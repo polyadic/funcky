@@ -23,5 +23,15 @@ namespace Funcky.Extensions
 
             return new Maybe<DateTime>();
         }
+
+        public static Maybe<TEnum> TryParseEnum<TEnum>(this string candidate) where TEnum : struct
+        {
+            if (Enum.TryParse(candidate, out TEnum enumValue))
+            {
+                return new Maybe<TEnum>(enumValue);
+            }
+
+            return new Maybe<TEnum>();
+        }
     }
 }

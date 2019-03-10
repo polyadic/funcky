@@ -6,7 +6,7 @@ namespace Funcky.Test
 {
     public class Maybe
     {
-
+        enum MyEnum { None, Cool }
 
         [Theory]
         [InlineData(-12, "-12")]
@@ -32,6 +32,25 @@ namespace Funcky.Test
         }
 
         [Fact]
+        public void ParseEnumViaMaybeMonad()
+        {
+
+            var maybe = "Cool".TryParseEnum<MyEnum>();
+
+            Assert.True(maybe.Match(false, m => true));
+            Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, m => m));
+        }
+
+        [Fact]
+        public void ParseEnumViaMaybeMonadWhereValueIsInvalid()
+        {
+
+            var maybe = "NotCool".TryParseEnum<MyEnum>();
+
+            Assert.False(maybe.Match(false, m => true));
+        }
+
+        [Fact]
         public void GetValueFromDictionaryViaMaybeMonad()
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
@@ -41,6 +60,8 @@ namespace Funcky.Test
             Assert.True(maybe.Match(false, m => true));
             Assert.Equal("value", maybe.Match("", m => m));
         }
+
+
 
         [Fact]
         public void GetValueFromDictionaryViaMaybeMonadWhereKeyDoesNotExist()
