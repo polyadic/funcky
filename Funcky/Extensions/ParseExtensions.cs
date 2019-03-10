@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Funcky
+namespace Funcky.Extensions
 {
-    public static class TryParseHelper
+    public static class ParseExtensions
     {
-        public static Maybe<int> TryParseInt(string candidate)
+        public static Maybe<int> TryParseInt(this string candidate)
         {
             if (int.TryParse(candidate, out int integerResult))
             {
@@ -14,7 +14,7 @@ namespace Funcky
             return new Maybe<int>();
         }
 
-        public static Maybe<DateTime> TryParseDate(string candidate)
+        public static Maybe<DateTime> TryParseDate(this string candidate)
         {
             if (DateTime.TryParse(candidate, out DateTime dateTime))
             {
