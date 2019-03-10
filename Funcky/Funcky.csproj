@@ -8,6 +8,9 @@
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
 	<PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/FreeApophis/Funcky</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/FreeApophis/Funcky</RepositoryUrl>
+	<PackageTags>Functional Monad</PackageTags>
   </PropertyGroup>
 
 </Project>
