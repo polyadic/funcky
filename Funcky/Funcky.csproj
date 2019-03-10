@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Thomas Bruderer</Authors>
+    <Company>apophis.ch</Company>
+    <Product>Funcky a functional C# library</Product>
+    <Description>Funcky is a basic functional C# library</Description>
+	<PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
