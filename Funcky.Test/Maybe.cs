@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Funcky.Extensions;
 using Xunit;
@@ -29,6 +30,15 @@ namespace Funcky.Test
             Maybe<bool> isLeet = maybe.Select(m => m == 1337);
 
             Assert.False(isLeet.Match(false, b => true));
+        }
+
+        [Fact]
+        public void ParseDateViaMaybeMonad()
+        {
+            var maybe = "26.02.1982".TryParseDate();
+
+            Assert.True(maybe.Match(false, m => true));
+            Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, m => m));
         }
 
         [Fact]
