@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky", "Funcky\Funcky.csproj", "{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Test", "Funcky.Test\Funcky.Test.csproj", "{EA10A7A1-6393-4B5F-BFF6-5937DA395141}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F800283-D010-4227-94C9-09C02B0411DE}
+	EndGlobalSection
+EndGlobal
