@@ -27,9 +27,7 @@ namespace Funcky.Test
         {
             var maybe = "no number".TryParseInt();
 
-            Maybe<bool> isLeet = maybe.Select(m => m == 1337);
-
-            Assert.False(isLeet.Match(false, b => true));
+            Assert.False(maybe.Match(false, m => true));
         }
 
         [Fact]
