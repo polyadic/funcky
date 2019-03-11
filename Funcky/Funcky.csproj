@@ -11,6 +11,8 @@
 	<PackageProjectUrl>https://github.com/FreeApophis/Funcky</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/FreeApophis/Funcky</RepositoryUrl>
 	<PackageTags>Functional Monad</PackageTags>
+	<Version>1.0.1</Version>
+	<FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
 </Project>
