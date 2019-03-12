@@ -4,17 +4,6 @@ namespace Funcky.Monads
 {
     public static class Maybe
     {
-        /// <summary>
-        /// Factory Method to use type inference to create a new Maybe instance
-        /// </summary>
-        /// <typeparam name="TItem"></typeparam>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public static Maybe<TItem> Create<TItem>(TItem item)
-        {
-            return new Maybe<TItem>(item);
-        }
-
         public static Maybe<TItem> Some<TItem>(TItem item)
         {
             return new Maybe<TItem>(item);
