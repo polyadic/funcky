@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
