@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Funcky.Test
 {
-    public class MaybeTest
+    public class OptionsTest
     {
         enum MyEnum { None, Cool }
 
@@ -20,14 +20,20 @@ namespace Funcky.Test
         {
             var maybe = stringToParse.TryParseInt();
 
-            Assert.True(maybe.Match(false, m => true));
+            bool isSome = maybe.Match(
+                none: false,
+                some: m => true
+                );
+
+
+            Assert.True(isSome);
             Assert.Equal(parsed, maybe.Match(0, m => m));
         }
 
         [Fact]
         public void CreateMaybeWithTypeInference()
         {
-            var maybe = Maybe.Create(1337);
+            var maybe = Option.Some(1337);
 
             Assert.Equal(typeof(int), maybe.GetType().GetGenericArguments().First());
         }
@@ -35,7 +41,7 @@ namespace Funcky.Test
         [Fact]
         public void CreateNone()
         {
-            var none = Maybe<int>.None();
+            var none = Option<int>.None();
 
             Assert.Equal(typeof(int), none.GetType().GetGenericArguments().First());
         }
@@ -43,7 +49,7 @@ namespace Funcky.Test
         [Fact]
         public void CreateSome()
         {
-            var some = Maybe.Some(42);
+            var some = Option.Some(42);
 
             Assert.Equal(typeof(int), some.GetType().GetGenericArguments().First());
         }
@@ -111,8 +117,8 @@ namespace Funcky.Test
         [Fact]
         public void SupportingLinqSyntaxSelect()
         {
-            Maybe<int> maybe = Maybe<int>.None();
-            Maybe<bool> maybeBool =
+            Option<int> maybe = Option<int>.None();
+            Option<bool> maybeBool =
                 from m in maybe
                 select m == 1337;
 
@@ -122,12 +128,12 @@ namespace Funcky.Test
         [Fact]
         public void MaybeMonadShouldSupportSelectMany()
         {
-            Maybe<int> someNumber = "1337".TryParseInt();
-            Maybe<DateTime> someDate = "12.2.2009".TryParseDateTime();
+            Option<int> someNumber = "1337".TryParseInt();
+            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
 
-            Maybe<Tuple<int, DateTime>> result = someNumber.SelectMany(number => someDate, Tuple.Create);
+            Option<Tuple<int, DateTime>> result = someNumber.SelectMany(number => someDate, Tuple.Create);
 
-            var resultShouldBe = new Maybe<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
+            var resultShouldBe = new Option<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
         }
 
@@ -135,23 +141,23 @@ namespace Funcky.Test
         [Fact]
         public void MaybeSupportingLinqSyntaxSelectMany()
         {
-            Maybe<int> someNumber = "1337".TryParseInt();
-            Maybe<DateTime> someDate = "12.2.2009".TryParseDateTime();
+            Option<int> someNumber = "1337".TryParseInt();
+            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
 
             var result = from number in someNumber
                          from date in someDate
                          select Tuple.Create(number, date);
 
-            var resultShouldBe = new Maybe<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
+            var resultShouldBe = new Option<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
         }
 
         [Fact]
         public void SelectManyWithOneNoneInputShouldResultInNoneResult()
         {
-            Maybe<int> someNumber = "1337".TryParseInt();
-            Maybe<DateTime> someDate = "12.2.2009".TryParseDateTime();
-            Maybe<int> someOtherNumber = "not a number".TryParseInt();
+            Option<int> someNumber = "1337".TryParseInt();
+            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
+            Option<int> someOtherNumber = "not a number".TryParseInt();
 
             var result = from number in someNumber
                          from date in someDate
@@ -168,7 +174,12 @@ namespace Funcky.Test
 
             foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
             {
-                Assert.NotEqual(0, number.Match(0, i => i));
+                var value = number.Match(
+                    none: 0,
+                    some: i => i
+                    );
+
+                Assert.NotEqual(0, value);
             }
         }
     }
