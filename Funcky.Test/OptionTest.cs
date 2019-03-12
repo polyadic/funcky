@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Xunit;
@@ -10,6 +12,11 @@ namespace Funcky.Test
     public class OptionsTest
     {
         enum MyEnum { None, Cool }
+
+        public OptionsTest()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
+        }
 
         [Theory]
         [InlineData(-12, "-12")]
