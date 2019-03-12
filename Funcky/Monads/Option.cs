@@ -2,23 +2,23 @@
 
 namespace Funcky.Monads
 {
-    public static class Maybe
+    public static class Option
     {
-        public static Maybe<TItem> Some<TItem>(TItem item)
+        public static Option<TItem> Some<TItem>(TItem item)
         {
-            return new Maybe<TItem>(item);
+            return new Option<TItem>(item);
         }
     }
 
-    public sealed class Maybe<TItem>
+    public sealed class Option<TItem>
     {
         private readonly bool _hasItem;
         private readonly TItem _item;
 
-        public Maybe() => _hasItem = false;
-        public static Maybe<TItem> None() => new Maybe<TItem>();
+        public Option() => _hasItem = false;
+        public static Option<TItem> None() => new Option<TItem>();
 
-        public Maybe(TItem item)
+        public Option(TItem item)
         {
             if (item == null)
             {
@@ -30,7 +30,7 @@ namespace Funcky.Monads
 
         }
 
-        public Maybe<TResult> Select<TResult>(Func<TItem, TResult> selector)
+        public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
         {
             if (selector == null)
             {
@@ -38,12 +38,12 @@ namespace Funcky.Monads
             }
 
             return _hasItem
-                ? Maybe.Some(selector(_item))
-                : Maybe<TResult>.None();
+                ? Option.Some(selector(_item))
+                : Option<TResult>.None();
         }
 
 
-        public Maybe<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Maybe<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
+        public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
         {
             if (maybeSelector == null)
             {
@@ -57,14 +57,14 @@ namespace Funcky.Monads
 
             if (_hasItem)
             {
-                Maybe<TMaybe> selectedMaybe = maybeSelector(_item);
+                Option<TMaybe> selectedMaybe = maybeSelector(_item);
                 if (selectedMaybe._hasItem)
                 {
-                    return Maybe.Some(resultSelector(_item, selectedMaybe._item));
+                    return Option.Some(resultSelector(_item, selectedMaybe._item));
                 }
 
             }
-            return Maybe<TResult>.None();
+            return Option<TResult>.None();
         }
 
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
@@ -85,7 +85,7 @@ namespace Funcky.Monads
 
         public override bool Equals(object obj)
         {
-            return obj is Maybe<TItem> other && Equals(_item, other._item);
+            return obj is Option<TItem> other && Equals(_item, other._item);
         }
 
         public override int GetHashCode()
