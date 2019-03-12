@@ -7,12 +7,12 @@
     <Company>apophis.ch</Company>
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
-	<PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageProjectUrl>https://github.com/FreeApophis/Funcky</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/FreeApophis/Funcky</RepositoryUrl>
 	<PackageTags>Functional Monad</PackageTags>
-	<Version>1.0.1</Version>
-	<FileVersion>1.0.1.0</FileVersion>
+	<Version>1.0.2</Version>
+	<FileVersion>1.0.2.0</FileVersion>
   </PropertyGroup>
 
 </Project>
