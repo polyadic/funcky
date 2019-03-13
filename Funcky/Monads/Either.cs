@@ -2,7 +2,7 @@
 
 namespace Funcky.Monads
 {
-    public class Either<TLeft, TRight>
+    public struct Either<TLeft, TRight>
     {
         private readonly TLeft _left;
         private readonly TRight _right;
@@ -11,11 +11,13 @@ namespace Funcky.Monads
         private Either(TLeft left)
         {
             _left = left;
+            _right = default(TRight);
             _isRight = false;
         }
 
         private Either(TRight right)
         {
+            _left = default(TLeft);
             _right = right;
             _isRight = true;
         }

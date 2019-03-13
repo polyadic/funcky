@@ -4,7 +4,7 @@ using Funcky.Monads;
 namespace Funcky.Monads
 {
 
-    public sealed class Result<TValidResult>
+    public struct Result<TValidResult>
     {
         private readonly TValidResult _result;
         private readonly Exception _error;
@@ -12,10 +12,12 @@ namespace Funcky.Monads
         private Result(TValidResult result)
         {
             _result = result;
+            _error = null;
         }
 
         private Result(Exception error)
         {
+            _result = default(TValidResult);
             _error = error;
         }
 

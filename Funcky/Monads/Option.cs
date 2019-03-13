@@ -10,12 +10,11 @@ namespace Funcky.Monads
         }
     }
 
-    public sealed class Option<TItem>
+    public struct Option<TItem>
     {
         private readonly bool _hasItem;
         private readonly TItem _item;
 
-        public Option() => _hasItem = false;
         public static Option<TItem> None() => new Option<TItem>();
 
         public Option(TItem item)
@@ -57,13 +56,14 @@ namespace Funcky.Monads
 
             if (_hasItem)
             {
-                Option<TMaybe> selectedMaybe = maybeSelector(_item);
+                var selectedMaybe = maybeSelector(_item);
                 if (selectedMaybe._hasItem)
                 {
                     return Option.Some(resultSelector(_item, selectedMaybe._item));
                 }
 
             }
+
             return Option<TResult>.None();
         }
 
@@ -85,7 +85,8 @@ namespace Funcky.Monads
 
         public override bool Equals(object obj)
         {
-            return obj is Option<TItem> other && Equals(_item, other._item);
+            return obj is Option<TItem> other
+                   && Equals(_item, other._item);
         }
 
         public override int GetHashCode()
