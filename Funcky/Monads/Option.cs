@@ -10,14 +10,15 @@ namespace Funcky.Monads
         }
     }
 
-    public struct Option<TItem>
+    public struct Option<TItem> :
+        IToString
     {
         private readonly bool _hasItem;
         private readonly TItem _item;
 
         public static Option<TItem> None() => new Option<TItem>();
 
-        public Option(TItem item)
+        internal Option(TItem item)
         {
             if (item == null)
             {
@@ -94,6 +95,14 @@ namespace Funcky.Monads
             return _hasItem
                 ? _item.GetHashCode()
                 : 0;
+        }
+
+        public override string ToString()
+        {
+            return Match(
+                none: "None",
+                some: value => $"Some({value})"
+                );
         }
     }
 }

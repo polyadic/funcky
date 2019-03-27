@@ -103,7 +103,7 @@ namespace Funcky.Test
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
 
-            var maybe = dictionary.TryGetValue("some");
+            var maybe = dictionary.TryGetValue(key: "some");
 
             Assert.True(maybe.Match(false, m => true));
             Assert.Equal("value", maybe.Match("", m => m));
@@ -116,7 +116,7 @@ namespace Funcky.Test
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
 
-            var maybe = dictionary.TryGetValue("none");
+            var maybe = dictionary.TryGetValue(readOnlyKey: "none");
 
             Assert.False(maybe.Match(false, m => true));
         }
@@ -140,7 +140,7 @@ namespace Funcky.Test
 
             Option<Tuple<int, DateTime>> result = someNumber.SelectMany(number => someDate, Tuple.Create);
 
-            var resultShouldBe = new Option<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
+            var resultShouldBe = Option.Some(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
         }
 
@@ -155,7 +155,7 @@ namespace Funcky.Test
                          from date in someDate
                          select Tuple.Create(number, date);
 
-            var resultShouldBe = new Option<Tuple<int, DateTime>>(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
+            var resultShouldBe = Option.Some(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
         }
 
@@ -188,6 +188,29 @@ namespace Funcky.Test
 
                 Assert.NotEqual(0, value);
             }
+        }
+
+
+        public static IEnumerable<object[]> TestValues()
+        {
+            yield return new object[] { "Some(1337)", Option.Some(1337) };
+            yield return new object[] { "Some(-1)", Option.Some(-1) };
+            yield return new object[] { "Some(10000)", Option.Some(10E3) };
+            yield return new object[] { "Some(string)", Option.Some("string") };
+            yield return new object[] { "None", Option<int>.None() };
+            yield return new object[] { "None", Option<string>.None() };
+            yield return new object[] { "Some(Cool)", Option.Some(MyEnum.Cool) };
+            yield return new object[] { "None", Option<MyEnum>.None() };
+        }
+
+
+        [Theory]
+        [MemberData(nameof(TestValues))]
+
+        public void OptionToStringReturnsUsefulString(string reference, IToString option)
+        {
+            Assert.Equal(reference, option.ToString());
+
         }
     }
 }
