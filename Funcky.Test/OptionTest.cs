@@ -212,5 +212,34 @@ namespace Funcky.Test
             Assert.Equal(reference, option.ToString());
 
         }
+
+        [Fact]
+        public void MatchOverloadWithTwoFuncObjectsWorksCorrectly()
+        {
+            var input = "123,some,x,1337,42,1,1000";
+
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
+            {
+                var value = number.Match(
+                    none: () => 0,
+                    some: i => i
+                );
+
+                Assert.NotEqual(0, value);
+            }
+        }
+
+        [Fact]
+        public void MatchingWithAThrowWorksAsExpected()
+        {
+            var none = Option<int>.None();
+
+            Assert.Throws<ArgumentNullException>(() =>
+                none.Match(
+                    none: () => throw new ArgumentNullException(),
+                    some: i => i
+                    )
+                );
+        }
     }
 }
