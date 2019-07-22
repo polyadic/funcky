@@ -96,6 +96,56 @@ namespace Funcky.Monads
                 : none();
         }
 
+        public void Match(Action none, Action<TItem> some)
+        {
+            if (none == null)
+            {
+                throw new ArgumentNullException(nameof(none));
+            }
+            if (some == null)
+            {
+                throw new ArgumentNullException(nameof(some));
+            }
+
+            if (_hasItem)
+            {
+                some(_item);
+            }
+            else
+            {
+                none();
+            }
+        }
+
+        public Option<TItem> OrElse(Option<TItem> elseOption)
+        {
+            return _hasItem
+                ? this
+                : elseOption;
+        }
+
+        public TItem OrElse(TItem elseOption)
+        {
+            return _hasItem
+                ? _item
+                : elseOption;
+        }
+
+        public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
+        {
+            return _hasItem
+                ? Option.Some(andThenFunction(_item))
+                : Option<TResult>.None();
+        }
+
+        public void AndThen(Action<TItem> andThenFunction)
+        {
+            if (_hasItem)
+            {
+                andThenFunction(_item);
+            }
+        }
+
 
         public override bool Equals(object obj)
         {

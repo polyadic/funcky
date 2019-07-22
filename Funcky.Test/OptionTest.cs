@@ -18,12 +18,20 @@ namespace Funcky.Test
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
         }
 
+        private void Statement(int value)
+        {
+        }
+
+        private void Statement()
+        {
+        }
+
         [Theory]
         [InlineData(-12, "-12")]
         [InlineData(0, "0")]
         [InlineData(-953542, "-953542")]
         [InlineData(1337, "1337")]
-        public void ParseIntViaMaybeMonadWhereStringIsNumber(int parsed, string stringToParse)
+        public void GivenStringsThenTheTryParseIntFunctionReturnsSomeForNumbers(int parsed, string stringToParse)
         {
             var maybe = stringToParse.TryParseInt();
 
@@ -38,7 +46,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void CreateMaybeWithTypeInference()
+        public void GivenAValueThenCreateMaybeWithTypeInference()
         {
             var maybe = Option.Some(1337);
 
@@ -46,7 +54,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void CreateNone()
+        public void GivenTheTypeConstructorNoneThenCreateNone()
         {
             var none = Option<int>.None();
 
@@ -54,7 +62,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void CreateSome()
+        public void GivenTheTypeConstructorSomeThenCreateSome()
         {
             var some = Option.Some(42);
 
@@ -62,7 +70,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void ParseIntViaMaybeMonadWhereStringIsNoNumber()
+        public void GivenAStringWhichIsNotAnIntThenTryParseIntReturnsANoneValue()
         {
             var maybe = "no number".TryParseInt();
 
@@ -70,7 +78,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void ParseDateViaMaybeMonad()
+        public void GivenADateThenTryParseDateReturnsAnOptionOfDate()
         {
             var maybe = "26.02.1982".TryParseDateTime();
 
@@ -79,7 +87,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void ParseEnumViaMaybeMonad()
+        public void GivenAnEnumThenTryParseEnumReturnsAnOptionOfDate()
         {
 
             var maybe = "Cool".TryParseEnum<MyEnum>();
@@ -89,7 +97,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void ParseEnumViaMaybeMonadWhereValueIsInvalid()
+        public void GivenAnInvalidEnumValueThenTryParseEnumReturnsANone()
         {
 
             var maybe = "NotCool".TryParseEnum<MyEnum>();
@@ -99,7 +107,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void GetValueFromDictionaryViaMaybeMonad()
+        public void GivenADictionaryWhenWeLookForAnExistentValueWithTryGetValueThenTheResultShouldBeASomeOfTheGivenType()
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
 
@@ -112,7 +120,7 @@ namespace Funcky.Test
 
 
         [Fact]
-        public void GetValueFromDictionaryViaMaybeMonadWhereKeyDoesNotExist()
+        public void GivenADictionaryWhenWeLookForAnInexistentValueWithTryGetValueThenTheResultShouldBeANoneOfTheGivenType()
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
 
@@ -122,7 +130,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void SupportingLinqSyntaxSelect()
+        public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
         {
             Option<int> maybe = Option<int>.None();
             Option<bool> maybeBool =
@@ -133,7 +141,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void MaybeMonadShouldSupportSelectMany()
+        public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
         {
             Option<int> someNumber = "1337".TryParseInt();
             Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
@@ -146,7 +154,7 @@ namespace Funcky.Test
 
 
         [Fact]
-        public void MaybeSupportingLinqSyntaxSelectMany()
+        public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntacThenTheResultShouldBeSomeValue()
         {
             Option<int> someNumber = "1337".TryParseInt();
             Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
@@ -160,7 +168,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void SelectManyWithOneNoneInputShouldResultInNoneResult()
+        public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
         {
             Option<int> someNumber = "1337".TryParseInt();
             Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
@@ -175,7 +183,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void FilterAllNonesFromAMaybeEnumerable()
+        public void GivenAFilterWhichFiltersAllNoneThenOnlyTheSomeValuesPassThrough()
         {
             var input = "123,some,x,1337,42,1,1000";
 
@@ -207,7 +215,7 @@ namespace Funcky.Test
         [Theory]
         [MemberData(nameof(TestValues))]
 
-        public void OptionToStringReturnsUsefulString(string reference, IToString option)
+        public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, IToString option)
         {
             Assert.Equal(reference, option.ToString());
 
@@ -230,7 +238,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void MatchingWithAThrowWorksAsExpected()
+        public void GivenAMatchingStatementWhichThrowsAnExceptionThrowsTheSameException()
         {
             var none = Option<int>.None();
 
@@ -240,6 +248,59 @@ namespace Funcky.Test
                     some: i => i
                     )
                 );
+        }
+
+        [Fact]
+        public void GivenANoneThenOrElseShouldReturnTheArgument()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            Assert.Equal(some, some.OrElse(none));
+            Assert.Equal(none, none.OrElse(none));
+            Assert.Equal(some, none.OrElse(some));
+            Assert.Equal(some, none.OrElse(none).OrElse(some));
+            Assert.Equal(none, none.OrElse(none).OrElse(none));
+            Assert.Equal(1337, none.OrElse(1337));
+            Assert.Equal(1337, none.OrElse(none).OrElse(1337));
+        }
+
+        [Fact]
+        public void GivenAnOptionWithTheIdentityFunctionThenTheResultShouldBeTheSame()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            Assert.Equal(none, none.AndThen(number => number));
+            Assert.Equal(some, some.AndThen(number => number));
+        }
+
+        [Fact]
+        public void GivenAnOptionToAndThenWithAStatementThenItShouldCompile()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            none.AndThen(Statement);
+            some.AndThen(Statement);
+        }
+
+        [Theory]
+        [InlineData("-12")]
+        [InlineData("0")]
+        [InlineData("-953542")]
+        [InlineData("1337")]
+        [InlineData("not a number")]
+        [InlineData("13 is a number")]
+        [InlineData("")]
+        public void GivenAnOptionAndTheMatchFunctionAStatmentItShouldCompile(string stringToParse)
+        {
+            var maybe = stringToParse.TryParseInt();
+
+            maybe.Match(
+                none: Statement,
+                some: Statement
+            );
         }
     }
 }

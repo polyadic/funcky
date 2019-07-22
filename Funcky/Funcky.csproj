@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,8 +11,9 @@
 	<PackageProjectUrl>https://github.com/FreeApophis/Funcky</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/FreeApophis/Funcky</RepositoryUrl>
 	<PackageTags>Functional Monad</PackageTags>
-	<Version>1.1.0</Version>
-	<FileVersion>1.0.2.0</FileVersion>
+	<Version>1.2.0</Version>
+	<FileVersion>1.2.0.0</FileVersion>
+	<AssemblyVersion>1.2.0.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>
