@@ -23,29 +23,37 @@ A Maybe<T> can either hold a value of T or it holds Nothing (None)
 
 ### Create something
 
-    var something = Maybe.Some(1337);
+```csharp
+var something = Maybe.Some(1337);
+```
     
 ### Create nothing
 
-    var nothing = Maybe<int>.None();
-    
+```csharp
+var nothing = Maybe<int>.None();
+```
+
 ### Select
 
-            Option<bool> maybeBool =
-                from m in maybe
-                select m == 1337;
+```csharp
+Option<bool> maybeBool =
+    from m in maybe
+    select m == 1337;
+```
 
 ### Select Many 
 
-
-    var result = from number in someNumber
-        from date in someDate
-        select Tuple.Create(number, date);
+```csharp
+var result = from number in someNumber
+    from date in someDate
+    select Tuple.Create(number, date);
+```
 
 ### Match
 
-    bool isSome = maybe.Match(
-        none: false,
-        some: m => true
-    );
-
+```csharp
+bool isSome = maybe.Match(
+    none: false,
+    some: m => true
+);
+```
