@@ -16,4 +16,8 @@
 	<AssemblyVersion>1.2.0.0</AssemblyVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>
