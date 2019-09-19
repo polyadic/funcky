@@ -18,7 +18,7 @@ namespace Funcky.Monads
         internal Reader() { }
 
         //Used to extract some value from a context
-        public static Reader<T> Read<TCtx>(Func<TCtx, T> extractor) => new Reader<T>(context => Extract(context, extractor));
+        public static Reader<T> Read<TContext>(Func<TContext, T> extractor) => new Reader<T>(context => Extract(context, extractor));
 
         private Reader(Func<object, T> exec) => _extractor = exec;
 
