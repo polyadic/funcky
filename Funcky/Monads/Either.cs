@@ -90,5 +90,9 @@ namespace Funcky.Monads
                 ? _right.GetHashCode()
                 : _left.GetHashCode();
         }
+
+        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
     }
 }
