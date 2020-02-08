@@ -167,5 +167,9 @@ namespace Funcky.Monads
                 some: value => $"Some({value})"
                 );
         }
+
+        public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
     }
 }
