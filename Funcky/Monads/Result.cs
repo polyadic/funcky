@@ -1,9 +1,7 @@
 ﻿using System;
-using Funcky.Monads;
 
 namespace Funcky.Monads
 {
-
     public struct Result<TValidResult>
     {
         private readonly TValidResult _result;
@@ -90,5 +88,11 @@ namespace Funcky.Monads
                 ? _result.GetHashCode()
                 : _error.GetHashCode();
         }
+        
+        public static bool operator ==(Result<TValidResult> lhs, Result<TValidResult> rhs)
+            => lhs.Equals(rhs);
+
+        public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
+            => !lhs.Equals(rhs);
     }
 }
