@@ -15,7 +15,7 @@ namespace Funcky.Monads
         }
     }
 
-    public struct Option<TItem> :
+    public readonly struct Option<TItem> :
         IToString
     {
         private readonly bool _hasItem;
