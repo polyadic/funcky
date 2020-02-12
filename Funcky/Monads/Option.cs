@@ -8,6 +8,11 @@ namespace Funcky.Monads
         {
             return new Option<TItem>(item);
         }
+
+        public static Option<TItem> Some<TItem>(Option<TItem> item)
+        {
+            return item;
+        }
     }
 
     public struct Option<TItem> :
@@ -110,8 +115,7 @@ namespace Funcky.Monads
             if (_hasItem)
             {
                 some(_item);
-            }
-            else
+            } else
             {
                 none();
             }
@@ -130,6 +134,21 @@ namespace Funcky.Monads
                 ? _item
                 : elseOption;
         }
+
+        public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
+        {
+            return _hasItem
+                ? this
+                : elseOption.Invoke();
+        }
+
+        public TItem OrElse(Func<TItem> elseOption)
+        {
+            return _hasItem
+                ? _item
+                : elseOption.Invoke();
+        }
+
 
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
         {

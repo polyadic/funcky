@@ -187,8 +187,7 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
-            {
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true))) {
                 var value = number.Match(
                     none: 0,
                     some: i => i
@@ -226,8 +225,7 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
-            {
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true))) {
                 var value = number.Match(
                     none: () => 0,
                     some: i => i
@@ -285,6 +283,39 @@ namespace Funcky.Test
             some.AndThen(Statement);
         }
 
+        [Fact]
+        public void GivenANoneWithOrElseFuncWeGetTheCorrectValue()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            var maybe = none
+                .OrElse(() => none)
+                .OrElse(() => some);
+
+            Assert.Equal(some, maybe);
+        }
+
+        [Fact]
+        public void GivenASomeCaseTheOrElseFuncIsNotExecuted()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+            var global = 0;
+
+            Func<int> sideEffect = () =>
+            {
+                global = 42;
+                return 11;
+            };
+
+            var maybe = some
+                .OrElse(sideEffect);
+
+            Assert.Equal(0, global);
+        }
+
+
         [Theory]
         [InlineData("-12")]
         [InlineData("0")]
@@ -302,5 +333,15 @@ namespace Funcky.Test
                 some: Statement
             );
         }
+
+        [Fact]
+        public void GivenAnOptionOfAnOptionWeGetASimpleOption()
+        {
+            var option1 = Option.Some(1);
+            var option2 = Option.Some(option1);
+
+            Assert.Equal(option1, option2);
+        }
+
     }
 }
