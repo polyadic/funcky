@@ -2,7 +2,7 @@
 
 namespace Funcky
 {
-    public struct Unit : IEquatable<Unit>, IComparable<Unit>
+    public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
     {
         public bool Equals(Unit other) => true;
 

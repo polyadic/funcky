@@ -2,7 +2,7 @@
 
 namespace Funcky.Monads
 {
-    public struct Result<TValidResult>
+    public readonly struct Result<TValidResult>
     {
         private readonly TValidResult _result;
         private readonly Exception _error;
