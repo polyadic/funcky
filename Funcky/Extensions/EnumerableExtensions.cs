@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Funcky.Extensions
@@ -18,6 +19,38 @@ namespace Funcky.Extensions
             if (item is { })
             {
                 yield return item;
+            }
+        }
+
+        /// <summary>
+        /// An IEnumerable that calls a function on each element before yielding it. It can be used to encode side effects without enumerating.
+        /// The side effect will be executed when enumerating the result.
+        /// </summary>
+        /// <typeparam name="T">the inner type of the enumerable</typeparam>
+        /// <param name="elements">anything enumerable</param>
+        /// <param name="action"></param>
+        /// <returns>returns an IEnumerable with the sideeffect defined by action encoded in the enumerable.</returns>
+        public static IEnumerable<T> Inspect<T>(this IEnumerable<T> elements, Action<T> action)
+        {
+            foreach (var element in elements)
+            {
+                action(element);
+                yield return element;
+            }
+        }
+
+        /// <summary>
+        /// The IEnumerable version of foreach. You can apply an acction to each element. This is only useful when you have side effects.
+        /// </summary>
+        /// <typeparam name="T">the inner type of the enumerable</typeparam>
+        /// <param name="elements">anything enumerable</param>
+        /// <param name="action"></param>
+        /// <returns>returns an enumerated ienumerable to be able to chain multiple each.</returns>
+        public static void Each<T>(this IEnumerable<T> elements, Action<T> action)
+        {
+            foreach (var element in elements)
+            {
+                action(element);
             }
         }
     }
