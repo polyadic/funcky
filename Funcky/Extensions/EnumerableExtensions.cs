@@ -13,7 +13,7 @@ namespace Funcky.Extensions
         /// </summary>
         /// <typeparam name="T"> Type of the object. </typeparam>
         /// <param name="item"> The instance that will be wrapped. </param>
-        /// <returns> An IEnumerable&lt;T&gt; consisting of a single item. </returns>
+        /// <returns> An <see cref="IEnumerable{T}" /> consisting of a single item. </returns>
         public static IEnumerable<T> Yield<T>(this T item)
         {
             if (item is { })
@@ -29,7 +29,7 @@ namespace Funcky.Extensions
         /// <typeparam name="T">the inner type of the enumerable</typeparam>
         /// <param name="elements">anything enumerable</param>
         /// <param name="action"></param>
-        /// <returns>returns an IEnumerable with the sideeffect defined by action encoded in the enumerable.</returns>
+        /// <returns>returns an <see cref="IEnumerable{T}" /> with the sideeffect defined by action encoded in the enumerable.</returns>
         public static IEnumerable<T> Inspect<T>(this IEnumerable<T> elements, Action<T> action)
         {
             foreach (var element in elements)
@@ -40,12 +40,12 @@ namespace Funcky.Extensions
         }
 
         /// <summary>
-        /// The IEnumerable version of foreach. You can apply an acction to each element. This is only useful when you have side effects.
+        /// The IEnumerable version of foreach. You can apply an action to each element. This is only useful when you have side effects.
         /// </summary>
         /// <typeparam name="T">the inner type of the enumerable</typeparam>
         /// <param name="elements">anything enumerable</param>
         /// <param name="action"></param>
-        /// <returns>returns an enumerated ienumerable to be able to chain multiple each.</returns>
+        /// <returns>returns an enumerated <see cref="IEnumerable{T}" /> to be able to chain multiple each.</returns>
         public static void Each<T>(this IEnumerable<T> elements, Action<T> action)
         {
             foreach (var element in elements)
