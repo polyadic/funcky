@@ -5,7 +5,7 @@ namespace Funcky.Monads
 {
     public static class Reader
     {
-        //Used to extract some value from a context
+        // Used to extract some value from a context
         public static Reader<TService> GetService<TService>() =>
             Reader<TService>.Read<IServiceProvider>(serviceProvider => (TService)serviceProvider.GetService(typeof(TService)));
     }
@@ -13,10 +13,10 @@ namespace Funcky.Monads
     [AsyncMethodBuilder(typeof(ReaderTaskMethodBuilder<>))]
     public class Reader<T> : INotifyCompletion, IReader
     {
-        //Used by ReaderTaskMethodBuilder in a compiler generated code
+        // Used by ReaderTaskMethodBuilder in a compiler generated code
         internal Reader() { }
 
-        //Used to extract some value from a context
+        // Used to extract some value from a context
         public static Reader<T> Read<TContext>(Func<TContext, T> extractor) => new Reader<T>(context => Extract(context, extractor));
 
         private Reader(Func<object, T> exec) => _extractor = exec;
@@ -67,7 +67,7 @@ namespace Funcky.Monads
         {
             if (_exception != null)
             {
-                //ExceptionDispatchInfo.Throw(_exception);
+                // ExceptionDispatchInfo.Throw(_exception);
             }
 
             if (!IsCompleted)
