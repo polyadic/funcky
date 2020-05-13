@@ -126,7 +126,9 @@ namespace Funcky.Monads
                 throw new Exception("Some extracting function should be defined");
             }
 
+            #pragma warning disable SA1305
             if (context is TContext tContext)
+            #pragma warning restore SA1305
             {
                 return extractor(tContext);
             }
