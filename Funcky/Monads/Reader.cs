@@ -148,9 +148,9 @@ namespace Funcky.Monads
         {
         }
 
-        public void SetException(Exception exception) => this.Task.SetException(exception);
+        public void SetException(Exception exception) => Task.SetException(exception);
 
-        public void SetResult(T result) => this.Task.SetResult(result);
+        public void SetResult(T result) => Task.SetResult(result);
 
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
             where TAwaiter : INotifyCompletion

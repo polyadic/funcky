@@ -17,9 +17,9 @@ namespace Funcky.Test
 
             public Configuration(int dataBaseId, string greetingTemplate, string nameFormat)
             {
-                this.DataBaseId = dataBaseId;
-                this.GreetingTemplate = greetingTemplate;
-                this.NameFormat = nameFormat;
+                DataBaseId = dataBaseId;
+                GreetingTemplate = greetingTemplate;
+                NameFormat = nameFormat;
             }
         }
 

@@ -42,10 +42,10 @@ namespace Funcky.Test
         private readonly Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
         public void RegisterInstance<T>(T instance)
-            => this._storage.Add(typeof(T), instance);
+            => _storage.Add(typeof(T), instance);
 
         public object GetService(Type t)
-            => this._storage.TryGetValue(t, out var result)
+            => _storage.TryGetValue(t, out var result)
                 ? result
                 : throw new Exception($"Type '{t.Name}' is not registered");
     }
