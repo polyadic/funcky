@@ -11,7 +11,7 @@ namespace Funcky.Test
 {
     public class OptionsTest
     {
-        enum MyEnum
+        private enum MyEnum
         {
             None,
             Cool,

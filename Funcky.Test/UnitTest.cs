@@ -16,7 +16,7 @@ namespace Funcky.Test
             Assert.NotEqual(void1, o);
         }
 
-        void AnAction(SideEffect sideEffect)
+        private static void AnAction(SideEffect sideEffect)
         {
             sideEffect.Do();
         }

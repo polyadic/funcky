@@ -14,7 +14,7 @@ namespace Funcky.Test
             _testOutputHelper = testOutputHelper;
         }
 
-        class Config
+        private class Config
         {
             public string Template;
         }
@@ -31,10 +31,10 @@ namespace Funcky.Test
         public static async Reader<(string gJohn, string gJose)> GreetGuys()
             => (await Greet("John"), await Greet("Jose"));
 
-        static async Reader<string> Greet(string name)
+        private static async Reader<string> Greet(string name)
             => string.Format(await ExtractTemplate(), name);
 
-        static async Reader<string> ExtractTemplate()
+        private static async Reader<string> ExtractTemplate()
             => await Reader<string>.Read<Config>(c => c.Template);
     }
 }

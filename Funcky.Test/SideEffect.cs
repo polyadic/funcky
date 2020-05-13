@@ -1,6 +1,6 @@
 ﻿namespace Funcky.Test
 {
-    class SideEffect
+    internal class SideEffect
     {
         public void Do() => IsDone = true;
 
