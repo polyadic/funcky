@@ -21,7 +21,7 @@ namespace Funcky.Monads
         private readonly bool _hasItem;
         private readonly TItem _item;
 
-        public static Option<TItem> None() => new Option<TItem>();
+        public static Option<TItem> None() => default;
 
         internal Option(TItem item)
         {
