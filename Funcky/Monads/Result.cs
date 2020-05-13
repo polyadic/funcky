@@ -15,7 +15,7 @@ namespace Funcky.Monads
 
         private Result(Exception error)
         {
-            _result = default(TValidResult);
+            _result = default;
             _error = error;
         }
 

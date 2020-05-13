@@ -9,7 +9,7 @@ namespace Funcky
             return parameter =>
             {
                 action(parameter);
-                return new Unit();
+                return default;
             };
         }
 
@@ -18,7 +18,7 @@ namespace Funcky
             return (p1, p2) =>
             {
                 action(p1, p2);
-                return new Unit();
+                return default;
             };
         }
 
@@ -27,7 +27,7 @@ namespace Funcky
             return (p1, p2, p3) =>
             {
                 action(p1, p2, p3);
-                return new Unit();
+                return default;
             };
         }
 
@@ -36,7 +36,7 @@ namespace Funcky
             return (p1, p2, p3, p4) =>
             {
                 action(p1, p2, p3, p4);
-                return new Unit();
+                return default;
             };
         }
 
@@ -45,7 +45,7 @@ namespace Funcky
             return (p1, p2, p3, p4, p5) =>
             {
                 action(p1, p2, p3, p4, p5);
-                return new Unit();
+                return default;
             };
         }
 
@@ -54,7 +54,7 @@ namespace Funcky
             return (p1, p2, p3, p4, p5, p6) =>
             {
                 action(p1, p2, p3, p4, p5, p6);
-                return new Unit();
+                return default;
             };
         }
 
@@ -63,7 +63,7 @@ namespace Funcky
             return (p1, p2, p3, p4, p5, p6, p7) =>
             {
                 action(p1, p2, p3, p4, p5, p6, p7);
-                return new Unit();
+                return default;
             };
         }
 
@@ -72,7 +72,7 @@ namespace Funcky
             return (p1, p2, p3, p4, p5, p6, p7, p8) =>
             {
                 action(p1, p2, p3, p4, p5, p6, p7, p8);
-                return new Unit();
+                return default;
             };
         }
     }

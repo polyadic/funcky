@@ -11,13 +11,13 @@ namespace Funcky.Monads
         private Either(TLeft left)
         {
             _left = left;
-            _right = default(TRight);
+            _right = default;
             _isRight = false;
         }
 
         private Either(TRight right)
         {
-            _left = default(TLeft);
+            _left = default;
             _right = right;
             _isRight = true;
         }
