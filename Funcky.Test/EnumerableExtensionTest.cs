@@ -15,22 +15,6 @@ namespace Funcky.Test
             AcceptUnits(unit.Yield());
         }
 
-        private void AcceptIntegers(IEnumerable<int> values)
-        {
-            foreach (var value in values)
-            {
-                Assert.Equal(42, value);
-            }
-        }
-
-        private void AcceptUnits(IEnumerable<Unit> units)
-        {
-            foreach (var unit in units)
-            {
-                Assert.Equal(new Unit(), unit);
-            }
-        }
-
         [Fact]
         public void GivenAnEnumerableAndInjectWeCanApplySideffectsToEnumberables()
         {
@@ -45,6 +29,22 @@ namespace Funcky.Test
             numbersWithSideEffect.Each(n => { });
 
             Assert.Equal(numbers.Count, sideEffect);
+        }
+
+        private void AcceptIntegers(IEnumerable<int> values)
+        {
+            foreach (var value in values)
+            {
+                Assert.Equal(42, value);
+            }
+        }
+
+        private void AcceptUnits(IEnumerable<Unit> units)
+        {
+            foreach (var unit in units)
+            {
+                Assert.Equal(default, unit);
+            }
         }
     }
 }

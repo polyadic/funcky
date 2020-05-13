@@ -14,11 +14,6 @@ namespace Funcky.Test
             _testOutputHelper = testOutputHelper;
         }
 
-        private class Config
-        {
-            public string Template;
-        }
-
         [Fact]
         public async Task Main()
         {
@@ -28,7 +23,7 @@ namespace Funcky.Test
         }
 
         // These functions do not have any link to any instance of the Config class.
-        public static async Reader<(string gJohn, string gJose)> GreetGuys()
+        public static async Reader<(string GreetJohn, string GreetJose)> GreetGuys()
             => (await Greet("John"), await Greet("Jose"));
 
         private static async Reader<string> Greet(string name)
@@ -36,5 +31,10 @@ namespace Funcky.Test
 
         private static async Reader<string> ExtractTemplate()
             => await Reader<string>.Read<Config>(c => c.Template);
+
+        private struct Config
+        {
+            public string Template;
+        }
     }
 }

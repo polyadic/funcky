@@ -2,26 +2,11 @@
 
 namespace Funcky.Monads
 {
-    public static class Option
-    {
-        public static Option<TItem> Some<TItem>(TItem item)
-        {
-            return new Option<TItem>(item);
-        }
-
-        public static Option<TItem> Some<TItem>(Option<TItem> item)
-        {
-            return item;
-        }
-    }
-
     public readonly struct Option<TItem> :
         IToString
     {
         private readonly bool _hasItem;
         private readonly TItem _item;
-
-        public static Option<TItem> None() => default;
 
         internal Option(TItem item)
         {
@@ -33,6 +18,12 @@ namespace Funcky.Monads
             _item = item;
             _hasItem = true;
         }
+
+        public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
+
+        public static Option<TItem> None() => default;
 
         public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
         {
@@ -183,9 +174,18 @@ namespace Funcky.Monads
                 none: "None",
                 some: value => $"Some({value})");
         }
+    }
 
-        public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
+    public static class Option
+    {
+        public static Option<TItem> Some<TItem>(TItem item)
+        {
+            return new Option<TItem>(item);
+        }
 
-        public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
+        public static Option<TItem> Some<TItem>(Option<TItem> item)
+        {
+            return item;
+        }
     }
 }

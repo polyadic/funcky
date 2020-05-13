@@ -7,22 +7,6 @@ namespace Funcky.Test
 {
     public class ReaderTest
     {
-        public class Configuration
-        {
-            public readonly int DataBaseId;
-
-            public readonly string GreetingTemplate;
-
-            public readonly string NameFormat;
-
-            public Configuration(int dataBaseId, string greetingTemplate, string nameFormat)
-            {
-                DataBaseId = dataBaseId;
-                GreetingTemplate = greetingTemplate;
-                NameFormat = nameFormat;
-            }
-        }
-
         [Fact]
         public async Task MainTest()
         {
@@ -106,6 +90,22 @@ namespace Funcky.Test
         {
             var dataBaseId = await Reader<int>.Read<Configuration>(cfg => cfg.DataBaseId);
             return Database.ConnectTo(dataBaseId);
+        }
+
+        public readonly struct Configuration
+        {
+            public readonly int DataBaseId;
+
+            public readonly string GreetingTemplate;
+
+            public readonly string NameFormat;
+
+            public Configuration(int dataBaseId, string greetingTemplate, string nameFormat)
+            {
+                DataBaseId = dataBaseId;
+                GreetingTemplate = greetingTemplate;
+                NameFormat = nameFormat;
+            }
         }
     }
 }

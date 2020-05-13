@@ -9,25 +9,17 @@ using Xunit;
 
 namespace Funcky.Test
 {
-    public class OptionsTest
+    public class OptionTest
     {
-        private enum MyEnum
-        {
-            None,
-            Cool,
-        }
-
-        public OptionsTest()
+        public OptionTest()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
         }
 
-        private void Statement(int value)
+        private enum MyEnum
         {
-        }
-
-        private void Statement()
-        {
+            None,
+            Cool,
         }
 
         [Theory]
@@ -114,7 +106,7 @@ namespace Funcky.Test
             var maybe = dictionary.TryGetValue(key: "some");
 
             Assert.True(maybe.Match(false, m => true));
-            Assert.Equal("value", maybe.Match("", m => m));
+            Assert.Equal("value", maybe.Match(string.Empty, m => m));
         }
 
         [Fact]
@@ -331,6 +323,14 @@ namespace Funcky.Test
             var option2 = Option.Some(option1);
 
             Assert.Equal(option1, option2);
+        }
+
+        private void Statement(int value)
+        {
+        }
+
+        private void Statement()
+        {
         }
     }
 }

@@ -13,18 +13,6 @@ namespace Funcky.Monads
     [AsyncMethodBuilder(typeof(ReaderTaskMethodBuilder<>))]
     public class Reader<T> : INotifyCompletion, IReader
     {
-        // Used by ReaderTaskMethodBuilder in a compiler generated code
-        internal Reader()
-        {
-        }
-
-        // Used to extract some value from a context
-        public static Reader<T> Read<TContext>(Func<TContext, T> extractor) => new Reader<T>(context => Extract(context, extractor));
-
-        private Reader(Func<object, T> exec) => _extractor = exec;
-
-        public bool IsCompleted { get; private set; }
-
         private readonly Func<object, T> _extractor;
 
         private object _context;
@@ -36,6 +24,18 @@ namespace Funcky.Monads
         private Exception _exception;
 
         private IReader _child;
+
+        // Used by ReaderTaskMethodBuilder in a compiler generated code
+        internal Reader()
+        {
+        }
+
+        private Reader(Func<object, T> exec) => _extractor = exec;
+
+        public bool IsCompleted { get; private set; }
+
+        // Used to extract some value from a context
+        public static Reader<T> Read<TContext>(Func<TContext, T> extractor) => new Reader<T>(context => Extract(context, extractor));
 
         public Reader<T> GetAwaiter() => this;
 
@@ -82,6 +82,20 @@ namespace Funcky.Monads
             return _result;
         }
 
+        public void SetContext(object context)
+        {
+            _context = context;
+            if (_context != null)
+            {
+                _child?.SetContext(_context);
+
+                if (_extractor != null)
+                {
+                    SetResult(_extractor(_context));
+                }
+            }
+        }
+
         internal void SetResult(T result)
         {
             _result = result;
@@ -105,20 +119,6 @@ namespace Funcky.Monads
             }
         }
 
-        public void SetContext(object context)
-        {
-            _context = context;
-            if (_context != null)
-            {
-                _child?.SetContext(_context);
-
-                if (_extractor != null)
-                {
-                    SetResult(_extractor(_context));
-                }
-            }
-        }
-
         private static T Extract<TContext>(object context, Func<TContext, T> extractor)
         {
             if (extractor == null)
@@ -139,9 +139,12 @@ namespace Funcky.Monads
     {
         public ReaderTaskMethodBuilder() => Task = new Reader<T>();
 
+        public Reader<T> Task { get; }
+
         public static ReaderTaskMethodBuilder<T> Create() => new ReaderTaskMethodBuilder<T>();
 
-        public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
+        public void Start<TStateMachine>(ref TStateMachine stateMachine)
+            where TStateMachine : IAsyncStateMachine
             => stateMachine.MoveNext();
 
         public void SetStateMachine(IAsyncStateMachine stateMachine)
@@ -179,7 +182,5 @@ namespace Funcky.Monads
 
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
-
-        public Reader<T> Task { get; }
     }
 }

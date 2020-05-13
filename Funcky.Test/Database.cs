@@ -6,6 +6,17 @@ namespace Funcky.Test
 {
     public class Database
     {
+        private static readonly (int Id, string FirstName, string LastName, int Win)[] Data =
+        {
+            (1, "John", "Smith", 110),
+            (2, "Mary", "Louie", 30),
+            (3, "Louis", "Slaughter", 47),
+        };
+
+        private Database()
+        {
+        }
+
         public static Database ConnectTo(int id)
         {
             if (id == 100)
@@ -15,17 +26,6 @@ namespace Funcky.Test
 
             throw new Exception("Wrong database");
         }
-
-        private Database()
-        {
-        }
-
-        private static readonly (int Id, string FirstName, string LastName, int Win)[] Data =
-        {
-            (1, "John", "Smith", 110),
-            (2, "Mary", "Louie", 30),
-            (3, "Louis", "Slaughter", 47),
-        };
 
         public async Task<string> GetFirstName(int id)
         {

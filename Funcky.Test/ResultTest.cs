@@ -7,34 +7,6 @@ using Xunit;
 
 namespace Funcky.Test
 {
-    public class IntegerResults : IEnumerable<object[]>
-    {
-        public IEnumerator<object[]> GetEnumerator()
-        {
-            yield return new object[] { Result<int>.Ok(1000), 250.0 };
-            yield return new object[] { Result<int>.Ok(44), 11.0 };
-            yield return new object[] { Result<int>.Ok(1), 0.25 };
-            yield return new object[] { Result<int>.Ok(1000), 250.0 };
-            yield return new object[] { Result<int>.Error(new Exception()), -1.0 };
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
-    public class IntegerSums : IEnumerable<object[]>
-    {
-        public IEnumerator<object[]> GetEnumerator()
-        {
-            yield return new object[] { Result<int>.Ok(5), Result<int>.Ok(10), Result<int>.Ok(15), 30 };
-            yield return new object[] { Result<int>.Ok(42), Result<int>.Ok(1337), Result<int>.Error(new InvalidCastException()), null };
-            yield return new object[] { Result<int>.Ok(1337), Result<int>.Ok(42), Result<int>.Ok(99), 1478 };
-            yield return new object[] { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), 804198 };
-            yield return new object[] { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), null };
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
     public class ResultTest
     {
         [Fact]
@@ -89,6 +61,34 @@ namespace Funcky.Test
                 error: y => null);
 
             Assert.Equal(referenceSum, resultSum);
+        }
+
+        public class IntegerResults : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { Result<int>.Ok(1000), 250.0 };
+                yield return new object[] { Result<int>.Ok(44), 11.0 };
+                yield return new object[] { Result<int>.Ok(1), 0.25 };
+                yield return new object[] { Result<int>.Ok(1000), 250.0 };
+                yield return new object[] { Result<int>.Error(new Exception()), -1.0 };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+        public class IntegerSums : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { Result<int>.Ok(5), Result<int>.Ok(10), Result<int>.Ok(15), 30 };
+                yield return new object[] { Result<int>.Ok(42), Result<int>.Ok(1337), Result<int>.Error(new InvalidCastException()), null };
+                yield return new object[] { Result<int>.Ok(1337), Result<int>.Ok(42), Result<int>.Ok(99), 1478 };
+                yield return new object[] { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), 804198 };
+                yield return new object[] { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), null };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

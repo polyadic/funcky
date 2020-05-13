@@ -22,6 +22,10 @@ namespace Funcky.Monads
             _isRight = true;
         }
 
+        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
+
         public static Either<TLeft, TRight> Left(TLeft left)
         {
             return new Either<TLeft, TRight>(left);
@@ -88,9 +92,5 @@ namespace Funcky.Monads
                 ? _right.GetHashCode()
                 : _left.GetHashCode();
         }
-
-        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
-
-        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
     }
 }
