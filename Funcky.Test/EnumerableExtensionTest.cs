@@ -46,6 +46,5 @@ namespace Funcky.Test
 
             Assert.Equal(numbers.Count, sideEffect);
         }
-
     }
 }

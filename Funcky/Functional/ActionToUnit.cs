@@ -6,7 +6,11 @@ namespace Funcky
     {
         public static Func<T, Unit> ActionToUnit<T>(Action<T> action)
         {
-            return parameter => { action(parameter); return new Unit(); };
+            return parameter =>
+            {
+                action(parameter);
+                return new Unit();
+            };
         }
 
         public static Func<T1, T2, Unit> ActionToUnit<T1, T2>(Action<T1, T2> action)

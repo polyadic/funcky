@@ -14,7 +14,10 @@ namespace Funcky.Test
             _testOutputHelper = testOutputHelper;
         }
 
-        class Config { public string Template; }
+        class Config
+        {
+            public string Template;
+        }
 
         [Fact]
         public async Task Main()
@@ -24,7 +27,7 @@ namespace Funcky.Test
             _testOutputHelper.WriteLine((await GreetGuys().Apply(new Config { Template = "¡Hola, {0}!" })).ToString());
         }
 
-        //These functions do not have any link to any instance of the Config class.
+        // These functions do not have any link to any instance of the Config class.
         public static async Reader<(string gJohn, string gJose)> GreetGuys()
             => (await Greet("John"), await Greet("Jose"));
 

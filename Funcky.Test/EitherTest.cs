@@ -62,7 +62,5 @@ namespace Funcky.Test
 
             Assert.True(temp);
         }
-
-
     }
 }

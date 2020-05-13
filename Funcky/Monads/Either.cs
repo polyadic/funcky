@@ -39,7 +39,6 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(selector));
             }
 
-
             return _isRight
                 ? Either<TLeft, TResult>.Right(selector(_right))
                 : Either<TLeft, TResult>.Left(_left);
@@ -67,7 +66,6 @@ namespace Funcky.Monads
 
             return Either<TLeft, TResult>.Left(_left);
         }
-
 
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
         {

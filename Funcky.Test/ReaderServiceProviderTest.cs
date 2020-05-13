@@ -49,5 +49,4 @@ namespace Funcky.Test
                 ? result
                 : throw new Exception($"Type '{t.Name}' is not registered");
     }
-
 }

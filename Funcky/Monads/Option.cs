@@ -32,7 +32,6 @@ namespace Funcky.Monads
 
             _item = item;
             _hasItem = true;
-
         }
 
         public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
@@ -46,7 +45,6 @@ namespace Funcky.Monads
                 ? Option.Some(selector(_item))
                 : Option<TResult>.None();
         }
-
 
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
         {
@@ -67,7 +65,6 @@ namespace Funcky.Monads
                 {
                     return Option.Some(resultSelector(_item, selectedMaybe._item));
                 }
-
             }
 
             return Option<TResult>.None();
@@ -91,6 +88,7 @@ namespace Funcky.Monads
             {
                 throw new ArgumentNullException(nameof(none));
             }
+
             if (some == null)
             {
                 throw new ArgumentNullException(nameof(some));
@@ -107,6 +105,7 @@ namespace Funcky.Monads
             {
                 throw new ArgumentNullException(nameof(none));
             }
+
             if (some == null)
             {
                 throw new ArgumentNullException(nameof(some));
@@ -115,7 +114,8 @@ namespace Funcky.Monads
             if (_hasItem)
             {
                 some(_item);
-            } else
+            }
+            else
             {
                 none();
             }
@@ -149,7 +149,6 @@ namespace Funcky.Monads
                 : elseOption.Invoke();
         }
 
-
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
         {
             return _hasItem
@@ -164,7 +163,6 @@ namespace Funcky.Monads
                 andThenFunction(_item);
             }
         }
-
 
         public override bool Equals(object obj)
         {
@@ -183,8 +181,7 @@ namespace Funcky.Monads
         {
             return Match(
                 none: "None",
-                some: value => $"Some({value})"
-                );
+                some: value => $"Some({value})");
         }
 
         public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);

@@ -41,9 +41,8 @@ namespace Funcky.Test
                 "Congratulations, Louis Slaughter! You won 47$!",
                 "¡Felicidades, John! Ganaste 110 $",
                 "¡Felicidades, Mary! Ganaste 30 $",
-                "¡Felicidades, Louis! Ganaste 47 $"
+                "¡Felicidades, Louis! Ganaste 47 $",
             };
-
 
             var actual = new List<string>();
 
@@ -51,10 +50,10 @@ namespace Funcky.Test
             {
                 foreach (var userId in ids)
                 {
-                    //The logic receives only a single explicit parameter - userId
+                    // The logic receives only a single explicit parameter - userId
                     var logic = GetGreeting(userId);
 
-                    //The rest of parameters (database Id, templates) can be passed implicitly
+                    // The rest of parameters (database Id, templates) can be passed implicitly
                     var greeting = await logic.Apply(configuration);
 
                     actual.Add(greeting);
@@ -73,7 +72,6 @@ namespace Funcky.Test
             var win = await GetWin(userId);
 
             return string.Format(template, fullName, win);
-
         }
 
         private static async Reader<string> GetFullName(int userId)

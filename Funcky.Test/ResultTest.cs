@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Funcky.Test
 {
-
     public class IntegerResults : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
@@ -59,7 +58,6 @@ namespace Funcky.Test
                 ok: x => true,
                 error: y => false);
 
-
             Assert.False(hasResult);
         }
 
@@ -89,7 +87,6 @@ namespace Funcky.Test
             var resultSum = result.Match<int?>(
                 ok: x => x,
                 error: y => null);
-
 
             Assert.Equal(referenceSum, resultSum);
         }

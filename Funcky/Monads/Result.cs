@@ -88,7 +88,7 @@ namespace Funcky.Monads
                 ? _result.GetHashCode()
                 : _error.GetHashCode();
         }
-        
+
         public static bool operator ==(Result<TValidResult> lhs, Result<TValidResult> rhs)
             => lhs.Equals(rhs);
 

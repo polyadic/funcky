@@ -125,14 +125,16 @@ namespace Funcky.Extensions
                 : Option<TimeSpan>.None();
         }
 
-        public static Option<TEnum> TryParseEnum<TEnum>(this string candidate) where TEnum : struct
+        public static Option<TEnum> TryParseEnum<TEnum>(this string candidate)
+            where TEnum : struct
         {
             return Enum.TryParse(candidate, out TEnum enumValue)
                 ? new Option<TEnum>(enumValue)
                 : Option<TEnum>.None();
         }
 
-        public static Option<TEnum> TryParseEnum<TEnum>(this string candidate, bool ignoreCase) where TEnum : struct
+        public static Option<TEnum> TryParseEnum<TEnum>(this string candidate, bool ignoreCase)
+            where TEnum : struct
         {
             return Enum.TryParse(candidate, ignoreCase, out TEnum enumValue)
                 ? new Option<TEnum>(enumValue)

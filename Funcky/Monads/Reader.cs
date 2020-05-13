@@ -14,7 +14,9 @@ namespace Funcky.Monads
     public class Reader<T> : INotifyCompletion, IReader
     {
         // Used by ReaderTaskMethodBuilder in a compiler generated code
-        internal Reader() { }
+        internal Reader()
+        {
+        }
 
         // Used to extract some value from a context
         public static Reader<T> Read<TContext>(Func<TContext, T> extractor) => new Reader<T>(context => Extract(context, extractor));
@@ -43,6 +45,7 @@ namespace Funcky.Monads
             {
                 throw new Exception("Another context is already applied to the reader");
             }
+
             SetContext(context);
             return this;
         }
@@ -59,6 +62,7 @@ namespace Funcky.Monads
                 {
                     throw new Exception("Only a single async continuation is allowed");
                 }
+
                 _continuation = continuation;
             }
         }
@@ -121,6 +125,7 @@ namespace Funcky.Monads
             {
                 throw new Exception("Some extracting function should be defined");
             }
+
             if (context is TContext tContext)
             {
                 return extractor(tContext);
@@ -139,7 +144,9 @@ namespace Funcky.Monads
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
             => stateMachine.MoveNext();
 
-        public void SetStateMachine(IAsyncStateMachine stateMachine) { }
+        public void SetStateMachine(IAsyncStateMachine stateMachine)
+        {
+        }
 
         public void SetException(Exception exception) => this.Task.SetException(exception);
 
@@ -152,7 +159,8 @@ namespace Funcky.Monads
             GenericAwaitOnCompleted(ref awaiter, ref stateMachine);
         }
 
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter,
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(
+            ref TAwaiter awaiter,
             ref TStateMachine stateMachine)
             where TAwaiter : ICriticalNotifyCompletion
             where TStateMachine : IAsyncStateMachine
@@ -164,7 +172,6 @@ namespace Funcky.Monads
             where TAwaiter : INotifyCompletion
             where TStateMachine : IAsyncStateMachine
         {
-
             if (awaiter is IReader reader)
             {
                 Task.SetChild(reader);
