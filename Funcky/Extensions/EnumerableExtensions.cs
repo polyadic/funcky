@@ -24,9 +24,7 @@ namespace Funcky.Extensions
         /// An IEnumerable that calls a function on each element before yielding it. It can be used to encode side effects without enumerating.
         /// The side effect will be executed when enumerating the result.
         /// </summary>
-        /// <typeparam name="T">the inner type of the enumerable</typeparam>
-        /// <param name="elements">anything enumerable</param>
-        /// <param name="action"></param>
+        /// <typeparam name="T">the inner type of the enumerable.</typeparam>
         /// <returns>returns an <see cref="IEnumerable{T}" /> with the sideeffect defined by action encoded in the enumerable.</returns>
         public static IEnumerable<T> Inspect<T>(this IEnumerable<T> elements, Action<T> action)
         {
@@ -40,10 +38,7 @@ namespace Funcky.Extensions
         /// <summary>
         /// The IEnumerable version of foreach. You can apply an action to each element. This is only useful when you have side effects.
         /// </summary>
-        /// <typeparam name="T">the inner type of the enumerable</typeparam>
-        /// <param name="elements">anything enumerable</param>
-        /// <param name="action"></param>
-        /// <returns>returns an enumerated <see cref="IEnumerable{T}" /> to be able to chain multiple each.</returns>
+        /// <typeparam name="T">the inner type of the enumerable.</typeparam>
         public static void Each<T>(this IEnumerable<T> elements, Action<T> action)
         {
             foreach (var element in elements)

@@ -6,7 +6,7 @@ namespace Funcky.Test
     public class NoOperationTest
     {
         [Fact]
-        void GivenTheNoOperationFunctionWeCanApplyItToMatch()
+        public void GivenTheNoOperationFunctionWeCanApplyItToMatch()
         {
             var none = Option<int>.None();
 

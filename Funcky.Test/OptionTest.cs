@@ -9,21 +9,17 @@ using Xunit;
 
 namespace Funcky.Test
 {
-    public class OptionsTest
+    public class OptionTest
     {
-        enum MyEnum { None, Cool }
-
-        public OptionsTest()
+        public OptionTest()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
         }
 
-        private void Statement(int value)
+        private enum MyEnum
         {
-        }
-
-        private void Statement()
-        {
+            None,
+            Cool,
         }
 
         [Theory]
@@ -37,9 +33,7 @@ namespace Funcky.Test
 
             bool isSome = maybe.Match(
                 none: false,
-                some: m => true
-                );
-
+                some: m => true);
 
             Assert.True(isSome);
             Assert.Equal(parsed, maybe.Match(0, m => m));
@@ -89,7 +83,6 @@ namespace Funcky.Test
         [Fact]
         public void GivenAnEnumThenTryParseEnumReturnsAnOptionOfDate()
         {
-
             var maybe = "Cool".TryParseEnum<MyEnum>();
 
             Assert.True(maybe.Match(false, m => true));
@@ -99,7 +92,6 @@ namespace Funcky.Test
         [Fact]
         public void GivenAnInvalidEnumValueThenTryParseEnumReturnsANone()
         {
-
             var maybe = "NotCool".TryParseEnum<MyEnum>();
 
             Assert.False(maybe.Match(false, m => true));
@@ -114,10 +106,8 @@ namespace Funcky.Test
             var maybe = dictionary.TryGetValue(key: "some");
 
             Assert.True(maybe.Match(false, m => true));
-            Assert.Equal("value", maybe.Match("", m => m));
+            Assert.Equal("value", maybe.Match(string.Empty, m => m));
         }
-
-
 
         [Fact]
         public void GivenADictionaryWhenWeLookForAnInexistentValueWithTryGetValueThenTheResultShouldBeANoneOfTheGivenType()
@@ -151,7 +141,6 @@ namespace Funcky.Test
             var resultShouldBe = Option.Some(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
         }
-
 
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntacThenTheResultShouldBeSomeValue()
@@ -187,16 +176,15 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true))) {
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
+            {
                 var value = number.Match(
                     none: 0,
-                    some: i => i
-                    );
+                    some: i => i);
 
                 Assert.NotEqual(0, value);
             }
         }
-
 
         public static IEnumerable<object[]> TestValues()
         {
@@ -210,14 +198,12 @@ namespace Funcky.Test
             yield return new object[] { "None", Option<MyEnum>.None() };
         }
 
-
         [Theory]
         [MemberData(nameof(TestValues))]
 
         public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, IToString option)
         {
             Assert.Equal(reference, option.ToString());
-
         }
 
         [Fact]
@@ -225,11 +211,11 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true))) {
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
+            {
                 var value = number.Match(
                     none: () => 0,
-                    some: i => i
-                );
+                    some: i => i);
 
                 Assert.NotEqual(0, value);
             }
@@ -240,12 +226,10 @@ namespace Funcky.Test
         {
             var none = Option<int>.None();
 
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(testCode: () =>
                 none.Match(
                     none: () => throw new ArgumentNullException(),
-                    some: i => i
-                    )
-                );
+                    some: i => i));
         }
 
         [Fact]
@@ -315,7 +299,6 @@ namespace Funcky.Test
             Assert.Equal(0, global);
         }
 
-
         [Theory]
         [InlineData("-12")]
         [InlineData("0")]
@@ -330,8 +313,7 @@ namespace Funcky.Test
 
             maybe.Match(
                 none: Statement,
-                some: Statement
-            );
+                some: Statement);
         }
 
         [Fact]
@@ -343,5 +325,12 @@ namespace Funcky.Test
             Assert.Equal(option1, option2);
         }
 
+        private void Statement(int value)
+        {
+        }
+
+        private void Statement()
+        {
+        }
     }
 }

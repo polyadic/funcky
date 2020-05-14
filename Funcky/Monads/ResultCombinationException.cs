@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Funcky.Monads
 {
     public class ResultCombinationException : Exception

@@ -15,9 +15,15 @@ namespace Funcky.Monads
 
         private Result(Exception error)
         {
-            _result = default(TValidResult);
+            _result = default;
             _error = error;
         }
+
+        public static bool operator ==(Result<TValidResult> lhs, Result<TValidResult> rhs)
+            => lhs.Equals(rhs);
+
+        public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
+            => !lhs.Equals(rhs);
 
         public static Result<TValidResult> Ok(TValidResult item)
         {
@@ -36,12 +42,10 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(selector));
             }
 
-
             return _error is null
                 ? Result<TResult>.Ok(selector(_result))
                 : Result<TResult>.Error(_error);
         }
-
 
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
         {
@@ -88,11 +92,5 @@ namespace Funcky.Monads
                 ? _result.GetHashCode()
                 : _error.GetHashCode();
         }
-        
-        public static bool operator ==(Result<TValidResult> lhs, Result<TValidResult> rhs)
-            => lhs.Equals(rhs);
-
-        public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
-            => !lhs.Equals(rhs);
     }
 }

@@ -11,16 +11,20 @@ namespace Funcky.Monads
         private Either(TLeft left)
         {
             _left = left;
-            _right = default(TRight);
+            _right = default;
             _isRight = false;
         }
 
         private Either(TRight right)
         {
-            _left = default(TLeft);
+            _left = default;
             _right = right;
             _isRight = true;
         }
+
+        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
 
         public static Either<TLeft, TRight> Left(TLeft left)
         {
@@ -38,7 +42,6 @@ namespace Funcky.Monads
             {
                 throw new ArgumentNullException(nameof(selector));
             }
-
 
             return _isRight
                 ? Either<TLeft, TResult>.Right(selector(_right))
@@ -68,7 +71,6 @@ namespace Funcky.Monads
             return Either<TLeft, TResult>.Left(_left);
         }
 
-
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
         {
             return _isRight
@@ -90,9 +92,5 @@ namespace Funcky.Monads
                 ? _right.GetHashCode()
                 : _left.GetHashCode();
         }
-
-        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
-
-        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
     }
 }
