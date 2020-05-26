@@ -12,12 +12,12 @@
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/FreeApophis/Funcky</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FreeApophis/Funcky</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
-    <Version>1.5.1</Version>
-    <FileVersion>1.5.1.0</FileVersion>
-    <AssemblyVersion>1.5.1.0</AssemblyVersion>
+    <Version>1.6.0</Version>
+    <FileVersion>1.6.0.0</FileVersion>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup>
