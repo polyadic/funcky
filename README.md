@@ -19,7 +19,7 @@ Use functional programming as an additional asset to write correct code.
 
 ## Option Monad
 
-A Option<T> can either hold a value of T (Some) or it holds Nothing (None)
+An Option<T> can either hold a value of T (Some) or it holds Nothing (None)
 
 ### Create something
 
