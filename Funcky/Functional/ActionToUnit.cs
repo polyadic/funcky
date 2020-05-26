@@ -4,6 +4,13 @@ namespace Funcky
 {
     public static partial class Functional
     {
+        public static Func<Unit> ActionToUnit(Action action)
+            => () =>
+            {
+                action();
+                return default;
+            };
+
         public static Func<T, Unit> ActionToUnit<T>(Action<T> action)
         {
             return parameter =>
