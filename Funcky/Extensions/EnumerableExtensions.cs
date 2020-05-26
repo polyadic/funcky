@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
@@ -19,6 +21,13 @@ namespace Funcky.Extensions
                 yield return item;
             }
         }
+
+        /// <summary>
+        /// Projects and filters an <see cref="IEnumerable{T}"/> at the same time.
+        /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
+        /// </summary>
+        public static IEnumerable<TOutput> WhereSelect<TInput, TOutput>(this IEnumerable<TInput> inputs, Func<TInput, Option<TOutput>> selector)
+            => inputs.SelectMany(input => selector(input).ToEnumerable());
 
         /// <summary>
         /// An IEnumerable that calls a function on each element before yielding it. It can be used to encode side effects without enumerating.
