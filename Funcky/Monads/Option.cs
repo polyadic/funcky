@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Funcky.Monads
 {
@@ -154,6 +156,15 @@ namespace Funcky.Monads
                 andThenFunction(_item);
             }
         }
+
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
+        /// has an item and nothing when the option is empty.
+        /// </summary>
+        public IEnumerable<TItem> ToEnumerable()
+            => Match(
+                   none: Enumerable.Empty<TItem>(),
+                   some: value => Enumerable.Repeat(value, 1));
 
         public override bool Equals(object obj)
         {

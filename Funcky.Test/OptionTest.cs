@@ -325,6 +325,21 @@ namespace Funcky.Test
             Assert.Equal(option1, option2);
         }
 
+        [Fact]
+        public void ToEnumerableReturnsEmptyEnumerableWhenOptionIsEmpty()
+        {
+            var option = Option<int>.None();
+            Assert.Empty(option.ToEnumerable());
+        }
+
+        [Fact]
+        public void ToEnumerableReturnsEnumerableWithOneElementWhenOptionHasValue()
+        {
+            const int value = 42;
+            var option = Option.Some(value);
+            Assert.Single(option.ToEnumerable(), value);
+        }
+
         private void Statement(int value)
         {
         }
