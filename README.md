@@ -17,20 +17,20 @@ This library is based on his example code, and should grow slowly to a library w
 
 Use functional programming as an additional asset to write correct code.
 
-## Maybe Monad
+## Option Monad
 
-A Maybe<T> can either hold a value of T or it holds Nothing (None)
+A Option<T> can either hold a value of T (Some) or it holds Nothing (None)
 
 ### Create something
 
 ```csharp
-var something = Maybe.Some(1337);
+var something = Option.Some(1337);
 ```
     
 ### Create nothing
 
 ```csharp
-var nothing = Maybe<int>.None();
+var nothing = Option<int>.None();
 ```
 
 ### Select
