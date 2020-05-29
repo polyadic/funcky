@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Funcky.Monads;
+﻿using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test
@@ -32,7 +30,7 @@ namespace Funcky.Test
         }
 
         [Theory]
-        [ClassData(typeof(IntegerSums))]
+        [MemberData(nameof(GetIntegerSums))]
         public void TheSumsOverEitherTypesShouldBeValid(Either<string, int> firstValue, Either<string, int> secondValue, Either<string, int> thirdValue, object reference)
         {
             var result =
@@ -48,19 +46,15 @@ namespace Funcky.Test
             Assert.True(temp);
         }
 
-        private class IntegerSums : IEnumerable<object[]>
-        {
-            public IEnumerator<object[]> GetEnumerator()
+        public static TheoryData<Either<string, int>, Either<string, int>, Either<string, int>, object> GetIntegerSums()
+            => new TheoryData<Either<string, int>, Either<string, int>, Either<string, int>, object>
             {
-                yield return new object[] { Either<string, int>.Right(5), Either<string, int>.Right(10), Either<string, int>.Right(15), 30 };
-                yield return new object[] { Either<string, int>.Right(1337), Either<string, int>.Right(42), Either<string, int>.Right(99), 1478 };
-                yield return new object[] { Either<string, int>.Right(45856), Either<string, int>.Right(58788), Either<string, int>.Right(699554), 804198 };
-                yield return new object[] { Either<string, int>.Right(5), Either<string, int>.Right(10), Either<string, int>.Left("Last"), "Last" };
-                yield return new object[] { Either<string, int>.Right(5), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "Middle" };
-                yield return new object[] { Either<string, int>.Left("First"), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "First" };
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        }
+                { Either<string, int>.Right(5), Either<string, int>.Right(10), Either<string, int>.Right(15), 30 },
+                { Either<string, int>.Right(1337), Either<string, int>.Right(42), Either<string, int>.Right(99), 1478 },
+                { Either<string, int>.Right(45856), Either<string, int>.Right(58788), Either<string, int>.Right(699554), 804198 },
+                { Either<string, int>.Right(5), Either<string, int>.Right(10), Either<string, int>.Left("Last"), "Last" },
+                { Either<string, int>.Right(5), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "Middle" },
+                { Either<string, int>.Left("First"), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "First" },
+            };
     }
 }

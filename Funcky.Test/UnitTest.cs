@@ -10,7 +10,7 @@ namespace Funcky.Test
         {
             Unit void1;
             Unit void2;
-            object o = new object();
+            var o = new object();
 
             Assert.Equal(void1, void2);
             Assert.NotEqual(void1, o);
@@ -21,7 +21,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit<SideEffect>(AnAction);
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect);
+            var unit = unitAction(sideEffect);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -32,7 +32,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int dummy) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 42);
+            var unit = unitAction(sideEffect, 42);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -43,7 +43,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -54,7 +54,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3, int p4) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -65,7 +65,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3, int p4, int p5) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -76,7 +76,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3, int p4, int p5, int p6) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0, 0, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0, 0, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -87,7 +87,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3, int p4, int p5, int p6, int p7) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0, 0, 0, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0, 0, 0, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
@@ -98,7 +98,7 @@ namespace Funcky.Test
         {
             var unitAction = ActionToUnit((SideEffect effect, int p2, int p3, int p4, int p5, int p6, int p7, int p8) => effect.Do());
             var sideEffect = new SideEffect();
-            Unit unit = unitAction(sideEffect, 0, 0, 0, 0, 0, 0, 0);
+            var unit = unitAction(sideEffect, 0, 0, 0, 0, 0, 0, 0);
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);

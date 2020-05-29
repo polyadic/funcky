@@ -10,7 +10,7 @@ namespace Funcky.Test
         {
             var none = Option<int>.None();
 
-            int sideEffect = 0;
+            var sideEffect = 0;
             none.Match(Functional.NoOperation, i => sideEffect = i);
 
             Assert.Equal(0, sideEffect);
