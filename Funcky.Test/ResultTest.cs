@@ -35,7 +35,7 @@ namespace Funcky.Test
         [MemberData(nameof(GetIntegerResults))]
         public void CreateResultOkAndMatchASelectedResult(Result<int> value, double reference)
         {
-            Result<double> doubleResult = value.Select(i => i * 0.25);
+            var doubleResult = value.Select(i => i * 0.25);
 
             var result = doubleResult.Match(
                 ok: x => x,

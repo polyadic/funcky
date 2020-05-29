@@ -60,7 +60,7 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(resultSelector));
             }
 
-            Either<TLeft, TEither> selectedEither = eitherSelector(_right);
+            var selectedEither = eitherSelector(_right);
             if (_isRight)
             {
                 return selectedEither._isRight

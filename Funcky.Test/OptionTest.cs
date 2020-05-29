@@ -31,7 +31,7 @@ namespace Funcky.Test
         {
             var maybe = stringToParse.TryParseInt();
 
-            bool isSome = maybe.Match(
+            var isSome = maybe.Match(
                 none: false,
                 some: m => true);
 
@@ -122,8 +122,8 @@ namespace Funcky.Test
         [Fact]
         public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
         {
-            Option<int> maybe = Option<int>.None();
-            Option<bool> maybeBool =
+            var maybe = Option<int>.None();
+            var maybeBool =
                 from m in maybe
                 select m == 1337;
 
@@ -133,10 +133,10 @@ namespace Funcky.Test
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
         {
-            Option<int> someNumber = "1337".TryParseInt();
-            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
+            var someNumber = "1337".TryParseInt();
+            var someDate = "12.2.2009".TryParseDateTime();
 
-            Option<Tuple<int, DateTime>> result = someNumber.SelectMany(number => someDate, Tuple.Create);
+            var result = someNumber.SelectMany(number => someDate, Tuple.Create);
 
             var resultShouldBe = Option.Some(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
@@ -145,8 +145,8 @@ namespace Funcky.Test
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntacThenTheResultShouldBeSomeValue()
         {
-            Option<int> someNumber = "1337".TryParseInt();
-            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
+            var someNumber = "1337".TryParseInt();
+            var someDate = "12.2.2009".TryParseDateTime();
 
             var result = from number in someNumber
                          from date in someDate
@@ -159,9 +159,9 @@ namespace Funcky.Test
         [Fact]
         public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
         {
-            Option<int> someNumber = "1337".TryParseInt();
-            Option<DateTime> someDate = "12.2.2009".TryParseDateTime();
-            Option<int> someOtherNumber = "not a number".TryParseInt();
+            var someNumber = "1337".TryParseInt();
+            var someDate = "12.2.2009".TryParseDateTime();
+            var someOtherNumber = "not a number".TryParseInt();
 
             var result = from number in someNumber
                          from date in someDate

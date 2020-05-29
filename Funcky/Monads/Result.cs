@@ -59,7 +59,7 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(resultSelector));
             }
 
-            Result<TSelectedResult> selectedMaybe = selectedResultSelector(_result);
+            var selectedMaybe = selectedResultSelector(_result);
             if (_error is null)
             {
                 return selectedMaybe._error is null

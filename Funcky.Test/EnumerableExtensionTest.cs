@@ -20,7 +20,7 @@ namespace Funcky.Test
         [Fact]
         public void GivenAnEnumerableAndInjectWeCanApplySideffectsToEnumberables()
         {
-            int sideEffect = 0;
+            var sideEffect = 0;
             var numbers = new List<int> { 1, 2, 3, 42 };
 
             var numbersWithSideEffect = numbers
