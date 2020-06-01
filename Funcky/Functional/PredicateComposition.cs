@@ -8,19 +8,19 @@ namespace Funcky
         /// <summary>
         /// Returns a new predicate that is true when all given predicates are true.
         /// </summary>
-        public static Predicate<T> All<T>(params Predicate<T>[] predicates)
+        public static Func<T, bool> All<T>(params Func<T, bool>[] predicates)
             => value => predicates.All(predicate => predicate(value));
 
         /// <summary>
         /// Returns a new predicate that is true when any of the given predicates are true.
         /// </summary>
-        public static Predicate<T> Any<T>(params Predicate<T>[] predicates)
+        public static Func<T, bool> Any<T>(params Func<T, bool>[] predicates)
             => value => predicates.Any(predicate => predicate(value));
 
         /// <summary>
         /// Returns a new predicate that inverts the given predicate.
         /// </summary>
-        public static Predicate<T> Not<T>(Predicate<T> predicate)
+        public static Func<T, bool> Not<T>(Func<T, bool> predicate)
             => value => !predicate(value);
 
         private static bool True<T>(T value) => true;
