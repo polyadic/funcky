@@ -15,7 +15,7 @@ namespace Funcky
         /// Returns a new predicate that is true when any of the given predicates are true.
         /// </summary>
         public static Predicate<T> Any<T>(params Predicate<T>[] predicates)
-            => predicates.Any() ? AnyInternal(predicates) : True;
+            => predicates.Any() ? AnyInternal(predicates) : False;
 
         /// <summary>
         /// Returns a new predicate that inverts the given predicate.
@@ -34,5 +34,7 @@ namespace Funcky
                 (result, predicate) => result || predicate(value));
 
         private static bool True<T>(T value) => true;
+
+        private static bool False<T>(T value) => false;
     }
 }
