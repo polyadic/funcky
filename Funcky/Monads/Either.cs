@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 namespace Funcky.Monads
 {
@@ -11,13 +13,13 @@ namespace Funcky.Monads
         private Either(TLeft left)
         {
             _left = left;
-            _right = default;
+            _right = default!;
             _isRight = false;
         }
 
         private Either(TRight right)
         {
-            _left = default;
+            _left = default!;
             _right = right;
             _isRight = true;
         }
@@ -87,10 +89,9 @@ namespace Funcky.Monads
         }
 
         public override int GetHashCode()
-        {
-            return _isRight
-                ? _right.GetHashCode()
-                : _left.GetHashCode();
-        }
+            => Match(
+                   left: left => left?.GetHashCode(),
+                   right: right => right?.GetHashCode())
+               ?? 0;
     }
 }
