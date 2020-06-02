@@ -22,6 +22,7 @@ namespace Funcky.Extensions
             }
         }
 
+        #nullable enable
         /// <summary>
         /// Projects and filters an <see cref="IEnumerable{T}"/> at the same time.
         /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
@@ -55,5 +56,6 @@ namespace Funcky.Extensions
                 action(element);
             }
         }
+        #nullable disable
     }
 }
