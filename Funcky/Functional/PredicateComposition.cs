@@ -22,9 +22,5 @@ namespace Funcky
         /// </summary>
         public static Func<T, bool> Not<T>(Func<T, bool> predicate)
             => value => !predicate(value);
-
-        private static bool True<T>(T value) => true;
-
-        private static bool False<T>(T value) => false;
     }
 }
