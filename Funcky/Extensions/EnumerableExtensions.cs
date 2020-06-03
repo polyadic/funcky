@@ -28,6 +28,7 @@ namespace Funcky.Extensions
         /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
         /// </summary>
         public static IEnumerable<TOutput> WhereSelect<TInput, TOutput>(this IEnumerable<TInput> inputs, Func<TInput, Option<TOutput>> selector)
+            where TOutput : notnull
             => inputs.SelectMany(input => selector(input).ToEnumerable());
 
         /// <summary>

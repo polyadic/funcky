@@ -1,11 +1,13 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Funcky.Monads
 {
-    public readonly struct Option<TItem> :
-        IToString
+    public readonly struct Option<TItem> : IToString
+        where TItem : notnull
     {
         private readonly bool _hasItem;
         private readonly TItem _item;
@@ -28,6 +30,7 @@ namespace Funcky.Monads
         public static Option<TItem> None() => default;
 
         public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
+            where TResult : notnull
         {
             if (selector == null)
             {
@@ -40,6 +43,8 @@ namespace Funcky.Monads
         }
 
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
+            where TResult : notnull
+            where TMaybe : notnull
         {
             if (maybeSelector == null)
             {
@@ -143,6 +148,7 @@ namespace Funcky.Monads
         }
 
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
+            where TResult : notnull
         {
             return _hasItem
                 ? Option.Some(andThenFunction(_item))
@@ -190,11 +196,13 @@ namespace Funcky.Monads
     public static class Option
     {
         public static Option<TItem> Some<TItem>(TItem item)
+            where TItem : notnull
         {
             return new Option<TItem>(item);
         }
 
         public static Option<TItem> Some<TItem>(Option<TItem> item)
+            where TItem : notnull
         {
             return item;
         }
