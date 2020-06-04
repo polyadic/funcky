@@ -1,5 +1,7 @@
-﻿using Funcky.Monads;
+﻿using System;
+using Funcky.Monads;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test
 {
@@ -27,6 +29,14 @@ namespace Funcky.Test
                 right: r => true);
 
             Assert.True(hasRight);
+        }
+
+        [Fact]
+        public void MatchThrowsWhenEitherIsCreatedWithDefault()
+        {
+            var value = default(Either<string, int>);
+            Assert.Throws<NotSupportedException>(() =>
+                value.Match(Identity, i => i.ToString()));
         }
 
         [Theory]

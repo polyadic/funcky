@@ -8,35 +8,36 @@ namespace Funcky.Monads
     {
         private readonly TLeft _left;
         private readonly TRight _right;
-        private readonly bool _isRight;
+        private readonly Side _side;
 
         private Either(TLeft left)
         {
             _left = left;
             _right = default!;
-            _isRight = false;
+            _side = Side.Left;
         }
 
         private Either(TRight right)
         {
             _left = default!;
             _right = right;
-            _isRight = true;
+            _side = Side.Right;
+        }
+
+        private enum Side
+        {
+            Uninitialized,
+            Left,
+            Right,
         }
 
         public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
 
-        public static Either<TLeft, TRight> Left(TLeft left)
-        {
-            return new Either<TLeft, TRight>(left);
-        }
+        public static Either<TLeft, TRight> Left(TLeft left) => new Either<TLeft, TRight>(left);
 
-        public static Either<TLeft, TRight> Right(TRight right)
-        {
-            return new Either<TLeft, TRight>(right);
-        }
+        public static Either<TLeft, TRight> Right(TRight right) => new Either<TLeft, TRight>(right);
 
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
         {
@@ -45,9 +46,9 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            return _isRight
-                ? Either<TLeft, TResult>.Right(selector(_right))
-                : Either<TLeft, TResult>.Left(_left);
+            return Match(
+                Either<TLeft, TResult>.Left,
+                right => Either<TLeft, TResult>.Right(selector(right)));
         }
 
         public Either<TLeft, TResult> SelectMany<TEither, TResult>(Func<TRight, Either<TLeft, TEither>> eitherSelector, Func<TRight, TEither, TResult> resultSelector)
@@ -62,36 +63,32 @@ namespace Funcky.Monads
                 throw new ArgumentNullException(nameof(resultSelector));
             }
 
-            var selectedEither = eitherSelector(_right);
-            if (_isRight)
-            {
-                return selectedEither._isRight
-                    ? Either<TLeft, TResult>.Right(resultSelector(_right, selectedEither._right))
-                    : Either<TLeft, TResult>.Left(selectedEither._left);
-            }
-
-            return Either<TLeft, TResult>.Left(_left);
+            return Match(
+                Either<TLeft, TResult>.Left,
+                right => eitherSelector(right).Select(
+                    selectedRight => resultSelector(right, selectedRight)));
         }
 
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
-        {
-            return _isRight
-                ? right(_right)
-                : left(_left);
-        }
+            => _side switch
+            {
+                Side.Left => left(_left),
+                Side.Right => right(_right),
+                Side.Uninitialized => throw new NotSupportedException(
+                    "Either constructed via default instead of a factory function (Either.Left or Either.Right)"),
+                _ => throw new NotSupportedException(
+                    $"Internal error: Enum variant {_side} is not handled"),
+            };
 
         public override bool Equals(object obj)
-        {
-            return obj is Either<TLeft, TLeft> other
-                && Equals(_isRight, other._isRight)
-                && Equals(_right, other._right)
-                && Equals(_left, other._left);
-        }
+            => obj is Either<TLeft, TLeft> other
+               && Equals(_side, other._side)
+               && Equals(_right, other._right)
+               && Equals(_left, other._left);
 
         public override int GetHashCode()
             => Match(
-                   left: left => left?.GetHashCode(),
-                   right: right => right?.GetHashCode())
-               ?? 0;
+                left => left?.GetHashCode(),
+                right => right?.GetHashCode()) ?? 0;
     }
 }
