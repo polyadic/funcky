@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 namespace Funcky.Monads
 {
@@ -10,12 +12,12 @@ namespace Funcky.Monads
         private Result(TValidResult result)
         {
             _result = result;
-            _error = null;
+            _error = null!;
         }
 
         private Result(Exception error)
         {
-            _result = default;
+            _result = default!;
             _error = error;
         }
 
@@ -75,8 +77,8 @@ namespace Funcky.Monads
         public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
         {
             return _error is null
-                ? ok(_result) :
-                error(_error);
+                ? ok(_result)
+                : error(_error);
         }
 
         public override bool Equals(object obj)
@@ -87,10 +89,8 @@ namespace Funcky.Monads
         }
 
         public override int GetHashCode()
-        {
-            return _error is null
-                ? _result.GetHashCode()
-                : _error.GetHashCode();
-        }
+            => Match(
+                ok: result => result?.GetHashCode(),
+                error: error => error.GetHashCode()) ?? 0;
     }
 }
