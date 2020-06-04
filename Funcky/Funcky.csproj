@@ -12,7 +12,7 @@
     <Company>Messerli Informatik AG</Company>
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
     <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
