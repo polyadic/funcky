@@ -10,7 +10,6 @@ namespace Funcky.Extensions
 {
     public static class EnumerableExtensions
     {
-        #nullable enable
         /// <summary>
         /// Wraps this object instance into an <see cref="IEnumerable{T}"/>
         /// consisting of a single item.
