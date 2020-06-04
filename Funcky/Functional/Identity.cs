@@ -1,5 +1,3 @@
-#nullable enable
-
 namespace Funcky
 {
     public static partial class Functional

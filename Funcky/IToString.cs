@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace Funcky
+﻿namespace Funcky
 {
     public interface IToString
     {
