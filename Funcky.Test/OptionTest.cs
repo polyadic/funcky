@@ -340,6 +340,26 @@ namespace Funcky.Test
             Assert.Single(option.ToEnumerable(), value);
         }
 
+        [Fact]
+        public void OptionCanBeCreatedFromReferenceType()
+        {
+            Assert.Equal(Option.Some("foo"), Option.From("foo"));
+            Assert.Equal(Option<string>.None(), Option.From<string>(null));
+        }
+
+        [Fact]
+        public void OptionCanBeCreatedFromNullableValueType()
+        {
+            Assert.Equal(Option.Some(10), Option.From((int?)10));
+            Assert.Equal(Option<int>.None(), Option.From<int>(null));
+        }
+
+        [Fact]
+        public void OptionCanBeCreatedFromValueType()
+        {
+            Assert.Equal(Option.Some(10), Option.From(10));
+        }
+
         private void Statement(int value)
         {
         }

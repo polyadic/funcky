@@ -11,13 +11,13 @@ namespace Funcky.Monads
         private Either(TLeft left)
         {
             _left = left;
-            _right = default;
+            _right = default!;
             _side = Side.Left;
         }
 
         private Either(TRight right)
         {
-            _left = default;
+            _left = default!;
             _right = right;
             _side = Side.Right;
         }
@@ -38,34 +38,15 @@ namespace Funcky.Monads
         public static Either<TLeft, TRight> Right(TRight right) => new Either<TLeft, TRight>(right);
 
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
-        {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            return Match(
+            => Match(
                 Either<TLeft, TResult>.Left,
                 right => Either<TLeft, TResult>.Right(selector(right)));
-        }
 
         public Either<TLeft, TResult> SelectMany<TEither, TResult>(Func<TRight, Either<TLeft, TEither>> eitherSelector, Func<TRight, TEither, TResult> resultSelector)
-        {
-            if (eitherSelector == null)
-            {
-                throw new ArgumentNullException(nameof(eitherSelector));
-            }
-
-            if (resultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(resultSelector));
-            }
-
-            return Match(
+            => Match(
                 Either<TLeft, TResult>.Left,
                 right => eitherSelector(right).Select(
                     selectedRight => resultSelector(right, selectedRight)));
-        }
 
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
             => _side switch
@@ -86,7 +67,7 @@ namespace Funcky.Monads
 
         public override int GetHashCode()
             => Match(
-                left => left.GetHashCode(),
-                right => right.GetHashCode());
+                left => left?.GetHashCode(),
+                right => right?.GetHashCode()) ?? 0;
     }
 }

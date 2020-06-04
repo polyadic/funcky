@@ -41,6 +41,7 @@ namespace Funcky.Test
             private readonly Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
             public void RegisterInstance<T>(T instance)
+                where T : notnull
                 => _storage.Add(typeof(T), instance);
 
             public object GetService(Type t)

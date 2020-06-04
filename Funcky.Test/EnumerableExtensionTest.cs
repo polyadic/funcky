@@ -18,6 +18,41 @@ namespace Funcky.Test
         }
 
         [Fact]
+        public void YieldReturnsEmptyEnumerableWhenReferenceIsNull()
+        {
+            string? value = null;
+            Assert.Empty(value.Yield());
+        }
+
+        [Fact]
+        public void YieldReturnsEnumerableWithOneValueWhenReferenceIsNotNull()
+        {
+            const string value = "foo";
+            Assert.Single(value.Yield(), value);
+        }
+
+        [Fact]
+        public void YieldReturnsEmptyEnumerableWhenNullableValueTypeIsNull()
+        {
+            int? value = null;
+            Assert.Empty(value.Yield());
+        }
+
+        [Fact]
+        public void YieldReturnsEnumerableWithOneValueWhenNullableValueTypeIsNotNull()
+        {
+            int? value = 10;
+            Assert.Single(value.Yield(), value);
+        }
+
+        [Fact]
+        public void YieldReturnsEnumerableWithOneValueWhenValueTypeIsNotNull()
+        {
+            const int value = 10;
+            Assert.Single(value.Yield(), value);
+        }
+
+        [Fact]
         public void GivenAnEnumerableAndInjectWeCanApplySideffectsToEnumberables()
         {
             var sideEffect = 0;

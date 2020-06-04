@@ -10,12 +10,12 @@ namespace Funcky.Monads
         private Result(TValidResult result)
         {
             _result = result;
-            _error = null;
+            _error = null!;
         }
 
         private Result(Exception error)
         {
-            _result = default;
+            _result = default!;
             _error = error;
         }
 
@@ -36,29 +36,12 @@ namespace Funcky.Monads
         }
 
         public Result<TResult> Select<TResult>(Func<TValidResult, TResult> selector)
-        {
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
-
-            return _error is null
+            => _error is null
                 ? Result<TResult>.Ok(selector(_result))
                 : Result<TResult>.Error(_error);
-        }
 
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
         {
-            if (selectedResultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(selectedResultSelector));
-            }
-
-            if (resultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(resultSelector));
-            }
-
             var selectedMaybe = selectedResultSelector(_result);
             if (_error is null)
             {
@@ -73,24 +56,18 @@ namespace Funcky.Monads
         }
 
         public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
-        {
-            return _error is null
-                ? ok(_result) :
-                error(_error);
-        }
+            => _error is null
+                ? ok(_result)
+                : error(_error);
 
         public override bool Equals(object obj)
-        {
-            return obj is Result<TValidResult> other
-                && Equals(_result, other._result)
-                && Equals(_error, other._error);
-        }
+            => obj is Result<TValidResult> other
+                 && Equals(_result, other._result)
+                 && Equals(_error, other._error);
 
         public override int GetHashCode()
-        {
-            return _error is null
-                ? _result.GetHashCode()
-                : _error.GetHashCode();
-        }
+            => Match(
+                ok: result => result?.GetHashCode(),
+                error: error => error.GetHashCode()) ?? 0;
     }
 }

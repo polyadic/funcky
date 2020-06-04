@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Funcky.Monads
