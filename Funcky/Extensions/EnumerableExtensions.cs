@@ -1,20 +1,24 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Funcky.Constraints;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
     public static class EnumerableExtensions
     {
+        #nullable enable
         /// <summary>
-        /// Wraps this object instance into an IEnumerable&lt;T&gt;
+        /// Wraps this object instance into an <see cref="IEnumerable{T}"/>
         /// consisting of a single item.
         /// </summary>
-        /// <typeparam name="T"> Type of the object. </typeparam>
-        /// <param name="item"> The instance that will be wrapped. </param>
-        /// <returns> An <see cref="IEnumerable{T}" /> consisting of a single item. </returns>
-        public static IEnumerable<T> Yield<T>(this T item)
+        /// <typeparam name="T">Type of the object.</typeparam>
+        /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
+        public static IEnumerable<T> Yield<T>(this T? item, RequireClass<T>? ω = null)
+            where T : class
         {
             if (item is { })
             {
@@ -22,7 +26,23 @@ namespace Funcky.Extensions
             }
         }
 
-        #nullable enable
+        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> Yield<T>(this T item, RequireStruct<T>? ω = null)
+            where T : struct
+        {
+            yield return item;
+        }
+
+        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> Yield<T>(this T? item)
+            where T : struct
+        {
+            if (item.HasValue)
+            {
+                yield return item.Value;
+            }
+        }
+
         /// <summary>
         /// Projects and filters an <see cref="IEnumerable{T}"/> at the same time.
         /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
@@ -57,6 +77,5 @@ namespace Funcky.Extensions
                 action(element);
             }
         }
-        #nullable disable
     }
 }
