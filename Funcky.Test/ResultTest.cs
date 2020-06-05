@@ -2,6 +2,7 @@
 using System.IO;
 using Funcky.Monads;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test
 {
@@ -13,8 +14,8 @@ namespace Funcky.Test
             var value = Result<int>.Ok(1000);
 
             var hasResult = value.Match(
-                ok: Functional.True,
-                error: Functional.False);
+                ok: True,
+                error: False);
 
             Assert.True(hasResult);
         }
@@ -25,8 +26,8 @@ namespace Funcky.Test
             var value = Result<int>.Error(new ArgumentException());
 
             var hasResult = value.Match(
-                ok: Functional.True,
-                error: Functional.False);
+                ok: True,
+                error: False);
 
             Assert.False(hasResult);
         }
