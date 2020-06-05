@@ -32,7 +32,5 @@ namespace Funcky
             => value => predicates.Aggregate(
                 false,
                 (result, predicate) => result || predicate(value));
-
-        private static bool True<T>(T value) => true;
     }
 }
