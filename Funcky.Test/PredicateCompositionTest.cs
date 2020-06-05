@@ -62,9 +62,5 @@ namespace Funcky.Test
             var predicate = Any<string>(False, False, False);
             Assert.False(predicate(DummyString));
         }
-
-        private static bool True<T>(T value) => true;
-
-        private static bool False<T>(T value) => false;
     }
 }

@@ -6,6 +6,7 @@ using System.Threading;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test
 {
@@ -33,7 +34,7 @@ namespace Funcky.Test
 
             var isSome = maybe.Match(
                 none: false,
-                some: m => true);
+                some: True);
 
             Assert.True(isSome);
             Assert.Equal(parsed, maybe.Match(0, m => m));
@@ -68,7 +69,7 @@ namespace Funcky.Test
         {
             var maybe = "no number".TryParseInt();
 
-            Assert.False(maybe.Match(false, m => true));
+            Assert.False(maybe.Match(false, True));
         }
 
         [Fact]
@@ -76,7 +77,7 @@ namespace Funcky.Test
         {
             var maybe = "26.02.1982".TryParseDateTime();
 
-            Assert.True(maybe.Match(false, m => true));
+            Assert.True(maybe.Match(false, True));
             Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, m => m));
         }
 
@@ -85,7 +86,7 @@ namespace Funcky.Test
         {
             var maybe = "Cool".TryParseEnum<MyEnum>();
 
-            Assert.True(maybe.Match(false, m => true));
+            Assert.True(maybe.Match(false, True));
             Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, m => m));
         }
 
@@ -94,7 +95,7 @@ namespace Funcky.Test
         {
             var maybe = "NotCool".TryParseEnum<MyEnum>();
 
-            Assert.False(maybe.Match(false, m => true));
+            Assert.False(maybe.Match(false, True));
             Assert.Equal(MyEnum.None, maybe.Match(MyEnum.None, m => m));
         }
 
@@ -105,7 +106,7 @@ namespace Funcky.Test
 
             var maybe = dictionary.TryGetValue(key: "some");
 
-            Assert.True(maybe.Match(false, m => true));
+            Assert.True(maybe.Match(false, True));
             Assert.Equal("value", maybe.Match(string.Empty, m => m));
         }
 
@@ -116,7 +117,7 @@ namespace Funcky.Test
 
             var maybe = dictionary.TryGetValue(readOnlyKey: "none");
 
-            Assert.False(maybe.Match(false, m => true));
+            Assert.False(maybe.Match(false, True));
         }
 
         [Fact]
@@ -127,7 +128,7 @@ namespace Funcky.Test
                 from m in maybe
                 select m == 1337;
 
-            Assert.False(maybeBool.Match(false, m => true));
+            Assert.False(maybeBool.Match(false, True));
         }
 
         [Fact]
@@ -168,7 +169,7 @@ namespace Funcky.Test
                          from otherNumber in someOtherNumber
                          select Tuple.Create(number, date, otherNumber);
 
-            Assert.False(result.Match(false, t => true));
+            Assert.False(result.Match(false, True));
         }
 
         [Fact]
@@ -176,7 +177,7 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 var value = number.Match(
                     none: 0,
@@ -211,7 +212,7 @@ namespace Funcky.Test
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, i => true)))
+            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 var value = number.Match(
                     none: () => 0,

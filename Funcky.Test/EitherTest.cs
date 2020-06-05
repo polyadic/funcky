@@ -13,8 +13,8 @@ namespace Funcky.Test
             var value = Either<string, int>.Left("Error: not cool!");
 
             var hasLeft = value.Match(
-                left: l => true,
-                right: r => false);
+                left: True,
+                right: False);
 
             Assert.True(hasLeft);
         }
@@ -25,8 +25,8 @@ namespace Funcky.Test
             var value = Either<string, int>.Right(1337);
 
             var hasRight = value.Match(
-                left: l => false,
-                right: r => true);
+                left: False,
+                right: True);
 
             Assert.True(hasRight);
         }
