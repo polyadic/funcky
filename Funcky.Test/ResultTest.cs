@@ -81,5 +81,23 @@ namespace Funcky.Test
                 { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), 804198 },
                 { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), null },
             };
+
+        [Theory]
+        [MemberData(nameof(GetResults))]
+        public void MatchAcceptsActionsAsFunctions(Result<int> result, bool expected)
+        {
+            result
+              .Match(
+                ok: v => Assert.True(expected),
+                error: e => Assert.False(expected));
+        }
+
+        public static TheoryData<Result<int>, bool> GetResults()
+            => new TheoryData<Result<int>, bool>
+            {
+                { Result<int>.Ok(5), true },
+                { Result<int>.Ok(42), true },
+                { Result<int>.Error(new InvalidCastException()), false },
+            };
     }
 }
