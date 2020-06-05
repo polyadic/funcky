@@ -13,8 +13,8 @@ namespace Funcky.Test
             var value = Result<int>.Ok(1000);
 
             var hasResult = value.Match(
-                ok: x => true,
-                error: y => false);
+                ok: Functional.True,
+                error: Functional.False);
 
             Assert.True(hasResult);
         }
@@ -25,8 +25,8 @@ namespace Funcky.Test
             var value = Result<int>.Error(new ArgumentException());
 
             var hasResult = value.Match(
-                ok: x => true,
-                error: y => false);
+                ok: Functional.True,
+                error: Functional.False);
 
             Assert.False(hasResult);
         }
