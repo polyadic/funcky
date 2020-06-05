@@ -82,7 +82,7 @@ namespace Funcky.Test
             };
 
         [Theory]
-        [MemberData(nameof(GetIntegerSums))]
+        [MemberData(nameof(GetResults))]
         public void MatchAcceptsActionsAsFunctions(Result<int> result, bool expected)
         {
             result
