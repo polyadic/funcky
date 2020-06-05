@@ -60,6 +60,18 @@ namespace Funcky.Monads
                 ? ok(_result)
                 : error(_error);
 
+        public void Match(Action<TValidResult> ok, Action<Exception> error)
+        {
+            if (_error is null)
+            {
+                ok(_result);
+            }
+            else
+            {
+                error(_error);
+            }
+        }
+
         public override bool Equals(object obj)
             => obj is Result<TValidResult> other
                  && Equals(_result, other._result)
