@@ -85,7 +85,7 @@ namespace Funcky.Test
         public void GivenAnValueEnumerableFirstLastOrNoneGivesTheCorrectOption(List<int> valueEnumerable, List<string> referenceEnumerable)
         {
             Assert.Equal(ExpectedOptionValue(valueEnumerable), valueEnumerable.FirstOrNone().Match(false, True));
-            Assert.Equal(ExpectedOptionValue(valueEnumerable), referenceEnumerable.FirstOrNone().Match(false, True));
+            Assert.Equal(ExpectedOptionValue(referenceEnumerable), referenceEnumerable.FirstOrNone().Match(false, True));
 
             Assert.Equal(ExpectedOptionValue(valueEnumerable), valueEnumerable.LastOrNone().Match(false, True));
             Assert.Equal(ExpectedOptionValue(valueEnumerable), referenceEnumerable.LastOrNone().Match(false, True));
