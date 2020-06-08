@@ -11,4 +11,4 @@
 * `Either.Match` now throws when called on an `Either` value created using `default(Either<L, R>)`.
 * Add `True` and `False` functions to public API
 * Match of Result Monad accepts actions
-* Add FirstOrNone, LastorNone and SingleOrNone extension functions
+* Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
