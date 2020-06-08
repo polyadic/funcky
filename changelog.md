@@ -10,5 +10,5 @@
 * Add a function for creating an `Option<T>` from a nullable value: `Option.From`.
 * `Either.Match` now throws when called on an `Either` value created using `default(Either<L, R>)`.
 * Add `True` and `False` functions to public API
-* Match of Result Monad accepts actions
+* Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
