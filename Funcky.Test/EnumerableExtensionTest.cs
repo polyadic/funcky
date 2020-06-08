@@ -128,14 +128,12 @@ namespace Funcky.Test
             }
         }
 
-        private bool ExpectedOptionValue(List<int> valueEnumerable)
-        {
-            return valueEnumerable.Count switch
+        private bool ExpectedOptionValue(List<int> valueEnumerable) =>
+            valueEnumerable.Count switch
             {
                 0 => false,
                 _ => true,
             };
-        }
 
         private void ExpectedSingleOrNoneBehaviour<T>(List<T> list, Func<bool> singleOrNone)
         {
