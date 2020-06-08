@@ -88,7 +88,7 @@ namespace Funcky.Test
             Assert.Equal(ExpectedOptionValue(referenceEnumerable), referenceEnumerable.FirstOrNone().Match(false, True));
 
             Assert.Equal(ExpectedOptionValue(valueEnumerable), valueEnumerable.LastOrNone().Match(false, True));
-            Assert.Equal(ExpectedOptionValue(valueEnumerable), referenceEnumerable.LastOrNone().Match(false, True));
+            Assert.Equal(ExpectedOptionValue(referenceEnumerable), referenceEnumerable.LastOrNone().Match(false, True));
         }
 
         [Theory]
