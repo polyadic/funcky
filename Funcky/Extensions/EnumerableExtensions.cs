@@ -74,5 +74,77 @@ namespace Funcky.Extensions
                 action(element);
             }
         }
+
+        /// <summary>
+        /// Returns the first element of a sequence as an option, or a None value if the sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull
+        {
+            return source.FirstOrDefault() is { } value
+                   ? Option.Some(value)
+                   : Option<TSource>.None();
+        }
+
+        /// <summary>
+        /// Returns the first element of the sequence as an option that satisfies a condition or a None value if no such element is found.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull
+        {
+            return source.FirstOrDefault(predicate) is { } value
+                ? Option.Some(value)
+                : Option<TSource>.None();
+        }
+
+        /// <summary>
+        /// Returns the last element of a sequence as an option, or a None value if the sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull
+        {
+            return source.LastOrDefault() is { } value
+                ? Option.Some(value)
+                : Option<TSource>.None();
+        }
+
+        /// <summary>
+        /// Returns the last element of a sequence that satisfies a condition as an option  or a None value if no such element is found.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull
+        {
+            return source.LastOrDefault(predicate) is { } value
+                ? Option.Some(value)
+                : Option<TSource>.None();
+        }
+
+        /// <summary>
+        /// Returns the only element of a sequence as an option, or a None value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull
+        {
+            return source.SingleOrDefault() is { } value
+                ? Option.Some(value)
+                : Option<TSource>.None();
+        }
+
+        /// <summary>
+        /// Returns the only element of a sequence that satisfies a specified condition as an option or a None value if no such element exists; this method throws an exception if more than one element satisfies the condition.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull
+        {
+            return source.SingleOrDefault(predicate) is { } value
+                ? Option.Some(value)
+                : Option<TSource>.None();
+        }
     }
 }
