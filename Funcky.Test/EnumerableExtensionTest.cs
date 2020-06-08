@@ -112,7 +112,7 @@ namespace Funcky.Test
 
         private static bool IsEven(int number) => number % 2 == 0;
 
-        private void AcceptIntegers(IEnumerable<int> values)
+        private static void AcceptIntegers(IEnumerable<int> values)
         {
             foreach (var value in values)
             {
@@ -120,7 +120,7 @@ namespace Funcky.Test
             }
         }
 
-        private void AcceptUnits(IEnumerable<Unit> units)
+        private static void AcceptUnits(IEnumerable<Unit> units)
         {
             foreach (var unit in units)
             {
@@ -128,14 +128,14 @@ namespace Funcky.Test
             }
         }
 
-        private bool ExpectedOptionValue(List<int> valueEnumerable) =>
+        private static bool ExpectedOptionValue(List<int> valueEnumerable) =>
             valueEnumerable.Count switch
             {
                 0 => false,
                 _ => true,
             };
 
-        private void ExpectedSingleOrNoneBehaviour<T>(List<T> list, Func<bool> singleOrNone)
+        private static void ExpectedSingleOrNoneBehaviour<T>(List<T> list, Func<bool> singleOrNone)
         {
             switch (list.Count)
             {
