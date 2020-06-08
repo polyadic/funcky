@@ -76,7 +76,7 @@ namespace Funcky.Extensions
         }
 
         /// <summary>
-        /// Returns the first element of a sequence as an option, or a None value if the sequence contains no elements.
+        /// Returns the first element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence contains no elements.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source)
@@ -86,7 +86,7 @@ namespace Funcky.Extensions
                 .FirstOrDefault();
 
         /// <summary>
-        /// Returns the first element of the sequence as an option that satisfies a condition or a None value if no such element is found.
+        /// Returns the first element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
@@ -97,7 +97,7 @@ namespace Funcky.Extensions
                 .FirstOrDefault();
 
         /// <summary>
-        /// Returns the last element of a sequence as an option, or a None value if the sequence contains no elements.
+        /// Returns the last element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence contains no elements.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source)
@@ -107,7 +107,7 @@ namespace Funcky.Extensions
                 .LastOrDefault();
 
         /// <summary>
-        /// Returns the last element of a sequence that satisfies a condition as an option  or a None value if no such element is found.
+        /// Returns the last element of a sequence that satisfies a condition as an <see cref="Option{T}" />  or a <see cref="Option{T}.None" /> value if no such element is found.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
@@ -118,7 +118,7 @@ namespace Funcky.Extensions
                 .LastOrDefault();
 
         /// <summary>
-        /// Returns the only element of a sequence as an option, or a None value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
+        /// Returns the only element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source)
@@ -128,7 +128,7 @@ namespace Funcky.Extensions
                 .SingleOrDefault();
 
         /// <summary>
-        /// Returns the only element of a sequence that satisfies a specified condition as an option or a None value if no such element exists; this method throws an exception if more than one element satisfies the condition.
+        /// Returns the only element of a sequence that satisfies a specified condition as an <see cref="Option{T}" /> or a <see cref="Option{T}.None" /> value if no such element exists; this method throws an exception if more than one element satisfies the condition.
         /// </summary>
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
