@@ -1,8 +1,0 @@
-language: csharp
-solution: Funcky.sln
-mono: none
-dotnet: "3.1"
-script:
- - dotnet restore
- - dotnet build
- - dotnet test

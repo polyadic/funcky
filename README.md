@@ -2,7 +2,7 @@
 
 Funcky is a functional Library for C# which encourages correct usage of the functional programming paradigm.
 
-[![Build Status](https://travis-ci.com/messerli-informatik-ag/funcky.svg?branch=master)](https://travis-ci.com/messerli-informatik-ag/funcky)
+[![Build](https://github.com/messerli-informatik-ag/funcky/workflows/Build/badge.svg)](https://github.com/messerli-informatik-ag/funcky/actions?query=workflow%3ABuild)
 [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to functional style of programming.
