@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -11,13 +12,13 @@
     <Company>Messerli Informatik AG</Company>
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
     <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
-    <Version>1.6.0</Version>
-    <FileVersion>1.6.0.0</FileVersion>
-    <AssemblyVersion>1.6.0.0</AssemblyVersion>
+    <Version>1.7.0</Version>
+    <FileVersion>1.7.0.0</FileVersion>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -1,5 +1,7 @@
-﻿using Funcky.Monads;
+﻿using System;
+using Funcky.Monads;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test
 {
@@ -11,8 +13,8 @@ namespace Funcky.Test
             var value = Either<string, int>.Left("Error: not cool!");
 
             var hasLeft = value.Match(
-                left: l => true,
-                right: r => false);
+                left: True,
+                right: False);
 
             Assert.True(hasLeft);
         }
@@ -23,10 +25,18 @@ namespace Funcky.Test
             var value = Either<string, int>.Right(1337);
 
             var hasRight = value.Match(
-                left: l => false,
-                right: r => true);
+                left: False,
+                right: True);
 
             Assert.True(hasRight);
+        }
+
+        [Fact]
+        public void MatchThrowsWhenEitherIsCreatedWithDefault()
+        {
+            var value = default(Either<string, int>);
+            Assert.Throws<NotSupportedException>(() =>
+                value.Match(Identity, i => i.ToString()));
         }
 
         [Theory]
@@ -56,5 +66,23 @@ namespace Funcky.Test
                 { Either<string, int>.Right(5), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "Middle" },
                 { Either<string, int>.Left("First"), Either<string, int>.Left("Middle"), Either<string, int>.Left("Last"), "First" },
             };
+
+        [Fact]
+        public void NullableReferenceTypesAreSupported()
+        {
+            _ = Either<string?, int>.Left("foo");
+            _ = Either<int, string?>.Right("foo");
+            _ = Either<string?, int>.Left(null);
+            _ = Either<int, string?>.Right(null);
+        }
+
+        [Fact]
+        public void NullableValueTypesAreSupported()
+        {
+            _ = Either<int?, string>.Left(42);
+            _ = Either<string, int?>.Right(42);
+            _ = Either<int?, string>.Left(null);
+            _ = Either<string, int?>.Right(null);
+        }
     }
 }

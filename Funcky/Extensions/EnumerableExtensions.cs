@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Funcky.GenericConstraints;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
@@ -8,17 +9,34 @@ namespace Funcky.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Wraps this object instance into an IEnumerable&lt;T&gt;
+        /// Wraps this object instance into an <see cref="IEnumerable{T}"/>
         /// consisting of a single item.
         /// </summary>
-        /// <typeparam name="T"> Type of the object. </typeparam>
-        /// <param name="item"> The instance that will be wrapped. </param>
-        /// <returns> An <see cref="IEnumerable{T}" /> consisting of a single item. </returns>
-        public static IEnumerable<T> Yield<T>(this T item)
+        /// <typeparam name="T">Type of the object.</typeparam>
+        /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
+        public static IEnumerable<T> Yield<T>(this T? item, RequireClass<T>? ω = null)
+            where T : class
         {
             if (item is { })
             {
                 yield return item;
+            }
+        }
+
+        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> Yield<T>(this T item, RequireStruct<T>? ω = null)
+            where T : struct
+        {
+            yield return item;
+        }
+
+        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> Yield<T>(this T? item)
+            where T : struct
+        {
+            if (item.HasValue)
+            {
+                yield return item.Value;
             }
         }
 
@@ -27,6 +45,7 @@ namespace Funcky.Extensions
         /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
         /// </summary>
         public static IEnumerable<TOutput> WhereSelect<TInput, TOutput>(this IEnumerable<TInput> inputs, Func<TInput, Option<TOutput>> selector)
+            where TOutput : notnull
             => inputs.SelectMany(input => selector(input).ToEnumerable());
 
         /// <summary>
@@ -55,5 +74,68 @@ namespace Funcky.Extensions
                 action(element);
             }
         }
+
+        /// <summary>
+        /// Returns the first element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull =>
+            source
+                .Select(Option.Some)
+                .FirstOrDefault();
+
+        /// <summary>
+        /// Returns the first element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull =>
+            source
+                .Where(predicate)
+                .Select(Option.Some)
+                .FirstOrDefault();
+
+        /// <summary>
+        /// Returns the last element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull =>
+            source
+                .Select(Option.Some)
+                .LastOrDefault();
+
+        /// <summary>
+        /// Returns the last element of a sequence that satisfies a condition as an <see cref="Option{T}" />  or a <see cref="Option{T}.None" /> value if no such element is found.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull =>
+            source
+                .Where(predicate)
+                .Select(Option.Some)
+                .LastOrDefault();
+
+        /// <summary>
+        /// Returns the only element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull =>
+            source
+                .Select(Option.Some)
+                .SingleOrDefault();
+
+        /// <summary>
+        /// Returns the only element of a sequence that satisfies a specified condition as an <see cref="Option{T}" /> or a <see cref="Option{T}.None" /> value if no such element exists; this method throws an exception if more than one element satisfies the condition.
+        /// </summary>
+        /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
+        public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            where TSource : notnull =>
+            source
+                .Where(predicate)
+                .Select(Option.Some)
+                .SingleOrDefault();
     }
 }

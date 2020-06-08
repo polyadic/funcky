@@ -7,6 +7,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky", "Funcky\Funcky.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Test", "Funcky.Test\Funcky.Test.csproj", "{EA10A7A1-6393-4B5F-BFF6-5937DA395141}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C37116A-BC6E-451C-B5E3-76A70F1BE590}"
+ProjectSection(SolutionItems) = preProject
+	changelog.md = changelog.md
+	README.md = README.md
+	.gitignore = .gitignore
+	.travis.yml = .travis.yml
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Config", "{DD8F8450-BE23-4D6B-9C5C-7AED0ABB7531}"
+ProjectSection(SolutionItems) = preProject
+	Directory.Build.props = Directory.Build.props
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
