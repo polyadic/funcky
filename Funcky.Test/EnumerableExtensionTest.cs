@@ -128,7 +128,7 @@ namespace Funcky.Test
             }
         }
 
-        private static bool ExpectedOptionValue(List<int> valueEnumerable) =>
+        private static bool ExpectedOptionValue<T>(List<T> valueEnumerable) =>
             valueEnumerable.Count switch
             {
                 0 => false,
