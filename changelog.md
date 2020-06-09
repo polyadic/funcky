@@ -12,3 +12,8 @@
 * Add `True` and `False` functions to public API
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
+
+## Next major version
+* Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
+  because most APIs in `System` use `Func`.
+* `Functional.Any` now returns `false` when the given list of predicates is empty.
