@@ -66,7 +66,7 @@ namespace Funcky.Test
 
             Assert.Equal(0, sideEffect);
 
-            numbersWithSideEffect.Each(n => { });
+            numbersWithSideEffect.ForEach(n => { });
 
             Assert.Equal(numbers.Count, sideEffect);
         }

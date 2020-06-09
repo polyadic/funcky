@@ -12,3 +12,6 @@
 * Add `True` and `False` functions to public API
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
+
+## Next major version
+* The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
