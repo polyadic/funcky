@@ -13,5 +13,5 @@
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
-## unreleased
+## Unreleased
 * Added overload for AndThen which flattens the Option
