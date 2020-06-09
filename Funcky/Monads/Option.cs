@@ -98,6 +98,12 @@ namespace Funcky.Monads
                 ? Option.Some(andThenFunction(_item))
                 : Option<TResult>.None();
 
+        public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> andThenFunction)
+            where TResult : notnull
+            => _hasItem
+                ? andThenFunction(_item)
+                : Option<TResult>.None();
+
         public void AndThen(Action<TItem> andThenFunction)
         {
             if (_hasItem)
