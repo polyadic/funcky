@@ -269,6 +269,16 @@ namespace Funcky.Test
         }
 
         [Fact]
+        public void GivenAnOptionAndAndAFuncToOptionItShouldBeFlattened()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            Assert.False(none.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
+            Assert.True(some.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
+        }
+
+        [Fact]
         public void GivenANoneWithOrElseFuncWeGetTheCorrectValue()
         {
             var none = Option<int>.None();
