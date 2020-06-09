@@ -137,5 +137,13 @@ namespace Funcky.Extensions
                 .Where(predicate)
                 .Select(Option.Some)
                 .SingleOrDefault();
+
+        public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
+            where TSource : class
+            => source.WhereSelect(value => Option.From(value));
+
+        public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
+            where TSource : struct
+            => source.WhereSelect(Option.From);
     }
 }
