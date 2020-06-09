@@ -36,10 +36,10 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void AnyReturnsTrueWhenNoPredicatesAreGiven()
+        public void AnyReturnsFalseWhenNoPredicatesAreGiven()
         {
             var predicate = Any<string>();
-            Assert.True(predicate(DummyString));
+            Assert.False(predicate(DummyString));
         }
 
         [Fact]
