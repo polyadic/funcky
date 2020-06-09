@@ -12,3 +12,6 @@
 * Add `True` and `False` functions to public API
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
+
+## Next major version
+* Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
