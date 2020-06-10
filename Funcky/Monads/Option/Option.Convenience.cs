@@ -1,53 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Funcky.Functional;
 
 namespace Funcky.Monads
 {
     public readonly partial struct Option<TItem>
     {
         public Option<TItem> Where(Func<TItem, bool> predicate)
-            => AndThen(item => predicate(item) ? Option.Some(item) : None());
+            => SelectMany(item => predicate(item) ? Option.Some(item) : None());
 
         public Option<TItem> OrElse(Option<TItem> elseOption)
-            => _hasItem
-                ? this
-                : elseOption;
+            => Match(none: elseOption, some: Option.Some);
 
         public TItem OrElse(TItem elseOption)
-            => _hasItem
-                ? _item
-                : elseOption;
+            => Match(none: elseOption, some: Identity);
 
         public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
-            => _hasItem
-                ? this
-                : elseOption.Invoke();
+            => Match(none: elseOption, some: Option.Some);
 
         public TItem OrElse(Func<TItem> elseOption)
-            => _hasItem
-                ? _item
-                : elseOption.Invoke();
+            => Match(none: elseOption, some: Identity);
 
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
             where TResult : notnull
-            => _hasItem
-                ? Option.Some(andThenFunction(_item))
-                : Option<TResult>.None();
+            => Select(andThenFunction);
 
         public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> andThenFunction)
             where TResult : notnull
-            => _hasItem
-                ? andThenFunction(_item)
-                : Option<TResult>.None();
+            => SelectMany(andThenFunction);
 
         public void AndThen(Action<TItem> andThenFunction)
-        {
-            if (_hasItem)
-            {
-                andThenFunction(_item);
-            }
-        }
+            => Match(none: NoOperation, some: andThenFunction);
 
         /// <summary>
         /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
