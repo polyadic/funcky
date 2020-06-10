@@ -140,10 +140,10 @@ namespace Funcky.Extensions
 
         public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
             where TSource : class
-            => source.WhereSelect(value => Option.From(value));
+            => source.WhereSelect(Option.FromNullable);
 
         public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
             where TSource : struct
-            => source.WhereSelect(Option.From);
+            => source.WhereSelect(Option.FromNullable);
     }
 }
