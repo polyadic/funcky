@@ -30,9 +30,9 @@ namespace Funcky.Monads
 
         public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
             where TResult : notnull
-            => _hasItem
-                ? Option.Some(selector(_item))
-                : Option<TResult>.None();
+            => Match(
+                 none: Option<TResult>.None,
+                 item => Option.Some(selector(item)));
 
         public Option<TResult> SelectMany<TResult>(Func<TItem, Option<TResult>> selector)
             where TResult : notnull
@@ -41,23 +41,13 @@ namespace Funcky.Monads
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
             where TResult : notnull
             where TMaybe : notnull
-        {
-            if (_hasItem)
-            {
-                var selectedMaybe = maybeSelector(_item);
-                if (selectedMaybe._hasItem)
-                {
-                    return Option.Some(resultSelector(_item, selectedMaybe._item));
-                }
-            }
-
-            return Option<TResult>.None();
-        }
+            => Match(
+                none: Option<TResult>.None,
+                some: item => maybeSelector(item).Select(
+                    maybe => resultSelector(item, maybe)));
 
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
-            => _hasItem
-                ? some(_item)
-                : none;
+            => Match(() => none, some);
 
         public TResult Match<TResult>(Func<TResult> none, Func<TItem, TResult> some)
             => _hasItem
@@ -77,16 +67,17 @@ namespace Funcky.Monads
         }
 
         public override bool Equals(object obj)
-            => obj is Option<TItem> other
-            && Equals(_item, other._item);
+            => obj is Option<TItem> other && Equals(_item, other._item);
 
-        public override int GetHashCode() =>
-            Select(item => item.GetHashCode()).OrElse(0);
+        public override int GetHashCode()
+            => Match(
+                 none: 0,
+                 some: item => item.GetHashCode());
 
         public override string ToString()
             => Match(
-                none: "None",
-                some: value => $"Some({value})");
+                 none: "None",
+                 some: value => $"Some({value})");
     }
 
     public static partial class Option
