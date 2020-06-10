@@ -200,6 +200,32 @@ namespace Funcky.Test
         }
 
         [Theory]
+        [MemberData(nameof(WhereTestValues))]
+        public void WhereFiltersOptionCorrectly(Option<string> expectedResult, Option<string> input, Func<string, bool> predicate)
+        {
+            Assert.Equal(expectedResult, input.Where(predicate));
+        }
+
+        [Theory]
+        [MemberData(nameof(WhereTestValues))]
+        public void OptionSupportsLinqWhereSyntax(Option<string> expectedResult, Option<string> input, Func<string, bool> predicate)
+        {
+            var result = from x in input
+                where predicate(x)
+                select x;
+            Assert.Equal(expectedResult, result);
+        }
+
+        public static TheoryData<Option<string>, Option<string>, Func<string, bool>> WhereTestValues()
+            => new TheoryData<Option<string>, Option<string>, Func<string, bool>>
+            {
+                { Option.Some("foo"), Option.Some("foo"), True },
+                { Option<string>.None(), Option.Some("foo"), False },
+                { Option<string>.None(), Option<string>.None(), True },
+                { Option<string>.None(), Option<string>.None(), False },
+            };
+
+        [Theory]
         [MemberData(nameof(TestValues))]
 
         public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, IToString option)
@@ -266,6 +292,16 @@ namespace Funcky.Test
 
             none.AndThen(Statement);
             some.AndThen(Statement);
+        }
+
+        [Fact]
+        public void GivenAnOptionAndAndAFuncToOptionItShouldBeFlattened()
+        {
+            var none = Option<int>.None();
+            var some = Option.Some(42);
+
+            Assert.False(none.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
+            Assert.True(some.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
         }
 
         [Fact]
