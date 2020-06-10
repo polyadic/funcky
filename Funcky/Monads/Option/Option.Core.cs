@@ -50,9 +50,6 @@ namespace Funcky.Monads
             return Option<TResult>.None();
         }
 
-        public Option<TItem> Where(Func<TItem, bool> predicate)
-            => AndThen(item => predicate(item) ? Option.Some(item) : None());
-
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
             => _hasItem
                 ? some(_item)
@@ -75,55 +72,6 @@ namespace Funcky.Monads
             }
         }
 
-        public Option<TItem> OrElse(Option<TItem> elseOption)
-            => _hasItem
-                ? this
-                : elseOption;
-
-        public TItem OrElse(TItem elseOption)
-            => _hasItem
-                ? _item
-                : elseOption;
-
-        public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
-            => _hasItem
-                ? this
-                : elseOption.Invoke();
-
-        public TItem OrElse(Func<TItem> elseOption)
-            => _hasItem
-                ? _item
-                : elseOption.Invoke();
-
-        public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
-            where TResult : notnull
-            => _hasItem
-                ? Option.Some(andThenFunction(_item))
-                : Option<TResult>.None();
-
-        public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> andThenFunction)
-            where TResult : notnull
-            => _hasItem
-                ? andThenFunction(_item)
-                : Option<TResult>.None();
-
-        public void AndThen(Action<TItem> andThenFunction)
-        {
-            if (_hasItem)
-            {
-                andThenFunction(_item);
-            }
-        }
-
-        /// <summary>
-        /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
-        /// has an item and nothing when the option is empty.
-        /// </summary>
-        public IEnumerable<TItem> ToEnumerable()
-            => Match(
-                   none: Enumerable.Empty<TItem>(),
-                   some: value => Enumerable.Repeat(value, 1));
-
         public override bool Equals(object obj)
             => obj is Option<TItem> other
             && Equals(_item, other._item);
@@ -137,7 +85,7 @@ namespace Funcky.Monads
                 some: value => $"Some({value})");
     }
 
-    public static class Option
+    public static partial class Option
     {
         public static Option<TItem> Some<TItem>(TItem item)
             where TItem : notnull
@@ -146,22 +94,5 @@ namespace Funcky.Monads
         public static Option<TItem> Some<TItem>(Option<TItem> item)
             where TItem : notnull
             => item;
-
-        /// <summary>
-        /// Creates an <see cref="Option{T}"/> from a nullable value.
-        /// </summary>
-        public static Option<T> From<T>(T? item, RequireClass<T>? ω = null)
-            where T : class
-            => item is { } value ? Some(value) : Option<T>.None();
-
-        /// <inheritdoc cref="From{T}(T, RequireClass{T})"/>
-        public static Option<T> From<T>(T item, RequireStruct<T>? ω = null)
-            where T : struct
-            => Some(item);
-
-        /// <inheritdoc cref="From{T}(T, RequireClass{T})"/>
-        public static Option<T> From<T>(T? item)
-            where T : struct
-            => item.HasValue ? Some(item.Value) : Option<T>.None();
     }
 }
