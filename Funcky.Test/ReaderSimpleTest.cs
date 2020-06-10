@@ -1,25 +1,16 @@
 ﻿using System.Threading.Tasks;
 using Funcky.Monads;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Funcky.Test
 {
     public class ReaderSimpleTest
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-
-        public ReaderSimpleTest(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-        }
-
         [Fact]
-        public async Task Main()
+        public async Task GivenTheGreetExampleIGetTheRightText()
         {
-            _testOutputHelper.WriteLine((await GreetGuys().Apply(new Config { Template = "Hi, {0}!" })).ToString());
-
-            _testOutputHelper.WriteLine((await GreetGuys().Apply(new Config { Template = "¡Hola, {0}!" })).ToString());
+            Assert.Equal("(Hi, John!, Hi, Jose!)", (await GreetGuys().Apply(new Config { Template = "Hi, {0}!" })).ToString());
+            Assert.Equal("(¡Hola, John!, ¡Hola, Jose!)", (await GreetGuys().Apply(new Config { Template = "¡Hola, {0}!" })).ToString());
         }
 
         // These functions do not have any link to any instance of the Config class.
