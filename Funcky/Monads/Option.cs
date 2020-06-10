@@ -50,6 +50,9 @@ namespace Funcky.Monads
             return Option<TResult>.None();
         }
 
+        public Option<TItem> Where(Func<TItem, bool> predicate)
+            => AndThen(item => predicate(item) ? Option.Some(item) : None());
+
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
             => _hasItem
                 ? some(_item)
