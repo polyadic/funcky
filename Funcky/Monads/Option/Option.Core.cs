@@ -34,6 +34,10 @@ namespace Funcky.Monads
                 ? Option.Some(selector(_item))
                 : Option<TResult>.None();
 
+        public Option<TResult> SelectMany<TResult>(Func<TItem, Option<TResult>> selector)
+            where TResult : notnull
+            => SelectMany(selector, (_, result) => result);
+
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
             where TResult : notnull
             where TMaybe : notnull
