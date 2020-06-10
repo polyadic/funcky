@@ -5,7 +5,7 @@ using Funcky.GenericConstraints;
 
 namespace Funcky.Monads
 {
-    public readonly struct Option<TItem> : IToString
+    public readonly partial struct Option<TItem> : IToString
         where TItem : notnull
     {
         private readonly bool _hasItem;
