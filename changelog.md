@@ -19,3 +19,4 @@
   because most APIs in `System` use `Func`.
 * `Functional.Any` now returns `false` when the given list of predicates is empty.
 * The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
+* Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`

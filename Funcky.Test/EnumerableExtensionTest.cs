@@ -12,47 +12,47 @@ namespace Funcky.Test
     public class EnumerableExtensionTest
     {
         [Fact]
-        public void GivenAnObjectWeCreateAnIEnumerableWithYield()
+        public void GivenAnObjectWeCreateAnIEnumerableWithToEnumerable()
         {
-            AcceptIntegers(42.Yield());
+            AcceptIntegers(42.ToEnumerable());
 
             Unit unit;
-            AcceptUnits(unit.Yield());
+            AcceptUnits(unit.ToEnumerable());
         }
 
         [Fact]
-        public void YieldReturnsEmptyEnumerableWhenReferenceIsNull()
+        public void ToEnumerableReturnsEmptyEnumerableWhenReferenceIsNull()
         {
             string? value = null;
-            Assert.Empty(value.Yield());
+            Assert.Empty(value.ToEnumerable());
         }
 
         [Fact]
-        public void YieldReturnsEnumerableWithOneValueWhenReferenceIsNotNull()
+        public void ToEnumerableReturnsEnumerableWithOneValueWhenReferenceIsNotNull()
         {
             const string value = "foo";
-            Assert.Single(value.Yield(), value);
+            Assert.Single(value.ToEnumerable(), value);
         }
 
         [Fact]
-        public void YieldReturnsEmptyEnumerableWhenNullableValueTypeIsNull()
+        public void ToEnumerableReturnsEmptyEnumerableWhenNullableValueTypeIsNull()
         {
             int? value = null;
-            Assert.Empty(value.Yield());
+            Assert.Empty(value.ToEnumerable());
         }
 
         [Fact]
-        public void YieldReturnsEnumerableWithOneValueWhenNullableValueTypeIsNotNull()
+        public void ToEnumerableReturnsEnumerableWithOneValueWhenNullableValueTypeIsNotNull()
         {
             int? value = 10;
-            Assert.Single(value.Yield(), value);
+            Assert.Single(value.ToEnumerable(), value);
         }
 
         [Fact]
-        public void YieldReturnsEnumerableWithOneValueWhenValueTypeIsNotNull()
+        public void ToEnumerableReturnsEnumerableWithOneValueWhenValueTypeIsNotNull()
         {
             const int value = 10;
-            Assert.Single(value.Yield(), value);
+            Assert.Single(value.ToEnumerable(), value);
         }
 
         [Fact]
