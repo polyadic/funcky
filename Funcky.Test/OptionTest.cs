@@ -345,6 +345,44 @@ namespace Funcky.Test
             Assert.Equal(Option.Some(10), Option.From(10));
         }
 
+        [Theory]
+        [MemberData(nameof(OptionValues))]
+        public void AssociativityHolds(Option<int> input)
+        {
+            static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
+            static Option<int> AddTwo(int x) => Option.Some(x + 2);
+            static Option<int> MultiplyByTenAndAddTwo(int x) => MultiplyByTen(x).SelectMany(AddTwo);
+
+            Assert.Equal(
+                input.SelectMany(MultiplyByTen).SelectMany(AddTwo),
+                input.SelectMany(MultiplyByTenAndAddTwo));
+        }
+
+        [Theory]
+        [MemberData(nameof(OptionValues))]
+        public void RightIdentityHolds(Option<int> input)
+        {
+            Assert.Equal(input.SelectMany(Option.Some), input);
+        }
+
+        public static TheoryData<Option<int>> OptionValues()
+            => new TheoryData<Option<int>>
+            {
+                Option.Some(10),
+                Option<int>.None(),
+            };
+
+        [Fact]
+        public void LeftIdentityHolds()
+        {
+            static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
+
+            const int input = 10;
+            Assert.Equal(
+                Option.Some(input).SelectMany(MultiplyByTen),
+                MultiplyByTen(input));
+        }
+
         private void Statement(int value)
         {
         }
