@@ -39,7 +39,7 @@ namespace Funcky.Test
             var doubleResult = value.Select(i => i * 0.25);
 
             var result = doubleResult.Match(
-                ok: x => x,
+                ok: Identity,
                 error: y => -1.0);
 
             Assert.Equal(reference, result);

@@ -55,7 +55,7 @@ namespace Funcky.Test
             var maybe = dictionary.TryGetValue(key: "some");
 
             Assert.True(maybe.Match(false, True));
-            Assert.Equal("value", maybe.Match(string.Empty, m => m));
+            Assert.Equal("value", maybe.Match(string.Empty, Identity));
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace Funcky.Test
             {
                 var value = number.Match(
                     none: 0,
-                    some: i => i);
+                    some: Identity);
 
                 Assert.NotEqual(0, value);
             }
@@ -190,7 +190,7 @@ namespace Funcky.Test
             {
                 var value = number.Match(
                     none: () => 0,
-                    some: i => i);
+                    some: Identity);
 
                 Assert.NotEqual(0, value);
             }
@@ -204,7 +204,7 @@ namespace Funcky.Test
             Assert.Throws<ArgumentNullException>(testCode: () =>
                 none.Match(
                     none: () => throw new ArgumentNullException(),
-                    some: i => i));
+                    some: Identity));
         }
 
         [Fact]

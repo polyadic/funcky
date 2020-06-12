@@ -34,7 +34,7 @@ namespace Funcky.Test.Extensions
                 some: True);
 
             Assert.True(isSome);
-            Assert.Equal(parsed, maybe.Match(0, m => m));
+            Assert.Equal(parsed, maybe.Match(0, Identity));
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Funcky.Test.Extensions
             var maybe = "26.02.1982".TryParseDateTime();
 
             Assert.True(maybe.Match(false, True));
-            Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, m => m));
+            Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, Identity));
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Funcky.Test.Extensions
             var maybe = "Cool".TryParseEnum<MyEnum>();
 
             Assert.True(maybe.Match(false, True));
-            Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, m => m));
+            Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, Identity));
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Funcky.Test.Extensions
             var maybe = "NotCool".TryParseEnum<MyEnum>();
 
             Assert.False(maybe.Match(false, True));
-            Assert.Equal(MyEnum.None, maybe.Match(MyEnum.None, m => m));
+            Assert.Equal(MyEnum.None, maybe.Match(MyEnum.None, Identity));
         }
     }
 }
