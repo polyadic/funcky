@@ -17,4 +17,6 @@
 * Added overload for AndThen which flattens the Option
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
- 
+
+## Unpublished
+* `Exception` created by `Result` monad contains valid stack trace
