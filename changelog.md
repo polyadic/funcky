@@ -14,8 +14,10 @@
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
 ## Next major version
+* Full nullable support introduced with C# 8 
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
   because most APIs in `System` use `Func`.
 * `Functional.Any` now returns `false` when the given list of predicates is empty.
 * The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
+* Remove `Reader` monad based on `await`.
