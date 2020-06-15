@@ -28,3 +28,7 @@
 * Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`
 * Remove `Reader` monad based on `await`.
 * `Exception` created by `Result` monad contains valid stack trace
+
+## Unreleased
+* Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.  
+  Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`. 
