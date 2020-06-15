@@ -13,12 +13,12 @@
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
-## Unreleased
+## 1.8.0
 * Added overload for AndThen which flattens the Option
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 
-## Next major version
+## 2.0.0.rc
 * Full nullable support introduced with C# 8 
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
@@ -27,3 +27,4 @@
 * The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
 * Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`
 * Remove `Reader` monad based on `await`.
+* `Exception` created by `Result` monad contains valid stack trace

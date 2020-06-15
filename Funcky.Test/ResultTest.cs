@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Linq;
 using Funcky.Monads;
 using Xunit;
 using static Funcky.Functional;
@@ -39,7 +40,7 @@ namespace Funcky.Test
             var doubleResult = value.Select(i => i * 0.25);
 
             var result = doubleResult.Match(
-                ok: x => x,
+                ok: Identity,
                 error: y => -1.0);
 
             Assert.Equal(reference, result);
@@ -57,7 +58,7 @@ namespace Funcky.Test
 
         [Theory]
         [MemberData(nameof(GetIntegerSums))]
-        public void TheSumsOverResultTypesShouldBeValid(Result<int> firstValue, Result<int> secondValue, Result<int> thirdValue, int? referenceSum)
+        public void TheSumsOverResultTypesShouldBeValid(Result<int> firstValue, Result<int> secondValue, Result<int> thirdValue, Option<int> referenceSum)
         {
             var result =
                 from first in firstValue
@@ -65,21 +66,21 @@ namespace Funcky.Test
                 from third in thirdValue
                 select first + second + third;
 
-            var resultSum = result.Match<int?>(
-                ok: x => x,
-                error: y => null);
+            var resultSum = result.Match(
+                ok: Option.Some,
+                error: _ => Option<int>.None());
 
             Assert.Equal(referenceSum, resultSum);
         }
 
-        public static TheoryData<Result<int>, Result<int>, Result<int>, int?> GetIntegerSums()
-            => new TheoryData<Result<int>, Result<int>, Result<int>, int?>
+        public static TheoryData<Result<int>, Result<int>, Result<int>, Option<int>> GetIntegerSums()
+            => new TheoryData<Result<int>, Result<int>, Result<int>, Option<int>>
             {
-                { Result<int>.Ok(5), Result<int>.Ok(10), Result<int>.Ok(15), 30 },
-                { Result<int>.Ok(42), Result<int>.Ok(1337), Result<int>.Error(new InvalidCastException()), null },
-                { Result<int>.Ok(1337), Result<int>.Ok(42), Result<int>.Ok(99), 1478 },
-                { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), 804198 },
-                { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), null },
+                { Result<int>.Ok(5), Result<int>.Ok(10), Result<int>.Ok(15), Option.Some(30) },
+                { Result<int>.Ok(42), Result<int>.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
+                { Result<int>.Ok(1337), Result<int>.Ok(42), Result<int>.Ok(99), Option.Some(1478) },
+                { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), Option.Some(804198) },
+                { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), Option<int>.None() },
             };
 
         [Theory]
@@ -99,5 +100,49 @@ namespace Funcky.Test
                 { Result<int>.Ok(42), true },
                 { Result<int>.Error(new InvalidCastException()), false },
             };
+
+        [Fact]
+        public void GivenAResultWithAnExceptionWeGetAStackTrace()
+        {
+            var arbitrayNumberOfStackFrames = 3;
+
+            InterestingStackTrace(arbitrayNumberOfStackFrames)
+              .Match(
+                ok: v => FunctionalAssert.Unmatched("ok"),
+                error: e => Assert.NotNull(e.StackTrace));
+        }
+
+        [Fact]
+        public void GivenAResultWithAnExceptionTheStackTraceStartsInCreationMethod()
+        {
+            var arbitrayNumberOfStackFrames = 0;
+
+            InterestingStackTrace(arbitrayNumberOfStackFrames)
+              .Match(
+                ok: v => FunctionalAssert.Unmatched("ok"),
+                error: IsInterestingStackTraceFirst);
+        }
+
+        private void IsInterestingStackTraceFirst(Exception exception)
+        {
+            if (exception.StackTrace is { })
+            {
+                var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                Assert.StartsWith("   at Funcky.Test.ResultTest.InterestingStackTrace(Int32 n)", lines.First());
+            }
+            else
+            {
+                FunctionalAssert.Unmatched("else");
+            }
+        }
+
+        private Result<int> InterestingStackTrace(int n)
+            => n == 0
+                ? Result<int>.Error(new InvalidCastException())
+                : Indirection(n - 1);
+
+        private Result<int> Indirection(int n)
+            => InterestingStackTrace(n);
     }
 }
