@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Funcky.Monads;
 using Xunit;
 using static Funcky.Functional;
@@ -99,5 +100,53 @@ namespace Funcky.Test
                 { Result<int>.Ok(42), true },
                 { Result<int>.Error(new InvalidCastException()), false },
             };
+
+        [Fact]
+        public void GivenAResultWithAnExceptionWeGetAStackTrace()
+        {
+            var arbitrayNumberOfStackFrames = 3;
+
+            InterestingStackTrace(arbitrayNumberOfStackFrames)
+              .Match(
+                ok: v => FunctionalAssert.Unmatched("ok"),
+                error: e => Assert.NotNull(e.StackTrace));
+        }
+
+        [Fact]
+        public void GivenAResultWithAnExceptionTheStackTraceStartsInCreationMethod()
+        {
+            var arbitrayNumberOfStackFrames = 0;
+
+            InterestingStackTrace(arbitrayNumberOfStackFrames)
+              .Match(
+                ok: v => FunctionalAssert.Unmatched("ok"),
+                error: IsInterestingStackTraceFirst);
+        }
+
+        private void IsInterestingStackTraceFirst(Exception exception)
+        {
+            if (exception.StackTrace is { })
+            {
+                var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+                Assert.StartsWith("   at Funcky.Test.ResultTest.InterestingStackTrace(Int32 n)", lines.First());
+            }
+            else
+            {
+                FunctionalAssert.Unmatched("else");
+            }
+        }
+
+        private Result<int> InterestingStackTrace(int n)
+        {
+            return n == 0
+                ? Result<int>.Error(new InvalidCastException())
+                : Indirection(n - 1);
+        }
+
+        private Result<int> Indirection(int n)
+        {
+            return InterestingStackTrace(n);
+        }
     }
 }

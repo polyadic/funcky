@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Funcky.Monads
 {
     public readonly struct Result<TValidResult>
     {
+        private const int SkipLowestStackFrame = 1;
+
         private readonly TValidResult _result;
         private readonly Exception _error;
 
@@ -32,6 +35,8 @@ namespace Funcky.Monads
 
         public static Result<TValidResult> Error(Exception item)
         {
+            ExceptionUtilities.SetStackTrace(item, new StackTrace(SkipLowestStackFrame, true));
+
             return new Result<TValidResult>(item);
         }
 
