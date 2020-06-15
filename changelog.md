@@ -18,7 +18,7 @@
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 
-## 2.0.0.rc
+## 2.0.0-rc.1
 * Full nullable support introduced with C# 8 
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
