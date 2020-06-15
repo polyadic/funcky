@@ -19,10 +19,11 @@
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 
 ## Next major version
+* Full nullable support introduced with C# 8 
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
   because most APIs in `System` use `Func`.
 * `Functional.Any` now returns `false` when the given list of predicates is empty.
 * The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
 * Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`
-
+* Remove `Reader` monad based on `await`.
