@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using Funcky.Monads;
@@ -138,15 +138,11 @@ namespace Funcky.Test
         }
 
         private Result<int> InterestingStackTrace(int n)
-        {
-            return n == 0
+            => n == 0
                 ? Result<int>.Error(new InvalidCastException())
                 : Indirection(n - 1);
-        }
 
         private Result<int> Indirection(int n)
-        {
-            return InterestingStackTrace(n);
-        }
+            => InterestingStackTrace(n);
     }
 }
