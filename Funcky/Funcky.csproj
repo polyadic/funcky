@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
@@ -16,9 +16,9 @@
     <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
     <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
-    <Version>1.8.1</Version>
-    <FileVersion>1.8.1.0</FileVersion>
-    <AssemblyVersion>1.8.1.0</AssemblyVersion>
+    <Version>2.0.0-rc.1</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -30,9 +30,4 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
-  </ItemGroup>
-
 </Project>

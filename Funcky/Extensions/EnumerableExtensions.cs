@@ -14,7 +14,7 @@ namespace Funcky.Extensions
         /// </summary>
         /// <typeparam name="T">Type of the object.</typeparam>
         /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
-        public static IEnumerable<T> Yield<T>(this T? item, RequireClass<T>? ω = null)
+        public static IEnumerable<T> ToEnumerable<T>(this T? item, RequireClass<T>? ω = null)
             where T : class
         {
             if (item is { })
@@ -23,15 +23,15 @@ namespace Funcky.Extensions
             }
         }
 
-        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
-        public static IEnumerable<T> Yield<T>(this T item, RequireStruct<T>? ω = null)
+        /// <inheritdoc cref="ToEnumerable{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> ToEnumerable<T>(this T item, RequireStruct<T>? ω = null)
             where T : struct
         {
             yield return item;
         }
 
-        /// <inheritdoc cref="Yield{T}(T, RequireClass{T})"/>
-        public static IEnumerable<T> Yield<T>(this T? item)
+        /// <inheritdoc cref="ToEnumerable{T}(T, RequireClass{T})"/>
+        public static IEnumerable<T> ToEnumerable<T>(this T? item)
             where T : struct
         {
             if (item.HasValue)
@@ -67,7 +67,7 @@ namespace Funcky.Extensions
         /// The IEnumerable version of foreach. You can apply an action to each element. This is only useful when you have side effects.
         /// </summary>
         /// <typeparam name="T">the inner type of the enumerable.</typeparam>
-        public static void Each<T>(this IEnumerable<T> elements, Action<T> action)
+        public static void ForEach<T>(this IEnumerable<T> elements, Action<T> action)
         {
             foreach (var element in elements)
             {
@@ -140,10 +140,10 @@ namespace Funcky.Extensions
 
         public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
             where TSource : class
-            => source.WhereSelect(value => Option.From(value));
+            => source.WhereSelect(Option.FromNullable);
 
         public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
             where TSource : struct
-            => source.WhereSelect(Option.From);
+            => source.WhereSelect(Option.FromNullable);
     }
 }
