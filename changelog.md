@@ -19,4 +19,4 @@
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 
 ## Unpublished
-* `Exception` created by `Reader` monad contains valid stack trace
+* `Exception` created by `Result` monad contains valid stack trace
