@@ -16,9 +16,11 @@
     <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
     <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
-    <Version>2.0.0-prerelease</Version>
+    <Version>2.0.0-rc.1</Version>
     <FileVersion>2.0.0.0</FileVersion>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>

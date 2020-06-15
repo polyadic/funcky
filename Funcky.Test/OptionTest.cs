@@ -23,23 +23,6 @@ namespace Funcky.Test
             Cool,
         }
 
-        [Theory]
-        [InlineData(-12, "-12")]
-        [InlineData(0, "0")]
-        [InlineData(-953542, "-953542")]
-        [InlineData(1337, "1337")]
-        public void GivenStringsThenTheTryParseIntFunctionReturnsSomeForNumbers(int parsed, string stringToParse)
-        {
-            var maybe = stringToParse.TryParseInt();
-
-            var isSome = maybe.Match(
-                none: false,
-                some: True);
-
-            Assert.True(isSome);
-            Assert.Equal(parsed, maybe.Match(0, m => m));
-        }
-
         [Fact]
         public void GivenAValueThenCreateMaybeWithTypeInference()
         {
@@ -65,41 +48,6 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void GivenAStringWhichIsNotAnIntThenTryParseIntReturnsANoneValue()
-        {
-            var maybe = "no number".TryParseInt();
-
-            Assert.False(maybe.Match(false, True));
-        }
-
-        [Fact]
-        public void GivenADateThenTryParseDateReturnsAnOptionOfDate()
-        {
-            var maybe = "26.02.1982".TryParseDateTime();
-
-            Assert.True(maybe.Match(false, True));
-            Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, m => m));
-        }
-
-        [Fact]
-        public void GivenAnEnumThenTryParseEnumReturnsAnOptionOfDate()
-        {
-            var maybe = "Cool".TryParseEnum<MyEnum>();
-
-            Assert.True(maybe.Match(false, True));
-            Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, m => m));
-        }
-
-        [Fact]
-        public void GivenAnInvalidEnumValueThenTryParseEnumReturnsANone()
-        {
-            var maybe = "NotCool".TryParseEnum<MyEnum>();
-
-            Assert.False(maybe.Match(false, True));
-            Assert.Equal(MyEnum.None, maybe.Match(MyEnum.None, m => m));
-        }
-
-        [Fact]
         public void GivenADictionaryWhenWeLookForAnExistentValueWithTryGetValueThenTheResultShouldBeASomeOfTheGivenType()
         {
             var dictionary = new Dictionary<string, string> { { "some", "value" } };
@@ -107,7 +55,7 @@ namespace Funcky.Test
             var maybe = dictionary.TryGetValue(key: "some");
 
             Assert.True(maybe.Match(false, True));
-            Assert.Equal("value", maybe.Match(string.Empty, m => m));
+            Assert.Equal("value", maybe.Match(string.Empty, Identity));
         }
 
         [Fact]
@@ -181,7 +129,7 @@ namespace Funcky.Test
             {
                 var value = number.Match(
                     none: 0,
-                    some: i => i);
+                    some: Identity);
 
                 Assert.NotEqual(0, value);
             }
@@ -242,7 +190,7 @@ namespace Funcky.Test
             {
                 var value = number.Match(
                     none: () => 0,
-                    some: i => i);
+                    some: Identity);
 
                 Assert.NotEqual(0, value);
             }
@@ -256,7 +204,7 @@ namespace Funcky.Test
             Assert.Throws<ArgumentNullException>(testCode: () =>
                 none.Match(
                     none: () => throw new ArgumentNullException(),
-                    some: i => i));
+                    some: Identity));
         }
 
         [Fact]
@@ -280,8 +228,8 @@ namespace Funcky.Test
             var none = Option<int>.None();
             var some = Option.Some(42);
 
-            Assert.Equal(none, none.AndThen(number => number));
-            Assert.Equal(some, some.AndThen(number => number));
+            Assert.Equal(none, none.AndThen(Identity));
+            Assert.Equal(some, some.AndThen(Identity));
         }
 
         [Fact]
@@ -389,6 +337,44 @@ namespace Funcky.Test
         {
             Assert.Equal(Option.Some(10), Option.FromNullable((int?)10));
             Assert.Equal(Option<int>.None(), Option.FromNullable((int?)null));
+        }
+
+        [Theory]
+        [MemberData(nameof(OptionValues))]
+        public void AssociativityHolds(Option<int> input)
+        {
+            static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
+            static Option<int> AddTwo(int x) => Option.Some(x + 2);
+            static Option<int> MultiplyByTenAndAddTwo(int x) => MultiplyByTen(x).SelectMany(AddTwo);
+
+            Assert.Equal(
+                input.SelectMany(MultiplyByTen).SelectMany(AddTwo),
+                input.SelectMany(MultiplyByTenAndAddTwo));
+        }
+
+        [Theory]
+        [MemberData(nameof(OptionValues))]
+        public void RightIdentityHolds(Option<int> input)
+        {
+            Assert.Equal(input.SelectMany(Option.Some), input);
+        }
+
+        public static TheoryData<Option<int>> OptionValues()
+            => new TheoryData<Option<int>>
+            {
+                Option.Some(10),
+                Option<int>.None(),
+            };
+
+        [Fact]
+        public void LeftIdentityHolds()
+        {
+            static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
+
+            const int input = 10;
+            Assert.Equal(
+                Option.Some(input).SelectMany(MultiplyByTen),
+                MultiplyByTen(input));
         }
 
         private void Statement(int value)
