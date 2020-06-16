@@ -12,7 +12,7 @@ namespace Funcky.Test
         [Fact]
         public void CreateResultOkAndMatchCorrectly()
         {
-            var value = Result<int>.Ok(1000);
+            var value = Result.Ok(1000);
 
             var hasResult = value.Match(
                 ok: True,
@@ -49,10 +49,10 @@ namespace Funcky.Test
         public static TheoryData<Result<int>, double> GetIntegerResults()
             => new TheoryData<Result<int>, double>
             {
-                { Result<int>.Ok(1000), 250.0 },
-                { Result<int>.Ok(44), 11.0 },
-                { Result<int>.Ok(1), 0.25 },
-                { Result<int>.Ok(1000), 250.0 },
+                { Result.Ok(1000), 250.0 },
+                { Result.Ok(44), 11.0 },
+                { Result.Ok(1), 0.25 },
+                { Result.Ok(1000), 250.0 },
                 { Result<int>.Error(new Exception()), -1.0 },
             };
 
@@ -76,10 +76,10 @@ namespace Funcky.Test
         public static TheoryData<Result<int>, Result<int>, Result<int>, Option<int>> GetIntegerSums()
             => new TheoryData<Result<int>, Result<int>, Result<int>, Option<int>>
             {
-                { Result<int>.Ok(5), Result<int>.Ok(10), Result<int>.Ok(15), Option.Some(30) },
-                { Result<int>.Ok(42), Result<int>.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
-                { Result<int>.Ok(1337), Result<int>.Ok(42), Result<int>.Ok(99), Option.Some(1478) },
-                { Result<int>.Ok(45856), Result<int>.Ok(58788), Result<int>.Ok(699554), Option.Some(804198) },
+                { Result.Ok(5), Result.Ok(10), Result.Ok(15), Option.Some(30) },
+                { Result.Ok(42), Result.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
+                { Result.Ok(1337), Result.Ok(42), Result.Ok(99), Option.Some(1478) },
+                { Result.Ok(45856), Result.Ok(58788), Result.Ok(699554), Option.Some(804198) },
                 { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), Option<int>.None() },
             };
 
@@ -96,8 +96,8 @@ namespace Funcky.Test
         public static TheoryData<Result<int>, bool> GetResults()
             => new TheoryData<Result<int>, bool>
             {
-                { Result<int>.Ok(5), true },
-                { Result<int>.Ok(42), true },
+                { Result.Ok(5), true },
+                { Result.Ok(42), true },
                 { Result<int>.Error(new InvalidCastException()), false },
             };
 

@@ -10,7 +10,7 @@ namespace Funcky.Monads
         private readonly TValidResult _result;
         private readonly Exception _error;
 
-        private Result(TValidResult result)
+        internal Result(TValidResult result)
         {
             _result = result;
             _error = null!;
@@ -28,11 +28,6 @@ namespace Funcky.Monads
         public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
             => !lhs.Equals(rhs);
 
-        public static Result<TValidResult> Ok(TValidResult item)
-        {
-            return new Result<TValidResult>(item);
-        }
-
         public static Result<TValidResult> Error(Exception item)
         {
             ExceptionUtilities.SetStackTrace(item, new StackTrace(SkipLowestStackFrame, true));
@@ -42,7 +37,7 @@ namespace Funcky.Monads
 
         public Result<TResult> Select<TResult>(Func<TValidResult, TResult> selector)
             => _error is null
-                ? Result<TResult>.Ok(selector(_result))
+                ? Result.Ok(selector(_result))
                 : Result<TResult>.Error(_error);
 
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
@@ -51,7 +46,7 @@ namespace Funcky.Monads
             if (_error is null)
             {
                 return selectedMaybe._error is null
-                    ? Result<TResult>.Ok(resultSelector(_result, selectedMaybe._result))
+                    ? Result.Ok(resultSelector(_result, selectedMaybe._result))
                     : Result<TResult>.Error(selectedMaybe._error);
             }
 
@@ -86,5 +81,10 @@ namespace Funcky.Monads
             => Match(
                 ok: result => result?.GetHashCode(),
                 error: error => error.GetHashCode()) ?? 0;
+    }
+
+    public static class Result
+    {
+        public static Result<TValidResult> Ok<TValidResult>(TValidResult item) => new Result<TValidResult>(item);
     }
 }
