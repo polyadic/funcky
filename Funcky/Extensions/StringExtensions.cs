@@ -5,6 +5,8 @@ namespace Funcky.Extensions
 {
     public static class StringExtensions
     {
+        private const int NotFoundValue = -1;
+
         public static Option<int> IndexOfOrNone(this string haystack, char value)
             => MapIndexToOption(haystack.IndexOf(value));
 
@@ -83,9 +85,8 @@ namespace Funcky.Extensions
             => MapIndexToOption(haystack.LastIndexOfAny(anyOf, startIndex, count));
 
         private static Option<int> MapIndexToOption(int index)
-        {
-            const int sentinelValue = -1;
-            return index == sentinelValue ? Option<int>.None() : Option.Some(index);
-        }
+            => index == NotFoundValue
+                   ? Option<int>.None()
+                   : Option.Some(index);
     }
 }
