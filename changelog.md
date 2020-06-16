@@ -32,3 +32,4 @@
 ## Unreleased
 * Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.  
   Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`. 
+* Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
