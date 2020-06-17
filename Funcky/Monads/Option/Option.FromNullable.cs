@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+
 namespace Funcky.Monads
 {
     public static partial class Option
