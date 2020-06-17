@@ -54,7 +54,7 @@ namespace Funcky.Test
 
             var maybe = dictionary.TryGetValue(key: "some");
 
-            Assert.True(maybe.Match(false, True));
+            FunctionalAssert.IsSome(maybe);
             Assert.Equal("value", maybe.Match(string.Empty, Identity));
         }
 
@@ -65,7 +65,7 @@ namespace Funcky.Test
 
             var maybe = dictionary.TryGetValue(readOnlyKey: "none");
 
-            Assert.False(maybe.Match(false, True));
+            FunctionalAssert.IsNone(maybe);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Funcky.Test
                 from m in maybe
                 select m == 1337;
 
-            Assert.False(maybeBool.Match(false, True));
+            FunctionalAssert.IsNone(maybeBool);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Funcky.Test
                          from otherNumber in someOtherNumber
                          select Tuple.Create(number, date, otherNumber);
 
-            Assert.False(result.Match(false, True));
+            FunctionalAssert.IsNone(result);
         }
 
         [Fact]
