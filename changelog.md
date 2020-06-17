@@ -36,3 +36,4 @@
 * Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
 * Added `Curry`, `Uncurry` and `Flip` to the `Functional` Class
 * Remove `IToString`.
+* Mark our functions as `[Pure]`.

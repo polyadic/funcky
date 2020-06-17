@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
@@ -10,8 +11,10 @@ namespace Funcky.Monads
             Second = second;
         }
 
+        [Pure]
         public Exception First { get; }
 
+        [Pure]
         public Exception Second { get; }
     }
 }

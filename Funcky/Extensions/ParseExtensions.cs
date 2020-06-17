@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using Funcky.Monads;
 
@@ -6,6 +7,7 @@ namespace Funcky.Extensions
 {
     public static class ParseExtensions
     {
+        [Pure]
         public static Option<bool> TryParseBoolean(this string candidate)
         {
             return bool.TryParse(candidate, out var boolResult)
@@ -13,6 +15,7 @@ namespace Funcky.Extensions
                 : Option<bool>.None();
         }
 
+        [Pure]
         public static Option<int> TryParseInt(this string candidate)
         {
             return int.TryParse(candidate, out var integerResult)
@@ -20,6 +23,7 @@ namespace Funcky.Extensions
                 : Option<int>.None();
         }
 
+        [Pure]
         public static Option<int> TryParseInt(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return int.TryParse(candidate, styles, provider, out var integerResult)
@@ -27,6 +31,7 @@ namespace Funcky.Extensions
                 : Option<int>.None();
         }
 
+        [Pure]
         public static Option<byte> TryParseByte(this string candidate)
         {
             return byte.TryParse(candidate, out var byteResult)
@@ -34,6 +39,7 @@ namespace Funcky.Extensions
                 : Option<byte>.None();
         }
 
+        [Pure]
         public static Option<byte> TryParseByte(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return byte.TryParse(candidate, styles, provider, out var byteResult)
@@ -41,6 +47,7 @@ namespace Funcky.Extensions
                 : Option<byte>.None();
         }
 
+        [Pure]
         public static Option<short> TryParseShort(this string candidate)
         {
             return short.TryParse(candidate, out var shortResult)
@@ -48,6 +55,7 @@ namespace Funcky.Extensions
                 : Option<short>.None();
         }
 
+        [Pure]
         public static Option<short> TryParseShort(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return short.TryParse(candidate, styles, provider, out var shortResult)
@@ -55,6 +63,7 @@ namespace Funcky.Extensions
                 : Option<short>.None();
         }
 
+        [Pure]
         public static Option<long> TryParseLong(this string candidate)
         {
             return long.TryParse(candidate, out var longResult)
@@ -62,6 +71,7 @@ namespace Funcky.Extensions
                 : Option<long>.None();
         }
 
+        [Pure]
         public static Option<long> TryParseLong(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return long.TryParse(candidate, styles, provider, out var longResult)
@@ -69,6 +79,7 @@ namespace Funcky.Extensions
                 : Option<long>.None();
         }
 
+        [Pure]
         public static Option<double> TryParseDouble(this string candidate)
         {
             return double.TryParse(candidate, out var doubleResult)
@@ -76,6 +87,7 @@ namespace Funcky.Extensions
                 : Option<double>.None();
         }
 
+        [Pure]
         public static Option<double> TryParseDouble(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return double.TryParse(candidate, styles, provider, out var doubleResult)
@@ -83,6 +95,7 @@ namespace Funcky.Extensions
                 : Option<double>.None();
         }
 
+        [Pure]
         public static Option<decimal> TryParseDecimal(this string candidate)
         {
             return decimal.TryParse(candidate, out var decimalResult)
@@ -90,6 +103,7 @@ namespace Funcky.Extensions
                 : Option<decimal>.None();
         }
 
+        [Pure]
         public static Option<decimal> TryParseDecimal(this string candidate, NumberStyles styles, IFormatProvider provider)
         {
             return decimal.TryParse(candidate, styles, provider, out var decimalResult)
@@ -97,6 +111,7 @@ namespace Funcky.Extensions
                 : Option<decimal>.None();
         }
 
+        [Pure]
         public static Option<DateTime> TryParseDateTime(this string candidate)
         {
             return DateTime.TryParse(candidate, out var dateTime)
@@ -104,6 +119,7 @@ namespace Funcky.Extensions
                 : Option<DateTime>.None();
         }
 
+        [Pure]
         public static Option<DateTime> TryParseDateTime(this string candidate, IFormatProvider provider, DateTimeStyles styles)
         {
             return DateTime.TryParse(candidate, provider, styles, out var dateTime)
@@ -111,6 +127,7 @@ namespace Funcky.Extensions
                 : Option<DateTime>.None();
         }
 
+        [Pure]
         public static Option<TimeSpan> TryParseTimeSpan(this string candidate)
         {
             return TimeSpan.TryParse(candidate, out var timeSpan)
@@ -118,6 +135,7 @@ namespace Funcky.Extensions
                 : Option<TimeSpan>.None();
         }
 
+        [Pure]
         public static Option<TimeSpan> TryParseTimeSpan(this string candidate, IFormatProvider provider)
         {
             return TimeSpan.TryParse(candidate, provider, out var timeSpan)
@@ -125,6 +143,7 @@ namespace Funcky.Extensions
                 : Option<TimeSpan>.None();
         }
 
+        [Pure]
         public static Option<TEnum> TryParseEnum<TEnum>(this string candidate)
             where TEnum : struct
         {
@@ -133,6 +152,7 @@ namespace Funcky.Extensions
                 : Option<TEnum>.None();
         }
 
+        [Pure]
         public static Option<TEnum> TryParseEnum<TEnum>(this string candidate, bool ignoreCase)
             where TEnum : struct
         {

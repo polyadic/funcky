@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
     public static class DictionaryExtensions
     {
+        [Pure]
         public static Option<TValue> TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
             where TKey : notnull
             where TValue : notnull
@@ -14,6 +16,7 @@ namespace Funcky.Extensions
                 : Option<TValue>.None();
         }
 
+        [Pure]
         public static Option<TValue> TryGetValue<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey readOnlyKey)
             where TKey : notnull
             where TValue : notnull
