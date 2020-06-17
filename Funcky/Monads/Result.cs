@@ -31,7 +31,6 @@ namespace Funcky.Monads
         public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
             => !lhs.Equals(rhs);
 
-        [Pure]
         public static Result<TValidResult> Error(Exception item)
         {
             item.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
