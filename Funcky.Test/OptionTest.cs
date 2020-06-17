@@ -218,8 +218,8 @@ namespace Funcky.Test
             Assert.Equal(some, none.OrElse(some));
             Assert.Equal(some, none.OrElse(none).OrElse(some));
             Assert.Equal(none, none.OrElse(none).OrElse(none));
-            Assert.Equal(1337, none.OrElse(1337));
-            Assert.Equal(1337, none.OrElse(none).OrElse(1337));
+            Assert.Equal(1337, none.GetOrElse(1337));
+            Assert.Equal(1337, none.OrElse(none).GetOrElse(1337));
         }
 
         [Fact]
@@ -279,7 +279,7 @@ namespace Funcky.Test
             };
 
             var maybe = some
-                .OrElse(sideEffect);
+                .GetOrElse(sideEffect);
 
             Assert.Equal(0, global);
         }
