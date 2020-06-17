@@ -41,19 +41,10 @@ namespace Funcky.Monads
                 : Result<TResult>.Error(_error);
 
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
-        {
-            var selectedMaybe = selectedResultSelector(_result);
-            if (_error is null)
-            {
-                return selectedMaybe._error is null
-                    ? Result.Ok(resultSelector(_result, selectedMaybe._result))
-                    : Result<TResult>.Error(selectedMaybe._error);
-            }
-
-            return selectedMaybe._error is null
-                ? Result<TResult>.Error(_error)
-                : Result<TResult>.Error(new ResultCombinationException(_error, selectedMaybe._error));
-        }
+            => Match(
+                error: error => new Result<TResult>(error),
+                ok: result => selectedResultSelector(result)
+                    .Select(maybe => resultSelector(result, maybe)));
 
         public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
             => _error is null
