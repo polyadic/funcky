@@ -13,13 +13,13 @@ namespace Funcky.Monads
         public Option<TItem> OrElse(Option<TItem> elseOption)
             => Match(none: elseOption, some: Option.Some);
 
-        public TItem OrElse(TItem elseOption)
-            => Match(none: elseOption, some: Identity);
-
         public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
             => Match(none: elseOption, some: Option.Some);
 
-        public TItem OrElse(Func<TItem> elseOption)
+        public TItem GetOrElse(TItem elseOption)
+            => Match(none: elseOption, some: Identity);
+
+        public TItem GetOrElse(Func<TItem> elseOption)
             => Match(none: elseOption, some: Identity);
 
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)

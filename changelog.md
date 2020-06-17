@@ -19,7 +19,7 @@
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 
 ## 2.0.0-rc.1
-* Full nullable support introduced with C# 8 
+* Full nullable support introduced with C# 8
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
   because most APIs in `System` use `Func`.
@@ -30,5 +30,7 @@
 * `Exception` created by `Result` monad contains valid stack trace
 
 ## Unreleased
-* Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.  
-  Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`. 
+* Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.
+  Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`.
+* Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
+* Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
