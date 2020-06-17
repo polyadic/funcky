@@ -176,7 +176,7 @@ namespace Funcky.Test
         [Theory]
         [MemberData(nameof(TestValues))]
 
-        public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, IToString option)
+        public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, object option)
         {
             Assert.Equal(reference, option.ToString());
         }
