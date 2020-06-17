@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
@@ -29,25 +30,32 @@ namespace Funcky.Monads
             Right,
         }
 
+        [Pure]
         public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
+        [Pure]
         public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
 
+        [Pure]
         public static Either<TLeft, TRight> Left(TLeft left) => new Either<TLeft, TRight>(left);
 
+        [Pure]
         public static Either<TLeft, TRight> Right(TRight right) => new Either<TLeft, TRight>(right);
 
+        [Pure]
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
             => Match(
                 Either<TLeft, TResult>.Left,
                 right => Either<TLeft, TResult>.Right(selector(right)));
 
+        [Pure]
         public Either<TLeft, TResult> SelectMany<TEither, TResult>(Func<TRight, Either<TLeft, TEither>> eitherSelector, Func<TRight, TEither, TResult> resultSelector)
             => Match(
                 Either<TLeft, TResult>.Left,
                 right => eitherSelector(right).Select(
                     selectedRight => resultSelector(right, selectedRight)));
 
+        [Pure]
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
             => _side switch
             {
@@ -59,12 +67,14 @@ namespace Funcky.Monads
                     $"Internal error: Enum variant {_side} is not handled"),
             };
 
+        [Pure]
         public override bool Equals(object obj)
             => obj is Either<TLeft, TLeft> other
                && Equals(_side, other._side)
                && Equals(_right, other._right)
                && Equals(_left, other._left);
 
+        [Pure]
         public override int GetHashCode()
             => Match(
                 left => left?.GetHashCode(),
