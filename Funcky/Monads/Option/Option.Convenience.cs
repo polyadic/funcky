@@ -38,7 +38,6 @@ namespace Funcky.Monads
             where TResult : notnull
             => SelectMany(andThenFunction);
 
-        [Pure]
         public void AndThen(Action<TItem> andThenFunction)
             => Match(none: NoOperation, some: andThenFunction);
 
