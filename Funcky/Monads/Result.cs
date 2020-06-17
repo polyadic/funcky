@@ -48,8 +48,8 @@ namespace Funcky.Monads
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
             => Match(
                 error: error => new Result<TResult>(error),
-                ok: result => selectedResultSelector(result)
-                    .Select(maybe => resultSelector(result, maybe)));
+                ok: result => selectedResultSelector(result).Select(
+                    maybe => resultSelector(result, maybe)));
 
         [Pure]
         public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
