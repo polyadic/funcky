@@ -22,7 +22,7 @@ namespace Funcky.Monads
             _side = Side.Right;
         }
 
-        private enum Side
+        private enum Side : byte
         {
             Uninitialized,
             Left,
