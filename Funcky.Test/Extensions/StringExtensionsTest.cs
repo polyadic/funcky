@@ -20,7 +20,7 @@ namespace Funcky.Test.Extensions
         [MemberData(nameof(InvalidIndexes))]
         public void ReturnsNoneIfNeedleIsNotFound(Option<int> index)
         {
-            Assert.Equal(Option<int>.None(), index);
+            FunctionalAssert.IsNone(index);
         }
 
         public static TheoryData<Option<int>> InvalidIndexes()
@@ -57,7 +57,7 @@ namespace Funcky.Test.Extensions
         [MemberData(nameof(ValidIndexes))]
         public void ReturnsIndexIfNeedleIsFound(Option<int> index)
         {
-            Assert.Equal(Option.Some(NeedlePosition), index);
+            FunctionalAssert.IsSome(NeedlePosition, index);
         }
 
         public static TheoryData<Option<int>> ValidIndexes()
