@@ -23,5 +23,9 @@ namespace Funcky.Test
         public static void IsSome<TItem>(Option<TItem> option)
             where TItem : notnull
             => Assert.True(option.Match(none: false, some: True));
+
+        public static void IsError<T>(Result<T> result)
+            where T : notnull
+            => Assert.False(result.Match(ok: True, error: False));
     }
 }

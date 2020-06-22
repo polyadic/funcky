@@ -123,6 +123,18 @@ namespace Funcky.Test
                 error: IsInterestingStackTraceFirst);
         }
 
+        [Fact]
+        public void SelectManyOnlyCallsSelectorWhenOk()
+        {
+            static Result<int> GetLength(string input) => Result.Ok(input.Length);
+            var error = Result<string>.Error(new InvalidOperationException());
+            var length =
+                from a in error
+                from b in GetLength(a)
+                select b;
+            FunctionalAssert.IsError(length);
+        }
+
         private void IsInterestingStackTraceFirst(Exception exception)
         {
             if (exception.StackTrace is { })
