@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
-    public readonly struct Result<TValidResult>
+    public readonly partial struct Result<TValidResult>
     {
         private const int SkipLowestStackFrame = 1;
 
