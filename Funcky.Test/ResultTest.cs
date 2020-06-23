@@ -135,7 +135,7 @@ namespace Funcky.Test
             FunctionalAssert.IsError(length);
         }
 
-        private void IsInterestingStackTraceFirst(Exception exception)
+        private static void IsInterestingStackTraceFirst(Exception exception)
         {
             if (exception.StackTrace is { })
             {

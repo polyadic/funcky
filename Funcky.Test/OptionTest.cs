@@ -377,11 +377,11 @@ namespace Funcky.Test
                 MultiplyByTen(input));
         }
 
-        private void Statement(int value)
+        private static void Statement(int value)
         {
         }
 
-        private void Statement()
+        private static void Statement()
         {
         }
     }
