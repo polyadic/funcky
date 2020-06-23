@@ -11,7 +11,7 @@ namespace Funcky.Monads
             some: _ => "Some");
     }
 
-    internal class OptionDebugView<T>
+    internal sealed class OptionDebugView<T>
         where T : notnull
     {
         private readonly Option<T> _option;

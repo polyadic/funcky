@@ -11,7 +11,7 @@ namespace Funcky.Monads
             right: _ => "Right");
     }
 
-    internal class EitherDebugView<TLeft, TRight>
+    internal sealed class EitherDebugView<TLeft, TRight>
     {
         private readonly Either<TLeft, TRight> _either;
 
