@@ -92,7 +92,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntacThenTheResultShouldBeSomeValue()
+        public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
         {
             var someNumber = "1337".TryParseInt();
             var someDate = "12.2.2009".TryParseDateTime();
@@ -292,7 +292,7 @@ namespace Funcky.Test
         [InlineData("not a number")]
         [InlineData("13 is a number")]
         [InlineData("")]
-        public void GivenAnOptionAndTheMatchFunctionAStatmentItShouldCompile(string stringToParse)
+        public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
         {
             var maybe = stringToParse.TryParseInt();
 
