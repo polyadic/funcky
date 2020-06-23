@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
-    public readonly struct Either<TLeft, TRight>
+    public readonly partial struct Either<TLeft, TRight>
     {
         private readonly TLeft _left;
         private readonly TRight _right;

@@ -27,6 +27,7 @@ namespace Funcky.Test
         public void GivenAValueThenCreateMaybeWithTypeInference()
         {
             var maybe = Option.Some(1337);
+            var maybeNothing = Option<int>.None();
 
             Assert.Equal(typeof(int), maybe.GetType().GetGenericArguments().First());
         }
