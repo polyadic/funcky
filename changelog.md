@@ -14,9 +14,10 @@
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
 ## 1.8.0
-* Added overload for AndThen which flattens the Option
+* Added overload for `AndThen` which flattens the `Option`
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
+* Add `WhereNotNull` extension method for `IEnumerable<T>`.
 
 ## 2.0.0-rc.1
 * Full nullable support introduced with C# 8
