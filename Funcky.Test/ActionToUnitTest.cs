@@ -8,9 +8,9 @@ namespace Funcky.Test
         [Fact]
         public void OverloadResolutionWorks()
         {
-            ActionToUnit(ActionWithNoParameters);
-            ActionToUnit<int>(ActionWithOneParameter);
-            ActionToUnit<int, int>(ActionWithTwoParameters);
+            _ = ActionToUnit(ActionWithNoParameters);
+            _ = ActionToUnit<int>(ActionWithOneParameter);
+            _ = ActionToUnit<int, int>(ActionWithTwoParameters);
         }
 
         private static void ActionWithNoParameters()

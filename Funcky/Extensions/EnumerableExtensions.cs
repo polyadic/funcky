@@ -58,7 +58,7 @@ namespace Funcky.Extensions
         /// The side effect will be executed when enumerating the result.
         /// </summary>
         /// <typeparam name="T">the inner type of the enumerable.</typeparam>
-        /// <returns>returns an <see cref="IEnumerable{T}" /> with the sideeffect defined by action encoded in the enumerable.</returns>
+        /// <returns>returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
         [Pure]
         public static IEnumerable<T> Inspect<T>(this IEnumerable<T> elements, Action<T> action)
         {

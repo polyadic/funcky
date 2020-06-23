@@ -104,9 +104,9 @@ namespace Funcky.Test
         [Fact]
         public void GivenAResultWithAnExceptionWeGetAStackTrace()
         {
-            var arbitrayNumberOfStackFrames = 3;
+            const int arbitraryNumberOfStackFrames = 3;
 
-            InterestingStackTrace(arbitrayNumberOfStackFrames)
+            InterestingStackTrace(arbitraryNumberOfStackFrames)
               .Match(
                 ok: v => FunctionalAssert.Unmatched("ok"),
                 error: e => Assert.NotNull(e.StackTrace));
@@ -115,9 +115,9 @@ namespace Funcky.Test
         [Fact]
         public void GivenAResultWithAnExceptionTheStackTraceStartsInCreationMethod()
         {
-            var arbitrayNumberOfStackFrames = 0;
+            const int arbitraryNumberOfStackFrames = 0;
 
-            InterestingStackTrace(arbitrayNumberOfStackFrames)
+            InterestingStackTrace(arbitraryNumberOfStackFrames)
               .Match(
                 ok: v => FunctionalAssert.Unmatched("ok"),
                 error: IsInterestingStackTraceFirst);
@@ -135,7 +135,7 @@ namespace Funcky.Test
             FunctionalAssert.IsError(length);
         }
 
-        private void IsInterestingStackTraceFirst(Exception exception)
+        private static void IsInterestingStackTraceFirst(Exception exception)
         {
             if (exception.StackTrace is { })
             {

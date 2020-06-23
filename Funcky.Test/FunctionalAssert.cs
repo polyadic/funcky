@@ -4,7 +4,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test
 {
-    internal class FunctionalAssert
+    internal static class FunctionalAssert
     {
         public static void Unmatched()
             => throw new UnmatchedException();
