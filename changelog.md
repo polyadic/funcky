@@ -40,3 +40,7 @@
 * Mark our functions as `[Pure]`.
 * Fix incorrect implementation on `Result.SelectMany` which called the `selectedResultSelector` even when the
   result was an error. As a result (pun intended) of the fix, `ResultCombinationException` is no longer needed and also removed.
+
+
+## Unreleased
+* Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
