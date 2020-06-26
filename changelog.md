@@ -14,9 +14,10 @@
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
 ## 1.8.0
-* Added overload for AndThen which flattens the Option
+* Added overload for `AndThen` which flattens the `Option`
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
+* Add `WhereNotNull` extension method for `IEnumerable<T>`.
 
 ## 2.0.0-rc.1
 * Full nullable support introduced with C# 8
@@ -29,10 +30,18 @@
 * Remove `Reader` monad based on `await`.
 * `Exception` created by `Result` monad contains valid stack trace
 
-## Unreleased
+## 2.0.0-rc.2
 * Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.
   Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`.
 * Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
 * Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
+* Added `Curry`, `Uncurry` and `Flip` to the `Functional` Class
+* Remove `IToString`.
+* Mark our functions as `[Pure]`.
+* Fix incorrect implementation on `Result.SelectMany` which called the `selectedResultSelector` even when the
+  result was an error. As a result (pun intended) of the fix, `ResultCombinationException` is no longer needed and also removed.
+
+## Unreleased
+* Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
 * Add extension methods for getting `Stream` properties that are not always available, as `Option`:
   `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.

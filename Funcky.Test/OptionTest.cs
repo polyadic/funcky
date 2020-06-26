@@ -92,7 +92,7 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntacThenTheResultShouldBeSomeValue()
+        public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
         {
             var someNumber = "1337".TryParseInt();
             var someDate = "12.2.2009".TryParseDateTime();
@@ -176,7 +176,7 @@ namespace Funcky.Test
         [Theory]
         [MemberData(nameof(TestValues))]
 
-        public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, IToString option)
+        public void GivenAnOptionObjectThenToStringReturnsUsefulString(string reference, object option)
         {
             Assert.Equal(reference, option.ToString());
         }
@@ -292,7 +292,7 @@ namespace Funcky.Test
         [InlineData("not a number")]
         [InlineData("13 is a number")]
         [InlineData("")]
-        public void GivenAnOptionAndTheMatchFunctionAStatmentItShouldCompile(string stringToParse)
+        public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
         {
             var maybe = stringToParse.TryParseInt();
 
@@ -377,11 +377,11 @@ namespace Funcky.Test
                 MultiplyByTen(input));
         }
 
-        private void Statement(int value)
+        private static void Statement(int value)
         {
         }
 
-        private void Statement()
+        private static void Statement()
         {
         }
     }

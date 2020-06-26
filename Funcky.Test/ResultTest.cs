@@ -104,9 +104,9 @@ namespace Funcky.Test
         [Fact]
         public void GivenAResultWithAnExceptionWeGetAStackTrace()
         {
-            var arbitrayNumberOfStackFrames = 3;
+            const int arbitraryNumberOfStackFrames = 3;
 
-            InterestingStackTrace(arbitrayNumberOfStackFrames)
+            InterestingStackTrace(arbitraryNumberOfStackFrames)
               .Match(
                 ok: v => FunctionalAssert.Unmatched("ok"),
                 error: e => Assert.NotNull(e.StackTrace));
@@ -115,15 +115,27 @@ namespace Funcky.Test
         [Fact]
         public void GivenAResultWithAnExceptionTheStackTraceStartsInCreationMethod()
         {
-            var arbitrayNumberOfStackFrames = 0;
+            const int arbitraryNumberOfStackFrames = 0;
 
-            InterestingStackTrace(arbitrayNumberOfStackFrames)
+            InterestingStackTrace(arbitraryNumberOfStackFrames)
               .Match(
                 ok: v => FunctionalAssert.Unmatched("ok"),
                 error: IsInterestingStackTraceFirst);
         }
 
-        private void IsInterestingStackTraceFirst(Exception exception)
+        [Fact]
+        public void SelectManyOnlyCallsSelectorWhenOk()
+        {
+            static Result<int> GetLength(string input) => Result.Ok(input.Length);
+            var error = Result<string>.Error(new InvalidOperationException());
+            var length =
+                from a in error
+                from b in GetLength(a)
+                select b;
+            FunctionalAssert.IsError(length);
+        }
+
+        private static void IsInterestingStackTraceFirst(Exception exception)
         {
             if (exception.StackTrace is { })
             {
