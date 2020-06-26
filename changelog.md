@@ -44,3 +44,5 @@
 ## Unreleased
 * Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
 * Remove overload for `Option.From` that flattens passed `Option`s.
+* Add extension methods for getting `Stream` properties that are not always available, as `Option`:
+  `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.
