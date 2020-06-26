@@ -34,3 +34,5 @@
   Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`.
 * Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
 * Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
+* Add extension methods for getting `Stream` properties that are not always available, as `Option`:
+  `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.
