@@ -43,3 +43,4 @@
 
 ## Unreleased
 * Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
+* Remove overload for `Option.From` that flattens passed `Option`s.

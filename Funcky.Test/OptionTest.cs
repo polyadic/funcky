@@ -302,12 +302,12 @@ namespace Funcky.Test
         }
 
         [Fact]
-        public void GivenAnOptionOfAnOptionWeGetASimpleOption()
+        public void OptionFromDoesNotFlattenOptions()
         {
-            var option1 = Option.Some(1);
-            var option2 = Option.Some(option1);
-
-            Assert.Equal(option1, option2);
+            var option = Option.Some(Option.Some(1));
+            #pragma warning disable 183 // The given operation is always of the provided type
+            Assert.True(option is Option<Option<int>>);
+            #pragma warning restore 183
         }
 
         [Fact]

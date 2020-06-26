@@ -95,10 +95,5 @@ namespace Funcky.Monads
         public static Option<TItem> Some<TItem>(TItem item)
             where TItem : notnull
             => new Option<TItem>(item);
-
-        [Pure]
-        public static Option<TItem> Some<TItem>(Option<TItem> item)
-            where TItem : notnull
-            => item;
     }
 }
