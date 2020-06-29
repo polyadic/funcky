@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
-    public readonly partial struct Result<TValidResult>
+    public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
     {
         private const int SkipLowestStackFrame = 1;
 
@@ -71,9 +71,12 @@ namespace Funcky.Monads
 
         [Pure]
         public override bool Equals(object obj)
-            => obj is Result<TValidResult> other
-                 && Equals(_result, other._result)
-                 && Equals(_error, other._error);
+            => obj is Result<TValidResult> other && Equals(other);
+
+        [Pure]
+        public bool Equals(Result<TValidResult> other)
+            => Equals(_result, other._result)
+               && Equals(_error, other._error);
 
         [Pure]
         public override int GetHashCode()

@@ -12,6 +12,18 @@ namespace Funcky
         public static bool operator !=(Unit lhs, Unit rhs) => false;
 
         [Pure]
+        public static bool operator <(Unit lhs, Unit rhs) => false;
+
+        [Pure]
+        public static bool operator <=(Unit lhs, Unit rhs) => true;
+
+        [Pure]
+        public static bool operator >(Unit lhs, Unit rhs) => false;
+
+        [Pure]
+        public static bool operator >=(Unit lhs, Unit rhs) => true;
+
+        [Pure]
         public bool Equals(Unit other) => true;
 
         [Pure]
