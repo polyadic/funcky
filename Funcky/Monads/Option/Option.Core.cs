@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
-    public readonly partial struct Option<TItem> : IEquatable<Option<TItem>>
+    public readonly partial struct Option<TItem>
         where TItem : notnull
     {
         private readonly bool _hasItem;
@@ -19,12 +19,6 @@ namespace Funcky.Monads
             _item = item;
             _hasItem = true;
         }
-
-        [Pure]
-        public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
-
-        [Pure]
-        public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
 
         [Pure]
         public static Option<TItem> None() => default;
@@ -71,20 +65,6 @@ namespace Funcky.Monads
                 none();
             }
         }
-
-        [Pure]
-        public override bool Equals(object obj)
-            => obj is Option<TItem> other && Equals(other);
-
-        [Pure]
-        public bool Equals(Option<TItem> other)
-            => Equals(_hasItem, other._hasItem) && Equals(_item, other._item);
-
-        [Pure]
-        public override int GetHashCode()
-            => Match(
-                 none: 0,
-                 some: item => item.GetHashCode());
 
         [Pure]
         public override string ToString()
