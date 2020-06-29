@@ -21,12 +21,6 @@ namespace Funcky.Monads
         }
 
         [Pure]
-        public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
-
-        [Pure]
-        public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
-
-        [Pure]
         public static Option<TItem> None() => default;
 
         [Pure]
@@ -72,16 +66,6 @@ namespace Funcky.Monads
                 none();
             }
         }
-
-        [Pure]
-        public override bool Equals(object obj)
-            => obj is Option<TItem> other && Equals(_item, other._item);
-
-        [Pure]
-        public override int GetHashCode()
-            => Match(
-                 none: 0,
-                 some: item => item.GetHashCode());
 
         [Pure]
         public override string ToString()

@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
-    public readonly partial struct Either<TLeft, TRight>
+    public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {
         private readonly TLeft _left;
         private readonly TRight _right;
@@ -69,8 +69,11 @@ namespace Funcky.Monads
 
         [Pure]
         public override bool Equals(object obj)
-            => obj is Either<TLeft, TLeft> other
-               && Equals(_side, other._side)
+            => obj is Either<TLeft, TRight> other && Equals(other);
+
+        [Pure]
+        public bool Equals(Either<TLeft, TRight> other)
+            => Equals(_side, other._side)
                && Equals(_right, other._right)
                && Equals(_left, other._left);
 
