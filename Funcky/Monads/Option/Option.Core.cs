@@ -74,7 +74,9 @@ namespace Funcky.Monads
 
         [Pure]
         public override bool Equals(object obj)
-            => obj is Option<TItem> other && Equals(_item, other._item);
+            => obj is Option<TItem> other
+               && Equals(_hasItem, other._hasItem)
+               && Equals(_item, other._item);
 
         [Pure]
         public override int GetHashCode()
