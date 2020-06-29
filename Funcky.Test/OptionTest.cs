@@ -377,6 +377,38 @@ namespace Funcky.Test
                 MultiplyByTen(input));
         }
 
+        [Theory]
+        [MemberData(nameof(EqualOptions))]
+        public void EqualsReturnsTrueForEqualOptions(Option<int> lhs, Option<int> rhs)
+        {
+            Assert.True(lhs == rhs);
+        }
+
+        public static TheoryData<Option<int>, Option<int>> EqualOptions()
+            => new TheoryData<Option<int>, Option<int>>
+            {
+                { Option.Some(1), Option.Some(1) },
+                { Option<int>.None(), Option<int>.None() },
+            };
+
+        [Theory]
+        [MemberData(nameof(NotEqualOptions))]
+        public void EqualsReturnsFalseForNotEqualOptions(Option<int> lhs, Option<int> rhs)
+        {
+            Assert.True(lhs != rhs);
+        }
+
+        public static TheoryData<Option<int>, Option<int>> NotEqualOptions()
+            => new TheoryData<Option<int>, Option<int>>
+            {
+                { Option.Some(1), Option<int>.None() },
+                { Option<int>.None(), Option.Some(1) },
+                { Option<int>.None(), Option.Some(default(int)) },
+                { Option.Some(default(int)), Option<int>.None() },
+                { Option.Some(1), Option.Some(2) },
+                { Option.Some(2), Option.Some(1) },
+            };
+
         private static void Statement(int value)
         {
         }
