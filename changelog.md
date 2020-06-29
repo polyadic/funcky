@@ -46,3 +46,6 @@
 * Remove overload for `Option.From` that flattens passed `Option`s.
 * Add extension methods for getting `Stream` properties that are not always available, as `Option`:
   `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.
+* Move `ToEnumerable` extension method to its own class.
+  This is only a breaking change if you've used the extension method as normal method.
+  In that case you need to change `EnumerableExtensions.ToEnumerable` to `ObjectExtensions.ToEnumerable`.
