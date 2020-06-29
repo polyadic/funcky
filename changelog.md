@@ -49,3 +49,6 @@
 * Move `ToEnumerable` extension method to its own class.
   This is only a breaking change if you've used the extension method as normal method.
   In that case you need to change `EnumerableExtensions.ToEnumerable` to `ObjectExtensions.ToEnumerable`.
+* Implement `IEquatable` on `Option`, `Result` and `Either`.
+* Fix incorrect `Equals` implementation on `Option`.
+  `Equals` previously returned `true` when comparing a `None` value with a `Some` value containing the default value of the type.
