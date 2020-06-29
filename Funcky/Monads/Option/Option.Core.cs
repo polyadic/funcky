@@ -39,16 +39,17 @@ namespace Funcky.Monads
         [Pure]
         public Option<TResult> SelectMany<TResult>(Func<TItem, Option<TResult>> selector)
             where TResult : notnull
-            => SelectMany(selector, (_, result) => result);
+            => Match(
+                 none: Option<TResult>.None,
+                 some: selector);
 
         [Pure]
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
             where TResult : notnull
             where TMaybe : notnull
-            => Match(
-                none: Option<TResult>.None,
-                some: item => maybeSelector(item).Select(
-                    maybe => resultSelector(item, maybe)));
+            => SelectMany(
+                 item => maybeSelector(item).Select(
+                     maybe => resultSelector(item, maybe)));
 
         [Pure]
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
