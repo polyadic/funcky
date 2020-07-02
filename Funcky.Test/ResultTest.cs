@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Funcky.Monads;
+using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
 

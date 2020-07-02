@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using Funcky.Extensions;
+using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
 

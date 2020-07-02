@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Messerli Informatik AG</Authors>
+        <Company>Messerli Informatik AG</Company>
+        <Product>Funcky a functional C# library</Product>
+        <Description>Funcky is a basic functional C# library</Description>
+        <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
+        <PackageTags>Functional Monad</PackageTags>
+        <Version>2.0.0-rc.2</Version>
+        <FileVersion>2.0.0.0</FileVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="xunit.assert" Version="2.4.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Funcky/Funcky.csproj" />
+    </ItemGroup>
+</Project>

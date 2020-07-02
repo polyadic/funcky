@@ -1,8 +1,8 @@
-using System;
+using Xunit.Sdk;
 
-namespace Funcky.Test
+namespace Funcky.Xunit
 {
-    internal class UnmatchedException : Exception
+    internal class UnmatchedException : XunitException
     {
         public UnmatchedException()
             : base("Wrong pattern matched.")

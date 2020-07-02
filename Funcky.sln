@@ -21,6 +21,8 @@ ProjectSection(SolutionItems) = preProject
 	global.json = global.json
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA10A7A1-6393-4B5F-BFF6-5937DA395141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Funcky.Extensions;
 using Funcky.Monads;
+using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
 
