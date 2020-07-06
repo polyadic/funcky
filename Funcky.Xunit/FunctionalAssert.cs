@@ -9,12 +9,6 @@ namespace Funcky.Xunit
 {
     public static class FunctionalAssert
     {
-        public static void Unmatched()
-            => throw new UnmatchedException();
-
-        public static void Unmatched(string unmatchedCase)
-            => throw new UnmatchedException(unmatchedCase);
-
         public static void IsNone<TItem>(Option<TItem> option)
             where TItem : notnull
             => Assert.Equal(Option<TItem>.None(), option);
@@ -45,5 +39,11 @@ namespace Funcky.Xunit
 
         public static void IsOk<TResult>(TResult expectedResult, Result<TResult> result)
             => Assert.Equal(Result.Ok(expectedResult), result);
+
+        internal static void Unmatched()
+            => throw new UnmatchedException();
+
+        internal static void Unmatched(string unmatchedCase)
+            => throw new UnmatchedException(unmatchedCase);
     }
 }
