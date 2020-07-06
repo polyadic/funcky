@@ -52,3 +52,4 @@
 * Implement `IEquatable` on `Option`, `Result` and `Either`.
 * Fix incorrect `Equals` implementation on `Option`.
   `Equals` previously returned `true` when comparing a `None` value with a `Some` value containing the default value of the type.
+* Add `None` extension method to `IEnumerable`.
