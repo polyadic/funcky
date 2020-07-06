@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using Funcky.Extensions;
+using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions
 {
@@ -17,7 +17,6 @@ namespace Funcky.Test.Extensions
 
         private enum MyEnum
         {
-            None,
             Cool,
         }
 
@@ -30,12 +29,7 @@ namespace Funcky.Test.Extensions
         {
             var maybe = stringToParse.TryParseInt();
 
-            var isSome = maybe.Match(
-                none: false,
-                some: True);
-
-            Assert.True(isSome);
-            Assert.Equal(parsed, maybe.Match(0, Identity));
+            FunctionalAssert.IsSome(parsed, maybe);
         }
 
         [Fact]
@@ -43,7 +37,7 @@ namespace Funcky.Test.Extensions
         {
             var maybe = "no number".TryParseInt();
 
-            Assert.Equal(default, maybe);
+            FunctionalAssert.IsNone(maybe);
         }
 
         [Fact]
@@ -51,8 +45,7 @@ namespace Funcky.Test.Extensions
         {
             var maybe = "26.02.1982".TryParseDateTime();
 
-            FunctionalAssert.IsSome(maybe);
-            Assert.Equal(new DateTime(1982, 2, 26), maybe.Match(DateTime.Now, Identity));
+            FunctionalAssert.IsSome(new DateTime(1982, 2, 26), maybe);
         }
 
         [Fact]
@@ -60,8 +53,7 @@ namespace Funcky.Test.Extensions
         {
             var maybe = "Cool".TryParseEnum<MyEnum>();
 
-            FunctionalAssert.IsSome(maybe);
-            Assert.Equal(MyEnum.Cool, maybe.Match(MyEnum.None, Identity));
+            FunctionalAssert.IsSome(MyEnum.Cool, maybe);
         }
 
         [Fact]
@@ -70,7 +62,6 @@ namespace Funcky.Test.Extensions
             var maybe = "NotCool".TryParseEnum<MyEnum>();
 
             FunctionalAssert.IsNone(maybe);
-            Assert.Equal(MyEnum.None, maybe.Match(MyEnum.None, Identity));
         }
     }
 }
