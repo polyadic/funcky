@@ -16,7 +16,7 @@ namespace Xunit.Sdk
         }
 
         public override string Message =>
-            $"{nameof(FunctionalAssert)}.{nameof(FunctionalAssert.IsSome)} Failure{NewLine}" +
+            $"{nameof(FunctionalAssert)}.{nameof(FunctionalAssert.IsSome)}() Failure{NewLine}" +
             $"Expected: Some({_expectedValue}){NewLine}" +
             $"Actual:   {_actualValue}";
     }

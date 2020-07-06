@@ -18,7 +18,7 @@ namespace Xunit.Sdk
         }
 
         public override string Message =>
-            $"{nameof(FunctionalAssert)}.{nameof(FunctionalAssert.IsOk)} Failure{Environment.NewLine}" +
+            $"{nameof(FunctionalAssert)}.{nameof(FunctionalAssert.IsOk)}() Failure{Environment.NewLine}" +
             $"Expected: Ok({_expectedValue}){Environment.NewLine}" +
             $"Actual:   {FormatResult(_actualValue)}";
     }
