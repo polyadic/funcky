@@ -124,5 +124,12 @@ namespace Funcky.Extensions
         public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
             where TSource : struct
             => source.WhereSelect(Option.FromNullable);
+
+        /// <summary>
+        /// Determines whether no element exists or satisfies a condition.
+        /// </summary>
+        [Pure]
+        public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            => !source.Any(predicate);
     }
 }
