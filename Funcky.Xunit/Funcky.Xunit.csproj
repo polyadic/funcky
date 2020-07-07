@@ -9,15 +9,12 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Messerli Informatik AG</Authors>
         <Company>Messerli Informatik AG</Company>
-        <Product>Funcky a functional C# library</Product>
-        <Description>Funcky is a basic functional C# library</Description>
+        <Description>Package to use Funcky with xUnit</Description>
         <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
         <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
-        <PackageTags>Functional Monad</PackageTags>
-        <Version>2.0.0-rc.2</Version>
-        <FileVersion>2.0.0.0</FileVersion>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <PackageTags>Functional Monad xUnit</PackageTags>
+        <Version>0.1.0</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
