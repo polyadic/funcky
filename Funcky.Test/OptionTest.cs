@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Funcky.Extensions;
 using Funcky.Monads;
+using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
 
@@ -127,11 +128,7 @@ namespace Funcky.Test
 
             foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
             {
-                var value = number.Match(
-                    none: 0,
-                    some: Identity);
-
-                Assert.NotEqual(0, value);
+                FunctionalAssert.IsSome(number);
             }
         }
 
