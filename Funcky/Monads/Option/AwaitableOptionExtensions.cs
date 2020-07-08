@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Funcky.Monads
 {
-    public static class OptionExtensions
+    public static class AwaitableOptionExtensions
     {
         /// <summary>
         /// This method is intended for compiler use only
