@@ -18,6 +18,9 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NU5104</NoWarn>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="xunit.assert" Version="2.4.0" />
     </ItemGroup>
