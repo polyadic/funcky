@@ -41,19 +41,45 @@
 * Fix incorrect implementation on `Result.SelectMany` which called the `selectedResultSelector` even when the
   result was an error. As a result (pun intended) of the fix, `ResultCombinationException` is no longer needed and also removed.
 
-## Unreleased
-* Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
+## 2.0.0
+
+### Breaking Changes
+* Remove `Reader` monad based on `await`.
+* Remove `IToString`.
 * Remove overload for `Option.From` that flattens passed `Option`s.
-* Add extension methods for getting `Stream` properties that are not always available, as `Option`:
-  `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.
 * Move `ToEnumerable` extension method to its own class.
   This is only a breaking change if you've used the extension method as normal method.
   In that case you need to change `EnumerableExtensions.ToEnumerable` to `ObjectExtensions.ToEnumerable`.
-* Implement `IEquatable` on `Option`, `Result` and `Either`.
+* Rename `Option.From` to `Option.FromNullable` and remove overload that takes non-nullable value types.
+* Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`
+* Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
+* The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
+* Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.
+  Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`.
+* Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
+  because most APIs in `System` use `Func`.
+* `Functional.Any` now returns `false` when the given list of predicates is empty.
+
+### Fixes
 * Fix incorrect `Equals` implementation on `Option`.
   `Equals` previously returned `true` when comparing a `None` value with a `Some` value containing the default value of the type.
+* `Exception` created by `Result` monad contains valid stack trace
+* Fix incorrect implementation on `Result.SelectMany` which called the `selectedResultSelector` even when the
+  result was an error. As a result (pun intended) of the fix, `ResultCombinationException` is no longer needed and also removed.
+
+### Additions
+* Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
+* Added `Curry`, `Uncurry` and `Flip` to the `Functional` Class
+* Add extension method for `HttpHeaders.TryGetValues`, which returns an `Option`.
+* Add extension methods for getting `Stream` properties that are not always available, as `Option`:
+  `GetLengthOrNone`, `GetPositionOrNone`, `GetReadTimeoutOrNone`, `GetWriteTimeoutOrNone`.
 * Add `None` extension method to `IEnumerable`.
 * `Option<Task<T>>`, `Option<Task>` and their `ValueTask` equivalents are now awaitable:
   ```csharp
   var answer = await Option.Some(Task.FromResult(42));
   ```
+
+### Improvements
+* Full nullable support introduced with C# 8.
+* Mark our functions as `[Pure]`.
+* Implement `IEquatable` on `Option`, `Result` and `Either`.
