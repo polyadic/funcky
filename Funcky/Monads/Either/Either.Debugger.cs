@@ -15,10 +15,7 @@ namespace Funcky.Monads
     {
         private readonly Either<TLeft, TRight> _either;
 
-        public EitherDebugView(Either<TLeft, TRight> either)
-        {
-            _either = either;
-        }
+        public EitherDebugView(Either<TLeft, TRight> either) => _either = either;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
         public object? Value => _either.Match(
