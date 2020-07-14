@@ -83,4 +83,3 @@
 * Full nullable support introduced with C# 8.
 * Mark our functions as `[Pure]`.
 * Implement `IEquatable` on `Option`, `Result` and `Either`.
-
