@@ -16,10 +16,7 @@ namespace Funcky.Monads
     {
         private readonly Option<T> _option;
 
-        public OptionDebugView(Option<T> option)
-        {
-            _option = option;
-        }
+        public OptionDebugView(Option<T> option) => _option = option;
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public object Value => _option.Match(

@@ -40,9 +40,9 @@ namespace Funcky.Monads
 
         [Pure]
         public Result<TResult> Select<TResult>(Func<TValidResult, TResult> selector)
-            => _error is null
-                ? Result.Ok(selector(_result))
-                : Result<TResult>.Error(_error);
+            => Match(
+                error: error => new Result<TResult>(error),
+                ok: value => Result.Ok(selector(value)));
 
         [Pure]
         public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
@@ -88,7 +88,6 @@ namespace Funcky.Monads
     public static class Result
     {
         [Pure]
-
         public static Result<TValidResult> Ok<TValidResult>(TValidResult item) => new Result<TValidResult>(item);
     }
 }

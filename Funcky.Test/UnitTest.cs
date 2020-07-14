@@ -30,7 +30,7 @@ namespace Funcky.Test
         [Fact]
         public void TransformALambdaActionWith2ParametersToFunctionWithUnitReturn()
         {
-            var unitAction = ActionToUnit((SideEffect effect, int dummy) => effect.Do());
+            var unitAction = ActionToUnit((SideEffect effect, int p2) => effect.Do());
             var sideEffect = new SideEffect();
             var unit = unitAction(sideEffect, 42);
 
