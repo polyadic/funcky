@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Funcky.Xunit;
@@ -405,6 +406,44 @@ namespace Funcky.Test
                 { Option.Some(1), Option.Some(2) },
                 { Option.Some(2), Option.Some(1) },
             };
+
+        [Fact]
+        public async Task OptionOfTaskCanBeAwaited()
+        {
+            var delay = TimeSpan.FromMilliseconds(100);
+
+            await Option<Task>.None();
+            await Option.Some(Task.Delay(delay));
+
+            Assert.Equal(
+                Option.Some(10),
+                await Option.Some(DelayedResult(10, delay)));
+            Assert.Equal(
+                Option<int>.None(),
+                await Option<Task<int>>.None());
+        }
+
+        [Fact]
+        public async Task OptionOfValueTaskCanBeAwaited()
+        {
+            var delay = TimeSpan.FromMilliseconds(100);
+
+            await Option<ValueTask>.None();
+            await Option.Some(new ValueTask(Task.Delay(delay)));
+
+            Assert.Equal(
+                Option.Some(10),
+                await Option.Some(new ValueTask<int>(DelayedResult(10, delay))));
+            Assert.Equal(
+                Option<int>.None(),
+                await Option<ValueTask<int>>.None());
+        }
+
+        private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
+        {
+            await Task.Delay(delay);
+            return value;
+        }
 
         private static void Statement(int value)
         {
