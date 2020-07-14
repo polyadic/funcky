@@ -50,7 +50,7 @@
 * Move `ToEnumerable` extension method to its own class.
   This is only a breaking change if you've used the extension method as normal method.
   In that case you need to change `EnumerableExtensions.ToEnumerable` to `ObjectExtensions.ToEnumerable`.
-* Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
+* Rename `Option.From` to `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Unify `Option<T>.ToEnumerable` and `Yield` to `ToEnumerable`
 * Rename `OrElse` overloads that return the item to `GetOrElse` which improves overload resolution.
 * The `Each` extension method on `IEnumerable<T>` has been renamed to `ForEach`.
