@@ -1,5 +1,3 @@
-#nullable enable
-
 using Funcky.Extensions;
 using Xunit;
 
