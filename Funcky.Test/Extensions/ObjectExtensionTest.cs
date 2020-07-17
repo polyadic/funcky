@@ -1,25 +1,24 @@
 #nullable enable
 
-using System;
 using Funcky.Extensions;
 using Xunit;
 
-namespace Funcky.Test
+namespace Funcky.Test.Extensions
 {
-    public class ApplyTest
+    public sealed class ObjectExtensionTest
     {
         [Fact]
         public void ApplyWorksOnNullableReferenceType()
         {
-            var value = GetStringAsNullable("foo");
-            var length = value?.Then<string, int>(GetLength);
+            var value = GetNullableString("foo");
+            var length = value?.Then(GetLength);
             Assert.Equal(3, length);
         }
 
         [Fact]
         public void ApplyWorksOnNull()
         {
-            var value = GetStringAsNullable(null);
+            var value = GetNullableString(null);
             var length = value?.Then(GetLength);
             Assert.Null(length);
         }
@@ -27,14 +26,14 @@ namespace Funcky.Test
         [Fact]
         public void ApplyWorksOnNullableValueType()
         {
-            int? value = 10;
+            var value = GetNullableInteger(10);
             Assert.Equal(30, value?.Then(Square));
         }
 
         [Fact]
         public void ApplyWorksOnNullableValueTypeNull()
         {
-            int? value = null;
+            var value = GetNullableInteger(null);
             Assert.Null(value?.Then(Square));
         }
 
@@ -42,6 +41,8 @@ namespace Funcky.Test
 
         private static int Square(int value) => value * value;
 
-        private static string? GetStringAsNullable(string? value) => value;
+        private static string? GetNullableString(string? value) => value;
+
+        private static int? GetNullableInteger(int? value) => value;
     }
 }

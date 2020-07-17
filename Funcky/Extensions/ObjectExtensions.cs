@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Funcky.GenericConstraints;
@@ -40,5 +41,7 @@ namespace Funcky.Extensions
                 yield return item.Value;
             }
         }
+
+        public static TResult Then<TInput, TResult>(this TInput value, Func<TInput, TResult> func) => func(value);
     }
 }
