@@ -11,7 +11,7 @@ namespace Funcky.Monads
 
         internal Option(TItem item)
         {
-            if (item == null)
+            if (item is null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
