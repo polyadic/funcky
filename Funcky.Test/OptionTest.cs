@@ -439,6 +439,31 @@ namespace Funcky.Test
                 await Option<ValueTask<int>>.None());
         }
 
+        [Fact]
+        public void InspectExecutesSideEffectWhenOptionIsSome()
+        {
+            const int value = 10;
+            var option = Option.Some(value);
+            var sideEffect = false;
+            var inspectedOption = option.Inspect(v =>
+            {
+                Assert.Equal(value, v);
+                sideEffect = true;
+            });
+            Assert.True(sideEffect);
+            Assert.Equal(option, inspectedOption);
+        }
+
+        [Fact]
+        public void InspectDoesNotExecuteSideEffectWhenOptionIsNone()
+        {
+            var option = Option<int>.None();
+            var sideEffect = false;
+            var inspectedOption = option.Inspect(v => sideEffect = true);
+            Assert.False(sideEffect);
+            Assert.Equal(option, inspectedOption);
+        }
+
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
         {
             await Task.Delay(delay);
