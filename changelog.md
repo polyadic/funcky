@@ -83,3 +83,6 @@
 * Full nullable support introduced with C# 8.
 * Mark our functions as `[Pure]`.
 * Implement `IEquatable` on `Option`, `Result` and `Either`.
+
+## Unreleased
+* Add `Inspect` method to `Option` akin to `IEnumerable.Inspect`.
