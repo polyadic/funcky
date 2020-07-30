@@ -442,12 +442,12 @@ namespace Funcky.Test
         [Fact]
         public void InspectExecutesSideEffectWhenOptionIsSome()
         {
-            const int value = 10;
-            var option = Option.Some(value);
+            const int arbitraryValue = 10;
+            var option = Option.Some(arbitraryValue);
             var sideEffect = false;
             var inspectedOption = option.Inspect(v =>
             {
-                Assert.Equal(value, v);
+                Assert.Equal(arbitraryValue, v);
                 sideEffect = true;
             });
             Assert.True(sideEffect);
