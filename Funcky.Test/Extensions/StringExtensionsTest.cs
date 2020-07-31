@@ -1,21 +1,32 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Funcky.Test.Extensions
 {
     public sealed class StringExtensionsTest
     {
+        private const int NumberOfThisParametersInExtensionMethods = 1;
+
         private const string Haystack = "haystack";
         private const string NonExistingNeedle = "needle";
         private const char NonExistingNeedleChar = 'n';
         private const string ExistingNeedle = "ystack";
         private const char ExistingNeedleChar = 'y';
         private const int NeedlePosition = 2;
+
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public StringExtensionsTest(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
 
         [Theory]
         [MemberData(nameof(InvalidIndexes))]
@@ -94,7 +105,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void ValidIndexesCoversAllOverloads()
         {
-            var overloadCount = CountIndexOfOverloads();
+            var overloadCount = GetIndexOfExtensionMethods().Count();
             var validIndexesCount = ValidIndexes().Count();
             Assert.Equal(overloadCount, validIndexesCount);
         }
@@ -102,14 +113,58 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void InvalidIndexesCoversAllOverloads()
         {
-            var overloadCount = CountIndexOfOverloads();
-            var validIndexesCount = InvalidIndexes().Count();
-            Assert.Equal(overloadCount, validIndexesCount);
+            var overloadCount = GetIndexOfExtensionMethods().Count();
+            var invalidIndexesCount = InvalidIndexes().Count();
+            Assert.Equal(overloadCount, invalidIndexesCount);
         }
 
-        private static int CountIndexOfOverloads()
-            => typeof(StringExtensions)
-                .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .Length;
+        [Fact]
+        public void AllOverloadsOfIndexOfAreSupported()
+        {
+            GetIndexOfMethods()
+                .Inspect(WriteToTestOutput)
+                .Select(GetMatchingExtensionMethod)
+                .ForEach(matchingExtensionMethod =>
+                {
+                    matchingExtensionMethod.AndThen(WriteToTestOutput);
+                    FunctionalAssert.IsSome(matchingExtensionMethod);
+                });
+        }
+
+        private static IEnumerable<MethodInfo> GetIndexOfMethods()
+            => typeof(string).GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(IsIndexOfMethod);
+
+        private void WriteToTestOutput(object value) => _testOutputHelper.WriteLine(value.ToString());
+
+        private static Option<MethodInfo> GetMatchingExtensionMethod(MethodInfo originalMethod)
+        {
+            const string extensionMethodSuffix = "OrNone";
+            var expectedMethodName = originalMethod.Name + extensionMethodSuffix;
+            return GetIndexOfExtensionMethods()
+                .Where(m => m.Name == expectedMethodName)
+                .Where(m => IsOptionWithItemType(m.ReturnType, originalMethod.ReturnType))
+                .Where(m => ArityOfExtensionMethodMatchesRegularMethod(m, originalMethod))
+                .FirstOrNone(m => originalMethod.GetParameters()
+                    .Zip(m.GetParameters().Skip(NumberOfThisParametersInExtensionMethods))
+                    .All(pair => AreParametersEqual(pair.First, pair.Second)));
+        }
+
+        private static IEnumerable<MethodInfo> GetIndexOfExtensionMethods()
+            => typeof(StringExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(IsIndexOfMethod);
+
+        private static bool IsIndexOfMethod(MethodInfo method)
+            => method.Name.Contains("IndexOf");
+
+        private static bool AreParametersEqual(ParameterInfo expected, ParameterInfo actual)
+            => expected.Name == actual.Name &&
+               expected.ParameterType == actual.ParameterType &&
+               expected.DefaultValue == actual.DefaultValue;
+
+        private static bool IsOptionWithItemType(Type optionType, Type expectedItemType)
+            => optionType.GetGenericTypeDefinition() == typeof(Option<>) &&
+               optionType.GetGenericArguments().Single() == expectedItemType;
+
+        private static bool ArityOfExtensionMethodMatchesRegularMethod(MethodInfo extensionMethod, MethodInfo regularMethod)
+            => extensionMethod.GetParameters().Length - NumberOfThisParametersInExtensionMethods == regularMethod.GetParameters().Length;
     }
 }
