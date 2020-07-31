@@ -12,6 +12,8 @@ namespace Funcky.Test.Extensions
 {
     public sealed class StringExtensionsTest
     {
+        private const int NumberOfThisParametersInExtensionMethods = 1;
+
         private const string Haystack = "haystack";
         private const string NonExistingNeedle = "needle";
         private const char NonExistingNeedleChar = 'n';
@@ -143,7 +145,7 @@ namespace Funcky.Test.Extensions
                 .Where(m => IsOptionWithItemType(m.ReturnType, originalMethod.ReturnType))
                 .Where(m => ArityOfExtensionMethodMatchesRegularMethod(m, originalMethod))
                 .FirstOrNone(m => originalMethod.GetParameters()
-                    .Zip(m.GetParameters().Skip(1))
+                    .Zip(m.GetParameters().Skip(NumberOfThisParametersInExtensionMethods))
                     .All(pair => AreParametersEqual(pair.First, pair.Second)));
         }
 
@@ -163,6 +165,6 @@ namespace Funcky.Test.Extensions
                optionType.GetGenericArguments().Single() == expectedItemType;
 
         private static bool ArityOfExtensionMethodMatchesRegularMethod(MethodInfo extensionMethod, MethodInfo regularMethod)
-            => extensionMethod.GetParameters().Length - 1 == regularMethod.GetParameters().Length;
+            => extensionMethod.GetParameters().Length - NumberOfThisParametersInExtensionMethods == regularMethod.GetParameters().Length;
     }
 }
