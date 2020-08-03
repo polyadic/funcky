@@ -41,6 +41,12 @@ namespace Funcky.Monads
         public void AndThen(Action<TItem> andThenFunction)
             => Match(none: NoOperation, some: andThenFunction);
 
+        public Option<TItem> Inspect(Action<TItem> action)
+        {
+            AndThen(action);
+            return this;
+        }
+
         /// <summary>
         /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
         /// has an item and nothing when the option is empty.
