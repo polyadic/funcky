@@ -10,6 +10,9 @@ namespace Funcky.Xunit
         public static TheoryData<T1> ToTheoryData<T1>(this IEnumerable<T1> enumerable)
             => enumerable.Aggregate(new TheoryData<T1>(), AddElementToTheoryData);
 
+        public static TheoryData<T1> ToTheoryData<T1>(this IEnumerable<Tuple<T1>> enumerable)
+            => enumerable.Aggregate(new TheoryData<T1>(), AddElementToTheoryData);
+
         public static TheoryData<T1, T2> ToTheoryData<T1, T2>(this IEnumerable<Tuple<T1, T2>> enumerable)
             => enumerable.Aggregate(new TheoryData<T1, T2>(), AddElementToTheoryData);
 
@@ -40,6 +43,13 @@ namespace Funcky.Xunit
         private static TheoryData<T1> AddElementToTheoryData<T1>(TheoryData<T1> theoryData, T1 element)
         {
             theoryData.Add(element);
+
+            return theoryData;
+        }
+
+        private static TheoryData<T1> AddElementToTheoryData<T1>(TheoryData<T1> theoryData, Tuple<T1> tuple)
+        {
+            theoryData.Add(tuple.Item1);
 
             return theoryData;
         }
