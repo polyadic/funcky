@@ -86,3 +86,5 @@
 
 ## Unreleased
 * Add `Inspect` method to `Option` akin to `IEnumerable.Inspect`.
+* Add `ToTheoryData` extension for `IEnumerable<T>` for xUnit.
+
