@@ -13,10 +13,8 @@ namespace Funcky.Test.Extensions
 
         [Theory]
         [MemberData(nameof(TheoryFromEnumerable))]
-        public void GivenAnEnumerableEachElementCreatesATest(int index)
-        {
+        public void GivenAnEnumerableEachElementCreatesATest(int index) =>
             Assert.InRange(index, 0, 9);
-        }
 
         public static TheoryData<int> TheoryFromEnumerable()
             => Enumerable.Range(0, 10).ToTheoryData();
