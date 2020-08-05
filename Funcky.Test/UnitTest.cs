@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using static Funcky.Functional;
 
 namespace Funcky.Test
@@ -102,6 +102,12 @@ namespace Funcky.Test
 
             Assert.Equal(default, unit);
             Assert.True(sideEffect.IsDone);
+        }
+
+        [Fact]
+        public void UnitValueIsTheSameAsDefaultUnit()
+        {
+            Assert.Equal(default, Unit.Value);
         }
 
         private static void AnAction(SideEffect sideEffect)

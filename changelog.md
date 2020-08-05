@@ -87,4 +87,4 @@
 ## Unreleased
 * Add `Inspect` method to `Option` akin to `IEnumerable.Inspect`.
 * Add `ToTheoryData` extension for `IEnumerable<T>` for xUnit.
-
+* Add `Unit.Value` as a way to a get a `Unit` value.
