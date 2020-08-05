@@ -6,6 +6,9 @@ namespace Funcky
     public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
     {
         [Pure]
+        public static Unit Value => default;
+
+        [Pure]
         public static bool operator ==(Unit lhs, Unit rhs) => true;
 
         [Pure]
