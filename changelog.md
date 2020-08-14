@@ -84,7 +84,7 @@
 * Mark our functions as `[Pure]`.
 * Implement `IEquatable` on `Option`, `Result` and `Either`.
 
-## Unreleased
+## Funcky 2.1.0 | Funcky.xUnit 0.1.1
 * Add `Inspect` method to `Option` akin to `IEnumerable.Inspect`.
 * Add `ToTheoryData` extension for `IEnumerable<T>` for xUnit.
 * Add `Unit.Value` as a way to a get a `Unit` value.
