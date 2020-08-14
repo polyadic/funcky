@@ -157,8 +157,8 @@ namespace Funcky.Test
         public void OptionSupportsLinqWhereSyntax(Option<string> expectedResult, Option<string> input, Func<string, bool> predicate)
         {
             var result = from x in input
-                where predicate(x)
-                select x;
+                         where predicate(x)
+                         select x;
             Assert.Equal(expectedResult, result);
         }
 
@@ -303,9 +303,9 @@ namespace Funcky.Test
         public void OptionFromDoesNotFlattenOptions()
         {
             var option = Option.Some(Option.Some(1));
-            #pragma warning disable 183 // The given operation is always of the provided type
+#pragma warning disable 183 // The given operation is always of the provided type
             Assert.True(option is Option<Option<int>>);
-            #pragma warning restore 183
+#pragma warning restore 183
         }
 
         [Fact]
@@ -463,6 +463,15 @@ namespace Funcky.Test
             Assert.False(sideEffect);
             Assert.Equal(option, inspectedOption);
         }
+
+        [Fact]
+        public void GivenAFunctionWithADefaultOptionParameterGivesANoneWhenNoValueGiven()
+        {
+            FunctionalAssert.IsNone(MethodWithDefaultOptionParameter());
+            FunctionalAssert.IsSome("value", MethodWithDefaultOptionParameter(Option.Some("value")));
+        }
+
+        private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
 
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
         {
