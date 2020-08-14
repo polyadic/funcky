@@ -471,10 +471,7 @@ namespace Funcky.Test
             FunctionalAssert.IsSome("value", MethodWithDefaultOptionParameter(Option.Some("value")));
         }
 
-        private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default)
-        {
-            return value;
-        }
+        private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
 
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
         {
