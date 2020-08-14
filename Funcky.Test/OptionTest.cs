@@ -467,11 +467,8 @@ namespace Funcky.Test
         [Fact]
         public void GivenAFunctionWithADefaultOptionParameterGivesANoneWhenNoValueGiven()
         {
-            MethodWithDefaultOptionParameter()
-                .Match(none: () => Assert.True(true), some: s => Assert.True(false));
-
-            MethodWithDefaultOptionParameter(Option.Some("value"))
-                .Match(none: () => Assert.True(false), some: s => Assert.Equal("value", s));
+            FunctionalAssert.IsNone(MethodWithDefaultOptionParameter());
+            FunctionalAssert.IsSome("value", MethodWithDefaultOptionParameter(Option.Some("value")));
         }
 
         private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default)
