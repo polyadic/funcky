@@ -21,13 +21,14 @@ namespace Funcky.Test
             var stack = new Stack<Option<int>>(new[]
             {
                 Option<int>.None(),
-                Option<int>.None(),
-                Option<int>.None(),
-                Option<int>.None(),
                 Option.Some(value),
+                Option<int>.None(),
+                Option<int>.None(),
+                Option<int>.None(),
                 Option<int>.None(),
             });
             Assert.Equal(value, Retry(stack.Pop));
+            Assert.Single(stack);
         }
     }
 }
