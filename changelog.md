@@ -89,3 +89,6 @@
 * Add `ToTheoryData` extension for `IEnumerable<T>` for xUnit.
 * Add `Unit.Value` as a way to a get a `Unit` value.
 * Add `Functional.Retry` which retries a producer until `Option.Some` is returned.
+
+## Funcky 2.1.1 | Funcky.xUnit 0.1.2
+* Re-release of previous release with correct assemblies.

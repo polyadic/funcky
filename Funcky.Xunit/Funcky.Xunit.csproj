@@ -14,7 +14,7 @@
         <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
         <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
         <PackageTags>Functional Monad xUnit</PackageTags>
-        <Version>0.1.1</Version>
+        <Version>0.1.2</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
