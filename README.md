@@ -44,7 +44,8 @@ Option<bool> maybeBool =
 ### Select Many 
 
 ```csharp
-var result = from number in someNumber
+var result =
+    from number in someNumber
     from date in someDate
     select (number, date);
 ```
