@@ -44,16 +44,18 @@ Option<bool> maybeBool =
 ### Select Many 
 
 ```csharp
-var result = from number in someNumber
+var result =
+    from number in someNumber
     from date in someDate
-    select Tuple.Create(number, date);
+    select (number, date);
 ```
 
 ### Match
 
 ```csharp
+using static Funcky.Functional;
+
 bool isSome = maybe.Match(
     none: false,
-    some: m => true
-);
+    some: True);
 ```
