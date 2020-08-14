@@ -52,8 +52,9 @@ var result = from number in someNumber
 ### Match
 
 ```csharp
+using static Funcky.Functional;
+
 bool isSome = maybe.Match(
     none: false,
-    some: m => true
-);
+    some: True);
 ```
