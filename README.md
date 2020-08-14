@@ -46,7 +46,7 @@ Option<bool> maybeBool =
 ```csharp
 var result = from number in someNumber
     from date in someDate
-    select Tuple.Create(number, date);
+    select (number, date);
 ```
 
 ### Match
