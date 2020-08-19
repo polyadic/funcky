@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Funcky.Monads;
 using static System.Threading.Thread;
@@ -22,9 +23,15 @@ namespace Funcky
         public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
             => Enumerable
-                .Range(0, FirstTry + retryPolicy.MaxRetries)
-                .Select(ProduceDelayed(producer, retryPolicy))
+                .Repeat(producer(), FirstTry)
+                .Concat(TailRetries(producer, retryPolicy))
                 .FirstOrDefault(IsSome);
+
+        private static IEnumerable<Option<TResult>> TailRetries<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
+            where TResult : notnull
+            => Enumerable
+                .Range(0, retryPolicy.MaxRetries)
+                .Select(ProduceDelayed(producer, retryPolicy));
 
         private static bool IsSome<TResult>(Option<TResult> option)
             where TResult : notnull
@@ -35,15 +42,9 @@ namespace Funcky
             => (retryCount) =>
             {
                 // We do not wait before the first try!
-                if (IsNotFirstTry(retryCount))
-                {
-                    Sleep(retryPolicy.Duration(retryCount));
-                }
+                Sleep(retryPolicy.Duration(retryCount));
 
                 return producer();
             };
-
-        private static bool IsNotFirstTry(int retryCount)
-            => retryCount != 0;
     }
 }
