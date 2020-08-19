@@ -2,7 +2,7 @@ using System;
 
 namespace Funcky
 {
-    public class LinearBackoffRetryPolicy : IRetryPolicy
+    public sealed class LinearBackoffRetryPolicy : IRetryPolicy
     {
         private readonly TimeSpan _firstDelay;
 

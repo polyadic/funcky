@@ -2,7 +2,7 @@ using System;
 
 namespace Funcky
 {
-    public class ExponentialBackoffRetryPolicy : IRetryPolicy
+    public sealed class ExponentialBackoffRetryPolicy : IRetryPolicy
     {
         private const double BaseFactor = 1.5;
         private readonly TimeSpan _firstDelay;

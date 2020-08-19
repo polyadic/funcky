@@ -2,7 +2,7 @@ using System;
 
 namespace Funcky
 {
-    public class DoNotRetryPolicy : IRetryPolicy
+    public sealed class DoNotRetryPolicy : IRetryPolicy
     {
         public int MaxRetry => 0;
 
