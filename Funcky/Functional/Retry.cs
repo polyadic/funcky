@@ -33,7 +33,7 @@ namespace Funcky
             return (retryCount) =>
             {
                 // We do not wait before the first try!
-                if (IsFirstTry(retryCount) == false)
+                if (IsNotFirstTry(retryCount))
                 {
                     System.Threading.Thread.Sleep(retryPolicy.Duration(retryCount));
                 }
@@ -42,9 +42,9 @@ namespace Funcky
             };
         }
 
-        private static bool IsFirstTry(int retryCount)
+        private static bool IsNotFirstTry(int retryCount)
         {
-            return retryCount == 0;
+            return retryCount != 0;
         }
     }
 }
