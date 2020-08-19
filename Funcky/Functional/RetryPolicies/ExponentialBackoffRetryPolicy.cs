@@ -20,7 +20,7 @@ namespace Funcky
             => _firstDelay.Multiply(Exponential(onRetryCount));
 #else
         public TimeSpan Duration(int onRetryCount)
-        => TimeSpan.FromTicks((long)(_firstDelay.Ticks * Exponential(onRetryCount)));
+            => TimeSpan.FromTicks((long)(_firstDelay.Ticks * Exponential(onRetryCount)));
 #endif
 
         private double Exponential(int onRetryCount) => Math.Pow(BaseFactor, onRetryCount);
