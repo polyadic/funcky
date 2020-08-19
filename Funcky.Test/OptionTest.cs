@@ -471,6 +471,16 @@ namespace Funcky.Test
             FunctionalAssert.IsSome("value", MethodWithDefaultOptionParameter(Option.Some("value")));
         }
 
+        [Fact]
+        public void GivenAnEmptyListOfOptionsFirstOrDefaultProducesANoneValue()
+        {
+            var defaultValue = Enumerable.Range(0, 10)
+                .Select(_ => Option.Some(1337))
+                .FirstOrDefault(False);
+
+            FunctionalAssert.IsNone(defaultValue);
+        }
+
         private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
 
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
