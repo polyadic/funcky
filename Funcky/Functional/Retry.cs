@@ -39,7 +39,7 @@ namespace Funcky
 
         private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-            => (retryCount) =>
+            => retryCount =>
             {
                 Sleep(retryPolicy.Duration(retryCount));
 
