@@ -41,7 +41,6 @@ namespace Funcky
             where TResult : notnull
             => (retryCount) =>
             {
-                // We do not wait before the first try!
                 Sleep(retryPolicy.Duration(retryCount));
 
                 return producer();
