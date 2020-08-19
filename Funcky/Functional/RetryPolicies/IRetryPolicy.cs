@@ -4,7 +4,7 @@ namespace Funcky
 {
     public interface IRetryPolicy
     {
-        int MaxRetry { get; }
+        int MaxRetries { get; }
 
         TimeSpan Duration(int onRetryCount);
     }

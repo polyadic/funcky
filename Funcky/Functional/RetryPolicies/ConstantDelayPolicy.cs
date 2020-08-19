@@ -8,11 +8,11 @@ namespace Funcky
 
         public ConstantDelayPolicy(int maxRetry, TimeSpan delay)
         {
-            MaxRetry = maxRetry;
+            MaxRetries = maxRetry;
             _delay = delay;
         }
 
-        public int MaxRetry { get; }
+        public int MaxRetries { get; }
 
         public TimeSpan Duration(int onRetryCount) => _delay;
     }

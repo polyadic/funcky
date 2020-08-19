@@ -22,7 +22,7 @@ namespace Funcky
         public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
             => Enumerable
-                .Range(0, FirstTry + retryPolicy.MaxRetry)
+                .Range(0, FirstTry + retryPolicy.MaxRetries)
                 .Select(ProduceDelayed(producer, retryPolicy))
                 .FirstOrDefault(IsSome<TResult>);
 

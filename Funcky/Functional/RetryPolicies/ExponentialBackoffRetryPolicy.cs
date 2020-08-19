@@ -9,11 +9,11 @@ namespace Funcky
 
         public ExponentialBackoffRetryPolicy(int maxRetry, TimeSpan firstDelay)
         {
-            MaxRetry = maxRetry;
+            MaxRetries = maxRetry;
             _firstDelay = firstDelay;
         }
 
-        public int MaxRetry { get; }
+        public int MaxRetries { get; }
 
 #if NETSTANDARD2_1
         public TimeSpan Duration(int onRetryCount)
