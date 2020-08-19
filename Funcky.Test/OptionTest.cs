@@ -476,7 +476,7 @@ namespace Funcky.Test
         {
             var defaultValue = Enumerable.Range(0, 10)
                 .Select(_ => Option.Some(1337))
-                .FirstOrDefault(_ => false);
+                .FirstOrDefault(False);
 
             FunctionalAssert.IsNone(defaultValue);
         }
