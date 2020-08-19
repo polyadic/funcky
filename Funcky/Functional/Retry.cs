@@ -25,8 +25,12 @@ namespace Funcky
             return Enumerable
                 .Range(0, FirstTry + retryPolicy.MaxRetry)
                 .Select(ProduceDelayed(producer, retryPolicy))
-                .FirstOrDefault(result => result.Match(none: false, some: True));
+                .FirstOrDefault(IsSome<TResult>);
         }
+
+        private static bool IsSome<TResult>(Option<TResult> option)
+            where TResult : notnull
+            => option.Match(none: false, some: True);
 
         private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
