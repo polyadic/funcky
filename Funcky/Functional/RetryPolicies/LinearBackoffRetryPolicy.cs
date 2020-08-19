@@ -19,7 +19,7 @@ namespace Funcky
             => _firstDelay.Multiply(onRetryCount);
 #else
         public TimeSpan Duration(int onRetryCount)
-        => TimeSpan.FromTicks(_firstDelay.Ticks * onRetryCount);
+            => TimeSpan.FromTicks(_firstDelay.Ticks * onRetryCount);
 #endif
     }
 }
