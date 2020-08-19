@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Funcky.Monads;
+using static System.Threading.Thread;
 
 namespace Funcky
 {
@@ -35,7 +36,7 @@ namespace Funcky
                 // We do not wait before the first try!
                 if (IsNotFirstTry(retryCount))
                 {
-                    System.Threading.Thread.Sleep(retryPolicy.Duration(retryCount));
+                    Sleep(retryPolicy.Duration(retryCount));
                 }
 
                 return producer();
