@@ -21,12 +21,10 @@ namespace Funcky
         /// </summary>
         public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-        {
-            return Enumerable
+            => Enumerable
                 .Range(0, FirstTry + retryPolicy.MaxRetry)
                 .Select(ProduceDelayed(producer, retryPolicy))
                 .FirstOrDefault(IsSome<TResult>);
-        }
 
         private static bool IsSome<TResult>(Option<TResult> option)
             where TResult : notnull
@@ -34,8 +32,7 @@ namespace Funcky
 
         private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-        {
-            return (retryCount) =>
+            => (retryCount) =>
             {
                 // We do not wait before the first try!
                 if (IsNotFirstTry(retryCount))
@@ -45,11 +42,8 @@ namespace Funcky
 
                 return producer();
             };
-        }
 
         private static bool IsNotFirstTry(int retryCount)
-        {
-            return retryCount != 0;
-        }
+            => retryCount != 0;
     }
 }
