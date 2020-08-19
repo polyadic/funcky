@@ -1,15 +1,50 @@
 using System;
+using System.Linq;
 using Funcky.Monads;
 
 namespace Funcky
 {
     public static partial class Functional
     {
+        private const int FirstTry = 1;
+
         /// <summary>
         /// Calls the given <paramref name="producer"/> over and over until it returns a value.
         /// </summary>
         public static TResult Retry<TResult>(Func<Option<TResult>> producer)
             where TResult : notnull
             => producer().GetOrElse(() => Retry(producer));
+
+        /// <summary>
+        /// Calls the given <paramref name="producer"/> repeatedly until it returns a value or the retry policy conditions are no longer met.
+        /// </summary>
+        public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
+            where TResult : notnull
+        {
+            return Enumerable
+                .Range(0, FirstTry + retryPolicy.MaxRetry)
+                .Select(ProduceDelayed(producer, retryPolicy))
+                .FirstOrDefault(result => result.Match(none: false, some: True));
+        }
+
+        private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
+            where TResult : notnull
+        {
+            return (retryCount) =>
+            {
+                // We do not wait before the first try!
+                if (IsFirstTry(retryCount) == false)
+                {
+                    System.Threading.Thread.Sleep(retryPolicy.Duration(retryCount));
+                }
+
+                return producer();
+            };
+        }
+
+        private static bool IsFirstTry(int retryCount)
+        {
+            return retryCount == 0;
+        }
     }
 }

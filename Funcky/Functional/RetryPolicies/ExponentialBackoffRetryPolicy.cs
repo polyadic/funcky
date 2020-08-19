@@ -1,0 +1,28 @@
+using System;
+
+namespace Funcky
+{
+    public class ExponentialBackoffRetryPolicy : IRetryPolicy
+    {
+        private const double BaseFactor = 1.5;
+        private readonly TimeSpan _firstDelay;
+
+        public ExponentialBackoffRetryPolicy(int maxRetry, TimeSpan firstDelay)
+        {
+            MaxRetry = maxRetry;
+            _firstDelay = firstDelay;
+        }
+
+        public int MaxRetry { get; }
+
+#if NETSTANDARD2_1
+        public TimeSpan Duration(int onRetryCount)
+            => _firstDelay.Multiply(Exponential(onRetryCount));
+#else
+        public TimeSpan Duration(int onRetryCount)
+        => TimeSpan.FromTicks((long)(_firstDelay.Ticks * Exponential(onRetryCount)));
+#endif
+
+        private double Exponential(int onRetryCount) => Math.Pow(BaseFactor, onRetryCount);
+    }
+}
