@@ -57,7 +57,7 @@ namespace Funcky.Test
             var produceString = "Hello world!";
             var producer = new MaybeProducer<string>(numberOfRetries, produceString);
 
-            Assert.Equal(Option.Some("Hello world!"), Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
+            Assert.Equal(Option.Some(produceString), Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
             Assert.Equal(numberOfRetries + 1, producer.Called);
         }
     }
