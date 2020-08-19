@@ -30,5 +30,35 @@ namespace Funcky.Test
             Assert.Equal(value, Retry(stack.Pop));
             Assert.Single(stack);
         }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(15)]
+        [InlineData(90)]
+        public void RetriesWithDoNotRetryPolicyAlwaysTriesNumberOfRetriesTimes(int numberOfRetries)
+        {
+            var produceString = "Hello world!";
+            var producer = new MaybeProducer<string>(1000, produceString);
+
+            Assert.Equal(Option<string>.None(), Retry(producer.Produce, new NoDelayRetryPolicy(numberOfRetries)));
+            Assert.Equal(numberOfRetries + 1, producer.Called);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(15)]
+        [InlineData(90)]
+        public void RetriesWithDoNotRetryRetriesUntilValueProduced(int numberOfRetries)
+        {
+            var produceString = "Hello world!";
+            var producer = new MaybeProducer<string>(numberOfRetries, produceString);
+
+            Assert.Equal(Option.Some(produceString), Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
+            Assert.Equal(numberOfRetries + 1, producer.Called);
+        }
     }
 }

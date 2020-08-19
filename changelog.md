@@ -92,3 +92,6 @@
 
 ## Funcky 2.1.1 | Funcky.xUnit 0.1.2
 * Re-release of previous release with correct assemblies.
+
+## Unreleased
+* Added overload to `Functional.Retry` with a `IRetryPolicy`.
