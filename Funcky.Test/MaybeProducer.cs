@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Funcky.Monads;
 
 namespace Funcky.Test
@@ -24,5 +25,7 @@ namespace Funcky.Test
                 ? Option.Some(_result)
                 : Option<T>.None();
         }
+
+        public Task<Option<T>> ProduceAsync() => Task.FromResult(Produce());
     }
 }
