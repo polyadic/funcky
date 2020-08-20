@@ -95,3 +95,4 @@
 
 ## Unreleased
 * Added overload to `Functional.Retry` with a `IRetryPolicy`.
+* Added `None` overload that takes no predicate.
