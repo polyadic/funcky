@@ -37,11 +37,13 @@ namespace Funcky
 
         private static IEnumerable<Option<TResult>> TailRetries<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-            => Retries(retryPolicy).Select(ProduceDelayed(producer, retryPolicy));
+            => Retries(retryPolicy)
+                .Select(ProduceDelayed(producer, retryPolicy));
 
         private static IEnumerable<Task<Option<TResult>>> TailRetriesAsync<TResult>(Func<Task<Option<TResult>>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-            => Retries(retryPolicy).Select(ProduceDelayedAsync(producer, retryPolicy));
+            => Retries(retryPolicy)
+                .Select(ProduceDelayedAsync(producer, retryPolicy));
 
         private static IEnumerable<int> Retries(IRetryPolicy retryPolicy) => Enumerable.Range(0, retryPolicy.MaxRetries);
 
