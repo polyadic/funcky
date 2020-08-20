@@ -33,7 +33,7 @@ namespace Funcky
             => await Enumerable
                 .Repeat(producer(), FirstTry)
                 .Concat(TailRetriesAsync(producer, retryPolicy))
-                .FirstOrDefault();
+                .FirstOrDefault(IsSome, Option<TResult>.None());
 
         private static IEnumerable<Option<TResult>> TailRetries<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
@@ -66,19 +66,21 @@ namespace Funcky
                 return await producer();
             };
 
-        private static async Task<Option<TItem>> FirstOrDefault<TItem>(this IEnumerable<Task<Option<TItem>>> enumerable)
-            where TItem : notnull
+        private static async Task<TItem> FirstOrDefault<TItem>(
+            this IEnumerable<Task<TItem>> enumerable,
+            Func<TItem, bool> predicate,
+            TItem defaultValue)
         {
             foreach (var item in enumerable)
             {
                 var awaitedItem = await item;
-                if (IsSome(awaitedItem))
+                if (predicate(awaitedItem))
                 {
                     return awaitedItem;
                 }
             }
 
-            return Option<TItem>.None();
+            return defaultValue;
         }
     }
 }
