@@ -3,6 +3,10 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
+    /// <remarks>
+    /// Either values constructed using <c>default</c> are in an invalid state.
+    /// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
+    /// </remarks>
     public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {
         private readonly TLeft _left;

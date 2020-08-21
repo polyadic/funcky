@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Funcky.Extensions;
 using static Funcky.Functional;
 
 namespace Funcky.Monads
@@ -38,9 +39,16 @@ namespace Funcky.Monads
             where TResult : notnull
             => SelectMany(andThenFunction);
 
+        /// <summary>
+        /// Performs a side effect when the option has a value.
+        /// </summary>
         public void AndThen(Action<TItem> andThenFunction)
             => Match(none: NoOperation, some: andThenFunction);
 
+        /// <summary>
+        /// Performs a side effect when the option has a value and returns the option again.
+        /// This is the <see cref="Option{T}"/> equivalent of <see cref="EnumerableExtensions.Inspect{T}(IEnumerable{T}, Action{T})"/>.
+        /// </summary>
         public Option<TItem> Inspect(Action<TItem> action)
         {
             AndThen(action);
