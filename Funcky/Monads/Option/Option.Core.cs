@@ -49,12 +49,33 @@ namespace Funcky.Monads
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
             => Match(() => none, some);
 
+        /// <summary>
+        /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option
+        /// has a value. Serves the same purpose as a switch expression.</para>
+        /// <para>Note that there are often better alternatives available:
+        /// <list type="bullet">
+        /// <item><description><see cref="Select{TResult}"/></description></item>
+        /// <item><description><see cref="SelectMany{TResult}"/></description></item>
+        /// <item><description><see cref="OrElse(Func{Option{TItem}})"/></description></item>
+        /// <item><description><seealso cref="GetOrElse(TItem)"/></description></item>
+        /// </list></para>
+        /// </summary>
         [Pure]
         public TResult Match<TResult>(Func<TResult> none, Func<TItem, TResult> some)
             => _hasItem
                   ? some(_item)
                   : none();
 
+        /// <summary>
+        /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option
+        /// has a value. Serves the same purpose as a switch statement.</para>
+        /// <para>Note that there are often better alternatives available, such as:
+        /// <list type="bullet">
+        /// <item><description><seealso cref="AndThen(System.Action{TItem})"/></description></item>
+        /// <item><description><seealso cref="Inspect(System.Action{TItem})"/></description></item>
+        /// </list>
+        /// </para>
+        /// </summary>
         public void Match(Action none, Action<TItem> some)
         {
             if (_hasItem)
