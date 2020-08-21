@@ -1,0 +1,6 @@
+[book]
+authors = ["Funcky Contributors"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Funcky User Guide"
