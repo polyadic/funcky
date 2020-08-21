@@ -1,0 +1,28 @@
+name: Build Documentation
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: '0.4.2'
+      - name: Build Documentation
+        run: mdbook build
+        working-directory: ./documentation
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: success() && github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./Documentation/book
+          commit_message: ${{github.event.head_commit.message}}
