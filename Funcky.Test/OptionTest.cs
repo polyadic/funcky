@@ -52,7 +52,7 @@ namespace Funcky.Test
         [Fact]
         public void GivenADictionaryWhenWeLookForAnExistentValueWithTryGetValueThenTheResultShouldBeASomeOfTheGivenType()
         {
-            var dictionary = new Dictionary<string, string> { { "some", "value" } };
+            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
 
             var maybe = dictionary.TryGetValue(key: "some");
 
@@ -63,7 +63,7 @@ namespace Funcky.Test
         [Fact]
         public void GivenADictionaryWhenWeLookForAnInexistentValueWithTryGetValueThenTheResultShouldBeANoneOfTheGivenType()
         {
-            var dictionary = new Dictionary<string, string> { { "some", "value" } };
+            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
 
             var maybe = dictionary.TryGetValue(readOnlyKey: "none");
 
