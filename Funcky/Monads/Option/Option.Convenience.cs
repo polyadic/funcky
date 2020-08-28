@@ -56,6 +56,13 @@ namespace Funcky.Monads
         }
 
         /// <summary>
+        /// Filters the <see cref="Option{T}"/> based on a specified type.
+        /// </summary>
+        public Option<TResult> OfType<TResult>()
+            where TResult : class
+            => SelectMany(value => Option.FromNullable(value as TResult));
+
+        /// <summary>
         /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
         /// has an item and nothing when the option is empty.
         /// </summary>

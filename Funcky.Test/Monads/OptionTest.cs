@@ -487,6 +487,40 @@ namespace Funcky.Test.Monads
             FunctionalAssert.IsNone(defaultValue);
         }
 
+        [Fact]
+        public void OfTypeReturnsNoneWhenTypeDoesNotMatch()
+        {
+            var input = Option.Some(10);
+            var filtered = input.OfType<string>();
+            FunctionalAssert.IsNone(filtered);
+        }
+
+        [Fact]
+        public void OfTypeReturnsNoneWhenTheInputIsNone()
+        {
+            var input = Option<string>.None();
+            var filtered = input.OfType<string>();
+            FunctionalAssert.IsNone(filtered);
+        }
+
+        [Fact]
+        public void OfTypeReturnsSomeWhenTheDowncastSucceedsAndTheInputIsSome()
+        {
+            const string value = "hello";
+            var input = Option.Some<object>(value);
+            var filtered = input.OfType<string>();
+            FunctionalAssert.IsSome(value, filtered);
+        }
+
+        [Fact]
+        public void OfTypeReturnsSomeWhenTheUpcastSucceedsAndTheInputIsSome()
+        {
+            const string value = "hello";
+            var input = Option.Some(value);
+            var filtered = input.OfType<object>();
+            FunctionalAssert.IsSome(value, filtered);
+        }
+
         private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
 
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
