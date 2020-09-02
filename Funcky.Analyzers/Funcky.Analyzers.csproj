@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Authors>Messerli Informatik AG</Authors>
+        <Company>Messerli Informatik AG</Company>
+        <Product>Funcky a functional C# library</Product>
+        <Description>Funcky is a basic functional C# library</Description>
+        <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/messerli-informatik-ag/funcky</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/messerli-informatik-ag/funcky</RepositoryUrl>
+        <PackageTags>Functional Monad</PackageTags>
+        <Version>2.2.0</Version>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
+    </ItemGroup>
+    <Target Name="BeforeNuspecGenerate" BeforeTargets="_GetPackageFiles">
+        <ItemGroup>
+            <None Include="$(OutputPath)\$(AssemblyName).dll">
+                <Pack>true</Pack>
+                <PackagePath>analyzers/dotnet/cs</PackagePath>
+            </None>
+        </ItemGroup>
+    </Target>
+</Project>

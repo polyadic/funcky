@@ -19,9 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 ProjectSection(SolutionItems) = preProject
 	Directory.Build.props = Directory.Build.props
 	global.json = global.json
+	NuGet.config = NuGet.config
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzers", "Funcky.Analyzers\Funcky.Analyzers.csproj", "{E7B7D378-87A7-4EB6-873B-C3E739ABE85E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzers.Test", "Funcky.Analyzers.Test\Funcky.Analyzers.Test.csproj", "{31F56238-AF8E-4536-9761-2A894C250269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +46,14 @@ Global
 		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E98B0D-CC17-4576-89DE-065FF475BE6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7B7D378-87A7-4EB6-873B-C3E739ABE85E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7B7D378-87A7-4EB6-873B-C3E739ABE85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7B7D378-87A7-4EB6-873B-C3E739ABE85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7B7D378-87A7-4EB6-873B-C3E739ABE85E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F56238-AF8E-4536-9761-2A894C250269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F56238-AF8E-4536-9761-2A894C250269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F56238-AF8E-4536-9761-2A894C250269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F56238-AF8E-4536-9761-2A894C250269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
