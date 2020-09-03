@@ -61,7 +61,8 @@ namespace Funcky.Analyzers
         private static MemberAccessExpressionSyntax CreateIdentityFunctionMethodGroup()
             => MemberAccessExpression(
                    SyntaxKind.SimpleMemberAccessExpression,
-                   QualifiedName(
+                   MemberAccessExpression(
+                       SyntaxKind.SimpleMemberAccessExpression,
                        IdentifierName("Funcky"),
                        IdentifierName("Functional")),
                    IdentifierName("Identity"));
