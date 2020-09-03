@@ -77,10 +77,11 @@ namespace Funcky.Analyzers
         {
             var lambdaType = context.SemanticModel.GetTypeInfo(expression).ConvertedType;
             var typeWithoutGenericParameters = lambdaType?.OriginalDefinition ?? lambdaType;
-            return SymbolEqualityComparer.Default.Equals(typeWithoutGenericParameters, GetLinqExpressionType(context));
+            var linqExpressionType = GetLinqExpressionType(context);
+            return linqExpressionType is { } && SymbolEqualityComparer.Default.Equals(typeWithoutGenericParameters, linqExpressionType);
         }
 
-        private static ITypeSymbol GetLinqExpressionType(SyntaxNodeAnalysisContext context)
-            => context.Compilation?.GetTypeByMetadataName("System.Linq.Expressions.Expression`1") ?? throw new NullReferenceException();
+        private static ITypeSymbol? GetLinqExpressionType(SyntaxNodeAnalysisContext context)
+            => context.Compilation?.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
     }
 }
