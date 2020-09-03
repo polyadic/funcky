@@ -49,15 +49,15 @@ namespace Funcky.Analyzers
             => expression.ParameterList.Parameters.Count == 1;
 
         private static bool CanBeReplacedWithIdentityFunction(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax expression)
-            => !IsLinqExpression(context, expression) &&
-               AnonymousFunctionContainsParameterReferenceThatMatchesReturnTypeOnly(context, expression);
+            => !IsLinqExpression(context, expression)
+                && AnonymousFunctionContainsParameterReferenceThatMatchesReturnTypeOnly(context, expression);
 
         private static bool AnonymousFunctionContainsParameterReferenceThatMatchesReturnTypeOnly(
             SyntaxNodeAnalysisContext context,
             AnonymousFunctionExpressionSyntax expression)
-            => GetReturnType(context, expression) is { } returnType &&
-               GetParameterReferenceOperationType(context, expression) is { } parameterType &&
-               SymbolEqualityComparer.IncludeNullability.Equals(returnType, parameterType);
+            => GetReturnType(context, expression) is { } returnType
+                && GetParameterReferenceOperationType(context, expression) is { } parameterType
+                && SymbolEqualityComparer.IncludeNullability.Equals(returnType, parameterType);
 
         private static ITypeSymbol? GetParameterReferenceOperationType(
             SyntaxNodeAnalysisContext context,
