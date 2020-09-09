@@ -7,12 +7,8 @@
     <WarningsAsErrors />
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Polyadic</Authors>
     <Product>Funcky a functional C# library</Product>
     <Description>Funcky is a basic functional C# library</Description>
-    <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
     <PackageTags>Functional Monad</PackageTags>
     <Version>2.2.0</Version>
     <IncludeSymbols>true</IncludeSymbols>

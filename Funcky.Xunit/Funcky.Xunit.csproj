@@ -7,11 +7,7 @@
         <WarningsAsErrors />
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Authors>Polyadic</Authors>
         <Description>Package to use Funcky with xUnit</Description>
-        <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
         <PackageTags>Functional Monad xUnit</PackageTags>
         <Version>0.1.3</Version>
         <IncludeSymbols>true</IncludeSymbols>
