@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
+using static Funcky.Functional;
+using static Funcky.Linq.Async.PredicateExtensions;
 
 namespace Funcky.Linq.Async
 {
@@ -17,7 +18,7 @@ namespace Funcky.Linq.Async
         [Pure]
         public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.Select(Option.Some).SingleOrDefaultAsync(cancellationToken);
+            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken<TSource>(True), cancellationToken);
 
         /// <summary>
         /// Returns the only element of a sequence that satisfies a specified condition as an <see cref="Option{T}" /> or a <see cref="Option{T}.None" /> value if no such element exists.
@@ -26,18 +27,42 @@ namespace Funcky.Linq.Async
         [Pure]
         public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.Where(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken);
+            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
         public static ValueTask<Option<TSource>> SingleOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.WhereAwait(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken);
+            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
-        public static ValueTask<Option<TSource>> SingleOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        public static async ValueTask<Option<TSource>> SingleOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.WhereAwaitWithCancellation(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken);
+        {
+            await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
+
+            while (await enumerator.MoveNextAsync())
+            {
+                if (await predicate(enumerator.Current, cancellationToken))
+                {
+                    await ThrowIfEnumeratorContainsMoreMatchingElements(enumerator, predicate, cancellationToken);
+                    return Option.Some(enumerator.Current);
+                }
+            }
+
+            return Option<TSource>.None();
+        }
+
+        private static async ValueTask ThrowIfEnumeratorContainsMoreMatchingElements<TSource>(IAsyncEnumerator<TSource> enumerator, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken)
+        {
+            while (await enumerator.MoveNextAsync())
+            {
+                if (await predicate(enumerator.Current, cancellationToken))
+                {
+                    throw new InvalidOperationException("Source sequence contains more than one element.");
+                }
+            }
+        }
     }
 }

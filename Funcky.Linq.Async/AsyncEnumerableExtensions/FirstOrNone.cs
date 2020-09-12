@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
+using static Funcky.Functional;
+using static Funcky.Linq.Async.PredicateExtensions;
 
 namespace Funcky.Linq.Async
 {
@@ -16,7 +17,7 @@ namespace Funcky.Linq.Async
         [Pure]
         public static ValueTask<Option<TSource>> FirstOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.Select(Option.Some).FirstOrDefaultAsync(cancellationToken);
+            => inputs.FirstOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken<TSource>(True), cancellationToken);
 
         /// <summary>
         /// Returns the first element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.
@@ -24,18 +25,28 @@ namespace Funcky.Linq.Async
         [Pure]
         public static ValueTask<Option<TSource>> FirstOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.Where(predicate).Select(Option.Some).FirstOrDefaultAsync(cancellationToken);
+            => inputs.FirstOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="FirstOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
         public static ValueTask<Option<TSource>> FirstOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.WhereAwait(predicate).Select(Option.Some).FirstOrDefaultAsync(cancellationToken);
+            => inputs.FirstOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="FirstOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
-        public static ValueTask<Option<TSource>> FirstOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        public static async ValueTask<Option<TSource>> FirstOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.WhereAwaitWithCancellation(predicate).Select(Option.Some).FirstOrDefaultAsync(cancellationToken);
+        {
+            await foreach (var item in source.WithCancellation(cancellationToken))
+            {
+                if (await predicate(item, cancellationToken))
+                {
+                    return Option.Some(item);
+                }
+            }
+
+            return Option<TSource>.None();
+        }
     }
 }

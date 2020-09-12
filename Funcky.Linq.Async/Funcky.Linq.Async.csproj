@@ -23,6 +23,6 @@
         <ProjectReference Include="../Funcky/Funcky.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="System.Linq.Async" Version="[4.1.1, 5)" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" />
     </ItemGroup>
 </Project>
