@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Funcky.Linq.Async
+namespace Funcky.Extensions
 {
     internal static class PredicateExtensions
     {

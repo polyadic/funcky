@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
 
-namespace Funcky.Linq.Async
+namespace Funcky.Extensions
 {
     public static partial class AsyncEnumerableExtensions
     {

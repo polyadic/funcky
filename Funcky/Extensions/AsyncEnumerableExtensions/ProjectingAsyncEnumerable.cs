@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Funcky.Linq.Async
+namespace Funcky.Extensions
 {
     internal sealed class ProjectingAsyncEnumerable<TSource, TOutput> : IAsyncEnumerable<TOutput>
     {

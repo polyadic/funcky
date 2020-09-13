@@ -4,10 +4,10 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
+using static Funcky.Extensions.PredicateExtensions;
 using static Funcky.Functional;
-using static Funcky.Linq.Async.PredicateExtensions;
 
-namespace Funcky.Linq.Async
+namespace Funcky.Extensions
 {
     public static partial class AsyncEnumerableExtensions
     {
