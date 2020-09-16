@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,6 +24,10 @@ namespace Funcky.Test.Monads
         {
             None,
             Cool,
+        }
+
+        private interface IFoo
+        {
         }
 
         [Fact]
@@ -488,36 +493,27 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
-        public void OfTypeReturnsNoneWhenTypeDoesNotMatch()
+        public void WhereOfSubTypeReturnsNoneWhenTypeDoesNotMatch()
         {
-            var input = Option.Some(10);
-            var filtered = input.OfType<string>();
+            var input = Option.Some<IFoo>(new FooImplOne());
+            var filtered = input.WhereOfSubType<FooImplTwo>();
             FunctionalAssert.IsNone(filtered);
         }
 
         [Fact]
-        public void OfTypeReturnsNoneWhenTheInputIsNone()
+        public void WhereOfSubTypeReturnsNoneWhenTheInputIsNone()
         {
-            var input = Option<string>.None();
-            var filtered = input.OfType<string>();
+            var input = Option<IFoo>.None();
+            var filtered = input.WhereOfSubType<FooImplOne>();
             FunctionalAssert.IsNone(filtered);
         }
 
         [Fact]
-        public void OfTypeReturnsSomeWhenTheDowncastSucceedsAndTheInputIsSome()
+        public void WhereOfSubTypeReturnsSomeWhenTheCastSucceeds()
         {
-            const string value = "hello";
-            var input = Option.Some<object>(value);
-            var filtered = input.OfType<string>();
-            FunctionalAssert.IsSome(value, filtered);
-        }
-
-        [Fact]
-        public void OfTypeReturnsSomeWhenTheUpcastSucceedsAndTheInputIsSome()
-        {
-            const string value = "hello";
-            var input = Option.Some(value);
-            var filtered = input.OfType<object>();
+            var value = new FooImplOne();
+            var input = Option.Some<IFoo>(value);
+            var filtered = input.WhereOfSubType<FooImplOne>();
             FunctionalAssert.IsSome(value, filtered);
         }
 
@@ -534,6 +530,14 @@ namespace Funcky.Test.Monads
         }
 
         private static void Statement()
+        {
+        }
+
+        private sealed class FooImplOne : IFoo
+        {
+        }
+
+        private sealed class FooImplTwo : IFoo
         {
         }
     }
