@@ -1,0 +1,1 @@
+[assembly: Fody.ConfigureAwait(false)]
