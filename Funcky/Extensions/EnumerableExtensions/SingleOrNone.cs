@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Funcky.Monads;
+using static Funcky.Functional;
 
 namespace Funcky.Extensions
 {
@@ -14,10 +15,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
         [Pure]
         public static Option<TSource> SingleOrNone<TSource>(this IEnumerable<TSource> source)
-            where TSource : notnull =>
-            source
-                .Select(Option.Some)
-                .SingleOrDefault();
+            where TSource : notnull => source.SingleOrNone(True);
 
         /// <summary>
         /// Returns the only element of a sequence that satisfies a specified condition as an <see cref="Option{T}" /> or a <see cref="Option{T}.None" /> value if no such element exists; this method throws an exception if more than one element satisfies the condition.
