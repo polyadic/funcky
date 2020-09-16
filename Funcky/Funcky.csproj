@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Product>Funcky a functional C# library</Product>
-    <Description>Funcky is a basic functional C# library</Description>
-    <PackageTags>Functional Monad</PackageTags>
-    <Version>2.2.0</Version>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="all" />
-    <PackageReference Include="Fody" Version="6.2.6" PrivateAssets="all" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Product>Funcky a functional C# library</Product>
+        <Description>Funcky is a basic functional C# library</Description>
+        <PackageTags>Functional Monad</PackageTags>
+        <Version>2.2.0</Version>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="all" />
+        <PackageReference Include="Fody" Version="6.2.6" PrivateAssets="all" />
+    </ItemGroup>
 </Project>
