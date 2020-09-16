@@ -60,7 +60,7 @@ namespace Funcky.Extensions
             {
                 if (await predicate(enumerator.Current, cancellationToken))
                 {
-                    throw new InvalidOperationException("Source sequence contains more than one element.");
+                    throw new InvalidOperationException("Sequence contains more than one element");
                 }
             }
         }
