@@ -18,5 +18,4 @@
     <ProjectReference Include="..\Funcky\Funcky.csproj" />
     <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
   </ItemGroup>
-
 </Project>

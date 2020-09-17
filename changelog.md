@@ -96,3 +96,6 @@
 ## Funcky 2.2.0 | Funcky.xUnit 0.1.3
 * Added overload to `Functional.Retry` with a `IRetryPolicy`.
 * Added `None` overload that takes no predicate.
+
+## Unreleased
+* Funcky now uses `.ConfigureAwait(false)` everywhere `await` is used.
