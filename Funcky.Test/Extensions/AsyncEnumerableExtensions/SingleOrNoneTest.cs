@@ -61,11 +61,11 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
             const int matchingItem = 3;
             const int itemAfterMatchingItem = matchingItem + 1;
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-                await NumbersGreaterThanZero(throwExceptionWhenValueGreaterThan: itemAfterMatchingItem)
+                await NumbersGreaterThanOrEqualToZero(throwExceptionWhenValueGreaterThan: itemAfterMatchingItem)
                     .SingleOrNoneAsync(n => n >= matchingItem));
         }
 
-        private static async IAsyncEnumerable<int> NumbersGreaterThanZero(int throwExceptionWhenValueGreaterThan)
+        private static async IAsyncEnumerable<int> NumbersGreaterThanOrEqualToZero(int throwExceptionWhenValueGreaterThan)
         {
             for (var value = 0; ; value++)
             {
