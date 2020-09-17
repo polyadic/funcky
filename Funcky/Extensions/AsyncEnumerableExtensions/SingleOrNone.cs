@@ -44,10 +44,11 @@ namespace Funcky.Extensions
 
             while (await enumerator.MoveNextAsync())
             {
-                if (await predicate(enumerator.Current, cancellationToken))
+                var currentItem = enumerator.Current;
+                if (await predicate(currentItem, cancellationToken))
                 {
                     await ThrowIfEnumeratorContainsMoreMatchingElements(enumerator, predicate, cancellationToken);
-                    return Option.Some(enumerator.Current);
+                    return Option.Some(currentItem);
                 }
             }
 

@@ -1,28 +1,16 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Funcky.Extensions;
 using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
+using static Funcky.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
 namespace Funcky.Test.Extensions
 {
     public sealed class AsyncEnumerableExtensionsTest
     {
-        private const string FirstItem = "first";
-
-        private const string LastItem = "last";
-
-        private static readonly IAsyncEnumerable<string> EmptyEnumerable
-            = AsyncEnumerable.Empty<string>();
-
-        private static readonly IAsyncEnumerable<string> EnumerableWithOneItem
-            = AsyncEnumerable.Repeat(FirstItem, 1);
-
-        private static readonly IAsyncEnumerable<string> EnumerableWithMoreThanOneItem
-            = new[] { FirstItem, "foo", LastItem }.ToAsyncEnumerable();
-
         [Fact]
         public async Task FirstOrNoneReturnsNoneWhenEnumerableIsEmpty()
         {
