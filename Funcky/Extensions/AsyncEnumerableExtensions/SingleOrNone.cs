@@ -16,24 +16,24 @@ namespace Funcky.Extensions
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if there is more than one element in the sequence.</exception>
         [Pure]
-        public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, CancellationToken cancellationToken = default)
+        public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken<TSource>(True), cancellationToken);
+            => source.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken<TSource>(True), cancellationToken);
 
         /// <summary>
         /// Returns the only element of a sequence that satisfies a specified condition as an <see cref="Option{T}" /> or a <see cref="Option{T}.None" /> value if no such element exists.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if more than one element satisfies the condition.</exception>
         [Pure]
-        public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+        public static ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
+            => source.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
-        public static ValueTask<Option<TSource>> SingleOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> inputs, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        public static ValueTask<Option<TSource>> SingleOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => inputs.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
+            => source.SingleOrNoneAwaitWithCancellationAsync(ToAsyncPredicateWithCancellationToken(predicate), cancellationToken);
 
         /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
