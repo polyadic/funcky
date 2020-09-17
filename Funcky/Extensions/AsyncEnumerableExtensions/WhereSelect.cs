@@ -33,47 +33,47 @@ namespace Funcky.Extensions
                 source,
                 (enumerator, cancellationToken) => new WhereSelectAwaitAsyncEnumerator<TSource, TOutput>(
                     enumerator, selector, cancellationToken));
-    }
 
-    internal sealed class WhereSelectAwaitAsyncEnumerator<TSource, TOutput> : IAsyncEnumerator<TOutput>
-        where TOutput : notnull
-    {
-        private readonly IAsyncEnumerator<TSource> _source;
-        private readonly Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> _selector;
-        private readonly CancellationToken _cancellationToken;
-
-        public WhereSelectAwaitAsyncEnumerator(
-            IAsyncEnumerator<TSource> source,
-            Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
-            CancellationToken cancellationToken)
+        private sealed class WhereSelectAwaitAsyncEnumerator<TSource, TOutput> : IAsyncEnumerator<TOutput>
+            where TOutput : notnull
         {
-            _source = source;
-            _selector = selector;
-            _cancellationToken = cancellationToken;
-        }
+            private readonly IAsyncEnumerator<TSource> _source;
+            private readonly Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> _selector;
+            private readonly CancellationToken _cancellationToken;
 
-        public TOutput Current { get; private set; } = default!;
+            public WhereSelectAwaitAsyncEnumerator(
+                IAsyncEnumerator<TSource> source,
+                Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
+                CancellationToken cancellationToken)
+            {
+                _source = source;
+                _selector = selector;
+                _cancellationToken = cancellationToken;
+            }
 
-        [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP007", Justification = "Enumerator holds ownership")]
-        public ValueTask DisposeAsync() => _source.DisposeAsync();
+            public TOutput Current { get; private set; } = default!;
 
-        public async ValueTask<bool> MoveNextAsync()
-        {
-            _cancellationToken.ThrowIfCancellationRequested();
+            [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP007", Justification = "Enumerator holds ownership")]
+            public ValueTask DisposeAsync() => _source.DisposeAsync();
 
-            while (await _source.MoveNextAsync())
+            public async ValueTask<bool> MoveNextAsync()
             {
                 _cancellationToken.ThrowIfCancellationRequested();
 
-                var item = await _selector(_source.Current, _cancellationToken);
-                foreach (var value in item.ToEnumerable())
+                while (await _source.MoveNextAsync())
                 {
-                    Current = value;
-                    return true;
-                }
-            }
+                    _cancellationToken.ThrowIfCancellationRequested();
 
-            return false;
+                    var item = await _selector(_source.Current, _cancellationToken);
+                    foreach (var value in item.ToEnumerable())
+                    {
+                        Current = value;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
     }
 }
