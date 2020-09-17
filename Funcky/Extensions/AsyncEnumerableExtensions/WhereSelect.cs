@@ -58,12 +58,8 @@ namespace Funcky.Extensions
 
             public async ValueTask<bool> MoveNextAsync()
             {
-                _cancellationToken.ThrowIfCancellationRequested();
-
                 while (await _source.MoveNextAsync())
                 {
-                    _cancellationToken.ThrowIfCancellationRequested();
-
                     var item = await _selector(_source.Current, _cancellationToken);
                     foreach (var value in item.ToEnumerable())
                     {
