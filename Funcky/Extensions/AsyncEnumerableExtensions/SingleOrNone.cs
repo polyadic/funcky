@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
-using static Funcky.Extensions.PredicateExtensions;
 using static Funcky.Functional;
 
 namespace Funcky.Extensions
