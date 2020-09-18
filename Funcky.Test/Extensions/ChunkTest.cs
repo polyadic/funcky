@@ -10,7 +10,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
         {
-            var numbers = new List<int>();
+            var numbers = Enumerable.Empty<int>();
 
             var chunked = numbers.Chunk(3);
 
@@ -18,7 +18,7 @@ namespace Funcky.Test.Extensions
         }
 
         [Fact]
-        public void GivenAnSingleElementListWeGetEnumerbaleWithOneElement()
+        public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
         {
             var numbers = new List<int> { 1 };
 
