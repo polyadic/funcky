@@ -99,3 +99,4 @@
 
 ## Unreleased
 * Funcky now uses `.ConfigureAwait(false)` everywhere `await` is used.
+* Extension function Chunk added
