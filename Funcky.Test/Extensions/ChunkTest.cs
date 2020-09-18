@@ -9,7 +9,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
         {
-            List<int> numbers = new List<int>();
+            var numbers = new List<int>();
 
             var chunked = numbers.Chunk(3);
 
@@ -19,7 +19,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnSingleElementListWeGetEnumerbaleWithOneElement()
         {
-            List<int> numbers = new List<int> { 1 };
+            var numbers = new List<int> { 1 };
 
             var chunked = numbers.Chunk(3);
 
@@ -36,7 +36,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
         {
-            List<int> numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
             var chunked = numbers.Chunk(3);
 
