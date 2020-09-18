@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using static Funcky.Functional;
 
 namespace Funcky.Extensions
 {
@@ -16,7 +17,7 @@ namespace Funcky.Extensions
         /// <returns>A sequence of equally sized chunks containing elements of the source collection.</returns>
         [Pure]
         public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
-            => Chunk(source, size, Functional.Identity);
+            => Chunk(source, size, Identity);
 
         [Pure]
         public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> resultSelector)
