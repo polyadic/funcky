@@ -104,5 +104,15 @@ namespace Funcky.Test.Extensions
 
             Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(negativeChunkSize));
         }
+
+        [Fact]
+        public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
+        {
+            var magicSquare = new List<int> { 9, 2, 4, 3, 5, 7, 6, 8, 1 };
+
+            magicSquare
+                .Chunk(3, Enumerable.Average)
+                .ForEach(average => Assert.Equal(5, average));
+        }
     }
 }
