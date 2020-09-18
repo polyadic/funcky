@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Funcky.Extensions;
@@ -91,6 +92,17 @@ namespace Funcky.Test.Extensions
                 {
                     Assert.Equal(c.Count(), numbers.Count % chunkSize);
                 });
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(-42)]
+        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int negativeChunkSize)
+        {
+            var numbers = new List<int> { 1 };
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(negativeChunkSize));
         }
     }
 }
