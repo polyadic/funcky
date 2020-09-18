@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
@@ -65,6 +66,30 @@ namespace Funcky.Test.Extensions
                         ca => Assert.Equal(7, ca),
                         cb => Assert.Equal(8, cb),
                         cc => Assert.Equal(9, cc));
+                });
+        }
+
+        [Fact]
+        public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
+        {
+            var numbers = new List<string> { "a", "b", "c", "d", "e", "g", "h", "i", "j" };
+
+            var chunkSize = 4;
+            var chunked = numbers.Chunk(chunkSize);
+
+            Assert.Collection(
+                chunked,
+                a =>
+                {
+                    Assert.Equal(a.Count(), chunkSize);
+                },
+                b =>
+                {
+                    Assert.Equal(b.Count(), chunkSize);
+                },
+                c =>
+                {
+                    Assert.Equal(c.Count(), numbers.Count % chunkSize);
                 });
         }
     }
