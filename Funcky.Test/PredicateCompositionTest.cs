@@ -67,7 +67,7 @@ namespace Funcky.Test
         public void NotReturnsPredicateThatReturnsTrueWhenOriginalPredicateReturnsFalse()
         {
             var negated = Not<string>(False);
-            Assert.False(negated(PlaceholderValue));
+            Assert.True(negated(PlaceholderValue));
         }
 
         [Fact]
