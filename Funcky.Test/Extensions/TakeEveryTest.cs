@@ -20,11 +20,11 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(-42)]
-        public void TakeEveryOnlyAcceptsPositiveIntervalls(int negativeIntervalls)
+        public void TakeEveryOnlyAcceptsPositiveIntervals(int negativeIntervals)
         {
             var numbers = new List<int> { 1 };
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.TakeEvery(negativeIntervalls));
+            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.TakeEvery(negativeIntervals));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         }
 
         [Fact]
-        public void TakeEveryWithLessThanIntervallElementsReturnsOnlyFirstElement()
+        public void TakeEveryWithLessThanIntervalElementsReturnsOnlyFirstElement()
         {
             var numbers = new List<int> { 1, 2, 3, 4 };
 
@@ -46,7 +46,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         }
 
         [Fact]
-        public void TakeEveryWithASourceWith5ElementsAndIntervall4Returns2Elements()
+        public void TakeEveryWithASourceWith5ElementsAndInterval4Returns2Elements()
         {
             var numbers = new List<int> { 1, 2, 3, 4, 5 };
 
