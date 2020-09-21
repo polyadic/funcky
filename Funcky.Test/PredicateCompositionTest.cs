@@ -62,5 +62,19 @@ namespace Funcky.Test
             var predicate = Any<string>(False, False, False);
             Assert.False(predicate(PlaceholderValue));
         }
+
+        [Fact]
+        public void NotReturnsPredicateThatReturnsTrueWhenOriginalPredicateReturnsFalse()
+        {
+            var negated = Not<string>(False);
+            Assert.False(negated(PlaceholderValue));
+        }
+
+        [Fact]
+        public void NotReturnsPredicateThatReturnsFalseWhenOriginalPredicateReturnsTrue()
+        {
+            var negated = Not<string>(True);
+            Assert.False(negated(PlaceholderValue));
+        }
     }
 }
