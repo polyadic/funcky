@@ -99,4 +99,6 @@
 
 ## Unreleased
 * Funcky now uses `.ConfigureAwait(false)` everywhere `await` is used.
+* Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync` and `SingleOrNoneAsync` extension methods for `IAsyncEnumerable`.
 * Extension function Chunk added
+

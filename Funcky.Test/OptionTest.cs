@@ -26,6 +26,12 @@ namespace Funcky.Test
         }
 
         [Fact]
+        public void OptionConstructorThrowsWhenNullIsPassed()
+        {
+            Assert.Throws<ArgumentNullException>(() => Option.Some<string>(null!));
+        }
+
+        [Fact]
         public void GivenAValueThenCreateMaybeWithTypeInference()
         {
             var maybe = Option.Some(1337);

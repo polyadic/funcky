@@ -1,5 +1,3 @@
-#if NETSTANDARD2_1
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -32,5 +30,3 @@ namespace Funcky.Monads
             => _awaiter.Select(a => a.GetResult());
     }
 }
-
-#endif

@@ -97,6 +97,7 @@ namespace Funcky.Monads
 
     public static partial class Option
     {
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="item"/> is <c>null</c>.</exception>
         [Pure]
         public static Option<TItem> Some<TItem>(TItem item)
             where TItem : notnull

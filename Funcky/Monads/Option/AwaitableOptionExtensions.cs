@@ -23,7 +23,6 @@ namespace Funcky.Monads
             where TItem : notnull
             => new OptionTaskAwaiter<TItem>(option.Select(t => t.GetAwaiter()));
 
-        #if NETSTANDARD2_1
         /// <summary>
         /// This method is intended for compiler use only
         /// and are therefore exempt from typical semver guarantees.
@@ -40,6 +39,5 @@ namespace Funcky.Monads
         public static OptionValueTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<ValueTask<TItem>> option)
             where TItem : notnull
             => new OptionValueTaskAwaiter<TItem>(option.Select(t => t.GetAwaiter()));
-        #endif
     }
 }
