@@ -21,6 +21,7 @@ namespace Funcky.Extensions
             {
                 var minimum = FindMinimum(enumerators, comparer);
                 yield return minimum.Current;
+
                 if (!minimum.MoveNext())
                 {
                     enumerators = enumerators.Remove(minimum);
@@ -31,15 +32,6 @@ namespace Funcky.Extensions
         }
 
         private static IEnumerator<TSource> FindMinimum<TSource>(ImmutableList<IEnumerator<TSource>> enumerators, IComparer<TSource> comparer)
-        {
-            var minimum = enumerators.First();
-
-            foreach (var enumerator in enumerators.Skip(1).Where(e => comparer.Compare(minimum.Current, e.Current) > 0))
-            {
-                minimum = enumerator;
-            }
-
-            return minimum;
-        }
+            => enumerators.Aggregate((enumerator, minimum) => comparer.Compare(minimum.Current, enumerator.Current) <= 0 ? minimum : enumerator);
     }
 }
