@@ -15,7 +15,7 @@ namespace Funcky
 
         public int MaxRetries { get; }
 
-#if NETSTANDARD2_1
+#if TIMESPAN_MULTIPLY_SUPPORTED
         public TimeSpan Duration(int onRetryCount)
             => _firstDelay.Multiply(Exponential(onRetryCount));
 #else
