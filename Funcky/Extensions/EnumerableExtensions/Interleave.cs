@@ -34,7 +34,7 @@ namespace Funcky.Extensions
                 enumerators = enumerators.Where(e => e.MoveNext()).ToList();
                 foreach (var enumerator in enumerators)
                 {
-                    yield return enumerator.Current!;
+                    yield return enumerator.Current;
                 }
             }
 
