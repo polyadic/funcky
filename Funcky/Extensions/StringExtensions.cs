@@ -20,7 +20,7 @@ namespace Funcky.Extensions
         public static Option<int> IndexOfOrNone(this string haystack, char value, int startIndex, int count)
             => MapIndexToOption(haystack.IndexOf(value, startIndex, count));
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_1 || NETCOREAPP3_1
         public static Option<int> IndexOfOrNone(this string haystack, char value, StringComparison comparisonType)
             => MapIndexToOption(haystack.IndexOf(value, comparisonType));
 #endif
