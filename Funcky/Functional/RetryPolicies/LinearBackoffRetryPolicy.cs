@@ -16,7 +16,7 @@ namespace Funcky
 
 #if TIMESPAN_MULTIPLY_SUPPORTED
         public TimeSpan Duration(int onRetryCount)
-            => _firstDelay.Multiply(onRetryCount);
+            => _firstDelay * onRetryCount;
 #else
         public TimeSpan Duration(int onRetryCount)
             => TimeSpan.FromTicks(_firstDelay.Ticks * onRetryCount);
