@@ -23,6 +23,6 @@ namespace Funcky
             => TimeSpan.FromTicks((long)(_firstDelay.Ticks * Exponential(onRetryCount)));
 #endif
 
-        private double Exponential(int onRetryCount) => Math.Pow(BaseFactor, onRetryCount);
+        private static double Exponential(int onRetryCount) => Math.Pow(BaseFactor, onRetryCount);
     }
 }
