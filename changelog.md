@@ -102,3 +102,4 @@
 * Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync` and `SingleOrNoneAsync` extension methods for `IAsyncEnumerable`.
 * Extension function Chunk added
 * Depend on `System.Collections.Immutable`
+* Extension function `Merge` added
