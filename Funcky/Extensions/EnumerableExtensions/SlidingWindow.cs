@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Funcky.Extensions
 {
@@ -9,17 +11,17 @@ namespace Funcky.Extensions
         public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int length)
             where TSource : notnull
         {
-            Queue<TSource> slidingWindow = new Queue<TSource>();
+            var slidingWindow = ImmutableQueue<TSource>.Empty;
             foreach (var element in source)
             {
-                slidingWindow.Enqueue(element);
+                slidingWindow = slidingWindow.Enqueue(element);
 
-                if (slidingWindow.Count == length + 1)
+                if (slidingWindow.Count() == length + 1)
                 {
-                    slidingWindow.Dequeue();
+                    slidingWindow = slidingWindow.Dequeue();
                 }
 
-                if (slidingWindow.Count == length)
+                if (slidingWindow.Count() == length)
                 {
                     yield return slidingWindow;
                 }
