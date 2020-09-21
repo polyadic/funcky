@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+	<PropertyGroup Label="Shared NuGet Metadata">
+		<Authors>Polyadic</Authors>
+		<PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
+	</PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Messerli.CodeStyle" Version="1.2.0" PrivateAssets="all" />
+        <PackageReference Include="Messerli.CodeStyle" Version="1.2.1" PrivateAssets="all" />
     </ItemGroup>
 </Project>
