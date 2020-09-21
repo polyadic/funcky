@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace Funcky.Extensions
         /// <returns>one sequences with all the elements interleaved.</returns>
         [Pure]
         public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> sequence, params IEnumerable<TSource>[] otherSequences)
-            => Interleave(new[] { sequence }.Concat(otherSequences));
+            => Interleave(ImmutableList.Create<IEnumerable<TSource>>().Add(sequence).AddRange(otherSequences));
 
         /// <summary>
         /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completley consumed.
@@ -26,12 +27,12 @@ namespace Funcky.Extensions
         [Pure]
         public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<IEnumerable<TSource>> source)
         {
-            var sourceEnumerators = source.Select(s => s.GetEnumerator()).ToList();
+            var sourceEnumerators = source.Select(s => s.GetEnumerator()).ToImmutableList();
 
             var enumerators = sourceEnumerators;
-            while (enumerators.Count > 0)
+            while (!enumerators.IsEmpty)
             {
-                enumerators = enumerators.Where(e => e.MoveNext()).ToList();
+                enumerators = enumerators.RemoveAll(e => !e.MoveNext());
                 foreach (var enumerator in enumerators)
                 {
                     yield return enumerator.Current;
