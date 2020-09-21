@@ -16,7 +16,7 @@ namespace Funcky.Extensions
         /// <returns>one sequences with all the elements interleaved.</returns>
         [Pure]
         public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> sequence, params IEnumerable<TSource>[] otherSequences)
-            => ImmutableList.Create<IEnumerable<TSource>>().Add(sequence).AddRange(otherSequences).Interleave();
+            => ImmutableList.Create(sequence).AddRange(otherSequences).Interleave();
 
         /// <summary>
         /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completley consumed.
