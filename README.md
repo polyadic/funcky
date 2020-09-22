@@ -2,7 +2,7 @@
 
 Funcky is a functional Library for C# which encourages correct usage of the functional programming paradigm.
 
-[![Build](https://github.com/messerli-informatik-ag/funcky/workflows/Build/badge.svg)](https://github.com/messerli-informatik-ag/funcky/actions?query=workflow%3ABuild)
+[![Build](https://github.com/polyadic/funcky/workflows/Build/badge.svg)](https://github.com/messerli-informatik-ag/funcky/actions?query=workflow%3ABuild)
 [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
@@ -13,7 +13,7 @@ Mark Seemann points out that "Unfortunately, Maybe implementations often come wi
 
 https://blog.ploeh.dk/2019/02/04/how-to-get-the-value-out-of-the-monad/
 
-This library is based on his example code, and should grow slowly to a library which helps to use and understand the Functional programming paradigm. Functional programming is side-effect free and the strong type system can be used to make illegal state impossible. 
+This library is based on his example code, and should grow slowly to a library which helps to use and understand the Functional programming paradigm. Functional programming is side-effect free and the strong type system can be used to make illegal state impossible.
 
 Use functional programming as an additional asset to write correct code.
 
@@ -26,7 +26,7 @@ An Option<T> can either hold a value of T (Some) or it holds Nothing (None)
 ```csharp
 var something = Option.Some(1337);
 ```
-    
+
 ### Create nothing
 
 ```csharp
@@ -41,7 +41,7 @@ Option<bool> maybeBool =
     select m == 1337;
 ```
 
-### Select Many 
+### Select Many
 
 ```csharp
 var result =
