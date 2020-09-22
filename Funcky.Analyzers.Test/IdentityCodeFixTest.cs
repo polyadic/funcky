@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
-using Verify = Microsoft.CodeAnalysis.CSharp.Testing.CSharpCodeFixVerifier<Funcky.Analyzers.IdentityAnalyzer, Funcky.Analyzers.IdentityCodeFix, Microsoft.CodeAnalysis.Testing.Verifiers.XUnitVerifier>;
+using Verify = Microsoft.CodeAnalysis.CSharp.Testing.CSharpCodeFixVerifier<Funcky.Analyzers.IdentityAnalyzer, Funcky.Analyzers.IdentityCodeFixProvider, Microsoft.CodeAnalysis.Testing.Verifiers.XUnitVerifier>;
 
 namespace Funcky.Analyzers.Test
 {
