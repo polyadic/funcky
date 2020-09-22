@@ -23,7 +23,7 @@ namespace Funcky.Analyzers
         private void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var expression = (SimpleLambdaExpressionSyntax)context.Node;
-            if (IsLinqExpression(context, expression) && CanBeReplacedWithMethodGroup(context, expression))
+            if (!IsLinqExpression(context, expression) && CanBeReplacedWithMethodGroup(context, expression))
             {
                 ReportDiagnostic(context, expression);
             }
