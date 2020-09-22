@@ -15,6 +15,9 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" OutputItemType="Analyzer" PrivateAssets="all" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Collections.Immutable" Version="[1.7.1, 2)"  Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
         <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="all" />

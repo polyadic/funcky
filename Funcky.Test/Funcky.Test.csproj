@@ -15,5 +15,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 </Project>
