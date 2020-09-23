@@ -60,7 +60,7 @@ MoreLinq provides more extension functions on `IEnumerable`, but has no addition
 
 This is a very simple Functional Library with similar ideas in spirit but not as mature. 
 
-### And more...
+### And more…
 
 * [Functional.Primitives.Extensions](https://github.com/JohannesMoersch/Functional)
 * [Functional.Maybe](https://github.com/AndreyTsvetkov/Functional.Maybe)
