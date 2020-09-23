@@ -3,8 +3,8 @@
 	<ItemGroup Label="Runtime Dependencies">
 		<PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" />
 		<PackageVersion Include="System.Collections.Immutable" Version="[1.7.1, 2)" />
-		<PackageVersion Include="xunit.assert" Version="2.4.0" />
-		<PackageVersion Include="xunit.extensibility.core" Version="2.4.0" />
+		<PackageVersion Include="xunit.assert" Version="[2.4.0, 3)" />
+		<PackageVersion Include="xunit.extensibility.core" Version="[2.4.0, 3)" />
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
 		<PackageVersion Include="Messerli.CodeStyle" Version="1.2.1" />
