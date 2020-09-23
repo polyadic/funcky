@@ -20,7 +20,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void TransposingAMatrixResultsInATransposedMatrix()
         {
-            var transposed = GetMatrixExample().Transpose();
+            var transposed = MatrixExample().Transpose();
 
             Assert.Collection(
                 transposed,
@@ -79,30 +79,26 @@ namespace Funcky.Test.Extensions
             Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
         }
 
-        private static IEnumerable<IEnumerable<int>> GetMatrixExample()
-        {
-            return new List<IEnumerable<int>>()
+        private static IEnumerable<IEnumerable<int>> MatrixExample()
+            => new List<IEnumerable<int>>()
             {
                 new List<int>() { 1, 2, 3, 4 },
                 new List<int>() { 5, 6, 7, 8 },
                 new List<int>() { 9, 10, 11, 12 },
             };
-        }
+
+        private static IEnumerable<IEnumerable<int>> JaggedMatrixExample()
+            => new List<IEnumerable<int>>()
+            {
+                new List<int>() { 1, 2, 3, 4 },
+                new List<int>() { 5 },
+                new List<int>() { 6, 7, 8, 9 },
+                new List<int>() { 10 },
+            };
 
         private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
-        {
-            foreach (var row in Enumerable.Range(0, rows))
-            {
-                yield return LazyRow(columns);
-            }
-        }
-
-        private IEnumerable<CountCreation> LazyRow(int columns)
-        {
-            foreach (var column in Enumerable.Range(0, columns))
-            {
-                yield return new CountCreation();
-            }
-        }
+            => from row in Enumerable.Range(0, rows)
+               select from column in Enumerable.Range(0, columns)
+                      select new CountCreation();
     }
 }
