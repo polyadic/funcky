@@ -22,5 +22,7 @@
   * [Foreach]()
   * [None]()
   * [Chunk]()
+* [String Extensions]()
+* [Stream Extensions]()
 
 [Changelog](changelog.md)
