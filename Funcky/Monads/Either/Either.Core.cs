@@ -72,7 +72,7 @@ namespace Funcky.Monads
             };
 
         [Pure]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Either<TLeft, TRight> other && Equals(other);
 
         [Pure]

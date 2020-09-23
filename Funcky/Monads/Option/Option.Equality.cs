@@ -12,7 +12,7 @@ namespace Funcky.Monads
         public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
 
         [Pure]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Option<TItem> other && Equals(other);
 
         [Pure]
