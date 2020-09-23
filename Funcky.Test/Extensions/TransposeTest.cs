@@ -71,9 +71,7 @@ namespace Funcky.Test.Extensions
 
             foreach (var row in transposedMatrix)
             {
-                foreach (var column in row)
-                {
-                }
+                row.ToList();
             }
 
             Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
