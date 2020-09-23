@@ -36,7 +36,7 @@ Use functional programming as an additional asset to write correct code.
 
 ## Other libraries
 
-There are saveral libraries available which try to give you more functional features in C#. So 
+There are several libraries available which try to give you more functional features in C#. So 
 
 * **Funcky want's to be functional C#.**
 * **Funcky tries to use the C# Monadic interfaces as an advantage**
@@ -70,5 +70,4 @@ This is a very simlpe Functional Library with similar ideas in spirit but not as
 ## Features
 
 TODO
-
 
