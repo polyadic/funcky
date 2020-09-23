@@ -18,7 +18,7 @@ namespace Funcky.Test.Extensions
         }
 
         [Fact]
-        public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
+        public void TransposingAMatrixResultsInATransposedMatrix()
         {
             var transposed = GetMatrixExample().Transpose();
 
@@ -58,6 +58,27 @@ namespace Funcky.Test.Extensions
                 });
         }
 
+        [Fact]
+        public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
+        {
+            var numberOfRows = 5;
+            var numberOfColumns = 3;
+            var lazyMatric = LazyMatrix(numberOfRows, numberOfColumns);
+
+            var transposedMatrix = lazyMatric.Transpose();
+
+            Assert.Equal(0, CountCreation.Count);
+
+            foreach (var row in transposedMatrix)
+            {
+                foreach (var column in row)
+                {
+                }
+            }
+
+            Assert.Equal(numberOfColumns * numberOfColumns, CountCreation.Count);
+        }
+
         private static IEnumerable<IEnumerable<int>> GetMatrixExample()
         {
             return new List<IEnumerable<int>>()
@@ -66,6 +87,22 @@ namespace Funcky.Test.Extensions
                 new List<int>() { 5, 6, 7, 8 },
                 new List<int>() { 9, 10, 11, 12 },
             };
+        }
+
+        private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
+        {
+            foreach (var row in Enumerable.Range(0, rows))
+            {
+                yield return LazyRow(columns);
+            }
+        }
+
+        private IEnumerable<CountCreation> LazyRow(int columns)
+        {
+            foreach (var column in Enumerable.Range(0, columns))
+            {
+                yield return new CountCreation();
+            }
         }
     }
 }
