@@ -10,11 +10,14 @@
 		<PackageVersion Include="Messerli.CodeStyle" Version="1.2.1" />
 		<PackageVersion Include="ConfigureAwait.Fody" Version="3.3.1" />
 		<PackageVersion Include="Fody" Version="6.2.6" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
 		<PackageVersion Include="System.Linq.Async" Version="4.1.1" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
 		<PackageVersion Include="xunit" Version="2.4.0" />
 		<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" Version="1.0.1-beta1.20421.1" />
 	</ItemGroup>
 </Project>
