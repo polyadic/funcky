@@ -58,7 +58,7 @@ MoreLinq provides more extension functions on `IEnumerable`, but has no addition
 
 ### [Galaxus.Functional](https://github.com/DigitecGalaxus/Galaxus.Functional)
 
-This is a very simlpe Functional Library with similar ideas in spirit but not as mature. 
+This is a very simple Functional Library with similar ideas in spirit but not as mature. 
 
 ### And more...
 
