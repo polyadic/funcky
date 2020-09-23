@@ -70,7 +70,7 @@ namespace Funcky.Monads
         }
 
         [Pure]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Result<TValidResult> other && Equals(other);
 
         [Pure]
