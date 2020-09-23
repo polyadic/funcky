@@ -17,7 +17,8 @@ namespace Funcky.Analyzers
         protected override SyntaxNode CreateReplacement(CodeFixContext context)
             => MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
-                QualifiedName(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
                     IdentifierName("Funcky"),
                     IdentifierName("Functional")),
                 IdentifierName("Identity"));
