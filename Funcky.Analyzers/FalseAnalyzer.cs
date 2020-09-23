@@ -15,7 +15,10 @@ namespace Funcky.Analyzers
         protected override Diagnostic GenerateDiagnostic(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax expression)
             => Diagnostic.Create(UseFunctionalFalse, expression.GetLocation());
 
-        protected override bool CanBeReplacedWithMethodGroup(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax expression)
+        protected override bool CanBeReplacedWithMethodGroup(
+            SyntaxNodeAnalysisContext context,
+            AnonymousFunctionExpressionSyntax expression,
+            ParameterSyntax parameter)
             => expression.HasBooleanAsReturnType(context) && expression.Body.IsFalseLiteral();
     }
 }

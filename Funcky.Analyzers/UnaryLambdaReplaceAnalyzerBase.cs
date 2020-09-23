@@ -18,12 +18,16 @@ namespace Funcky.Analyzers
 
         protected abstract Diagnostic GenerateDiagnostic(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax expression);
 
-        protected abstract bool CanBeReplacedWithMethodGroup(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax expression);
+        protected abstract bool CanBeReplacedWithMethodGroup(
+            SyntaxNodeAnalysisContext context,
+            AnonymousFunctionExpressionSyntax expression,
+            ParameterSyntax parameter);
 
         private void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var expression = (SimpleLambdaExpressionSyntax)context.Node;
-            if (!IsLinqExpression(context, expression) && CanBeReplacedWithMethodGroup(context, expression))
+            if (!IsLinqExpression(context, expression) &&
+                CanBeReplacedWithMethodGroup(context, expression, expression.Parameter))
             {
                 ReportDiagnostic(context, expression);
             }
@@ -32,7 +36,9 @@ namespace Funcky.Analyzers
         private void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var expression = (ParenthesizedLambdaExpressionSyntax)context.Node;
-            if (!IsLinqExpression(context, expression) && IsUnaryLambdaExpression(expression) && CanBeReplacedWithMethodGroup(context, expression))
+            if (!IsLinqExpression(context, expression) &&
+                IsUnaryLambdaExpression(expression) &&
+                CanBeReplacedWithMethodGroup(context, expression, expression.ParameterList.Parameters[0]))
             {
                 ReportDiagnostic(context, expression);
             }
