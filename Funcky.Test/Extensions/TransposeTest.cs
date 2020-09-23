@@ -76,7 +76,7 @@ namespace Funcky.Test.Extensions
                 }
             }
 
-            Assert.Equal(numberOfColumns * numberOfColumns, CountCreation.Count);
+            Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
         }
 
         private static IEnumerable<IEnumerable<int>> GetMatrixExample()
