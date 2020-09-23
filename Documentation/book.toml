@@ -4,3 +4,8 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Funcky User Guide"
+
+[output.html]
+additional-css = ["custom.css"]
+git-repository-url = "https://github.com/polyadic/funcky"
+git-repository-icon = "fa-github"

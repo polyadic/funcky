@@ -20,6 +20,7 @@ ProjectSection(SolutionItems) = preProject
 	Directory.Build.props = Directory.Build.props
 	global.json = global.json
 	NuGet.config = NuGet.config
+	Directory.Packages.props = Directory.Packages.props
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
