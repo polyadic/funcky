@@ -39,7 +39,7 @@ Use functional programming as an additional asset to write correct code.
 There are several libraries available which try to give you more functional features in C#. So 
 
 * **Funcky wants to be functional C#.**
-* **Funcky tries to use the C# Monadic interfaces as an advantage**
+* **Funcky tries to use the C# monadic interfaces as an advantage**
 * **We do not provide our own RecordType, use Fody or Wait for C#9**
 
 ### [LanguageExt](https://github.com/louthy/language-ext)
