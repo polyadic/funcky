@@ -23,7 +23,7 @@
   * [Inspect]()
   * [None]()
   * [Chunk]()
-* [String Extensions]()
+* [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
 
 [Changelog](changelog.md)
