@@ -24,6 +24,7 @@ namespace Funcky.Extensions
                 {
                     return Option.Some(item);
                 }
+                currentIndex++;
             }
 
             return Option<TSource>.None();
