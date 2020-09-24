@@ -102,4 +102,4 @@
 * Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync`, `SingleOrNoneAsync` and `ElementAtOrNone` extension methods for `IAsyncEnumerable`.
 * Depend on `System.Collections.Immutable`
 * Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
-* Add `ElementAtOrNone` extension methods for `IEnumerable`
+* Add `ElementAtOrNone` extension methods for `IEnumerable`.
