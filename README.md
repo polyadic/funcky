@@ -70,3 +70,15 @@ This is a very simple Functional Library with similar ideas in spirit but not as
 ## Features
 
 TODO
+
+## Contributing
+Contributions are more than welcome. Just open a PR :)
+If you want something easy to work on, there are a few issues marked with [good first issue](https://github.com/polyadic/funcky/labels/good%20first%20issue).
+
+### Documentation
+To build the documentation you need [mdBook](https://github.com/rust-lang/mdBook) installed.
+When working on the documentation it's useful to have `mdbook` running in the background, automatically rebuilding:
+
+```bash
+mdbook serve Documentation
+```
