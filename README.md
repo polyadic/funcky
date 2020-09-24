@@ -77,7 +77,7 @@ If you want something easy to work on, there are a few issues marked with [good 
 
 ### Documentation
 To build the documentation you need [mdBook](https://github.com/rust-lang/mdBook) installed.
-When working on the documentation it's useful to have `mdbook` running in the background, automatically rebuilding:
+When working on the documentation it's useful to have `mdbook` watching and automatically rebuilding on changes:
 
 ```bash
 mdbook serve Documentation
