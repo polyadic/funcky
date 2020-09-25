@@ -6,6 +6,18 @@ namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
     {
+        /// <summary>
+        /// SlidingWindow returns a sequence of sliding windows of the given width.
+        /// The nth sequence will start with the nth element of the source sequence.
+        /// </summary>
+        /// <remarks>
+        /// The returned windows always have  'width' many elements.
+        /// i.e. if your source Sequence is smaller than the window, there will be an empty result.
+        /// </remarks>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="width">The width of the sliding window.</param>
+        /// <typeparam name="TSource">The type of the source elements.</typeparam>
+        /// <returns>Returns a sequence of equally sized window sequences.</returns>
         [Pure]
         public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
         {
@@ -14,9 +26,7 @@ namespace Funcky.Extensions
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
             foreach (var element in source)
             {
-                slidingWindow.Enqueue(element);
-
-                if (slidingWindow.CurrentWidth == width)
+                if (slidingWindow.Enqueue(element).IsFull)
                 {
                     yield return slidingWindow.Window;
                 }

@@ -14,14 +14,16 @@ namespace Funcky.Extensions
             _width = width;
         }
 
-        public int CurrentWidth => _currentWidth;
-
         public IEnumerable<TSource> Window => _window;
 
-        public void Enqueue(TSource element)
+        public bool IsFull => _width == _currentWidth;
+
+        public SlidingWindowQueue<TSource> Enqueue(TSource element)
         {
             EnqueueWithWidth(element);
             KeepWindowWidth();
+
+            return this;
         }
 
         private void EnqueueWithWidth(TSource element)
