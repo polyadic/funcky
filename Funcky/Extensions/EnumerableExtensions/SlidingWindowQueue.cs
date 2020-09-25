@@ -10,13 +10,13 @@ namespace Funcky.Extensions
         private ImmutableQueue<TSource> _window = ImmutableQueue<TSource>.Empty;
 
         public SlidingWindowQueue(int width)
-        {
-            _width = width;
-        }
+            => _width = width;
 
-        public IEnumerable<TSource> Window => _window;
+        public IEnumerable<TSource> Window
+            => _window;
 
-        public bool IsFull => _width == _currentWidth;
+        public bool IsFull
+            => _width == _currentWidth;
 
         public SlidingWindowQueue<TSource> Enqueue(TSource element)
         {
