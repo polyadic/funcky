@@ -1,15 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
-namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
+namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public sealed class TakeEveryTest
+    public class TakeEveryTest
     {
         [Fact]
-        public void TakeEveryOnAnEmptySequnceReturnsAnEmptySequence()
+        public void TakeEveryOnAnEmptySequenceReturnsAnEmptySequence()
         {
             var emptySource = Enumerable.Empty<string>();
 
@@ -30,7 +30,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         [Fact]
         public void TakeEverySelectsEveryNthElement()
         {
-            var numbers = Enumerable.Range(-60, 120);
+            var numbers = Enumerable.Range(-60, 120).ToList();
 
             Assert.Equal(numbers.Count() / 6, numbers.TakeEvery(6).Count());
 
@@ -42,7 +42,8 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         {
             var numbers = new List<int> { 1, 2, 3, 4 };
 
-            Assert.Collection(numbers.TakeEvery(4), element => Assert.Equal(1, element));
+            Assert.Single(numbers.TakeEvery(4));
+            Assert.Equal(1, numbers.TakeEvery(4).Single());
         }
 
         [Fact]
@@ -50,7 +51,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         {
             var numbers = new List<int> { 1, 2, 3, 4, 5 };
 
-            Assert.Collection(numbers.TakeEvery(4), element => Assert.Equal(1, element), element => Assert.Equal(5, element));
+            Assert.Equal(new[] { 1, 5 }, numbers.TakeEvery(4));
         }
     }
 }
