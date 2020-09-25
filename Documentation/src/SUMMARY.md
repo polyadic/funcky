@@ -7,6 +7,8 @@
   * [The Linq-Extensions]()
     * [FirstOrNone, LastOrNone, SingleOrNone]()
     * [WhereSelect]()
+* [Case Studies]()
+  * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
 * [Either Monad]()
 * [Result Monad]()
 * [Functional Helpers]()

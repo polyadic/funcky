@@ -16,11 +16,11 @@ namespace Funcky.Extensions
         /// <param name="interval">the interval between elements in the source sequences.</param>
         /// <returns>Returns a sequence where only every n'th element (interval) of source sequnce is used. </returns>
         [Pure]
-        public static async IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int interval)
+        public static async IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int interval, CancellationToken cancellationToken = default)
             where TSource : notnull
         {
             var currentIndex = 0;
-            await foreach (var item in source)
+            await foreach (var item in source.WithCancellation(cancellationToken))
             {
                 if (currentIndex % interval == 0)
                 {
