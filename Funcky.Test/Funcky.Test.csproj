@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>8.0</LangVersion>
@@ -15,5 +15,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
+        <PackageReference Include="Equals.Fody" PrivateAssets="all" />
+        <PackageReference Include="Fody" PrivateAssets="all" />
     </ItemGroup>
 </Project>

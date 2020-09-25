@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Monads
 {
+    [JsonOptionConverter]
     public readonly partial struct Option<TItem>
         where TItem : notnull
     {
