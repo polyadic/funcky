@@ -1,30 +1,33 @@
+using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
     {
         [Pure]
-        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int length)
-            where TSource : notnull
+        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
         {
-            var slidingWindow = ImmutableQueue<TSource>.Empty;
+            ValidateWindowWidth(width);
+
+            var slidingWindow = new SlidingWindowQueue<TSource>(width);
             foreach (var element in source)
             {
-                slidingWindow = slidingWindow.Enqueue(element);
+                slidingWindow.Enqueue(element);
 
-                if (slidingWindow.Count() == length + 1)
+                if (slidingWindow.CurrentWidth == width)
                 {
-                    slidingWindow = slidingWindow.Dequeue();
+                    yield return slidingWindow.Window;
                 }
+            }
+        }
 
-                if (slidingWindow.Count() == length)
-                {
-                    yield return slidingWindow;
-                }
+        private static void ValidateWindowWidth(int width)
+        {
+            if (width <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(width), width, "The width of the window must be bigger than 0");
             }
         }
     }
