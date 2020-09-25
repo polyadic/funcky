@@ -11,5 +11,3 @@ trim_trailing_whitespace = true
 [*.{props,sln,targets}]
 indent_style = tab
 
-[*.sln]
-end_of_line = crlf
