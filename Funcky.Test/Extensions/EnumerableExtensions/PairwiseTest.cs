@@ -18,9 +18,9 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenASingleElementSequencePairwiseReturnsAnEmptySequence()
         {
-            var oneElementSequnce = Enumerable.Repeat("string", 1);
+            var oneElementSequence = Enumerable.Repeat("string", 1);
 
-            Assert.Empty(oneElementSequnce.Pairwise());
+            Assert.Empty(oneElementSequence.Pairwise());
         }
 
         [Fact]
@@ -42,6 +42,11 @@ namespace Funcky.Test.Extensions
             var sequence = Enumerable.Range(0, numberOfElements);
 
             Assert.Equal(numberOfElements - 1, sequence.Pairwise().Count());
+
+            foreach (var (pair, index) in sequence.Pairwise().Select((pair, index) => (pair, index)))
+            {
+                Assert.Equal((index, index + 1), pair);
+            }
         }
     }
 }
