@@ -23,6 +23,11 @@ namespace Funcky.Extensions
         {
             ValidateWindowWidth(width);
 
+            return SlidingWindowEnumerable(source, width);
+        }
+
+        private static IEnumerable<IEnumerable<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)
+        {
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
             foreach (var element in source)
             {
