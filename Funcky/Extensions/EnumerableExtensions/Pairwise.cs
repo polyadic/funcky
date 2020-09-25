@@ -15,12 +15,14 @@ namespace Funcky.Extensions
         {
             using var enumerator = source.GetEnumerator();
 
-            if (enumerator.MoveNext())
+            if (!enumerator.MoveNext())
             {
-                for (var previous = enumerator.Current; enumerator.MoveNext(); previous = enumerator.Current)
-                {
-                    yield return resultSelector(previous, enumerator.Current);
-                }
+                yield break;
+            }
+
+            for (var previous = enumerator.Current; enumerator.MoveNext(); previous = enumerator.Current)
+            {
+                yield return resultSelector(previous, enumerator.Current);
             }
         }
     }
