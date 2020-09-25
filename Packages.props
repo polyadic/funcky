@@ -3,12 +3,14 @@
 	<ItemGroup Label="Runtime Dependencies">
 		<PackageReference Update="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" />
 		<PackageReference Update="System.Collections.Immutable" Version="[1.7.1, 2)" />
+		<PackageReference Update="System.Text.Json" Version="[4.7.2, 5)" />
 		<PackageReference Update="xunit.assert" Version="[2.4.0, 3)" />
 		<PackageReference Update="xunit.extensibility.core" Version="[2.4.0, 3)" />
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
 		<PackageReference Update="Messerli.CodeStyle" Version="1.2.1" />
 		<PackageReference Update="ConfigureAwait.Fody" Version="3.3.1" />
+		<PackageReference Update="Equals.Fody" Version="4.0.1" />
 		<PackageReference Update="Fody" Version="6.2.6" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
