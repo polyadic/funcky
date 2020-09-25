@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -14,10 +14,13 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'netcoreapp3.1'">
+        <DefineConstants>$(DefineConstants);INDEXOF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED</DefineConstants>
+    </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-        <PackageReference Include="System.Collections.Immutable" Version="[1.7.1, 2)"  Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
-        <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="all" />
-        <PackageReference Include="Fody" Version="6.2.6" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+        <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
+        <PackageReference Include="ConfigureAwait.Fody" PrivateAssets="all" />
+        <PackageReference Include="Fody" PrivateAssets="all" />
     </ItemGroup>
 </Project>

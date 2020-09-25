@@ -30,7 +30,7 @@ namespace Funcky
         public bool Equals(Unit other) => true;
 
         [Pure]
-        public override bool Equals(object obj) => obj is Unit other && Equals(other);
+        public override bool Equals(object? obj) => obj is Unit other && Equals(other);
 
         [Pure]
         public override int GetHashCode() => 0;

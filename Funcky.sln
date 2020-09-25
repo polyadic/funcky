@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 ProjectSection(SolutionItems) = preProject
 	Directory.Build.props = Directory.Build.props
 	global.json = global.json
+	Directory.Packages.props = Directory.Packages.props
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
