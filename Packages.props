@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<ItemGroup Label="Runtime Dependencies">
+		<PackageReference Update="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1, 2)" />
+		<PackageReference Update="System.Collections.Immutable" Version="[1.7.1, 2)" />
+		<PackageReference Update="xunit.assert" Version="[2.4.0, 3)" />
+		<PackageReference Update="xunit.extensibility.core" Version="[2.4.0, 3)" />
+	</ItemGroup>
+	<ItemGroup Label="Build Dependencies">
+		<PackageReference Update="Messerli.CodeStyle" Version="1.2.1" />
+		<PackageReference Update="ConfigureAwait.Fody" Version="3.3.1" />
+		<PackageReference Update="Fody" Version="6.2.6" />
+	</ItemGroup>
+	<ItemGroup Label="Test Dependencies">
+		<PackageReference Update="System.Linq.Async" Version="4.1.1" />
+		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+		<PackageReference Update="xunit" Version="2.4.0" />
+		<PackageReference Update="xunit.runner.visualstudio" Version="2.4.0" />
+	</ItemGroup>
+</Project>
