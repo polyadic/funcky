@@ -63,15 +63,35 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numberOfRows = 5;
             var numberOfColumns = 3;
-            var lazyMatric = LazyMatrix(numberOfRows, numberOfColumns);
+            var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
 
-            var transposedMatrix = lazyMatric.Transpose();
+            var transposedMatrix = lazyMatrix.Transpose();
 
             Assert.Equal(0, CountCreation.Count);
 
-            foreach (var row in transposedMatrix) row.ToList();
+            transposedMatrix.ForEach(row => row.ToList());
 
             Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
+        }
+
+        [Fact]
+        public void GivenAMagicSquareTransposeDoesNotChangeTheAverages()
+        {
+            var magicSquare = new List<List<int>>
+            {
+                new List<int> {4, 9, 2},
+                new List<int> {3, 5, 7},
+                new List<int> {8, 1, 6}
+            };
+
+            magicSquare
+                .Select(Enumerable.Average)
+                .ForEach(average => Assert.Equal(5, average));
+
+            magicSquare
+                .Transpose()
+                .Select(Enumerable.Average)
+                .ForEach(average => Assert.Equal(5, average));
         }
 
         private static IEnumerable<IEnumerable<int>> MatrixExample()

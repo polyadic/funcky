@@ -21,7 +21,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
         {
-            var numbers = new List<int> { 1 };
+            var numbers = new List<int> {1};
 
             var chunked = numbers.Chunk(3);
 
@@ -38,7 +38,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
         {
-            var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var numbers = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
             var chunked = numbers.Chunk(3);
 
@@ -73,25 +73,16 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
         {
-            var numbers = new List<string> { "a", "b", "c", "d", "e", "g", "h", "i", "j" };
+            var numbers = new List<string> {"a", "b", "c", "d", "e", "g", "h", "i", "j"};
 
             var chunkSize = 4;
             var chunked = numbers.Chunk(chunkSize);
 
             Assert.Collection(
                 chunked,
-                a =>
-                {
-                    Assert.Equal(a.Count(), chunkSize);
-                },
-                b =>
-                {
-                    Assert.Equal(b.Count(), chunkSize);
-                },
-                c =>
-                {
-                    Assert.Equal(c.Count(), numbers.Count % chunkSize);
-                });
+                a => { Assert.Equal(a.Count(), chunkSize); },
+                b => { Assert.Equal(b.Count(), chunkSize); },
+                c => { Assert.Equal(c.Count(), numbers.Count % chunkSize); });
         }
 
         [Theory]
@@ -100,7 +91,7 @@ namespace Funcky.Test.Extensions
         [InlineData(-42)]
         public void ChunkThrowsOnZeroOrNegativeChunkSizes(int negativeChunkSize)
         {
-            var numbers = new List<int> { 1 };
+            var numbers = new List<int> {1};
 
             Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(negativeChunkSize));
         }
@@ -108,7 +99,7 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
         {
-            var magicSquare = new List<int> { 9, 2, 4, 3, 5, 7, 6, 8, 1 };
+            var magicSquare = new List<int> {4, 9, 2, 3, 5, 7, 8, 1, 6};
 
             magicSquare
                 .Chunk(3, Enumerable.Average)
