@@ -3,7 +3,7 @@ using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public class TransposeTest
     {
@@ -69,34 +69,37 @@ namespace Funcky.Test.Extensions
 
             Assert.Equal(0, CountCreation.Count);
 
-            foreach (var row in transposedMatrix)
-            {
-                row.ToList();
-            }
+            foreach (var row in transposedMatrix) row.ToList();
 
             Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
         }
 
         private static IEnumerable<IEnumerable<int>> MatrixExample()
-            => new List<IEnumerable<int>>()
+        {
+            return new List<IEnumerable<int>>
             {
-                new List<int>() { 1, 2, 3, 4 },
-                new List<int>() { 5, 6, 7, 8 },
-                new List<int>() { 9, 10, 11, 12 },
+                new List<int> {1, 2, 3, 4},
+                new List<int> {5, 6, 7, 8},
+                new List<int> {9, 10, 11, 12}
             };
+        }
 
         private static IEnumerable<IEnumerable<int>> JaggedMatrixExample()
-            => new List<IEnumerable<int>>()
+        {
+            return new List<IEnumerable<int>>
             {
-                new List<int>() { 1, 2, 3, 4 },
-                new List<int>() { 5 },
-                new List<int>() { 6, 7, 8, 9 },
-                new List<int>() { 10 },
+                new List<int> {1, 2, 3, 4},
+                new List<int> {5},
+                new List<int> {6, 7, 8, 9},
+                new List<int> {10}
             };
+        }
 
         private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
-            => from row in Enumerable.Range(0, rows)
-               select from column in Enumerable.Range(0, columns)
-                      select new CountCreation();
+        {
+            return from row in Enumerable.Range(0, rows)
+                select from column in Enumerable.Range(0, columns)
+                    select new CountCreation();
+        }
     }
 }
