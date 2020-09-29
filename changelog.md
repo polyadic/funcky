@@ -102,4 +102,9 @@
 * Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync` and `SingleOrNoneAsync` extension methods for `IAsyncEnumerable`.
 * Extension function Chunk added
 * Depend on `System.Collections.Immutable`
+* Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
+* Add `ElementAtOrNone` extension methods for `IEnumerable`.
 * Extension function `Merge` added
+* Add custom `JsonConverter` for `Option`.
+  When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
+  `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
