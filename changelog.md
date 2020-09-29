@@ -102,6 +102,7 @@
 * Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync`, `SingleOrNoneAsync` and `ElementAtOrNone` extension methods for `IAsyncEnumerable`.
 * Depend on `System.Collections.Immutable`
 * Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
+* Add `CartesianProduct` extension method for `IEnumerable`.
 * Add `ElementAtOrNone` extension methods for `IEnumerable`.
 * Add custom `JsonConverter` for `Option`.
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
