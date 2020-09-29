@@ -6,7 +6,7 @@ using Funcky.Xunit;
 using Xunit;
 using static Funcky.Functional;
 
-namespace Funcky.Test
+namespace Funcky.Test.Monads
 {
     public class ResultTest
     {
