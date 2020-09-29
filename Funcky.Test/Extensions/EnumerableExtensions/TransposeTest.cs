@@ -79,9 +79,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var magicSquare = new List<List<int>>
             {
-                new List<int> {4, 9, 2},
-                new List<int> {3, 5, 7},
-                new List<int> {8, 1, 6}
+                new List<int> { 4, 9, 2 },
+                new List<int> { 3, 5, 7 },
+                new List<int> { 8, 1, 6 },
             };
 
             magicSquare
@@ -98,9 +98,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             return new List<IEnumerable<int>>
             {
-                new List<int> {1, 2, 3, 4},
-                new List<int> {5, 6, 7, 8},
-                new List<int> {9, 10, 11, 12}
+                new List<int> { 1, 2, 3, 4 },
+                new List<int> { 5, 6, 7, 8 },
+                new List<int> { 9, 10, 11, 12 },
             };
         }
 
@@ -108,10 +108,10 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             return new List<IEnumerable<int>>
             {
-                new List<int> {1, 2, 3, 4},
-                new List<int> {5},
-                new List<int> {6, 7, 8, 9},
-                new List<int> {10}
+                new List<int> { 1, 2, 3, 4 },
+                new List<int> { 5 },
+                new List<int> { 6, 7, 8, 9 },
+                new List<int> { 10 },
             };
         }
 
