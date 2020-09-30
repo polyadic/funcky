@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Funcky.Monads;
 
-namespace Funcky.Test
+namespace Funcky.Test.TestUtils
 {
     internal class MaybeProducer<T>
         where T : notnull
