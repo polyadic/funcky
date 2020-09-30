@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Funcky.Internal;
 
 namespace Funcky.Extensions
 {
@@ -12,12 +13,11 @@ namespace Funcky.Extensions
         /// Returns a sequence of pair-wise tuples from the underlying sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <param name="cancellationToken">A cancellation token.</param>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <returns>Returns a sequence of ValueTuple-pairs.</returns>
         [Pure]
-        public static IAsyncEnumerable<(TSource Front, TSource Back)> Pairwise<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
-            => Pairwise(source, ValueTuple.Create, cancellationToken);
+        public static IAsyncEnumerable<(TSource Front, TSource Back)> Pairwise<TSource>(this IAsyncEnumerable<TSource> source)
+            => Pairwise(source, ValueTuple.Create);
 
         /// <summary>
         /// Applies a function to the element and its successor pairwise from the underlying sequence and returns a new sequence with these results.
@@ -25,12 +25,15 @@ namespace Funcky.Extensions
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="resultSelector">A function of type (TSource, TSource) -> TResult which creates the results from the pairs.</param>
-        /// <param name="cancellationToken">A cancellation token.</param>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the result Sequence.</typeparam>
         /// <returns>Returns a sequence of ValueTuple-pairs.</returns>
+        public static IAsyncEnumerable<TResult> Pairwise<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
+            => AsyncEnumerable.Create(cancellationToken => PairwiseInternal(source, resultSelector, cancellationToken));
+
         [Pure]
-        public static async IAsyncEnumerable<TResult> Pairwise<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+#pragma warning disable 8425
+        public static async IAsyncEnumerator<TResult> PairwiseInternal<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, CancellationToken cancellationToken)
         {
             await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
 
@@ -44,5 +47,6 @@ namespace Funcky.Extensions
                 yield return resultSelector(previous, enumerator.Current);
             }
         }
+#pragma warning restore 8425
     }
 }
