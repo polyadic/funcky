@@ -42,8 +42,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numbers = new List<int> { 1, 2, 3, 4 };
 
-            Assert.Single(numbers.TakeEvery(4));
-            Assert.Equal(1, numbers.TakeEvery(4).Single());
+            Assert.Single(numbers.TakeEvery(4), expected: 1);
         }
 
         [Fact]
