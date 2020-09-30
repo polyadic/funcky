@@ -3,7 +3,7 @@ using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class PairwiseTest
     {
@@ -28,11 +28,7 @@ namespace Funcky.Test.Extensions
         {
             var twoElementSequence = new List<int> { 42, 1337 };
 
-            Assert.Single(twoElementSequence.Pairwise());
-
-            var (head, tail) = twoElementSequence.Pairwise().First();
-            Assert.Equal(42, head);
-            Assert.Equal(1337, tail);
+            Assert.Single(twoElementSequence.Pairwise(), (42, 1337));
         }
 
         [Fact]
