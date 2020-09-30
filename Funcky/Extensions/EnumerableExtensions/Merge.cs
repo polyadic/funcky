@@ -9,18 +9,56 @@ namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
     {
+        /// <summary>
+        /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="sequence1">First ordered sequence.</param>
+        /// <param name="sequence2">Second ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IComparer<TSource>? comparer = null)
             => ImmutableList.Create(sequence1).Add(sequence2).Merge(comparer);
 
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="sequence1">First ordered sequence.</param>
+        /// <param name="sequence2">Second ordered sequence.</param>
+        /// <param name="sequence3">Third ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IComparer<TSource>? comparer = null)
             => ImmutableList.Create(sequence1).Add(sequence2).Add(sequence3).Merge(comparer);
 
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="sequence1">First ordered sequence.</param>
+        /// <param name="sequence2">Second ordered sequence.</param>
+        /// <param name="sequence3">Third ordered sequence.</param>
+        /// <param name="sequence4">Forth ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IEnumerable<TSource> sequence4, IComparer<TSource>? comparer = null)
             => ImmutableList.Create(sequence1).Add(sequence2).Add(sequence3).Add(sequence4).Merge(comparer);
 
+        /// <summary>
+        /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="sources">First ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, IComparer<TSource>? comparer = null)
         {
