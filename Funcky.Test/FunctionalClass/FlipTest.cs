@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using static Funcky.Functional;
 
-namespace Funcky.Test
+namespace Funcky.Test.FunctionalClass
 {
     public sealed class FlipTest
     {
