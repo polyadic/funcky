@@ -1,4 +1,4 @@
-﻿namespace Funcky.Test
+﻿namespace Funcky.Test.TestUtils
 {
     internal class SideEffect
     {

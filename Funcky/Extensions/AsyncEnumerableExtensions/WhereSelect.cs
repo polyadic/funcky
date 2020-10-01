@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
+using Funcky.Internal;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
@@ -29,47 +29,24 @@ namespace Funcky.Extensions
         [Pure]
         public static IAsyncEnumerable<TOutput> WhereSelectAwaitWithCancellation<TSource, TOutput>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector)
             where TOutput : notnull
-            => new ProjectingAsyncEnumerable<TSource, TOutput>(
-                source,
-                (enumerator, cancellationToken) => new WhereSelectAwaitAsyncEnumerator<TSource, TOutput>(
-                    enumerator, selector, cancellationToken));
+            => AsyncEnumerable.Create(cancellationToken => WhereSelectAwaitWithCancellationInternal(source, selector, cancellationToken));
 
-        private sealed class WhereSelectAwaitAsyncEnumerator<TSource, TOutput> : IAsyncEnumerator<TOutput>
+        #pragma warning disable 8425
+        private static async IAsyncEnumerator<TOutput> WhereSelectAwaitWithCancellationInternal<TSource, TOutput>(
+            IAsyncEnumerable<TSource> source,
+            Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
+            CancellationToken cancellationToken)
             where TOutput : notnull
         {
-            private readonly IAsyncEnumerator<TSource> _source;
-            private readonly Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> _selector;
-            private readonly CancellationToken _cancellationToken;
-
-            public WhereSelectAwaitAsyncEnumerator(
-                IAsyncEnumerator<TSource> source,
-                Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
-                CancellationToken cancellationToken)
+            await foreach (var item in source.WithCancellation(cancellationToken))
             {
-                _source = source;
-                _selector = selector;
-                _cancellationToken = cancellationToken;
-            }
-
-            public TOutput Current { get; private set; } = default!;
-
-            [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP007", Justification = "Enumerator holds ownership")]
-            public ValueTask DisposeAsync() => _source.DisposeAsync();
-
-            public async ValueTask<bool> MoveNextAsync()
-            {
-                while (await _source.MoveNextAsync())
+                var projectedItem = await selector(item, cancellationToken);
+                foreach (var value in projectedItem.ToEnumerable())
                 {
-                    var item = await _selector(_source.Current, _cancellationToken);
-                    foreach (var value in item.ToEnumerable())
-                    {
-                        Current = value;
-                        return true;
-                    }
+                    yield return value;
                 }
-
-                return false;
             }
         }
+        #pragma warning restore 8425
     }
 }

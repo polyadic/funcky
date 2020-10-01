@@ -4,7 +4,7 @@ using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public class ChunkTest
     {
