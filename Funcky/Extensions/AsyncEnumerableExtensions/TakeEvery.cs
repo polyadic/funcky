@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Funcky.Monads;
+using Funcky.Internal;
 
 namespace Funcky.Extensions
 {
@@ -16,17 +15,17 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="interval">The interval between elements in the source sequences.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Returns a sequence where only every n'th element (interval) of source sequence is used. </returns>
         [Pure]
-        public static IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int interval, CancellationToken cancellationToken = default)
+        public static IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int interval)
         {
             ValidateInterval(interval);
 
-            return TakeEveryEnumerable(source, interval, cancellationToken);
+            return AsyncEnumerable.Create(cancellationToken => TakeEveryEnumerable(source, interval, cancellationToken));
         }
 
-        private static async IAsyncEnumerable<TSource> TakeEveryEnumerable<TSource>(this IAsyncEnumerable<TSource> source, int interval, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        #pragma warning disable 8425
+        private static async IAsyncEnumerator<TSource> TakeEveryEnumerable<TSource>(this IAsyncEnumerable<TSource> source, int interval, CancellationToken cancellationToken = default)
         {
             var currentIndex = 0;
             await foreach (var item in source.WithCancellation(cancellationToken))
@@ -39,6 +38,7 @@ namespace Funcky.Extensions
                 currentIndex++;
             }
         }
+        #pragma warning restore 8425
 
         private static void ValidateInterval(int interval)
         {
