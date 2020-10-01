@@ -102,10 +102,14 @@
 * Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync`, `SingleOrNoneAsync` and `ElementAtOrNone` extension methods for `IAsyncEnumerable`.
 * Depend on `System.Collections.Immutable`
 * Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
+* Add `CartesianProduct` extension method for `IEnumerable`.
 * Add `ElementAtOrNone` extension methods for `IEnumerable`.
 * Add extension function `Pairwise` for `IEnumerable`.
 * Add extension function `TakeEvery` 
 * Add custom `JsonConverter` for `Option`.
+* Add custom `JsonConverter` for `Option`.
+* Add `Transpose` extension methods for `IEnumerable`.
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
   `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
+* Extension function `SlidingWindow` added.
 * Add `WhereOfSubType` and `Cast` methods to `Option` for filtering/casting by a specified type.
