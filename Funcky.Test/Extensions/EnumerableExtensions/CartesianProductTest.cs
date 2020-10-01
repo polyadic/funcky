@@ -52,7 +52,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var values = ImmutableList.Create("2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A");
 
             var cards = suits.CartesianProduct(values, (suit, value) => $"{value}{suit}").ToList();
-            Assert.Equal(52, cards.Count());
+
+            Assert.Equal(52, cards.Count);
             Assert.Equal("2♠", cards.First());
             Assert.Equal("A♦", cards.Last());
         }
