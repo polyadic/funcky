@@ -8,11 +8,28 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public class SlidingWindowTest
     {
         [Fact]
-        public void AnEmptySourceReturnsNoSlidingWindows()
+        public void GivenAnEmptySourceSequenceSlidingWindowReturnsAnEmptySequence()
         {
             var source = Enumerable.Empty<int>();
 
             Assert.Empty(source.SlidingWindow(5));
+        }
+
+        [Fact]
+        public void GivenASourceSequenceEqualInLengthToTheSlidingWindowReturnsASequenceWithOneElement()
+        {
+            var source = Enumerable.Range(0, 5);
+
+            Assert.Single(source.SlidingWindow(5));
+            Assert.Equal(source, source.SlidingWindow(5).Single());
+        }
+
+        [Fact]
+        public void GivenASourceSequenceShorterThanTheSlidingWindowReturnsAnEmptySequence()
+        {
+            var source = Enumerable.Range(0, 5);
+
+            Assert.Empty(source.SlidingWindow(10));
         }
 
         [Fact]
