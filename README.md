@@ -36,7 +36,7 @@ Use functional programming as an additional asset to write correct code.
 
 ## Other libraries
 
-There are several libraries available which try to give you more functional features in C#. So 
+There are several libraries available which try to give you more functional features in C#. So
 
 * **Funcky wants to be functional C#.**
 * **Funcky tries to use the C# monadic interfaces as an advantage**
@@ -58,7 +58,7 @@ MoreLinq provides more extension functions on `IEnumerable`, but has no addition
 
 ### [Galaxus.Functional](https://github.com/DigitecGalaxus/Galaxus.Functional)
 
-This is a very simple Functional Library with similar ideas in spirit but not as mature. 
+This is a very simple Functional Library with similar ideas in spirit but not as mature.
 
 ### And more…
 
@@ -82,3 +82,9 @@ When working on the documentation it's useful to have `mdbook` watching and auto
 ```bash
 mdbook serve Documentation
 ```
+
+## Dependency Policy
+The core `Funcky` package is not allowed to have dependencies. Backwards compatibility packages from Microsoft that are included in
+newer framework versions (e.g. `Microsoft.Bcl.AsyncInterfaces`, `System.Collections.Immutable`) are excempt from this rule.
+
+Interoperability with other libraries should be provided in separate packages (e.g. `Funcky.Xunit`, [`Funcky.NewtonsoftJson`](https://github.com/polyadic/funcky-newtonsoftjson))
