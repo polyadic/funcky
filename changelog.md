@@ -104,6 +104,8 @@
 * Depend on `System.Collections.Immutable`
 * Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
 * Add `ElementAtOrNone` extension methods for `IEnumerable`.
+* Add extension function `Pairwise` for `IEnumerable`.
+* Add extension function `TakeEvery` 
 * Extension function `Merge` added
 * Add custom `JsonConverter` for `Option`.
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.

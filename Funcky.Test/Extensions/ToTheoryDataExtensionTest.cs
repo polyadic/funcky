@@ -21,7 +21,7 @@ namespace Funcky.Test.Extensions
 
         [Theory]
         [MemberData(nameof(TheoryFromRepeat))]
-        public void GivenAEnumberableOfTupleWeGetAllValues(int id, string value)
+        public void GivenAnEnumerableOfTupleWeGetAllValues(int id, string value)
         {
             Assert.Equal(IntValue, id);
             Assert.Equal(StringValue, value);
