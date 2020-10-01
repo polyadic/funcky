@@ -19,7 +19,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenOneEmptySetCartesianProductReturnsAnEmptySet()
         {
-            var ints = ImmutableList<int>.Empty.Add(1).Add(2).Add(42);
+            var ints = ImmutableList.Create(1, 2, 3);
             var strings = Enumerable.Empty<string>();
 
             Assert.Empty(ints.CartesianProduct(strings));
