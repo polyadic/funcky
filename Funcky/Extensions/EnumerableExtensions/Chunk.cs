@@ -31,12 +31,12 @@ namespace Funcky.Extensions
         [Pure]
         public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            ValidateSize(size);
+            ValidateChunkSize(size);
 
             return ChunkEnumerable(source, size, resultSelector);
         }
 
-        private static void ValidateSize(int size)
+        private static void ValidateChunkSize(int size)
         {
             if (size <= 0)
             {
