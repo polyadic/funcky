@@ -25,38 +25,10 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
             Assert.Collection(
                 transposed,
-                row1 =>
-                {
-                    Assert.Collection(
-                        row1,
-                        column1 => Assert.Equal(1, column1),
-                        column2 => Assert.Equal(5, column2),
-                        column3 => Assert.Equal(9, column3));
-                },
-                row2 =>
-                {
-                    Assert.Collection(
-                        row2,
-                        column1 => Assert.Equal(2, column1),
-                        column2 => Assert.Equal(6, column2),
-                        column3 => Assert.Equal(10, column3));
-                },
-                row3 =>
-                {
-                    Assert.Collection(
-                        row3,
-                        column1 => Assert.Equal(3, column1),
-                        column2 => Assert.Equal(7, column2),
-                        column3 => Assert.Equal(11, column3));
-                },
-                row4 =>
-                {
-                    Assert.Collection(
-                        row4,
-                        column1 => Assert.Equal(4, column1),
-                        column2 => Assert.Equal(8, column2),
-                        column3 => Assert.Equal(12, column3));
-                });
+                row => { Assert.Equal(new[] { 1, 5, 9 }, row); },
+                row => { Assert.Equal(new[] { 2, 6, 10 }, row); },
+                row => { Assert.Equal(new[] { 3, 7, 11 }, row); },
+                row => { Assert.Equal(new[] { 4, 8, 12 }, row); });
         }
 
         [Fact]
@@ -90,18 +62,17 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASpecialJaggedArrayTheTransposeWorks()
+        public void GivenAJaggedArrayTheTransposeDoesNotWorkAsExpected()
         {
-            // Jagged sequences generally do not work!
-            // If you use jagged sequences, in Transpose you are using an implementation detail.
+            // Jagged sequences do not work!
+            // If you use jagged sequences, in Transpose you are using an implementation detail which could change.
             var transposed = JaggedMatrixExample().Transpose();
 
             Assert.Collection(
                 transposed,
-                row1 => { Assert.Equal(new[] { 1, 6, 5, 10 }, row1); },
-                row2 => { Assert.Equal(new[] { 2, 9 }, row2); },
-                row3 => { Assert.Equal(new[] { 3 }, row3); },
-                row4 => { Assert.Equal(new[] { 4 }, row4); });
+                row => { Assert.Equal(new[] { 1, 6, 5, 10 }, row); },
+                row => { Assert.Equal(new[] { 2, 9, 3, 42 }, row); },
+                row => { Assert.Equal(new[] { 4 }, row); });
         }
 
         private static IEnumerable<IEnumerable<int>> MagicSquare() =>
@@ -124,7 +95,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             new List<IEnumerable<int>>
             {
                 new List<int> { 1, 2, 3, 4 },
-                new List<int> { 6, 9 },
+                new List<int> { 6, 9, 42 },
                 new List<int> { 5 },
                 new List<int> { 10 },
             };
