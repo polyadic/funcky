@@ -1,7 +1,7 @@
 ﻿using Funcky.Monads;
 using Xunit;
 
-namespace Funcky.Test
+namespace Funcky.Test.FunctionalClass
 {
     public class NoOperationTest
     {
