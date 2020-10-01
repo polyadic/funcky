@@ -106,6 +106,8 @@
 * Add extension function `Pairwise` for `IEnumerable`.
 * Add extension function `TakeEvery` 
 * Add custom `JsonConverter` for `Option`.
+* Add custom `JsonConverter` for `Option`.
+* Add `Transpose` extension methods for `IEnumerable`.
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
   `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 * Extension function `SlidingWindow` added.
