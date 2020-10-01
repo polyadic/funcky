@@ -20,7 +20,7 @@ namespace Funcky.Extensions
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IComparer<TSource>? comparer = null)
-            => ImmutableList.Create(sequence1).Add(sequence2).Merge(comparer);
+            => ImmutableList.Create(sequence1, sequence2).Merge(comparer);
 
         /// <summary>
         /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -34,7 +34,7 @@ namespace Funcky.Extensions
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IComparer<TSource>? comparer = null)
-            => ImmutableList.Create(sequence1).Add(sequence2).Add(sequence3).Merge(comparer);
+            => ImmutableList.Create(sequence1, sequence2, sequence3).Merge(comparer);
 
         /// <summary>
         /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -49,7 +49,7 @@ namespace Funcky.Extensions
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IEnumerable<TSource> sequence4, IComparer<TSource>? comparer = null)
-            => ImmutableList.Create(sequence1).Add(sequence2).Add(sequence3).Add(sequence4).Merge(comparer);
+            => ImmutableList.Create(sequence1, sequence2, sequence3, sequence4).Merge(comparer);
 
         /// <summary>
         /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
