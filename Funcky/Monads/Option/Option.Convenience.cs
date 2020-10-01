@@ -63,6 +63,14 @@ namespace Funcky.Monads
             => SelectMany(item => Option.FromNullable(item as TResult));
 
         /// <summary>
+        /// Casts the value in the <see cref="Option{T}"/> to the desired type.
+        /// You should prefer <see cref="WhereOfSubType{TResult}"/> whenever possible.
+        /// </summary>
+        public Option<TResult> Cast<TResult>()
+            where TResult : class
+            => Select(item => (TResult)(object)item);
+
+        /// <summary>
         /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
         /// has an item and nothing when the option is empty.
         /// </summary>

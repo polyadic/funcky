@@ -517,7 +517,31 @@ namespace Funcky.Test.Monads
             FunctionalAssert.IsSome(value, filtered);
         }
 
-        private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
+        [Fact]
+        public void CastReturnsOptionOfResultTypeWhenUpcastSucceeds()
+        {
+            const string value = "foo";
+            Assert.Equal(
+                Option.Some<object>(value),
+                Option.Some(value).Cast<object>());
+        }
+
+        [Fact]
+        public void CastReturnsOptionOfResultTypeWhenDowncastSucceeds()
+        {
+            const string value = "foo";
+            Assert.Equal(
+                Option.Some<object>(value).Cast<string>(),
+                Option.Some(value));
+        }
+
+        [Fact]
+        public void CastThrowsWhenCastFails()
+        {
+            Assert.Throws<InvalidCastException>(() => Option.Some<ValueTask>(default).Cast<Task>());
+        }
+
+        private static Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;
 
         private static async Task<T> DelayedResult<T>(T value, TimeSpan delay)
         {
