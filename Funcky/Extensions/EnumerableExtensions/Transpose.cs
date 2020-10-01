@@ -18,8 +18,8 @@ namespace Funcky.Extensions
         /// <returns>A partially lazy transposition of a matrix.</returns>
         [Pure]
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "We need to know the length of the outer IEnumerable to Chunk correctly, we only iterate the outer sequence, which should be cheap")]
-        public static IEnumerable<IEnumerable<TSource>> Transpose<TSource>(this IEnumerable<IEnumerable<TSource>> source) =>
-            source.Any()
+        public static IEnumerable<IEnumerable<TSource>> Transpose<TSource>(this IEnumerable<IEnumerable<TSource>> source)
+            => source.Any()
                 ? source.Interleave().Chunk(source.Count())
                 : Enumerable.Empty<IEnumerable<TSource>>();
     }
