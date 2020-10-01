@@ -16,8 +16,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSecondSource">The type of the elements in the second sequence.</typeparam>
         /// <returns>Returns a list of all combinations as pairs.</returns>
         [Pure]
-        public static IEnumerable<(TFirstSource First, TSecondSource Second)> CartesianProduct<TFirstSource,
-            TSecondSource>(
+        public static IEnumerable<(TFirstSource First, TSecondSource Second)> CartesianProduct<TFirstSource, TSecondSource>(
             this IEnumerable<TFirstSource> firstSequence, IEnumerable<TSecondSource> secondSequence) =>
                 CartesianProduct(firstSequence, secondSequence, ValueTuple.Create);
 
