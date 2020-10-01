@@ -19,7 +19,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
-        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IComparer<TSource>? comparer = null)
+        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, Option<IComparer<TSource>> comparer = default)
             => ImmutableList.Create(sequence1, sequence2).Merge(comparer);
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
-        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IComparer<TSource>? comparer = null)
+        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, Option<IComparer<TSource>> comparer = default)
             => ImmutableList.Create(sequence1, sequence2, sequence3).Merge(comparer);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
-        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IEnumerable<TSource> sequence4, IComparer<TSource>? comparer = null)
+        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> sequence1, IEnumerable<TSource> sequence2, IEnumerable<TSource> sequence3, IEnumerable<TSource> sequence4, Option<IComparer<TSource>> comparer = default)
             => ImmutableList.Create(sequence1, sequence2, sequence3, sequence4).Merge(comparer);
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
         /// <returns>The merged sequences in the same order as the given sequences.</returns>
         [Pure]
-        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, IComparer<TSource>? comparer = null)
+        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
         {
             var enumerators = GetMergeEnumerators(sources);
             var result = MergeEnumerators(enumerators.RemoveAll(MoveNextMerge), GetMergeComparer(comparer));
@@ -73,8 +73,8 @@ namespace Funcky.Extensions
         private static ImmutableList<IEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> sources)
             => ImmutableList.Create<IEnumerator<TSource>>().AddRange(sources.Select(s => s.GetEnumerator()));
 
-        private static IComparer<TSource> GetMergeComparer<TSource>(IComparer<TSource>? comparer)
-            => Option.FromNullable(comparer).GetOrElse(Comparer<TSource>.Default);
+        private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
+            => comparer.GetOrElse(Comparer<TSource>.Default);
 
         private static bool MoveNextMerge<TSource>(IEnumerator<TSource> enumerator)
             => !enumerator.MoveNext();

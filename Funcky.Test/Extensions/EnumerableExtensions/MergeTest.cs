@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Xunit;
 
@@ -71,7 +72,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var sequence2 = new List<int> { 8, 6, 5, 3 };
             var expected = Enumerable.Range(1, 8).Reverse();
 
-            Assert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
+            Assert.Equal(expected, sequence1.Merge(sequence2, Option.Some<IComparer<int>>(DescendingIntComparer.Create())));
         }
     }
 }
