@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Funcky.Extensions;
 using Xunit;
@@ -59,6 +60,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
+        [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed", Justification = "The ToList just enumerates the items, we test for the side effect in the next line.")]
         public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
         {
             var numberOfRows = 5;
@@ -77,49 +79,59 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenAMagicSquareTransposeDoesNotChangeTheAverages()
         {
-            var magicSquare = new List<List<int>>
+            MagicSquare()
+                .Select(Enumerable.Average)
+                .ForEach(average => Assert.Equal(5, average));
+
+            MagicSquare()
+                .Transpose()
+                .Select(Enumerable.Average)
+                .ForEach(average => Assert.Equal(5, average));
+        }
+
+        [Fact]
+        public void GivenASpecialJaggedArrayTheTransposeWorks()
+        {
+            // Jagged sequences generally do not work!
+            // If you use jagged sequences, in Transpose you are using an implementation detail.
+            var transposed = JaggedMatrixExample().Transpose();
+
+            Assert.Collection(
+                transposed,
+                row1 => { Assert.Equal(new[] { 1, 6, 5, 10 }, row1); },
+                row2 => { Assert.Equal(new[] { 2, 9 }, row2); },
+                row3 => { Assert.Equal(new[] { 3 }, row3); },
+                row4 => { Assert.Equal(new[] { 4 }, row4); });
+        }
+
+        private static IEnumerable<IEnumerable<int>> MagicSquare() =>
+            new List<IEnumerable<int>>
             {
                 new List<int> { 4, 9, 2 },
                 new List<int> { 3, 5, 7 },
                 new List<int> { 8, 1, 6 },
             };
 
-            magicSquare
-                .Select(Enumerable.Average)
-                .ForEach(average => Assert.Equal(5, average));
-
-            magicSquare
-                .Transpose()
-                .Select(Enumerable.Average)
-                .ForEach(average => Assert.Equal(5, average));
-        }
-
-        private static IEnumerable<IEnumerable<int>> MatrixExample()
-        {
-            return new List<IEnumerable<int>>
+        private static IEnumerable<IEnumerable<int>> MatrixExample() =>
+            new List<IEnumerable<int>>
             {
                 new List<int> { 1, 2, 3, 4 },
                 new List<int> { 5, 6, 7, 8 },
                 new List<int> { 9, 10, 11, 12 },
             };
-        }
 
-        private static IEnumerable<IEnumerable<int>> JaggedMatrixExample()
-        {
-            return new List<IEnumerable<int>>
+        private static IEnumerable<IEnumerable<int>> JaggedMatrixExample() =>
+            new List<IEnumerable<int>>
             {
                 new List<int> { 1, 2, 3, 4 },
+                new List<int> { 6, 9 },
                 new List<int> { 5 },
-                new List<int> { 6, 7, 8, 9 },
                 new List<int> { 10 },
             };
-        }
 
-        private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
-        {
-            return from row in Enumerable.Range(0, rows)
-                select from column in Enumerable.Range(0, columns)
-                    select new CountCreation();
-        }
+        private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns) =>
+            from row in Enumerable.Range(0, rows)
+            select from column in Enumerable.Range(0, columns)
+                select new CountCreation();
     }
 }
