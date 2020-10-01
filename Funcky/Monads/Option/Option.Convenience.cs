@@ -11,60 +11,43 @@ namespace Funcky.Monads
     {
         [Pure]
         public Option<TItem> Where(Func<TItem, bool> predicate)
-        {
-            return SelectMany(item => predicate(item) ? Option.Some(item) : None());
-        }
+            => SelectMany(item => predicate(item) ? Option.Some(item) : None());
 
         [Pure]
         public Option<TItem> OrElse(Option<TItem> elseOption)
-        {
-            return Match(elseOption, Option.Some);
-        }
+            => Match(none: elseOption, some: Option.Some);
 
         [Pure]
         public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
-        {
-            return Match(elseOption, Option.Some);
-        }
+            => Match(none: elseOption, some: Option.Some);
 
         [Pure]
         public TItem GetOrElse(TItem elseOption)
-        {
-            return Match(elseOption, Identity);
-        }
+            => Match(none: elseOption, some: Identity);
 
         [Pure]
         public TItem GetOrElse(Func<TItem> elseOption)
-        {
-            return Match(elseOption, Identity);
-        }
+            => Match(none: elseOption, some: Identity);
 
         [Pure]
         public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
             where TResult : notnull
-        {
-            return Select(andThenFunction);
-        }
+            => Select(andThenFunction);
 
         [Pure]
         public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> andThenFunction)
             where TResult : notnull
-        {
-            return SelectMany(andThenFunction);
-        }
+            => SelectMany(andThenFunction);
 
         /// <summary>
-        ///     Performs a side effect when the option has a value.
+        /// Performs a side effect when the option has a value.
         /// </summary>
         public void AndThen(Action<TItem> andThenFunction)
-        {
-            Match(NoOperation, andThenFunction);
-        }
+            => Match(none: NoOperation, some: andThenFunction);
 
         /// <summary>
-        ///     Performs a side effect when the option has a value and returns the option again.
-        ///     This is the <see cref="Option{T}" /> equivalent of
-        ///     <see cref="EnumerableExtensions.Inspect{T}(IEnumerable{T}, Action{T})" />.
+        /// Performs a side effect when the option has a value and returns the option again.
+        /// This is the <see cref="Option{T}"/> equivalent of <see cref="EnumerableExtensions.Inspect{T}(IEnumerable{T}, Action{T})"/>.
         /// </summary>
         public Option<TItem> Inspect(Action<TItem> action)
         {
@@ -73,15 +56,13 @@ namespace Funcky.Monads
         }
 
         /// <summary>
-        ///     Returns an <see cref="IEnumerable{T}" /> that yields exactly one value when the option
-        ///     has an item and nothing when the option is empty.
+        /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
+        /// has an item and nothing when the option is empty.
         /// </summary>
         [Pure]
         public IEnumerable<TItem> ToEnumerable()
-        {
-            return Match(
-                Enumerable.Empty<TItem>(),
-                value => Enumerable.Repeat(value, 1));
-        }
+            => Match(
+                none: Enumerable.Empty<TItem>(),
+                some: value => Enumerable.Repeat(value, 1));
     }
 }
