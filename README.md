@@ -36,7 +36,7 @@ Use functional programming as an additional asset to write correct code.
 
 ## Other libraries
 
-There are several libraries available which try to give you more functional features in C#. So 
+There are several libraries available which try to give you more functional features in C#. So
 
 * **Funcky wants to be functional C#.**
 * **Funcky tries to use the C# monadic interfaces as an advantage**
@@ -58,7 +58,7 @@ MoreLinq provides more extension functions on `IEnumerable`, but has no addition
 
 ### [Galaxus.Functional](https://github.com/DigitecGalaxus/Galaxus.Functional)
 
-This is a very simple Functional Library with similar ideas in spirit but not as mature. 
+This is a very simple Functional Library with similar ideas in spirit but not as mature.
 
 ### And more…
 
@@ -73,12 +73,25 @@ TODO
 
 ## Contributing
 Contributions are more than welcome. Just open a PR :)
-If you want something easy to work on, there are a few issues marked with [good first issue](https://github.com/polyadic/funcky/labels/good%20first%20issue).
+If you want something easy to work on, there are a few issues marked with [good first issue].
 
 ### Documentation
-To build the documentation you need [mdBook](https://github.com/rust-lang/mdBook) installed.
+To build the documentation you need [mdBook] installed.
 When working on the documentation it's useful to have `mdbook` watching and automatically rebuilding on changes:
 
 ```bash
 mdbook serve Documentation
 ```
+
+## Dependency Policy
+The core `Funcky` package is not allowed to have dependencies. Backwards compatibility packages from Microsoft that are included in
+newer framework versions (e.g. [`Microsoft.Bcl.AsyncInterfaces`], [`System.Collections.Immutable`]) are excempt from this rule.
+
+Interoperability with other libraries should be provided in separate packages (e.g. `Funcky.Xunit`, [`Funcky.NewtonsoftJson`])
+
+
+[good first issue]: https://github.com/polyadic/funcky/labels/good%20first%20issue
+[mdBook]: https://github.com/rust-lang/mdBook
+[`Funcky.NewtonsoftJson`]: https://github.com/polyadic/funcky-newtonsoftjson
+[`Microsoft.Bcl.AsyncInterfaces`]: https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces
+[`System.Collections.Immutable`]: https://www.nuget.org/packages/System.Collections.Immutable
