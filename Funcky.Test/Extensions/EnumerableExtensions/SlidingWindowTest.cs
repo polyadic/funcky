@@ -16,7 +16,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASourceSequenceEqualInLengthToTheSlidingWindowReturnsASequenceWithOneElement()
+        public void GivenASourceSequenceEqualInLengthToTheSlidingWindowWidthReturnsASequenceWithOneElement()
         {
             var source = Enumerable.Range(0, 5);
 
@@ -25,7 +25,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASourceSequenceShorterThanTheSlidingWindowReturnsAnEmptySequence()
+        public void GivenASourceSequenceShorterThanTheSlidingWindowWidthReturnsAnEmptySequence()
         {
             var source = Enumerable.Range(0, 5);
 
