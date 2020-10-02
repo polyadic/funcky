@@ -31,7 +31,10 @@ namespace Funcky.Extensions
 
             try
             {
-                return InterleaveEnumerator(enumerators);
+                foreach (var element in InterleaveEnumerator(enumerators))
+                {
+                    yield return element;
+                }
             }
             finally
             {
@@ -46,7 +49,7 @@ namespace Funcky.Extensions
         {
             while (!enumerators.IsEmpty)
             {
-                enumerators = enumerators.RemoveAll(e => !e.MoveNext());
+                enumerators = enumerators.RemoveAll(HasMoreElements);
                 foreach (var enumerator in enumerators)
                 {
                     yield return enumerator.Current;
