@@ -99,13 +99,15 @@
 
 ## Unreleased
 * Funcky now uses `.ConfigureAwait(false)` everywhere `await` is used.
-* Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync`, `SingleOrNoneAsync` and `ElementAtOrNone` extension methods for `IAsyncEnumerable`.
+* Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync` and `SingleOrNoneAsync` extension methods for `IAsyncEnumerable`.
+* Extension function Chunk added
 * Depend on `System.Collections.Immutable`
 * Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
 * Add `CartesianProduct` extension method for `IEnumerable`.
 * Add `ElementAtOrNone` extension methods for `IEnumerable`.
 * Add extension function `Pairwise` for `IEnumerable`.
 * Add extension function `TakeEvery` 
+* Extension function `Merge` added
 * Add custom `JsonConverter` for `Option`.
 * Add custom `JsonConverter` for `Option`.
 * Add `Transpose` extension methods for `IEnumerable`.
