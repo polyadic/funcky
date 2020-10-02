@@ -63,11 +63,15 @@ namespace Funcky.Extensions
         public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
         {
             var enumerators = GetMergeEnumerators(sources);
-            var result = MergeEnumerators(enumerators.RemoveAll(MoveNextMerge), GetMergeComparer(comparer));
 
-            enumerators.ForEach(s => s.Dispose());
-
-            return result;
+            try
+            {
+                return MergeEnumerators(enumerators.RemoveAll(MoveNextMerge), GetMergeComparer(comparer));
+            }
+            finally
+            {
+                enumerators.ForEach(s => s.Dispose());
+            }
         }
 
         private static ImmutableList<IEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> sources)
