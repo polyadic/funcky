@@ -94,8 +94,8 @@ namespace Funcky.Extensions
             }
         }
 
-        private static ImmutableList<IEnumerator<TSource>> RemoveYielded<TSource>(IEnumerator<TSource> minimum, ImmutableList<IEnumerator<TSource>> enumerators) =>
-            minimum.MoveNext()
+        private static ImmutableList<IEnumerator<TSource>> RemoveYielded<TSource>(IEnumerator<TSource> minimum, ImmutableList<IEnumerator<TSource>> enumerators)
+            => minimum.MoveNext()
                 ? enumerators
                 : enumerators.Remove(minimum);
 
