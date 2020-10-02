@@ -66,7 +66,10 @@ namespace Funcky.Extensions
 
             try
             {
-                return MergeEnumerators(enumerators.RemoveAll(MoveNextMerge), GetMergeComparer(comparer));
+                foreach (var element in MergeEnumerators(enumerators.RemoveAll(HasMoreElements), GetMergeComparer(comparer)))
+                {
+                    yield return element;
+                }
             }
             finally
             {
@@ -80,7 +83,7 @@ namespace Funcky.Extensions
         private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
             => comparer.GetOrElse(Comparer<TSource>.Default);
 
-        private static bool MoveNextMerge<TSource>(IEnumerator<TSource> enumerator)
+        private static bool HasMoreElements<TSource>(IEnumerator<TSource> enumerator)
             => !enumerator.MoveNext();
 
         private static IEnumerable<TSource> MergeEnumerators<TSource>(ImmutableList<IEnumerator<TSource>> enumerators, IComparer<TSource> comparer)
