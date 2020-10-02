@@ -27,9 +27,23 @@ namespace Funcky.Extensions
         [Pure]
         public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<IEnumerable<TSource>> source)
         {
-            var sourceEnumerators = source.Select(s => s.GetEnumerator()).ToImmutableList();
+            var enumerators = GetInterleaveEnumerators(source);
 
-            var enumerators = sourceEnumerators;
+            try
+            {
+                return InterleaveEnumerator(enumerators);
+            }
+            finally
+            {
+                enumerators.ForEach(enumerator => enumerator.Dispose());
+            }
+        }
+
+        private static ImmutableList<IEnumerator<TSource>> GetInterleaveEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> source)
+            => source.Select(s => s.GetEnumerator()).ToImmutableList();
+
+        private static IEnumerable<TSource> InterleaveEnumerator<TSource>(ImmutableList<IEnumerator<TSource>> enumerators)
+        {
             while (!enumerators.IsEmpty)
             {
                 enumerators = enumerators.RemoveAll(e => !e.MoveNext());
@@ -38,8 +52,6 @@ namespace Funcky.Extensions
                     yield return enumerator.Current;
                 }
             }
-
-            sourceEnumerators.ForEach(enumerator => enumerator.Dispose());
         }
     }
 }
