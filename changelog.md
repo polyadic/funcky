@@ -106,7 +106,7 @@
 * Add `CartesianProduct` extension method for `IEnumerable`.
 * Add `ElementAtOrNone` extension methods for `IEnumerable`.
 * Add extension function `Pairwise` for `IEnumerable`.
-* Add extension function `TakeEvery` 
+* Add extension function `TakeEvery`
 * Extension function `Merge` added
 * Add custom `JsonConverter` for `Option`.
 * Add custom `JsonConverter` for `Option`.
@@ -114,3 +114,4 @@
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
   `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 * Extension function `SlidingWindow` added.
+* Add `Partition` extension method for `IEnumerable`.
