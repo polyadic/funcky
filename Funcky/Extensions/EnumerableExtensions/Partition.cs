@@ -36,7 +36,7 @@ namespace Funcky.Extensions
             Func<TItem, bool> predicate,
             Func<IEnumerable<TItem>, IEnumerable<TItem>, TResult> resultSelector)
             => source
-                .Aggregate(new PartitionBuilder<TItem>(predicate), (builder, item) => builder.Add(item))
+                .Aggregate(new PartitionBuilder<TItem>(predicate), PartitionBuilder<TItem>.Add)
                 .Build(resultSelector);
 
         private readonly struct PartitionBuilder<TItem>
@@ -53,6 +53,9 @@ namespace Funcky.Extensions
                 _left = left ?? ImmutableList<TItem>.Empty;
                 _right = right ?? ImmutableList<TItem>.Empty;
             }
+
+            public static PartitionBuilder<TItem> Add(PartitionBuilder<TItem> builder, TItem item)
+                => builder.Add(item);
 
             public PartitionBuilder<TItem> Add(TItem item)
                 => _predicate(item)
