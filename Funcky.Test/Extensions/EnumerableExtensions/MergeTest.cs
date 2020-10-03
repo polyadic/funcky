@@ -37,8 +37,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [InlineData(1000, 100)]
         public void TwoSingleSequencesAreMergedCorrectly(int first, int second)
         {
-            var sequence1 = Enumerable.Repeat(first, 1);
-            var sequence2 = Enumerable.Repeat(second, 1);
+            var sequence1 = Sequence.Return(first);
+            var sequence2 = Sequence.Return(second);
 
             var merged = sequence1.Merge(sequence2);
             Assert.True(merged.First() < merged.Last());
