@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
@@ -54,16 +55,17 @@ namespace Funcky.Extensions
                 _right = right ?? ImmutableList<TItem>.Empty;
             }
 
-            public static PartitionBuilder<TItem> Add(PartitionBuilder<TItem> builder, TItem item)
-                => builder.Add(item);
+            public static PartitionBuilder<TItem> Add(PartitionBuilder<TItem> builder, TItem item) => builder.Add(item);
 
-            public PartitionBuilder<TItem> Add(TItem item)
+            public TResult Build<TResult>(Func<IEnumerable<TItem>, IEnumerable<TItem>, TResult> selector) => selector(_left, _right);
+
+            private PartitionBuilder<TItem> Add(TItem item)
                 => _predicate(item)
-                    ? new PartitionBuilder<TItem>(_predicate, _left.Add(item), _right)
-                    : new PartitionBuilder<TItem>(_predicate, _left, _right.Add(item));
+                    ? With(left: _left.Add(item))
+                    : With(right: _right.Add(item));
 
-            public TResult Build<TResult>(Func<IEnumerable<TItem>, IEnumerable<TItem>, TResult> selector)
-                => selector(_left, _right);
+            private PartitionBuilder<TItem> With(IImmutableList<TItem>? left = null, IImmutableList<TItem>? right = null)
+                => new PartitionBuilder<TItem>(_predicate, left ?? _left, right ?? _right);
         }
     }
 }
