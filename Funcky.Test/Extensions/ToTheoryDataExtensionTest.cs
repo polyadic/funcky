@@ -28,6 +28,6 @@ namespace Funcky.Test.Extensions
         }
 
         public static TheoryData<int, string> TheoryFromRepeat()
-            => Enumerable.Repeat(Tuple.Create(IntValue, StringValue), 1).ToTheoryData();
+            => Sequence.Return(Tuple.Create(IntValue, StringValue)).ToTheoryData();
     }
 }

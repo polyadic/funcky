@@ -50,9 +50,9 @@ namespace Funcky.Test.Extensions
         [InlineData("c", "b", "a")]
         public void GivenMultipleSequencesTheOrderIsPreserved(string first, string second, string third)
         {
-            IEnumerable<string> one = Enumerable.Repeat(first, 1);
-            IEnumerable<string> two = Enumerable.Repeat(second, 1);
-            IEnumerable<string> three = Enumerable.Repeat(third, 1);
+            IEnumerable<string> one = Sequence.Return(first);
+            IEnumerable<string> two = Sequence.Return(second);
+            IEnumerable<string> three = Sequence.Return(third);
 
             var interleaved = one.Interleave(two, three);
 

@@ -18,7 +18,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASingleElementSequencePairwiseReturnsAnEmptySequence()
         {
-            var oneElementSequence = Enumerable.Repeat("string", 1);
+            var oneElementSequence = Sequence.Return("string");
 
             Assert.Empty(oneElementSequence.Pairwise());
         }
