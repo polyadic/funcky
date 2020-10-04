@@ -62,7 +62,7 @@ namespace Funcky.Monads
         [Pure]
         public IEnumerable<TItem> ToEnumerable()
             => Match(
-                none: Enumerable.Empty<TItem>(),
-                some: value => Enumerable.Repeat(value, 1));
+                none: Enumerable.Empty<TItem>,
+                some: Sequence.Return);
     }
 }
