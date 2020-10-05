@@ -148,8 +148,13 @@ suited especially for use with EF Core:
   When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
   `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 
+### Dependencies
+To support .NET Standard, Funcky conditionally pulls in dependencies
+that provide the missing functionality:
+* `Microsoft.Bcl.AsyncInterfaces` for .NET Standard 2.0
+* `System.Collections.Immutable` and `System.Text.Json` for .NET Standard 2.0 and 2.1
+
 ### Improvements
 * `ConfigureAwait(false)` is now used everywhere `await` is used.
-* Funcky now depend on `System.Collections.Immutable` when targeting .NET Standard.
 * The `IRetryPolicy` implementations now use correct `Timespan` with `double` multiplication
   when targeting .NET Standard 2.0.
