@@ -23,7 +23,7 @@
 * [IEnumerable Extensions]()
   * [ForEach]()
   * [Inspect]()
-  * [None]()
+  * [None](./none.md)
   * [Chunk]()
 * [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
