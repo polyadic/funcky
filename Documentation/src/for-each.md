@@ -1,5 +1,6 @@
 # `IEnumerable` extension method `.ForEach`
-With the `.ForEach` extension method, you can invoke an action for each item in an enumerable, just like a `for each` statement would allow you to do.
+With the `.ForEach` extension method, you can invoke an action for each item in an enumerable, just like a `foreach` statement would allow you to do.
+
 This method is already available in .NET, but just on `List`s, and it makes sense for it to be available on every enumerable.
 
 Keep in mind that `.ForEach` is imperative and only expects an `Action<T>`. It should not be used to change state of anything outside of the `.ForEach`.
