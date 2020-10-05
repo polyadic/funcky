@@ -13,7 +13,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var dates = DateGenerator(2020);
 
-            var months = dates.AdjacentGroupBy2(date => date.Month, EqualityComparer<int>.Default);
+            var months = dates.AdjacentGroupBy(date => date.Month, EqualityComparer<int>.Default);
 
             Assert.Equal(366, dates.Count());
             Assert.Equal(12, months.Count());
