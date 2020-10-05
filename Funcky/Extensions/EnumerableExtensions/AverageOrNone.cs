@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Funcky.Monads;
 using static Funcky.Functional;
 
@@ -7,6 +8,7 @@ namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
     {
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<int> source)
         {
             using IEnumerator<int> enumerator = source.GetEnumerator();
@@ -20,9 +22,11 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<int>> source)
             => source.WhereSelect(Identity).AverageOrNone();
 
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<long> source)
         {
             using IEnumerator<long> enumerator = source.GetEnumerator();
@@ -36,9 +40,11 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<long>> source)
             => source.WhereSelect(Identity).AverageOrNone();
 
+        [Pure]
         public static Option<float> AverageOrNone(this IEnumerable<float> source)
         {
             using IEnumerator<float> enumerator = source.GetEnumerator();
@@ -52,9 +58,11 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<float> AverageOrNone(this IEnumerable<Option<float>> source)
             => source.WhereSelect(Identity).AverageOrNone();
 
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<double> source)
         {
             using IEnumerator<double> enumerator = source.GetEnumerator();
@@ -68,9 +76,11 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<double>> source)
             => source.WhereSelect(Identity).AverageOrNone();
 
+        [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<decimal> source)
         {
             using IEnumerator<decimal> enumerator = source.GetEnumerator();
@@ -84,9 +94,11 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<Option<decimal>> source)
             => source.WhereSelect(Identity).AverageOrNone();
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -100,6 +112,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, Option<int>> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -113,6 +126,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -126,6 +140,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, Option<long>> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -139,6 +154,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<float> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -152,6 +168,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<float> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, Option<float>> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -165,6 +182,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -178,6 +196,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, Option<double>> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -191,6 +210,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<decimal> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
@@ -204,6 +224,7 @@ namespace Funcky.Extensions
             return calculator.Average;
         }
 
+        [Pure]
         public static Option<decimal> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, Option<decimal>> selector)
         {
             using IEnumerator<TSource> enumerator = source.GetEnumerator();
