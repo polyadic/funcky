@@ -144,9 +144,9 @@ suited especially for use with EF Core:
 * `SingleOrNone`
 
 ### Serialization
-* Add custom `JsonConverter` for `Option`.
-  When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
-  `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
+`Option` adds support for `System.Text.Json`:\
+The custom `JsonConverter` is picked up automatically when serializing/deserializing.
+`None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 
 ### Dependencies
 To support .NET Standard, Funcky conditionally pulls in dependencies
