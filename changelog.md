@@ -106,7 +106,7 @@
 This release adds factory methods for creating `IEnumerable<T>`
 with the static class `Sequence`:
 * `Sequence.Return`: Creates an `IEnumerable<T>` with exactly one item.
-* `Sequence.FromNullable`: Creates an `IEnumerable<T>` with zero or one item.
+* `Sequence.FromNullable`: Creates an `IEnumerable<T>` with zero or one items.
 
 ### More Extension Methods for `IEnumerable<T>`
 This release adds a bunch of new extension methods on `IEnumerable<T>`:
@@ -128,7 +128,7 @@ with `Option<T>` to `IAsyncEnumerable<T>`:
 * `FirstOrNoneAsync`
 * `LastOrNoneAsync`
 * `SingleOrNoneAsync`
-* `ElementAtOrNone`
+* `ElementAtOrNoneAsync`
 
 A couple of the new extension methods on `IEnumerable<T>` have async counterparts:
 * `Pairwise`
