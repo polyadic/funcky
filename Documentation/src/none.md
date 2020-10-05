@@ -18,7 +18,7 @@ if (enumerable.None())
 }
 ```
 
-Just like with `.Any()`, you can additionally pass a `Func<TSource,bool> predicate` as a parameter:
+Just like with `.Any()`, you can additionally pass a predicate as a parameter:
 
 ```csharp
 if (enumerable.None(item => item.SomeNumericProperty == 2){...}
