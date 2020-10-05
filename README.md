@@ -85,7 +85,7 @@ mdbook serve Documentation
 
 ## Dependency Policy
 The core `Funcky` package is not allowed to have dependencies. Backwards compatibility packages from Microsoft that are included in
-newer framework versions (e.g. [`Microsoft.Bcl.AsyncInterfaces`], [`System.Collections.Immutable`]) are excempt from this rule.
+newer framework versions (e.g. [`Microsoft.Bcl.AsyncInterfaces`], [`System.Collections.Immutable`]) are exempt from this rule.
 
 Interoperability with other libraries should be provided in separate packages (e.g. `Funcky.Xunit`, [`Funcky.NewtonsoftJson`])
 
