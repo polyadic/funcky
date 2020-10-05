@@ -22,12 +22,12 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
         private IEnumerable<DateTime> DateGenerator(int startYear)
         {
-            DateTime current = new DateTime(startYear, 1, 1);
+            var current = new DateTime(startYear, 1, 1);
 
             while (current.Year == startYear)
             {
                 yield return current;
-                current.AddDays(1);
+                current = current.AddDays(1);
             }
         }
     }
