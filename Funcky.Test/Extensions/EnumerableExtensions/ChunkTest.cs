@@ -98,11 +98,11 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(-42)]
-        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int negativeChunkSize)
+        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
         {
             var numbers = new List<int> { 1 };
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(negativeChunkSize));
+            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(invalidChunkSize));
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var magicSquare = new List<int> { 4, 9, 2, 3, 5, 7, 8, 1, 6 };
 
             magicSquare
-                .Chunk(3, Enumerable.Average)
+                .Chunk(3, number => Enumerable.Average(number))
                 .ForEach(average => Assert.Equal(5, average));
         }
     }
