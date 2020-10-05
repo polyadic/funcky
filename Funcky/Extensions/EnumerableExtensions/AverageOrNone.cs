@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Funcky.Monads;
+using static Funcky.Functional;
 
 namespace Funcky.Extensions
 {
@@ -20,7 +21,7 @@ namespace Funcky.Extensions
         }
 
         public static Option<double> AverageOrNone(this IEnumerable<Option<int>> source)
-            => source.WhereSelect(Functional.Identity).AverageOrNone();
+            => source.WhereSelect(Identity).AverageOrNone();
 
         public static Option<double> AverageOrNone(this IEnumerable<long> source)
         {
@@ -36,7 +37,7 @@ namespace Funcky.Extensions
         }
 
         public static Option<double> AverageOrNone(this IEnumerable<Option<long>> source)
-            => source.WhereSelect(Functional.Identity).AverageOrNone();
+            => source.WhereSelect(Identity).AverageOrNone();
 
         public static Option<float> AverageOrNone(this IEnumerable<float> source)
         {
@@ -52,7 +53,7 @@ namespace Funcky.Extensions
         }
 
         public static Option<float> AverageOrNone(this IEnumerable<Option<float>> source)
-            => source.WhereSelect(Functional.Identity).AverageOrNone();
+            => source.WhereSelect(Identity).AverageOrNone();
 
         public static Option<double> AverageOrNone(this IEnumerable<double> source)
         {
@@ -68,7 +69,7 @@ namespace Funcky.Extensions
         }
 
         public static Option<double> AverageOrNone(this IEnumerable<Option<double>> source)
-            => source.WhereSelect(Functional.Identity).AverageOrNone();
+            => source.WhereSelect(Identity).AverageOrNone();
 
         public static Option<decimal> AverageOrNone(this IEnumerable<decimal> source)
         {
@@ -84,7 +85,7 @@ namespace Funcky.Extensions
         }
 
         public static Option<decimal> AverageOrNone(this IEnumerable<Option<decimal>> source)
-            => source.WhereSelect(Functional.Identity).AverageOrNone();
+            => source.WhereSelect(Identity).AverageOrNone();
 
         public static Option<double> AverageOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
