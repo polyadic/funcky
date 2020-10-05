@@ -40,7 +40,7 @@ There are several libraries available which try to give you more functional feat
 
 * **Funcky wants to be functional C#.**
 * **Funcky tries to use the C# monadic interfaces as an advantage**
-* **We do not provide our own RecordType. Use Fody or Wait for C# 9**
+* **We do not provide our own RecordType. Use Fody or wait for C# 9**
 
 ### [LanguageExt](https://github.com/louthy/language-ext)
 
