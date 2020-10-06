@@ -98,19 +98,63 @@
 * Added `None` overload that takes no predicate.
 
 ## Unreleased
-* Funcky now uses `.ConfigureAwait(false)` everywhere `await` is used.
-* Add `WhereSelect`, `FirstOrNoneAsync`, `LastOrNoneAsync` and `SingleOrNoneAsync` extension methods for `IAsyncEnumerable`.
-* Extension function Chunk added
-* Depend on `System.Collections.Immutable`
-* Add `Chunk`, `Interleave` extension methods for `IEnumerable`.
-* Add `CartesianProduct` extension method for `IEnumerable`.
-* Add `ElementAtOrNone` extension methods for `IEnumerable`.
-* Add extension function `Pairwise` for `IEnumerable`.
-* Add extension function `TakeEvery` 
-* Extension function `Merge` added
-* Add custom `JsonConverter` for `Option`.
-* Add custom `JsonConverter` for `Option`.
-* Add `Transpose` extension methods for `IEnumerable`.
-  When using `System.Text.Json` to serialize/deserialize this converter is picked up automatically.
-  `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
-* Extension function `SlidingWindow` added.
+
+### Deprecations
+* `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
+
+### Factory methods for `IEnumerable<T>`
+This release adds factory methods for creating `IEnumerable<T>`
+with the static class `Sequence`:
+* `Sequence.Return`: Creates an `IEnumerable<T>` with exactly one item.
+* `Sequence.FromNullable`: Creates an `IEnumerable<T>` with zero or one items.
+
+### More Extension Methods for `IEnumerable<T>`
+This release adds a bunch of new extension methods on `IEnumerable<T>`:
+* `CartesianProduct`
+* `Chunk`
+* `ElementAtOrNone`
+* `Interleave`
+* `Merge`
+* `Pairwise`
+* `Partition`
+* `SlidingWindow`
+* `TakeEvery`
+* `Transpose`
+
+### `IAsyncEnumerable<T>` Support
+This release adds a couple of extension methods that provide interoperability
+with `Option<T>` to `IAsyncEnumerable<T>`:
+* `WhereSelect`
+* `FirstOrNoneAsync`
+* `LastOrNoneAsync`
+* `SingleOrNoneAsync`
+* `ElementAtOrNoneAsync`
+
+A couple of the new extension methods on `IEnumerable<T>` have async counterparts:
+* `Pairwise`
+* `TakeEvery`
+
+The naming of the extension methods and their overloads follows that of [`System.Linq.Async`](https://github.com/dotnet/reactive/tree/main/Ix.NET/Source/System.Linq.Async).
+
+### Improved `IQueryable` Support
+This release adds specialized extension methods for `IQueryable<T>` that are better
+suited especially for use with EF Core:
+* `FirstOrNone`
+* `LastOrNone`
+* `SingleOrNone`
+
+### Serialization
+`Option` adds support for `System.Text.Json`:\
+The custom `JsonConverter` is picked up automatically when serializing/deserializing.
+`None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
+
+### Dependencies
+To support .NET Standard, Funcky conditionally pulls in dependencies
+that provide the missing functionality:
+* `Microsoft.Bcl.AsyncInterfaces` for .NET Standard 2.0
+* `System.Collections.Immutable` and `System.Text.Json` for .NET Standard 2.0 and 2.1
+
+### Improvements
+* `ConfigureAwait(false)` is now used everywhere `await` is used.
+* The `IRetryPolicy` implementations now use correct `Timespan` with `double` multiplication
+  when targeting .NET Standard 2.0.
