@@ -180,7 +180,7 @@ namespace Funcky.Extensions
         }
 
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IList<TElement> elements)
-            => return new Grouping<TKey, TElement>(key, elements);
+            => new Grouping<TKey, TElement>(key, elements);
 
         public class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
         {
@@ -205,9 +205,6 @@ namespace Funcky.Extensions
                 get => _elements[index];
                 set => throw new NotSupportedException();
             }
-
-            public void Add(TElement element)
-                => _elements.Add(element);
 
             public void Clear()
                 => throw new NotSupportedException();
@@ -235,6 +232,12 @@ namespace Funcky.Extensions
 
             IEnumerator IEnumerable.GetEnumerator()
                 => GetEnumerator();
+
+            void ICollection<TElement>.Add(TElement item)
+                => throw new NotSupportedException();
+
+            internal void Add(TElement element)
+                => _elements.Add(element);
         }
     }
 }
