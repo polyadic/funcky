@@ -195,17 +195,18 @@ namespace Funcky.Extensions
 
             public TKey Key { get; }
 
-            public int Count
-                => _elements.Count;
+            public int Count => _elements.Count;
 
-            public bool IsReadOnly
-                => true;
+            public bool IsReadOnly => true;
 
             public TElement this[int index]
             {
                 get => _elements[index];
                 set => throw new NotSupportedException();
             }
+
+            public void Add(TElement item)
+                => throw new NotSupportedException();
 
             public void Clear()
                 => throw new NotSupportedException();
@@ -233,9 +234,6 @@ namespace Funcky.Extensions
 
             IEnumerator IEnumerable.GetEnumerator()
                 => GetEnumerator();
-
-            void ICollection<TElement>.Add(TElement item)
-                => throw new NotSupportedException();
         }
     }
 }
