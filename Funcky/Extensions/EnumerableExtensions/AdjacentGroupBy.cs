@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using static Funcky.Functional;
@@ -182,7 +183,8 @@ namespace Funcky.Extensions
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IList<TElement> elements)
             => new Grouping<TKey, TElement>(key, elements);
 
-        public class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
+
+        internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
         {
             private readonly IList<TElement> _elements;
 
@@ -235,9 +237,6 @@ namespace Funcky.Extensions
 
             void ICollection<TElement>.Add(TElement item)
                 => throw new NotSupportedException();
-
-            internal void Add(TElement element)
-                => _elements.Add(element);
         }
     }
 }
