@@ -180,9 +180,7 @@ namespace Funcky.Extensions
         }
 
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IList<TElement> elements)
-        {
-            return new Grouping<TKey, TElement>(key, elements);
-        }
+            => return new Grouping<TKey, TElement>(key, elements);
 
         public class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
         {
