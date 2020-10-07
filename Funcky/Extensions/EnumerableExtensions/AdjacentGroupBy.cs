@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -160,20 +161,18 @@ namespace Funcky.Extensions
                 yield break;
             }
 
-            var group = new List<TElement> { elementSelector(enumerator.Current) };
-            var key = keySelector(enumerator.Current);
+            var (group, key) = CreateGroupAndKey(keySelector, elementSelector, enumerator);
 
             while (enumerator.MoveNext())
             {
                 if (comparer.Equals(key, keySelector(enumerator.Current)))
                 {
-                    group.Add(elementSelector(enumerator.Current));
+                    group = group.Add(elementSelector(enumerator.Current));
                 }
                 else
                 {
                     yield return resultSelector(key, group);
-                    group = new List<TElement> { elementSelector(enumerator.Current) };
-                    key = keySelector(enumerator.Current);
+                    (group, key) = CreateGroupAndKey(keySelector, elementSelector, enumerator);
                 }
             }
 
@@ -182,6 +181,14 @@ namespace Funcky.Extensions
 
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IList<TElement> elements)
             => new Grouping<TKey, TElement>(key, elements);
+
+        private static (ImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEnumerator<TSource> enumerator)
+        {
+            var group = ImmutableList.Create(elementSelector(enumerator.Current));
+            var key = keySelector(enumerator.Current);
+
+            return (group, key);
+        }
 
         internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
         {
