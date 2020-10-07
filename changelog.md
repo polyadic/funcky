@@ -110,6 +110,7 @@ with the static class `Sequence`:
 
 ### More Extension Methods for `IEnumerable<T>`
 This release adds a bunch of new extension methods on `IEnumerable<T>`:
+* `AdjacentGroupBy`
 * `CartesianProduct`
 * `Chunk`
 * `ElementAtOrNone`
