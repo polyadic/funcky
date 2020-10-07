@@ -183,7 +183,6 @@ namespace Funcky.Extensions
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IList<TElement> elements)
             => new Grouping<TKey, TElement>(key, elements);
 
-
         internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
         {
             private readonly IList<TElement> _elements;
