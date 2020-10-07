@@ -159,7 +159,7 @@ namespace Funcky.Extensions
                 yield break;
             }
 
-            var group = new List<TElement>() { elementSelector(enumerator.Current) };
+            var group = new List<TElement> { elementSelector(enumerator.Current) };
             var key = keySelector(enumerator.Current);
 
             while (enumerator.MoveNext())
