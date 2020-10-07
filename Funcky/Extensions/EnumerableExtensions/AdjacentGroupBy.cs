@@ -171,7 +171,7 @@ namespace Funcky.Extensions
                 else
                 {
                     yield return resultSelector(key, group);
-                    group = new List<TElement>() { elementSelector(enumerator.Current) };
+                    group = new List<TElement> { elementSelector(enumerator.Current) };
                     key = keySelector(enumerator.Current);
                 }
             }
