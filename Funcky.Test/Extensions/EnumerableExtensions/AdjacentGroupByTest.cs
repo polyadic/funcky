@@ -43,8 +43,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var range = Enumerable.Range(0, elementCount);
             var group = range.AdjacentGroupBy(n => groupKey);
 
-            Assert.Single(group, grouping => grouping.Key == groupKey);
-            Assert.Single(group, grouping => grouping.Count() == elementCount);
+            var grouping = Assert.Single(group);
+            Assert.Equal(groupKey, grouping.Key);
+            Assert.Equal(elementCount, grouping.Count());
         }
 
         [Fact]
