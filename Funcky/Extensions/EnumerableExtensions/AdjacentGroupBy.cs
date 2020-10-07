@@ -205,7 +205,7 @@ namespace Funcky.Extensions
             public TElement this[int index]
             {
                 get => _elements[index];
-                set => throw new NotImplementedException();
+                set => throw new NotSupportedException();
             }
 
             public void Add(TElement element)
@@ -218,7 +218,7 @@ namespace Funcky.Extensions
                 => _elements.Contains(element);
 
             public void CopyTo(TElement[] array, int arrayIndex)
-                => throw new NotImplementedException();
+                => throw new NotSupportedException();
 
             public IEnumerator<TElement> GetEnumerator()
                 => _elements.GetEnumerator();
