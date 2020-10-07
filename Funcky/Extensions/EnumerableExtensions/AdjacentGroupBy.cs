@@ -150,7 +150,7 @@ namespace Funcky.Extensions
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
-            Func<TKey, IReadOnlyList<TElement>, TResult> resultSelector,
+            Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
             using var enumerator = source.GetEnumerator();
@@ -178,10 +178,10 @@ namespace Funcky.Extensions
             yield return resultSelector(key, group);
         }
 
-        internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IReadOnlyList<TElement> elements)
+        internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
             => new Grouping<TKey, TElement>(key, elements);
 
-        private static (ImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEnumerator<TSource> enumerator)
+        private static (IImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEnumerator<TSource> enumerator)
         {
             var group = ImmutableList.Create(elementSelector(enumerator.Current));
             var key = keySelector(enumerator.Current);
@@ -189,11 +189,11 @@ namespace Funcky.Extensions
             return (group, key);
         }
 
-        internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IReadOnlyList<TElement>
+        internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IReadOnlyList<TElement>, IList<TElement>
         {
-            private readonly IReadOnlyList<TElement> _elements;
+            private readonly IImmutableList<TElement> _elements;
 
-            internal Grouping(TKey key, IReadOnlyList<TElement> elements)
+            internal Grouping(TKey key, IImmutableList<TElement> elements)
             {
                 Key = key;
                 _elements = elements;
@@ -203,14 +203,40 @@ namespace Funcky.Extensions
 
             public int Count => _elements.Count;
 
+            public bool IsReadOnly => true;
+
             public TElement this[int index]
             {
                 get => _elements[index];
                 set => throw new NotSupportedException();
             }
 
+            public void Add(TElement item)
+                => throw new NotSupportedException();
+
+            public void Clear()
+                => throw new NotSupportedException();
+
+            public bool Contains(TElement element)
+                => _elements.Contains(element);
+
+            public void CopyTo(TElement[] array, int arrayIndex)
+                => throw new NotSupportedException();
+
             public IEnumerator<TElement> GetEnumerator()
                 => _elements.GetEnumerator();
+
+            public int IndexOf(TElement element)
+                => _elements.IndexOf(element);
+
+            public void Insert(int index, TElement element)
+                => throw new NotSupportedException();
+
+            public bool Remove(TElement element)
+                => throw new NotSupportedException();
+
+            public void RemoveAt(int index)
+                => throw new NotSupportedException();
 
             IEnumerator IEnumerable.GetEnumerator()
                 => GetEnumerator();
