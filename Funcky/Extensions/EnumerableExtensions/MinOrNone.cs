@@ -53,38 +53,21 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TSource> MinOrNone<TSource>(this IEnumerable<TSource> source, RequireClass<TSource>? ω = null)
             where TSource : class
-        {
-            var comparer = Comparer<TSource>.Default;
-
-            return source.Aggregate(Option<TSource>.None(), (min, current) => Option.Some(min.Match(current, m => comparer.Compare(m, current) < 0 ? current : m)));
-        }
+            => source.Aggregate(Option<TSource>.None(), (min, current) => Option.Some(min.Match(current, m => Comparer<TSource>.Default.Compare(m, current) < 0 ? current : m)));
 
         [Pure]
         public static Option<TSource> MinOrNone<TSource>(this IEnumerable<TSource> source, RequireStruct<TSource>? ω = null)
             where TSource : struct
-        {
-            var comparer = Comparer<TSource>.Default;
-
-            return source.Aggregate(Option<TSource>.None(), (min, current) => Option.Some(min.Match(current, m => comparer.Compare(m, current) < 0 ? current : m)));
-        }
+            => source.Aggregate(Option<TSource>.None(), (min, current) => Option.Some(min.Match(current, m => Comparer<TSource>.Default.Compare(m, current) < 0 ? current : m)));
 
         [Pure]
         public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireClass<TSource>? ω = null)
             where TSource : class
-        {
-            var comparer = Comparer<TSource>.Default;
-
-            return source.Aggregate(Option<TSource>.None(), (min, current) => (from m in min from c in current select comparer.Compare(m, c) < 0 ? c : m).OrElse(current));
-        }
+            => source.Aggregate(Option<TSource>.None(), (min, current) => (from m in min from c in current select Comparer<TSource>.Default.Compare(m, c) < 0 ? c : m).OrElse(current));
 
         [Pure]
         public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireStruct<TSource>? ω = null)
-            where TSource : struct
-        {
-            var comparer = Comparer<TSource>.Default;
-
-            return source.Aggregate(Option<TSource>.None(), (min, current) => (from m in min from c in current select comparer.Compare(m, c) < 0 ? c : m).OrElse(current));
-        }
+            where TSource : struct => source.Aggregate(Option<TSource>.None(), (min, current) => (from m in min from c in current select Comparer<TSource>.Default.Compare(m, c) < 0 ? c : m).OrElse(current));
 
         [Pure]
         public static Option<int> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
@@ -129,37 +112,21 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireClass<TResult>? ω = null)
             where TResult : class
-        {
-            var comparer = Comparer<TResult>.Default;
-
-            return source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => comparer.Compare(m, selector(current)) < 0 ? selector(current) : m)));
-        }
+            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
 
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireStruct<TResult>? ω = null)
             where TResult : struct
-        {
-            var comparer = Comparer<TResult>.Default;
-
-            return source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => comparer.Compare(m, selector(current)) < 0 ? selector(current) : m)));
-        }
+            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
 
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireClass<TResult>? ω = null)
             where TResult : class
-        {
-            var comparer = Comparer<TResult>.Default;
-
-            return source.Aggregate(Option<TResult>.None(), (min, current) => (from m in min from c in selector(current) select comparer.Compare(m, c) < 0 ? c : m).OrElse(selector(current)));
-        }
+            => source.Aggregate(Option<TResult>.None(), (min, current) => (from m in min from c in selector(current) select Comparer<TResult>.Default.Compare(m, c) < 0 ? c : m).OrElse(selector(current)));
 
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireStruct<TResult>? ω = null)
             where TResult : struct
-        {
-            var comparer = Comparer<TResult>.Default;
-
-            return source.Aggregate(Option<TResult>.None(), (min, current) => (from m in min from c in selector(current) select comparer.Compare(m, c) < 0 ? c : m).OrElse(selector(current)));
-        }
+            => source.Aggregate(Option<TResult>.None(), (min, current) => (from m in min from c in selector(current) select Comparer<TResult>.Default.Compare(m, c) < 0 ? c : m).OrElse(selector(current)));
     }
 }
