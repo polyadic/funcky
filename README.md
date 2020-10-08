@@ -69,7 +69,7 @@ This is a very simple Functional Library with similar ideas in spirit but not as
 
 ## Features
 
-TODO
+See our [documentation](https://polyadic.github.io/funcky/) (still in progress)
 
 ## Contributing
 Contributions are more than welcome. Just open a PR :)
