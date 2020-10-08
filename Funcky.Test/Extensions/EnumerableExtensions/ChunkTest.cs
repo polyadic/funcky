@@ -98,11 +98,11 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(-42)]
-        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int negativeChunkSize)
+        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
         {
             var numbers = new List<int> { 1 };
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(negativeChunkSize));
+            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(invalidChunkSize));
         }
 
         [Fact]

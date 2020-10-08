@@ -21,10 +21,10 @@
   * [Unit Type]()
   * [ActionToUnit]()
 * [IEnumerable Extensions]()
-  * [ForEach]()
-  * [Inspect]()
+  * [ForEach](./for-each.md)
+  * [Inspect](./inspect.md)
   * [None](./none.md)
-  * [Chunk]()
+  * [Chunk](./chunk.md)
 * [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
 
