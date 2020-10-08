@@ -8,15 +8,8 @@ namespace Funcky.Monads
             #endif
             out TItem item)
         {
-            item = default!;
-
-            if (_hasItem)
-            {
-                item = _item;
-                return true;
-            }
-
-            return false;
+            item = _hasItem ? _item : default!;
+            return _hasItem;
         }
     }
 }
