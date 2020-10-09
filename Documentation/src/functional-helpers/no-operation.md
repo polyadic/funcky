@@ -17,7 +17,8 @@ DoSomething(2, NoOperation);
 
 ```
 
-NoOperation becomes especially useful when a `Action<T>` with many parameters is expected.
+`NoOperation` becomes especially useful when a `Action<T>` with many parameters is expected.
+
 Example 2:
 
 ```
@@ -37,6 +38,7 @@ DoSomething(2, NoOperation);
 ```
 
 `NoOperation` is also useful when you want to use a expression body for a method.
+
 Example 3:
 ```
 // Abstract class:
