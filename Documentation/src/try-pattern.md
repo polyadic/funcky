@@ -17,7 +17,6 @@ The TryVerb pattern is used in several instances in C# as an alternative for fun
 	{
 	    // ...
 	}
-
 ```   
 
 Out parameters are bad, and in consequence we think the TryVerb-pattern (`TryGet`, `TryParse`...) used in C# as an anti-pattern.
@@ -38,6 +37,5 @@ Extension functions have been added to `IDictionary` and `IReadOnlyDictionary`
 
 ```cs
     Option<int> = "1234".TryParseInt();
-
 ```   
 
