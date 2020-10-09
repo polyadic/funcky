@@ -13,7 +13,7 @@
 * [Result Monad]()
 * [Functional Helpers](./functional-helpers/functional-helpers.md)
   * [NoOperation](./functional-helpers/no-operation.md)
-  * [Identity]()
+  * [Identity](./functional-helpers/identity.md)
   * [Curry]()
   * [Flip]()
   * [Retry]()
