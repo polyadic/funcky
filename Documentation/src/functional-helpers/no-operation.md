@@ -14,7 +14,6 @@ DoSomething(2, _ => {});
 
 // How you can call it with NoOperation:
 DoSomething(2, NoOperation);
-
 ```
 
 `NoOperation` becomes especially useful when a `Action<T>` with many parameters is expected.

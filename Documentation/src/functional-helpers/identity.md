@@ -15,7 +15,6 @@ FunctionExpectingSelector(item => item);
 
 // With Identity:
 FunctionExpectingSelector(Identity);
-
 ```
 
 Example 2 (typical `SelectMany` selector):
