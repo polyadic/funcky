@@ -50,7 +50,7 @@ public abstract class SomeClassWithExecuteAndHookBase
 }
 
 // Derived class that doesn't have any use for the PostExecutionHook usually:
-public class SomeClassWithExecuteAndHookDerived
+public class SomeClassWithExecuteAndHookDerived : SomeClassWithExecuteAndHookBase
 {
   protected override void PostExecutionHook()
   {
@@ -58,7 +58,7 @@ public class SomeClassWithExecuteAndHookDerived
 }
 
 // Derived class that doesn't have any use for the PostExecutionHook with NoOperation:
-public class SomeClassWithExecuteAndHookDerived
+public class SomeClassWithExecuteAndHookDerived : SomeClassWithExecuteAndHookBase
 {
   protected override void PostExecutionHook() => NoOperation();
 }
