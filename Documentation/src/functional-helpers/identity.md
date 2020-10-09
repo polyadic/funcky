@@ -31,5 +31,4 @@ itemGroups.SelectMany(items => items);
 
 // With Identity:
 itemGroups.SelectMany(Identity);
-
 ```

@@ -62,5 +62,4 @@ public class SomeClassWithExecuteAndHookDerived : SomeClassWithExecuteAndHookBas
 {
   protected override void PostExecutionHook() => NoOperation();
 }
-
 ```
