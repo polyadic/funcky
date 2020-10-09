@@ -1,6 +1,6 @@
 # Funcky
 
-Funcky is a functional Library for C# which encourages correct usage of the functional programming paradigm.
+Funcky is a functional library for C# which encourages correct usage of the functional programming paradigm.
 
 [![Build](https://github.com/polyadic/funcky/workflows/Build/badge.svg)](https://github.com/messerli-informatik-ag/funcky/actions?query=workflow%3ABuild)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](https://raw.githubusercontent.com/polyadic/funcky/master/LICENSE-MIT)
@@ -69,7 +69,7 @@ This is a very simple Functional Library with similar ideas in spirit but not as
 
 ## Features
 
-TODO
+See our [documentation](https://polyadic.github.io/funcky/) (still in progress)
 
 ## Contributing
 Contributions are more than welcome. Just open a PR :)
