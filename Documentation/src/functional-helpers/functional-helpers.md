@@ -1,0 +1,2 @@
+The static class `Funcky.Functional` is designed to be used with a static import (`using static Funcky.Functional;`). All examples will as if `using static` was used.
+All the methods in `Funcky.Functional` are named to be easily understood without the functional prefix. They are general purpose, and their goal is to unify typical boilerplate code or be more expressive than typical C# ways of doing their job.
