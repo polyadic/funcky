@@ -2,7 +2,7 @@ The `NoOperation` function is a more expressive way of manually creating an empt
 
 Example 1:
 
-```
+```csharp
 // The function we want to call:
 public void DoSomething(int value, Action<int> callback)
 {
@@ -21,7 +21,7 @@ DoSomething(2, NoOperation);
 
 Example 2:
 
-```
+```csharp
 // The function we want to call:
 public void DoSomething(int value, Action<int, string, float, AnyCustomClassThatYouWant> callback)
 {
@@ -40,7 +40,8 @@ DoSomething(2, NoOperation);
 `NoOperation` is also useful when you want to use a expression body for a method.
 
 Example 3:
-```
+
+```csharp
 // Abstract class:
 public abstract class SomeClassWithExecuteAndHookBase
 {

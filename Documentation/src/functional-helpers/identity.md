@@ -1,7 +1,7 @@
 The `Identity` function is designed to replace parameter-returning lambdas, like sometimes used in LINQ.
 
 Example 1:
-```
+```csharp
 // Method:
 public void FunctionExpectingSelector<TIn, TOut>(Func<TIn, TOut> selector)
 {
@@ -19,7 +19,7 @@ FunctionExpectingSelector(Identity);
 ```
 
 Example 2 (typical `SelectMany` selector):
-```
+```csharp
 // Usually result of a query:
 IEnumerable<IEnumerable<int>> itemGroups = new[] { new[] { 1, 2, 3 }, new[] { 5, 6, 7 } };
 
