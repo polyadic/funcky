@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Funcky.GenericConstraints;
 using Funcky.Monads;
+using static System.Math ;
 using static Funcky.Functional;
 
 namespace Funcky.Extensions
@@ -37,7 +38,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<int> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
-            => source.Aggregate(Option<int>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Math.Min(selector(current), m))));
+            => source.Aggregate(Option<int>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional Int32 value. If the transforemd sequence only consists of none or is empty it returns None.
@@ -77,7 +78,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<long> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
-            => source.Aggregate(Option<long>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Math.Min(selector(current), m))));
+            => source.Aggregate(Option<long>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional Int64 value. If the transforemd sequence only consists of none or is empty it returns None.
@@ -117,7 +118,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<double> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
-            => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Math.Min(selector(current), m))));
+            => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional Double value. If the transforemd sequence only consists of none or is empty it returns None.
@@ -157,7 +158,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<float> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
-            => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Math.Min(selector(current), m))));
+            => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional Single value. If the transforemd sequence only consists of none or is empty it returns None.
@@ -197,7 +198,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
-            => source.Aggregate(Option<decimal>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Math.Min(selector(current), m))));
+            => source.Aggregate(Option<decimal>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional Decimal value. If the transforemd sequence only consists of none or is empty it returns None.
@@ -312,5 +313,11 @@ namespace Funcky.Extensions
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireStruct<TResult>? ω = null)
             where TResult : struct
             => source.WhereSelect(selector).MinOrNone(Identity);
+
+        private static float DefaultComparerMin(float left, float right)
+            => Comparer<float>.Default.Compare(left, right) < 0 ? left : right;
+
+        private static double DefaultComparerMin(double left, double right)
+            => Comparer<double>.Default.Compare(left, right) < 0 ? left : right;
     }
 }
