@@ -251,7 +251,7 @@ namespace Funcky.Extensions
                 _sum = sum;
             }
 
-            public Option<double> Average => _sum.Select(s => s / _count);
+            public Option<double> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorDouble Add(int term)
                 => new AverageCalculatorDouble(_count + 1, from sum in _sum select sum + term);
@@ -285,7 +285,7 @@ namespace Funcky.Extensions
                 _sum = sum;
             }
 
-            public Option<float> Average => _sum.Select(s => s / _count);
+            public Option<float> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorFloat Add(float term)
                 => new AverageCalculatorFloat(_count + 1, from sum in _sum select sum + term);
@@ -307,7 +307,7 @@ namespace Funcky.Extensions
                 _sum = sum;
             }
 
-            public Option<decimal> Average => _sum.Select(s => s / _count);
+            public Option<decimal> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorDecimal Add(decimal term)
                 => new AverageCalculatorDecimal(_count + 1, from sum in _sum select sum + term);
