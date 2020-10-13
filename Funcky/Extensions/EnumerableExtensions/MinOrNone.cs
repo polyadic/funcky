@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Funcky.GenericConstraints;
 using Funcky.Monads;
-using static System.Math ;
+using static System.Math;
 using static Funcky.Functional;
 
 namespace Funcky.Extensions
@@ -314,9 +314,11 @@ namespace Funcky.Extensions
             where TResult : struct
             => source.WhereSelect(selector).MinOrNone(Identity);
 
+        // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
         private static float DefaultComparerMin(float left, float right)
-            => Comparer<float>.Default.Compare(left, right) < 0 ? left : right;
+            => Comparer<double>.Default.Compare(left, right) < 0 ? left : right;
 
+        // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
         private static double DefaultComparerMin(double left, double right)
             => Comparer<double>.Default.Compare(left, right) < 0 ? left : right;
     }
