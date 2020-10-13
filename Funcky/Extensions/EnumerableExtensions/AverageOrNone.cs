@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Funcky.Monads;
+using static Funcky.Monads.Option;
 
 namespace Funcky.Extensions
 {
@@ -254,19 +255,19 @@ namespace Funcky.Extensions
             public Option<double> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorDouble Add(int term)
-                => new AverageCalculatorDouble(_count + 1, from sum in _sum select sum + term);
+                => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<int> term)
                 => term.Match(this, Add);
 
             public AverageCalculatorDouble Add(long term)
-                => new AverageCalculatorDouble(_count + 1, from sum in _sum select sum + term);
+                => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<long> term)
                 => term.Match(this, Add);
 
             public AverageCalculatorDouble Add(double term)
-                => new AverageCalculatorDouble(_count + 1, from sum in _sum select sum + term);
+                => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<double> term)
                 => term.Match(this, Add);
@@ -288,7 +289,7 @@ namespace Funcky.Extensions
             public Option<float> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorFloat Add(float term)
-                => new AverageCalculatorFloat(_count + 1, from sum in _sum select sum + term);
+                => new AverageCalculatorFloat(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorFloat Add(Option<float> term)
                 => term.Match(this, Add);
@@ -310,7 +311,7 @@ namespace Funcky.Extensions
             public Option<decimal> Average => _sum.Select(sum => sum / _count);
 
             public AverageCalculatorDecimal Add(decimal term)
-                => new AverageCalculatorDecimal(_count + 1, from sum in _sum select sum + term);
+                => new AverageCalculatorDecimal(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDecimal Add(Option<decimal> term)
                 => term.Match(this, Add);
