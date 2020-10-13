@@ -5,10 +5,8 @@ using Funcky.GenericConstraints;
 
 namespace Funcky
 {
-    public static class Sequence
+    public static partial class Sequence
     {
-        public static IEnumerable<TItem> Return<TItem>(TItem item) => Enumerable.Repeat(item, 1);
-
         /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
         [Pure]
         public static IEnumerable<T> FromNullable<T>(T? item, RequireClass<T>? ω = null)
