@@ -219,6 +219,7 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
         public static Option<TSource> MaxOrNone<TSource>(this IEnumerable<TSource> source, RequireClass<TSource>? ω = null)
             where TSource : class
             => source.MaxOrNone(Identity);
@@ -231,6 +232,7 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
         public static Option<TSource> MaxOrNone<TSource>(this IEnumerable<TSource> source, RequireStruct<TSource>? ω = null)
             where TSource : struct
             => source.MaxOrNone(Identity);
@@ -243,6 +245,7 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
         public static Option<TSource> MaxOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireClass<TSource>? ω = null)
             where TSource : class
             => source.WhereSelect(Identity).MaxOrNone(Identity);
@@ -254,6 +257,7 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
         public static Option<TSource> MaxOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireStruct<TSource>? ω = null)
             where TSource : struct
             => source.WhereSelect(Identity).MaxOrNone(Identity);
@@ -268,6 +272,8 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireClass type is needed on each overload.")]
         public static Option<TResult> MaxOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireClass<TResult>? ω = null)
             where TResult : class
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
@@ -282,6 +288,8 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireStruct type is needed on each overload.")]
         public static Option<TResult> MaxOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireStruct<TResult>? ω = null)
             where TResult : struct
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
@@ -296,6 +304,8 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireClass type is needed on each overload.")]
         public static Option<TResult> MaxOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireClass<TResult>? ω = null)
             where TResult : class
             => source.WhereSelect(selector).MaxOrNone(Identity);
@@ -310,6 +320,8 @@ namespace Funcky.Extensions
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireStruct type is needed on each overload.")]
         public static Option<TResult> MaxOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireStruct<TResult>? ω = null)
             where TResult : struct
             => source.WhereSelect(selector).MaxOrNone(Identity);

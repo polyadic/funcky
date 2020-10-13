@@ -1,1 +1,77 @@
 #nullable enable
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<decimal>>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<double>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<float>>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<int>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<long>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<decimal>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<double>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<float>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<int>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<long>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<decimal>>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<double>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<float>>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<int>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<long>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, decimal>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, double>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, float>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, int>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, long>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<decimal>>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<double>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<float>>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<int>>! source) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<long>>! source) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<decimal>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<double>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<float>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<int>! source) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone(this System.Collections.Generic.IEnumerable<long>! source) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult!>>! selector, Funcky.GenericConstraints.RequireClass<TResult!>? ω = null) -> Funcky.Monads.Option<TResult!>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector, Funcky.GenericConstraints.RequireStruct<TResult>? ω = null) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult!>! selector, Funcky.GenericConstraints.RequireClass<TResult!>? ω = null) -> Funcky.Monads.Option<TResult!>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! selector, Funcky.GenericConstraints.RequireStruct<TResult>? ω = null) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource!>>! source, Funcky.GenericConstraints.RequireClass<TSource!>? ω = null) -> Funcky.Monads.Option<TSource!>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source, Funcky.GenericConstraints.RequireStruct<TSource>? ω = null) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource!>! source, Funcky.GenericConstraints.RequireClass<TSource!>? ω = null) -> Funcky.Monads.Option<TSource!>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, Funcky.GenericConstraints.RequireStruct<TSource>? ω = null) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<decimal>>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<double>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<float>>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<int>>! selector) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<long>>! selector) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, decimal>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, double>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, float>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, int>! selector) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, long>! selector) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<decimal>>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<double>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<float>>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<int>>! source) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<long>>! source) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<decimal>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<double>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<float>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<int>! source) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone(this System.Collections.Generic.IEnumerable<long>! source) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult!>>! selector, Funcky.GenericConstraints.RequireClass<TResult!>? ω = null) -> Funcky.Monads.Option<TResult!>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector, Funcky.GenericConstraints.RequireStruct<TResult>? ω = null) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult!>! selector, Funcky.GenericConstraints.RequireClass<TResult!>? ω = null) -> Funcky.Monads.Option<TResult!>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! selector, Funcky.GenericConstraints.RequireStruct<TResult>? ω = null) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource!>>! source, Funcky.GenericConstraints.RequireClass<TSource!>? ω = null) -> Funcky.Monads.Option<TSource!>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source, Funcky.GenericConstraints.RequireStruct<TSource>? ω = null) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource!>! source, Funcky.GenericConstraints.RequireClass<TSource!>? ω = null) -> Funcky.Monads.Option<TSource!>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, Funcky.GenericConstraints.RequireStruct<TSource>? ω = null) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<decimal>>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<double>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<float>>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<int>>! selector) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<long>>! selector) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, decimal>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, double>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, float>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, int>! selector) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, long>! selector) -> Funcky.Monads.Option<long>
