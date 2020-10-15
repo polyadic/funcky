@@ -1,5 +1,6 @@
 #nullable enable
 Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
+Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
 static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
