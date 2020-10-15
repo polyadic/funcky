@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace Funcky.Monads
 {
@@ -18,7 +19,7 @@ namespace Funcky.Monads
         public static bool operator >=(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) >= 0;
 
         public int CompareTo(object? obj)
-            => OptionComparer<TItem>.Default.Compare(this, obj);
+            => (OptionComparer<TItem>.Default as IComparer).Compare(this, obj);
 
         public int CompareTo(Option<TItem> other)
             => OptionComparer<TItem>.Default.Compare(this, other);
