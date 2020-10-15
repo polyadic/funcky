@@ -8,8 +8,8 @@ namespace Funcky.Monads
     /// <code><![CDATA[
     /// using Funcky.Monads;
     /// var withComparer = OptionComparer.Create(new PersonComparer());
-    /// var withComparison = OptionComparer<TItem>.Create((p1, p2) => p1.Age.CompareTo(p2.Age));
-    /// var defaultComparer = OptionComparer<TItem>.Default;
+    /// var withComparison = OptionComparer<Person>.Create((p1, p2) => p1.Age.CompareTo(p2.Age));
+    /// var defaultComparer = OptionComparer<Person>.Default;
     /// ]]></code>
     /// </example>
     public static class OptionComparer<TItem>
