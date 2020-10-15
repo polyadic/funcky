@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Funcky.Internal;
 
 namespace Funcky.Monads
 {
@@ -20,16 +18,9 @@ namespace Funcky.Monads
         public static bool operator >=(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) >= 0;
 
         public int CompareTo(object? obj)
-            => obj switch
-            {
-                null => ComparisonResult.GreaterThan,
-                Option<TItem> other => CompareTo(other),
-                _ => throw new ArgumentException("Object must be an Option<T>", nameof(obj)),
-            };
+            => OptionComparer<TItem>.Default.Compare(this, obj);
 
         public int CompareTo(Option<TItem> other)
-            => _hasItem && other._hasItem
-                ? Comparer<TItem>.Default.Compare(_item, other._item)
-                : _hasItem.CompareTo(other._hasItem);
+            => OptionComparer<TItem>.Default.Compare(this, other);
     }
 }
