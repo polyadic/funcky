@@ -12,7 +12,7 @@ namespace Funcky.Monads
     /// var defaultComparer = OptionComparer<TItem>.Default;
     /// ]]></code>
     /// </example>
-    internal static class OptionComparer<TItem>
+    public static class OptionComparer<TItem>
         where TItem : notnull
     {
         /// <summary>Returns a default sort order comparer for the item type specified by the generic argument.</summary>
@@ -24,7 +24,7 @@ namespace Funcky.Monads
             => OptionComparer.Create(Comparer<TItem>.Create(comparison));
     }
 
-    internal static class OptionComparer
+    public static class OptionComparer
     {
         /// <summary>Creates a comparer by using the specified item comparer.</summary>
         /// <param name="comparer">The item comparer to use.</param>
