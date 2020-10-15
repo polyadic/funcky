@@ -28,10 +28,12 @@ namespace Funcky.Monads
             };
 
         public int CompareTo(Option<TItem> other)
-            => (this, other).Match(
-                both: Comparer<TItem>.Default.Compare,
-                right: _ => ComparisonResult.LessThan,
-                neither: () => ComparisonResult.Equal,
-                left: _ => ComparisonResult.GreaterThan);
+            => (_hasItem, other._hasItem) switch
+            {
+                (true, true) => Comparer<TItem>.Default.Compare(_item, other._item),
+                (false, true) => ComparisonResult.LessThan,
+                (false, false) => ComparisonResult.Equal,
+                (true, false) => ComparisonResult.GreaterThan,
+            };
     }
 }
