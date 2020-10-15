@@ -104,6 +104,8 @@ namespace Funcky.Test.Extensions
                 { Option.Some(false), "FalsE" },
                 { Option<bool>.None(), "0" },
                 { Option<bool>.None(), "1" },
+                { Option<bool>.None(), "T" },
+                { Option<bool>.None(), "F" },
                 { Option<bool>.None(), "falsch" },
                 { Option<bool>.None(), "bool" },
                 { Option<bool>.None(), "none" },
