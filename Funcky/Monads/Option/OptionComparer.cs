@@ -4,7 +4,10 @@ using Funcky.Internal;
 
 namespace Funcky.Monads
 {
-    /// <summary>A comparer for two <see cref="Option{TItem}"/>s.</summary>
+    /// <summary>
+    /// A comparer for two <see cref="Option{TItem}"/>s.
+    /// <see cref="Option{T}.None"/> values are always treated as being less than <see cref="Option.Some{T}"/> values.
+    /// </summary>
     /// <example>
     /// <code><![CDATA[
     /// using Funcky.Monads;
