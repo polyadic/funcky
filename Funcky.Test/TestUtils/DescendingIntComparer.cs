@@ -2,7 +2,7 @@
 
 namespace Funcky.Test.TestUtils
 {
-    internal class DescendingIntComparer : IComparer<int>
+    internal sealed class DescendingIntComparer : IComparer<int>
     {
         private DescendingIntComparer()
         {

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class WhereSelect
+    public sealed class WhereSelect
     {
         [Fact]
         public void WhereSelectFiltersEmptyValues()

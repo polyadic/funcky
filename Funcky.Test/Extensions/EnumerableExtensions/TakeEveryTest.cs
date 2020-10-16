@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class TakeEveryTest
+    public sealed class TakeEveryTest
     {
         [Fact]
         public void TakeEveryOnAnEmptySequenceReturnsAnEmptySequence()

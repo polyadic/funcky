@@ -4,7 +4,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {
-    public class IdentityTest
+    public sealed class IdentityTest
     {
         [Fact]
         public void IdentityReturnsPassedValue()

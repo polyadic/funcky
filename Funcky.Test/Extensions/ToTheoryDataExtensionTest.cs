@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions
 {
-    public class ToTheoryDataExtensionTest
+    public sealed class ToTheoryDataExtensionTest
     {
         private const string StringValue = "Hello world!";
         private const int IntValue = 1337;

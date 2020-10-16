@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class AdjacentGroupByTest
+    public sealed class AdjacentGroupByTest
     {
         [Fact]
         public void AdjacentGroupByIsLazy()

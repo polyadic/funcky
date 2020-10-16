@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class ChunkTest
+    public sealed class ChunkTest
     {
         [Fact]
         public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
