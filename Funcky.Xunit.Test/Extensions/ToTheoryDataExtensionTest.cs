@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
-using Funcky.Xunit;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Xunit.Test.Extensions
 {
     public sealed class ToTheoryDataExtensionTest
     {
