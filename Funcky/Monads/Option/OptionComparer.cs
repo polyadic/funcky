@@ -28,6 +28,7 @@ namespace Funcky.Monads
             => OptionComparer.Create(Comparer<TItem>.Create(comparison));
     }
 
+    /// <inheritdoc cref="OptionComparer{TItem}"/>
     public static class OptionComparer
     {
         /// <summary>Creates a comparer by using the specified item comparer.</summary>
