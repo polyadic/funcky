@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Funcky.Test.FunctionalClass
 {
-    public class NoOperationTest
+    public sealed class NoOperationTest
     {
         [Fact]
         public void GivenTheNoOperationFunctionWeCanApplyItToMatch()

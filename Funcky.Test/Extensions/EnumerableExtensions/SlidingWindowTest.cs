@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class SlidingWindowTest
+    public sealed class SlidingWindowTest
     {
         [Fact]
         public void GivenAnEmptySourceSequenceSlidingWindowReturnsAnEmptySequence()

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class CartesianProductTest
+    public sealed class CartesianProductTest
     {
         [Fact]
         public void GivenTwoEmptySetsCartesianProductReturnsAnEmptySet()

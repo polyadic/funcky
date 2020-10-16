@@ -8,7 +8,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public class ResultTest
+    public sealed class ResultTest
     {
         [Fact]
         public void CreateResultOkAndMatchCorrectly()
