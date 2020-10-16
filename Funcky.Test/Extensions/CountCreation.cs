@@ -1,6 +1,6 @@
 namespace Funcky.Test.Extensions
 {
-    internal class CountCreation
+    internal sealed class CountCreation
     {
         public CountCreation()
         {
