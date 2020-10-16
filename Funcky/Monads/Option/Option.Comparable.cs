@@ -21,6 +21,9 @@ namespace Funcky.Monads
         public int CompareTo(object? obj)
             => (OptionComparer<TItem>.Default as IComparer).Compare(this, obj);
 
+        /// <exception cref="T:System.ArgumentException">Thrown when two <see cref="Option.Some{T}"/> values are compared
+        /// and the type <typeparamref name="TItem"/> does not implement either the <see cref="IComparable{T}" />
+        /// generic interface or the <see cref="IComparable" /> interface.</exception>
         public int CompareTo(Option<TItem> other)
             => OptionComparer<TItem>.Default.Compare(this, other);
     }

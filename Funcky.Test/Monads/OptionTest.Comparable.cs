@@ -86,5 +86,34 @@ namespace Funcky.Test.Monads
             var sorted = unsorted.Sort();
             Assert.Equal(expected, sorted);
         }
+
+        [Fact]
+        public void CompareToThrowsWhenTwoSomeValuesWhereItemTypeIsNotComparableAreCompared()
+        {
+            var optionOne = Option.Some(new Person());
+            var optionTwo = Option.Some(new Person());
+            Assert.Throws<ArgumentException>(() => _ = optionOne.CompareTo(optionTwo));
+        }
+
+        [Fact]
+        public void CompareToDoesNotThrowWhenTwoNoneValuesWhereItemTypeIsNotComparableAreCompared()
+        {
+            var optionOne = Option<Person>.None();
+            var optionTwo = Option<Person>.None();
+            _ = optionOne.CompareTo(optionTwo);
+        }
+
+        [Fact]
+        public void CompareToDoesNotThrowWhenNoneValueAndSomeValueWhereItemTypeIsNotComparableAreCompared()
+        {
+            var optionOne = Option.Some(new Person());
+            var optionTwo = Option<Person>.None();
+            _ = optionOne.CompareTo(optionTwo);
+            _ = optionTwo.CompareTo(optionOne);
+        }
+
+        private sealed class Person
+        {
+        }
     }
 }
