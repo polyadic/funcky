@@ -12,7 +12,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public sealed class OptionTest
+    public sealed partial class OptionTest
     {
         public OptionTest()
         {
