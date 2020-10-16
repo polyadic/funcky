@@ -279,7 +279,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
@@ -295,7 +295,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
@@ -311,7 +311,7 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MaxOrNone(Identity);
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
