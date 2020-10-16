@@ -41,7 +41,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<int>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Max(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the maximum optional Int32 value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum optional Int32 value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values of TSource to determine the maximum value of.</param>
@@ -81,7 +81,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<long>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Max(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the maximum optional Int64 value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum optional Int64 value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to calculate the average of.</param>
@@ -121,7 +121,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<double>.None(), (max, current) => Option.Some(max.Match(selector(current), m => DefaultComparerMax(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the maximum optional Double value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum optional Double value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values of TSource to determine the maximum value of.</param>
@@ -161,7 +161,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<float>.None(), (max, current) => Option.Some(max.Match(selector(current), m => DefaultComparerMax(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the maximum optional Single value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum optional Single value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values of TSource to determine the maximum value of.</param>
@@ -201,7 +201,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<decimal>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Max(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the maximum optional Decimal value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the maximum optional Decimal value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values of TSource to determine the maximum value of.</param>
@@ -263,7 +263,7 @@ namespace Funcky.Extensions
             => source.WhereSelect(Identity).MaxOrNone(Identity);
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a Comparer{T}. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
@@ -279,7 +279,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a Comparer{T}. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
@@ -295,7 +295,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (max, current) => Option.Some(max.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) > 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a Comparer{T}. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
@@ -311,7 +311,7 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MaxOrNone(Identity);
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a Comparer{T}. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of TSource to determine the maximum value of.</param>
