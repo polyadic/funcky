@@ -216,50 +216,20 @@ namespace Funcky.Extensions
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
-        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<TSource> source, RequireClass<TSource>? ω = null)
-            where TSource : class
-            => source.MinOrNone(Identity);
-
-        /// <summary>
-        /// Returns the minimum value in a sequence of generic values compared by a <see cref="Comparer{T}"/>. If the sequence is empty it returns None.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
-        /// <returns>The minimum value in the sequence or None.</returns>
-        [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
-        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<TSource> source, RequireStruct<TSource>? ω = null)
-            where TSource : struct
+        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<TSource> source)
+            where TSource : notnull
             => source.MinOrNone(Identity);
 
         /// <summary>
         /// Returns the minimum value in a sequence of optional generic values compared by a <see cref="Comparer{T}"/>. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of optional generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
-        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireClass<TSource>? ω = null)
-            where TSource : class
-            => source.WhereSelect(Identity).MinOrNone(Identity);
-
-        /// <summary>
-        /// Returns the minimum value in a sequence of optional generic values compared by a <see cref="Comparer{T}"/>. If the sequence only consists of none or is empty it returns None.
-        /// </summary>
-        /// <param name="source">A sequence of optional generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
-        /// <returns>The minimum value in the sequence or None.</returns>
-        [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
-        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source, RequireStruct<TSource>? ω = null)
-            where TSource : struct
+        public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source)
+            where TSource : notnull
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
@@ -269,29 +239,10 @@ namespace Funcky.Extensions
         /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireClass type is needed on each overload.")]
-        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireClass<TResult>? ω = null)
-            where TResult : class
-            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
-
-        /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
-        /// <param name="selector">A transform function to apply to each element.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
-        /// <returns>The minimum value in the sequence or None.</returns>
-        [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireStruct type is needed on each overload.")]
-        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, RequireStruct<TResult>? ω = null)
-            where TResult : struct
+        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+            where TResult : notnull
             => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
 
         /// <summary>
@@ -301,29 +252,10 @@ namespace Funcky.Extensions
         /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireClass type is only for type deduction of the right overload.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireClass type is needed on each overload.")]
-        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireClass<TResult>? ω = null)
-            where TResult : class
-            => source.WhereSelect(selector).MinOrNone(Identity);
-
-        /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
-        /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
-        /// <param name="selector">A transform function to apply to each element.</param>
-        /// <param name="ω">Dummy Parameter, do not use.</param>
-        /// <returns>The minimum value in the sequence or None.</returns>
-        [Pure]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0027:Public API with optional parameter(s) should have the most parameters amongst its public overloads.", Justification = "The RequireStruct type is only for type deduction of the right overload.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "The RequireStruct type is needed on each overload.")]
-        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, RequireStruct<TResult>? ω = null)
-            where TResult : struct
+        public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector)
+            where TResult : notnull
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
