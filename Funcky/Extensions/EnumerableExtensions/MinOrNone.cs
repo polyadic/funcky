@@ -12,28 +12,28 @@ namespace Funcky.Extensions
     public static partial class EnumerableExtensions
     {
         /// <summary>
-        /// Returns the minimum value in a sequence of Int32 values. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of <see cref="int"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Int32 values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of <see cref="int"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<int> MinOrNone(this IEnumerable<int> source)
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional Int32 values. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional <see cref="int"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int32 values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional <see cref="int"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<int> MinOrNone(this IEnumerable<Option<int>> source)
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Int32 value. If the sequence is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="int"/> value. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -41,10 +41,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<int>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Int32 value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="int"/> value. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -52,28 +52,28 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of Int64 values. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of <see cref="long"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Int64 values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of <see cref="long"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<long> MinOrNone(this IEnumerable<long> source)
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional Int64 values. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional <see cref="long"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int64 values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<long> MinOrNone(this IEnumerable<Option<long>> source)
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Int64 value. If the sequence is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="long"/> value. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -81,7 +81,7 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<long>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Int64 value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="long"/> value. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to calculate the average of.</param>
@@ -92,28 +92,28 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of Double values. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of <see cref="double"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Double values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of <see cref="double"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<double> MinOrNone(this IEnumerable<double> source)
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional Double values. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional <see cref="double"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Double values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional <see cref="double"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<double> MinOrNone(this IEnumerable<Option<double>> source)
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Double value. If the sequence is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="double"/> value. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -121,10 +121,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Double value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="double"/> value. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -132,25 +132,25 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of Single values. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of <see cref="float"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Single values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of <see cref="float"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<float> MinOrNone(this IEnumerable<float> source)
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional Single values. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional <see cref="float"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Single values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional <see cref="float"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<float> MinOrNone(this IEnumerable<Option<float>> source)
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Single value. If the sequence is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="float"/> value. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to calculate the average of.</param>
@@ -161,10 +161,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Single value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="float"/> value. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -172,28 +172,28 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of Decimal values. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of <see cref="decimal"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Decimal values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of <see cref="decimal"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> MinOrNone(this IEnumerable<decimal> source)
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional Decimal values. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional <see cref="decimal"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Decimal values to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional <see cref="decimal"/> values to determine the minimum value of.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> MinOrNone(this IEnumerable<Option<decimal>> source)
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Decimal value. If the sequence is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="decimal"/> value. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -201,10 +201,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<decimal>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
-        /// Invokes a transform function on each element of a sequence and returns the minimum optional Decimal value. If the transforemd sequence only consists of none or is empty it returns None.
+        /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="decimal"/> value. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -212,10 +212,10 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of generic values compared by a Comparer{T}. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of generic values compared by a <see cref="Comparer{T}"/>. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -225,10 +225,10 @@ namespace Funcky.Extensions
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of generic values compared by a Comparer{T}. If the sequence is empty it returns None.
+        /// Returns the minimum value in a sequence of generic values compared by a <see cref="Comparer{T}"/>. If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -238,10 +238,10 @@ namespace Funcky.Extensions
             => source.MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional generic values compared by a Comparer{T}. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional generic values compared by a <see cref="Comparer{T}"/>. If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of optional generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -251,9 +251,9 @@ namespace Funcky.Extensions
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        /// Returns the minimum value in a sequence of optional generic values compared by a Comparer{T}. If the sequence only consists of none or is empty it returns None.
+        /// Returns the minimum value in a sequence of optional generic values compared by a <see cref="Comparer{T}"/>. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of optional generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
@@ -263,10 +263,10 @@ namespace Funcky.Extensions
             => source.WhereSelect(Identity).MinOrNone(Identity);
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a <see cref="Comparer{T}"/>. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
@@ -279,10 +279,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a <see cref="Comparer{T}"/>. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
@@ -295,10 +295,10 @@ namespace Funcky.Extensions
             => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? selector(current) : m)));
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
@@ -311,10 +311,10 @@ namespace Funcky.Extensions
             => source.WhereSelect(selector).MinOrNone(Identity);
 
         /// <summary>
-        ///  Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a Comparer{T}. If the transforemd sequence only consists of none or is empty it returns None.
+        ///  Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transforemd sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of generic values of TSource to determine the minimum value of.</param>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
         /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="ω">Dummy Parameter, do not use.</param>
