@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Funcky.Internal;
 
 namespace Funcky.Monads
 {
@@ -42,12 +43,10 @@ namespace Funcky.Monads
         internal OptionComparerInternal(IComparer<TItem> comparer) => _comparer = comparer;
 
         public override int Compare(Option<TItem> x, Option<TItem> y)
-        {
-            var leftHasValue = x.TryGetValue(out var left);
-            var rightHasValue = y.TryGetValue(out var right);
-            return leftHasValue && rightHasValue
-                ? _comparer.Compare(left!, right!)
-                : leftHasValue.CompareTo(rightHasValue);
-        }
+            => (x, y).Match(
+                right: _ => ComparisonResult.LessThan,
+                none: () => ComparisonResult.Equal,
+                left: _ => ComparisonResult.GreaterThan,
+                leftAndRight: _comparer.Compare);
     }
 }
