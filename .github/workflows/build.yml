@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, funcky3 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, funcky3 ]
 
 jobs:
   build:
