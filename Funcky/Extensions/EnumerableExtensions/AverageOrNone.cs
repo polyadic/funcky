@@ -10,113 +10,113 @@ namespace Funcky.Extensions
     public static partial class EnumerableExtensions
     {
         /// <summary>
-        /// Computes the average of a sequence of Int32 values. If the sequence is empty it returns None.
+        /// Computes the average of a sequence of <see cref="int"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Int32 values to determine the average value of.</param>
+        /// <param name="source">A sequence of <see cref="int"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<int> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int32 values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="int"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int32 values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="int"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<int>> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Int32 values. If the sequence is empty it returns None.
+        /// Computes the average of a sequence of <see cref="int"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of Int32 values to determine the average value of.</param>
+        /// <param name="source">A sequence of <see cref="int"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<long> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int64 values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="long"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int64 values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<long>> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Single values. If the sequence is empty it returns None.
+        /// Computes the average of a sequence of <see cref="float"/> values. If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
         /// TODO: describe handling of NaN and +/- infinity, +/- zero.
         /// </remarks>
-        /// <param name="source">A sequence of Single values to determine the average value of.</param>
+        /// <param name="source">A sequence of <see cref="float"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<float> AverageOrNone(this IEnumerable<float> source)
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Single values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="float"/> values. If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
         /// TODO: describe handling of NaN and +/- infinity, +/- zero.
         /// </remarks>
-        /// <param name="source">A sequence of optional Single values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="float"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<float> AverageOrNone(this IEnumerable<Option<float>> source)
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Double values. If the sequence is empty it returns None.
+        /// Computes the average of a sequence of <see cref="double"/> values. If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
         /// TODO: describe handling of NaN and +/- infinity, +/- zero.
         /// </remarks>
-        /// <param name="source">A sequence of Double values to determine the average value of.</param>
+        /// <param name="source">A sequence of <see cref="double"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<double> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Double values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="double"/> values. If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
         /// TODO: describe handling of NaN and +/- infinity, +/- zero.
         /// </remarks>
-        /// <param name="source">A sequence of optional Double values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="double"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<Option<double>> source)
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int64 values.  If the sequence is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="long"/> values.  If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int64 values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<decimal> source)
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int64 values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="long"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional Int64 values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<Option<decimal>> source)
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Int32 values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -128,7 +128,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int32 values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -140,7 +140,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Int64 values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -152,7 +152,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Int64 values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -164,7 +164,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Single values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -177,7 +177,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Single values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -190,7 +190,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Double values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Double values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -216,7 +216,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of Decimal values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -228,7 +228,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional Decimal values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
