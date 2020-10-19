@@ -84,7 +84,7 @@ namespace Funcky.Extensions
         /// Invokes a transform function on each element of a sequence and returns the maximum optional <see cref="long"/> value. If the transformed sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values to calculate the average of.</param>
+        /// <param name="source">A sequence of values to calculate the maximum of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
