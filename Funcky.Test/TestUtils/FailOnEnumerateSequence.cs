@@ -3,7 +3,7 @@ using Xunit.Sdk;
 
 namespace Funcky.Test.TestUtils
 {
-    internal class FailOnEnumerateSequence<T> : IEnumerable<T>
+    internal sealed class FailOnEnumerateSequence<T> : IEnumerable<T>
     {
         public IEnumerator<T> GetEnumerator()
             => throw new XunitException("Sequence was unexpectedly enumerated.");

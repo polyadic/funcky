@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class TransposeTest
+    public sealed class TransposeTest
     {
         [Fact]
         public void TransposingAnEmptyMatrixResultsInAnEmptyMatrix()

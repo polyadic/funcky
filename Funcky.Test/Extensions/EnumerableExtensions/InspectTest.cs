@@ -5,7 +5,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class InspectTest
+    public sealed class InspectTest
     {
         [Fact]
         public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()

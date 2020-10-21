@@ -3,7 +3,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {
-    public class PredicateCompositionTest
+    public sealed class PredicateCompositionTest
     {
         private const string PlaceholderValue = "foo";
 
