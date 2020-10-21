@@ -20,11 +20,14 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             const string expectedValue = "Hello world!";
             var oneElementSequence = Sequence.Return(expectedValue);
 
-            foreach (var (value, isFirst) in oneElementSequence.WithFirst())
+            var sequenceWithFirst = oneElementSequence.WithFirst();
+            foreach (var (value, isFirst) in sequenceWithFirst)
             {
                 Assert.Equal(expectedValue, value);
                 Assert.True(isFirst);
             }
+
+            Assert.NotEmpty(sequenceWithFirst);
         }
 
         [Fact]
