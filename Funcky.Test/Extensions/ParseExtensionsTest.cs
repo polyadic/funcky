@@ -24,63 +24,63 @@ namespace Funcky.Test.Extensions
 
         [Theory]
         [MemberData(nameof(BooleanStrings))]
-        public void GivenAStringTryParseBooleanOrNoneReturnsTheCorrectValue(Option<bool> expected, string input)
+        public void GivenAStringParseBooleanOrNoneReturnsTheCorrectValue(Option<bool> expected, string input)
         {
             Assert.Equal(expected, input.ParseBooleanOrNone());
         }
 
         [Theory]
         [MemberData(nameof(ByteStrings))]
-        public void GivenAStringTryParseByteOrNoneReturnsTheCorrectValue(Option<byte> expected, string input)
+        public void GivenAStringParseByteOrNoneReturnsTheCorrectValue(Option<byte> expected, string input)
         {
             Assert.Equal(expected, input.ParseByteOrNone());
         }
 
         [Theory]
         [MemberData(nameof(ShortStrings))]
-        public void GivenAStringTryParseShortOrNoneReturnsTheCorrectValue(Option<short> expected, string input)
+        public void GivenAStringParseShortOrNoneReturnsTheCorrectValue(Option<short> expected, string input)
         {
             Assert.Equal(expected, input.ParseShortOrNone());
         }
 
         [Theory]
         [MemberData(nameof(IntStrings))]
-        public void GivenAStringTryParseIntOrNoneReturnsTheCorrectValue(Option<int> expected, string input)
+        public void GivenAStringParseIntOrNoneReturnsTheCorrectValue(Option<int> expected, string input)
         {
             Assert.Equal(expected, input.ParseIntOrNone());
         }
 
         [Theory]
         [MemberData(nameof(LongStrings))]
-        public void GivenAStringTryParseLongOrNoneReturnsTheCorrectValue(Option<long> expected, string input)
+        public void GivenAStringParseLongOrNoneReturnsTheCorrectValue(Option<long> expected, string input)
         {
             Assert.Equal(expected, input.ParseLongOrNone());
         }
 
         [Theory]
         [MemberData(nameof(FloatStrings))]
-        public void GivenAStringTryParseFloatOrNoneReturnsTheCorrectValue(Option<float> expected, string input)
+        public void GivenAStringParseFloatOrNoneReturnsTheCorrectValue(Option<float> expected, string input)
         {
             Assert.Equal(expected, input.ParseFloatOrNone());
         }
 
         [Theory]
         [MemberData(nameof(DoubleStrings))]
-        public void GivenAStringTryParseDoubleOrNoneReturnsTheCorrectValue(Option<double> expected, string input)
+        public void GivenAStringParseDoubleOrNoneReturnsTheCorrectValue(Option<double> expected, string input)
         {
             Assert.Equal(expected, input.ParseDoubleOrNone());
         }
 
         [Theory]
         [MemberData(nameof(DecimalStrings))]
-        public void GivenAStringTryParseDecimalOrNoneReturnsTheCorrectValue(Option<decimal> expected, string input)
+        public void GivenAStringParseDecimalOrNoneReturnsTheCorrectValue(Option<decimal> expected, string input)
         {
             Assert.Equal(expected, input.ParseDecimalOrNone());
         }
 
         [Theory]
         [MemberData(nameof(DateTimeStrings))]
-        public void GivenAStringTryParseDateTimeOrNoneReturnsTheCorrectValue(Option<DateTime> expected, string input)
+        public void GivenAStringParseDateTimeOrNoneReturnsTheCorrectValue(Option<DateTime> expected, string input)
         {
             using var current = new DisposableCulture("de-CH");
 
@@ -89,7 +89,7 @@ namespace Funcky.Test.Extensions
 
         [Theory]
         [MemberData(nameof(EnumStrings))]
-        public void GivenAStringTryParseEnumOrNoneReturnsTheCorrectValue(Option<MyEnum> expected, string input)
+        public void GivenAStringParseEnumOrNoneReturnsTheCorrectValue(Option<MyEnum> expected, string input)
         {
             Assert.Equal(expected, input.ParseEnumOrNone<MyEnum>());
         }
