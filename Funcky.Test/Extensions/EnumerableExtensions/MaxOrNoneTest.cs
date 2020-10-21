@@ -207,7 +207,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfSinglesWithAnNaNTheMaxReturnsNaN()
+        public void GivenASequenceOfSinglesWithAnNaNAndNegativeInfinityReturnsNaN()
         {
             var numbers = new List<Option<float>> { Option.Some(float.NegativeInfinity), Option.Some(1.8f), Option.Some(42.52f), Option.Some(float.NaN) };
 
