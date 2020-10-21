@@ -282,7 +282,7 @@ namespace Funcky.Extensions
             private readonly int _count;
             private readonly Option<double> _sum;
 
-            public AverageCalculatorDouble(int count = default, Option<double> sum = default)
+            private AverageCalculatorDouble(int count = default, Option<double> sum = default)
             {
                 _count = count;
                 _sum = sum;
@@ -316,7 +316,7 @@ namespace Funcky.Extensions
             private readonly Option<float> _sum;
             private readonly int _count;
 
-            public AverageCalculatorFloat(int count = default, Option<float> sum = default)
+            private AverageCalculatorFloat(int count = default, Option<float> sum = default)
             {
                 _count = count;
                 _sum = sum;
@@ -338,7 +338,7 @@ namespace Funcky.Extensions
             private readonly Option<decimal> _sum;
             private readonly int _count;
 
-            public AverageCalculatorDecimal(int count = default, Option<decimal> sum = default)
+            private AverageCalculatorDecimal(int count = default, Option<decimal> sum = default)
             {
                 _count = count;
                 _sum = sum;
