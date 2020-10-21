@@ -1,6 +1,24 @@
 #nullable enable
+Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TValue>
+Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
+Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TValue>.IsFirst.get -> bool
+Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TValue>.Value.get -> TValue
+Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
+Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TValue>
+Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
+Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TValue>.Index.get -> int
+Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TValue>.Value.get -> TValue
+Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
+Funcky.Extensions.EnumerableExtensions.ValueWithLast<TValue>
+Funcky.Extensions.EnumerableExtensions.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
+Funcky.Extensions.EnumerableExtensions.ValueWithLast<TValue>.IsLast.get -> bool
+Funcky.Extensions.EnumerableExtensions.ValueWithLast<TValue>.Value.get -> TValue
+Funcky.Extensions.EnumerableExtensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
 Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
 Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
+static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.EnumerableExtensions.ValueWithFirst<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.EnumerableExtensions.ValueWithIndex<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.EnumerableExtensions.ValueWithLast<TSource>>!
 static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
