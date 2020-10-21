@@ -24,19 +24,19 @@ namespace Funcky.Extensions
                 => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<int> term)
-                => term.Match(this, Add);
+                => term.Match(none: this, some: Add);
 
             public AverageCalculatorDouble Add(long term)
                 => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<long> term)
-                => term.Match(this, Add);
+                => term.Match(none: this, some: Add);
 
             public AverageCalculatorDouble Add(double term)
                 => new AverageCalculatorDouble(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDouble Add(Option<double> term)
-                => term.Match(this, Add);
+                => term.Match(none: this, some: Add);
         }
 
         private class AverageCalculatorFloat
@@ -58,7 +58,7 @@ namespace Funcky.Extensions
                 => new AverageCalculatorFloat(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorFloat Add(Option<float> term)
-                => term.Match(this, Add);
+                => term.Match(none: this, some: Add);
         }
 
         private class AverageCalculatorDecimal
@@ -80,7 +80,7 @@ namespace Funcky.Extensions
                 => new AverageCalculatorDecimal(_count + 1, Some(_sum.Match(none: term, some: sum => sum + term)));
 
             public AverageCalculatorDecimal Add(Option<decimal> term)
-                => term.Match(this, Add);
+                => term.Match(none: this, some: Add);
         }
     }
 }
