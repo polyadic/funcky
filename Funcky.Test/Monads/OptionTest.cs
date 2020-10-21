@@ -56,27 +56,6 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
-        public void GivenADictionaryWhenWeLookForAnExistentValueWithTryGetValueThenTheResultShouldBeASomeOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-            var maybe = dictionary.TryGetValue(key: "some");
-
-            FunctionalAssert.IsSome(maybe);
-            Assert.Equal("value", maybe.Match(string.Empty, Identity));
-        }
-
-        [Fact]
-        public void GivenADictionaryWhenWeLookForAnInexistentValueWithTryGetValueThenTheResultShouldBeANoneOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-            var maybe = dictionary.TryGetValue(readOnlyKey: "none");
-
-            FunctionalAssert.IsNone(maybe);
-        }
-
-        [Fact]
         public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
         {
             var maybe = Option<int>.None();
