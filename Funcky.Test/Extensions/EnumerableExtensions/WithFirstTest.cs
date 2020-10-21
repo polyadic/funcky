@@ -18,7 +18,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public void ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedFirst()
         {
             const string expectedValue = "Hello world!";
-            var oneElementSequence = Enumerable.Repeat(expectedValue, 1);
+            var oneElementSequence = Sequence.Return(expectedValue);
 
             foreach (var (value, isFirst) in oneElementSequence.WithFirst())
             {

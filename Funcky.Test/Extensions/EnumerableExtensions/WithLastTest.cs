@@ -18,7 +18,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public void ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedLast()
         {
             const string expectedValue = "Hello world!";
-            var oneElementSequence = Enumerable.Repeat(expectedValue, 1);
+            var oneElementSequence = Sequence.Return(expectedValue);
 
             foreach (var (value, isLast) in oneElementSequence.WithLast())
             {
