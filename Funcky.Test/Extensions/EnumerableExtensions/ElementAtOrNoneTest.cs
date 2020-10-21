@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class ElementAtOrNoneTest
+    public sealed class ElementAtOrNoneTest
     {
         [Fact]
         public void GivenAnEmptySequenceElementAtOrNoneAlwaysReturnsNone()

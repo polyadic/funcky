@@ -4,7 +4,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test
 {
-    public class UnitTest
+    public sealed class UnitTest
     {
         [Fact]
         public void TheUnitTypeIsAlwaysTheSame()

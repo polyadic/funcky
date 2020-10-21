@@ -4,9 +4,9 @@ using Funcky.Xunit;
 using Xunit;
 using static Funcky.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
 {
-    public class ElementAtOrNoneTest
+    public sealed class ElementAtOrNoneTest
     {
         [Theory]
         [InlineData(-42)]

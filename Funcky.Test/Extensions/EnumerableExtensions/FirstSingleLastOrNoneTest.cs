@@ -6,7 +6,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class FirstSingleLastOrNoneTest
+    public sealed class FirstSingleLastOrNoneTest
     {
         [Theory]
         [MemberData(nameof(ValueReferenceEnumerables))]

@@ -3,7 +3,7 @@ using Funcky.Monads;
 
 namespace Funcky.Test.TestUtils
 {
-    internal class MaybeProducer<T>
+    internal sealed class MaybeProducer<T>
         where T : notnull
     {
         private readonly T _result;

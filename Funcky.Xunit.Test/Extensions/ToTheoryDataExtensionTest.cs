@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Funcky.Xunit;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Xunit.Test.Extensions
 {
-    public class ToTheoryDataExtensionTest
+    public sealed class ToTheoryDataExtensionTest
     {
         private const string StringValue = "Hello world!";
         private const int IntValue = 1337;
@@ -21,13 +19,13 @@ namespace Funcky.Test.Extensions
 
         [Theory]
         [MemberData(nameof(TheoryFromRepeat))]
-        public void GivenAEnumberableOfTupleWeGetAllValues(int id, string value)
+        public void GivenAnEnumerableOfTupleWeGetAllValues(int id, string value)
         {
             Assert.Equal(IntValue, id);
             Assert.Equal(StringValue, value);
         }
 
         public static TheoryData<int, string> TheoryFromRepeat()
-            => Enumerable.Repeat(Tuple.Create(IntValue, StringValue), 1).ToTheoryData();
+            => Sequence.Return(Tuple.Create(IntValue, StringValue)).ToTheoryData();
     }
 }

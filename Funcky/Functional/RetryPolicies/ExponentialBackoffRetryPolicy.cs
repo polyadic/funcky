@@ -15,13 +15,8 @@ namespace Funcky
 
         public int MaxRetries { get; }
 
-#if TIMESPAN_MULTIPLY_SUPPORTED
         public TimeSpan Duration(int onRetryCount)
-            => _firstDelay * Exponential(onRetryCount);
-#else
-        public TimeSpan Duration(int onRetryCount)
-            => TimeSpan.FromTicks((long)(_firstDelay.Ticks * Exponential(onRetryCount)));
-#endif
+            => _firstDelay.Multiply(Exponential(onRetryCount));
 
         private static double Exponential(int onRetryCount) => Math.Pow(BaseFactor, onRetryCount);
     }

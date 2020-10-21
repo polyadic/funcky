@@ -1,54 +1,52 @@
 using System.Collections.Generic;
-using System.Linq;
-using Funcky.Extensions;
 using Xunit;
 
 namespace Funcky.Test.Extensions
 {
-    public class ObjectExtensionsTest
+    public sealed class SequenceTest
     {
         [Fact]
         public void GivenAnObjectWeCreateAnIEnumerableWithToEnumerable()
         {
-            AcceptIntegers(42.ToEnumerable());
+            AcceptIntegers(Sequence.Return(42));
 
             Unit unit;
-            AcceptUnits(unit.ToEnumerable());
+            AcceptUnits(Sequence.Return(unit));
         }
 
         [Fact]
         public void ToEnumerableReturnsEmptyEnumerableWhenReferenceIsNull()
         {
             string? value = null;
-            Assert.Empty(value.ToEnumerable());
+            Assert.Empty(Sequence.FromNullable(value));
         }
 
         [Fact]
         public void ToEnumerableReturnsEnumerableWithOneValueWhenReferenceIsNotNull()
         {
             const string value = "foo";
-            Assert.Single(value.ToEnumerable(), value);
+            Assert.Single(Sequence.FromNullable(value), value);
         }
 
         [Fact]
         public void ToEnumerableReturnsEmptyEnumerableWhenNullableValueTypeIsNull()
         {
             int? value = null;
-            Assert.Empty(value.ToEnumerable());
+            Assert.Empty(Sequence.FromNullable(value));
         }
 
         [Fact]
         public void ToEnumerableReturnsEnumerableWithOneValueWhenNullableValueTypeIsNotNull()
         {
             int? value = 10;
-            Assert.Single(value.ToEnumerable(), value);
+            Assert.Single(Sequence.FromNullable(value), value);
         }
 
         [Fact]
         public void ToEnumerableReturnsEnumerableWithOneValueWhenValueTypeIsNotNull()
         {
             const int value = 10;
-            Assert.Single(value.ToEnumerable(), value);
+            Assert.Single(Sequence.Return(value), value);
         }
 
         private static void AcceptIntegers(IEnumerable<int> values)
