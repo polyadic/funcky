@@ -303,7 +303,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfDoublesWithAnNaNTheMaxReturnsNaN()
+        public void GivenASequenceOfDoublesWithAnNaNMaxOrNoneDoesNotReturnNaN()
         {
             var numbers = new List<Option<double>> { Option.Some(double.NegativeInfinity), Option.Some(1.8), Option.Some(42.52), Option.Some(double.NaN) };
 
