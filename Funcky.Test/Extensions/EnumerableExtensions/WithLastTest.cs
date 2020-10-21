@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
@@ -33,9 +33,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             const int length = 20;
             var sequence = Enumerable.Range(1, length);
 
-            foreach (var (value, isLast) in sequence.WithLast())
+            foreach (var valueWithLast in sequence.WithLast())
             {
-                Assert.Equal(value == length, isLast);
+                Assert.Equal(valueWithLast.Value == length, valueWithLast.IsLast);
             }
         }
     }

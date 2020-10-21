@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
@@ -34,9 +34,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
             var sequence = Enumerable.Range(1, length);
 
-            foreach (var (value, isFirst) in sequence.WithFirst())
+            foreach (var valueWithFirst in sequence.WithFirst())
             {
-                Assert.Equal(value == 1, isFirst);
+                Assert.Equal(valueWithFirst.Value == 1, valueWithFirst.IsFirst);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Funcky.Extensions;
 using Xunit;
 
@@ -32,9 +32,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var sequence = Enumerable.Range(0, 20);
 
-            foreach (var (value, index) in sequence.WithIndex())
+            foreach (var valueWithIndex in sequence.WithIndex())
             {
-                Assert.Equal(value, index);
+                Assert.Equal(valueWithIndex.Value, valueWithIndex.Index);
             }
         }
     }
