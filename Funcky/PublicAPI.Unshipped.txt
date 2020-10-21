@@ -1,6 +1,24 @@
 #nullable enable
+Funcky.Extensions.ValueWithFirst<TValue>
+Funcky.Extensions.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
+Funcky.Extensions.ValueWithFirst<TValue>.IsFirst.get -> bool
+Funcky.Extensions.ValueWithFirst<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
+Funcky.Extensions.ValueWithIndex<TValue>
+Funcky.Extensions.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
+Funcky.Extensions.ValueWithIndex<TValue>.Index.get -> int
+Funcky.Extensions.ValueWithIndex<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
+Funcky.Extensions.ValueWithLast<TValue>
+Funcky.Extensions.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
+Funcky.Extensions.ValueWithLast<TValue>.IsLast.get -> bool
+Funcky.Extensions.ValueWithLast<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
 Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
 Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
+static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithFirst<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithIndex<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithLast<TSource>>!
 static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
