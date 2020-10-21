@@ -381,10 +381,64 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(-1000.45m, numbers.WhereSelect(Identity).Min());
         }
 
-        // Generic TSource Tests
+        // Generic TSource implementing IComparable Tests
         [Fact]
-        public void GivenAnEmptySequenceOfTSourceMinOrNoneReturnsNone()
+        public void GivenAnEmptySequenceOfAGenericIComparableMinOrNoneReturnsNone()
         {
+            var persons = Enumerable.Empty<Person>();
+
+            FunctionalAssert.IsNone(persons.MinOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceWithASingleGenericIComparableMinOrNoneReturnsTheSingleElement()
+        {
+            var persons = Enumerable.Repeat(new Person(42), 1);
+
+            FunctionalAssert.IsSome(persons.First(), persons.MinOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceOfGenericIComparablesMinOrNoneComputesTheMin()
+        {
+            var persons = new List<Person> { new Person(42), new Person(18), new Person(72), new Person(33) };
+
+            var person = FunctionalAssert.IsSome(persons.MinOrNone());
+            Assert.Equal(person.Age, persons.Min().Age);
+        }
+
+        [Fact]
+        public void GivenAnEmptySequenceOfOptionGenericIComparablesMinOrNoneReturnsNone()
+        {
+            var persons = Enumerable.Empty<Option<Person>>();
+
+            FunctionalAssert.IsNone(persons.MinOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceWithASingleOptionGenericIComparablesMinOrNoneReturnsTheSingleElement()
+        {
+            var persons = Enumerable.Repeat(Option.Some(new Person(42)), 1);
+
+            var person = FunctionalAssert.IsSome(persons.MinOrNone());
+            Assert.Equal(42, person.Age);
+        }
+
+        [Fact]
+        public void GivenASequenceOfOptionGenericIComparablesWhereAllValuesAreNoneMinOrNoneComputesNone()
+        {
+            var persons = new List<Option<Person>> { Option<Person>.None(), Option<Person>.None(), Option<Person>.None() };
+
+            FunctionalAssert.IsNone(persons.MinOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceOfOptionGenericIComparablesMinOrNoneComputesTheMinIgnoringTheNones()
+        {
+            var persons = new List<Option<Person>> { Option.Some(new Person(42)), Option.Some(new Person(18)), Option<Person>.None(), Option.Some(new Person(72)), Option.Some(new Person(33)), Option<Person>.None(), Option<Person>.None(), Option.Some(new Person(21)), Option<Person>.None() };
+
+            var person = FunctionalAssert.IsSome(persons.MinOrNone());
+            Assert.Equal(person.Age, persons.WhereSelect(Identity).Min().Age);
         }
     }
 }

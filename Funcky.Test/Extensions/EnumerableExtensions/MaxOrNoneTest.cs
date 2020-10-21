@@ -138,7 +138,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceWithASinglesSingleMaxOrNoneReturnsTheSingleElement()
+        public void GivenASequenceWithASingleSingleMaxOrNoneReturnsTheSingleElement()
         {
             var numbers = Enumerable.Repeat(42.0f, 1);
 
@@ -234,7 +234,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceWithADoublesSingleMaxOrNoneReturnsTheSingleElement()
+        public void GivenASequenceWithASingleDoubleMaxOrNoneReturnsTheSingleElement()
         {
             var numbers = Enumerable.Repeat(42.0, 1);
 
@@ -330,7 +330,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceWithADecimalsSingleMaxOrNoneReturnsTheSingleElement()
+        public void GivenASequenceWithASingleDecimalMaxOrNoneReturnsTheSingleElement()
         {
             var numbers = Enumerable.Repeat(42.0m, 1);
 
@@ -379,10 +379,64 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(9999.0001m, numbers.WhereSelect(Identity).Max());
         }
 
-        // Generic TSource Tests
+        // Generic TSource implementing IComparable Tests
         [Fact]
-        public void GivenAnEmptySequenceOfTSourceMaxOrNoneReturnsNone()
+        public void GivenAnEmptySequenceOfAGenericIComparableMaxOrNoneReturnsNone()
         {
+            var persons = Enumerable.Empty<Person>();
+
+            FunctionalAssert.IsNone(persons.MaxOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceWithASingleGenericIComparableMaxOrNoneReturnsTheSingleElement()
+        {
+            var persons = Enumerable.Repeat(new Person(42), 1);
+
+            FunctionalAssert.IsSome(persons.First(), persons.MaxOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceOfGenericIComparablesMaxOrNoneComputesTheMax()
+        {
+            var persons = new List<Person> { new Person(42), new Person(18), new Person(72), new Person(33) };
+
+            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
+            Assert.Equal(person.Age, persons.Max().Age);
+        }
+
+        [Fact]
+        public void GivenAnEmptySequenceOfOptionGenericIComparablesMaxOrNoneReturnsNone()
+        {
+            var persons = Enumerable.Empty<Option<Person>>();
+
+            FunctionalAssert.IsNone(persons.MaxOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceWithASingleOptionGenericIComparablesMaxOrNoneReturnsTheSingleElement()
+        {
+            var persons = Enumerable.Repeat(Option.Some(new Person(42)), 1);
+
+            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
+            Assert.Equal(42, person.Age);
+        }
+
+        [Fact]
+        public void GivenASequenceOfOptionGenericIComparablesWhereAllValuesAreNoneMaxOrNoneComputesNone()
+        {
+            var persons = new List<Option<Person>> { Option<Person>.None(), Option<Person>.None(), Option<Person>.None() };
+
+            FunctionalAssert.IsNone(persons.MaxOrNone());
+        }
+
+        [Fact]
+        public void GivenASequenceOfOptionGenericIComparablesMaxOrNoneComputesTheMaxIgnoringTheNones()
+        {
+            var persons = new List<Option<Person>> { Option.Some(new Person(42)), Option.Some(new Person(18)), Option<Person>.None(), Option.Some(new Person(72)), Option.Some(new Person(33)), Option<Person>.None(), Option<Person>.None(), Option.Some(new Person(21)), Option<Person>.None() };
+
+            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
+            Assert.Equal(person.Age, persons.WhereSelect(Identity).Max().Age);
         }
     }
 }
