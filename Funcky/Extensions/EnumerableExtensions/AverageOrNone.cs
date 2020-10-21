@@ -50,7 +50,10 @@ namespace Funcky.Extensions
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
-        /// TODO: describe handling of NaN and +/- infinity, +/- zero.
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
         /// </remarks>
         /// <param name="source">A sequence of <see cref="float"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
@@ -63,7 +66,10 @@ namespace Funcky.Extensions
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
-        /// TODO: describe handling of NaN and +/- infinity, +/- zero.
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
         /// </remarks>
         /// <param name="source">A sequence of optional <see cref="float"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
@@ -76,7 +82,10 @@ namespace Funcky.Extensions
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
-        /// TODO: describe handling of NaN and +/- infinity, +/- zero.
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
         /// </remarks>
         /// <param name="source">A sequence of <see cref="double"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
@@ -89,7 +98,10 @@ namespace Funcky.Extensions
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
         /// <remarks>
-        /// TODO: describe handling of NaN and +/- infinity, +/- zero.
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
         /// </remarks>
         /// <param name="source">A sequence of optional <see cref="double"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
@@ -168,6 +180,12 @@ namespace Funcky.Extensions
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
+        /// <remarks>
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
+        /// </remarks>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values that are used to calculate an average.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
@@ -181,6 +199,12 @@ namespace Funcky.Extensions
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
+        /// <remarks>
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
+        /// </remarks>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values that are used to calculate an average.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
@@ -194,6 +218,12 @@ namespace Funcky.Extensions
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
+        /// <remarks>
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
+        /// </remarks>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values that are used to calculate an average.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
@@ -207,6 +237,12 @@ namespace Funcky.Extensions
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
+        /// <remarks>
+        /// Any sequence containing at least one NaN value will evaluate to NaN.
+        /// A sequence containing at least one +Infinity will always evaluate to an average of +infinity.
+        /// A sequence containing at least one -Infinity will always evaluate to an average of -infinity.
+        /// A sequence containing at least one of each +Infinity and -Infinity values will always evaluate to NaN.
+        /// </remarks>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values that are used to calculate an average.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
