@@ -97,7 +97,7 @@
 * Added overload to `Functional.Retry` with a `IRetryPolicy`.
 * Added `None` overload that takes no predicate.
 
-## Unreleased
+## Funcky 2.3.0-beta.1
 
 ### Deprecations
 * `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
@@ -111,11 +111,14 @@ with the static class `Sequence`:
 ### More Extension Methods for `IEnumerable<T>`
 This release adds a bunch of new extension methods on `IEnumerable<T>`:
 * `AdjacentGroupBy`
+* `AverageOrNone`
 * `CartesianProduct`
 * `Chunk`
 * `ElementAtOrNone`
 * `Interleave`
+* `MaxOrNone`
 * `Merge`
+* `MinOrNone`
 * `Pairwise`
 * `Partition`
 * `SlidingWindow`
