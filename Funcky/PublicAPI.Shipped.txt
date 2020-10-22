@@ -1,4 +1,6 @@
 #nullable enable
+
+~Funcky.GenericConstraints.RequireClass<T>
 Funcky.ConstantDelayPolicy
 Funcky.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
 Funcky.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
@@ -20,6 +22,21 @@ Funcky.Extensions.ParseExtensions
 Funcky.Extensions.QueryableExtensions
 Funcky.Extensions.StreamExtensions
 Funcky.Extensions.StringExtensions
+Funcky.Extensions.ValueWithFirst<TValue>
+Funcky.Extensions.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
+Funcky.Extensions.ValueWithFirst<TValue>.IsFirst.get -> bool
+Funcky.Extensions.ValueWithFirst<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
+Funcky.Extensions.ValueWithIndex<TValue>
+Funcky.Extensions.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
+Funcky.Extensions.ValueWithIndex<TValue>.Index.get -> int
+Funcky.Extensions.ValueWithIndex<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
+Funcky.Extensions.ValueWithLast<TValue>
+Funcky.Extensions.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
+Funcky.Extensions.ValueWithLast<TValue>.IsLast.get -> bool
+Funcky.Extensions.ValueWithLast<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
 Funcky.Functional
 Funcky.GenericConstraints.RequireClass<T>.RequireClass() -> void
 Funcky.GenericConstraints.RequireStruct<T>
@@ -43,6 +60,8 @@ Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.AndThen(System.Action<TItem>! andThenFunction) -> void
 Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! andThenFunction) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, TResult>! andThenFunction) -> Funcky.Monads.Option<TResult>
+Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
+Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
 Funcky.Monads.Option<TItem>.Equals(Funcky.Monads.Option<TItem> other) -> bool
 Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! elseOption) -> TItem
 Funcky.Monads.Option<TItem>.GetOrElse(TItem elseOption) -> TItem
@@ -57,6 +76,8 @@ Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funck
 Funcky.Monads.Option<TItem>.SelectMany<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.ToEnumerable() -> System.Collections.Generic.IEnumerable<TItem>!
 Funcky.Monads.Option<TItem>.Where(System.Func<TItem, bool>! predicate) -> Funcky.Monads.Option<TItem>
+Funcky.Monads.OptionComparer
+Funcky.Monads.OptionComparer<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
@@ -118,6 +139,26 @@ static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey, TRe
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector, System.Collections.Generic.IEqualityComparer<TKey>! comparer) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>! comparer) -> System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>!>!
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<decimal>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<double>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<float>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<decimal>>! source) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<double>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<float>>! source) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<int>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<long>>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<int>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<long>! source) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, decimal>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, double>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, float>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<decimal>>! selector) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<double>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<float>>! selector) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<int>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<long>>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, int>! selector) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, long>! selector) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.EnumerableExtensions.CartesianProduct<TFirstSource, TSecondSource, TResult>(this System.Collections.Generic.IEnumerable<TFirstSource>! firstSequence, System.Collections.Generic.IEnumerable<TSecondSource>! secondSequence, System.Func<TFirstSource, TSecondSource, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.CartesianProduct<TFirstSource, TSecondSource>(this System.Collections.Generic.IEnumerable<TFirstSource>! firstSequence, System.Collections.Generic.IEnumerable<TSecondSource>! secondSequence) -> System.Collections.Generic.IEnumerable<(TFirstSource First, TSecondSource Second)>!
 static Funcky.Extensions.EnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
@@ -131,10 +172,18 @@ static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Co
 static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence, params System.Collections.Generic.IEnumerable<TSource>![]! otherSequences) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.Merge<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources, Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!> comparer = default(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!>)) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Merge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence1, System.Collections.Generic.IEnumerable<TSource>! sequence2, Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!> comparer = default(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!>)) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Merge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence1, System.Collections.Generic.IEnumerable<TSource>! sequence2, System.Collections.Generic.IEnumerable<TSource>! sequence3, Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!> comparer = default(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!>)) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Merge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence1, System.Collections.Generic.IEnumerable<TSource>! sequence2, System.Collections.Generic.IEnumerable<TSource>! sequence3, System.Collections.Generic.IEnumerable<TSource>! sequence4, Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!> comparer = default(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!>)) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Option<TResult>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MinOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.None<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> bool
 static Funcky.Extensions.EnumerableExtensions.None<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> bool
 static Funcky.Extensions.EnumerableExtensions.Pairwise<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
@@ -149,6 +198,9 @@ static Funcky.Extensions.EnumerableExtensions.Transpose<TSource>(this System.Col
 static Funcky.Extensions.EnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IEnumerable<TSource?>! source) -> System.Collections.Generic.IEnumerable<TSource!>!
 static Funcky.Extensions.EnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IEnumerable<TSource?>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TInput, TOutput>(this System.Collections.Generic.IEnumerable<TInput>! inputs, System.Func<TInput, Funcky.Monads.Option<TOutput>>! selector) -> System.Collections.Generic.IEnumerable<TOutput>!
+static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithFirst<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithIndex<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithLast<TSource>>!
 static Funcky.Extensions.HttpHeadersExtensions.TryGetValues(this System.Net.Http.Headers.HttpHeaders! headers, string! name) -> Funcky.Monads.Option<System.Collections.Generic.IEnumerable<string!>!>
 static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T item, Funcky.GenericConstraints.RequireStruct<T>? ω = null) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T? item) -> System.Collections.Generic.IEnumerable<T>!
@@ -186,15 +238,15 @@ static Funcky.Extensions.StringExtensions.IndexOfAnyOrNone(this string! haystack
 static Funcky.Extensions.StringExtensions.IndexOfAnyOrNone(this string! haystack, char[]! anyOf, int startIndex) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfAnyOrNone(this string! haystack, char[]! anyOf, int startIndex, int count) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value) -> Funcky.Monads.Option<int>
-static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, int startIndex) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, int startIndex, int count) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value) -> Funcky.Monads.Option<int>
-static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, int startIndex) -> Funcky.Monads.Option<int>
-static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, int startIndex, int count) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, string! value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfAnyOrNone(this string! haystack, char[]! anyOf) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfAnyOrNone(this string! haystack, char[]! anyOf, int startIndex) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfAnyOrNone(this string! haystack, char[]! anyOf, int startIndex, int count) -> Funcky.Monads.Option<int>
@@ -202,12 +254,13 @@ static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystac
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, char value, int startIndex) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, char value, int startIndex, int count) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value) -> Funcky.Monads.Option<int>
-static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, int startIndex) -> Funcky.Monads.Option<int>
-static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, int startIndex, int count) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, string! value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Functional.ActionToUnit(System.Action! action) -> System.Func<Funcky.Unit>!
+static Funcky.Functional.ActionToUnit<T>(System.Action<T>! action) -> System.Func<T, Funcky.Unit>!
 static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, Funcky.Unit>!
 static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6, T7>(System.Action<T1, T2, T3, T4, T5, T6, T7>! action) -> System.Func<T1, T2, T3, T4, T5, T6, T7, Funcky.Unit>!
 static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6>(System.Action<T1, T2, T3, T4, T5, T6>! action) -> System.Func<T1, T2, T3, T4, T5, T6, Funcky.Unit>!
@@ -215,7 +268,6 @@ static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5>(System.Action<T1, T2, 
 static Funcky.Functional.ActionToUnit<T1, T2, T3, T4>(System.Action<T1, T2, T3, T4>! action) -> System.Func<T1, T2, T3, T4, Funcky.Unit>!
 static Funcky.Functional.ActionToUnit<T1, T2, T3>(System.Action<T1, T2, T3>! action) -> System.Func<T1, T2, T3, Funcky.Unit>!
 static Funcky.Functional.ActionToUnit<T1, T2>(System.Action<T1, T2>! action) -> System.Func<T1, T2, Funcky.Unit>!
-static Funcky.Functional.ActionToUnit<T>(System.Action<T>! action) -> System.Func<T, Funcky.Unit>!
 static Funcky.Functional.All<T>(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
 static Funcky.Functional.Any<T>(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
 static Funcky.Functional.Curry<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>! function) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Func<T8, TResult>!>!>!>!>!>!>!>!
@@ -260,9 +312,9 @@ static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Opt
 static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Monads.OptionTaskAwaiter<TItem>
 static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Monads.OptionValueTaskAwaiter<TItem>
 static Funcky.Monads.Either<TLeft, TRight>.Left(TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
-static Funcky.Monads.Either<TLeft, TRight>.Right(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
+static Funcky.Monads.Either<TLeft, TRight>.Right(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.LazyExtensions.Select<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
 static Funcky.Monads.LazyExtensions.SelectMany<T, TA, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TA>!>! selector, System.Func<T, TA, TResult>! resultSelector) -> System.Lazy<TResult>!
 static Funcky.Monads.LazyExtensions.SelectMany<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!
@@ -271,7 +323,14 @@ static Funcky.Monads.Option.FromNullable<T>(T? item) -> Funcky.Monads.Option<T>
 static Funcky.Monads.Option.Some<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.None() -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.operator !=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
+static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
+static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.Option<TItem>.operator ==(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
+static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
+static Funcky.Monads.Option<TItem>.operator >=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
+static Funcky.Monads.OptionComparer.Create<TItem>(System.Collections.Generic.IComparer<TItem>! comparer) -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
+static Funcky.Monads.OptionComparer<TItem>.Create(System.Comparison<TItem>! comparison) -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
+static Funcky.Monads.OptionComparer<TItem>.Default.get -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.Result.Ok<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
@@ -281,11 +340,10 @@ static Funcky.Sequence.FromNullable<T>(T? item, Funcky.GenericConstraints.Requir
 static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, Funcky.Monads.Option<TItem>>! next) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, TItem>! next) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Return<TItem>(TItem item) -> System.Collections.Generic.IEnumerable<TItem>!
-static Funcky.Unit.Value.get -> Funcky.Unit
 static Funcky.Unit.operator !=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator <(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator <=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator ==(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-~Funcky.GenericConstraints.RequireClass<T>
+static Funcky.Unit.Value.get -> Funcky.Unit
