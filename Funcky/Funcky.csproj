@@ -7,10 +7,10 @@
         <WarningsAsErrors />
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Product>Funcky a functional C# library</Product>
-        <Description>Funcky is a basic functional C# library</Description>
-        <PackageTags>Functional Monad</PackageTags>
-        <Version>2.2.0</Version>
+        <Product>Funcky</Product>
+        <Description>Funcky is a functional C# library</Description>
+        <PackageTags>Functional Monad Linq</PackageTags>
+        <Version>2.3.0-beta.1</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
