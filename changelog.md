@@ -97,7 +97,7 @@
 * Added overload to `Functional.Retry` with a `IRetryPolicy`.
 * Added `None` overload that takes no predicate.
 
-## Funcky 2.3.0-beta1
+## Funcky 2.3.0-beta.1
 
 ### Deprecations
 * `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
