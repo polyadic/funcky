@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Funcky.GenericConstraints;
 using Funcky.Monads;
-using static System.Math;
 using static Funcky.Functional;
 
 namespace Funcky.Extensions
@@ -118,7 +116,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<double> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
-            => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
+            => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="double"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -158,7 +156,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<float> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
-            => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => DefaultComparerMin(selector(current), m))));
+            => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="float"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -243,7 +241,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
             where TResult : notnull
-            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Comparer<TResult>.Default.Compare(m, selector(current)) < 0 ? m : selector(current))));
+            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(m, selector(current)))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -258,12 +256,8 @@ namespace Funcky.Extensions
             where TResult : notnull
             => source.WhereSelect(selector).MinOrNone(Identity);
 
-        // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
-        private static float DefaultComparerMin(float left, float right)
-            => Comparer<float>.Default.Compare(left, right) < 0 ? left : right;
-
-        // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
-        private static double DefaultComparerMin(double left, double right)
-            => Comparer<double>.Default.Compare(left, right) < 0 ? left : right;
+        // For floats this defines a total order where NaN comes before negative infinity
+        private static TSource Min<TSource>(TSource left, TSource right)
+            => Comparer<TSource>.Default.Compare(left, right) < 0 ? left : right;
     }
 }
