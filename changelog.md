@@ -121,6 +121,9 @@ This release adds a bunch of new extension methods on `IEnumerable<T>`:
 * `SlidingWindow`
 * `TakeEvery`
 * `Transpose`
+* `WithFirst`
+* `WithIndex`
+* `WithLast`
 
 ### `IAsyncEnumerable<T>` Support
 This release adds a couple of extension methods that provide interoperability
