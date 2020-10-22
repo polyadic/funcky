@@ -36,7 +36,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<int> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
-            => source.Aggregate(Option<int>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
+            => source.Select(selector).Aggregate(Option<int>.None(), (min, current) => Option.Some(min.Match(current, m => Min(current, m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="int"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -76,7 +76,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<long> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
-            => source.Aggregate(Option<long>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
+            => source.Select(selector).Aggregate(Option<long>.None(), (min, current) => Option.Some(min.Match(current, m => Min(current, m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="long"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -116,7 +116,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<double> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
-            => source.Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
+            => source.Select(selector).Aggregate(Option<double>.None(), (min, current) => Option.Some(min.Match(current, m => Min(current, m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="double"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -156,7 +156,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<float> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
-            => source.Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
+            => source.Select(selector).Aggregate(Option<float>.None(), (min, current) => Option.Some(min.Match(current, m => Min(current, m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="float"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -196,7 +196,7 @@ namespace Funcky.Extensions
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> MinOrNone<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
-            => source.Aggregate(Option<decimal>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(selector(current), m))));
+            => source.Select(selector).Aggregate(Option<decimal>.None(), (min, current) => Option.Some(min.Match(current, m => Min(current, m))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum optional <see cref="decimal"/> value. If the transformed sequence only consists of none or is empty it returns None.
@@ -241,7 +241,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
             where TResult : notnull
-            => source.Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(selector(current), m => Min(m, selector(current)))));
+            => source.Select(selector).Aggregate(Option<TResult>.None(), (min, current) => Option.Some(min.Match(current, m => Min(m, current))));
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
