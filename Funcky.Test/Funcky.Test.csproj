@@ -15,7 +15,5 @@
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
-        <PackageReference Include="Equals.Fody" PrivateAssets="all" />
-        <PackageReference Include="Fody" PrivateAssets="all" />
     </ItemGroup>
 </Project>
