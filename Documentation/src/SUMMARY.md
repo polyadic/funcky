@@ -2,13 +2,13 @@
 
 [Introduction](./introduction.md)
 
+* [Case Studies]()
+  * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
 * [Option Monad](./option.md)
   * [The TryVerb-pattern](./try-pattern.md)
   * [The Linq-Extensions]()
     * [FirstOrNone, LastOrNone, SingleOrNone]()
     * [WhereSelect]()
-* [Case Studies]()
-  * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
 * [Either Monad]()
 * [Result Monad]()
 * [Functional Helpers](./functional-helpers/functional-helpers.md)
@@ -20,11 +20,7 @@
   * [Predicate Composition]()
   * [Unit Type](./functional-helpers/unit-type.md)
   * [ActionToUnit](./functional-helpers/action-to-unit.md)
-* [IEnumerable Extensions]()
-  * [ForEach](./enumerable-extensions/for-each.md)
-  * [Inspect](./enumerable-extensions/inspect.md)
-  * [None](./enumerable-extensions/none.md)
-  * [Chunk](./enumerable-extensions/chunk.md)
+* [IEnumerable Extensions](./enumerable-extensions/enumerable-extensions.md)
 * [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
 

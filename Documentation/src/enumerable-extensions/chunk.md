@@ -1,8 +1,9 @@
-# `IEnumerable` extension method `.Chunk`
+## Chunk
+
 With the `.Chunk(int)` extension method, you can turn an `IEnumerable<T>` into a `IEnumerable<IEnumerable<T>>`, with the inner Enumerables being of the given size.
 Empty and negative chunk sizes are not allowed and will throw a `ArgumentOutOfRangeException`.
 
-Examples:
+### Examples
 
 ```csharp
 var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
