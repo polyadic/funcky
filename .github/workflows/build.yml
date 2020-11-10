@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  DOTNET_NOLOGO: 1
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,4 +20,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run Tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --configuration Release --no-build

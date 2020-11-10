@@ -402,7 +402,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var persons = new List<Person> { new Person(42), new Person(18), new Person(72), new Person(33) };
 
             var person = FunctionalAssert.IsSome(persons.MaxOrNone());
-            Assert.Equal(person.Age, persons.Max().Age);
+            Assert.Equal(person.Age, persons.Max()?.Age);
         }
 
         [Fact]
@@ -436,7 +436,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var persons = new List<Option<Person>> { Option.Some(new Person(42)), Option.Some(new Person(18)), Option<Person>.None(), Option.Some(new Person(72)), Option.Some(new Person(33)), Option<Person>.None(), Option<Person>.None(), Option.Some(new Person(21)), Option<Person>.None() };
 
             var person = FunctionalAssert.IsSome(persons.MaxOrNone());
-            Assert.Equal(person.Age, persons.WhereSelect(Identity).Max().Age);
+            Assert.Equal(person.Age, persons.WhereSelect(Identity).Max()?.Age);
         }
     }
 }
