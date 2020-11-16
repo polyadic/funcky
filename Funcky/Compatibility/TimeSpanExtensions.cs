@@ -26,8 +26,8 @@ namespace System
         private static TimeSpan IntervalFromDoubleTicks(double ticks)
             => ticks switch
             {
-                _ when ticks > long.MaxValue || ticks < long.MinValue => throw new OverflowException(TimeSpanTooLong),
-                _ when ticks == long.MaxValue => TimeSpan.MaxValue,
+                >long.MaxValue or <long.MinValue => throw new OverflowException(TimeSpanTooLong),
+                long.MaxValue => TimeSpan.MaxValue,
                 _ => new TimeSpan((long)ticks),
             };
     }
