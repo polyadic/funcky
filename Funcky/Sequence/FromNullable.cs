@@ -11,7 +11,7 @@ namespace Funcky
         [Pure]
         public static IEnumerable<T> FromNullable<T>(T? item, RequireClass<T>? ω = null)
             where T : class
-            => item is { } ? Return(item) : Enumerable.Empty<T>();
+            => item is null ? Enumerable.Empty<T>() : Return(item);
 
         /// <inheritdoc cref="FromNullable{T}(T, Funcky.GenericConstraints.RequireClass{T})"/>
         [Pure]

@@ -10,7 +10,7 @@ namespace Funcky.Monads
         [Pure]
         public static Option<T> FromNullable<T>(T? item)
             where T : class
-            => item is { } value ? Some(value) : Option<T>.None();
+            => item is null ? Option<T>.None() : Some(item);
 
         /// <summary>
         /// Creates an <see cref="Option{T}"/> from a nullable value.
