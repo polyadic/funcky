@@ -17,6 +17,9 @@
         <NoWarn>$(NoWarn);NU5104</NoWarn>
     </PropertyGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="Funcky.Test" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="xunit.assert" />
         <PackageReference Include="xunit.extensibility.core" />
     </ItemGroup>
