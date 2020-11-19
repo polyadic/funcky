@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -14,11 +14,11 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'netcoreapp3.1'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
         <DefineConstants>$(DefineConstants);INDEXOF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;NULLABLE_ATTRIBUTES_SUPPORTED</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net5.0'" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
         <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />

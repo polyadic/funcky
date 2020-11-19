@@ -10,7 +10,7 @@ namespace Funcky.Monads
         public override Option<TItem> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             => reader.TokenType == JsonTokenType.Null
                 ? Option<TItem>.None()
-                : Option.Some(JsonSerializer.Deserialize<TItem>(ref reader, options));
+                : Option.Some(JsonSerializer.Deserialize<TItem>(ref reader, options)!);
 
         public override void Write(Utf8JsonWriter writer, Option<TItem> value, JsonSerializerOptions options)
             => value.Match(
