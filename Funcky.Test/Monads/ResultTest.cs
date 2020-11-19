@@ -132,7 +132,7 @@ namespace Funcky.Test.Monads
 
         private static void IsInterestingStackTraceFirst(Exception exception)
         {
-            if (exception.StackTrace is { })
+            if (exception.StackTrace is not null)
             {
                 var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
