@@ -1,3 +1,4 @@
+#if !SET_CURRENT_STACK_TRACE_SUPPORTED
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -18,3 +19,4 @@ namespace Funcky.Monads
         }
     }
 }
+#endif
