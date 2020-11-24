@@ -40,7 +40,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(NonExistingNeedleChar),
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0),
+                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, StringComparison.InvariantCulture),
+                #endif
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1),
                 Haystack.IndexOfOrNone(NonExistingNeedle),
                 Haystack.IndexOfOrNone(NonExistingNeedle, startIndex: 0),
@@ -77,7 +79,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(ExistingNeedleChar),
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0),
+                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(ExistingNeedleChar, StringComparison.InvariantCulture),
+                #endif
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0, count: Haystack.Length),
                 Haystack.IndexOfOrNone(ExistingNeedle),
                 Haystack.IndexOfOrNone(ExistingNeedle, startIndex: 0),
@@ -145,8 +149,8 @@ namespace Funcky.Test.Extensions
                 .Where(m => IsOptionWithItemType(m.ReturnType, originalMethod.ReturnType))
                 .Where(m => ArityOfExtensionMethodMatchesRegularMethod(m, originalMethod))
                 .FirstOrNone(m => originalMethod.GetParameters()
-                    .Zip(m.GetParameters().Skip(NumberOfThisParametersInExtensionMethods))
-                    .All(pair => AreParametersEqual(pair.First, pair.Second)));
+                    .Zip(m.GetParameters().Skip(NumberOfThisParametersInExtensionMethods), ValueTuple.Create)
+                    .All(pair => AreParametersEqual(pair.Item1, pair.Item2)));
         }
 
         private static IEnumerable<MethodInfo> GetIndexOfExtensionMethods()

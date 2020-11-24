@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
     <PropertyGroup>
         <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net4.8</TargetFrameworks>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -16,4 +17,5 @@
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
+    <Import Project="..\FrameworkFeatureConstants.props" />
 </Project>
