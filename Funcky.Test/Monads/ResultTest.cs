@@ -136,7 +136,7 @@ namespace Funcky.Test.Monads
             {
                 var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                Assert.StartsWith("   at Funcky.Test.Monads.ResultTest.InterestingStackTrace(Int32 n)", lines.First());
+                Assert.Matches(@"^\s+at Funcky\.Test\.Monads\.ResultTest\.InterestingStackTrace\s*\((System\.)?Int32 n\)", lines.First());
             }
             else
             {

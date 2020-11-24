@@ -122,7 +122,7 @@ namespace Funcky.Test.Extensions
             Assert.Equal(overloadCount, invalidIndexesCount);
         }
 
-        [Fact]
+        [SkipOnMonoFact]
         public void AllOverloadsOfIndexOfAreSupported()
         {
             GetIndexOfMethods()
