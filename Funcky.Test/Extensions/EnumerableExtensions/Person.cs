@@ -13,7 +13,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
         public int Age { get; }
 
-        public int CompareTo([AllowNull] Person other)
+        public int CompareTo(Person? other)
         {
             return other != null
                 ? Age.CompareTo(other.Age)

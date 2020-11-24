@@ -97,7 +97,7 @@ namespace Funcky.Test
                 LastName = lastName;
             }
 
-            private Person()
+            public Person()
             {
             }
 
@@ -115,7 +115,7 @@ namespace Funcky.Test
                 EmergencyContact = emergencyContact;
             }
 
-            private MedicalId()
+            public MedicalId()
             {
             }
 
