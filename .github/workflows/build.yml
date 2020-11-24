@@ -15,7 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-dotnet@v1
+      name: Install Current .NET SDK
     - uses: actions/setup-dotnet@v1
+      name: 'Install .NET SDK 3.1'
       with:
         dotnet-version: '3.1.x'
     - name: Restore dependencies
