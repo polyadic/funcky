@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
@@ -144,11 +145,13 @@ namespace Funcky.Test.Monads
             }
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private Result<int> InterestingStackTrace(int n)
             => n == 0
                 ? Result<int>.Error(new InvalidCastException())
                 : Indirection(n - 1);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private Result<int> Indirection(int n)
             => InterestingStackTrace(n);
     }
