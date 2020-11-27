@@ -98,6 +98,17 @@
 * Added `None` overload that takes no predicate.
 
 ## Funcky 2.3.0
+* `net5.0` has been added to Funcky's target frameworks.
+
+### Improvements to `Option<T>`
+* `Option<T>` is now implicitly convertible from `T`.
+  ```csharp
+  public static Option<int> Answer => 42;
+  ```
+* `Option` adds support for `System.Text.Json`:\
+  The custom `JsonConverter` is picked up automatically when serializing/deserializing.
+  `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
+
 ### Factory methods for `IEnumerable<T>`
 This release adds factory methods for creating `IEnumerable<T>`
 with the static class `Sequence`:
@@ -145,11 +156,6 @@ suited especially for use with EF Core:
 * `FirstOrNone`
 * `LastOrNone`
 * `SingleOrNone`
-
-### Serialization
-`Option` adds support for `System.Text.Json`:\
-The custom `JsonConverter` is picked up automatically when serializing/deserializing.
-`None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 
 ### Dependencies
 To support .NET Standard, Funcky conditionally pulls in dependencies
