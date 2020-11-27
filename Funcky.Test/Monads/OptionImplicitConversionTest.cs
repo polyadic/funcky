@@ -63,9 +63,7 @@ namespace Funcky.Test.Monads
         }
 
         private Option<string> ReturnStringOption()
-        {
-            return "Hello world!";
-        }
+            => "Hello world!";
 
         private Option<int> ReturnIntOption()
             => 42;
