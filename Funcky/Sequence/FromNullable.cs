@@ -9,13 +9,13 @@ namespace Funcky
     {
         /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
         [Pure]
-        public static IEnumerable<T> FromNullable<T>(T? item, RequireClass<T>? ω = null)
+        public static IEnumerable<T> FromNullable<T>(T? item)
             where T : class
             => item is null ? Enumerable.Empty<T>() : Return(item);
 
-        /// <inheritdoc cref="FromNullable{T}(T, Funcky.GenericConstraints.RequireClass{T})"/>
+        /// <inheritdoc cref="FromNullable{T}(T)"/>
         [Pure]
-        public static IEnumerable<T> FromNullable<T>(T? item, RequireStruct<T>? ω = null)
+        public static IEnumerable<T> FromNullable<T>(T? item)
             where T : struct
             => item.HasValue ? Return(item.Value) : Enumerable.Empty<T>();
     }
