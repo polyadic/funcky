@@ -68,9 +68,7 @@ namespace Funcky.Test.Monads
         }
 
         private Option<int> ReturnIntOption()
-        {
-            return 42;
-        }
+            => 42;
 
         private bool OverloadResolution(int i)
             => true;
