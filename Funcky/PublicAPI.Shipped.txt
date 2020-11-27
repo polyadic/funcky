@@ -335,8 +335,8 @@ static Funcky.Monads.Result.Ok<TValidResult>(TValidResult item) -> Funcky.Monads
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
-static Funcky.Sequence.FromNullable<T>(T? item, Funcky.GenericConstraints.RequireClass<T!>? ω = null) -> System.Collections.Generic.IEnumerable<T!>!
-static Funcky.Sequence.FromNullable<T>(T? item, Funcky.GenericConstraints.RequireStruct<T>? ω = null) -> System.Collections.Generic.IEnumerable<T>!
+static Funcky.Sequence.FromNullable<T>(T? item) -> System.Collections.Generic.IEnumerable<T!>!
+static Funcky.Sequence.FromNullable<T>(T? item) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, Funcky.Monads.Option<TItem>>! next) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, TItem>! next) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Return<TItem>(TItem item) -> System.Collections.Generic.IEnumerable<TItem>!
