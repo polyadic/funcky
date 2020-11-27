@@ -98,9 +98,6 @@
 * Added `None` overload that takes no predicate.
 
 ## Funcky 2.3.0
-### Deprecations
-* `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
-
 ### Factory methods for `IEnumerable<T>`
 This release adds factory methods for creating `IEnumerable<T>`
 with the static class `Sequence`:
@@ -164,3 +161,7 @@ that provide the missing functionality:
 * `ConfigureAwait(false)` is now used everywhere `await` is used.
 * The `IRetryPolicy` implementations now use correct `Timespan` with `double` multiplication
   when targeting .NET Standard 2.0.
+
+### Deprecations
+* `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
+* `RequireClass` and `RequireStruct` have been obsoleted with no replacement.
