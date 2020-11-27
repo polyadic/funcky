@@ -114,6 +114,7 @@ This release adds factory methods for creating `IEnumerable<T>`
 with the static class `Sequence`:
 * `Sequence.Return`: Creates an `IEnumerable<T>` with exactly one item.
 * `Sequence.FromNullable`: Creates an `IEnumerable<T>` with zero or one items.
+* `Sequence.Generate`: Creates an `IEnumerable<T>` using a generation function and a seed.
 
 ### More Extension Methods for `IEnumerable<T>`
 This release adds a bunch of new extension methods on `IEnumerable<T>`:
