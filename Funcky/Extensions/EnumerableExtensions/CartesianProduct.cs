@@ -17,8 +17,9 @@ namespace Funcky.Extensions
         /// <returns>Returns a list of all combinations as pairs.</returns>
         [Pure]
         public static IEnumerable<(TFirstSource First, TSecondSource Second)> CartesianProduct<TFirstSource, TSecondSource>(
-            this IEnumerable<TFirstSource> firstSequence, IEnumerable<TSecondSource> secondSequence) =>
-                CartesianProduct(firstSequence, secondSequence, ValueTuple.Create);
+            this IEnumerable<TFirstSource> firstSequence,
+            IEnumerable<TSecondSource> secondSequence)
+                => CartesianProduct(firstSequence, secondSequence, ValueTuple.Create);
 
         /// <summary>
         /// CartesianProduct returns a set the projection of ordered pairs where each element of the first sequence is paired with each element of the second sequence.
@@ -34,9 +35,7 @@ namespace Funcky.Extensions
         public static IEnumerable<TResult> CartesianProduct<TFirstSource, TSecondSource, TResult>(
             this IEnumerable<TFirstSource> firstSequence,
             IEnumerable<TSecondSource> secondSequence,
-            Func<TFirstSource, TSecondSource, TResult> resultSelector) =>
-                from firstElement in firstSequence
-                from secondElement in secondSequence
-                select resultSelector(firstElement, secondElement);
+            Func<TFirstSource, TSecondSource, TResult> resultSelector)
+                => firstSequence.SelectMany(_ => secondSequence, resultSelector);
     }
 }
