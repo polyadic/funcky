@@ -27,9 +27,9 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="int"/> values. If the sequence is empty it returns None.
+        /// Computes the average of a sequence of <see cref="long"/> values. If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of <see cref="int"/> values to determine the average value of.</param>
+        /// <param name="source">A sequence of <see cref="long"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<double> AverageOrNone(this IEnumerable<long> source)
@@ -109,25 +109,25 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="long"/> values.  If the sequence is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="decimal"/> values.  If the sequence is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="decimal"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<decimal> source)
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="long"/> values. If the sequence only consists of none or is empty it returns None.
+        /// Computes the average of a sequence of optional <see cref="decimal"/> values. If the sequence only consists of none or is empty it returns None.
         /// </summary>
-        /// <param name="source">A sequence of optional <see cref="long"/> values to determine the average value of.</param>
+        /// <param name="source">A sequence of optional <see cref="decimal"/> values to determine the average value of.</param>
         /// <returns>The average value in the sequence or None.</returns>
         [Pure]
         public static Option<decimal> AverageOrNone(this IEnumerable<Option<decimal>> source)
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(element)).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -139,7 +139,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -151,7 +151,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -163,7 +163,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -175,7 +175,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -194,7 +194,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -213,7 +213,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorFloat.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -232,7 +232,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence only consists of none or is empty it returns None.
         /// The rules for floating point arithmetic apply see remarks for detail.
         /// </summary>
@@ -251,7 +251,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDouble.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -263,7 +263,7 @@ namespace Funcky.Extensions
             => source.Aggregate(AverageCalculatorDecimal.Empty, (calculator, element) => calculator.Add(selector(element))).Average;
 
         /// <summary>
-        /// Computes the average of a sequence of optional <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence.
+        /// Computes the average of a sequence of optional <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
         /// If the sequence only consists of none or is empty it returns None.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
