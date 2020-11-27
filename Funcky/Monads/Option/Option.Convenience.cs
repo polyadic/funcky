@@ -9,6 +9,9 @@ namespace Funcky.Monads
 {
     public readonly partial struct Option<TItem>
     {
+        public static implicit operator Option<TItem>(TItem item)
+            => Option.Some(item);
+
         [Pure]
         public Option<TItem> Where(Func<TItem, bool> predicate)
             => SelectMany(item => predicate(item) ? Option.Some(item) : None());
