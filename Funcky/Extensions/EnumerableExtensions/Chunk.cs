@@ -9,7 +9,7 @@ namespace Funcky.Extensions
     public static partial class EnumerableExtensions
     {
         /// <summary>
-        /// Chunks the source sequence into equally sized chunks.
+        /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -20,7 +20,7 @@ namespace Funcky.Extensions
             => Chunk(source, size, Identity);
 
         /// <summary>
-        /// Chunks the source sequence into equally sized chunks.
+        /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the elements returned.</typeparam>
