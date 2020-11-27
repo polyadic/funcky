@@ -29,7 +29,7 @@ namespace Funcky.Extensions
         /// <typeparam name="TFirstSource">The type of the elements in the first sequence.</typeparam>
         /// <typeparam name="TSecondSource">The type of the elements in the second sequence.</typeparam>
         /// <typeparam name="TResult">The result type of the given projection.</typeparam>
-        /// <returns> sequence of elements returned by/// <paramref name="resultSelector"/>.</returns>
+        /// <returns> sequence of elements returned by <paramref name="resultSelector"/>.</returns>
         [Pure]
         public static IEnumerable<TResult> CartesianProduct<TFirstSource, TSecondSource, TResult>(
             this IEnumerable<TFirstSource> firstSequence,
