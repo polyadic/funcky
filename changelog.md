@@ -97,16 +97,24 @@
 * Added overload to `Functional.Retry` with a `IRetryPolicy`.
 * Added `None` overload that takes no predicate.
 
-## Funcky 2.3.0-beta.1
+## Funcky 2.3.0
+* `net5.0` has been added to Funcky's target frameworks.
 
-### Deprecations
-* `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
+### Improvements to `Option<T>`
+* `Option<T>` is now implicitly convertible from `T`.
+  ```csharp
+  public static Option<int> Answer => 42;
+  ```
+* `Option` adds support for `System.Text.Json`:\
+  The custom `JsonConverter` is picked up automatically when serializing/deserializing.
+  `None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
 
 ### Factory methods for `IEnumerable<T>`
 This release adds factory methods for creating `IEnumerable<T>`
 with the static class `Sequence`:
 * `Sequence.Return`: Creates an `IEnumerable<T>` with exactly one item.
 * `Sequence.FromNullable`: Creates an `IEnumerable<T>` with zero or one items.
+* `Sequence.Generate`: Creates an `IEnumerable<T>` using a generation function and a seed.
 
 ### More Extension Methods for `IEnumerable<T>`
 This release adds a bunch of new extension methods on `IEnumerable<T>`:
@@ -150,11 +158,6 @@ suited especially for use with EF Core:
 * `LastOrNone`
 * `SingleOrNone`
 
-### Serialization
-`Option` adds support for `System.Text.Json`:\
-The custom `JsonConverter` is picked up automatically when serializing/deserializing.
-`None` is serialized as `null` and `Some(value)` is serialized to whatever `value` serializes to.
-
 ### Dependencies
 To support .NET Standard, Funcky conditionally pulls in dependencies
 that provide the missing functionality:
@@ -165,3 +168,7 @@ that provide the missing functionality:
 * `ConfigureAwait(false)` is now used everywhere `await` is used.
 * The `IRetryPolicy` implementations now use correct `Timespan` with `double` multiplication
   when targeting .NET Standard 2.0.
+
+### Deprecations
+* `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
+* `RequireClass` and `RequireStruct` have been obsoleted with no replacement.
