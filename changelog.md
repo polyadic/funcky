@@ -163,7 +163,7 @@ To support .NET Standard, Funcky conditionally pulls in dependencies
 that provide the missing functionality:
 * `Microsoft.Bcl.AsyncInterfaces` for .NET Standard 2.0
 * `System.Collections.Immutable` and `System.Text.Json` for .NET Standard 2.0 and 2.1
-* The version constraint for `System.Collections.Immutable` has been relaxed to allow 5.x.
+* The version constraints for all these packages have been relaxed to allow 5.x.
 
 ### Improvements
 * `ConfigureAwait(false)` is now used everywhere `await` is used.
