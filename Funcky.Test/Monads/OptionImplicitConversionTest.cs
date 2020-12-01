@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Funcky.Monads;
+using Funcky.Test.TestUtils;
 using Funcky.Xunit;
 using Xunit;
 
@@ -43,6 +44,24 @@ namespace Funcky.Test.Monads
         public void NullAssignmentThrows()
         {
             Assert.Throws<ArgumentNullException>(TryNullAssignment);
+        }
+
+        [Fact]
+        public void ImplicitConversionOnlyWorkOnInstancesOfClassType()
+        {
+            // The specs do not allow the implicit operator with generics on interfaces
+            var instance = new MyClass();
+
+            // Class type does work
+            Foo(instance);
+
+            // Interface type does not: this works as specified by C#
+            // https://stackoverflow.com/questions/39618845/implicit-operator-with-generic-not-working-for-interface
+            // Foo((IMyInterface)instance);
+        }
+
+        private void Foo(Option<IMyInterface> foo)
+        {
         }
 
         private void TryNullAssignment()
