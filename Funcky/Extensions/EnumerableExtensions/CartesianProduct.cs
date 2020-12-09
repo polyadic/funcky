@@ -17,8 +17,9 @@ namespace Funcky.Extensions
         /// <returns>Returns a list of all combinations as pairs.</returns>
         [Pure]
         public static IEnumerable<(TFirstSource First, TSecondSource Second)> CartesianProduct<TFirstSource, TSecondSource>(
-            this IEnumerable<TFirstSource> firstSequence, IEnumerable<TSecondSource> secondSequence) =>
-                CartesianProduct(firstSequence, secondSequence, ValueTuple.Create);
+            this IEnumerable<TFirstSource> firstSequence,
+            IEnumerable<TSecondSource> secondSequence)
+                => CartesianProduct(firstSequence, secondSequence, ValueTuple.Create);
 
         /// <summary>
         /// CartesianProduct returns a set the projection of ordered pairs where each element of the first sequence is paired with each element of the second sequence.
@@ -29,14 +30,12 @@ namespace Funcky.Extensions
         /// <typeparam name="TFirstSource">The type of the elements in the first sequence.</typeparam>
         /// <typeparam name="TSecondSource">The type of the elements in the second sequence.</typeparam>
         /// <typeparam name="TResult">The result type of the given projection.</typeparam>
-        /// <returns> sequence of elements returned by/// <paramref name="resultSelector"/>.</returns>
+        /// <returns>sequence of elements returned by <paramref name="resultSelector"/>.</returns>
         [Pure]
         public static IEnumerable<TResult> CartesianProduct<TFirstSource, TSecondSource, TResult>(
             this IEnumerable<TFirstSource> firstSequence,
             IEnumerable<TSecondSource> secondSequence,
-            Func<TFirstSource, TSecondSource, TResult> resultSelector) =>
-                from firstElement in firstSequence
-                from secondElement in secondSequence
-                select resultSelector(firstElement, secondElement);
+            Func<TFirstSource, TSecondSource, TResult> resultSelector)
+                => firstSequence.SelectMany(_ => secondSequence, resultSelector);
     }
 }

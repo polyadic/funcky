@@ -1,6 +1,11 @@
 using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
+#if SET_CURRENT_STACK_TRACE_SUPPORTED
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
+#else
+using System.Diagnostics;
+#endif
 
 namespace Funcky.Monads
 {
@@ -31,9 +36,20 @@ namespace Funcky.Monads
         public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
             => !lhs.Equals(rhs);
 
+        #if SET_CURRENT_STACK_TRACE_SUPPORTED
+        // Methods with AggressiveInlining are always excluded from the stack trace.
+        // This is required for <c>SetCurrentStackTrace</c> to work properly.
+        // See: https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L347
+        // TODO: Use StackTraceHiddenAttribute, once it's released (probably in .NET 6)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        #endif
         public static Result<TValidResult> Error(Exception item)
         {
+            #if SET_CURRENT_STACK_TRACE_SUPPORTED
+            ExceptionDispatchInfo.SetCurrentStackTrace(item);
+            #else
             item.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
+            #endif
 
             return new Result<TValidResult>(item);
         }

@@ -18,8 +18,8 @@ namespace Funcky.Monads
         public EitherDebugView(Either<TLeft, TRight> either) => _either = either;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
-        public object? Value => _either.Match(
-            left: left => (object?)left,
-            right: right => (object?)right);
+        public object? Value => _either.Match<object?>(
+            left: left => left,
+            right: right => right);
     }
 }

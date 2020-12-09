@@ -13,7 +13,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public class OptionTest
+    public sealed partial class OptionTest
     {
         public OptionTest()
         {
@@ -138,7 +138,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 FunctionalAssert.IsSome(number);
             }
@@ -195,7 +195,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(",").Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 var value = number.Match(
                     none: () => 0,

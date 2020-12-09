@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
@@ -8,7 +9,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public class ResultTest
+    public sealed class ResultTest
     {
         [Fact]
         public void CreateResultOkAndMatchCorrectly()
@@ -132,11 +133,11 @@ namespace Funcky.Test.Monads
 
         private static void IsInterestingStackTraceFirst(Exception exception)
         {
-            if (exception.StackTrace is { })
+            if (exception.StackTrace is not null)
             {
                 var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                Assert.StartsWith("   at Funcky.Test.Monads.ResultTest.InterestingStackTrace(Int32 n)", lines.First());
+                Assert.Matches(@"^\s+at Funcky\.Test\.Monads\.ResultTest\.InterestingStackTrace\s*\((System\.)?Int32 n\)", lines.First());
             }
             else
             {
@@ -144,11 +145,13 @@ namespace Funcky.Test.Monads
             }
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private Result<int> InterestingStackTrace(int n)
             => n == 0
                 ? Result<int>.Error(new InvalidCastException())
                 : Indirection(n - 1);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private Result<int> Indirection(int n)
             => InterestingStackTrace(n);
     }

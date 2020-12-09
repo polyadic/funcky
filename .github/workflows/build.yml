@@ -6,15 +6,26 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  DOTNET_NOLOGO: 1
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-dotnet@v1
+      name: Install Current .NET SDK
+    - uses: actions/setup-dotnet@v1
+      name: 'Install .NET SDK 3.1'
+      with:
+        dotnet-version: '3.1.x'
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run Tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --configuration Release --no-build

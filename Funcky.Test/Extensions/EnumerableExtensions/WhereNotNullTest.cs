@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Funcky.Extensions;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class WhereNotNullTest
+    public sealed class WhereNotNullTest
     {
         [Fact]
         public void WhereNotNullRemovesNullReferenceValues()
