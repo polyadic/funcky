@@ -1,9 +1,10 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Text.Json.Serialization;
 
 namespace Funcky.Monads
 {
-    [JsonOptionConverter]
+    [JsonConverter(typeof(JsonOptionConverterFactory))]
     public readonly partial struct Option<TItem>
         where TItem : notnull
     {
