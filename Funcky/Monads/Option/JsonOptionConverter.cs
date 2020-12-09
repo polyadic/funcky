@@ -18,7 +18,7 @@ namespace Funcky.Monads
             => reader.TokenType == JsonTokenType.Null
                 ? Option<TItem>.None()
                 : _itemConverter is not null
-                    ? _itemConverter.Read(ref reader, typeof(TItem), options)!
+                    ? Option.Some(_itemConverter.Read(ref reader, typeof(TItem), options)!)
                     : JsonSerializer.Deserialize<TItem>(ref reader, options);
 
         public override void Write(Utf8JsonWriter writer, Option<TItem> value, JsonSerializerOptions options)
