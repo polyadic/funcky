@@ -36,7 +36,7 @@ namespace Funcky.Test
         public void SerializesInnerObjectWhenNested()
         {
             const string expectedJson = @"{""BloodType"":""B-"",""EmergencyContact"":{""FirstName"":""Peter"",""LastName"":""Pan""}}";
-            var @object = new MedicalId(bloodType: "B-", emergencyContact: Option.Some(new Person("Peter", "Pan")));
+            var @object = new MedicalId(bloodType: "B-", emergencyContact: new Person("Peter", "Pan"));
             var json = JsonSerializer.Serialize(@object);
             Assert.Equal(expectedJson, json);
         }
@@ -84,7 +84,7 @@ namespace Funcky.Test
         public void DeserializesInnerObjectWhenNested()
         {
             const string json = @"{""BloodType"":""B-"",""EmergencyContact"":{""FirstName"":""Peter"",""LastName"":""Pan""}}";
-            var expectedObject = new MedicalId(bloodType: "B-", emergencyContact: Option.Some(new Person("Peter", "Pan")));
+            var expectedObject = new MedicalId(bloodType: "B-", emergencyContact: new Person("Peter", "Pan"));
             Assert.Equal(expectedObject, JsonSerializer.Deserialize<MedicalId>(json));
         }
 

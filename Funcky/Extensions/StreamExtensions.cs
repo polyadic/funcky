@@ -35,7 +35,7 @@ namespace Funcky.Extensions
         {
             try
             {
-                return Option.Some(func());
+                return func();
             }
             catch (TException)
             {

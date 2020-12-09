@@ -25,7 +25,7 @@ namespace Funcky.Extensions
             {
                 if (currentIndex == index)
                 {
-                    return Option.Some(item);
+                    return item;
                 }
 
                 currentIndex++;

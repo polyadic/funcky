@@ -63,7 +63,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt32sMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<int>> { Option.Some(1), Option.Some(42), Option<int>.None(), Option.Some(9999), Option.Some(5), Option<int>.None(), Option<int>.None(), Option.Some(1337), Option.Some(-13), Option.Some(-1), Option.Some(0), Option.Some(-1000), Option<int>.None() };
+            var numbers = new List<Option<int>> { 1, 42, Option<int>.None(), 9999, 5, Option<int>.None(), Option<int>.None(), 1337, -13, -1, 0, -1000, Option<int>.None() };
 
             FunctionalAssert.IsSome(-1000, numbers.MinOrNone());
             Assert.Equal(-1000, numbers.WhereSelect(Identity).Min());
@@ -122,7 +122,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt64sMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<long>> { Option.Some(1L), Option.Some(42L), Option<long>.None(), Option.Some(9999L), Option.Some(5L), Option<long>.None(), Option<long>.None(), Option.Some(1337L), Option.Some(-13L), Option.Some(-1L), Option.Some(0L), Option.Some(-1000L), Option<long>.None() };
+            var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None(), 9999L, 5L, Option<long>.None(), Option<long>.None(), 1337L, -13L, -1L, 0L, -1000L, Option<long>.None() };
 
             FunctionalAssert.IsSome(-1000L, numbers.MinOrNone());
             Assert.Equal(-1000L, numbers.WhereSelect(Identity).Min());
@@ -181,7 +181,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionSinglesMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<float>> { Option.Some(1.8f), Option.Some(42.52f), Option<float>.None(), Option.Some(9999.0001f), Option.Some(5f), Option<float>.None(), Option<float>.None(), Option.Some(1337.1337f), Option.Some(-13f), Option.Some(-1f), Option.Some(-0f), Option.Some(-1000.45f), Option<float>.None() };
+            var numbers = new List<Option<float>> { 1.8f, 42.52f, Option<float>.None(), 9999.0001f, 5f, Option<float>.None(), Option<float>.None(), 1337.1337f, -13f, -1f, -0f, -1000.45f, Option<float>.None() };
 
             FunctionalAssert.IsSome(-1000.45f, numbers.MinOrNone());
             Assert.Equal(-1000.45f, numbers.WhereSelect(Identity).Min());
@@ -190,7 +190,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void PlusZeroAndMinusZeroAreEqualForSingles()
         {
-            var numbers = new List<Option<float>> { Option.Some(+0.0f), Option.Some(-0.0f), };
+            var numbers = new List<Option<float>> { +0.0f, -0.0f, };
 
             FunctionalAssert.IsSome(+0.0f, numbers.MinOrNone());
             FunctionalAssert.IsSome(-0.0f, numbers.MinOrNone());
@@ -200,7 +200,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void InSequenceOfSinglesWithANegativeInfinityAndNoNaNTheMinReturnsNegativeInfinity()
         {
-            var numbers = new List<Option<float>> { Option.Some(float.NegativeInfinity), Option.Some(1.8f), Option.Some(42.52f), Option.Some(float.PositiveInfinity) };
+            var numbers = new List<Option<float>> { float.NegativeInfinity, 1.8f, 42.52f, float.PositiveInfinity };
 
             FunctionalAssert.IsSome(float.NegativeInfinity, numbers.MinOrNone());
             Assert.Equal(float.NegativeInfinity, numbers.WhereSelect(Identity).Min());
@@ -210,7 +210,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public void GivenASequenceOfSinglesWithAnNaNTheMinReturnsNaN()
         {
             // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
-            var numbers = new List<Option<float>> { Option.Some(1.8f), Option.Some(42.52f), Option.Some(float.NaN), Option.Some(42f) };
+            var numbers = new List<Option<float>> { 1.8f, 42.52f, float.NaN, 42f };
 
             FunctionalAssert.IsSome(float.NaN, numbers.MinOrNone());
             Assert.Equal(float.NaN, numbers.WhereSelect(Identity).Min());
@@ -278,7 +278,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDoublesMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<double>> { Option.Some(1.8), Option.Some(42.52), Option<double>.None(), Option.Some(9999.0001), Option.Some(5d), Option<double>.None(), Option<double>.None(), Option.Some(1337.1337), Option.Some(-13d), Option.Some(-1d), Option.Some(-0d), Option.Some(-1000.45), Option<double>.None() };
+            var numbers = new List<Option<double>> { 1.8, 42.52, Option<double>.None(), 9999.0001, 5d, Option<double>.None(), Option<double>.None(), 1337.1337, -13d, -1d, -0d, -1000.45, Option<double>.None() };
 
             FunctionalAssert.IsSome(-1000.45, numbers.MinOrNone());
             Assert.Equal(-1000.45, numbers.WhereSelect(Identity).Min());
@@ -287,7 +287,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void PlusZeroAndMinusZeroAreEqualForDoubles()
         {
-            var numbers = new List<Option<double>> { Option.Some(+0.0), Option.Some(-0.0), };
+            var numbers = new List<Option<double>> { +0.0, -0.0, };
 
             FunctionalAssert.IsSome(+0.0, numbers.MinOrNone());
             FunctionalAssert.IsSome(-0.0, numbers.MinOrNone());
@@ -297,7 +297,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void InASequenceOfDoublesWithANegativeInfinityAndNoNaNMinReturnsNegativeInfinity()
         {
-            var numbers = new List<Option<double>> { Option.Some(double.NegativeInfinity), Option.Some(1.8), Option.Some(42.52), Option.Some(double.PositiveInfinity) };
+            var numbers = new List<Option<double>> { double.NegativeInfinity, 1.8, 42.52, double.PositiveInfinity };
 
             FunctionalAssert.IsSome(double.NegativeInfinity, numbers.MinOrNone());
             Assert.Equal(double.NegativeInfinity, numbers.WhereSelect(Identity).Min());
@@ -307,7 +307,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public void GivenASequenceOfDoublesWithAnNaNTheMinReturnsNaN()
         {
             // We impose a total order where NaN is smaller than NegativeInfinity (same behaviour as dotnet)
-            var numbers = new List<Option<double>> { Option.Some(double.NegativeInfinity), Option.Some(1.8), Option.Some(42.52), Option.Some(double.NaN) };
+            var numbers = new List<Option<double>> { double.NegativeInfinity, 1.8, 42.52, double.NaN };
 
             FunctionalAssert.IsSome(double.NaN, numbers.MinOrNone());
             Assert.Equal(double.NaN, numbers.WhereSelect(Identity).Min());
@@ -375,7 +375,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDecimalsMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<decimal>> { Option.Some(1.8m), Option.Some(42.52m), Option<decimal>.None(), Option.Some(9999.0001m), Option.Some(5m), Option<decimal>.None(), Option<decimal>.None(), Option.Some(1337.1337m), Option.Some(-13m), Option.Some(-1m), Option.Some(-0m), Option.Some(-1000.45m), Option<decimal>.None() };
+            var numbers = new List<Option<decimal>> { 1.8m, 42.52m, Option<decimal>.None(), 9999.0001m, 5m, Option<decimal>.None(), Option<decimal>.None(), 1337.1337m, -13m, -1m, -0m, -1000.45m, Option<decimal>.None() };
 
             FunctionalAssert.IsSome(-1000.45m, numbers.MinOrNone());
             Assert.Equal(-1000.45m, numbers.WhereSelect(Identity).Min());
@@ -435,7 +435,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionGenericIComparablesMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var persons = new List<Option<Person>> { Option.Some(new Person(42)), Option.Some(new Person(18)), Option<Person>.None(), Option.Some(new Person(72)), Option.Some(new Person(33)), Option<Person>.None(), Option<Person>.None(), Option.Some(new Person(21)), Option<Person>.None() };
+            var persons = new List<Option<Person>> { new Person(42), new Person(18), Option<Person>.None(), new Person(72), new Person(33), Option<Person>.None(), Option<Person>.None(), new Person(21), Option<Person>.None() };
 
             var person = FunctionalAssert.IsSome(persons.MinOrNone());
             Assert.Equal(person.Age, persons.WhereSelect(Identity).Min()?.Age);

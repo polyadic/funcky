@@ -33,7 +33,7 @@ namespace Funcky.Test
         {
             Assert.Equal(
                 Enumerable.Range(1, 10),
-                Sequence.Generate(0, i => i < 10 ? Option.Some(i + 1) : Option<int>.None()));
+                Sequence.Generate(0, i => i < 10 ? i + 1 : Option<int>.None()));
         }
     }
 }

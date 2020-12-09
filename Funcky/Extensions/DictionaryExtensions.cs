@@ -11,7 +11,7 @@ namespace Funcky.Extensions
             where TKey : notnull
             where TValue : notnull
             => dictionary.TryGetValue(key, out var result)
-                ? Option.Some(result)
+                ? result
                 : Option<TValue>.None();
 
         [Pure]
@@ -19,7 +19,7 @@ namespace Funcky.Extensions
             where TKey : notnull
             where TValue : notnull
             => dictionary.TryGetValue(readOnlyKey, out var result)
-                ? Option.Some(result)
+                ? result
                 : Option<TValue>.None();
     }
 }

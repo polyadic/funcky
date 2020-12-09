@@ -43,7 +43,7 @@ namespace Funcky.Extensions
             {
                 if (await predicate(item, cancellationToken))
                 {
-                    lastItem = Option.Some(item);
+                    lastItem = item;
                 }
             }
 
