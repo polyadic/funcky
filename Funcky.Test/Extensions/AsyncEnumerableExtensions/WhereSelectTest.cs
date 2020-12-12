@@ -19,7 +19,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
 
         private static Option<int> SquareEvenNumbers(int n)
             => n % 2 == 0
-                ? Option.Some(n * n)
+                ? n * n
                 : Option<int>.None();
 
         private static async IAsyncEnumerable<int> Ι(int n)

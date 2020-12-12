@@ -22,7 +22,7 @@ namespace Funcky.Test.FunctionalClass
             var stack = new Stack<Option<int>>(new[]
             {
                 Option<int>.None(),
-                Option.Some(value),
+                value,
                 Option<int>.None(),
                 Option<int>.None(),
                 Option<int>.None(),
@@ -58,7 +58,7 @@ namespace Funcky.Test.FunctionalClass
             var produceString = "Hello world!";
             var producer = new MaybeProducer<string>(numberOfRetries, produceString);
 
-            Assert.Equal(Option.Some(produceString), Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
+            Assert.Equal(produceString, Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
             Assert.Equal(numberOfRetries + 1, producer.Called);
         }
     }

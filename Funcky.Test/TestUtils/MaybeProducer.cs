@@ -22,7 +22,7 @@ namespace Funcky.Test.TestUtils
             Called += 1;
 
             return _retriesNeeded == (Called - 1)
-                ? Option.Some(_result)
+                ? _result
                 : Option<T>.None();
         }
 

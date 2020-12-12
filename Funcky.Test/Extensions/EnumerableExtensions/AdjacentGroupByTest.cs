@@ -71,7 +71,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenTwoYearsGroupByAdjacentGroupsJanuaryOfTwoDifferentYearsInTwoDifferentGroups()
         {
-            var dates = DateGenerator(2019, Option.Some(2020));
+            var dates = DateGenerator(2019, 2020);
 
             var months = dates.AdjacentGroupBy(date => date.Month);
 

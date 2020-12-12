@@ -47,7 +47,7 @@ namespace Funcky.Extensions
                 if (await predicate(currentItem, cancellationToken))
                 {
                     await ThrowIfEnumeratorContainsMoreMatchingElements(enumerator, predicate, cancellationToken);
-                    return Option.Some(currentItem);
+                    return currentItem;
                 }
             }
 

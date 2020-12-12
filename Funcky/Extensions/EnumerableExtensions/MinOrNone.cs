@@ -58,7 +58,7 @@ namespace Funcky.Extensions
 
         private static Option<TResult> AggregateMin<TResult>(Option<TResult> min, TResult current)
             where TResult : notnull
-            => Option.Some(min.Match(current, m => Min(m, current)));
+            => min.Match(current, m => Min(m, current));
 
         // For floats this defines a total order where NaN comes before negative infinity
         private static TSource Min<TSource>(TSource left, TSource right)
