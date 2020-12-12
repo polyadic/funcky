@@ -58,7 +58,7 @@ namespace Funcky.Extensions
 
         private static Option<TResult> AggregateMax<TResult>(Option<TResult> min, TResult current)
             where TResult : notnull
-            => Option.Some(min.Match(current, m => Max(m, current)));
+            => min.Match(current, m => Max(m, current));
 
         private static TSource Max<TSource>(TSource left, TSource right)
             => Comparer<TSource>.Default.Compare(left, right) > 0 ? left : right;

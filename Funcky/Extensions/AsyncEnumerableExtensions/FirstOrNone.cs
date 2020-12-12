@@ -41,7 +41,7 @@ namespace Funcky.Extensions
             {
                 if (await predicate(item, cancellationToken))
                 {
-                    return Option.Some(item);
+                    return item;
                 }
             }
 

@@ -29,7 +29,7 @@ namespace Funcky.Monads
             where TResult : notnull
             => Match(
                  none: Option<TResult>.None,
-                 item => Option.Some(selector(item)));
+                 item => selector(item));
 
         [Pure]
         public Option<TResult> SelectMany<TResult>(Func<TItem, Option<TResult>> selector)

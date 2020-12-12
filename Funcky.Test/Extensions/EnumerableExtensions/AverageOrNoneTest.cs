@@ -71,7 +71,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt32sMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<int>> { Option.Some(1), Option.Some(42), Option<int>.None(), Option.Some(9999), Option.Some(5), Option<int>.None(), Option<int>.None(), Option.Some(1337), Option.Some(-13), Option.Some(-1), Option.Some(0), Option.Some(-1000), Option.Some(555), Option<int>.None() };
+            var numbers = new List<Option<int>> { 1, 42, Option<int>.None(), 9999, 5, Option<int>.None(), Option<int>.None(), 1337, -13, -1, 0, -1000, 555, Option<int>.None() };
 
             FunctionalAssert.IsSome(1092.5, numbers.AverageOrNone());
             Assert.Equal(1092.5, numbers.WhereSelect(Identity).Average());
@@ -138,7 +138,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt64sMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<long>> { Option.Some(1L), Option.Some(42L), Option<long>.None(), Option.Some(9999L), Option.Some(5L), Option<long>.None(), Option<long>.None(), Option.Some(1337L), Option.Some(-13L), Option.Some(-1L), Option.Some(0L), Option.Some(-1000L), Option.Some(555L), Option<long>.None() };
+            var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None(), 9999L, 5L, Option<long>.None(), Option<long>.None(), 1337L, -13L, -1L, 0L, -1000L, 555L, Option<long>.None() };
 
             FunctionalAssert.IsSome(1092.5, numbers.AverageOrNone());
             Assert.Equal(1092.5, numbers.WhereSelect(Identity).Average());
@@ -251,7 +251,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionalSinglesAverageOrNoneComputesTheAverageIgnoingTheNones()
         {
-            var numbers = new List<Option<float>> { Option<float>.None(), Option.Some(1.7f), Option.Some(42.42f), Option.Some(9999.01f), Option.Some(5f), Option<float>.None(), Option.Some(1337f), Option.Some(-13f), Option<float>.None(), Option.Some(-1f), Option.Some(0.0f), Option.Some(-1000.5f), Option.Some(17.25f), Option<float>.None(), Option<float>.None() };
+            var numbers = new List<Option<float>> { Option<float>.None(), 1.7f, 42.42f, 9999.01f, 5f, Option<float>.None(), 1337f, -13f, Option<float>.None(), -1f, 0.0f, -1000.5f, 17.25f, Option<float>.None(), Option<float>.None() };
 
             var average = FunctionalAssert.IsSome(numbers.AverageOrNone());
 
@@ -368,7 +368,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionalDoublesAverageOrNoneComputesTheAverageIgnoingTheNones()
         {
-            var numbers = new List<Option<double>> { Option<double>.None(), Option.Some(1.7), Option.Some(42.4242), Option.Some(9999.0001), Option.Some(5d), Option<double>.None(), Option.Some(1337d), Option.Some(-13d), Option<double>.None(), Option.Some(-1d), Option.Some(0.0), Option.Some(-1000.5), Option.Some(17.2525), Option<double>.None(), Option<double>.None() };
+            var numbers = new List<Option<double>> { Option<double>.None(), 1.7, 42.4242, 9999.0001, 5d, Option<double>.None(), 1337d, -13d, Option<double>.None(), -1d, 0.0, -1000.5, 17.2525, Option<double>.None(), Option<double>.None() };
 
             var average = FunctionalAssert.IsSome(numbers.AverageOrNone());
 
@@ -439,7 +439,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDecimalsMinOrNoneComputesTheMinIgnoringTheNones()
         {
-            var numbers = new List<Option<decimal>> { Option.Some(1.01m), Option.Some(42.42m), Option<decimal>.None(), Option.Some(9999.9m), Option.Some(4.95m), Option<decimal>.None(), Option<decimal>.None(), Option.Some(1337m), Option.Some(-13m), Option.Some(-1m), Option.Some(0.0m), Option.Some(-1000.3m), Option.Some(555.5m), Option<decimal>.None() };
+            var numbers = new List<Option<decimal>> { 1.01m, 42.42m, Option<decimal>.None(), 9999.9m, 4.95m, Option<decimal>.None(), Option<decimal>.None(), 1337m, -13m, -1m, 0.0m, -1000.3m, 555.5m, Option<decimal>.None() };
 
             FunctionalAssert.IsSome(1092.648m, numbers.AverageOrNone());
             Assert.Equal(1092.648m, numbers.WhereSelect(Identity).Average());

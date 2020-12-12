@@ -113,6 +113,6 @@ namespace Funcky.Extensions
         private static Option<int> MapIndexToOption(int index)
             => index == NotFoundValue
                    ? Option<int>.None()
-                   : Option.Some(index);
+                   : index;
     }
 }
