@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Threading;
 using Funcky.Extensions;
 using Funcky.Monads;
-using Funcky.Xunit;
 using Xunit;
 
 namespace Funcky.Test.Extensions
@@ -95,7 +94,7 @@ namespace Funcky.Test.Extensions
         }
 
         private static TheoryData<Option<bool>, string> BooleanStrings()
-            => new TheoryData<Option<bool>, string>
+            => new ()
             {
                 { Option<bool>.None(), string.Empty },
                 { Option.Some(true), "true" },
@@ -112,7 +111,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<byte>, string> ByteStrings()
-            => new TheoryData<Option<byte>, string>
+            => new ()
             {
                 { Option<byte>.None(), string.Empty },
                 { Option<byte>.None(), "no number" },
@@ -126,7 +125,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<short>, string> ShortStrings()
-            => new TheoryData<Option<short>, string>
+            => new ()
             {
                 { Option<short>.None(), string.Empty },
                 { Option<short>.None(), "no number" },
@@ -141,7 +140,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<int>, string> IntStrings()
-            => new TheoryData<Option<int>, string>
+            => new ()
             {
                 { Option<int>.None(), string.Empty },
                 { Option<int>.None(), "no number" },
@@ -156,8 +155,8 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<long>, string> LongStrings()
-        => new TheoryData<Option<long>, string>
-        {
+            => new ()
+            {
                 { Option<long>.None(), string.Empty },
                 { Option<long>.None(), "no number" },
                 { Option.Some(-12L), "-12" },
@@ -168,11 +167,11 @@ namespace Funcky.Test.Extensions
                 { Option<long>.None(), "+-1" },
                 { Option<long>.None(), "MCMI" },
                 { Option<long>.None(), "1337E+02" },
-        };
+            };
 
         private static TheoryData<Option<float>, string> FloatStrings()
-        => new TheoryData<Option<float>, string>
-        {
+            => new ()
+            {
                 { Option<float>.None(), string.Empty },
                 { Option<float>.None(), "no number" },
                 { Option.Some(-12.7f), "-12.7" },
@@ -184,11 +183,11 @@ namespace Funcky.Test.Extensions
                 { Option<float>.None(), "+-1" },
                 { Option<float>.None(), "MCMI" },
                 { Option<float>.None(), "1337F" },
-        };
+            };
 
         private static TheoryData<Option<double>, string> DoubleStrings()
-        => new TheoryData<Option<double>, string>
-        {
+            => new ()
+            {
                 { Option<double>.None(), string.Empty },
                 { Option<double>.None(), "no number" },
                 { Option.Some(-12.7), "-12.7" },
@@ -200,11 +199,11 @@ namespace Funcky.Test.Extensions
                 { Option<double>.None(), "+-1" },
                 { Option<double>.None(), "MCMI" },
                 { Option<double>.None(), "1337D" },
-        };
+            };
 
         private static TheoryData<Option<decimal>, string> DecimalStrings()
-        => new TheoryData<Option<decimal>, string>
-        {
+        => new ()
+            {
                 { Option<decimal>.None(), string.Empty },
                 { Option<decimal>.None(), "no number" },
                 { Option.Some(-12.7m), "-12.7" },
@@ -216,11 +215,11 @@ namespace Funcky.Test.Extensions
                 { Option<decimal>.None(), "+-1" },
                 { Option<decimal>.None(), "MCMI" },
                 { Option<decimal>.None(), "1337M" },
-        };
+            };
 
         private static TheoryData<Option<DateTime>, string> DateTimeStrings()
-        => new TheoryData<Option<DateTime>, string>
-        {
+            => new ()
+            {
                 { Option<DateTime>.None(), string.Empty },
                 { Option<DateTime>.None(), "no number" },
                 { Option.Some(new DateTime(1982, 2, 26)), "26.02.1982" },
@@ -228,11 +227,11 @@ namespace Funcky.Test.Extensions
                 { Option<DateTime>.None(), "One" },
                 { Option<DateTime>.None(), "+-1" },
                 { Option<DateTime>.None(), "MCMI" },
-        };
+            };
 
         private static TheoryData<Option<MyEnum>, string> EnumStrings()
-        => new TheoryData<Option<MyEnum>, string>
-        {
+            => new ()
+            {
                 { Option<MyEnum>.None(), string.Empty },
                 { Option.Some(MyEnum.Cool), "Cool" },
                 { Option.Some(MyEnum.FortyTwo), "FortyTwo" },
@@ -241,6 +240,6 @@ namespace Funcky.Test.Extensions
                 { Option<MyEnum>.None(), "WarpCool" },
                 { Option<MyEnum>.None(), "MyEnum.Cool" },
                 { Option<MyEnum>.None(), "fortytwo" },
-        };
+            };
     }
 }
