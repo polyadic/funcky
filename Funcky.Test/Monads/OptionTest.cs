@@ -56,27 +56,6 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
-        public void GivenADictionaryWhenWeLookForAnExistentValueWithTryGetValueThenTheResultShouldBeASomeOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-            var maybe = dictionary.TryGetValue(key: "some");
-
-            FunctionalAssert.IsSome(maybe);
-            Assert.Equal("value", maybe.Match(string.Empty, Identity));
-        }
-
-        [Fact]
-        public void GivenADictionaryWhenWeLookForAnInexistentValueWithTryGetValueThenTheResultShouldBeANoneOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-            var maybe = dictionary.TryGetValue(readOnlyKey: "none");
-
-            FunctionalAssert.IsNone(maybe);
-        }
-
-        [Fact]
         public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
         {
             var maybe = Option<int>.None();
@@ -90,8 +69,8 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
         {
-            var someNumber = "1337".TryParseInt();
-            var someDate = "12.2.2009".TryParseDateTime();
+            var someNumber = "1337".ParseIntOrNone();
+            var someDate = "12.2.2009".ParseDateTimeOrNone();
 
             var result = someNumber.SelectMany(number => someDate, Tuple.Create);
 
@@ -102,8 +81,8 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
         {
-            var someNumber = "1337".TryParseInt();
-            var someDate = "12.2.2009".TryParseDateTime();
+            var someNumber = "1337".ParseIntOrNone();
+            var someDate = "12.2.2009".ParseDateTimeOrNone();
 
             var result = from number in someNumber
                          from date in someDate
@@ -116,9 +95,9 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
         {
-            var someNumber = "1337".TryParseInt();
-            var someDate = "12.2.2009".TryParseDateTime();
-            var someOtherNumber = "not a number".TryParseInt();
+            var someNumber = "1337".ParseIntOrNone();
+            var someDate = "12.2.2009".ParseDateTimeOrNone();
+            var someOtherNumber = "not a number".ParseIntOrNone();
 
             var result = from number in someNumber
                          from date in someDate
@@ -133,7 +112,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 FunctionalAssert.IsSome(number);
             }
@@ -190,7 +169,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.TryParseInt).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(false, True)))
             {
                 var value = number.Match(
                     none: () => 0,
@@ -298,7 +277,7 @@ namespace Funcky.Test.Monads
         [InlineData("")]
         public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
         {
-            var maybe = stringToParse.TryParseInt();
+            var maybe = stringToParse.ParseIntOrNone();
 
             maybe.Match(
                 none: Statement,
