@@ -1,11 +1,18 @@
 using System.Collections.Generic;
+using static Funcky.Functional;
 
 namespace Funcky
 {
     public static partial class Sequence
     {
-        public static IEnumerable<TItem> Cycle<TItem>(TItem element, int count)
+        /// <summary>
+        /// Cycles the same element over and over again as an endless generator.
+        /// </summary>
+        /// <typeparam name="TItem">Type of the element to be cycled.</typeparam>
+        /// <param name="element">The element to be cycled.</param>
+        /// <returns>Returns an infinite IEnumerable cycling through the same elements.</returns>
+        public static IEnumerable<TItem> Cycle<TItem>(TItem element)
             where TItem : notnull
-            => Generate(element, Functional.Identity);
+            => Generate(element, Identity);
     }
 }
