@@ -17,12 +17,10 @@ namespace Funcky.Monads
 
         [Pure]
         public bool Equals(Option<TItem> other)
-            => Equals(_hasItem, other._hasItem) && Equals(_item, other._item);
+            => OptionEqualityComparer<TItem>.Default.Equals(this, other);
 
         [Pure]
         public override int GetHashCode()
-            => Match(
-                none: 0,
-                some: item => item.GetHashCode());
+            => OptionEqualityComparer<TItem>.Default.GetHashCode(this);
     }
 }
