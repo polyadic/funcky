@@ -178,3 +178,4 @@ that provide the missing functionality:
 
 Added new generator functions:
 * RepeatRange
+* Cycle
