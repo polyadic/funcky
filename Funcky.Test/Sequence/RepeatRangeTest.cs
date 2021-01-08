@@ -1,19 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test
 {
     public class RepeatRangeTest
     {
-        [Fact]
-        public void NextTest()
+        [Property]
+        public Property TheLengthOfTheGeneratedRepeatRangeIsCorrect(List<int> list, NonNegativeInt count)
         {
-            List<int> list = new () { 1, 1337, 42 };
+            var sequence = Sequence
+                .RepeatRange(list, count.Get)
+                .ToList();
 
-            var sequence = Sequence.RepeatRange(list, 3);
+            return (sequence.Count == list.Count * count.Get).ToProperty();
+        }
 
-            Assert.Equal(9, sequence.Count());
+        [Property]
+        public Property AllSubsequentSubListsWithOffsetModuloCountAreIdenticalToTheGivenList(List<int> list, NonNegativeInt count)
+        {
+            var sequence = Sequence
+                .RepeatRange(list, count.Get)
+                .ToList();
+
+            return Enumerable
+                .Range(0, count.Get)
+                .Aggregate(true, (b, i)
+                    => b && sequence
+                    .Skip(i * list.Count)
+                    .Zip(list, (l, r) => l == r)
+                    .All(Identity)).ToProperty();
         }
     }
 }
