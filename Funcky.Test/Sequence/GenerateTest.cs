@@ -5,7 +5,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test
 {
-    public sealed class SequenceTest
+    public sealed class GenerateTest
     {
         [Fact]
         public void GenerateWithFunctionThatImmediatelyReturnsNoneReturnsAnEmptyEnumerable()
