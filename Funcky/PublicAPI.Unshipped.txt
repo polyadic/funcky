@@ -25,4 +25,5 @@ static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candid
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Sequence.Cycle<TItem>(TItem element, int count) -> System.Collections.Generic.IEnumerable<TItem>!
+static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
