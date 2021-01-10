@@ -29,5 +29,5 @@ static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<
 static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
 Funcky.Monads.OptionEqualityComparer
 Funcky.Monads.OptionEqualityComparer<TItem>
-static Funcky.Monads.OptionEqualityComparer.Create<TItem>(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> System.Collections.Generic.IEqualityComparer<Funcky.Monads.Option<TItem>>!
-static Funcky.Monads.OptionEqualityComparer<TItem>.Default.get -> System.Collections.Generic.IEqualityComparer<Funcky.Monads.Option<TItem>>!
+static Funcky.Monads.OptionEqualityComparer.Create<TItem>(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
+static Funcky.Monads.OptionEqualityComparer<TItem>.Default.get -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
