@@ -29,3 +29,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true
     - name: Run Tests
       run: dotnet test --configuration Release --no-build
+    - name: Run Tests with Coverage
+      run: dotnet test --configuration Release --no-build --framework net5.0 /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: Funcky.Test/coverage.net5.0.info
