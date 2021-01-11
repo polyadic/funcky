@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using FsCheck;
+using FsCheck.Xunit;
 using Funcky.Monads;
 using Xunit;
 
@@ -35,21 +37,17 @@ namespace Funcky.Test.Monads
             Assert.Equal("foo".GetHashCode(), Option.Some("foo").GetHashCode());
         }
 
-        [Theory]
-        [InlineData(10, 10)]
-        [InlineData(10, 20)]
-        public void SomeAndSomeAreEqualWhenTheItemsAreEqual(int x, int y)
-        {
-            Assert.Equal(Option.Some(x), Option.Some(y), OptionEqualityComparer.Create(new ConstantEqualityComparer<int>(areEqual: true)));
-        }
+        [Property]
+        public Property SomeAndSomeAreEqualWhenTheItemsAreEqual(int x, int y)
+            => OptionEqualityComparer.Create(new ConstantEqualityComparer<int>(areEqual: true))
+                .Equals(Option.Some(x), Option.Some(y))
+                .ToProperty();
 
-        [Theory]
-        [InlineData(10, 10)]
-        [InlineData(10, 20)]
-        public void SomeAndSomeAreNotEqualWhenTheItemsAreNotEqual(int x, int y)
-        {
-            Assert.NotEqual(Option.Some(x), Option.Some(y), OptionEqualityComparer.Create(new ConstantEqualityComparer<int>(areEqual: false)));
-        }
+        [Property]
+        public Property SomeAndSomeAreNotEqualWhenTheItemsAreNotEqual(int x, int y)
+            => (!OptionEqualityComparer.Create(new ConstantEqualityComparer<int>(areEqual: false))
+                .Equals(Option.Some(x), Option.Some(y)))
+                .ToProperty();
 
         private sealed class ThrowingEqualityComparer<T> : EqualityComparer<T>
         {
