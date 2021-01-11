@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Funcky.Extensions;
 using static Funcky.Functional;
 
 namespace Funcky
@@ -13,6 +15,19 @@ namespace Funcky
         /// <param name="sequence">The sequence of elements which are cycled.</param>
         /// <returns>Returns an infinite IEnumerable repeating the same sequence of elements.</returns>
         public static IEnumerable<TItem> CycleRange<TItem>(IEnumerable<TItem> sequence)
+            where TItem : notnull
+        {
+            var list = sequence.ToList();
+
+            if (list.None())
+            {
+                throw new ArgumentException("An empty sequence cannot be cycled", nameof(sequence));
+            }
+
+            return CycleRangeExpression(list);
+        }
+
+        private static IEnumerable<TItem> CycleRangeExpression<TItem>(IEnumerable<TItem> sequence)
             where TItem : notnull
             => Generate(Unit.Value, Identity)
                 .SelectMany(_ => sequence);
