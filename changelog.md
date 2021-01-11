@@ -173,3 +173,10 @@ that provide the missing functionality:
 ### Deprecations
 * `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
 * `RequireClass` and `RequireStruct` have been obsoleted with no replacement.
+
+## Funcky next
+
+Added new generator functions:
+* RepeatRange
+* Cycle
+* CycleRange
