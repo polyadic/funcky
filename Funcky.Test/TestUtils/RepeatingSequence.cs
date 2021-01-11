@@ -9,7 +9,7 @@ namespace Funcky.Test.TestUtils
     {
         public static RepeatingSequenceHelper IsSequenceRepeating(this IEnumerable<int> sequence, IEnumerable<int> pattern)
         {
-            return new (sequence, pattern);
+            return new(sequence, pattern);
         }
 
         public class RepeatingSequenceHelper
@@ -23,8 +23,8 @@ namespace Funcky.Test.TestUtils
                 _pattern = pattern;
             }
 
-            public Property NTimes(int count) =>
-                Enumerable
+            public Property NTimes(int count)
+                => Enumerable
                     .Range(0, count)
                     .Aggregate(true, (b, i)
                         => b && _sequence
