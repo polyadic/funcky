@@ -9,7 +9,7 @@ namespace Funcky.Test.TestUtils
     {
         public static RepeatingSequenceHelper IsSequenceRepeating(this IEnumerable<int> sequence, IEnumerable<int> pattern)
         {
-            return new(sequence, pattern);
+            return new (sequence, pattern);
         }
 
         public class RepeatingSequenceHelper
