@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Funcky.Monads;
 using Xunit;
 using Xunit.Sdk;
@@ -9,6 +10,7 @@ namespace Funcky.Xunit
     public static partial class FunctionalAssert
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
         public static TResult IsOk<TResult>(Result<TResult> result)
         {
             try
