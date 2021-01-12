@@ -8,6 +8,12 @@ namespace Funcky
         public static bool True<T>(T ω) => true;
 
         [Pure]
+        public static bool True() => true;
+
+        [Pure]
         public static bool False<T>(T ω) => false;
+
+        [Pure]
+        public static bool False() => false;
     }
 }
