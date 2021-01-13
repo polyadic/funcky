@@ -8,7 +8,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class MaxOrNoneTest
+    public sealed class MaxOrNoneTest
     {
         // Int32/int Tests
         [Fact]

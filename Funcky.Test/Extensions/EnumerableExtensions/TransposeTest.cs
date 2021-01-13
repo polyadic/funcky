@@ -9,6 +9,23 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public sealed class TransposeTest
     {
         [Fact]
+        [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed", Justification = "The ToList just enumerates the items, we test for the side effect in the next line.")]
+        public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
+        {
+            const int numberOfRows = 5;
+            const int numberOfColumns = 3;
+            var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
+
+            var transposedMatrix = lazyMatrix.Transpose();
+
+            Assert.Equal(0, CountCreation.Count);
+
+            transposedMatrix.ForEach(row => row.ToList());
+
+            Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
+        }
+
+        [Fact]
         public void TransposingAnEmptyMatrixResultsInAnEmptyMatrix()
         {
             var emptyMatrix = Enumerable.Empty<IEnumerable<int>>();
@@ -29,23 +46,6 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 row => { Assert.Equal(new[] { 2, 6, 10 }, row); },
                 row => { Assert.Equal(new[] { 3, 7, 11 }, row); },
                 row => { Assert.Equal(new[] { 4, 8, 12 }, row); });
-        }
-
-        [Fact]
-        [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed", Justification = "The ToList just enumerates the items, we test for the side effect in the next line.")]
-        public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
-        {
-            const int numberOfRows = 5;
-            const int numberOfColumns = 3;
-            var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
-
-            var transposedMatrix = lazyMatrix.Transpose();
-
-            Assert.Equal(0, CountCreation.Count);
-
-            transposedMatrix.ForEach(row => row.ToList());
-
-            Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
         }
 
         [Fact]

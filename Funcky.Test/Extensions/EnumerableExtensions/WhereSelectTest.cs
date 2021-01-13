@@ -1,12 +1,21 @@
 using System.Linq;
 using Funcky.Extensions;
 using Funcky.Monads;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class WhereSelectTest
     {
+        [Fact]
+        public void WhereSelectNullIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.WhereSelect(_ => Option<object>.None());
+        }
+
         [Fact]
         public void WhereSelectFiltersEmptyValues()
         {

@@ -8,7 +8,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class AverageOrNoneTest
+    public sealed class AverageOrNoneTest
     {
         // Int32/int Tests
         [Fact]

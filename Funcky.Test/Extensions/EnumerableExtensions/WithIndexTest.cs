@@ -1,11 +1,20 @@
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class WithIndexTest
+    public sealed class WithIndexTest
     {
+        [Fact]
+        public void WithIndexIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.WithIndex();
+        }
+
         [Fact]
         public void AnEmptySequenceWithIndexReturnsAnEmptySequence()
         {

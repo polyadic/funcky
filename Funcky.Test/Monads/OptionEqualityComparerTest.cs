@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Funcky.Test.Monads
 {
-    public class OptionEqualityComparerTest
+    public sealed class OptionEqualityComparerTest
     {
         [Fact]
         public void TwoNoneOptionsAreEqual()

@@ -4,12 +4,21 @@ using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class TakeEveryTest
     {
+        [Fact]
+        public void TakeEveryIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.TakeEvery(42);
+        }
+
         [Property]
         public Property TakeEveryOnAnEmptySequenceReturnsAnEmptySequence(PositiveInt interval)
             => Enumerable

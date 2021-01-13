@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class ShuffleTest
+    public sealed class ShuffleTest
     {
         [Fact]
         public void AShuffleIsEnumeratedLazily()

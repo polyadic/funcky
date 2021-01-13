@@ -1,14 +1,23 @@
-﻿using System;
+using System;
 using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class SlidingWindowTest
     {
+        [Fact]
+        public void ASlidingWindowIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.SlidingWindow(42);
+        }
+
         [Property]
         public void ASlidingWindowFromAnEmptySequenceIsAlwaysEmpty(PositiveInt width)
             => Enumerable

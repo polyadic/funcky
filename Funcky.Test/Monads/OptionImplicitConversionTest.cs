@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Funcky.Test.Monads
 {
-    public class OptionImplicitConversionTest
+    public sealed class OptionImplicitConversionTest
     {
         [Fact]
         public void ImplicitFunctionParameterConversionDoesCompile()

@@ -1,12 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class PairwiseTest
     {
+        [Fact]
+        public void PairwiseIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Pairwise();
+        }
+
         [Fact]
         public void GivenAnEmptySequencePairwiseReturnsAnEmptySequence()
         {

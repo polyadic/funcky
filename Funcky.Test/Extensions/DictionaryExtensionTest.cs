@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Funcky.Test.Extensions
 {
-    public class DictionaryExtensionTest
+    public sealed class DictionaryExtensionTest
     {
         [Fact]
         public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
