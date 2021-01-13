@@ -43,7 +43,7 @@ namespace Funcky.Monads
         public override bool Equals(Option<TItem> x, Option<TItem> y)
             => (x, y).Match(
                 right: False,
-                none: () => true,
+                none: True,
                 left: False,
                 leftAndRight: _comparer.Equals);
 
