@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Funcky.Monads;
 using Xunit;
@@ -25,6 +26,7 @@ namespace Funcky.Xunit
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
         public static TItem IsSome<TItem>(Option<TItem> option)
             where TItem : notnull
         {
