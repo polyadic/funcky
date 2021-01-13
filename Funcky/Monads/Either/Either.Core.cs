@@ -41,10 +41,10 @@ namespace Funcky.Monads
         public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
 
         [Pure]
-        public static Either<TLeft, TRight> Left(TLeft left) => new Either<TLeft, TRight>(left);
+        public static Either<TLeft, TRight> Left(TLeft left) => new (left);
 
         [Pure]
-        public static Either<TLeft, TRight> Right(TRight right) => new Either<TLeft, TRight>(right);
+        public static Either<TLeft, TRight> Right(TRight right) => new (right);
 
         [Pure]
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)

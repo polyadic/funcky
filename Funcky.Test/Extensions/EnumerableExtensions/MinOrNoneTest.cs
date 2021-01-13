@@ -401,7 +401,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfGenericIComparablesMinOrNoneComputesTheMin()
         {
-            var persons = new List<Person> { new Person(42), new Person(18), new Person(72), new Person(33) };
+            var persons = new List<Person> { new (42), new (18), new (72), new (33) };
 
             var person = FunctionalAssert.IsSome(persons.MinOrNone());
             Assert.Equal(person.Age, persons.Min()?.Age);

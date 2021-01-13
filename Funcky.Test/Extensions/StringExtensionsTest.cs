@@ -36,7 +36,7 @@ namespace Funcky.Test.Extensions
         }
 
         public static TheoryData<Option<int>> InvalidIndexes()
-            => new TheoryData<Option<int>>
+            => new ()
             {
                 Haystack.IndexOfOrNone(NonExistingNeedleChar),
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0),
@@ -75,7 +75,7 @@ namespace Funcky.Test.Extensions
         }
 
         public static TheoryData<Option<int>> ValidIndexes()
-            => new TheoryData<Option<int>>
+            => new ()
             {
                 Haystack.IndexOfOrNone(ExistingNeedleChar),
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0),
