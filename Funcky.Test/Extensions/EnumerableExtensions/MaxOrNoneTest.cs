@@ -383,60 +383,60 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenAnEmptySequenceOfAGenericIComparableMaxOrNoneReturnsNone()
         {
-            var persons = Enumerable.Empty<Person>();
+            var people = Enumerable.Empty<Person>();
 
-            FunctionalAssert.IsNone(persons.MaxOrNone());
+            FunctionalAssert.IsNone(people.MaxOrNone());
         }
 
         [Fact]
         public void GivenASequenceWithASingleGenericIComparableMaxOrNoneReturnsTheSingleElement()
         {
-            var persons = Enumerable.Repeat(new Person(42), 1);
+            var people = Enumerable.Repeat(new Person(42), 1);
 
-            FunctionalAssert.IsSome(persons.First(), persons.MaxOrNone());
+            FunctionalAssert.IsSome(people.First(), people.MaxOrNone());
         }
 
         [Fact]
         public void GivenASequenceOfGenericIComparablesMaxOrNoneComputesTheMax()
         {
-            var persons = new List<Person> { new (42), new (18), new (72), new (33) };
+            var people = new List<Person> { new (42), new (18), new (72), new (33) };
 
-            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
-            Assert.Equal(person.Age, persons.Max()?.Age);
+            var person = FunctionalAssert.IsSome(people.MaxOrNone());
+            Assert.Equal(person.Age, people.Max()?.Age);
         }
 
         [Fact]
         public void GivenAnEmptySequenceOfOptionGenericIComparablesMaxOrNoneReturnsNone()
         {
-            var persons = Enumerable.Empty<Option<Person>>();
+            var people = Enumerable.Empty<Option<Person>>();
 
-            FunctionalAssert.IsNone(persons.MaxOrNone());
+            FunctionalAssert.IsNone(people.MaxOrNone());
         }
 
         [Fact]
         public void GivenASequenceWithASingleOptionGenericIComparablesMaxOrNoneReturnsTheSingleElement()
         {
-            var persons = Enumerable.Repeat(Option.Some(new Person(42)), 1);
+            var people = Enumerable.Repeat(Option.Some(new Person(42)), 1);
 
-            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
+            var person = FunctionalAssert.IsSome(people.MaxOrNone());
             Assert.Equal(42, person.Age);
         }
 
         [Fact]
         public void GivenASequenceOfOptionGenericIComparablesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var persons = new List<Option<Person>> { Option<Person>.None(), Option<Person>.None(), Option<Person>.None() };
+            var people = new List<Option<Person>> { Option<Person>.None(), Option<Person>.None(), Option<Person>.None() };
 
-            FunctionalAssert.IsNone(persons.MaxOrNone());
+            FunctionalAssert.IsNone(people.MaxOrNone());
         }
 
         [Fact]
         public void GivenASequenceOfOptionGenericIComparablesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var persons = new List<Option<Person>> { new Person(42), new Person(18), Option<Person>.None(), new Person(72), new Person(33), Option<Person>.None(), Option<Person>.None(), new Person(21), Option<Person>.None() };
+            var people = new List<Option<Person>> { new Person(42), new Person(18), Option<Person>.None(), new Person(72), new Person(33), Option<Person>.None(), Option<Person>.None(), new Person(21), Option<Person>.None() };
 
-            var person = FunctionalAssert.IsSome(persons.MaxOrNone());
-            Assert.Equal(person.Age, persons.WhereSelect(Identity).Max()?.Age);
+            var person = FunctionalAssert.IsSome(people.MaxOrNone());
+            Assert.Equal(person.Age, people.WhereSelect(Identity).Max()?.Age);
         }
     }
 }
