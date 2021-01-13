@@ -43,7 +43,7 @@ namespace Funcky.Test.Monads
 
             var result = doubleResult.Match(
                 ok: Identity,
-                error: y => -1.0);
+                error: _ => -1.0);
 
             Assert.Equal(reference, result);
         }
@@ -91,8 +91,8 @@ namespace Funcky.Test.Monads
         {
             result
               .Match(
-                ok: v => Assert.True(expected),
-                error: e => Assert.False(expected));
+                ok: _ => Assert.True(expected),
+                error: _ => Assert.False(expected));
         }
 
         public static TheoryData<Result<int>, bool> GetResults()

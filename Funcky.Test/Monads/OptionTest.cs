@@ -72,7 +72,7 @@ namespace Funcky.Test.Monads
             var someNumber = "1337".ParseIntOrNone();
             var someDate = "12.2.2009".ParseDateTimeOrNone();
 
-            var result = someNumber.SelectMany(number => someDate, Tuple.Create);
+            var result = someNumber.SelectMany(_ => someDate, Tuple.Create);
 
             var resultShouldBe = Option.Some(new Tuple<int, DateTime>(1337, new DateTime(2009, 2, 12)));
             Assert.Equal(resultShouldBe, result);
@@ -110,11 +110,11 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenAFilterWhichFiltersAllNoneThenOnlyTheSomeValuesPassThrough()
         {
-            var input = "123,some,x,1337,42,1,1000";
+            const string input = "123,some,x,1337,42,1,1000";
 
             foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(false, True)))
             {
-                FunctionalAssert.IsSome(number);
+                _ = FunctionalAssert.IsSome(number);
             }
         }
 
@@ -231,8 +231,8 @@ namespace Funcky.Test.Monads
             var none = Option<int>.None();
             var some = Option.Some(42);
 
-            Assert.False(none.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
-            Assert.True(some.AndThen(value => Option.Some(1337)).Match(false, v => v == 1337));
+            Assert.False(none.AndThen(_ => Option.Some(1337)).Match(false, v => v == 1337));
+            Assert.True(some.AndThen(_ => Option.Some(1337)).Match(false, v => v == 1337));
         }
 
         [Fact]
@@ -251,18 +251,17 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenASomeCaseTheOrElseFuncIsNotExecuted()
         {
-            var none = Option<int>.None();
             var some = Option.Some(42);
             var global = 0;
 
-            Func<int> sideEffect = () =>
+            int SideEffect()
             {
                 global = 42;
                 return 11;
-            };
+            }
 
-            var maybe = some
-                .GetOrElse(sideEffect);
+            _ = some
+                .GetOrElse(SideEffect);
 
             Assert.Equal(0, global);
         }
@@ -444,7 +443,7 @@ namespace Funcky.Test.Monads
         {
             var option = Option<int>.None();
             var sideEffect = false;
-            var inspectedOption = option.Inspect(v => sideEffect = true);
+            var inspectedOption = option.Inspect(_ => sideEffect = true);
             Assert.False(sideEffect);
             Assert.Equal(option, inspectedOption);
         }

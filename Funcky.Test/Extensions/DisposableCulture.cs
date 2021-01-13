@@ -5,7 +5,7 @@ namespace Funcky.Test.Extensions
 {
     internal class DisposableCulture : IDisposable
     {
-        private CultureInfo _lastCulture;
+        private readonly CultureInfo _lastCulture;
         private bool _disposedValue;
 
         public DisposableCulture(string culture)

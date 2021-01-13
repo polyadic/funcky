@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using FsCheck;
+using FsCheck.Xunit;
 using Funcky.Extensions;
 using Xunit;
 
@@ -8,13 +10,13 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class TakeEveryTest
     {
-        [Fact]
-        public void TakeEveryOnAnEmptySequenceReturnsAnEmptySequence()
-        {
-            var emptySource = Enumerable.Empty<string>();
-
-            Assert.Empty(emptySource.TakeEvery(5));
-        }
+        [Property]
+        public Property TakeEveryOnAnEmptySequenceReturnsAnEmptySequence(PositiveInt interval)
+            => Enumerable
+                .Empty<string>()
+                .TakeEvery(interval.Get)
+                .None()
+                .ToProperty();
 
         [Theory]
         [InlineData(0)]
@@ -32,7 +34,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numbers = Enumerable.Range(-60, 120).ToList();
 
-            Assert.Equal(numbers.Count() / 6, numbers.TakeEvery(6).Count());
+            Assert.Equal(numbers.Count / 6, numbers.TakeEvery(6).Count());
 
             numbers.TakeEvery(6).ForEach(n => Assert.True(n % 6 == 0));
         }

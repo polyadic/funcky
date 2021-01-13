@@ -35,8 +35,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed", Justification = "The ToList just enumerates the items, we test for the side effect in the next line.")]
         public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
         {
-            var numberOfRows = 5;
-            var numberOfColumns = 3;
+            const int numberOfRows = 5;
+            const int numberOfColumns = 3;
             var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
 
             var transposedMatrix = lazyMatrix.Transpose();
