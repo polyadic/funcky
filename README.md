@@ -16,6 +16,12 @@ Funcky is a functional library for C# which encourages correct usage of the func
 
 [![NuGet package](https://buildstats.info/nuget/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
 
+### [Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)
+[![NuGet package](https://buildstats.info/nuget/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
+[![git: polyadic/funcky-efcore](https://img.shields.io/badge/git-polyadic%2Ffuncky--efcore-blue)](https://github.com/polyadic/funcky-efcore)
+
+Provides interoperability between Funcky and EF Core
+
 ## Motivation
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
