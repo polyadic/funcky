@@ -3,11 +3,21 @@ using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
+using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public class ShuffleTest
     {
+        [Fact]
+        public void ShuffleDoesNotEnumerateOnCreation()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Shuffle();
+        }
+
         [Property]
         public Property AShuffleHasTheSameElementsAsTheSource(List<int> source)
             => source

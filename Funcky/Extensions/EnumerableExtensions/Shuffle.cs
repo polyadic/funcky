@@ -15,16 +15,16 @@ namespace Funcky.Extensions
         public static IEnumerable<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
             where TSource : notnull
             => source
-                .ToList()
                 .ShuffleInternal(new Random());
 
-        private static IEnumerable<T> ShuffleInternal<T>(this List<T> source, Random random)
+        private static IEnumerable<T> ShuffleInternal<T>(this IEnumerable<T> source, Random random)
         {
-            foreach (var (currentIndex, randomIndex) in source.RandomIndex(random))
+            var list = source.ToList();
+            foreach (var (currentIndex, randomIndex) in list.RandomIndex(random))
             {
-                yield return source[randomIndex];
+                yield return list[randomIndex];
 
-                source[randomIndex] = source[currentIndex];
+                list[randomIndex] = list[currentIndex];
             }
         }
 
