@@ -11,7 +11,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public class ShuffleTest
     {
         [Fact]
-        public void ShuffleDoesNotEnumerateOnCreation()
+        public void AShuffleIsEnumeratedLazily()
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
