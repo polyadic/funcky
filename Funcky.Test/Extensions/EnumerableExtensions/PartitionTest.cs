@@ -8,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class PartitionTest
     {
-        [Fact(Skip="TODO fix")]
+        [Fact(Skip = "TODO issue #271")]
         public void PartitionIsEnumeratedLazily()
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
