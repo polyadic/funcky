@@ -11,11 +11,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void InspectIsEnumeratedLazily()
         {
-            var sideEffect = 0;
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            _ = doNotEnumerate.Inspect(n => { ++sideEffect; });
-            Assert.Equal(0, sideEffect);
+            _ = doNotEnumerate.Inspect(NoOperation);
         }
 
         [Fact]
