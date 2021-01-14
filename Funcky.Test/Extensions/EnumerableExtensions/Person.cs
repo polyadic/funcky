@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    internal class Person : IComparable<Person>
+    internal sealed class Person : IComparable<Person>
     {
         public Person(int age)
         {

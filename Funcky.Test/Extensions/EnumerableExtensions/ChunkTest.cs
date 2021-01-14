@@ -2,12 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class ChunkTest
     {
+        [Fact]
+        public void ChunkIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Chunk(42);
+        }
+
         [Fact]
         public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
         {

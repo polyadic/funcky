@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 using static Funcky.Functional;
 
@@ -7,6 +8,14 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class InspectTest
     {
+        [Fact]
+        public void InspectIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Inspect(NoOperation);
+        }
+
         [Fact]
         public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
         {

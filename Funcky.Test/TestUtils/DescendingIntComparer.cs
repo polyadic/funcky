@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Funcky.Test.TestUtils
 {
@@ -9,7 +9,7 @@ namespace Funcky.Test.TestUtils
         }
 
         public static DescendingIntComparer Create()
-            => new DescendingIntComparer();
+            => new ();
 
         public int Compare(int x, int y)
             => y - x;

@@ -1,12 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class InterleaveTest
     {
+        [Fact]
+        public void InterleaveIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Interleave();
+        }
+
         [Fact]
         public void GivenAnEmptySequenceOfSequencesInterleaveReturnsAnEmptySequence()
         {

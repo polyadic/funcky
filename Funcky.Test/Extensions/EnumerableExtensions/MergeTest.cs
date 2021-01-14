@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Funcky.Extensions;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Xunit;
 
@@ -10,6 +9,14 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class MergeTest
     {
+        [Fact]
+        public void MergeIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.Merge(doNotEnumerate);
+        }
+
         [Fact]
         public void MergeEmptySequencesResultsInAnEmptySequence()
         {

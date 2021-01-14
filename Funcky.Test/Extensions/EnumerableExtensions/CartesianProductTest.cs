@@ -1,12 +1,21 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class CartesianProductTest
     {
+        [Fact]
+        public void CartesianProductIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.CartesianProduct(doNotEnumerate);
+        }
+
         [Fact]
         public void GivenTwoEmptySetsCartesianProductReturnsAnEmptySet()
         {

@@ -1,11 +1,20 @@
 using System.Linq;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    public class WithFirstTest
+    public sealed class WithFirstTest
     {
+        [Fact]
+        public void WithFirstIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+
+            _ = doNotEnumerate.WithFirst();
+        }
+
         [Fact]
         public void AnEmptySequenceWithFirstReturnsAnEmptySequence()
         {

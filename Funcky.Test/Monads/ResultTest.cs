@@ -43,13 +43,13 @@ namespace Funcky.Test.Monads
 
             var result = doubleResult.Match(
                 ok: Identity,
-                error: y => -1.0);
+                error: _ => -1.0);
 
             Assert.Equal(reference, result);
         }
 
         public static TheoryData<Result<int>, double> GetIntegerResults()
-            => new TheoryData<Result<int>, double>
+            => new ()
             {
                 { Result.Ok(1000), 250.0 },
                 { Result.Ok(44), 11.0 },
@@ -76,7 +76,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Result<int>, Result<int>, Result<int>, Option<int>> GetIntegerSums()
-            => new TheoryData<Result<int>, Result<int>, Result<int>, Option<int>>
+            => new ()
             {
                 { Result.Ok(5), Result.Ok(10), Result.Ok(15), 30 },
                 { Result.Ok(42), Result.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
@@ -91,12 +91,12 @@ namespace Funcky.Test.Monads
         {
             result
               .Match(
-                ok: v => Assert.True(expected),
-                error: e => Assert.False(expected));
+                ok: _ => Assert.True(expected),
+                error: _ => Assert.False(expected));
         }
 
         public static TheoryData<Result<int>, bool> GetResults()
-            => new TheoryData<Result<int>, bool>
+            => new ()
             {
                 { Result.Ok(5), true },
                 { Result.Ok(42), true },

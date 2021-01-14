@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -31,7 +31,7 @@ namespace Funcky.Extensions
                     : With(right: _right.Add(item));
 
             private PartitionBuilder<TItem> With(IImmutableList<TItem>? left = null, IImmutableList<TItem>? right = null)
-                => new PartitionBuilder<TItem>(_predicate, left ?? _left, right ?? _right);
+                => new (_predicate, left ?? _left, right ?? _right);
         }
     }
 }

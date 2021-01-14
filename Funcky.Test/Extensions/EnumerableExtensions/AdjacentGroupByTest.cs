@@ -11,18 +11,18 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public sealed class AdjacentGroupByTest
     {
         [Fact]
-        public void AdjacentGroupByIsLazy()
+        public void AdjacentGroupByIsEnumeratedLazily()
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, EqualityComparer<int>.Default);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, EqualityComparer<int>.Default);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>, EqualityComparer<int>.Default);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>);
-            doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>, EqualityComparer<int>.Default);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, EqualityComparer<int>.Default);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, EqualityComparer<int>.Default);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>, EqualityComparer<int>.Default);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>);
+            _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, FailOnCall.Function<object, object>, FailOnCall.Function<int, IEnumerable<object>, IEnumerable<object>>, EqualityComparer<int>.Default);
         }
 
         [Fact]

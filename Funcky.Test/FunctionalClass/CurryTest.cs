@@ -34,7 +34,7 @@ namespace Funcky.Test.FunctionalClass
         }
 
         public static TheoryData<int, string> FirstTwoArguments()
-            => new TheoryData<int, string>
+            => new ()
             {
                 { 5, "Hello world!" },
                 { -100, "TestString" },

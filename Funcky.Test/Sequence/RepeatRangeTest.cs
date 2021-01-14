@@ -3,7 +3,6 @@ using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
-using static Funcky.Functional;
 
 namespace Funcky.Test
 {

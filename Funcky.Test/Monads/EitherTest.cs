@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Funcky.Monads;
 using Xunit;
 using static Funcky.Functional;
@@ -57,7 +57,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Either<string, int>, Either<string, int>, Either<string, int>, object> GetIntegerSums()
-            => new TheoryData<Either<string, int>, Either<string, int>, Either<string, int>, object>
+            => new ()
             {
                 { Either<string, int>.Right(5), Either<string, int>.Right(10), Either<string, int>.Right(15), 30 },
                 { Either<string, int>.Right(1337), Either<string, int>.Right(42), Either<string, int>.Right(99), 1478 },

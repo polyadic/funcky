@@ -1,6 +1,6 @@
 namespace Funcky.Test.TestUtils
 {
-    internal class MyClass : IMyInterface
+    internal sealed class MyClass : IMyInterface
     {
     }
 }

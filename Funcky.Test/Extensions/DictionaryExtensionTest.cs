@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using Funcky.Extensions;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions
 {
-    public class DictionaryExtensionTest
+    public sealed class DictionaryExtensionTest
     {
         [Fact]
         public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
@@ -15,8 +14,7 @@ namespace Funcky.Test.Extensions
 
             var maybe = dictionary.GetValueOrNone(key: "some");
 
-            FunctionalAssert.IsSome(maybe);
-            Assert.Equal("value", maybe.Match(string.Empty, Identity));
+            FunctionalAssert.IsSome("value", maybe);
         }
 
         [Fact]

@@ -1,6 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
+using FsCheck;
+using FsCheck.Xunit;
 using Funcky.Extensions;
+using Funcky.Test.TestUtils;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
@@ -8,12 +11,20 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public sealed class SlidingWindowTest
     {
         [Fact]
-        public void GivenAnEmptySourceSequenceSlidingWindowReturnsAnEmptySequence()
+        public void ASlidingWindowIsEnumeratedLazily()
         {
-            var source = Enumerable.Empty<int>();
+            var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            Assert.Empty(source.SlidingWindow(5));
+            _ = doNotEnumerate.SlidingWindow(42);
         }
+
+        [Property]
+        public void ASlidingWindowFromAnEmptySequenceIsAlwaysEmpty(PositiveInt width)
+            => Enumerable
+                .Empty<int>()
+                .SlidingWindow(width.Get)
+                .None()
+                .ToProperty();
 
         [Fact]
         public void GivenASourceSequenceEqualInLengthToTheSlidingWindowWidthReturnsASequenceWithOneElement()
