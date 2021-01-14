@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Funcky.Extensions;
 using Xunit;
@@ -9,7 +8,6 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
     public sealed class TransposeTest
     {
         [Fact]
-        [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed", Justification = "The ToList just enumerates the items, we test for the side effect in the next line.")]
         public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
         {
             const int numberOfRows = 5;
@@ -20,7 +18,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
             Assert.Equal(0, CountCreation.Count);
 
-            transposedMatrix.ForEach(row => row.ToList());
+            transposedMatrix.ForEach(row => _ = row.ToList());
 
             Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
         }
