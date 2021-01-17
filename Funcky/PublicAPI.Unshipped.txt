@@ -34,3 +34,5 @@ static Funcky.Monads.OptionEqualityComparer.Create<TItem>(System.Collections.Gen
 static Funcky.Monads.OptionEqualityComparer<TItem>.Default.get -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Functional.True() -> bool
 static Funcky.Functional.False() -> bool
+static Funcky.Sequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
