@@ -24,7 +24,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void ThePowerSetIsTheSetOfAlLSubSets()
+        public void ThePowerSetIsTheSetOfAllSubSets()
         {
             var set = new List<string> { "Alpha", "Beta", "Gamma" };
             var powerSet = set.PowerSet();
