@@ -11,7 +11,7 @@ namespace Funcky.Test
         [Fact]
         public void ConcatenatedSequenceIsEmptyWhenNoSourcesAreProvided()
         {
-            Assert.Empty(Sequence.Concat(Enumerable.Empty<object>()));
+            Assert.Empty(Sequence.Concat<object>());
         }
 
         [Fact]
