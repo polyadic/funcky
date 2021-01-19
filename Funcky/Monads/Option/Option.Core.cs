@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Funcky.Monads
 {
@@ -22,6 +23,8 @@ namespace Funcky.Monads
             _hasItem = true;
         }
 
+        private static ValueTask<Option<TItem>> NoneAsync { get; } = new (None());
+
         [Pure]
         public static Option<TItem> None() => default;
 
@@ -33,11 +36,25 @@ namespace Funcky.Monads
                  item => selector(item));
 
         [Pure]
+        public async ValueTask<Option<TResult>> SelectAwait<TResult>(Func<TItem, ValueTask<TResult>> selector)
+            where TResult : notnull
+            => await Match<ValueTask<Option<TResult>>>(
+                none: Option<TResult>.NoneAsync,
+                some: async item => await selector(item));
+
+        [Pure]
         public Option<TResult> SelectMany<TResult>(Func<TItem, Option<TResult>> selector)
             where TResult : notnull
             => Match(
                  none: Option<TResult>.None,
                  some: selector);
+
+        [Pure]
+        public async ValueTask<Option<TResult>> SelectManyAwait<TResult>(Func<TItem, ValueTask<Option<TResult>>> selector)
+            where TResult : notnull
+            => await Match<ValueTask<Option<TResult>>>(
+                none: Option<TResult>.NoneAsync,
+                some: async item => await selector(item));
 
         [Pure]
         public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
