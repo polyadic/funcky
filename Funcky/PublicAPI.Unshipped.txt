@@ -54,6 +54,7 @@ static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Sequence.Cycle<TItem>(TItem element) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
+static Funcky.Sequence.Repeat<TItem>(int count, System.Func<TItem>! generator) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
 Funcky.Monads.OptionEqualityComparer
 Funcky.Monads.OptionEqualityComparer<TItem>
