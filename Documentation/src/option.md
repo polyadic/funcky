@@ -55,7 +55,7 @@ int? integer = 1337;
 
 You can access the Value directly via `i.Value`. The typical beginner question on the monad is therefore how to get to the value in a monad.
 
-The Option-Monad intentionally has no way to get to the value directly because that would an unsafe operation. The whole point of an optional is that it sometimes has no value. Instead you should inject the behaviour into the monad.
+The Option-Monad intentionally has no way to get to the value directly because that would be an unsafe operation. The whole point of an optional is that it sometimes has no value. Instead you should inject the behaviour into the monad.
 
 The basic Example:
 
@@ -81,5 +81,5 @@ Or in Linq syntax:
 
 ```cs
 from integer in MaybeValue()
-select Console.WriteLine($"Value: {integer .Value}");
+select Console.WriteLine($"Value: {integer.Value}");
 ```
