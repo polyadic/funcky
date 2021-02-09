@@ -40,7 +40,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(3, zipped.Count);
             foreach (var value in zipped)
             {
-                Assert.True(value.Match(False, False, (_, _) => true));
+                Assert.True(value.Match(False, False, True));
             }
         }
 
@@ -64,7 +64,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.True(zipped.Last().Match(
                 left: left => left == 9,
                 right: False,
-                both: (_, _) => false));
+                both: False));
         }
     }
 }
