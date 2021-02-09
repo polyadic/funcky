@@ -1,10 +1,8 @@
-using System;
 using System.Linq;
 using Funcky.Extensions;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
-using Funcky.Xunit;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -15,7 +13,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            _ = doNotEnumerate.ZipLongest(doNotEnumerate, (_, _) => Unit.Value);
+            _ = doNotEnumerate.ZipLongest(doNotEnumerate, (_) => Unit.Value);
         }
 
         [Fact]
@@ -24,7 +22,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = Enumerable.Empty<int>();
             var strings = Enumerable.Empty<string>();
 
-            var zipped = numbers.ZipLongest(strings, (_, _) => Unit.Value);
+            var zipped = numbers.ZipLongest(strings, (_) => Unit.Value);
 
             Assert.Empty(zipped);
         }
@@ -42,8 +40,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(3, zipped.Count);
             foreach (var value in zipped)
             {
-                _ = FunctionalAssert.IsSome(value.First);
-                _ = FunctionalAssert.IsSome(value.Second);
+                Assert.True(value.Match(False, False, (_, _) => true));
             }
         }
 
@@ -54,12 +51,20 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var strings = new[] { "Alpha", "Beta", "Gamma" };
 
             var zipped = numbers
-                .ZipLongest(strings, ValueTuple.Create)
+                .ZipLongest(strings)
                 .ToList();
 
             Assert.Equal(10, zipped.Count);
-            Assert.Equal((Option.Some(0), Option.Some("Alpha")), zipped.First());
-            Assert.Equal((Option.Some(9), Option<string>.None()), zipped.Last());
+
+            Assert.True(zipped.First().Match(
+                left: False,
+                right: False,
+                both: (left, right) => left == 0 && right == "Alpha"));
+
+            Assert.True(zipped.Last().Match(
+                left: left => left == 9,
+                right: False,
+                both: (_, _) => false));
         }
     }
 }

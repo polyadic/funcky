@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using Funcky.DataTypes;
 using Funcky.Monads;
 using static Funcky.Functional;
 
@@ -11,49 +12,59 @@ namespace Funcky.Extensions
         /// <summary>
         /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
         /// </summary>
-        /// <param name="source">The source sequence to merge.</param>
-        /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-        /// <param name="other">The other sequence to merge.</param>
-        /// <typeparam name="TOther">Type of the elements in <paramref name="other"/> sequence.</typeparam>
+        /// <param name="left">The left sequence to merge.</param>
+        /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
         /// <returns>A sequence that contains merged elements of two input sequences.</returns>
         [Pure]
-        public static IEnumerable<(Option<TSource> First, Option<TOther> Second)> ZipLongest<TSource, TOther>(this IEnumerable<TSource> source, IEnumerable<TOther> other)
-            where TSource : notnull
-            where TOther : notnull
-            => source.ZipLongest(other, ValueTuple.Create);
+        public static IEnumerable<EitherOrBoth<TLeft, TRight>> ZipLongest<TLeft, TRight>(this IEnumerable<TLeft> left, IEnumerable<TRight> right)
+            where TLeft : notnull
+            where TRight : notnull
+            => left.ZipLongest(right, Identity);
 
         /// <summary>
         /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
         /// </summary>
-        /// <param name="source">The source sequence to merge.</param>
-        /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-        /// <param name="other">The other sequence to merge.</param>
-        /// <typeparam name="TOther">Type of the elements in <paramref name="other"/> sequence.</typeparam>
+        /// <param name="left">The left sequence to merge.</param>
+        /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
         /// <typeparam name="TResult">The return type of the result selector function.</typeparam>
         /// <param name="resultSelector">A function that specifies how to merge the elements from the two sequences.</param>
         /// <returns>A sequence that contains merged elements of two input sequences.</returns>
         [Pure]
-        public static IEnumerable<TResult> ZipLongest<TSource, TOther, TResult>(this IEnumerable<TSource> source, IEnumerable<TOther> other, Func<Option<TSource>, Option<TOther>, TResult> resultSelector)
-            where TSource : notnull
-            where TOther : notnull
+        public static IEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IEnumerable<TLeft> left, IEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+            where TLeft : notnull
+            where TRight : notnull
         {
-            using var sourceEnumerator = source.GetEnumerator();
-            using var otherEnumerator = other.GetEnumerator();
+            using var leftEnumerator = left.GetEnumerator();
+            using var rightEnumerator = right.GetEnumerator();
 
             while (true)
             {
-                var sourceElement = ReadNext(sourceEnumerator);
-                var otherElement = ReadNext(otherEnumerator);
+                var result = CreateEitherOrBothFromOptions(ReadNext(leftEnumerator), ReadNext(rightEnumerator));
 
-                if (sourceElement.Match(False, True) || otherElement.Match(False, True))
+                if (result.HasValue)
                 {
-                    yield return resultSelector(sourceElement, otherElement);
+                    yield return resultSelector(result.Value);
                 }
                 else
                 {
                     yield break;
                 }
             }
+        }
+
+        private static EitherOrBoth<TLeft, TRight>? CreateEitherOrBothFromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
+            where TLeft : notnull
+            where TRight : notnull
+        {
+            return leftElement
+                .SelectMany(_ => rightElement, EitherOrBoth<TLeft, TRight>.Both)
+                .OrElse(leftElement.Select(EitherOrBoth<TLeft, TRight>.Left))
+                .OrElse(rightElement.Select(EitherOrBoth<TLeft, TRight>.Right))
+                .Match(() => (EitherOrBoth<TLeft, TRight>?)null, either => either);
         }
 
         private static Option<TSource> ReadNext<TSource>(IEnumerator<TSource> enumerator)
