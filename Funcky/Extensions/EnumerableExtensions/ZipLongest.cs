@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Funcky.DataTypes;
+using Funcky.Internal;
 using Funcky.Monads;
 using static Funcky.Functional;
 
@@ -41,31 +42,20 @@ namespace Funcky.Extensions
             using var leftEnumerator = left.GetEnumerator();
             using var rightEnumerator = right.GetEnumerator();
 
-            while (true)
+            while (CreateEitherOrBothFromOptions(ReadNext(leftEnumerator), ReadNext(rightEnumerator)).TryGetValue(out var value))
             {
-                var result = CreateEitherOrBothFromOptions(ReadNext(leftEnumerator), ReadNext(rightEnumerator));
-
-                if (result.HasValue)
-                {
-                    yield return resultSelector(result.Value);
-                }
-                else
-                {
-                    yield break;
-                }
+                yield return resultSelector(value);
             }
         }
 
-        private static EitherOrBoth<TLeft, TRight>? CreateEitherOrBothFromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
+        private static Option<EitherOrBoth<TLeft, TRight>> CreateEitherOrBothFromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
             where TLeft : notnull
             where TRight : notnull
-        {
-            return leftElement
-                .SelectMany(_ => rightElement, EitherOrBoth<TLeft, TRight>.Both)
-                .OrElse(leftElement.Select(EitherOrBoth<TLeft, TRight>.Left))
-                .OrElse(rightElement.Select(EitherOrBoth<TLeft, TRight>.Right))
-                .Match(() => (EitherOrBoth<TLeft, TRight>?)null, either => either);
-        }
+            => (leftElement, rightElement).Match(
+                left: left => EitherOrBoth<TLeft, TRight>.Left(left),
+                right: right => EitherOrBoth<TLeft, TRight>.Right(right),
+                leftAndRight: (left, right) => EitherOrBoth<TLeft, TRight>.Both(left, right),
+                none: Option<EitherOrBoth<TLeft, TRight>>.None);
 
         private static Option<TSource> ReadNext<TSource>(IEnumerator<TSource> enumerator)
             where TSource : notnull
