@@ -51,11 +51,22 @@ namespace Funcky.Extensions
         private static Option<EitherOrBoth<TLeft, TRight>> CreateEitherOrBothFromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
             where TLeft : notnull
             where TRight : notnull
-            => (leftElement, rightElement).Match(
-                left: left => EitherOrBoth<TLeft, TRight>.Left(left),
-                right: right => EitherOrBoth<TLeft, TRight>.Right(right),
-                leftAndRight: (left, right) => EitherOrBoth<TLeft, TRight>.Both(left, right),
-                none: Option<EitherOrBoth<TLeft, TRight>>.None);
+            => (leftElement, rightElement).Match(Left<TLeft, TRight>, Right<TLeft, TRight>, Both, Option<EitherOrBoth<TLeft, TRight>>.None);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Left(left);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Right<TLeft, TRight>(TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Right(right);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Both<TLeft, TRight>(TLeft left, TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Both(left, right);
 
         private static Option<TSource> ReadNext<TSource>(IEnumerator<TSource> enumerator)
             where TSource : notnull
