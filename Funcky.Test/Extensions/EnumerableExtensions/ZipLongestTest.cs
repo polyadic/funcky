@@ -13,7 +13,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            _ = doNotEnumerate.ZipLongest(doNotEnumerate, (_) => Unit.Value);
+            _ = doNotEnumerate.ZipLongest(doNotEnumerate, _ => Unit.Value);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = Enumerable.Empty<int>();
             var strings = Enumerable.Empty<string>();
 
-            var zipped = numbers.ZipLongest(strings, (_) => Unit.Value);
+            var zipped = numbers.ZipLongest(strings, _ => Unit.Value);
 
             Assert.Empty(zipped);
         }

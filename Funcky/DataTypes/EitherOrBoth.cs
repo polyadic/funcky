@@ -104,6 +104,6 @@ namespace Funcky.DataTypes
             => Match(
                 left => left?.GetHashCode(),
                 right => right?.GetHashCode(),
-                (left, right) => left?.GetHashCode() ^ right?.GetHashCode()) ?? 0;
+                (left, right) => HashCode.Combine(left, right)) ?? 0;
     }
 }
