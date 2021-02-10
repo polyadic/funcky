@@ -71,6 +71,23 @@ namespace Funcky.Monads
                     $"Internal error: Enum variant {_side} is not handled"),
             };
 
+        public void Match(Action<TLeft> left, Action<TRight> right)
+        {
+            switch (_side)
+            {
+                case Side.Left:
+                    left(_left);
+                    break;
+                case Side.Right:
+                    right(_right);
+                    break;
+                case Side.Uninitialized:
+                    throw new NotSupportedException("EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled");
+            }
+        }
+
         [Pure]
         public override bool Equals(object? obj)
             => obj is Either<TLeft, TRight> other && Equals(other);
