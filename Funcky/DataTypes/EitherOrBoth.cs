@@ -101,9 +101,18 @@ namespace Funcky.DataTypes
 
         [Pure]
         public override int GetHashCode()
-            => Match(
-                left => left?.GetHashCode(),
-                right => right?.GetHashCode(),
-                (left, right) => HashCode.Combine(left, right)) ?? 0;
+            => Match(HashFromLeft, HashFromRight, HashFromBoth);
+
+        [Pure]
+        private static int HashFromLeft(TLeft left)
+            => left?.GetHashCode() ?? 0;
+
+        [Pure]
+        private static int HashFromRight(TRight right)
+            => right?.GetHashCode() ?? 0;
+
+        [Pure]
+        private static int HashFromBoth(TLeft left, TRight right)
+            => HashCode.Combine(left, right);
     }
 }
