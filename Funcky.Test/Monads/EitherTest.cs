@@ -86,7 +86,7 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
-        public void MatchOnEitherSupportsActions()
+        public void MatchLeftOnEitherSupportsActions()
         {
             var value = Either<string, int>.Left("Error: not cool!");
 
@@ -99,6 +99,22 @@ namespace Funcky.Test.Monads
 
             Assert.True(hasLeft);
             Assert.False(hasRight);
+        }
+
+        [Fact]
+        public void MatchRightOnEitherSupportsActions()
+        {
+            var value = Either<string, int>.Right(1337);
+
+            var hasLeft = false;
+            var hasRight = false;
+
+            value.Match(
+                left: _ => Execute(() => hasLeft = true),
+                right: _ => Execute(() => hasRight = true));
+
+            Assert.False(hasLeft);
+            Assert.True(hasRight);
         }
 
         private static void Execute(Action action)
