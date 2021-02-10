@@ -76,10 +76,10 @@ namespace Funcky.DataTypes
                 case Side.Left:
                     left(_left);
                     break;
-                case Side.Both:
+                case Side.Right:
                     right(_right);
                     break;
-                case Side.Right:
+                case Side.Both:
                     both(_left, _right);
                     break;
                 case Side.Uninitialized:
