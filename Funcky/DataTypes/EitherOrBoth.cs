@@ -17,6 +17,16 @@ namespace Funcky.DataTypes
 
         private EitherOrBoth(TLeft left, TRight right)
         {
+            if (left is null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right is null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
             _left = left;
             _right = right;
             _side = Side.Both;
@@ -24,6 +34,11 @@ namespace Funcky.DataTypes
 
         private EitherOrBoth(TLeft left)
         {
+            if (left is null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
             _left = left;
             _right = default!;
             _side = Side.Left;
@@ -31,6 +46,11 @@ namespace Funcky.DataTypes
 
         private EitherOrBoth(TRight right)
         {
+            if (right is null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
             _left = default!;
             _right = right;
             _side = Side.Right;
