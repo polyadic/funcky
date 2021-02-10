@@ -14,12 +14,12 @@ namespace Funcky.Monads
         private const int SkipLowestStackFrame = 1;
 
         private readonly TValidResult _result;
-        private readonly Exception _error;
+        private readonly Exception? _error;
 
         internal Result(TValidResult result)
         {
             _result = result;
-            _error = null!;
+            _error = null;
         }
 
         private Result(Exception error)
