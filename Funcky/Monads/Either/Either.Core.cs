@@ -9,6 +9,7 @@ namespace Funcky.Monads
     /// </remarks>
     public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {
+        private const string UninitializedMatch = "Either constructed via default instead of a factory function (Either.Left or Either.Right)";
         private readonly TLeft _left;
         private readonly TRight _right;
         private readonly Side _side;
@@ -65,10 +66,8 @@ namespace Funcky.Monads
             {
                 Side.Left => left(_left),
                 Side.Right => right(_right),
-                Side.Uninitialized => throw new NotSupportedException(
-                    "Either constructed via default instead of a factory function (Either.Left or Either.Right)"),
-                _ => throw new NotSupportedException(
-                    $"Internal error: Enum variant {_side} is not handled"),
+                Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
+                _ => throw new NotSupportedException(UnknownSideMessage()),
             };
 
         public void Match(Action<TLeft> left, Action<TRight> right)
@@ -82,9 +81,9 @@ namespace Funcky.Monads
                     right(_right);
                     break;
                 case Side.Uninitialized:
-                    throw new NotSupportedException("EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)");
+                    throw new NotSupportedException(UninitializedMatch);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled");
+                    throw new NotSupportedException(UnknownSideMessage());
             }
         }
 
@@ -103,5 +102,9 @@ namespace Funcky.Monads
             => Match(
                 left => left?.GetHashCode(),
                 right => right?.GetHashCode()) ?? 0;
+
+        [Pure]
+        private string UnknownSideMessage()
+            => $"Internal error: Enum variant {_side} is not handled";
     }
 }
