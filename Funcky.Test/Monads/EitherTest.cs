@@ -117,9 +117,6 @@ namespace Funcky.Test.Monads
             Assert.True(hasRight);
         }
 
-        private static void Execute(Action action)
-        {
-            action();
-        }
+        private static void Execute(Action action) => action();
     }
 }
