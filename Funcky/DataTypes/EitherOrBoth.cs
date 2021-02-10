@@ -8,6 +8,8 @@ namespace Funcky.DataTypes
     /// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
     /// </remarks>
     public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLeft, TRight>>
+        where TLeft : notnull
+        where TRight : notnull
     {
         private readonly TLeft _left;
         private readonly TRight _right;
