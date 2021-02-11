@@ -28,7 +28,7 @@ namespace Funcky.Test.Extensions
         }
 
         [Fact]
-        public void FunctionCompositionWorksWithNonaryFunctionInput()
+        public void FunctionCompositionWorksWithNullaryFunctionInput()
         {
             Func<int, string> f = x => $"{x} + 2";
             Func<int> g = () => 9;
@@ -50,7 +50,7 @@ namespace Funcky.Test.Extensions
         }
 
         [Fact]
-        public void FunctionCompositionWorksWithActionAndNonaryFunctionInput()
+        public void FunctionCompositionWorksWithActionAndNullaryFunctionInput()
         {
             var sideEffect = new SideEffect();
             Action<string> f = s => sideEffect.Store(s);
