@@ -40,7 +40,7 @@ namespace Funcky.Test.Extensions
         public Property FunctionCompositionWorksWithAction(int argument)
         {
             var sideEffect = new SideEffect();
-            Action<string> f = s => sideEffect.Store(s);
+            Action<string> f = sideEffect.Store;
             Func<int, string> g = x => $"{x} + 2";
 
             var composed = f.Compose(g);
@@ -53,7 +53,7 @@ namespace Funcky.Test.Extensions
         public void FunctionCompositionWorksWithActionAndNullaryFunctionInput()
         {
             var sideEffect = new SideEffect();
-            Action<string> f = s => sideEffect.Store(s);
+            Action<string> f = sideEffect.Store;
             Func<string> g = () => "Hello World!";
 
             var composed = f.Compose(g);
