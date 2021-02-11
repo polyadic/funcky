@@ -5,15 +5,12 @@ namespace Funcky.Test.Extensions
         private string _string;
 
         public SideEffect()
-        {
-            _string = string.Empty;
-        }
+            => _string = string.Empty;
 
         public void Store(string s)
-        {
-            _string = s;
-        }
+            => _string = s;
 
-        public string Retrieve() => _string;
+        public string Retrieve()
+            => _string;
     }
 }
