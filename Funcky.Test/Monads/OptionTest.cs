@@ -148,7 +148,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Option<string>, Option<string>, Func<string, bool>> WhereTestValues()
-            => new ()
+            => new()
             {
                 { Option.Some("foo"), Option.Some("foo"), True },
                 { Option<string>.None(), Option.Some("foo"), False },
@@ -342,7 +342,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Option<int>> OptionValues()
-            => new ()
+            => new()
             {
                 Option.Some(10),
                 Option<int>.None(),
@@ -367,7 +367,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Option<int>, Option<int>> EqualOptions()
-            => new ()
+            => new()
             {
                 { Option.Some(1), Option.Some(1) },
                 { Option<int>.None(), Option<int>.None() },
@@ -381,7 +381,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Option<int>, Option<int>> NotEqualOptions()
-            => new ()
+            => new()
             {
                 { Option.Some(1), Option<int>.None() },
                 { Option<int>.None(), Option.Some(1) },

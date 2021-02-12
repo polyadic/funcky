@@ -70,7 +70,7 @@ namespace Funcky.Test.FunctionalClass
         }
 
         public static TheoryData<int, string> FirstTwoArguments()
-           => new ()
+           => new()
            {
                 { 5, "Hello world!" },
                 { -100, "TestString" },

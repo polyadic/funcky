@@ -399,7 +399,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfGenericIComparablesMaxOrNoneComputesTheMax()
         {
-            var people = new List<Person> { new (42), new (18), new (72), new (33) };
+            var people = new List<Person> { new(42), new(18), new(72), new(33) };
 
             var person = FunctionalAssert.IsSome(people.MaxOrNone());
             Assert.Equal(person.Age, people.Max()?.Age);

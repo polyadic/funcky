@@ -21,7 +21,7 @@ namespace Funcky.Monads
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static OptionTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<Task<TItem>> option)
             where TItem : notnull
-            => new (option.Select(t => t.GetAwaiter()));
+            => new(option.Select(t => t.GetAwaiter()));
 
         /// <summary>
         /// This method is intended for compiler use only
@@ -38,6 +38,6 @@ namespace Funcky.Monads
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static OptionValueTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<ValueTask<TItem>> option)
             where TItem : notnull
-            => new (option.Select(t => t.GetAwaiter()));
+            => new(option.Select(t => t.GetAwaiter()));
     }
 }

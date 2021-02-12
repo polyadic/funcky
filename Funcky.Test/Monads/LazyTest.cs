@@ -10,7 +10,7 @@ namespace Funcky.Test.Monads
         [Property]
         public Property LeftIdentityHolds(int input, Func<int, int> func)
         {
-            Lazy<int> LazyFunc(int x) => new (() => func(x));
+            Lazy<int> LazyFunc(int x) => new(() => func(x));
 
             return (new Lazy<int>(() => input).SelectMany(LazyFunc).Value == LazyFunc(input).Value)
                 .ToProperty();
@@ -27,8 +27,8 @@ namespace Funcky.Test.Monads
         [Property]
         public Property AssociativityHolds(int input, Func<int, int> func1, Func<int, int> func2)
         {
-            Lazy<int> LazyFunc1(int x) => new (() => func1(x));
-            Lazy<int> LazyFunc2(int x) => new (() => func2(x));
+            Lazy<int> LazyFunc1(int x) => new(() => func1(x));
+            Lazy<int> LazyFunc2(int x) => new(() => func2(x));
             Lazy<int> Func1AndFunc2(int x) => LazyFunc1(x).SelectMany(LazyFunc2);
 
             var lazyInput = new Lazy<int>(() => input);

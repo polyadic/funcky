@@ -31,7 +31,7 @@ namespace Funcky.Extensions
                     : With(right: _right.Add(item));
 
             private PartitionBuilder<TItem> With(IImmutableList<TItem>? left = null, IImmutableList<TItem>? right = null)
-                => new (_predicate, left ?? _left, right ?? _right);
+                => new(_predicate, left ?? _left, right ?? _right);
         }
     }
 }

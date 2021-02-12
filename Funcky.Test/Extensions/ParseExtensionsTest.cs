@@ -94,7 +94,7 @@ namespace Funcky.Test.Extensions
         }
 
         private static TheoryData<Option<bool>, string> BooleanStrings()
-            => new ()
+            => new()
             {
                 { Option<bool>.None(), string.Empty },
                 { Option.Some(true), "true" },
@@ -111,7 +111,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<byte>, string> ByteStrings()
-            => new ()
+            => new()
             {
                 { Option<byte>.None(), string.Empty },
                 { Option<byte>.None(), "no number" },
@@ -125,7 +125,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<short>, string> ShortStrings()
-            => new ()
+            => new()
             {
                 { Option<short>.None(), string.Empty },
                 { Option<short>.None(), "no number" },
@@ -140,7 +140,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<int>, string> IntStrings()
-            => new ()
+            => new()
             {
                 { Option<int>.None(), string.Empty },
                 { Option<int>.None(), "no number" },
@@ -155,7 +155,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<long>, string> LongStrings()
-            => new ()
+            => new()
             {
                 { Option<long>.None(), string.Empty },
                 { Option<long>.None(), "no number" },
@@ -170,7 +170,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<float>, string> FloatStrings()
-            => new ()
+            => new()
             {
                 { Option<float>.None(), string.Empty },
                 { Option<float>.None(), "no number" },
@@ -186,7 +186,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<double>, string> DoubleStrings()
-            => new ()
+            => new()
             {
                 { Option<double>.None(), string.Empty },
                 { Option<double>.None(), "no number" },
@@ -202,7 +202,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<decimal>, string> DecimalStrings()
-        => new ()
+        => new()
             {
                 { Option<decimal>.None(), string.Empty },
                 { Option<decimal>.None(), "no number" },
@@ -218,7 +218,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<DateTime>, string> DateTimeStrings()
-            => new ()
+            => new()
             {
                 { Option<DateTime>.None(), string.Empty },
                 { Option<DateTime>.None(), "no number" },
@@ -230,7 +230,7 @@ namespace Funcky.Test.Extensions
             };
 
         private static TheoryData<Option<MyEnum>, string> EnumStrings()
-            => new ()
+            => new()
             {
                 { Option<MyEnum>.None(), string.Empty },
                 { Option.Some(MyEnum.Cool), "Cool" },

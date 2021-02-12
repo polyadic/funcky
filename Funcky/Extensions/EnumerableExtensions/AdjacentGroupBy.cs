@@ -179,7 +179,7 @@ namespace Funcky.Extensions
         }
 
         internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
-            => new (key, elements);
+            => new(key, elements);
 
         private static (IImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEnumerator<TSource> enumerator)
         {
