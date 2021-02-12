@@ -23,7 +23,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Option<int>, Option<int>> SomeAndNoneAreNotEqualData()
-            => new ()
+            => new()
             {
                 { Option<int>.None(), Option.Some(13) },
                 { Option.Some(13), Option<int>.None() },

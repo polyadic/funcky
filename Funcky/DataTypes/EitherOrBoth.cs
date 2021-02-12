@@ -71,13 +71,13 @@ namespace Funcky.DataTypes
         public static bool operator !=(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => !lhs.Equals(rhs);
 
         [Pure]
-        public static EitherOrBoth<TLeft, TRight> Both(TLeft left, TRight right) => new (left, right);
+        public static EitherOrBoth<TLeft, TRight> Both(TLeft left, TRight right) => new(left, right);
 
         [Pure]
-        public static EitherOrBoth<TLeft, TRight> Left(TLeft left) => new (left);
+        public static EitherOrBoth<TLeft, TRight> Left(TLeft left) => new(left);
 
         [Pure]
-        public static EitherOrBoth<TLeft, TRight> Right(TRight right) => new (right);
+        public static EitherOrBoth<TLeft, TRight> Right(TRight right) => new(right);
 
         [Pure]
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right, Func<TLeft, TRight, TMatchResult> both)

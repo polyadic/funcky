@@ -49,7 +49,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Result<int>, double> GetIntegerResults()
-            => new ()
+            => new()
             {
                 { Result.Ok(1000), 250.0 },
                 { Result.Ok(44), 11.0 },
@@ -76,7 +76,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Result<int>, Result<int>, Result<int>, Option<int>> GetIntegerSums()
-            => new ()
+            => new()
             {
                 { Result.Ok(5), Result.Ok(10), Result.Ok(15), 30 },
                 { Result.Ok(42), Result.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
@@ -96,7 +96,7 @@ namespace Funcky.Test.Monads
         }
 
         public static TheoryData<Result<int>, bool> GetResults()
-            => new ()
+            => new()
             {
                 { Result.Ok(5), true },
                 { Result.Ok(42), true },

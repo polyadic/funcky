@@ -28,7 +28,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         public static TheoryData<List<int>, List<string>> ValueReferenceEnumerables()
-            => new ()
+            => new()
             {
                 { new List<int>(), new List<string>() },
                 { new List<int> { 1 }, new List<string> { "a" } },

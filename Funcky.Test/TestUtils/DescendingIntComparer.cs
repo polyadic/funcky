@@ -9,7 +9,7 @@ namespace Funcky.Test.TestUtils
         }
 
         public static DescendingIntComparer Create()
-            => new ();
+            => new();
 
         public int Compare(int x, int y)
             => y - x;

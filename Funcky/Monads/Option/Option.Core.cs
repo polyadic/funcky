@@ -103,6 +103,6 @@ namespace Funcky.Monads
         [Pure]
         public static Option<TItem> Some<TItem>(TItem item)
             where TItem : notnull
-            => new (item);
+            => new(item);
     }
 }
