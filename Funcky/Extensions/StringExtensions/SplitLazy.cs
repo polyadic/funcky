@@ -11,28 +11,43 @@ namespace Funcky.Extensions
 
         [Pure]
         public static IEnumerable<string> SplitLines(this string text, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(ExtractLine);
+            => text.SplitBy(ExtractLine, stringSplitOptions);
 
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, string[] separators)
-            => text.SplitBy(Extract(separators));
-
-        [Pure]
-        private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
+        private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext, StringSplitOptions stringSplitOptions)
         {
             if (text == string.Empty)
             {
                 yield break;
             }
 
-            var startIndex = 0;
-            while (extractNext(text, startIndex).TryGetValue(out var splitResult))
+            for (var startIndex = 0; extractNext(text, startIndex).TryGetValue(out var splitResult);)
             {
-                yield return splitResult.Result;
+                var result = TrimWhenNecessary(stringSplitOptions, splitResult);
+
+                if (CanYield(stringSplitOptions, result))
+                {
+                    yield return result;
+                }
 
                 startIndex = splitResult.NextStartIndex;
             }
         }
+
+        private static bool CanYield(StringSplitOptions stringSplitOptions, string result)
+        {
+            return !stringSplitOptions.HasFlag(StringSplitOptions.RemoveEmptyEntries) || result.Length != 0;
+        }
+
+#if TRIM_ENTRIES
+        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult) =>
+            stringSplitOptions.HasFlag(StringSplitOptions.TrimEntries)
+                ? splitResult.Result.Trim()
+                : splitResult.Result;
+#else
+        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult)
+            => splitResult.Result;
+#endif
 
         private static ExtractElement Extract(string[] separators)
             => (text, startIndex)
