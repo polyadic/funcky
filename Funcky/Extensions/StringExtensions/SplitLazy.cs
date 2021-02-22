@@ -46,22 +46,16 @@ namespace Funcky.Extensions
         }
 
         private static bool CanYield(StringSplitOptions stringSplitOptions, string result)
-        {
-            return !stringSplitOptions.HasFlag(StringSplitOptions.RemoveEmptyEntries) || result.Length != 0;
-        }
+            => !stringSplitOptions.HasFlag(StringSplitOptions.RemoveEmptyEntries) || result.Length != 0;
 
         private static ExtractElement Extract<T>(T t)
-        {
-            return (text, startIndex)
-                             => new SplitResult("todo", startIndex + 1);
-        }
+            => (text, startIndex)
+                => new SplitResult("todo", startIndex + 1);
 
         private static Option<SplitResult> ExtractLine(string text, int startIndex)
-        {
-            return startIndex <= text.Length
-                           ? GetNextLine(text, startIndex)
-                           : Option<SplitResult>.None();
-        }
+            => startIndex <= text.Length
+                ? GetNextLine(text, startIndex)
+                : Option<SplitResult>.None();
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
         {
@@ -79,25 +73,19 @@ namespace Funcky.Extensions
         }
 
         private static bool IsEndOfLine(string text, int index)
-        {
-            return index == text.Length
-                           || text[index] is '\n';
-        }
+            => index == text.Length
+               || text[index] is '\n';
 
         private static int NextStartIndex(int index, bool indexIsAtTheEndOfALine)
-        {
-            return indexIsAtTheEndOfALine
-                           ? index + 1
-                           : index;
-        }
+            => indexIsAtTheEndOfALine
+                ? index + 1
+                : index;
 
         private static Func<int, bool, int> GetLengthFrom(int startIndex)
-        {
-            return (index, hasCarriageReturn)
-                            => hasCarriageReturn
-                                ? index - startIndex - 1
-                                : index - startIndex;
-        }
+            => (index, hasCarriageReturn)
+                => hasCarriageReturn
+                    ? index - startIndex - 1
+                    : index - startIndex;
 
         private sealed class SplitResult
         {
