@@ -4,6 +4,6 @@
 		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;NULLABLE_ATTRIBUTES_SUPPORTED</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;TRIM_ENTRIES</DefineConstants>
+		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED</DefineConstants>
 	</PropertyGroup>
 </Project>

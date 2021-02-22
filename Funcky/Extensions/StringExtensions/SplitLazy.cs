@@ -10,27 +10,27 @@ namespace Funcky.Extensions
         private delegate Option<SplitResult> ExtractElement(string text, int startIndex);
 
         [Pure]
-        public static IEnumerable<string> SplitLines(this string text, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(ExtractLine, stringSplitOptions);
+        public static IEnumerable<string> SplitLines(this string text)
+            => text.SplitBy(ExtractLine);
 
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, char separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(Extract(separator), stringSplitOptions);
+        public static IEnumerable<string> SplitLazy(this string text, char separator)
+            => text.SplitBy(Extract(separator));
 
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, char[] separators, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(Extract(separators), stringSplitOptions);
+        public static IEnumerable<string> SplitLazy(this string text, char[] separators)
+            => text.SplitBy(Extract(separators));
 
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, string separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(Extract(separator), stringSplitOptions);
+        public static IEnumerable<string> SplitLazy(this string text, string separator)
+            => text.SplitBy(Extract(separator));
 
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, string[] separators, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
-            => text.SplitBy(Extract(separators), stringSplitOptions);
+        public static IEnumerable<string> SplitLazy(this string text, string[] separators)
+            => text.SplitBy(Extract(separators));
 
         [Pure]
-        private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext, StringSplitOptions stringSplitOptions)
+        private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
         {
             if (text == string.Empty)
             {
@@ -39,12 +39,7 @@ namespace Funcky.Extensions
 
             for (var startIndex = 0; extractNext(text, startIndex).TryGetValue(out var splitResult);)
             {
-                var result = TrimWhenNecessary(stringSplitOptions, splitResult);
-
-                if (CanYield(stringSplitOptions, result))
-                {
-                    yield return result;
-                }
+                yield return splitResult.Result;
 
                 startIndex = splitResult.NextStartIndex;
             }
@@ -54,18 +49,6 @@ namespace Funcky.Extensions
         {
             return !stringSplitOptions.HasFlag(StringSplitOptions.RemoveEmptyEntries) || result.Length != 0;
         }
-
-#if TRIM_ENTRIES
-        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult)
-        {
-            return stringSplitOptions.HasFlag(StringSplitOptions.TrimEntries)
-? splitResult.Result.Trim()
-: splitResult.Result;
-        }
-#else
-        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult)
-            => splitResult.Result;
-#endif
 
         private static ExtractElement Extract<T>(T t)
         {
