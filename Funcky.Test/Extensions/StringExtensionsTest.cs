@@ -155,7 +155,6 @@ namespace Funcky.Test.Extensions
             var text = "\n";
 
             Assert.Equal(Enumerable.Repeat(string.Empty, 2), text.SplitLines());
-            Assert.Equal(Enumerable.Empty<string>(), text.SplitLines(StringSplitOptions.RemoveEmptyEntries));
         }
 
         [Fact]
