@@ -45,9 +45,9 @@ static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this string! candidate
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, char separator) -> System.Collections.Generic.IEnumerable<string!>!
-static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, string! separator) -> System.Collections.Generic.IEnumerable<string!>!
-static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Extensions.StringExtensions.SplitLines(this string! text) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool

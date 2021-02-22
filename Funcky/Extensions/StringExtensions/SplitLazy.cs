@@ -9,24 +9,53 @@ namespace Funcky.Extensions
     {
         private delegate Option<SplitResult> ExtractElement(string text, int startIndex);
 
+        /// <summary>
+        /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <returns>A lazy IEnumerable containing the lines.</returns>
         [Pure]
         public static IEnumerable<string> SplitLines(this string text)
             => text.SplitBy(ExtractLine);
 
+        /// <summary>
+        /// Splits a string into individual parts by a given separator.
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <param name="separator">A single character separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, char separator)
             => text.SplitBy(Extract(separator));
 
+        /// <summary>
+        /// Splits a string into individual parts by several given separators.
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <param name="separators">Different characters separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, char[] separators)
+        public static IEnumerable<string> SplitLazy(this string text, params char[] separators)
             => text.SplitBy(Extract(separators));
 
+        /// <summary>
+        /// Splits a string into individual parts by a given separator.
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <param name="separator">A single string separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, string separator)
             => text.SplitBy(Extract(separator));
 
+        /// <summary>
+        /// Splits a string into individual parts by several given separators.
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <param name="separators">Different strings separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
-        public static IEnumerable<string> SplitLazy(this string text, string[] separators)
+        public static IEnumerable<string> SplitLazy(this string text, params string[] separators)
             => text.SplitBy(Extract(separators));
 
         [Pure]
