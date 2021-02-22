@@ -40,9 +40,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(NonExistingNeedleChar),
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0),
-                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+#if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, StringComparison.InvariantCulture),
-                #endif
+#endif
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1),
                 Haystack.IndexOfOrNone(NonExistingNeedle),
                 Haystack.IndexOfOrNone(NonExistingNeedle, startIndex: 0),
@@ -79,9 +79,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(ExistingNeedleChar),
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0),
-                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+#if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(ExistingNeedleChar, StringComparison.InvariantCulture),
-                #endif
+#endif
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0, count: Haystack.Length),
                 Haystack.IndexOfOrNone(ExistingNeedle),
                 Haystack.IndexOfOrNone(ExistingNeedle, startIndex: 0),
@@ -133,6 +133,36 @@ namespace Funcky.Test.Extensions
                     matchingExtensionMethod.AndThen(WriteToTestOutput);
                     FunctionalAssert.IsSome(matchingExtensionMethod);
                 });
+        }
+
+        [Fact]
+        public void SplitLinesOnAnEmptyStringReturnsAnEmptyIEnumerable()
+        {
+            Assert.Equal(Enumerable.Empty<string>(), string.Empty.SplitLines());
+        }
+
+        [Fact]
+        public void SplitLinesOnAStringWithoutANewLineCharacterReturnsTheString()
+        {
+            var text = "single line text";
+
+            Assert.Equal(Sequence.Return(text), text.SplitLines());
+        }
+
+        [Fact]
+        public void ASingleNewLineSplitsIn2EmptyLines()
+        {
+            var text = "\n";
+
+            Assert.Equal(Enumerable.Repeat(string.Empty, 2), text.SplitLines());
+        }
+
+        [Fact]
+        public void SplitLinesSplitsOnValidNewLineCharacters()
+        {
+            var text = "this\ntext\r\nis\non\r\nmultiple\nlines";
+
+            Assert.Equal(new[] { "this", "text", "is", "on", "multiple", "lines" }, text.SplitLines());
         }
 
         private static IEnumerable<MethodInfo> GetIndexOfMethods()
