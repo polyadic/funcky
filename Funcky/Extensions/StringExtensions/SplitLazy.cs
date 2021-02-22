@@ -14,6 +14,22 @@ namespace Funcky.Extensions
             => text.SplitBy(ExtractLine, stringSplitOptions);
 
         [Pure]
+        public static IEnumerable<string> SplitLazy(this string text, char separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+            => text.SplitBy(Extract(separator), stringSplitOptions);
+
+        [Pure]
+        public static IEnumerable<string> SplitLazy(this string text, char[] separators, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+            => text.SplitBy(Extract(separators), stringSplitOptions);
+
+        [Pure]
+        public static IEnumerable<string> SplitLazy(this string text, string separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+            => text.SplitBy(Extract(separator), stringSplitOptions);
+
+        [Pure]
+        public static IEnumerable<string> SplitLazy(this string text, string[] separators, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+            => text.SplitBy(Extract(separators), stringSplitOptions);
+
+        [Pure]
         private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext, StringSplitOptions stringSplitOptions)
         {
             if (text == string.Empty)
@@ -40,23 +56,29 @@ namespace Funcky.Extensions
         }
 
 #if TRIM_ENTRIES
-        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult) =>
-            stringSplitOptions.HasFlag(StringSplitOptions.TrimEntries)
-                ? splitResult.Result.Trim()
-                : splitResult.Result;
+        private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult)
+        {
+            return stringSplitOptions.HasFlag(StringSplitOptions.TrimEntries)
+? splitResult.Result.Trim()
+: splitResult.Result;
+        }
 #else
         private static string TrimWhenNecessary(StringSplitOptions stringSplitOptions, SplitResult splitResult)
             => splitResult.Result;
 #endif
 
-        private static ExtractElement Extract(string[] separators)
-            => (text, startIndex)
-                 => new SplitResult("todo", startIndex + 1);
+        private static ExtractElement Extract<T>(T t)
+        {
+            return (text, startIndex)
+                             => new SplitResult("todo", startIndex + 1);
+        }
 
         private static Option<SplitResult> ExtractLine(string text, int startIndex)
-            => startIndex <= text.Length
-                ? GetNextLine(text, startIndex)
-                : Option<SplitResult>.None();
+        {
+            return startIndex <= text.Length
+                           ? GetNextLine(text, startIndex)
+                           : Option<SplitResult>.None();
+        }
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
         {
@@ -74,19 +96,25 @@ namespace Funcky.Extensions
         }
 
         private static bool IsEndOfLine(string text, int index)
-            => index == text.Length
-                || text[index] is '\n';
+        {
+            return index == text.Length
+                           || text[index] is '\n';
+        }
 
         private static int NextStartIndex(int index, bool indexIsAtTheEndOfALine)
-            => indexIsAtTheEndOfALine
-                ? index + 1
-                : index;
+        {
+            return indexIsAtTheEndOfALine
+                           ? index + 1
+                           : index;
+        }
 
         private static Func<int, bool, int> GetLengthFrom(int startIndex)
-            => (index, hasCarriageReturn)
-                => hasCarriageReturn
-                    ? index - startIndex - 1
-                    : index - startIndex;
+        {
+            return (index, hasCarriageReturn)
+                            => hasCarriageReturn
+                                ? index - startIndex - 1
+                                : index - startIndex;
+        }
 
         private sealed class SplitResult
         {
