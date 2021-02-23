@@ -165,6 +165,14 @@ namespace Funcky.Test.Extensions
             Assert.Equal(new[] { "this", "text", "is", "on", "multiple", "lines" }, text.SplitLines());
         }
 
+        [Fact]
+        public void SplitOnSingleCharacter()
+        {
+            var text = "I want\tindividual words";
+
+            Assert.Equal(new[] { "I", "want", "individual", "words" }, text.SplitLazy(' ', '\t'));
+        }
+
         private static IEnumerable<MethodInfo> GetIndexOfMethods()
             => typeof(string).GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(IsIndexOfMethod);
 

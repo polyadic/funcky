@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
@@ -9,6 +9,10 @@ namespace Funcky.Extensions
     {
         private delegate Option<SplitResult> ExtractElement(string text, int startIndex);
 
+        private delegate Option<int> FindNextIndex(string text, int startIndex);
+
+        private delegate int GetLength(int index, bool hasCarriageReturn);
+
         /// <summary>
         /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
         /// </summary>
@@ -16,7 +20,7 @@ namespace Funcky.Extensions
         /// <returns>A lazy IEnumerable containing the lines.</returns>
         [Pure]
         public static IEnumerable<string> SplitLines(this string text)
-            => text.SplitBy(ExtractLine);
+            => text.SplitBy(ExtractBy(GetNextLine));
 
         /// <summary>
         /// Splits a string into individual parts by a given separator.
@@ -26,7 +30,7 @@ namespace Funcky.Extensions
         /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, char separator)
-            => text.SplitBy(Extract(separator));
+            => text.SplitBy(ExtractByIndex(IndexOfCharSeparator(separator)));
 
         /// <summary>
         /// Splits a string into individual parts by several given separators.
@@ -36,7 +40,7 @@ namespace Funcky.Extensions
         /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, params char[] separators)
-            => text.SplitBy(Extract(separators));
+            => text.SplitBy(ExtractByIndex(IndexOfCharSeparators(separators)));
 
         /// <summary>
         /// Splits a string into individual parts by a given separator.
@@ -46,7 +50,7 @@ namespace Funcky.Extensions
         /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, string separator)
-            => text.SplitBy(Extract(separator));
+            => text.SplitBy(ExtractByIndex(IndexOfStringSeparator(separator)));
 
         /// <summary>
         /// Splits a string into individual parts by several given separators.
@@ -56,7 +60,7 @@ namespace Funcky.Extensions
         /// <returns>A lazy IEnumerable containing the parts.</returns>
         [Pure]
         public static IEnumerable<string> SplitLazy(this string text, params string[] separators)
-            => text.SplitBy(Extract(separators));
+            => text.SplitBy(ExtractByIndex(IndexOfStringSeparators(separators)));
 
         [Pure]
         private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
@@ -74,32 +78,56 @@ namespace Funcky.Extensions
             }
         }
 
-        private static bool CanYield(StringSplitOptions stringSplitOptions, string result)
-            => !stringSplitOptions.HasFlag(StringSplitOptions.RemoveEmptyEntries) || result.Length != 0;
-
-        private static ExtractElement Extract<T>(T t)
+        private static FindNextIndex IndexOfCharSeparator(char separator)
             => (text, startIndex)
-                => new SplitResult("todo", startIndex + 1);
+                => text.IndexOfOrNone(separator, startIndex);
 
-        private static Option<SplitResult> ExtractLine(string text, int startIndex)
-            => startIndex <= text.Length
-                ? GetNextLine(text, startIndex)
-                : Option<SplitResult>.None();
+        private static FindNextIndex IndexOfCharSeparators(char[] separator)
+            => (text, startIndex)
+                => text.IndexOfAnyOrNone(separator, startIndex);
+
+        private static FindNextIndex IndexOfStringSeparator(string separator)
+            => (text, startIndex)
+                => text.IndexOfOrNone(separator, startIndex);
+
+        private static FindNextIndex IndexOfStringSeparators(string[] separators)
+            => (text, startIndex)
+                => separators.AsEnumerable().Select(s => text.IndexOfOrNone(s)).MinOrNone();
+
+        private static ExtractElement ExtractByIndex(FindNextIndex findNextIndex)
+            => ExtractBy(GetIndex(findNextIndex));
+
+        private static ExtractElement ExtractBy(ExtractElement extractElement)
+            => (text, startIndex)
+                => startIndex <= text.Length
+                    ? extractElement(text, startIndex)
+                    : Option<SplitResult>.None();
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
-        {
-            var getLength = GetLengthFrom(startIndex);
-            var seenCarriageReturn = false;
-            for (var index = startIndex; ; ++index)
-            {
-                if (IsEndOfLine(text, index) || seenCarriageReturn)
-                {
-                    return new SplitResult(text.Substring(startIndex, getLength(index, seenCarriageReturn)), NextStartIndex(index, IsEndOfLine(text, index)));
-                }
+            => GetNextLine(GetLengthFrom(startIndex))(text, startIndex);
 
-                seenCarriageReturn = text[index] is '\r';
-            }
-        }
+        private static ExtractElement GetNextLine(GetLength getLength)
+            => (text, startIndex)
+                =>
+                {
+                    var seenCarriageReturn = false;
+                    for (var index = startIndex; ; ++index)
+                    {
+                        if (IsEndOfLine(text, index) || seenCarriageReturn)
+                        {
+                            return new SplitResult(text.Substring(startIndex, getLength(index, seenCarriageReturn)), NextStartIndex(index, IsEndOfLine(text, index)));
+                        }
+
+                        seenCarriageReturn = text[index] is '\r';
+                    }
+                };
+
+        private static ExtractElement GetIndex(FindNextIndex getIndex)
+            => (text, startIndex)
+                => getIndex(text, startIndex)
+                    .Match(
+                        none: () => new SplitResult(text.Substring(startIndex), text.Length + 1),
+                        some: index => new SplitResult(text.Substring(startIndex, index - startIndex), index + 1));
 
         private static bool IsEndOfLine(string text, int index)
             => index == text.Length
@@ -110,7 +138,7 @@ namespace Funcky.Extensions
                 ? index + 1
                 : index;
 
-        private static Func<int, bool, int> GetLengthFrom(int startIndex)
+        private static GetLength GetLengthFrom(int startIndex)
             => (index, hasCarriageReturn)
                 => hasCarriageReturn
                     ? index - startIndex - 1

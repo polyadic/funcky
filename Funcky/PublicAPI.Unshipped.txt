@@ -50,6 +50,15 @@ static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params st
 static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, string! separator) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Extensions.StringExtensions.SplitLines(this string! text) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
+static Funcky.Functional.ToFunc<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>! f) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, T3, T4, T5, T6, T7, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>! f) -> System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, T3, T4, T5, T6, TResult>(System.Func<T1, T2, T3, T4, T5, T6, TResult>! f) -> System.Func<T1, T2, T3, T4, T5, T6, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! f) -> System.Func<T1, T2, T3, T4, T5, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! f) -> System.Func<T1, T2, T3, T4, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! f) -> System.Func<T1, T2, T3, TResult>!
+static Funcky.Functional.ToFunc<T1, T2, TResult>(System.Func<T1, T2, TResult>! f) -> System.Func<T1, T2, TResult>!
+static Funcky.Functional.ToFunc<T1, TResult>(System.Func<T1, TResult>! f) -> System.Func<T1, TResult>!
+static Funcky.Functional.ToFunc<TResult>(System.Func<TResult>! f) -> System.Func<TResult>!
 static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Sequence.Cycle<TItem>(TItem element) -> System.Collections.Generic.IEnumerable<TItem>!
