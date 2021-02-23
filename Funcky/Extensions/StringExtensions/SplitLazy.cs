@@ -77,6 +77,12 @@ namespace Funcky.Extensions
         private static ExtractElement ExtractByIndex(FindNextIndex findNextIndex)
             => ExtractBy(GetIndex(findNextIndex));
 
+        // Why do we check here if there a <= and not ==?
+        // Simple example: "\n".SplitLines()?
+        // * What is the length of this string? => 1
+        // * How many lines should we return? => 2
+        // Since we want to return 2 lines, we need to call ExtractElement with two distinct states: 0 and 1.
+        // Therefore we are beyond the string when we are at the index of Length + 1.
         private static ExtractElement ExtractBy(ExtractElement extractElement)
             => (text, startIndex)
                 => startIndex <= text.Length
