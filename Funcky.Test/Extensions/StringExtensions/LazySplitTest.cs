@@ -26,7 +26,7 @@ namespace Funcky.Test.Extensions.StringExtensions
                     .SequenceEqual(text.Get.SplitLazy(separator, separator2, separator3)))
                 .ToProperty();
 
-#if SPLIT_ACCEPTS_STRING_SEPARATOR
+        #if SPLIT_ACCEPTS_STRING_SEPARATOR
         [Property]
         public Property SplitLazyWithSingleStringWorksTheSameAsSplit(StringNoNulls text, StringNoNulls separator)
             => (text.Get is null
@@ -36,7 +36,7 @@ namespace Funcky.Test.Extensions.StringExtensions
                     .Split(separator.Get)
                     .SequenceEqual(text.Get.SplitLazy(separator.Get)))
                 .ToProperty();
-#endif
+        #endif
 
         [Fact]
         public void SplitLazyWithSingleStringSplitsWithAMultiCharacterSeparator()
