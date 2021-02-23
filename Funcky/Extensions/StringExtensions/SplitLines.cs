@@ -6,6 +6,8 @@ namespace Funcky.Extensions
 {
     public static partial class StringExtensions
     {
+        private delegate int GetLength(int index, bool hasCarriageReturn);
+
         /// <summary>
         /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
         /// </summary>

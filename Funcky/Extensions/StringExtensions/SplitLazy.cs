@@ -11,8 +11,6 @@ namespace Funcky.Extensions
 
         private delegate Option<int> FindNextIndex(string text, int startIndex);
 
-        private delegate int GetLength(int index, bool hasCarriageReturn);
-
         /// <summary>
         /// Splits a string into individual parts by a given separator.
         /// </summary>
