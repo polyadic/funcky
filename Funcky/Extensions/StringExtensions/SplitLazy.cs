@@ -52,19 +52,11 @@ namespace Funcky.Extensions
             => text.SplitBy(ExtractByIndex(IndexOfStringSeparators(separators)));
 
         private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
-        {
-            if (text == string.Empty)
-            {
-                yield break;
-            }
-
-            for (var startIndex = 0; extractNext(text, startIndex).TryGetValue(out var splitResult);)
-            {
-                yield return splitResult.Result;
-
-                startIndex = splitResult.NextStartIndex;
-            }
-        }
+            => text == string.Empty
+                ? Enumerable.Empty<string>()
+                : Sequence
+                    .Generate(new SplitResult(), last => extractNext(text, last.NextStartIndex))
+                    .Select(r => r.Result);
 
         private static FindNextIndex IndexOfCharSeparator(char separator)
             => (text, startIndex)
@@ -95,14 +87,14 @@ namespace Funcky.Extensions
             => (text, startIndex)
                 => getIndex(text, startIndex)
                     .Match(
-                        none: () => new SplitResult(text.Substring(startIndex), text.Length + 1),
-                        some: index => new SplitResult(text.Substring(startIndex, index - startIndex), index + 1));
+                        none: () => new SplitResult(text.Length + 1, text.Substring(startIndex)),
+                        some: index => new SplitResult(index + 1, text.Substring(startIndex, index - startIndex)));
 
-        private sealed class SplitResult
+        private readonly struct SplitResult
         {
-            public SplitResult(string result, int nextStartIndex)
+            public SplitResult(int nextStartIndex = 0, Option<string> result = default)
             {
-                Result = result;
+                Result = result.GetOrElse(string.Empty);
                 NextStartIndex = nextStartIndex;
             }
 

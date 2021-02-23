@@ -29,7 +29,7 @@ namespace Funcky.Extensions
                     {
                         if (IsEndOfLine(text, index) || seenCarriageReturn)
                         {
-                            return new SplitResult(text.Substring(startIndex, getLength(index, seenCarriageReturn)), NextStartIndex(index, IsEndOfLine(text, index)));
+                            return new SplitResult(NextStartIndex(index, IsEndOfLine(text, index)), text.Substring(startIndex, getLength(index, seenCarriageReturn)));
                         }
 
                         seenCarriageReturn = text[index] is '\r';
@@ -50,6 +50,5 @@ namespace Funcky.Extensions
             => indexIsAtTheEndOfALine
                 ? index + 1
                 : index;
-
     }
 }
