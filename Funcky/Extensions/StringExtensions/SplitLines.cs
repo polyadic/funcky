@@ -21,18 +21,18 @@ namespace Funcky.Extensions
         private static ExtractElement GetNextLine(GetLength getLength)
             => (text, startIndex)
                 =>
-            {
-                var seenCarriageReturn = false;
-                for (var index = startIndex; ; ++index)
                 {
-                    if (IsEndOfLine(text, index) || seenCarriageReturn)
+                    var seenCarriageReturn = false;
+                    for (var index = startIndex; ; ++index)
                     {
-                        return new SplitResult(text.Substring(startIndex, getLength(index, seenCarriageReturn)), NextStartIndex(index, IsEndOfLine(text, index)));
-                    }
+                        if (IsEndOfLine(text, index) || seenCarriageReturn)
+                        {
+                            return new SplitResult(text.Substring(startIndex, getLength(index, seenCarriageReturn)), NextStartIndex(index, IsEndOfLine(text, index)));
+                        }
 
-                    seenCarriageReturn = text[index] is '\r';
-                }
-            };
+                        seenCarriageReturn = text[index] is '\r';
+                    }
+                };
 
         private static GetLength GetLengthFrom(int startIndex)
             => (index, hasCarriageReturn)
