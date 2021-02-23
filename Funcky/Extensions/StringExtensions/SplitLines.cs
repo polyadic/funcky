@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Funcky.Monads;
@@ -6,8 +7,6 @@ namespace Funcky.Extensions
 {
     public static partial class StringExtensions
     {
-        private delegate int GetLength(int index, bool hasCarriageReturn);
-
         /// <summary>
         /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
         /// </summary>
@@ -18,37 +17,33 @@ namespace Funcky.Extensions
             => text.SplitBy(ExtractBy(GetNextLine));
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
-            => GetNextLine(GetLengthFrom(startIndex))(text, startIndex);
+            => GetNextLine()(text, startIndex);
 
-        private static ExtractElement GetNextLine(GetLength getLength)
+        private static ExtractElement GetNextLine()
             => (text, startIndex)
-                =>
-                {
-                    var seenCarriageReturn = false;
-                    for (var index = startIndex; ; ++index)
-                    {
-                        if (IsEndOfLine(text, index) || seenCarriageReturn)
-                        {
-                            return new SplitResult(NextStartIndex(index, IsEndOfLine(text, index)), text.Substring(startIndex, getLength(index, seenCarriageReturn)));
-                        }
+                => text
+                    .IndexOfAnyOrNone(new[] { '\r', '\n' }, startIndex)
+                    .Match(
+                        none: EndOfString(startIndex, text),
+                        some: NewLineFound(text, startIndex));
 
-                        seenCarriageReturn = text[index] is '\r';
-                    }
-                };
+        private static Func<Option<SplitResult>> EndOfString(int startIndex, string text)
+            => ()
+                => startIndex < text.Length
+                ? new SplitResult(text.Length + 1, text.Substring(startIndex))
+                : Option<SplitResult>.None();
 
-        private static GetLength GetLengthFrom(int startIndex)
-            => (index, hasCarriageReturn)
-                => hasCarriageReturn
-                    ? index - startIndex - 1
-                    : index - startIndex;
+        private static Func<int, Option<SplitResult>> NewLineFound(string text, int startIndex)
+            => index
+                => new SplitResult(index + SeparatorLength(text, index), text.Substring(startIndex, index - startIndex));
 
-        private static bool IsEndOfLine(string text, int index)
-            => index == text.Length
-               || text[index] is '\n';
+        private static int SeparatorLength(string text, int index)
+            => IsCrLf(text, index)
+                ? 2
+                : 1;
 
-        private static int NextStartIndex(int index, bool indexIsAtTheEndOfALine)
-            => indexIsAtTheEndOfALine
-                ? index + 1
-                : index;
+        private static bool IsCrLf(string text, int index)
+            => index + 1 < text.Length
+                && text[index + 1] is '\n';
     }
 }

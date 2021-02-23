@@ -8,9 +8,9 @@ using Funcky.Xunit;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.StringExtensions
 {
-    public sealed class StringExtensionsTest
+    public sealed class IndexOfTest
     {
         private const int NumberOfThisParametersInExtensionMethods = 1;
 
@@ -23,7 +23,7 @@ namespace Funcky.Test.Extensions
 
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public StringExtensionsTest(ITestOutputHelper testOutputHelper)
+        public IndexOfTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
@@ -40,9 +40,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(NonExistingNeedleChar),
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0),
-                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+#if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, StringComparison.InvariantCulture),
-                #endif
+#endif
                 Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1),
                 Haystack.IndexOfOrNone(NonExistingNeedle),
                 Haystack.IndexOfOrNone(NonExistingNeedle, startIndex: 0),
@@ -79,9 +79,9 @@ namespace Funcky.Test.Extensions
             {
                 Haystack.IndexOfOrNone(ExistingNeedleChar),
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0),
-                #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+#if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
                 Haystack.IndexOfOrNone(ExistingNeedleChar, StringComparison.InvariantCulture),
-                #endif
+#endif
                 Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0, count: Haystack.Length),
                 Haystack.IndexOfOrNone(ExistingNeedle),
                 Haystack.IndexOfOrNone(ExistingNeedle, startIndex: 0),
@@ -131,46 +131,8 @@ namespace Funcky.Test.Extensions
                 .ForEach(matchingExtensionMethod =>
                 {
                     matchingExtensionMethod.AndThen(WriteToTestOutput);
-                    FunctionalAssert.IsSome(matchingExtensionMethod);
+                    _ = FunctionalAssert.IsSome(matchingExtensionMethod);
                 });
-        }
-
-        [Fact]
-        public void SplitLinesOnAnEmptyStringReturnsAnEmptyIEnumerable()
-        {
-            Assert.Equal(Enumerable.Empty<string>(), string.Empty.SplitLines());
-        }
-
-        [Fact]
-        public void SplitLinesOnAStringWithoutANewLineCharacterReturnsTheString()
-        {
-            var text = "single line text";
-
-            Assert.Equal(Sequence.Return(text), text.SplitLines());
-        }
-
-        [Fact]
-        public void ASingleNewLineSplitsIn2EmptyLines()
-        {
-            var text = "\n";
-
-            Assert.Equal(Enumerable.Repeat(string.Empty, 2), text.SplitLines());
-        }
-
-        [Fact]
-        public void SplitLinesSplitsOnValidNewLineCharacters()
-        {
-            var text = "this\ntext\r\nis\non\r\nmultiple\nlines";
-
-            Assert.Equal(new[] { "this", "text", "is", "on", "multiple", "lines" }, text.SplitLines());
-        }
-
-        [Fact]
-        public void SplitOnSingleCharacter()
-        {
-            var text = "I want\tindividual words";
-
-            Assert.Equal(new[] { "I", "want", "individual", "words" }, text.SplitLazy(' ', '\t'));
         }
 
         private static IEnumerable<MethodInfo> GetIndexOfMethods()
@@ -192,7 +154,7 @@ namespace Funcky.Test.Extensions
         }
 
         private static IEnumerable<MethodInfo> GetIndexOfExtensionMethods()
-            => typeof(StringExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(IsIndexOfMethod);
+            => typeof(Funcky.Extensions.StringExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(IsIndexOfMethod);
 
         private static bool IsIndexOfMethod(MethodInfo method)
             => method.Name.Contains("IndexOf");
