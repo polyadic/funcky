@@ -108,8 +108,14 @@ namespace Funcky.Extensions
         // Simple example: ";".SplitLazy(';')?
         // * What is the length of this string? => 1
         // * How many values should we return? => 2
-        // Since we want to return 2 value, we need to call ExtractElement with two distinct states: 0 and 1.
+        // Since we want to return 2 values, we need to call ExtractElement with two distinct states: 0 and 1.
         // Therefore we are beyond the string when we are at the index of Length + 1.
+        //
+        // You can think of this as we use the index not for the character itself but for the position between the characters.
+        //
+        // "a;b" => [ ]a[ ];[ ]b[ ]
+        //           ^   ^   ^   ^
+        //           1   2   3   4
         private static ExtractElement ExtractBy(ExtractElement extractElement)
             => (text, startIndex)
                 => startIndex <= text.Length
