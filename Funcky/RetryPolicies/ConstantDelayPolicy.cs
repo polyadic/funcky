@@ -1,6 +1,6 @@
 using System;
 
-namespace Funcky
+namespace Funcky.RetryPolicies
 {
     public class ConstantDelayPolicy : IRetryPolicy
     {
