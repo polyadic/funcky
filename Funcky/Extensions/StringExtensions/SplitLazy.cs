@@ -104,7 +104,7 @@ namespace Funcky.Extensions
         private static ExtractElement ExtractByIndex(FindNextIndex findNextIndex)
             => ExtractBy(GetIndex(findNextIndex));
 
-        // Why do we check here if there a <= and not ==?
+        // Why do we check here if there is a '<=' and not a '=='?
         // Simple example: ";".SplitLazy(';')?
         // * What is the length of this string? => 1
         // * How many values should we return? => 2
