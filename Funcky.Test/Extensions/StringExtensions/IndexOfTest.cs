@@ -8,9 +8,9 @@ using Funcky.Xunit;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions.StringExtensions
 {
-    public sealed class StringExtensionsTest
+    public sealed class IndexOfTest
     {
         private const int NumberOfThisParametersInExtensionMethods = 1;
 
@@ -23,7 +23,7 @@ namespace Funcky.Test.Extensions
 
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public StringExtensionsTest(ITestOutputHelper testOutputHelper)
+        public IndexOfTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
@@ -131,7 +131,7 @@ namespace Funcky.Test.Extensions
                 .ForEach(matchingExtensionMethod =>
                 {
                     matchingExtensionMethod.AndThen(WriteToTestOutput);
-                    FunctionalAssert.IsSome(matchingExtensionMethod);
+                    _ = FunctionalAssert.IsSome(matchingExtensionMethod);
                 });
         }
 
@@ -154,7 +154,7 @@ namespace Funcky.Test.Extensions
         }
 
         private static IEnumerable<MethodInfo> GetIndexOfExtensionMethods()
-            => typeof(StringExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(IsIndexOfMethod);
+            => typeof(Funcky.Extensions.StringExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(IsIndexOfMethod);
 
         private static bool IsIndexOfMethod(MethodInfo method)
             => method.Name.Contains("IndexOf");

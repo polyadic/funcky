@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> other) -> bool
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
@@ -44,6 +44,11 @@ static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this string! candidate
 static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, char separator) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, string! separator) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLines(this string! text) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
