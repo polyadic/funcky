@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Funcky.Monads;
+using Funcky.RetryPolicies;
 using Funcky.Test.TestUtils;
 using Funcky.Xunit;
 using Xunit;
