@@ -40,6 +40,7 @@ namespace Funcky.Extensions
 
         private static bool IsCrLf(string text, int index)
             => index + 1 < text.Length
-                && text[index + 1] is '\n';
+               && text[index] is '\r'
+               && text[index + 1] is '\n';
     }
 }

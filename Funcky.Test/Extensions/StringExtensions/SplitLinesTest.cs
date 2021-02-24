@@ -43,5 +43,13 @@ namespace Funcky.Test.Extensions.StringExtensions
 
             Assert.Equal(new[] { "this", "text", "is", "on", "multiple", "lines" }, text.SplitLines());
         }
+
+        [Fact]
+        public void TwoConsecutiveNewLinesAreNotSwallowed()
+        {
+            var text = "\n\n";
+
+            Assert.Equal(Enumerable.Repeat(string.Empty, 2), text.SplitLines());
+        }
     }
 }
