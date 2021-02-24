@@ -131,15 +131,15 @@ namespace Funcky.Extensions
 
         private readonly struct SplitResult
         {
+            public readonly string Result;
+
+            public readonly int NextStartIndex;
+
             public SplitResult(int nextStartIndex, Option<string> result = default)
             {
                 Result = result.GetOrElse(string.Empty);
                 NextStartIndex = nextStartIndex;
             }
-
-            public string Result { get; }
-
-            public int NextStartIndex { get; }
         }
     }
 }
