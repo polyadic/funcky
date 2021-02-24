@@ -1,11 +1,11 @@
-namespace Funcky
+namespace Funcky.RetryPolicies
 {
-    public sealed class ExponentialBackoffRetryPolicy : IRetryPolicy
+    public sealed class ExponentialBackOffRetryPolicy : IRetryPolicy
     {
         private const double BaseFactor = 1.5;
         private readonly TimeSpan _firstDelay;
 
-        public ExponentialBackoffRetryPolicy(int maxRetry, TimeSpan firstDelay)
+        public ExponentialBackOffRetryPolicy(int maxRetry, TimeSpan firstDelay)
             => (MaxRetries, _firstDelay) = (maxRetry, firstDelay);
 
         public int MaxRetries { get; }
