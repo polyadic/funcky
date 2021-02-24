@@ -4,6 +4,27 @@ Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Func
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
+Funcky.RetryPolicies.ConstantDelayPolicy
+Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
+Funcky.RetryPolicies.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ConstantDelayPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.DoNotRetryPolicy
+Funcky.RetryPolicies.DoNotRetryPolicy.DoNotRetryPolicy() -> void
+Funcky.RetryPolicies.DoNotRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.DoNotRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.ExponentialBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.IRetryPolicy
+Funcky.RetryPolicies.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.IRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.LinearBackoffRetryPolicy
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.NoDelayRetryPolicy
+Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Func<T, Funcky.Unit>! action) -> Funcky.Unit
 Funcky.Extensions.ValueWithPrevious<TValue>
 Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void
@@ -57,6 +78,8 @@ static Funcky.Functional.NoOperationAsync<T1, T2, T3, T4>(T1 p1, T2 p2, T3 p3, T
 static Funcky.Functional.NoOperationAsync<T1, T2, T3>(T1 p1, T2 p2, T3 p3) -> System.Threading.Tasks.Task!
 static Funcky.Functional.NoOperationAsync<T1, T2>(T1 p1, T2 p2) -> System.Threading.Tasks.Task!
 static Funcky.Functional.NoOperationAsync<T1>(T1 p1) -> System.Threading.Tasks.Task!
+static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
+static Funcky.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7, T8>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Action<T7>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Action<T6>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6>!

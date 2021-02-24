@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Funcky.Monads;
+using Funcky.RetryPolicies;
 using static System.Threading.Thread;
 
 namespace Funcky

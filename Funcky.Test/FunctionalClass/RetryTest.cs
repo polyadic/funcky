@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Funcky.Monads;
+using Funcky.RetryPolicies;
 using Funcky.Test.TestUtils;
 using Xunit;
 using static Funcky.Functional;
