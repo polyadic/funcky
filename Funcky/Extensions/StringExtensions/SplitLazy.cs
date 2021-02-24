@@ -90,10 +90,10 @@ namespace Funcky.Extensions
                     some: Min(r)));
 
         private static Func<(int Index, int SeparatorLength), (int Index, int SeparatorLength)> Min((int Index, int SeparatorLength) result)
-        => current
-            => current.Index < result.Index
-                ? current
-                : result;
+            => current
+                => current.Index < result.Index
+                    ? current
+                    : result;
 
         private static Func<string, Option<(int Index, int SeparatorLength)>> IndexOfAnyOrNone(string text, int startIndex)
             => separator
