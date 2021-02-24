@@ -20,19 +20,22 @@ namespace Funcky.Test.Extensions.StringExtensions
             Assert.Equal(Sequence.Return(text), text.SplitLines());
         }
 
-        [Fact]
-        public void ASingleNewLineSplitsInASingleEmptyLine()
+        [Theory]
+        [InlineData("\n")]
+        [InlineData("\r")]
+        [InlineData("\r\n")]
+        public void ASingleNewLineSplitsInASingleEmptyLine(string text)
         {
-            var text = "\n";
-
             Assert.Equal(Sequence.Return(string.Empty), text.SplitLines());
         }
 
-        [Fact]
-        public void IfANewLineIsAtTheEndOfTheLastLineNoEmptyLineIsAdded()
+        [Theory]
+        [InlineData("Two\nlines\n")]
+        [InlineData("Two\rlines\r")]
+        [InlineData("Two\r\nlines\r\n")]
+        [InlineData("Two\nlines\r\n")]
+        public void IfANewLineIsAtTheEndOfTheLastLineNoEmptyLineIsAdded(string text)
         {
-            var text = "Two\nlines\n";
-
             Assert.Equal(new[] { "Two", "lines" }, text.SplitLines());
         }
 
