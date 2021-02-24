@@ -22,3 +22,26 @@ static Funcky.Functional.NoOperationAsync<T1, T2, T3, T4>(T1 p1, T2 p2, T3 p3, T
 static Funcky.Functional.NoOperationAsync<T1, T2, T3>(T1 p1, T2 p2, T3 p3) -> System.Threading.Tasks.Task!
 static Funcky.Functional.NoOperationAsync<T1, T2>(T1 p1, T2 p2) -> System.Threading.Tasks.Task!
 static Funcky.Functional.NoOperationAsync<T1>(T1 p1) -> System.Threading.Tasks.Task!
+Funcky.RetryPolicies.ConstantDelayPolicy
+Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
+Funcky.RetryPolicies.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ConstantDelayPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.DoNotRetryPolicy
+Funcky.RetryPolicies.DoNotRetryPolicy.DoNotRetryPolicy() -> void
+Funcky.RetryPolicies.DoNotRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.DoNotRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.ExponentialBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.IRetryPolicy
+Funcky.RetryPolicies.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.IRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.LinearBackoffRetryPolicy
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.NoDelayRetryPolicy
+Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
+static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
+static Funcky.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!
