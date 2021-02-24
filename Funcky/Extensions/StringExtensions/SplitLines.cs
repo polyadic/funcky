@@ -17,15 +17,11 @@ namespace Funcky.Extensions
             => text.SplitBy(ExtractBy(GetNextLine));
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
-            => GetNextLine()(text, startIndex);
-
-        private static ExtractElement GetNextLine()
-            => (text, startIndex)
-                => text
-                    .IndexOfAnyOrNone(new[] { '\r', '\n' }, startIndex)
-                    .Match(
-                        none: EndOfString(startIndex, text),
-                        some: NewLineFound(text, startIndex));
+            => text
+                .IndexOfAnyOrNone(new[] { '\r', '\n' }, startIndex)
+                .Match(
+                    none: EndOfString(startIndex, text),
+                    some: NewLineFound(text, startIndex));
 
         private static Func<Option<SplitResult>> EndOfString(int startIndex, string text)
             => ()
