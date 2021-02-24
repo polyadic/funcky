@@ -1,4 +1,4 @@
-namespace Funcky
+namespace Funcky.RetryPolicies
 {
     public sealed class NoDelayRetryPolicy : ConstantDelayPolicy
     {
