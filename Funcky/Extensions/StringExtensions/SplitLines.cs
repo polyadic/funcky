@@ -21,7 +21,7 @@ namespace Funcky.Extensions
                 .IndexOfAnyOrNone(new[] { '\r', '\n' }, startIndex)
                 .Match(
                     none: EndOfString(startIndex, text),
-                    some: NewLineFound(text, startIndex));
+                    some: NewLine(text, startIndex));
 
         private static Func<Option<SplitResult>> EndOfString(int startIndex, string text)
             => ()
@@ -29,7 +29,7 @@ namespace Funcky.Extensions
                 ? new SplitResult(text.Length + 1, text.Substring(startIndex))
                 : Option<SplitResult>.None();
 
-        private static Func<int, Option<SplitResult>> NewLineFound(string text, int startIndex)
+        private static Func<int, Option<SplitResult>> NewLine(string text, int startIndex)
             => index
                 => new SplitResult(index + SeparatorLength(text, index), text.Substring(startIndex, index - startIndex));
 
