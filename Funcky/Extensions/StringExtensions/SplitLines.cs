@@ -7,6 +7,9 @@ namespace Funcky.Extensions
 {
     public static partial class StringExtensions
     {
+        private const char CarriageReturn = '\r';
+        private const char LineFeed = '\n';
+
         /// <summary>
         /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
         /// </summary>
@@ -18,7 +21,7 @@ namespace Funcky.Extensions
 
         private static Option<SplitResult> GetNextLine(string text, int startIndex)
             => text
-                .IndexOfAnyOrNone(new[] { '\r', '\n' }, startIndex)
+                .IndexOfAnyOrNone(new[] { CarriageReturn, LineFeed }, startIndex)
                 .Match(
                     none: EndOfString(startIndex, text),
                     some: NewLine(text, startIndex));
@@ -40,7 +43,7 @@ namespace Funcky.Extensions
 
         private static bool IsCrLf(string text, int index)
             => index + 1 < text.Length
-               && text[index] is '\r'
-               && text[index + 1] is '\n';
+               && text[index] is CarriageReturn
+               && text[index + 1] is LineFeed;
     }
 }
