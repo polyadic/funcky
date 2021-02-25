@@ -1,6 +1,6 @@
 using Funcky.Monads;
 using Xunit;
-using static Funcky.Monads.Factory;
+using static Funcky.Monads.State;
 
 namespace Funcky.Test.Monads
 {

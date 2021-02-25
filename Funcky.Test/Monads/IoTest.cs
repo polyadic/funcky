@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using Funcky.Monads;
 using Xunit;
-using static Funcky.Monads.Factory;
 
 namespace Funcky.Test.Monads
 {
@@ -12,14 +11,14 @@ namespace Funcky.Test.Monads
         [Fact]
         public void Test()
         {
-            Io<int> query = from unit1 in Io(() => Console.WriteLine("File path:"))
-                            from filePath in Io(Console.ReadLine)
-                            from unit2 in Io(() => Console.WriteLine("File encoding:"))
-                            from encodingName in Io(Console.ReadLine)
+            Io<int> query = from unit1 in Io.Return(() => Console.WriteLine("File path:"))
+                            from filePath in Io.Return(Console.ReadLine)
+                            from unit2 in Io.Return(() => Console.WriteLine("File encoding:"))
+                            from encodingName in Io.Return(Console.ReadLine)
                             let encoding = Encoding.GetEncoding(encodingName)
-                            from fileContent in Io(() => File.ReadAllText(filePath, encoding))
-                            from unit3 in Io(() => Console.WriteLine("File content:"))
-                            from unit4 in Io(() => Console.WriteLine(fileContent))
+                            from fileContent in Io.Return(() => File.ReadAllText(filePath, encoding))
+                            from unit3 in Io.Return(() => Console.WriteLine("File content:"))
+                            from unit4 in Io.Return(() => Console.WriteLine(fileContent))
                             select fileContent.Length;
 
             int result = query(); // Execute query.
