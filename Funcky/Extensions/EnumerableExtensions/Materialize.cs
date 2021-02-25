@@ -26,8 +26,7 @@ namespace Funcky.Extensions
         /// <returns>A collection of the enumerated items.</returns>
         public static IEnumerable<TItem> Materialize<TItem, TMaterialization>(
             this IEnumerable<TItem> source,
-            Func<IEnumerable<TItem>,
-            TMaterialization> materialize)
+            Func<IEnumerable<TItem>, TMaterialization> materialize)
             where TMaterialization : IEnumerable<TItem>
             => source is IReadOnlyCollection<TItem> or ICollection<TItem>
                 ? source
