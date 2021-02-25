@@ -1,9 +1,7 @@
 using System;
 
-namespace Funcky.Monads.IO
+namespace Funcky.Monads
 {
-    public delegate T Io<out T>();
-
     public static class IoExtensions
     {
         public static Io<TResult> SelectMany<TSource, TSelector, TResult>(
@@ -13,14 +11,19 @@ namespace Funcky.Monads.IO
             => ()
                 => ResultSelector(resultSelector, selector, source());
 
-        // Type Constructor
-        public static Io<TSource> Io<TSource>(this TSource value) => () => value;
-
         public static Io<TResult> Select<TSource, TResult>(
-            this Io<TSource> source, Func<TSource, TResult> selector) =>
-            source.SelectMany(value => selector(value).Io(), (value, result) => result);
+            this Io<TSource> source,
+            Func<TSource, TResult> selector)
+            => source.SelectMany(value => selector(value).Io(), (value, result) => result);
 
-        private static TResult ResultSelector<TSource, TSelector, TResult>(Func<TSource, TSelector, TResult> resultSelector, Func<TSource, Io<TSelector>> selector, TSource value)
+        public static Io<TSource> Io<TSource>(this TSource value)
+            => ()
+                => value;
+
+        private static TResult ResultSelector<TSource, TSelector, TResult>(
+            Func<TSource, TSelector, TResult> resultSelector,
+            Func<TSource, Io<TSelector>> selector,
+            TSource value)
             => resultSelector(value, selector(value)());
     }
 }
