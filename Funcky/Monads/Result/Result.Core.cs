@@ -104,6 +104,12 @@ namespace Funcky.Monads
     public static class Result
     {
         [Pure]
-        public static Result<TValidResult> Ok<TValidResult>(TValidResult item) => new(item);
+        public static Result<TValidResult> Ok<TValidResult>(TValidResult item)
+            => new(item);
+
+        [Pure]
+        public static Result<TValidResult> Return<TValidResult>(TValidResult item)
+            => new(item);
+
     }
 }
