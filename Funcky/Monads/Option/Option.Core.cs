@@ -104,5 +104,11 @@ namespace Funcky.Monads
         public static Option<TItem> Some<TItem>(TItem item)
             where TItem : notnull
             => new(item);
+
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="item"/> is <c>null</c>.</exception>
+        [Pure]
+        public static Option<TItem> Return<TItem>(TItem item)
+            where TItem : notnull
+            => new(item);
     }
 }
