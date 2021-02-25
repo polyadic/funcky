@@ -24,38 +24,14 @@ namespace Funcky.Extensions
         /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
         /// <param name="materialize">A function which materializes a given sequence into a collection.</param>
         /// <returns>A collection of the enumerated items.</returns>
-        public static IEnumerable<TItem> Materialize<TItem, TMaterialization>(this IEnumerable<TItem> source, Func<IEnumerable<TItem>, TMaterialization> materialize)
+        public static IEnumerable<TItem> Materialize<TItem, TMaterialization>(
+            this IEnumerable<TItem> source,
+            Func<IEnumerable<TItem>,
+            TMaterialization> materialize)
             where TMaterialization : IEnumerable<TItem>
-        {
-            return source switch
-            {
-                List<TItem> => source,
-                LinkedList<TItem> => source,
-                HashSet<TItem> => source,
-                SortedSet<TItem> => source,
-                Stack<TItem> => source,
-                Queue<TItem> => source,
-                ImmutableList<TItem> => source,
-                ImmutableArray<TItem> => source,
-                ImmutableHashSet<TItem> => source,
-                ImmutableSortedSet<TItem> => source,
-                ImmutableStack<TItem> => source,
-                ImmutableQueue<TItem> => source,
-                IImmutableList<TItem> => source,
-                IImmutableSet<TItem> => source,
-                IImmutableStack<TItem> => source,
-                IImmutableQueue<TItem> => source,
-                IReadOnlyList<TItem> => source,
-#if I_READ_ONLY_SET_SUPPORTED
-                IReadOnlySet<TItem> => source,
-#endif
-                IReadOnlyCollection<TItem> => source,
-                IList<TItem> => source,
-                ISet<TItem> => source,
-                ICollection<TItem> => source,
-                _ => materialize(source),
-            };
-        }
+            => source is IReadOnlyCollection<TItem> or ICollection<TItem>
+                ? source
+                : materialize(source);
 
         private static ImmutableList<TItem> DefaultMaterialization<TItem>(IEnumerable<TItem> source)
             => source.ToImmutableList();
