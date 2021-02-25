@@ -17,8 +17,7 @@ namespace Funcky.Monads
                 };
 
         public static Func<TResult> Func<TResult>(Func<TResult> function)
-            => ()
-                => function();
+            => function;
 
         public static Func<Unit> Func(Action action)
             => ()
@@ -27,5 +26,11 @@ namespace Funcky.Monads
                     action();
                     return Unit.Value;
                 };
+
+        public static State<TState, TState> GetState<TState>() =>
+            oldState => (oldState, oldState);
+
+        public static State<TState, Unit> SetState<TState>(TState newState) =>
+            _ => (default, newState);
     }
 }
