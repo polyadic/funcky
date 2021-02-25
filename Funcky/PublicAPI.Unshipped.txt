@@ -5,6 +5,7 @@ Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match(System.Action<TLeft>! left, S
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
 Funcky.Extensions.FunctionCompositionExtensions
 Funcky.Monads.Either<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
+Funcky.Monads.Either<TLeft>
 override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
 static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
@@ -56,7 +57,10 @@ static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, string! s
 static Funcky.Extensions.StringExtensions.SplitLines(this string! text) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
 static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
+static Funcky.Monads.Either<TLeft>.Return<TRight>(TRight item) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.Option.Return<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.Result.Return<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Sequence.Cycle<TItem>(TItem element) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
