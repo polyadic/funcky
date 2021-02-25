@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Funcky.Extensions
 {
-    public static class FunctionCompositionExtensions
+    public static partial class FuncExtensions
     {
         /// <summary>
         /// Function composition.
