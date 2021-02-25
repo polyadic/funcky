@@ -174,9 +174,47 @@ that provide the missing functionality:
 * `ObjectExtensions.ToEnumerable` has been deprecated in favor of `Sequence.FromNullable`.
 * `RequireClass` and `RequireStruct` have been obsoleted with no replacement.
 
-## Funcky next
+## Funcky 2.4.0
+### `Try*` → `*OrNone`
+We've renamed all `Try*` methods, such as `TryParse`, `TryGet` value to `*OrNone`.
+The old methods are still available, but marked as obsolete and will be removed in 3.0.0.
 
-Added new generator functions:
-* RepeatRange
-* Cycle
-* CycleRange
+### Factory methods for `IEnumerable<T>`
+This release adds some new factory methods for creating `IEnumerable<T>`
+to the `Sequence` class:
+* `Sequence.RepeatRange`: Generates a sequence that contains the same sequence of elements the given number of times
+* `Sequence.Cycle`: Cycles the same element over and over again as an endless generator.
+* `Sequence.CycleRange`: Generates a sequence that contains the same sequence of elements over and over again as an endless generator
+* `Sequence.Concat`
+
+### More Extension Methods
+#### for `IEnumerable<T>`
+  * `Materialize`: Materializes all the items of a lazy enumerable.
+  * `PowerSet`: Returns a sequence with the set of all subsets
+  * `Shuffle`: Returns the given sequence in random Order in O(n).
+  * `Split`: Splits the source sequence a separator.
+  * `ZipLongest`: Zips two sequences with different lengths.
+#### for `string`
+* `SplitLazy`: Splits a string by separator lazily.
+* `SplitLines`: Splits a string by newline lazily.
+#### for `Func`
+* `Curry`
+* `Uncurry`
+* `Flip`
+* `Compose`
+
+### `EitherOrBoth`
+EitherOrBoth is a new data type that can represent `Left`, `Right` and `Both`. It is used in `ZipLongest`.
+
+### `Monad.Return`
+This release adds a `Return` method for all monad types in Funcky:
+* `Option.Return`
+* `Either<TLeft>.Return`
+* `Result.Return`
+
+### `OptionEqualityComparer`
+To support more advanced comparison scenarios, `OptionEqualityComparer` has been added similar to the already existing `OptionComparer`.
+
+### Smaller Improvements
+* Added a missing `Match` overload to `Either` that takes `Action`s
+* Added additional overloads for `Functional.True` and `Functional.False` for up to four parameters.

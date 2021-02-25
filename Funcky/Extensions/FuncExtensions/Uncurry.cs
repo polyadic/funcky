@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace Funcky
+namespace Funcky.Extensions
 {
     public static partial class FuncExtensions
     {
