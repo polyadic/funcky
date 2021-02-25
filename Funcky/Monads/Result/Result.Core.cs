@@ -110,6 +110,5 @@ namespace Funcky.Monads
         [Pure]
         public static Result<TValidResult> Return<TValidResult>(TValidResult item)
             => new(item);
-
     }
 }

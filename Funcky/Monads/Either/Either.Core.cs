@@ -107,4 +107,11 @@ namespace Funcky.Monads
         private string UnknownSideMessage()
             => $"Internal error: Enum variant {_side} is not handled";
     }
+
+    public static class Either<TLeft>
+    {
+        [Pure]
+        public static Either<TLeft, TRight> Return<TRight>(TRight item)
+            => Either<TLeft, TRight>.Right(item);
+    }
 }
