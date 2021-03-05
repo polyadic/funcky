@@ -220,4 +220,10 @@ To support more advanced comparison scenarios, `OptionEqualityComparer` has been
 * Added additional overloads for `Functional.True` and `Functional.False` for up to four parameters.
 
 ## Unreleased
+
 * Add the async equivalent of `Functional.NoOperation`: `Functional.NoOperationAsync`
+
+### Currying
+
+* Funcky provides currying also on `Action`s.
+* Added Property tests for Currying
