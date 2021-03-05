@@ -46,7 +46,7 @@ There are several libraries available which try to give you more functional feat
 
 * **Funcky wants to be functional C#.**
 * **Funcky tries to use the C# monadic interfaces as an advantage**
-* **We do not provide our own RecordType. Use Fody or wait for C# 9**
+* **We do not provide our own record type. Use the new [record types] in C# 9 or a weaver like [Equals.Fody].**
 
 ### [LanguageExt](https://github.com/louthy/language-ext)
 
@@ -101,3 +101,5 @@ Interoperability with other libraries should be provided in separate packages (e
 [`Funcky.NewtonsoftJson`]: https://github.com/polyadic/funcky-newtonsoftjson
 [`Microsoft.Bcl.AsyncInterfaces`]: https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces
 [`System.Collections.Immutable`]: https://www.nuget.org/packages/System.Collections.Immutable
+[record types]: https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/exploration/records
+[Equals.Fody]: https://github.com/Fody/Equals
