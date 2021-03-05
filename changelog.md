@@ -218,3 +218,6 @@ To support more advanced comparison scenarios, `OptionEqualityComparer` has been
 ### Smaller Improvements
 * Added a missing `Match` overload to `Either` that takes `Action`s
 * Added additional overloads for `Functional.True` and `Functional.False` for up to four parameters.
+
+## Unreleased
+* Add the async equivalent of `Functional.NoOperation`: `Functional.NoOperationAsync`
