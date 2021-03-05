@@ -1,45 +1,74 @@
 using System;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
+using Funcky.Extensions;
 using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {
     public sealed class CurryTest
     {
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith2ParametersWeGet2FunctionsWith1Parameter(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith2ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, string> f, int number1, string text1)
         {
-            Func<int, string, string> f = (int number, string text) => $"number:{number}, text:{text}";
+            var functionForm = f(number1, text1) == Curry(f)(number1)(text1);
+            var extensionForm = f(number1, text1) == f.Curry()(number1)(text1);
 
-            Assert.Equal(f(number, text), Curry(f)(number)(text));
+            return (functionForm && extensionForm).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith3ParametersWeGet3FunctionsWith1Parameter(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith3ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, bool, string> f, int number1, string text1, bool bool1)
         {
-            Func<int, string, bool, string> f = (int number, string text, bool p3) => $"number:{number}, text:{text}, {p3}";
+            var functionForm = f(number1, text1, bool1) == Curry(f)(number1)(text1)(bool1);
+            var extensionForm = f(number1, text1, bool1) == f.Curry()(number1)(text1)(bool1);
 
-            Assert.Equal(f(number, text, true), Curry(f)(number)(text)(true));
+            return (functionForm && extensionForm).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith4ParametersWeGet4FunctionsWith1Parameter(int number, string text)
+        [Property(Skip = "https://github.com/fscheck/FsCheck/issues/557")]
+        public Property GivenAFunctionWith4ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, int, string, string> f, int number1, string text1, int number2, string text2)
         {
-            Func<int, string, bool, bool, string> f = (int number, string text, bool p3, bool p4) => $"number:{number}, text:{text}, {p3}, {p4}";
+            var functionForm = f(number1, text1, number2, text2) == Curry(f)(number1)(text1)(number2)(text2);
+            var extensionForm = f(number1, text1, number2, text2) == f.Curry()(number1)(text1)(number2)(text2);
 
-            Assert.Equal(f(number, text, true, false), Curry(f)(number)(text)(true)(false));
+            return (functionForm && extensionForm).ToProperty();
         }
 
-        public static TheoryData<int, string> FirstTwoArguments()
-            => new()
-            {
-                { 5, "Hello world!" },
-                { -100, "TestString" },
-                { 1000, "Something something dark side" },
-                { 1337, "so?" },
-            };
+        [Property(Skip = "https://github.com/fscheck/FsCheck/issues/557")]
+        public Property GivenAFunctionWith5ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, int, string, bool, string> f, int number1, string text1, int number2, string text2, bool bool1)
+        {
+            var functionForm = f(number1, text1, number2, text2, bool1) == Curry(f)(number1)(text1)(number2)(text2)(bool1);
+            var extensionForm = f(number1, text1, number2, text2, bool1) == f.Curry()(number1)(text1)(number2)(text2)(bool1);
+
+            return (functionForm && extensionForm).ToProperty();
+        }
+
+        [Property(Skip = "https://github.com/fscheck/FsCheck/issues/557")]
+        public Property GivenAFunctionWith6ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, int, string, int, string, string> f, int number1, string text1, int number2, string text2, int number3, string text3)
+        {
+            var functionForm = f(number1, text1, number2, text2, number3, text3) == Curry(f)(number1)(text1)(number2)(text2)(number3)(text3);
+            var extensionForm = f(number1, text1, number2, text2, number3, text3) == f.Curry()(number1)(text1)(number2)(text2)(number3)(text3);
+
+            return (functionForm && extensionForm).ToProperty();
+        }
+
+        [Property(Skip = "https://github.com/fscheck/FsCheck/issues/557")]
+        public Property GivenAFunctionWith7ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, int, string, int, string, bool, string> f, int number1, string text1, int number2, string text2, int number3, string text3, bool bool1)
+        {
+            var functionForm = f(number1, text1, number2, text2, number3, text3, bool1) == Curry(f)(number1)(text1)(number2)(text2)(number3)(text3)(bool1);
+            var extensionForm = f(number1, text1, number2, text2, number3, text3, bool1) == f.Curry()(number1)(text1)(number2)(text2)(number3)(text3)(bool1);
+
+            return (functionForm && extensionForm).ToProperty();
+        }
+
+        [Property(Skip = "https://github.com/fscheck/FsCheck/issues/557")]
+        public Property GivenAFunctionWith8ParametersTheFunctionsAlwaysGiveTheSameResult(Func<int, string, int, string, int, string, int, string, string> f, int number1, string text1, int number2, string text2, int number3, string text3, int number4, string text4)
+        {
+            var functionForm = f(number1, text1, number2, text2, number3, text3, number4, text4) == Curry(f)(number1)(text1)(number2)(text2)(number3)(text3)(number4)(text4);
+            var extensionForm = f(number1, text1, number2, text2, number3, text3, number4, text4) == f.Curry()(number1)(text1)(number2)(text2)(number3)(text3)(number4)(text4);
+
+            return (functionForm && extensionForm).ToProperty();
+        }
     }
 }
