@@ -2,9 +2,9 @@ name: Build Documentation
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
         working-directory: ./Documentation
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: success() && github.ref == 'refs/heads/master'
+        if: success() && github.ref == 'refs/heads/main'
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: ./Documentation/book
