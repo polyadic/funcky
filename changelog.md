@@ -144,7 +144,7 @@ that provide the missing functionality:
 * Add `Unit.Value` as a way to a get a `Unit` value.
 * Add `Functional.Retry` which retries a producer until `Option.Some` is returned.
 
-## 2.0.0
+## Funcky 2.0.0
 ### Breaking Changes
 * Remove `Reader` monad based on `await`.
 * Remove `IToString`.
@@ -186,7 +186,7 @@ that provide the missing functionality:
 * Mark our functions as `[Pure]`.
 * Implement `IEquatable` on `Option`, `Result` and `Either`.
 
-## 2.0.0-rc.2
+## Funcky 2.0.0-rc.2
 * Move the `Ok` constructor of `Result<T>` to a non-generic class. This allows for the compiler to infer the generic type.
   Old: `Result<int>.Ok(10)`. New: `Result.Ok(10)`.
 * Add `IndexOfOrNone`, `LastIndexOfOrNone`, `IndexOfAnyOrNone` and `LastIndexOfAnyOrNone` extension methods to `string`.
@@ -197,7 +197,7 @@ that provide the missing functionality:
 * Fix incorrect implementation on `Result.SelectMany` which called the `selectedResultSelector` even when the
   result was an error. As a result (pun intended) of the fix, `ResultCombinationException` is no longer needed and also removed.
 
-## 2.0.0-rc.1
+## Funcky 2.0.0-rc.1
 * Full nullable support introduced with C# 8
 * Rename `Option.From` -> `Option.FromNullable` and remove overload that takes non-nullable value types.
 * Use `Func<T, bool>` instead of `Predicate<T>` in predicate composition functions (`Functional.All`, `Functional.Any`, `Functional.Not`),
@@ -208,13 +208,13 @@ that provide the missing functionality:
 * Remove `Reader` monad based on `await`.
 * `Exception` created by `Result` monad contains valid stack trace
 
-## 1.8.0
+## Funcky 1.8.0
 * Added overload for `AndThen` which flattens the `Option`
 * Add `Where` method to `Option<T>`, which allows filtering the `Option` by a predicate.
 * Add overload for `Option<T>.SelectMany` that takes only a selector.
 * Add `WhereNotNull` extension method for `IEnumerable<T>`.
 
-## 1.7.0
+## Funcky 1.7.0
 * Add nullability annotations to everything except for `Monads.Reader`.
 * Add a function for creating an `Option<T>` from a nullable value: `Option.From`.
 * `Either.Match` now throws when called on an `Either` value created using `default(Either<L, R>)`.
@@ -222,7 +222,7 @@ that provide the missing functionality:
 * Match of `Result` Monad accepts actions
 * Add `FirstOrNone`, `LastOrNone` and `SingleOrNone` extension functions
 
-## 1.6.0
+## Funcky 1.6.0
 * Add ToEnumerable function to `Option<T>`.
 * Add `WhereSelect` extension function for `IEnumerable<T>`.
 * Add missing overload for nullary actions to `ActionToUnit`.
