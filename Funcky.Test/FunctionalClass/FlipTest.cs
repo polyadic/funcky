@@ -1,81 +1,66 @@
 using System;
-using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {
     public sealed class FlipTest
     {
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, string> f = (number, text) => $"number:{number}, text:{text}";
 
-            Assert.Equal(f(number, text), Flip(f)(text, number));
+            return (f(number, text) == Flip(f)(text, number)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith3ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith3ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, bool, string> f = (number, text, p3) => $"number:{number}, text:{text}, {p3}";
 
-            Assert.Equal(f(number, text, true), Flip(f)(text, number, true));
+            return (f(number, text, true) == Flip(f)(text, number, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith4ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith4ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, bool, bool, string> f = (number, text, p3, p4) => $"number:{number}, text:{text}, {p3}, {p4}";
 
-            Assert.Equal(f(number, text, true, false), Flip(f)(text, number, true, false));
+            return (f(number, text, true, false) == Flip(f)(text, number, true, false)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith5ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith5ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, bool, bool, bool, string> f = (number, text, p3, p4, p5) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}";
 
-            Assert.Equal(f(number, text, true, false, true), Flip(f)(text, number, true, false, true));
+            return (f(number, text, true, false, true) == Flip(f)(text, number, true, false, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith6ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith6ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}";
 
-            Assert.Equal(f(number, text, true, false, true, false), Flip(f)(text, number, true, false, true, false));
+            return (f(number, text, true, false, true, false) == Flip(f)(text, number, true, false, true, false)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith7ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith7ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
             Func<int, string, bool, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6, p7) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
 
-            Assert.Equal(f(number, text, true, false, true, false, true), Flip(f)(text, number, true, false, true, false, true));
+            return (f(number, text, true, false, true, false, true) == Flip(f)(text, number, true, false, true, false, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenAFunctionWith8ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        [Property]
+        public Property GivenAFunctionWith8ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6, p7, p8) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
+            Func<int, string, bool, bool, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6, p7, p8) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}, {p8}";
 
-            Assert.Equal(f(number, text, true, false, true, false, true, false), Flip(f)(text, number, true, false, true, false, true, false));
+            return (f(number, text, true, false, true, false, true, false) == Flip(f)(text, number, true, false, true, false, true, false)).ToProperty();
         }
-
-        public static TheoryData<int, string> FirstTwoArguments()
-           => new()
-           {
-                { 5, "Hello world!" },
-                { -100, "TestString" },
-                { 1000, "Something something dark side" },
-                { 1337, "so?" },
-           };
     }
 }

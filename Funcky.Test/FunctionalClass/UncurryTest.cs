@@ -1,7 +1,6 @@
 using System;
 using FsCheck;
 using FsCheck.Xunit;
-using Xunit;
 using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
