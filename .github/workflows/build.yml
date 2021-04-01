@@ -33,11 +33,7 @@ jobs:
       run: dotnet test --configuration Release --no-build --framework net5.0 /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:MergeWith=../coverage.info -m:1
     - name: Coveralls
       uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.info
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+      if: matrix.os == 'ubuntu-latest'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: coverage.info
