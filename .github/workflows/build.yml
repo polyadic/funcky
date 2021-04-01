@@ -27,13 +27,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true
-    - name: Run Tests
-      run: dotnet test --configuration Release --no-build
     - name: Run Tests with Coverage
-      run: dotnet test --configuration Release --no-build --framework net5.0 /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:MergeWith=../coverage.info -m:1
+      run:  dotnet test --configuration Release --no-build --framework net5.0 /p:CollectCoverage=true /p:MergeWith=../coverage.json -m:1 /p:TargetFrameworks= /p:CoverletOutput=../ /p:CoverletOutputFormat=lcov%2cjson
     - name: Coveralls
       uses: coverallsapp/github-action@master
       if: matrix.os == 'ubuntu-latest'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.info
+        path-to-lcov: coverage.json
