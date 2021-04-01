@@ -10,7 +10,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, string> f = (int number, string text) => $"number:{number}, text:{text}";
+            Func<int, string, string> f = (number, text) => $"number:{number}, text:{text}";
 
             Assert.Equal(f(number, text), Flip(f)(text, number));
         }
@@ -19,7 +19,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith3ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, string> f = (int number, string text, bool p3) => $"number:{number}, text:{text}, {p3}";
+            Func<int, string, bool, string> f = (number, text, p3) => $"number:{number}, text:{text}, {p3}";
 
             Assert.Equal(f(number, text, true), Flip(f)(text, number, true));
         }
@@ -28,7 +28,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith4ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, string> f = (int number, string text, bool p3, bool p4) => $"number:{number}, text:{text}, {p3}, {p4}";
+            Func<int, string, bool, bool, string> f = (number, text, p3, p4) => $"number:{number}, text:{text}, {p3}, {p4}";
 
             Assert.Equal(f(number, text, true, false), Flip(f)(text, number, true, false));
         }
@@ -37,7 +37,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith5ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, bool, string> f = (int number, string text, bool p3, bool p4, bool p5) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}";
+            Func<int, string, bool, bool, bool, string> f = (number, text, p3, p4, p5) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}";
 
             Assert.Equal(f(number, text, true, false, true), Flip(f)(text, number, true, false, true));
         }
@@ -46,7 +46,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith6ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, bool, bool, string> f = (int number, string text, bool p3, bool p4, bool p5, bool p6) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}";
+            Func<int, string, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}";
 
             Assert.Equal(f(number, text, true, false, true, false), Flip(f)(text, number, true, false, true, false));
         }
@@ -55,7 +55,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith7ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, bool, bool, bool, string> f = (int number, string text, bool p3, bool p4, bool p5, bool p6, bool p7) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
+            Func<int, string, bool, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6, p7) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
 
             Assert.Equal(f(number, text, true, false, true, false, true), Flip(f)(text, number, true, false, true, false, true));
         }
@@ -64,7 +64,7 @@ namespace Funcky.Test.FunctionalClass
         [MemberData(nameof(FirstTwoArguments))]
         public void GivenAFunctionWith8ParametersTheFirstTwoParametersGetFlipped(int number, string text)
         {
-            Func<int, string, bool, bool, bool, bool, bool, bool, string> f = (int number, string text, bool p3, bool p4, bool p5, bool p6, bool p7, bool p8) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
+            Func<int, string, bool, bool, bool, bool, bool, bool, string> f = (number, text, p3, p4, p5, p6, p7, p8) => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}";
 
             Assert.Equal(f(number, text, true, false, true, false, true, false), Flip(f)(text, number, true, false, true, false, true, false));
         }
