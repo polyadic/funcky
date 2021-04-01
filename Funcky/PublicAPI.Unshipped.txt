@@ -7,7 +7,6 @@ static Funcky.Extensions.FuncExtensions.Curry<T1, T2, T3, T4, T5>(this System.Ac
 static Funcky.Extensions.FuncExtensions.Curry<T1, T2, T3, T4>(this System.Action<T1, T2, T3, T4>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Action<T4>!>!>!>!
 static Funcky.Extensions.FuncExtensions.Curry<T1, T2, T3>(this System.Action<T1, T2, T3>! action) -> System.Func<T1, System.Func<T2, System.Action<T3>!>!>!
 static Funcky.Extensions.FuncExtensions.Curry<T1, T2>(this System.Action<T1, T2>! action) -> System.Func<T1, System.Action<T2>!>!
-static Funcky.Functional.ActionToUnit<T1>(System.Action<T1>! action) -> System.Func<T1, Funcky.Unit>!
 static Funcky.Functional.Curry<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>!
 static Funcky.Functional.Curry<T1, T2, T3, T4, T5, T6, T7>(System.Action<T1, T2, T3, T4, T5, T6, T7>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Action<T7>!>!>!>!>!>!>!
 static Funcky.Functional.Curry<T1, T2, T3, T4, T5, T6>(System.Action<T1, T2, T3, T4, T5, T6>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Action<T6>!>!>!>!>!>!
