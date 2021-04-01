@@ -1,4 +1,6 @@
 using System;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 using static Funcky.Functional;
 
@@ -6,76 +8,60 @@ namespace Funcky.Test.FunctionalClass
 {
     public sealed class UncurryTest
     {
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA2ndLevelCurriedFunctionWeGetAFunctionWith2Parameters(int number, string text)
+        [Property]
+        public Property GivenA2NdLevelCurriedFunctionWeGetAFunctionWith2Parameters(int number, string text)
         {
             Func<int, Func<string, string>> f = number => text => $"number:{number}, text:{text}";
 
-            Assert.Equal(f(number)(text), Uncurry(f)(number, text));
+            return (f(number)(text) == Uncurry(f)(number, text)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA3rdLevelCurriedFunctionWeGetAFunctionWith3Parameters(int number, string text)
+        [Property]
+        public Property GivenA3RdLevelCurriedFunctionWeGetAFunctionWith3Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, string>>> f = number => text => p3 => $"number:{number}, text:{text}, {p3}";
 
-            Assert.Equal(f(number)(text)(true), Uncurry(f)(number, text, true));
+            return (f(number)(text)(true) == Uncurry(f)(number, text, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA4thLevelCurriedFunctionWeGetAFunctionWith4Parameters(int number, string text)
+        [Property]
+        public Property GivenA4ThLevelCurriedFunctionWeGetAFunctionWith4Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, Func<bool, string>>>> f = number => text => p3 => p4 => $"number:{number}, text:{text}, {p3}, {p4}";
 
-            Assert.Equal(f(number)(text)(true)(false), Uncurry(f)(number, text, true, false));
+            return (f(number)(text)(true)(false) == Uncurry(f)(number, text, true, false)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA5thLevelCurriedFunctionWeGetAFunctionWith5Parameters(int number, string text)
+        [Property]
+        public Property GivenA5ThLevelCurriedFunctionWeGetAFunctionWith5Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, Func<bool, Func<bool, string>>>>> f = number => text => p3 => p4 => p5 => $"number:{number}, text:{text}, {p3}, {p4}, {p5}";
 
-            Assert.Equal(f(number)(text)(true)(false)(true), Uncurry(f)(number, text, true, false, true));
+            return (f(number)(text)(true)(false)(true) == Uncurry(f)(number, text, true, false, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA6thLevelCurriedFunctionWeGetAFunctionWith6Parameters(int number, string text)
+        [Property]
+        public Property GivenA6ThLevelCurriedFunctionWeGetAFunctionWith6Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, Func<bool, Func<bool, Func<bool, string>>>>>> f = number => text => p3 => p4 => p5 => p6 => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}";
 
-            Assert.Equal(f(number)(text)(true)(false)(true)(false), Uncurry(f)(number, text, true, false, true, false));
+            return (f(number)(text)(true)(false)(true)(false) == Uncurry(f)(number, text, true, false, true, false)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA7thLevelCurriedFunctionWeGetAFunctionWith7Parameters(int number, string text)
+        [Property]
+        public Property GivenA7ThLevelCurriedFunctionWeGetAFunctionWith7Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, Func<bool, Func<bool, Func<bool, Func<bool, string>>>>>>> f = number => text => p3 => p4 => p5 => p6 => p7 => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}";
 
-            Assert.Equal(f(number)(text)(true)(false)(true)(false)(true), Uncurry(f)(number, text, true, false, true, false, true));
+            return (f(number)(text)(true)(false)(true)(false)(true) == Uncurry(f)(number, text, true, false, true, false, true)).ToProperty();
         }
 
-        [Theory]
-        [MemberData(nameof(FirstTwoArguments))]
-        public void GivenA8thLevelCurriedFunctionWeGetAFunctionWith8Parameters(int number, string text)
+        [Property]
+        public Property GivenA8ThLevelCurriedFunctionWeGetAFunctionWith8Parameters(int number, string text)
         {
             Func<int, Func<string, Func<bool, Func<bool, Func<bool, Func<bool, Func<bool, Func<bool, string>>>>>>>> f = number => text => p3 => p4 => p5 => p6 => p7 => p8 => $"number:{number}, text:{text}, {p3}, {p4}, {p5}, {p6}, {p7}, {p8}";
 
-            Assert.Equal(f(number)(text)(true)(false)(true)(false)(true)(false), Uncurry(f)(number, text, true, false, true, false, true, false));
+            return (f(number)(text)(true)(false)(true)(false)(true)(false) == Uncurry(f)(number, text, true, false, true, false, true, false)).ToProperty();
         }
-
-        public static TheoryData<int, string> FirstTwoArguments()
-            => new()
-            {
-                { 5, "Hello world!" },
-                { -100, "TestString" },
-                { 1000, "Something something dark side" },
-                { 1337, "so?" },
-            };
     }
 }
