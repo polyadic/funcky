@@ -6,7 +6,6 @@ namespace Funcky.Monads
 {
     /// <summary>
     /// An equality comparer for two <see cref="Option{TItem}"/>s.
-    /// </summary>
     /// <example>
     /// <code><![CDATA[
     /// using Funcky.Monads;
@@ -14,6 +13,7 @@ namespace Funcky.Monads
     /// var defaultComparer = OptionEqualityComparer<Person>.Default;
     /// ]]></code>
     /// </example>
+    /// </summary>
     public static class OptionEqualityComparer<TItem>
         where TItem : notnull
     {
