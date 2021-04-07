@@ -7,6 +7,12 @@
         <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="Templates\ParseOrNone.template" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Templates\ParseOrNone.template" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
     </ItemGroup>
