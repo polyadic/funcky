@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Funcky.Monads;
 
@@ -13,6 +14,7 @@ namespace Funcky
         /// </summary>
         /// <param name="seed">The first value passed to <paramref name="next"/>. Not included in the returned <see cref="IEnumerable{T}"/>.</param>
         /// <param name="next">Generates the next item based on the previous item.</param>
+        [Pure]
         public static IEnumerable<TItem> Generate<TItem>(TItem seed, Func<TItem, TItem> next)
             where TItem : notnull
         {
@@ -30,6 +32,7 @@ namespace Funcky
         /// </summary>
         /// <param name="seed">The first value passed to <paramref name="next"/>. Not included in the returned <see cref="IEnumerable{T}"/>.</param>
         /// <param name="next">Generates the next item or <see cref="Option{TItem}.None"/> based on the previous item.</param>
+        [Pure]
         public static IEnumerable<TItem> Generate<TItem>(TItem seed, Func<TItem, Option<TItem>> next)
             where TItem : notnull
         {
