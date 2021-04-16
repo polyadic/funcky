@@ -6,6 +6,7 @@ using Funcky.GenericConstraints;
 
 namespace Funcky.Extensions
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ObjectExtensions
     {
         /// <summary>
