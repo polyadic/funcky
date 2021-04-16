@@ -20,7 +20,7 @@ namespace Funcky.Monads
         where TItem : notnull
     {
         /// <summary>Returns a default sort order comparer for the item type specified by the generic argument.</summary>
-        /// <remarks>See <see cref="Comparer{T}.Default"/>.</remarks>
+        /// <seealso cref="Comparer{T}.Default"/>
         public static Comparer<Option<TItem>> Default => OptionComparer.Create(Comparer<TItem>.Default);
 
         /// <inheritdoc cref="Comparer{T}.Create"/>
