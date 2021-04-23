@@ -12,6 +12,9 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <AnalysisLevel>5</AnalysisLevel>
     </PropertyGroup>
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net5.0'" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Condition="'$(TargetFramework)' == 'netstandard2.0'" />

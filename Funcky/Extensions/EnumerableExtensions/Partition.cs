@@ -8,7 +8,6 @@ namespace Funcky.Extensions
     {
         /// <summary>
         /// Partitions the items in an <see cref="IEnumerable{T}"/> by the given <paramref name="predicate"/>.
-        /// </summary>
         /// <example>
         /// <code><![CDATA[
         /// using System.Linq;
@@ -17,6 +16,7 @@ namespace Funcky.Extensions
         /// var (evens, odds) = Enumerable.Range(0, 6).Partition(n => n % 2 == 0);
         /// ]]></code>
         /// </example>
+        /// </summary>
         /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
         /// <returns>A tuple with the items for which the predicate holds, and for those for which it doesn't.</returns>
         public static (IEnumerable<TItem> True, IEnumerable<TItem> False) Partition<TItem>(
