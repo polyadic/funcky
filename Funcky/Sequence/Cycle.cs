@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using static Funcky.Functional;
 
 namespace Funcky
@@ -11,6 +12,7 @@ namespace Funcky
         /// <typeparam name="TItem">Type of the element to be cycled.</typeparam>
         /// <param name="element">The element to be cycled.</param>
         /// <returns>Returns an infinite IEnumerable cycling through the same elements.</returns>
+        [Pure]
         public static IEnumerable<TItem> Cycle<TItem>(TItem element)
             where TItem : notnull
             => Generate(element, Identity);

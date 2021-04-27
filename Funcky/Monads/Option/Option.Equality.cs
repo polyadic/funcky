@@ -5,10 +5,8 @@ namespace Funcky.Monads
 {
     public readonly partial struct Option<TItem> : IEquatable<Option<TItem>>
     {
-        [Pure]
         public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
 
-        [Pure]
         public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
 
         [Pure]
