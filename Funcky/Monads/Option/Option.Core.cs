@@ -59,7 +59,7 @@ namespace Funcky.Monads
         /// <item><description><see cref="Select{TResult}"/></description></item>
         /// <item><description><see cref="SelectMany{TResult}"/></description></item>
         /// <item><description><see cref="OrElse(Func{Option{TItem}})"/></description></item>
-        /// <item><description><seealso cref="GetOrElse(TItem)"/></description></item>
+        /// <item><description><see cref="GetOrElse(TItem)"/></description></item>
         /// </list></para>
         /// </summary>
         [Pure]
@@ -73,8 +73,8 @@ namespace Funcky.Monads
         /// has a value. Serves the same purpose as a switch statement.</para>
         /// <para>Note that there are often better alternatives available, such as:
         /// <list type="bullet">
-        /// <item><description><seealso cref="AndThen(System.Action{TItem})"/></description></item>
-        /// <item><description><seealso cref="Inspect(System.Action{TItem})"/></description></item>
+        /// <item><description><see cref="AndThen(System.Action{TItem})"/></description></item>
+        /// <item><description><see cref="Inspect(System.Action{TItem})"/></description></item>
         /// </list>
         /// </para>
         /// </summary>

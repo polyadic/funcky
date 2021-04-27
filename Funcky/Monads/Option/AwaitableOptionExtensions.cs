@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Funcky.Monads
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class AwaitableOptionExtensions
     {
         /// <summary>

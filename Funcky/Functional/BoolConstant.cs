@@ -8,19 +8,19 @@ namespace Funcky
         [Pure]
         public static bool True() => true;
 
-        /// <inheritdoc cref="True{T}"/>
+        /// <inheritdoc cref="True"/>
         [Pure]
         public static bool True<T>(T ω) => true;
 
-        /// <inheritdoc cref="True{T}"/>
+        /// <inheritdoc cref="True"/>
         [Pure]
         public static bool True<T0, T1>(T0 ω0, T1 ω1) => true;
 
-        /// <inheritdoc cref="True{T}"/>
+        /// <inheritdoc cref="True"/>
         [Pure]
         public static bool True<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) => true;
 
-        /// <inheritdoc cref="True{T}"/>
+        /// <inheritdoc cref="True"/>
         [Pure]
         public static bool True<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) => true;
 
@@ -28,19 +28,19 @@ namespace Funcky
         [Pure]
         public static bool False() => false;
 
-        /// <inheritdoc cref="False{T}"/>
+        /// <inheritdoc cref="False"/>
         [Pure]
         public static bool False<T>(T ω) => false;
 
-        /// <inheritdoc cref="False{T}"/>
+        /// <inheritdoc cref="False"/>
         [Pure]
         public static bool False<T0, T1>(T0 ω0, T1 ω1) => false;
 
-        /// <inheritdoc cref="False{T}"/>
+        /// <inheritdoc cref="False"/>
         [Pure]
         public static bool False<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) => false;
 
-        /// <inheritdoc cref="False{T}"/>
+        /// <inheritdoc cref="False"/>
         [Pure]
         public static bool False<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) => false;
     }
