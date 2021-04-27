@@ -8,18 +8,14 @@ namespace Funcky.Test.FunctionalClass
     public sealed class FlipTest
     {
         [Property]
-        public Property GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        public Property GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text, Func<int, string, string> f)
         {
-            Func<int, string, string> f = (number, text) => $"number:{number}, text:{text}";
-
             return (f(number, text) == Flip(f)(text, number)).ToProperty();
         }
 
         [Property]
-        public Property GivenAFunctionWith3ParametersTheFirstTwoParametersGetFlipped(int number, string text)
+        public Property GivenAFunctionWith3ParametersTheFirstTwoParametersGetFlipped(int number, string text, Func<int, string, bool, string> f)
         {
-            Func<int, string, bool, string> f = (number, text, p3) => $"number:{number}, text:{text}, {p3}";
-
             return (f(number, text, true) == Flip(f)(text, number, true)).ToProperty();
         }
 
