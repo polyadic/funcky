@@ -131,6 +131,14 @@ namespace Funcky.Test.Monads
             FunctionalAssert.IsError(length);
         }
 
+        [Fact]
+        public void SelectManyWithOkResultMatchesTherightValue()
+            => FunctionalAssert.IsOk(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
+
+        [Fact]
+        public void SelectManyWithErrorResultMatchesTherightValue()
+            => FunctionalAssert.IsError(Result<int>.Error(new Exception("Any")).SelectMany(i => Result.Ok(i + 1)));
+
         private static void IsInterestingStackTraceFirst(Exception exception)
         {
             if (exception.StackTrace is not null)

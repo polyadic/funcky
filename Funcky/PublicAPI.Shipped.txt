@@ -100,6 +100,7 @@ Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> oth
 Funcky.Monads.Result<TValidResult>.Match(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
 Funcky.Monads.Result<TValidResult>.Select<TResult>(System.Func<TValidResult, TResult>! selector) -> Funcky.Monads.Result<TResult>
+Funcky.Monads.Result<TValidResult>.SelectMany<TResult>(System.Func<TValidResult, Funcky.Monads.Result<TResult>>! resultSelector) -> Funcky.Monads.Result<TResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.Func<TValidResult, Funcky.Monads.Result<TSelectedResult>>! selectedResultSelector, System.Func<TValidResult, TSelectedResult, TResult>! resultSelector) -> Funcky.Monads.Result<TResult>
 Funcky.NoDelayRetryPolicy
 Funcky.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
