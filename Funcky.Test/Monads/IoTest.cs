@@ -8,7 +8,7 @@ namespace Funcky.Test.Monads
 {
     public sealed class IoTest
     {
-        [Fact]
+        [Fact(Skip = "interactive test")]
         public void Test()
         {
             Io<int> query = from unit1 in Io.Return(() => Console.WriteLine("File path:"))
