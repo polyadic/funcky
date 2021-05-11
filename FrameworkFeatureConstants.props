@@ -6,4 +6,7 @@
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0'">
 		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED</DefineConstants>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>
+	</PropertyGroup>
 </Project>

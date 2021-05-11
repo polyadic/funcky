@@ -1,8 +1,12 @@
 using System;
 using System.Diagnostics.Contracts;
 #if SET_CURRENT_STACK_TRACE_SUPPORTED
-using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+#if STACK_TRACE_HIDDEN_SUPPORTED
+using System.Diagnostics;
+#else
+using System.Runtime.CompilerServices;
+#endif
 #else
 using System.Diagnostics;
 #endif
@@ -40,8 +44,11 @@ namespace Funcky.Monads
         // Methods with AggressiveInlining are always excluded from the stack trace.
         // This is required for <c>SetCurrentStackTrace</c> to work properly.
         // See: https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L347
-        // TODO: Use StackTraceHiddenAttribute, once it's released (probably in .NET 6)
+        #if STACK_TRACE_HIDDEN_SUPPORTED
+        [StackTraceHidden]
+        #else
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        #endif
         #endif
         public static Result<TValidResult> Error(Exception item)
         {
