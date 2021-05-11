@@ -10,9 +10,9 @@ namespace Funcky.Monads
         public static Func<Unit> Return(Action action)
             => ()
                 =>
-            {
-                action();
-                return Unit.Value;
-            };
+                {
+                    action();
+                    return Unit.Value;
+                };
     }
 }
