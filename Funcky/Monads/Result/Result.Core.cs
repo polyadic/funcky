@@ -15,7 +15,9 @@ namespace Funcky.Monads
 {
     public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
     {
+        #if !SET_CURRENT_STACK_TRACE_SUPPORTED
         private const int SkipLowestStackFrame = 1;
+        #endif
 
         private readonly TValidResult _result;
         private readonly Exception? _error;
