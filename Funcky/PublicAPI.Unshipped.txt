@@ -4,6 +4,10 @@ Funcky.Monads.FuncExtensions
 Funcky.Monads.Io
 Funcky.Monads.Io<T>
 Funcky.Monads.IoExtensions
+Funcky.Monads.Lazy
+Funcky.Monads.Reader<TEnvironment, TResult>
+Funcky.Monads.Reader<TEnvironment>
+Funcky.Monads.ReaderExtensions
 Funcky.Monads.State
 Funcky.Monads.State<TState, T>
 Funcky.Monads.StateExtensions
@@ -84,6 +88,14 @@ static Funcky.Monads.Io.Return<TResult>(System.Func<TResult>! function) -> Funck
 static Funcky.Monads.IoExtensions.Io<TSource>(this TSource value) -> Funcky.Monads.Io<TSource>!
 static Funcky.Monads.IoExtensions.Select<TSource, TResult>(this Funcky.Monads.Io<TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Io<TResult>!
 static Funcky.Monads.IoExtensions.SelectMany<TSource, TSelector, TResult>(this Funcky.Monads.Io<TSource>! source, System.Func<TSource, Funcky.Monads.Io<TSelector>!>! selector, System.Func<TSource, TSelector, TResult>! resultSelector) -> Funcky.Monads.Io<TResult>!
+static Funcky.Monads.Lazy.Return(System.Action! action) -> System.Lazy<Funcky.Unit>!
+static Funcky.Monads.Lazy.Return<TResult>(System.Func<TResult>! function) -> System.Lazy<TResult>!
+static Funcky.Monads.Reader<TEnvironment>.Return(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
+static Funcky.Monads.Reader<TEnvironment>.Return<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.ReaderExtensions.Reader<TEnvironment, TSource>(this TSource value) -> Funcky.Monads.Reader<TEnvironment, TSource>!
+static Funcky.Monads.ReaderExtensions.Select<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelector, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TSelector>!>! selector, System.Func<TSource, TSelector, TResult>! resultSelector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
 static Funcky.Monads.State.GetState<TState>() -> Funcky.Monads.State<TState, TState>!
 static Funcky.Monads.State.SetState<TState>(TState newState) -> Funcky.Monads.State<TState, Funcky.Unit>!
 static Funcky.Monads.StateExtensions.Select<TState, TSource, TResult>(this Funcky.Monads.State<TState, TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.State<TState, TResult>!

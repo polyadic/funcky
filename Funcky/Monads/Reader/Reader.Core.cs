@@ -1,4 +1,5 @@
 using System;
+using Funcky.Extensions;
 
 namespace Funcky.Monads
 {
@@ -12,10 +13,6 @@ namespace Funcky.Monads
 
         public static Reader<TEnvironment, Unit> Return(Action<TEnvironment> action)
             => environment
-                =>
-                {
-                    action(environment);
-                    return Unit.Value;
-                };
+                => action.ToUnitFunc()(environment);
     }
 }

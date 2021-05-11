@@ -1,4 +1,5 @@
 using System;
+using Funcky.Extensions;
 
 namespace Funcky.Monads
 {
@@ -8,11 +9,6 @@ namespace Funcky.Monads
             => function;
 
         public static Func<Unit> Return(Action action)
-            => ()
-                =>
-                {
-                    action();
-                    return Unit.Value;
-                };
+            => action.ToUnitFunc();
     }
 }

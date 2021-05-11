@@ -2,7 +2,7 @@ using System;
 
 namespace Funcky.Monads
 {
-    public static class StateExtensions
+    public static partial class StateExtensions
     {
         public static State<TState, TResult> SelectMany<TState, TSource, TSelector, TResult>(
             this State<TState, TSource> source,
