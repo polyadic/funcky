@@ -21,6 +21,7 @@ namespace Funcky.SourceGenerator.VariadicFunctions
         private static void AddVariadicFunctionalFunction(GeneratorExecutionContext context, int instances, IVariadicFunctionTemplate template)
         {
             var source = $"namespace Funcky\n" +
+                         $"#nullable enable\n" +
                          $"{{\n" +
                          $"    public static partial class Functional\n" +
                          $"    {{\n" +
