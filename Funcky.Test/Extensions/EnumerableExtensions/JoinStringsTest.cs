@@ -14,8 +14,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var empty = Enumerable.Empty<string>();
 
-            Assert.Equal(string.Empty, empty.JoinStrings(", "));
-            Assert.Equal(string.Empty, empty.JoinStrings(','));
+            Assert.Equal(string.Empty, empty.JoinToString(", "));
+            Assert.Equal(string.Empty, empty.JoinToString(','));
         }
 
         [Fact]
@@ -23,8 +23,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var singleElement = Sequence.Return("Alpha");
 
-            Assert.Equal("Alpha", singleElement.JoinStrings(", "));
-            Assert.Equal("Alpha", singleElement.JoinStrings(','));
+            Assert.Equal("Alpha", singleElement.JoinToString(", "));
+            Assert.Equal("Alpha", singleElement.JoinToString(','));
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var strings = new List<string> { "Alpha", "Beta", "Gamma" };
 
-            Assert.Equal("Alpha, Beta, Gamma", strings.JoinStrings(", "));
-            Assert.Equal("Alpha,Beta,Gamma", strings.JoinStrings(','));
+            Assert.Equal("Alpha, Beta, Gamma", strings.JoinToString(", "));
+            Assert.Equal("Alpha,Beta,Gamma", strings.JoinToString(','));
         }
 
         [Fact]
@@ -41,8 +41,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var strings = new List<int> { 1, 2, 3 };
 
-            Assert.Equal("1, 2, 3", strings.JoinStrings(", "));
-            Assert.Equal("1,2,3", strings.JoinStrings(','));
+            Assert.Equal("1, 2, 3", strings.JoinToString(", "));
+            Assert.Equal("1,2,3", strings.JoinToString(','));
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var strings = new List<string?> { "Alpha", null, "Gamma" };
 
-            Assert.Equal("Alpha, , Gamma", strings.JoinStrings(", "));
-            Assert.Equal("Alpha,,Gamma", strings.JoinStrings(','));
+            Assert.Equal("Alpha, , Gamma", strings.JoinToString(", "));
+            Assert.Equal("Alpha,,Gamma", strings.JoinToString(','));
         }
     }
 }
