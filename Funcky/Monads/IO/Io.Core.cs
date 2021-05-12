@@ -1,5 +1,5 @@
 using System;
-using Funcky.Extensions;
+using static Funcky.Functional;
 
 namespace Funcky.Monads
 {
@@ -12,6 +12,6 @@ namespace Funcky.Monads
                 => function();
 
         public static Io<Unit> Return(Action action)
-            => new(action.ToUnitFunc());
+            => new(ActionToUnit(action));
     }
 }
