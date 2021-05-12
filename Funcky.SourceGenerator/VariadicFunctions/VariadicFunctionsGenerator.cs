@@ -13,6 +13,7 @@ namespace Funcky.SourceGenerator.VariadicFunctions
         public void Execute(GeneratorExecutionContext context)
         {
             AddVariadicFunctionalFunction(context, instances: 8, new NoOperationTemplate());
+            AddVariadicFunctionalFunction(context, instances: 8, new NoOperationAsyncTemplate());
             AddVariadicFunctionalFunction(context, instances: 4, new TrueTemplate());
             AddVariadicFunctionalFunction(context, instances: 4, new FalseTemplate());
         }
