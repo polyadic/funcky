@@ -12,14 +12,20 @@ namespace Funcky.Monads
         [Pure]
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
             => Match(
-                Either<TLeft, TResult>.Left,
-                right => Either<TLeft, TResult>.Right(selector(right)));
+                left: Either<TLeft, TResult>.Left,
+                right: right => Either<TLeft, TResult>.Right(selector(right)));
+
+        [Pure]
+        public Either<TLeft, TResult> SelectMany<TResult>(Func<TRight, Either<TLeft, TResult>> selector)
+            => Match(
+                left: Either<TLeft, TResult>.Left,
+                right: selector);
 
         [Pure]
         public Either<TLeft, TResult> SelectMany<TEither, TResult>(Func<TRight, Either<TLeft, TEither>> eitherSelector, Func<TRight, TEither, TResult> resultSelector)
             => Match(
-                Either<TLeft, TResult>.Left,
-                right => eitherSelector(right).Select(
-                    selectedRight => resultSelector(right, selectedRight)));
+                left: Either<TLeft, TResult>.Left,
+                right: right => eitherSelector(right).Select(
+                     selectedRight => resultSelector(right, selectedRight)));
     }
 }
