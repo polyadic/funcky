@@ -16,7 +16,12 @@ namespace Funcky.Extensions
         /// <param name="size">The desired size of the chunks.</param>
         /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
         [Pure]
+        #if NET6_0_OR_GREATER
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(IEnumerable<TSource> source, int size)
+        #else
         public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
+        #endif
             => Chunk(source, size, Identity);
 
         /// <summary>

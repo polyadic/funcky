@@ -14,7 +14,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            _ = Funcky.Extensions.EnumerableExtensions.Chunk(doNotEnumerate, 42);
+            _ = doNotEnumerate.Chunk(42);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numbers = Enumerable.Empty<int>();
 
-            var chunked = Funcky.Extensions.EnumerableExtensions.Chunk(numbers, 3);
+            var chunked = numbers.Chunk(3);
 
             Assert.Empty(chunked);
         }
@@ -32,7 +32,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numbers = new List<int> { 1 };
 
-            var chunked = Funcky.Extensions.EnumerableExtensions.Chunk(numbers, 3);
+            var chunked = numbers.Chunk(3);
 
             Assert.Collection(
                 chunked,
@@ -49,7 +49,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            var chunked = Funcky.Extensions.EnumerableExtensions.Chunk(numbers, 3);
+            var chunked = numbers.Chunk(3);
 
             Assert.Collection(
                 chunked,
@@ -85,7 +85,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<string> { "a", "b", "c", "d", "e", "g", "h", "i", "j" };
 
             var chunkSize = 4;
-            var chunked = Funcky.Extensions.EnumerableExtensions.Chunk(numbers, chunkSize);
+            var chunked = numbers.Chunk(chunkSize);
 
             Assert.Collection(
                 chunked,
