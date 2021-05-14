@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Funcky.Test.Monads
 {
-    public class ReaderTest
+    public sealed partial class ReaderTest
     {
         private string _sideEffect = string.Empty;
 
@@ -45,12 +45,6 @@ namespace Funcky.Test.Monads
 
             Assert.Equal(".effect.", _sideEffect);
         }
-
-        private static Reader<int, int> Add(int number)
-            => Reader<int>.Return(config => number + config);
-
-        private static Reader<int, int> Times(int number)
-            => Reader<int>.Return(config => number * config);
 
         private Reader<Configuration, Unit> AffectMember(string quotable)
             => Reader<Configuration>.Return((Action<Configuration>)(config => _sideEffect = $"{config.QuoteChar}{quotable}{config.QuoteChar}"));

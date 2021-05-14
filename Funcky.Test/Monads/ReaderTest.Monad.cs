@@ -3,9 +3,9 @@ using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Monads;
 
-namespace Funcky.Test.Monads.MonadLaws
+namespace Funcky.Test.Monads
 {
-    public class ReaderTest
+    public sealed partial class ReaderTest
     {
         [Property]
         public Property AssociativityHolds(int environment, Func<int, int> readerFunction)
