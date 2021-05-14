@@ -1,4 +1,5 @@
 #nullable enable
+Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Func<T, Funcky.Unit>! action) -> Funcky.Unit
 Funcky.Extensions.ValueWithPrevious<TValue>
 Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void
