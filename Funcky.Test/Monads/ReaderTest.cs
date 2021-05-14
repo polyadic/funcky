@@ -1,35 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FsCheck;
-using FsCheck.Xunit;
 using Funcky.Monads;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Funcky.Test.Monads
 {
     public class ReaderTest
     {
         private string _sideEffect = string.Empty;
-
-        [Property]
-        public Property AssociativityHolds()
-        {
-            return true.ToProperty();
-        }
-
-        [Property]
-        public Property RightIdentityHolds()
-        {
-            return true.ToProperty();
-        }
-
-        [Property]
-        public Property LeftIdentityHolds()
-        {
-            return true.ToProperty();
-        }
 
         [Fact]
         public void YouCanApplyEnvironmentToReaderMonad()
@@ -67,6 +46,12 @@ namespace Funcky.Test.Monads
             Assert.Equal(".effect.", _sideEffect);
         }
 
+        private static Reader<int, int> Add(int number)
+            => Reader<int>.Return(config => number + config);
+
+        private static Reader<int, int> Times(int number)
+            => Reader<int>.Return(config => number * config);
+
         private Reader<Configuration, Unit> AffectMember(string quotable)
             => Reader<Configuration>.Return((Action<Configuration>)(config => _sideEffect = $"{config.QuoteChar}{quotable}{config.QuoteChar}"));
 
@@ -76,13 +61,13 @@ namespace Funcky.Test.Monads
                from e in Quote(end)
                select $"{s}{m}{e}";
 
-        private static Reader<Configuration, string> QuotedList(IEnumerable<string> quotables)
-            => from q in Quote(quotables)
+        private static Reader<Configuration, string> QuotedList(IEnumerable<string> toQuote)
+            => from q in Quote(toQuote)
                select string.Join(", ", q);
 
-        private static Reader<Configuration, IEnumerable<string>> Quote(IEnumerable<string> quotables)
-            => quotables
-                .Select(q => Quote(q))
+        private static Reader<Configuration, IEnumerable<string>> Quote(IEnumerable<string> toQuote)
+            => toQuote
+                .Select(Quote)
                 .Sequence();
 
         private static Reader<Configuration, string> Quote(string quotable)

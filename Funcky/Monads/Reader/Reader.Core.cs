@@ -14,5 +14,9 @@ namespace Funcky.Monads
         public static Reader<TEnvironment, Unit> Return(Action<TEnvironment> action)
             => environment
                 => ActionToUnit(action)(environment);
+
+        public static Reader<TEnvironment, TSource> Return<TSource>(TSource value)
+            => _
+                => value;
     }
 }

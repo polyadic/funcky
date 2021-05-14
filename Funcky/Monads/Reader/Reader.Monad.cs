@@ -9,6 +9,11 @@ namespace Funcky.Monads
             => source
                 .SelectMany(value => selector(value).Reader<TEnvironment, TResult>(), (_, result) => result);
 
+        public static Reader<TEnvironment, TResult> SelectMany<TEnvironment, TSource, TResult>(
+            this Reader<TEnvironment, TSource> source,
+            Func<TSource, Reader<TEnvironment, TResult>> selector)
+            => source.SelectMany(selector, (_, result) => result);
+
         public static Reader<TEnvironment, TResult> SelectMany<TEnvironment, TSource, TSelector, TResult>(
             this Reader<TEnvironment, TSource> source,
             Func<TSource, Reader<TEnvironment, TSelector>> selector,
@@ -16,7 +21,7 @@ namespace Funcky.Monads
                 => environment
                     =>
                     {
-                        TSource value = source(environment);
+                        var value = source(environment);
                         return resultSelector(value, selector(value)(environment));
                     };
 
