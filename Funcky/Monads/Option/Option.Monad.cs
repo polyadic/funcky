@@ -20,11 +20,11 @@ namespace Funcky.Monads
                  some: selector);
 
         [Pure]
-        public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> selector, Func<TItem, TMaybe, TResult> resultSelector)
+        public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> maybeSelector, Func<TItem, TMaybe, TResult> resultSelector)
             where TResult : notnull
             where TMaybe : notnull
             => SelectMany(
-                 item => selector(item).Select(
+                 item => maybeSelector(item).Select(
                      maybe => resultSelector(item, maybe)));
     }
 }
