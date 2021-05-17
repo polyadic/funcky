@@ -71,8 +71,8 @@ static Funcky.Functional.UnitToAction<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4
 static Funcky.Functional.UnitToAction<T1, T2, T3>(System.Func<T1, T2, T3, Funcky.Unit>! action) -> System.Action<T1, T2, T3>!
 static Funcky.Functional.UnitToAction<T1, T2>(System.Func<T1, T2, Funcky.Unit>! action) -> System.Action<T1, T2>!
 static Funcky.Functional.UnitToAction<T1>(System.Func<T1, Funcky.Unit>! action) -> System.Action<T1>!
-static Funcky.Monads.Reader<TEnvironment>.Return(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
-static Funcky.Monads.Reader<TEnvironment>.Return<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
+static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.Reader<TEnvironment>.Return<TSource>(TSource value) -> Funcky.Monads.Reader<TEnvironment, TSource>!
 static Funcky.Monads.ReaderExtensions.Reader<TEnvironment, TSource>(this TSource value) -> Funcky.Monads.Reader<TEnvironment, TSource>!
 static Funcky.Monads.ReaderExtensions.Select<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
