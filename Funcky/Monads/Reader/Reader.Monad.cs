@@ -7,7 +7,7 @@ namespace Funcky.Monads
         public static Reader<TEnvironment, TResult> Select<TEnvironment, TSource, TResult>(
             this Reader<TEnvironment, TSource> source, Func<TSource, TResult> selector)
             => source
-                .SelectMany(value => selector(value).Reader<TEnvironment, TResult>(), (_, result) => result);
+                .SelectMany(value => Reader<TEnvironment>.Return(selector(value)), (_, result) => result);
 
         public static Reader<TEnvironment, TResult> SelectMany<TEnvironment, TSource, TResult>(
             this Reader<TEnvironment, TSource> source,
@@ -25,8 +25,13 @@ namespace Funcky.Monads
                         return resultSelector(value, selector(value)(environment));
                     };
 
-        public static Reader<TEnvironment, TSource> Reader<TEnvironment, TSource>(this TSource value)
-            => _
-                => value;
+        public static Reader<TEnvironment, TSource> ToReader<TEnvironment, TSource>(this TSource value)
+            => Reader<TEnvironment>.Return(value);
+
+        public static Reader<TEnvironment, TSource> ToReader<TEnvironment, TSource>(this Func<TEnvironment, TSource> func)
+            => Reader<TEnvironment>.FromFunc(func);
+
+        public static Reader<TEnvironment, Unit> ToReader<TEnvironment>(this Action<TEnvironment> action)
+            => Reader<TEnvironment>.FromAction(action);
     }
 }

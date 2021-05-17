@@ -47,7 +47,7 @@ namespace Funcky.Test.Monads
         }
 
         private Reader<Configuration, Unit> AffectMember(string quotable)
-            => Reader<Configuration>.Return((Action<Configuration>)(config => _sideEffect = $"{config.QuoteChar}{quotable}{config.QuoteChar}"));
+            => Reader<Configuration>.FromAction(config => _sideEffect = $"{config.QuoteChar}{quotable}{config.QuoteChar}");
 
         private static Reader<Configuration, string> QuoteMany(string start, string middle, string end)
             => from s in Quote(start)
@@ -65,7 +65,7 @@ namespace Funcky.Test.Monads
                 .Sequence();
 
         private static Reader<Configuration, string> Quote(string quotable)
-            => Reader<Configuration>.Return(config => $"{config.QuoteChar}{quotable}{config.QuoteChar}");
+            => Reader<Configuration>.FromFunc(config => $"{config.QuoteChar}{quotable}{config.QuoteChar}");
 
         private record Configuration(char QuoteChar);
     }
