@@ -22,7 +22,7 @@ namespace Funcky.Test.Monads
         {
             var reader = Reader<int>.Return(readerFunction);
 
-            return (reader.SelectMany(Reader<int>.Return)(environment) == reader(environment)).ToProperty();
+            return (reader.SelectMany(Reader<int>.Return).Invoke(environment) == reader.Invoke(environment)).ToProperty();
         }
 
         [Property]
@@ -30,7 +30,7 @@ namespace Funcky.Test.Monads
         {
             var reader = value.Reader<int, int>();
 
-            return (reader.SelectMany(Add)(environment) == Add(value)(environment)).ToProperty();
+            return (reader.SelectMany(Add).Invoke(environment) == Add(value).Invoke(environment)).ToProperty();
         }
 
         private static Reader<int, int> Add(int number)
