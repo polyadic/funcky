@@ -69,4 +69,4 @@ static Funcky.Functional.UnitToAction<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4
 static Funcky.Functional.UnitToAction<T1, T2, T3>(System.Func<T1, T2, T3, Funcky.Unit>! action) -> System.Action<T1, T2, T3>!
 static Funcky.Functional.UnitToAction<T1, T2>(System.Func<T1, T2, Funcky.Unit>! action) -> System.Action<T1, T2>!
 static Funcky.Functional.UnitToAction<T1>(System.Func<T1, Funcky.Unit>! action) -> System.Action<T1>!
-static Funcky.Monads.Lazy.Lazy.Return<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!
+static Funcky.Monads.Lazy.Lazy.FromFunc<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!
