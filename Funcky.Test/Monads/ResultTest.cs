@@ -120,6 +120,36 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
+        public void StackTraceIsPreservedWhenProjectingAResultUsingSelect()
+        {
+            const int arbitraryNumberOfStackFrames = 2;
+            var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
+
+            var exception = FunctionalAssert.IsError(result);
+            var stackTrace = exception.StackTrace;
+
+            var exceptionAfterProjection = FunctionalAssert.IsError(result.Select(Identity));
+            var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
+
+            Assert.Equal(stackTrace, stackTraceAfterProjection);
+        }
+
+        [Fact]
+        public void StackTraceIsPreservedWhenProjectingAResultUsingSelectMany()
+        {
+            const int arbitraryNumberOfStackFrames = 2;
+            var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
+
+            var exception = FunctionalAssert.IsError(result);
+            var stackTrace = exception.StackTrace;
+
+            var exceptionAfterProjection = FunctionalAssert.IsError(result.SelectMany(Result.Return));
+            var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
+
+            Assert.Equal(stackTrace, stackTraceAfterProjection);
+        }
+
+        [Fact]
         public void SelectManyOnlyCallsSelectorWhenOk()
         {
             static Result<int> GetLength(string input) => Result.Ok(input.Length);
