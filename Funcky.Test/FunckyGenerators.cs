@@ -1,5 +1,7 @@
+using System;
 using FsCheck;
 using Funcky.Monads;
+using Result = Funcky.Monads.Result;
 
 namespace Funcky.Test
 {
@@ -11,5 +13,25 @@ namespace Funcky.Test
             => Arb.From(Gen.OneOf(
                 Arb.Generate<int>().Select(Either<int, int>.Left),
                 Arb.Generate<int>().Select(Either<int, int>.Right)));
+
+        public static Arbitrary<Result<int>> ArbitraryResultOfInt() => Arb.From(Gen.OneOf(
+            Arb.Generate<int>().Select(Result.Ok),
+            Arb.Generate<string>().Select(message => Result<int>.Error(new EquatableException(message)))));
+
+        private sealed class EquatableException : Exception, IEquatable<EquatableException>
+        {
+            public EquatableException(string? message)
+                : base(message)
+            {
+            }
+
+            public override bool Equals(object? obj)
+                => ReferenceEquals(this, obj) || (obj is EquatableException other && Equals(other));
+
+            public bool Equals(EquatableException? other)
+                => other is not null && Message == other.Message;
+
+            public override int GetHashCode() => HashCode.Combine(Message);
+        }
     }
 }
