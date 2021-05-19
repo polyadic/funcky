@@ -16,5 +16,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
         <PackageReference Include="Funcky" />
+        <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
 </Project>
