@@ -15,10 +15,10 @@ namespace Funcky.Monads
 
         [Pure]
         public static Reader<TEnvironment, TResult> FromFunc<TResult>(Func<TEnvironment, TResult> function)
-                => function.Invoke;
+            => function.Invoke;
 
         [Pure]
         public static Reader<TEnvironment, Unit> FromAction(Action<TEnvironment> action)
-                => ActionToUnit(action).Invoke;
+            => ActionToUnit(action).Invoke;
     }
 }
