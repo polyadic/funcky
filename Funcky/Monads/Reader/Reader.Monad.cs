@@ -28,17 +28,5 @@ namespace Funcky.Monads
                         var value = source(environment);
                         return resultSelector(value, selector(value)(environment));
                     };
-
-        [Pure]
-        public static Reader<TEnvironment, TSource> ToReader<TEnvironment, TSource>(this TSource value)
-            => Reader<TEnvironment>.Return(value);
-
-        [Pure]
-        public static Reader<TEnvironment, TSource> ToReader<TEnvironment, TSource>(this Func<TEnvironment, TSource> func)
-            => Reader<TEnvironment>.FromFunc(func);
-
-        [Pure]
-        public static Reader<TEnvironment, Unit> ToReader<TEnvironment>(this Action<TEnvironment> action)
-            => Reader<TEnvironment>.FromAction(action);
     }
 }
