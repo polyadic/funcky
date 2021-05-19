@@ -1,4 +1,5 @@
 #nullable enable
+Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions

@@ -5,7 +5,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public sealed class EitherTest
+    public sealed partial class EitherTest
     {
         [Fact]
         public void CreateEitherLeftAndMatchCorrectly()

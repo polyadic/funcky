@@ -9,7 +9,7 @@ using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {
-    public sealed class ResultTest
+    public sealed partial class ResultTest
     {
         [Fact]
         public void CreateResultOkAndMatchCorrectly()
@@ -117,6 +117,36 @@ namespace Funcky.Test.Monads
             const int arbitraryNumberOfStackFrames = 0;
             var exception = FunctionalAssert.IsError(InterestingStackTrace(arbitraryNumberOfStackFrames));
             IsInterestingStackTraceFirst(exception);
+        }
+
+        [Fact]
+        public void StackTraceIsPreservedWhenProjectingAResultUsingSelect()
+        {
+            const int arbitraryNumberOfStackFrames = 2;
+            var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
+
+            var exception = FunctionalAssert.IsError(result);
+            var stackTrace = exception.StackTrace;
+
+            var exceptionAfterProjection = FunctionalAssert.IsError(result.Select(Identity));
+            var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
+
+            Assert.Equal(stackTrace, stackTraceAfterProjection);
+        }
+
+        [Fact]
+        public void StackTraceIsPreservedWhenProjectingAResultUsingSelectMany()
+        {
+            const int arbitraryNumberOfStackFrames = 2;
+            var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
+
+            var exception = FunctionalAssert.IsError(result);
+            var stackTrace = exception.StackTrace;
+
+            var exceptionAfterProjection = FunctionalAssert.IsError(result.SelectMany(Result.Return));
+            var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
+
+            Assert.Equal(stackTrace, stackTraceAfterProjection);
         }
 
         [Fact]
