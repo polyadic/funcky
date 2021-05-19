@@ -17,37 +17,24 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static IAsyncEnumerable<TOutput> WhereSelect<TSource, TOutput>(this IAsyncEnumerable<TSource> source, Func<TSource, Option<TOutput>> selector)
             where TOutput : notnull
-            => source.WhereSelectAwaitWithCancellation((item, _) => new ValueTask<Option<TOutput>>(selector(item)));
+            => source.Select(selector).SelectMany(ToAsyncEnumerable);
 
         /// <inheritdoc cref="WhereSelect{TSource,TOutput}"/>
         [Pure]
         public static IAsyncEnumerable<TOutput> WhereSelectAwait<TSource, TOutput>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<Option<TOutput>>> selector)
             where TOutput : notnull
-            => source.WhereSelectAwaitWithCancellation((item, _) => selector(item));
+            => source.SelectAwait(selector).SelectMany(ToAsyncEnumerable);
 
         /// <inheritdoc cref="WhereSelect{TSource,TOutput}"/>
         [Pure]
         public static IAsyncEnumerable<TOutput> WhereSelectAwaitWithCancellation<TSource, TOutput>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector)
             where TOutput : notnull
-            => AsyncEnumerable.Create(cancellationToken => WhereSelectAwaitWithCancellationInternal(source, selector, cancellationToken));
+            => source.SelectAwaitWithCancellation(selector).SelectMany(ToAsyncEnumerable);
 
-#pragma warning disable 8425
-        private static async IAsyncEnumerator<TOutput> WhereSelectAwaitWithCancellationInternal<TSource, TOutput>(
-            IAsyncEnumerable<TSource> source,
-            Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
-            CancellationToken cancellationToken)
-            where TOutput : notnull
-        {
-            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-            {
-                var projectedItem = await selector(item, cancellationToken).ConfigureAwait(false);
-
-                foreach (var value in projectedItem.ToEnumerable())
-                {
-                    yield return value;
-                }
-            }
-        }
-#pragma warning restore 8425
+        private static IAsyncEnumerable<TItem> ToAsyncEnumerable<TItem>(Option<TItem> option)
+            where TItem : notnull
+            => option.Match(
+                none: AsyncEnumerable.Empty<TItem>,
+                some: AsyncSequence.Return);
     }
 }
