@@ -1,4 +1,5 @@
 #nullable enable
+Funcky.Monads.Lazy.Lazy
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
@@ -79,3 +80,5 @@ static Funcky.Monads.ReaderExtensions.Select<TEnvironment, TSource, TResult>(thi
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelector, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TSelector>!>! selector, System.Func<TSource, TSelector, TResult>! resultSelector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
+static Funcky.Monads.Lazy.Lazy.FromFunc<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!
+static Funcky.Monads.Lazy.Lazy.Return<TItem>(TItem value) -> System.Lazy<TItem>!
