@@ -12,7 +12,7 @@ namespace Funcky.Test
         public void SerializesNoneAsNull()
         {
             const string expectedJson = "null";
-            var json = JsonSerializer.Serialize(Option<string>.None());
+            var json = JsonSerializer.Serialize(Option<string>.None);
             Assert.Equal(expectedJson, json);
         }
 
@@ -20,7 +20,7 @@ namespace Funcky.Test
         public void SerializesNoneAsNullWhenNested()
         {
             const string expectedJson = @"{""BloodType"":""B-"",""EmergencyContact"":null}";
-            var json = JsonSerializer.Serialize(new MedicalId(bloodType: "B-", emergencyContact: Option<Person>.None()));
+            var json = JsonSerializer.Serialize(new MedicalId(bloodType: "B-", emergencyContact: Option<Person>.None));
             Assert.Equal(expectedJson, json);
         }
 
@@ -76,7 +76,7 @@ namespace Funcky.Test
         public void DeserializesNoneFromNullWhenNested()
         {
             const string json = @"{""BloodType"":""B-"",""EmergencyContact"":null}";
-            var expectedObject = new MedicalId(bloodType: "B-", emergencyContact: Option<Person>.None());
+            var expectedObject = new MedicalId(bloodType: "B-", emergencyContact: Option<Person>.None);
             Assert.Equal(expectedObject, JsonSerializer.Deserialize<MedicalId>(json));
         }
 

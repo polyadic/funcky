@@ -10,7 +10,7 @@ namespace Funcky.Test
         [Fact]
         public void GenerateWithFunctionThatImmediatelyReturnsNoneReturnsAnEmptyEnumerable()
         {
-            Assert.Empty(Sequence.Generate(0, _ => Option<int>.None()));
+            Assert.Empty(Sequence.Generate(0, _ => Option<int>.None));
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Funcky.Test
         {
             Assert.Equal(
                 Enumerable.Range(1, 10),
-                Sequence.Generate(0, i => i < 10 ? i + 1 : Option<int>.None()));
+                Sequence.Generate(0, i => i < 10 ? i + 1 : Option<int>.None));
         }
     }
 }

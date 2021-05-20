@@ -23,7 +23,7 @@ namespace Funcky.Monads
         }
 
         [Pure]
-        public static Option<TItem> None() => default;
+        public static Option<TItem> None => default;
 
         [Pure]
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
