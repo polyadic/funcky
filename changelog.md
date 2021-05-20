@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased Major
+* Removed in 2.x deprecated APIs 
+* Moved retry policies to a better namespace
+* Moved all Async Code to funcky-async
+
 ## Funcky 2.5.0
 ### Reader Monad
 This release includes the `Reader` monad including a bunch of factory methods
