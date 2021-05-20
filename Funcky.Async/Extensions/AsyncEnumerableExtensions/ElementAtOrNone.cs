@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
@@ -19,19 +20,6 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static async ValueTask<Option<TSource>> ElementAtOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, int index, CancellationToken cancellationToken = default)
             where TSource : notnull
-        {
-            var currentIndex = 0;
-            await foreach (var item in source.WithCancellation(cancellationToken))
-            {
-                if (currentIndex == index)
-                {
-                    return item;
-                }
-
-                currentIndex++;
-            }
-
-            return Option<TSource>.None();
-        }
+            => await source.Select(Option.Some).ElementAtOrDefaultAsync(index, cancellationToken);
     }
 }
