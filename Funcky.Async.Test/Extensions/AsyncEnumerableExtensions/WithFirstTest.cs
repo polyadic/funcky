@@ -1,0 +1,56 @@
+using System.Linq;
+using System.Threading.Tasks;
+using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
+using Xunit;
+
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
+{
+    public sealed class WithFirstTest
+    {
+        [Fact]
+        public void WithFirstIsEnumeratedLazily()
+        {
+            var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
+
+            _ = doNotEnumerate.WithFirst();
+        }
+
+        [Fact]
+        public async Task AnEmptySequenceWithFirstReturnsAnEmptySequence()
+        {
+            var emptySequence = AsyncEnumerable.Empty<string>();
+
+            Assert.False(await emptySequence.WithFirst().AnyAsync());
+        }
+
+        [Fact]
+        public async Task ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedFirst()
+        {
+            const string expectedValue = "Hello world!";
+            var oneElementSequence = AsyncEnumerable.Repeat(expectedValue, 1);
+
+            var sequenceWithFirst = oneElementSequence.WithFirst();
+            await foreach (var (value, isFirst) in sequenceWithFirst)
+            {
+                Assert.Equal(expectedValue, value);
+                Assert.True(isFirst);
+            }
+
+            Assert.True(await sequenceWithFirst.AnyAsync());
+        }
+
+        [Fact]
+        public async Task ASequenceWithMultipleElementsWithFirstMarksTheFirstElement()
+        {
+            const int length = 20;
+
+            var sequence = AsyncEnumerable.Range(1, length);
+
+            await foreach (var valueWithFirst in sequence.WithFirst())
+            {
+                Assert.Equal(valueWithFirst.Value == 1, valueWithFirst.IsFirst);
+            }
+        }
+    }
+}
