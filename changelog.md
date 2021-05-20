@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased Major
+* Removed in 2.x deprecated APIs 
+* Moved retry policies to a better namespace
+* Moved all Async Code to funcky-async
+
 ## Funcky 2.7.0 | Funcky.XUnit 1.0.0 | Funcky.Analyzers 1.1.0
 This release is the last non-breaking release for Funcky before 3.0.
 
