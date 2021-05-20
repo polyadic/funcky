@@ -10,6 +10,7 @@ Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Fu
 Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Funcky.Monads.Option<TValue> previous) -> void
 readonly Funcky.Extensions.ValueWithPrevious<TValue>.Previous -> Funcky.Monads.Option<TValue>
 readonly Funcky.Extensions.ValueWithPrevious<TValue>.Value -> TValue
+static Funcky.Extensions.EnumerableExtensions.Intersperse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource element) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collections.Generic.IEnumerable<T>! source, char separator) -> string!
 static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collections.Generic.IEnumerable<T>! source, string! separator) -> string!
 static Funcky.Extensions.EnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
