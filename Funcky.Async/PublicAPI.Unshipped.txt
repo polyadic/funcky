@@ -1,1 +1,4 @@
 #nullable enable
+Funcky.Async.Functional
+static Funcky.Async.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! producer) -> System.Threading.Tasks.ValueTask<TResult>
+static Funcky.Async.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! producer, Funcky.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>
