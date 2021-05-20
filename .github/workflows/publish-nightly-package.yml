@@ -12,8 +12,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build Funcky/Funcky.csproj --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true
+      run: dotnet build Funcky/Funcky.csproj --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true /p:GeneratePackageOnBuild=false
     - name: Pack Packages
-      run: dotnet pack Funcky/Funcky.csproj --configuration Release --output nupkg --version-suffix "-nightly.${{github.sha}}"
+      run: dotnet pack Funcky/Funcky.csproj --configuration Release --output nupkg --version-suffix "nightly.${{github.sha}}"
     - name: Push Package
       run: dotnet nuget push --source https://nuget.pkg.github.com/polyadic/index.json --api-key ${{secrets.GITHUB_TOKEN}} nupkg/Funcky.*.nupkg
