@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased Major
+* Removed in 2.x deprecated APIs 
+* Moved retry policies to a better namespace
+* Moved all Async Code to funcky-async
+
 ## Unreleased
 * The behaviour of the `Result.Error` constructor has been changed regarding exceptions
   with an already set stack trace. The original stack trace is now preserved.
