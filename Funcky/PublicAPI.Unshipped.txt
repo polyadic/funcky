@@ -20,4 +20,14 @@ Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRe
 Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
+static Funcky.Functional.False() -> bool
+static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
+static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
+static Funcky.Functional.False<T1, T2>(T1 ω1, T2 ω2) -> bool
+static Funcky.Functional.False<T1>(T1 ω1) -> bool
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
+static Funcky.Functional.True() -> bool
+static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
+static Funcky.Functional.True<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
+static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
+static Funcky.Functional.True<T1>(T1 ω1) -> bool
