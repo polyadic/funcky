@@ -23,7 +23,6 @@ Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRe
 Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
-static Funcky.Extensions.AsyncEnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Option<TItem>>! source) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
