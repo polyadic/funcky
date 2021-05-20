@@ -1,10 +1,6 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Funcky.Internal;
 
 namespace Funcky.Async.Extensions
 {
@@ -14,9 +10,7 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static IAsyncEnumerable<TSource> Intersperse<TSource>(this IAsyncEnumerable<TSource> source, TSource element)
             => source.WithFirst().SelectMany(item => item.IsFirst
-                ? Return(item.Value)
-                : Return(element).Append(item.Value));
-
-        private static IAsyncEnumerable<TSource> Return<TSource>(TSource item) => AsyncEnumerable.Repeat(item, 1);
+                ? AsyncSequence.Return(item.Value)
+                : AsyncSequence.Return(element).Append(item.Value));
     }
 }

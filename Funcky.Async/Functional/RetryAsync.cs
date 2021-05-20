@@ -12,8 +12,6 @@ namespace Funcky.Async
 {
     public static partial class Functional
     {
-        private const int FirstTry = 1;
-
         /// <summary>
         /// Calls the given <paramref name="producer"/> over and over until it returns a value.
         /// </summary>
@@ -30,8 +28,8 @@ namespace Funcky.Async
             where TResult : notnull
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await AsyncEnumerable
-                .Repeat(await producer(), FirstTry)
+            return await AsyncSequence
+                .Return(await producer())
                 .Concat(TailRetriesAsync(producer, retryPolicy, cancellationToken))
                 .WhereSelect(Identity)
                 .FirstOrNoneAsync(cancellationToken);

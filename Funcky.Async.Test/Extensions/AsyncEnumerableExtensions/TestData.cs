@@ -15,7 +15,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
             = AsyncEnumerable.Empty<string>();
 
         public static readonly IAsyncEnumerable<string> EnumerableWithOneItem
-            = AsyncEnumerable.Repeat(FirstItem, 1);
+            = AsyncSequence.Return(FirstItem);
 
         public static readonly IAsyncEnumerable<int> EnumerableTwoItems
             = new[] { 42, 1337 }.ToAsyncEnumerable();
