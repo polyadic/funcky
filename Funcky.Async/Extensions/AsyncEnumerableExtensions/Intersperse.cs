@@ -10,10 +10,7 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static IAsyncEnumerable<TSource> Intersperse<TSource>(this IAsyncEnumerable<TSource> source, TSource element)
             => source.WithFirst().SelectMany(item => item.IsFirst
-                ? Return(item.Value)
-                : Return(element).Append(item.Value));
-
-        private static IAsyncEnumerable<TSource> Return<TSource>(TSource item)
-            => AsyncSequence.Return(item);
+                ? AsyncSequence.Return(item.Value)
+                : AsyncSequence.Return(element).Append(item.Value));
     }
 }
