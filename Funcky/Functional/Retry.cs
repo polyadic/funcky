@@ -20,30 +20,15 @@ namespace Funcky
             => Sequence
                 .Return(producer())
                 .Concat(TailRetries(producer, retryPolicy))
-                .FirstOrDefault(IsSome);
-
-        public static async Task<Option<TResult>> RetryAsync<TResult>(Func<Task<Option<TResult>>> producer, IRetryPolicy retryPolicy)
-            where TResult : notnull
-            => await Sequence
-                .Return(producer())
-                .Concat(TailRetriesAsync(producer, retryPolicy))
-                .FirstOrDefault(IsSome, Option<TResult>.None());
+                .WhereSelect(Identity)
+                .FirstOrNone();
 
         private static IEnumerable<Option<TResult>> TailRetries<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
             => Retries(retryPolicy)
                 .Select(ProduceDelayed(producer, retryPolicy));
 
-        private static IEnumerable<Task<Option<TResult>>> TailRetriesAsync<TResult>(Func<Task<Option<TResult>>> producer, IRetryPolicy retryPolicy)
-            where TResult : notnull
-            => Retries(retryPolicy)
-                .Select(ProduceDelayedAsync(producer, retryPolicy));
-
         private static IEnumerable<int> Retries(IRetryPolicy retryPolicy) => Enumerable.Range(0, retryPolicy.MaxRetries);
-
-        private static bool IsSome<TResult>(Option<TResult> option)
-            where TResult : notnull
-            => option.Match(none: false, some: True);
 
         private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
@@ -53,30 +38,5 @@ namespace Funcky
 
                 return producer();
             };
-
-        private static Func<int, Task<Option<TResult>>> ProduceDelayedAsync<TResult>(Func<Task<Option<TResult>>> producer, IRetryPolicy retryPolicy)
-            where TResult : notnull
-            => async retryCount =>
-            {
-                await Task.Delay(retryPolicy.Duration(retryCount));
-                return await producer();
-            };
-
-        private static async Task<TItem> FirstOrDefault<TItem>(
-            this IEnumerable<Task<TItem>> enumerable,
-            Func<TItem, bool> predicate,
-            TItem defaultValue)
-        {
-            foreach (var item in enumerable)
-            {
-                var awaitedItem = await item;
-                if (predicate(awaitedItem))
-                {
-                    return awaitedItem;
-                }
-            }
-
-            return defaultValue;
-        }
     }
 }
