@@ -40,7 +40,7 @@ namespace Funcky.Test.Monads
             => new()
             {
                 Option.Some(10),
-                Option<int>.None(),
+                Option<int>.None,
             };
     }
 }

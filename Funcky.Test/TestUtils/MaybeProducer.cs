@@ -22,7 +22,7 @@ namespace Funcky.Test.TestUtils
 
             return IsReady()
                 ? _result
-                : Option<T>.None();
+                : Option<T>.None;
         }
 
         private bool IsReady()

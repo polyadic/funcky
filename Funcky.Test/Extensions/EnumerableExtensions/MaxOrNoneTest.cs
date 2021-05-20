@@ -55,7 +55,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt32sWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var numbers = new List<Option<int>> { Option<int>.None(), Option<int>.None(), Option<int>.None() };
+            var numbers = new List<Option<int>> { Option<int>.None, Option<int>.None, Option<int>.None };
 
             FunctionalAssert.IsNone(numbers.MaxOrNone());
         }
@@ -63,7 +63,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt32sMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var numbers = new List<Option<int>> { 1, 42, Option<int>.None(), 9999, 5, Option<int>.None(), Option<int>.None(), 1337, -13, -1, 0, -1000, Option<int>.None() };
+            var numbers = new List<Option<int>> { 1, 42, Option<int>.None, 9999, 5, Option<int>.None, Option<int>.None, 1337, -13, -1, 0, -1000, Option<int>.None };
 
             FunctionalAssert.IsSome(9999, numbers.MaxOrNone());
             Assert.Equal(9999, numbers.WhereSelect(Identity).Max());
@@ -114,7 +114,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt64sWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var numbers = new List<Option<long>> { Option<long>.None(), Option<long>.None(), Option<long>.None() };
+            var numbers = new List<Option<long>> { Option<long>.None, Option<long>.None, Option<long>.None };
 
             FunctionalAssert.IsNone(numbers.MaxOrNone());
         }
@@ -122,7 +122,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionInt64sMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None(), 9999L, 5L, Option<long>.None(), Option<long>.None(), 1337L, -13L, -1L, 0L, -1000L, Option<long>.None() };
+            var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None, 9999L, 5L, Option<long>.None, Option<long>.None, 1337L, -13L, -1L, 0L, -1000L, Option<long>.None };
 
             FunctionalAssert.IsSome(9999L, numbers.MaxOrNone());
             Assert.Equal(9999L, numbers.WhereSelect(Identity).Max());
@@ -173,7 +173,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionSinglesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var numbers = new List<Option<float>> { Option<float>.None(), Option<float>.None(), Option<float>.None() };
+            var numbers = new List<Option<float>> { Option<float>.None, Option<float>.None, Option<float>.None };
 
             FunctionalAssert.IsNone(numbers.MaxOrNone());
         }
@@ -181,7 +181,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionSinglesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var numbers = new List<Option<float>> { 1.8f, 42.52f, Option<float>.None(), 9999.0001f, 5f, Option<float>.None(), Option<float>.None(), 1337.1337f, -13f, -1f, -0f, -1000.45f, Option<float>.None() };
+            var numbers = new List<Option<float>> { 1.8f, 42.52f, Option<float>.None, 9999.0001f, 5f, Option<float>.None, Option<float>.None, 1337.1337f, -13f, -1f, -0f, -1000.45f, Option<float>.None };
 
             FunctionalAssert.IsSome(9999.0001f, numbers.MaxOrNone());
             Assert.Equal(9999, numbers.WhereSelect(Identity).Max());
@@ -269,7 +269,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDoublesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var numbers = new List<Option<double>> { Option<double>.None(), Option<double>.None(), Option<double>.None() };
+            var numbers = new List<Option<double>> { Option<double>.None, Option<double>.None, Option<double>.None };
 
             FunctionalAssert.IsNone(numbers.MaxOrNone());
         }
@@ -277,7 +277,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDoublesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var numbers = new List<Option<double>> { 1.8, 42.52, Option<double>.None(), 9999.0001, 5d, Option<double>.None(), Option<double>.None(), 1337.1337, -13d, -1d, -0d, -1000.45, Option<double>.None() };
+            var numbers = new List<Option<double>> { 1.8, 42.52, Option<double>.None, 9999.0001, 5d, Option<double>.None, Option<double>.None, 1337.1337, -13d, -1d, -0d, -1000.45, Option<double>.None };
 
             FunctionalAssert.IsSome(9999.0001, numbers.MaxOrNone());
             Assert.Equal(9999.0001, numbers.WhereSelect(Identity).Max());
@@ -365,7 +365,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDecimalsWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var numbers = new List<Option<decimal>> { Option<decimal>.None(), Option<decimal>.None(), Option<decimal>.None() };
+            var numbers = new List<Option<decimal>> { Option<decimal>.None, Option<decimal>.None, Option<decimal>.None };
 
             FunctionalAssert.IsNone(numbers.MaxOrNone());
         }
@@ -373,7 +373,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionDecimalsMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var numbers = new List<Option<decimal>> { 1.8m, 42.52m, Option<decimal>.None(), 9999.0001m, 5m, Option<decimal>.None(), Option<decimal>.None(), 1337.1337m, -13m, -1m, -0m, -1000.45m, Option<decimal>.None() };
+            var numbers = new List<Option<decimal>> { 1.8m, 42.52m, Option<decimal>.None, 9999.0001m, 5m, Option<decimal>.None, Option<decimal>.None, 1337.1337m, -13m, -1m, -0m, -1000.45m, Option<decimal>.None };
 
             FunctionalAssert.IsSome(9999.0001m, numbers.MaxOrNone());
             Assert.Equal(9999.0001m, numbers.WhereSelect(Identity).Max());
@@ -425,7 +425,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionGenericIComparablesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
-            var people = new List<Option<Person>> { Option<Person>.None(), Option<Person>.None(), Option<Person>.None() };
+            var people = new List<Option<Person>> { Option<Person>.None, Option<Person>.None, Option<Person>.None };
 
             FunctionalAssert.IsNone(people.MaxOrNone());
         }
@@ -433,7 +433,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceOfOptionGenericIComparablesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
-            var people = new List<Option<Person>> { new Person(42), new Person(18), Option<Person>.None(), new Person(72), new Person(33), Option<Person>.None(), Option<Person>.None(), new Person(21), Option<Person>.None() };
+            var people = new List<Option<Person>> { new Person(42), new Person(18), Option<Person>.None, new Person(72), new Person(33), Option<Person>.None, Option<Person>.None, new Person(21), Option<Person>.None };
 
             var person = FunctionalAssert.IsSome(people.MaxOrNone());
             Assert.Equal(person.Age, people.WhereSelect(Identity).Max()?.Age);
