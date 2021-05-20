@@ -39,7 +39,7 @@ namespace Funcky.Extensions
             }
             catch (TException)
             {
-                return Option<TResult>.None();
+                return Option<TResult>.None;
             }
         }
     }

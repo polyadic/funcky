@@ -30,7 +30,7 @@ namespace Funcky.Extensions
             => ()
                 => startIndex < text.Length
                 ? new SplitResult(text.Length + 1, text.Substring(startIndex))
-                : Option<SplitResult>.None();
+                : Option<SplitResult>.None;
 
         private static Func<int, Option<SplitResult>> NewLine(string text, int startIndex)
             => index

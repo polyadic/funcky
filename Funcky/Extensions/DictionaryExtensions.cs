@@ -12,7 +12,7 @@ namespace Funcky.Extensions
             where TValue : notnull
             => dictionary.TryGetValue(key, out var result)
                 ? result
-                : Option<TValue>.None();
+                : Option<TValue>.None;
 
         [Pure]
         public static Option<TValue> GetValueOrNone<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey readOnlyKey)
@@ -20,6 +20,6 @@ namespace Funcky.Extensions
             where TValue : notnull
             => dictionary.TryGetValue(readOnlyKey, out var result)
                 ? result
-                : Option<TValue>.None();
+                : Option<TValue>.None;
     }
 }
