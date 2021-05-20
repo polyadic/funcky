@@ -46,5 +46,19 @@ namespace Funcky.Test.FunctionalClass
             FunctionalAssert.IsSome(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
             Assert.Equal(numberOfRetries + 1, producer.Called);
         }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(15)]
+        [InlineData(90)]
+        public async Task RetryAsyncWithoutAnArgumentReturnsAlwaysAValueOrDoesNotReturn(int numberOfRetries)
+        {
+            const string produceString = "Hello world!";
+            var producer = new MaybeProducer<string>(numberOfRetries, produceString);
+
+            Assert.Equal(produceString, await RetryAsync(producer.ProduceAsync));
+        }
     }
 }
