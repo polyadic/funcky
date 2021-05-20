@@ -10,7 +10,7 @@ jobs:
     - uses: actions/setup-dotnet@v1
       name: Install Current .NET SDK
     - name: Add NuGet Source
-      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/OWNER/index.json"
+      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/polyadic/index.json"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
