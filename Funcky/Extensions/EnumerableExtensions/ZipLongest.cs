@@ -52,6 +52,6 @@ namespace Funcky.Extensions
             where TSource : notnull
             => enumerator.MoveNext()
                 ? enumerator.Current
-                : Option<TSource>.None();
+                : Option<TSource>.None;
     }
 }

@@ -108,3 +108,5 @@ static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelecto
 static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
 static Funcky.Monads.Lazy.FromFunc<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!
 static Funcky.Monads.Lazy.Return<TItem>(TItem value) -> System.Lazy<TItem>!
+static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.Option.None<TItem>() -> Funcky.Monads.Option<TItem>

@@ -23,7 +23,7 @@ namespace Funcky.Monads
         }
 
         [Pure]
-        public static Option<TItem> None() => default;
+        public static Option<TItem> None => default;
 
         [Pure]
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
@@ -77,6 +77,11 @@ namespace Funcky.Monads
 
     public static partial class Option
     {
+        [Pure]
+        public static Option<TItem> None<TItem>()
+            where TItem : notnull
+            => Option<TItem>.None;
+
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="item"/> is <c>null</c>.</exception>
         [Pure]
         public static Option<TItem> Some<TItem>(TItem item)

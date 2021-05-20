@@ -68,7 +68,7 @@ namespace Funcky.Extensions
         private static FindNextIndex IndexOfStringSeparator(string separator)
             => (text, startIndex)
                 => separator.Length == 0
-                    ? Option<(int Index, int SeparatorLength)>.None()
+                    ? Option<(int Index, int SeparatorLength)>.None
                     : text
                         .IndexOfOrNone(separator, startIndex, StringComparison.Ordinal)
                         .AndThen(index => (index, separator.Length));
@@ -78,7 +78,7 @@ namespace Funcky.Extensions
                 => separators
                     .AsEnumerable()
                     .Select(IndexOfAnyOrNone(text, startIndex))
-                    .Aggregate(Option<(int Index, int SeparatorLength)>.None(), FindClosestSeparator);
+                    .Aggregate(Option<(int Index, int SeparatorLength)>.None, FindClosestSeparator);
 
         private static Option<(int Index, int SeparatorLength)> FindClosestSeparator(
             Option<(int Index, int SeparatorLength)> result,
@@ -98,7 +98,7 @@ namespace Funcky.Extensions
         private static Func<string, Option<(int Index, int SeparatorLength)>> IndexOfAnyOrNone(string text, int startIndex)
             => separator
                 => separator.Length == 0
-                    ? Option<(int Index, int SeparatorLength)>.None()
+                    ? Option<(int Index, int SeparatorLength)>.None
                     : text.IndexOfOrNone(separator, startIndex, StringComparison.Ordinal).AndThen(index => (index, separator.Length));
 
         private static ExtractElement ExtractByIndex(FindNextIndex findNextIndex)
@@ -120,7 +120,7 @@ namespace Funcky.Extensions
             => (text, startIndex)
                 => startIndex <= text.Length
                     ? extractElement(text, startIndex)
-                    : Option<SplitResult>.None();
+                    : Option<SplitResult>.None;
 
         private static ExtractElement GetIndex(FindNextIndex getIndex)
             => (text, startIndex)
