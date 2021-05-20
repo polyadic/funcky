@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics.Contracts;
 using Funcky.Monads;
+#if !INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+using Funcky.Compatibility;
+#endif
 
 namespace Funcky.Extensions
 {
@@ -18,10 +21,9 @@ namespace Funcky.Extensions
         public static Option<int> IndexOfOrNone(this string haystack, char value, int startIndex, int count)
             => MapIndexToOption(haystack.IndexOf(value, startIndex, count));
 
-        #if INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
+        [Pure]
         public static Option<int> IndexOfOrNone(this string haystack, char value, StringComparison comparisonType)
             => MapIndexToOption(haystack.IndexOf(value, comparisonType));
-        #endif
 
         [Pure]
         public static Option<int> IndexOfOrNone(this string haystack, string value)
