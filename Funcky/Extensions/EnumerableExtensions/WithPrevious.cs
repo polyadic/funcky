@@ -13,7 +13,7 @@ namespace Funcky.Extensions
         public static IEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IEnumerable<TSource> source)
             where TSource : notnull
         {
-            var previous = Option<TSource>.None();
+            var previous = Option<TSource>.None;
 
             foreach (var value in source)
             {

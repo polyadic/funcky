@@ -41,7 +41,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TResult> MaxOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
             where TResult : notnull
-            => source.Select(selector).Aggregate(Option<TResult>.None(), AggregateMax);
+            => source.Select(selector).Aggregate(Option<TResult>.None, AggregateMax);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.

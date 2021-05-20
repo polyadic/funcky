@@ -13,7 +13,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateSequence<object>();
 
-            _ = doNotEnumerate.WhereSelect(_ => Option<object>.None());
+            _ = doNotEnumerate.WhereSelect(_ => Option<object>.None);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         private static Option<int> SquareEvenNumbers(int number)
-            => IsEven(number) ? number * number : Option<int>.None();
+            => IsEven(number) ? number * number : Option<int>.None;
 
         private static bool IsEven(int number)
             => number % 2 == 0;
