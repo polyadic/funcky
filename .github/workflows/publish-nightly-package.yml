@@ -1,5 +1,7 @@
 on: push
 
+name: Publish Nightly Packages
+
 jobs:
   publish:
     runs-on: ubuntu-latest
