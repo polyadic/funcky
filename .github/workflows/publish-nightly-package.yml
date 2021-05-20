@@ -1,4 +1,7 @@
-on: push
+on:
+  push:
+    branches:
+    - funcky3
 
 name: Publish Nightly Packages
 
