@@ -7,7 +7,7 @@ namespace Funcky.Extensions
         [Pure]
         private static Option<int> MapIndexToOption(int index)
             => index == NotFoundValue
-                ? Option<int>.None()
+                ? Option<int>.None
                 : index;
     }
 }
