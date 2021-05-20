@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Funcky.Monads;
 
 namespace Funcky.Test.TestUtils
@@ -15,17 +14,18 @@ namespace Funcky.Test.TestUtils
             _result = result;
         }
 
-        public int Called { get; private set; } = 0;
+        public int Called { get; private set; }
 
         public Option<T> Produce()
         {
             Called += 1;
 
-            return _retriesNeeded == (Called - 1)
+            return IsReady()
                 ? _result
                 : Option<T>.None();
         }
 
-        public Task<Option<T>> ProduceAsync() => Task.FromResult(Produce());
+        private bool IsReady()
+            => _retriesNeeded == Called - 1;
     }
 }
