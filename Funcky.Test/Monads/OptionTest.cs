@@ -32,7 +32,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenTheTypeConstructorNoneThenCreateNone()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
 
             Assert.Equal(typeof(int), none.GetType().GetGenericArguments().First());
         }
@@ -48,7 +48,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
         {
-            var maybe = Option<int>.None();
+            var maybe = Option<int>.None;
             var maybeBool =
                 from m in maybe
                 select m == 1337;
@@ -114,10 +114,10 @@ namespace Funcky.Test.Monads
             yield return new object[] { "Some(-1)", Option.Some(-1) };
             yield return new object[] { "Some(10000)", Option.Some(10E3) };
             yield return new object[] { "Some(string)", Option.Some("string") };
-            yield return new object[] { "None", Option<int>.None() };
-            yield return new object[] { "None", Option<string>.None() };
+            yield return new object[] { "None", Option<int>.None };
+            yield return new object[] { "None", Option<string>.None };
             yield return new object[] { "Some(Cool)", Option.Some(MyEnum.Cool) };
-            yield return new object[] { "None", Option<MyEnum>.None() };
+            yield return new object[] { "None", Option<MyEnum>.None };
         }
 
         [Theory]
@@ -141,9 +141,9 @@ namespace Funcky.Test.Monads
             => new()
             {
                 { Option.Some("foo"), Option.Some("foo"), True },
-                { Option<string>.None(), Option.Some("foo"), False },
-                { Option<string>.None(), Option<string>.None(), True },
-                { Option<string>.None(), Option<string>.None(), False },
+                { Option<string>.None, Option.Some("foo"), False },
+                { Option<string>.None, Option<string>.None, True },
+                { Option<string>.None, Option<string>.None, False },
             };
 
         [Theory]
@@ -172,7 +172,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenAMatchingStatementWhichThrowsAnExceptionThrowsTheSameException()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
 
             Assert.Throws<ArgumentNullException>(testCode: () =>
                 none.Match(
@@ -183,7 +183,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenANoneThenOrElseShouldReturnTheArgument()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
             var some = Option.Some(42);
 
             Assert.Equal(some, some.OrElse(none));
@@ -198,7 +198,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenAnOptionWithTheIdentityFunctionThenTheResultShouldBeTheSame()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
             var some = Option.Some(42);
 
             Assert.Equal(none, none.AndThen(Identity));
@@ -208,7 +208,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenAnOptionToAndThenWithAStatementThenItShouldCompile()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
             var some = Option.Some(42);
 
             none.AndThen(Statement);
@@ -218,7 +218,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenAnOptionAndAndAFuncToOptionItShouldBeFlattened()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
             var some = Option.Some(42);
 
             Assert.False(none.AndThen(_ => Option.Some(1337)).Match(false, v => v == 1337));
@@ -228,7 +228,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenANoneWithOrElseFuncWeGetTheCorrectValue()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
             var some = Option.Some(42);
 
             var maybe = none
@@ -285,7 +285,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void ToEnumerableReturnsEmptyEnumerableWhenOptionIsEmpty()
         {
-            var option = Option<int>.None();
+            var option = Option<int>.None;
             Assert.Empty(option.ToEnumerable());
         }
 
@@ -301,14 +301,14 @@ namespace Funcky.Test.Monads
         public void OptionCanBeCreatedFromReferenceType()
         {
             Assert.Equal(Option.Some("foo"), Option.FromNullable("foo"));
-            Assert.Equal(Option<string>.None(), Option.FromNullable<string>(null));
+            Assert.Equal(Option<string>.None, Option.FromNullable<string>(null));
         }
 
         [Fact]
         public void OptionCanBeCreatedFromNullableValueType()
         {
             Assert.Equal(Option.Some(10), Option.FromNullable((int?)10));
-            Assert.Equal(Option<int>.None(), Option.FromNullable((int?)null));
+            Assert.Equal(Option<int>.None, Option.FromNullable((int?)null));
         }
 
         [Theory]
@@ -322,7 +322,7 @@ namespace Funcky.Test.Monads
             => new()
             {
                 { Option.Some(1), Option.Some(1) },
-                { Option<int>.None(), Option<int>.None() },
+                { Option<int>.None, Option<int>.None },
             };
 
         [Theory]
@@ -335,10 +335,10 @@ namespace Funcky.Test.Monads
         public static TheoryData<Option<int>, Option<int>> NotEqualOptions()
             => new()
             {
-                { Option.Some(1), Option<int>.None() },
-                { Option<int>.None(), Option.Some(1) },
-                { Option<int>.None(), Option.Some(default(int)) },
-                { Option.Some(default(int)), Option<int>.None() },
+                { Option.Some(1), Option<int>.None },
+                { Option<int>.None, Option.Some(1) },
+                { Option<int>.None, Option.Some(default(int)) },
+                { Option.Some(default(int)), Option<int>.None },
                 { Option.Some(1), Option.Some(2) },
                 { Option.Some(2), Option.Some(1) },
             };
@@ -361,7 +361,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void InspectDoesNotExecuteSideEffectWhenOptionIsNone()
         {
-            var option = Option<int>.None();
+            var option = Option<int>.None;
             var sideEffect = false;
             var inspectedOption = option.Inspect(_ => sideEffect = true);
             Assert.False(sideEffect);

@@ -8,7 +8,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void TwoNoneOptionsAreEqual()
         {
-            Assert.Equal(Option<int>.None(), Option<int>.None(), OptionEqualityComparer.Create(new ThrowingEqualityComparer<int>()));
+            Assert.Equal(Option<int>.None, Option<int>.None, OptionEqualityComparer.Create(new ThrowingEqualityComparer<int>()));
         }
 
         [Theory]
@@ -21,10 +21,10 @@ namespace Funcky.Test.Monads
         public static TheoryData<Option<int>, Option<int>> SomeAndNoneAreNotEqualData()
             => new()
             {
-                { Option<int>.None(), Option.Some(13) },
-                { Option.Some(13), Option<int>.None() },
-                { Option<int>.None(), Option.Some(default(int)) },
-                { Option.Some(default(int)), Option<int>.None() },
+                { Option<int>.None, Option.Some(13) },
+                { Option.Some(13), Option<int>.None },
+                { Option<int>.None, Option.Some(default(int)) },
+                { Option.Some(default(int)), Option<int>.None },
             };
 
         [Fact]

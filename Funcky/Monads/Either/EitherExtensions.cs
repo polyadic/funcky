@@ -7,12 +7,12 @@ public static class EitherExtensions
         where TLeft : notnull
         => either.Match(
             left: Option.Some,
-            right: static _ => Option<TLeft>.None());
+            right: static _ => Option<TLeft>.None);
 
     /// <summary>Returns the right value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a left value.</summary>
     public static Option<TRight> RightOrNone<TLeft, TRight>(this Either<TLeft, TRight> either)
         where TRight : notnull
         => either.Match(
-            left: static _ => Option<TRight>.None(),
+            left: static _ => Option<TRight>.None,
             right: Option.Some);
 }

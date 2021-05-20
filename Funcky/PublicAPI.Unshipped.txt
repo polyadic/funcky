@@ -55,6 +55,7 @@ static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Mon
 static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
 static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, TItem>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
