@@ -14,8 +14,10 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static IAsyncEnumerable<TSource> Intersperse<TSource>(this IAsyncEnumerable<TSource> source, TSource element)
             => source.SelectMany((item, index) => IsFirst(index)
-                ? AsyncEnumerable.Repeat(item, 1)
-                : ImmutableArray.Create(element, item).ToAsyncEnumerable());
+                ? Return(item)
+                : Return(element).Append(item));
+
+        private static IAsyncEnumerable<TSource> Return<TSource>(TSource item) => AsyncEnumerable.Repeat(item, 1);
 
         private static bool IsFirst(int index) => index == 0;
     }
