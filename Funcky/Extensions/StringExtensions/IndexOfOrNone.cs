@@ -1,9 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using Funcky.Monads;
-#if !INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
-using Funcky.Compatibility;
-#endif
 
 namespace Funcky.Extensions
 {

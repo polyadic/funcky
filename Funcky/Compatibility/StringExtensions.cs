@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using static System.Globalization.CultureInfo;
 
-namespace Funcky.Compatibility
+namespace System
 {
     internal static class StringExtensions
     {
