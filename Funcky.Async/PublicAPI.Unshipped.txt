@@ -1,4 +1,17 @@
 #nullable enable
 Funcky.Async.Functional
+Funcky.Async.Monads.AwaitableOptionExtensions
+Funcky.Async.Monads.OptionTaskAwaiter<TItem>
+Funcky.Async.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Async.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
+Funcky.Async.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
+Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
+Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
 static Funcky.Async.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! producer) -> System.Threading.Tasks.ValueTask<TResult>
 static Funcky.Async.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! producer, Funcky.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>
+static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
+static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
+static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Async.Monads.OptionTaskAwaiter<TItem>
+static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
