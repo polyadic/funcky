@@ -29,9 +29,9 @@ namespace Funcky.Test.Monads
             => user.FirstName
                 .ToEither(() => Reason.NoFirstName);
 
-        private static Option<User> GetNoUser() => Option<User>.None();
+        private static Option<User> GetNoUser() => Option<User>.None;
 
-        private static Option<User> GetEmptyUser() => new User(Option<string>.None());
+        private static Option<User> GetEmptyUser() => new User(Option<string>.None);
 
         private static Option<User> GetCompleteUser() => new User("Name");
 

@@ -21,7 +21,7 @@ namespace Funcky.Monads
         [UnconditionalSuppressMessage("Trimming", "IL2046", Justification = "JsonSerializer is annotated with RequiresUnreferencedCode")]
         public override Option<TItem> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             => reader.TokenType == JsonTokenType.Null
-                ? Option<TItem>.None()
+                ? Option<TItem>.None
                 : _itemConverter is not null
                     ? Option.Some(_itemConverter.Read(ref reader, typeof(TItem), options)!)
                     : JsonSerializer.Deserialize<TItem>(ref reader, options)!;

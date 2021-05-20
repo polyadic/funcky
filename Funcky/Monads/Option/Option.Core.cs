@@ -25,7 +25,7 @@ namespace Funcky.Monads
 
         /// <summary>Returns an empty option.</summary>
         [Pure]
-        public static Option<TItem> None() => default;
+        public static Option<TItem> None => default;
 
         /// <summary>Extracts the value out of this option. This function should be used as a last resort.</summary>
         /// <remarks>The only allowed uses of this function are as part of a loop condition in an iterator or as part of a catch filter clause (<c>catch ... when</c>).

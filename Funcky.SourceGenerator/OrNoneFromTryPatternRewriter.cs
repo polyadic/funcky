@@ -30,7 +30,7 @@ public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
                     ConditionalExpression(
                         TryParseCondition(methodDeclaration),
                         IdentifierName(OutParameter),
-                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, methodDeclaration.ReturnType, OptionNone)))))
+                        MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, methodDeclaration.ReturnType, OptionNone))))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
     private InvocationExpressionSyntax TryParseCondition(MethodDeclarationSyntax methodDeclaration)

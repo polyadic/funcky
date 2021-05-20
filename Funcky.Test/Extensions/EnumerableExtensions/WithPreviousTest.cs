@@ -38,7 +38,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var sequence = ImmutableArray.Create("foo", "bar", "baz", "qux");
             var expectedSequenceWithPrevious = ImmutableArray.Create(
-                new ValueWithPrevious<string>("foo", Option<string>.None()),
+                new ValueWithPrevious<string>("foo", Option<string>.None),
                 new ValueWithPrevious<string>("bar", "foo"),
                 new ValueWithPrevious<string>("baz", "bar"),
                 new ValueWithPrevious<string>("qux", "baz"));

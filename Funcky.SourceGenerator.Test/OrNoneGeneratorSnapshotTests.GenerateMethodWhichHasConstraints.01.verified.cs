@@ -11,6 +11,6 @@ namespace Funcky.Extensions
     public static partial class ParseExtensions
     {
         public static partial Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
-            where TEnum : struct => Enum.TryParse(candidate, out var result) ? result : Option<TEnum>.None();
+            where TEnum : struct => Enum.TryParse(candidate, out var result) ? result : Option<TEnum>.None;
     }
 }

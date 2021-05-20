@@ -5,13 +5,13 @@ namespace Funcky.Test
         [Fact]
         public void ReturnsEmptySequenceWhenFirstItemIsNone()
         {
-            Assert.Empty(Sequence.Successors(Option<int>.None(), Identity));
+            Assert.Empty(Sequence.Successors(Option<int>.None, Identity));
         }
 
         [Fact]
         public void ReturnsOnlyTheFirstItemWhenSuccessorFunctionImmediatelyReturnsNone()
         {
-            var first = Assert.Single(Sequence.Successors(10, _ => Option<int>.None()));
+            var first = Assert.Single(Sequence.Successors(10, _ => Option<int>.None));
             Assert.Equal(10, first);
         }
 
