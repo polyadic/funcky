@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
 using Funcky.RetryPolicies;
@@ -60,5 +62,39 @@ namespace Funcky.Async.Test.FunctionalClass
 
             Assert.Equal(produceString, await RetryAsync(producer.ProduceAsync));
         }
+
+        [Fact]
+        public async Task RetryThrowsImmediatelyWhenAlreadyCanceled()
+        {
+            using var source = new CancellationTokenSource();
+            source.Cancel();
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None()), source.Token));
+        }
+
+        [Fact]
+        public async Task RetryThrowsWhenCanceledAfterAnArbitraryNumberOfRetries()
+        {
+            var delay = TimeSpan.FromMilliseconds(10);
+
+            using var source = new CancellationTokenSource();
+            source.CancelAfter(delay * 4);
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await RetryAsync(ProducerWithDelay(delay), source.Token));
+        }
+
+        [Fact]
+        public async Task RetryThrowsWhenCanceledDuringDelay()
+        {
+            var delay = TimeSpan.FromMilliseconds(10);
+            using var source = new CancellationTokenSource();
+            source.CancelAfter(delay);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None()), new ConstantDelayPolicy(10, delay), source.Token));
+        }
+
+        private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)
+            => async () =>
+            {
+                await Task.Delay(delay);
+                return Option<int>.None();
+            };
     }
 }
