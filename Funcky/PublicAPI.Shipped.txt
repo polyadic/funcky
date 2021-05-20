@@ -27,7 +27,6 @@ Funcky.Extensions.ValueWithLast<TValue>.IsLast.get -> bool
 Funcky.Extensions.ValueWithLast<TValue>.Value.get -> TValue
 Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
 Funcky.Functional
-Funcky.Monads.AwaitableOptionExtensions
 Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
 Funcky.Monads.Either<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
@@ -61,14 +60,6 @@ Funcky.Monads.OptionComparer
 Funcky.Monads.OptionComparer<TItem>
 Funcky.Monads.OptionEqualityComparer
 Funcky.Monads.OptionEqualityComparer<TItem>
-Funcky.Monads.OptionTaskAwaiter<TItem>
-Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
-Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
-Funcky.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
-Funcky.Monads.OptionValueTaskAwaiter<TItem>
-Funcky.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
-Funcky.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
-Funcky.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
 Funcky.Monads.Result
 Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> other) -> bool
@@ -320,10 +311,6 @@ static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, TResult>(System.Func<T1, Sy
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, TResult>!>!>!>! function) -> System.Func<T1, T2, T3, T4, TResult>!
 static Funcky.Functional.Uncurry<T1, T2, T3, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, TResult>!>!>! function) -> System.Func<T1, T2, T3, TResult>!
 static Funcky.Functional.Uncurry<T1, T2, TResult>(System.Func<T1, System.Func<T2, TResult>!>! function) -> System.Func<T1, T2, TResult>!
-static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
-static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
-static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Monads.OptionTaskAwaiter<TItem>
-static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Monads.OptionValueTaskAwaiter<TItem>
 static Funcky.Monads.Either<TLeft, TRight>.Left(TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
