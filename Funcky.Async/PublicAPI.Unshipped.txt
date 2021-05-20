@@ -22,3 +22,4 @@ static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Mona
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Async.Monads.OptionTaskAwaiter<TItem>
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
+static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithFirst<TSource>>!
