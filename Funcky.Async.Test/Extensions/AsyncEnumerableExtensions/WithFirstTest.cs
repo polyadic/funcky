@@ -28,7 +28,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         public async Task ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedFirst()
         {
             const string expectedValue = "Hello world!";
-            var oneElementSequence = AsyncEnumerable.Repeat(expectedValue, 1);
+            var oneElementSequence = AsyncSequence.Return(expectedValue);
 
             var sequenceWithFirst = oneElementSequence.WithFirst();
             await foreach (var (value, isFirst) in sequenceWithFirst)
