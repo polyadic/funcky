@@ -15,17 +15,21 @@ namespace Funcky.Test.TestUtils
             _result = result;
         }
 
-        public int Called { get; private set; } = 0;
+        public int Called { get; private set; }
 
-        public Option<T> Produce()
+        public ValueTask<Option<T>> ProduceAsync()
         {
             Called += 1;
 
-            return _retriesNeeded == (Called - 1)
-                ? _result
-                : Option<T>.None();
+            return ValueTask.FromResult(ProduceResult());
         }
 
-        public ValueTask<Option<T>> ProduceAsync() => ValueTask.FromResult(Produce());
+        private Option<T> ProduceResult()
+            => IsReady()
+                ? _result
+                : Option<T>.None();
+
+        private bool IsReady()
+            => _retriesNeeded == Called - 1;
     }
 }

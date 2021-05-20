@@ -6,7 +6,7 @@ using Funcky.Xunit;
 using Xunit;
 using static Funcky.Async.Functional;
 
-namespace Funcky.Test.FunctionalClass
+namespace Funcky.Async.Test.FunctionalClass
 {
     public sealed class RetryAsyncTest
     {
