@@ -6,7 +6,7 @@
         <Product>Funcky</Product>
         <Description>Funcky is a functional C# library</Description>
         <PackageTags>Functional Monad Linq</PackageTags>
-        <Version>2.6.0</Version>
+        <VersionPrefix>3.0.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
