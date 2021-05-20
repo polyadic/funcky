@@ -13,6 +13,6 @@ namespace Funcky.Extensions
             => source.WithFirst()
                 .SelectMany(s => s.IsFirst
                     ? Sequence.Return(s.Value)
-                    : ImmutableArray.Create(element, s.Value));
+                    : Sequence.Return(element).Append(s.Value));
     }
 }
