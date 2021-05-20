@@ -31,7 +31,6 @@ namespace Funcky.Async.Extensions
             => AsyncEnumerable.Create(cancellationToken => PairwiseInternal(source, resultSelector, cancellationToken));
 
         [Pure]
-        #pragma warning disable 8425
         private static async IAsyncEnumerator<TResult> PairwiseInternal<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, CancellationToken cancellationToken)
         {
             await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
@@ -46,6 +45,5 @@ namespace Funcky.Async.Extensions
                 yield return resultSelector(previous, enumerator.Current);
             }
         }
-        #pragma warning restore 8425
     }
 }
