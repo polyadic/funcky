@@ -13,12 +13,10 @@ namespace Funcky.Async.Extensions
         /// <summary>Returns a sequence with the items of the source sequence interspersed with the given <paramref name="element"/>.</summary>
         [Pure]
         public static IAsyncEnumerable<TSource> Intersperse<TSource>(this IAsyncEnumerable<TSource> source, TSource element)
-            => source.SelectMany((item, index) => IsFirst(index)
-                ? Return(item)
-                : Return(element).Append(item));
+            => source.WithFirst().SelectMany(item => item.IsFirst
+                ? Return(item.Value)
+                : Return(element).Append(item.Value));
 
         private static IAsyncEnumerable<TSource> Return<TSource>(TSource item) => AsyncEnumerable.Repeat(item, 1);
-
-        private static bool IsFirst(int index) => index == 0;
     }
 }
