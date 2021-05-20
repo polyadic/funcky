@@ -9,10 +9,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-dotnet@v1
       name: Install Current .NET SDK
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build Funcky/Funcky.csproj --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true /p:GeneratePackageOnBuild=false
     - name: Pack Packages
       run: dotnet pack Funcky/Funcky.csproj --configuration Release --output nupkg --version-suffix "nightly.${{github.sha}}"
     - name: Push Package
