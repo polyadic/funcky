@@ -218,3 +218,7 @@ To support more advanced comparison scenarios, `OptionEqualityComparer` has been
 ### Smaller Improvements
 * Added a missing `Match` overload to `Either` that takes `Action`s
 * Added additional overloads for `Functional.True` and `Functional.False` for up to four parameters.
+
+## 2.4.1
+* Remove upper bounds on all Microsoft.Bcl.* dependencies.
+  Between the 2.3.0 and 2.4.0 release an overly restrictive upper bound was accidentally introduced for Microsoft.Bcl.AsyncInterfaces.
