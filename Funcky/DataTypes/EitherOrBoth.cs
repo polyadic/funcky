@@ -122,6 +122,7 @@ namespace Funcky.DataTypes
 
     public static class EitherOrBoth
     {
+        [Pure]
         public static Option<EitherOrBoth<TLeft, TRight>> FromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
             where TLeft : notnull
             where TRight : notnull
