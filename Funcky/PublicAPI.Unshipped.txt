@@ -5,7 +5,7 @@ Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Func
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
-static Funcky.DataTypes.EitherOrBoth.CreateEitherOrBothFromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>
+static Funcky.DataTypes.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Func<T, Funcky.Unit>! action) -> Funcky.Unit
 Funcky.Extensions.ValueWithPrevious<TValue>
 Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void

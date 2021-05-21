@@ -42,7 +42,7 @@ namespace Funcky.Extensions
             using var leftEnumerator = left.GetEnumerator();
             using var rightEnumerator = right.GetEnumerator();
 
-            while (EitherOrBoth.CreateEitherOrBothFromOptions(ReadNext(leftEnumerator), ReadNext(rightEnumerator)).TryGetValue(out var value))
+            while (EitherOrBoth.FromOptions(ReadNext(leftEnumerator), ReadNext(rightEnumerator)).TryGetValue(out var value))
             {
                 yield return resultSelector(value);
             }
