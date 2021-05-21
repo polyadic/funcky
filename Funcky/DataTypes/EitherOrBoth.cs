@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
+using Funcky.Internal;
+using Funcky.Monads;
 
 namespace Funcky.DataTypes
 {
@@ -136,5 +138,32 @@ namespace Funcky.DataTypes
         [Pure]
         private static int HashFromBoth(TLeft left, TRight right)
             => HashCode.Combine(left, right);
+    }
+
+    public static class EitherOrBoth
+    {
+        public static Option<EitherOrBoth<TLeft, TRight>> CreateEitherOrBothFromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
+            where TLeft : notnull
+            where TRight : notnull
+            => (leftElement, rightElement).Match(
+                left: Left<TLeft, TRight>,
+                right: Right<TLeft, TRight>,
+                leftAndRight: Both,
+                none: Option<EitherOrBoth<TLeft, TRight>>.None);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Left(left);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Right<TLeft, TRight>(TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Right(right);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Both<TLeft, TRight>(TLeft left, TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Both(left, right);
     }
 }
