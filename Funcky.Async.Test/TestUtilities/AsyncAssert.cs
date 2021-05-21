@@ -43,9 +43,9 @@ namespace Funcky.Async.Test.TestUtilities
 
         internal static async Task Collection<TElement>(IAsyncEnumerable<TElement> asyncSequence, params Action<TElement>[] elementInspectors)
         {
-            TElement[] elements = await asyncSequence.ToArrayAsync();
+            var elements = await asyncSequence.ToListAsync();
             var elementInspectorsLength = elementInspectors.Length;
-            var elementsLength = elements.Length;
+            var elementsLength = elements.Count;
 
             if (elementInspectorsLength != elementsLength)
             {
