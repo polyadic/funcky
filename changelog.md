@@ -9,6 +9,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Funcky provides currying also on `Action`s.
 * Added Property tests for Currying
 
+## Funcky 2.4.1
+* Remove upper bounds on all Microsoft.Bcl.\* dependencies.
+  Between the 2.3.0 and 2.4.0 release an overly restrictive upper bound was accidentally introduced for Microsoft.Bcl.AsyncInterfaces.
+
 ## Funcky 2.4.0
 ### `Try*` → `*OrNone`
 We've renamed all `Try*` methods, such as `TryParse`, `TryGet` value to `*OrNone`.
