@@ -10,6 +10,8 @@ Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.O
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
 Funcky.AsyncSequence
+static Funcky.Async.Extensions.AsyncEnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource?>! source) -> System.Collections.Generic.IAsyncEnumerable<TSource!>!
+static Funcky.Async.Extensions.AsyncEnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource?>! source) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithIndex<TSource>>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithLast<TSource>>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
