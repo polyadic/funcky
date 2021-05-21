@@ -4,7 +4,7 @@ using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Xunit;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
 {
     public sealed class WithLastTest
     {
@@ -21,7 +21,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var emptySequence = AsyncEnumerable.Empty<string>();
 
-            Assert.False(await emptySequence.WithLast().AnyAsync());
+            await AsyncAssert.Empty(emptySequence.WithIndex());
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 Assert.True(isLast);
             }
 
-            Assert.True(await sequenceWithLast.AnyAsync());
+            await AsyncAssert.NotEmpty(sequenceWithLast);
         }
 
         [Fact]
@@ -46,9 +46,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             const int length = 20;
             var sequence = AsyncEnumerable.Range(1, length);
 
-            await foreach (var valueWithLast in sequence.WithLast())
+            await foreach (var (value, isLast) in sequence.WithLast())
             {
-                Assert.Equal(valueWithLast.Value == length, valueWithLast.IsLast);
+                Assert.Equal(value == length, isLast);
             }
         }
     }

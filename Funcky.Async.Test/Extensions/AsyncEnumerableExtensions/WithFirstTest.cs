@@ -21,7 +21,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         {
             var emptySequence = AsyncEnumerable.Empty<string>();
 
-            Assert.False(await emptySequence.WithFirst().AnyAsync());
+            await AsyncAssert.Empty(emptySequence.WithIndex());
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
                 Assert.True(isFirst);
             }
 
-            Assert.True(await sequenceWithFirst.AnyAsync());
+            await AsyncAssert.NotEmpty(sequenceWithFirst);
         }
 
         [Fact]
