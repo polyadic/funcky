@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Threading.Tasks;
+using Funcky.DataTypes;
+using Funcky.Monads;
+using static Funcky.Functional;
+
+namespace Funcky.Async.Extensions
+{
+    public static partial class AsyncEnumerableExtensions
+    {
+        /// <summary>
+        /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+        /// </summary>
+        /// <param name="left">The left sequence to merge.</param>
+        /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
+        /// <returns>A sequence that contains merged elements of two input sequences.</returns>
+        [Pure]
+        public static IAsyncEnumerable<EitherOrBoth<TLeft, TRight>> ZipLongest<TLeft, TRight>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right)
+            where TLeft : notnull
+            where TRight : notnull
+            => left.ZipLongest(right, Identity);
+
+        /// <summary>
+        /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+        /// </summary>
+        /// <param name="left">The left sequence to merge.</param>
+        /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
+        /// <typeparam name="TResult">The return type of the result selector function.</typeparam>
+        /// <param name="resultSelector">A function that specifies how to merge the elements from the two sequences.</param>
+        /// <returns>A sequence that contains merged elements of two input sequences.</returns>
+        [Pure]
+        public static async IAsyncEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+            where TLeft : notnull
+            where TRight : notnull
+        {
+            await using var leftEnumerator = left.GetAsyncEnumerator();
+            await using var rightEnumerator = right.GetAsyncEnumerator();
+
+            for (var next = await Next(leftEnumerator, rightEnumerator); next.Match(false, True); next = await Next(leftEnumerator, rightEnumerator))
+            {
+                yield return resultSelector(next.GetOrElse(() => throw new Exception("Cannot happen.")));
+            }
+        }
+
+        private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> Next<TLeft, TRight>(IAsyncEnumerator<TLeft> leftEnumerator, IAsyncEnumerator<TRight> rightEnumerator)
+            where TLeft : notnull
+            where TRight : notnull
+            => CreateEitherOrBothFromOptions(await ReadNext(leftEnumerator), await ReadNext(rightEnumerator));
+
+        private static Option<EitherOrBoth<TLeft, TRight>> CreateEitherOrBothFromOptions<TLeft, TRight>(
+            Option<TLeft> leftElement, Option<TRight> rightElement)
+            where TLeft : notnull
+            where TRight : notnull
+            => leftElement.Match(
+                none: rightElement.Match(
+                    none: Option<EitherOrBoth<TLeft, TRight>>.None,
+                    some: right => EitherOrBoth<TLeft, TRight>.Right(right)),
+                some: left => rightElement.Match<Option<EitherOrBoth<TLeft, TRight>>>(
+                    none: () => EitherOrBoth<TLeft, TRight>.Left(left),
+                    some: right => EitherOrBoth<TLeft, TRight>.Both(left, right)));
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Left(left);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Right<TLeft, TRight>(TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Right(right);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Both<TLeft, TRight>(TLeft left, TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Both(left, right);
+
+        private static async ValueTask<Option<TSource>> ReadNext<TSource>(IAsyncEnumerator<TSource> enumerator)
+            where TSource : notnull
+            => await enumerator.MoveNextAsync()
+                ? enumerator.Current
+                : Option<TSource>.None();
+    }
+}
