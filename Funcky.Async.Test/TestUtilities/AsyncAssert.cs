@@ -20,10 +20,7 @@ namespace Funcky.Async.Test.TestUtilities
             }
             finally
             {
-                if (asyncEnumerator is IAsyncDisposable asyncDisposable)
-                {
-                    await asyncDisposable.DisposeAsync();
-                }
+                await asyncEnumerator.DisposeAsync();
             }
         }
 
@@ -39,10 +36,7 @@ namespace Funcky.Async.Test.TestUtilities
             }
             finally
             {
-                if (asyncEnumerator is IAsyncDisposable asyncDisposable)
-                {
-                    await asyncDisposable.DisposeAsync();
-                }
+                await asyncEnumerator.DisposeAsync();
             }
         }
     }
