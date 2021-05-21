@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
+using Funcky.Internal;
+using Funcky.Monads;
 
 namespace Funcky.DataTypes
 {
@@ -17,42 +19,22 @@ namespace Funcky.DataTypes
 
         private EitherOrBoth(TLeft left, TRight right)
         {
-            if (left is null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right is null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            _left = left;
-            _right = right;
+            _left = left ?? throw new ArgumentNullException(nameof(left));
+            _right = right ?? throw new ArgumentNullException(nameof(right));
             _side = Side.Both;
         }
 
         private EitherOrBoth(TLeft left)
         {
-            if (left is null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            _left = left;
+            _left = left ?? throw new ArgumentNullException(nameof(left));
             _right = default!;
             _side = Side.Left;
         }
 
         private EitherOrBoth(TRight right)
         {
-            if (right is null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
             _left = default!;
-            _right = right;
+            _right = right ?? throw new ArgumentNullException(nameof(right));
             _side = Side.Right;
         }
 
@@ -136,5 +118,33 @@ namespace Funcky.DataTypes
         [Pure]
         private static int HashFromBoth(TLeft left, TRight right)
             => HashCode.Combine(left, right);
+    }
+
+    public static class EitherOrBoth
+    {
+        [Pure]
+        public static Option<EitherOrBoth<TLeft, TRight>> FromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
+            where TLeft : notnull
+            where TRight : notnull
+            => (leftElement, rightElement).Match(
+                left: Left<TLeft, TRight>,
+                right: Right<TLeft, TRight>,
+                leftAndRight: Both,
+                none: Option<EitherOrBoth<TLeft, TRight>>.None);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Left(left);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Right<TLeft, TRight>(TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Right(right);
+
+        private static Option<EitherOrBoth<TLeft, TRight>> Both<TLeft, TRight>(TLeft left, TRight right)
+            where TLeft : notnull
+            where TRight : notnull
+            => EitherOrBoth<TLeft, TRight>.Both(left, right);
     }
 }
