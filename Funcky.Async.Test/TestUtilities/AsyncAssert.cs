@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Funcky.Extensions;
 using Xunit.Sdk;
 
 namespace Funcky.Async.Test.TestUtilities
@@ -37,6 +38,30 @@ namespace Funcky.Async.Test.TestUtilities
             finally
             {
                 await asyncEnumerator.DisposeAsync();
+            }
+        }
+
+        internal static async Task Collection<TElement>(IAsyncEnumerable<TElement> asyncSequence, params Action<TElement>[] elementInspectors)
+        {
+            TElement[] elements = await asyncSequence.ToArrayAsync();
+            var elementInspectorsLength = elementInspectors.Length;
+            var elementsLength = elements.Length;
+
+            if (elementInspectorsLength != elementsLength)
+            {
+                throw new CollectionException(asyncSequence.ToListAsync(), elementInspectorsLength, elementsLength);
+            }
+
+            foreach (var ((elementInspector, element), indexFailurePoint) in elementInspectors.Zip(elements).WithIndex())
+            {
+                try
+                {
+                    elementInspector(element);
+                }
+                catch (Exception ex)
+                {
+                    throw new CollectionException(asyncSequence.ToListAsync(), elementInspectorsLength, elementsLength, indexFailurePoint, ex);
+                }
             }
         }
     }
