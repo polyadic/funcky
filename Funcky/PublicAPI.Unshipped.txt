@@ -105,3 +105,7 @@ static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelecto
 static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
 static Funcky.Monads.Lazy.Lazy.FromFunc<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!
 static Funcky.Monads.Lazy.Lazy.Return<TItem>(TItem value) -> System.Lazy<TItem>!
+Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
+Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funcky.Monads.Option<TMaybe>>! selector, System.Func<TItem, TMaybe, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
+Funcky.Monads.Result<TValidResult>.SelectMany<TResult>(System.Func<TValidResult, Funcky.Monads.Result<TResult>>! selector) -> Funcky.Monads.Result<TResult>
+Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.Func<TValidResult, Funcky.Monads.Result<TSelectedResult>>! selector, System.Func<TValidResult, TSelectedResult, TResult>! resultSelector) -> Funcky.Monads.Result<TResult>
