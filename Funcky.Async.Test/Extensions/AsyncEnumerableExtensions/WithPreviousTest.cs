@@ -45,7 +45,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         {
             var sequence = ImmutableArray.Create("foo", "bar", "baz", "qux").ToAsyncEnumerable();
             var expectedSequenceWithPrevious = ImmutableArray.Create(
-                new ValueWithPrevious<string>("foo", Option<string>.None()),
+                new ValueWithPrevious<string>("foo", Option<string>.None),
                 new ValueWithPrevious<string>("bar", "foo"),
                 new ValueWithPrevious<string>("baz", "bar"),
                 new ValueWithPrevious<string>("qux", "baz")).ToAsyncEnumerable();

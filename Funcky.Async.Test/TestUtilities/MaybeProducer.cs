@@ -27,7 +27,7 @@ namespace Funcky.Test.TestUtilities
         private Option<T> ProduceResult()
             => IsReady()
                 ? _result
-                : Option<T>.None();
+                : Option<T>.None;
 
         private bool IsReady()
             => _retriesNeeded == Called - 1;

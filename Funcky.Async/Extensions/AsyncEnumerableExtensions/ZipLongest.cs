@@ -51,39 +51,12 @@ namespace Funcky.Async.Extensions
         private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> MoveNextOrNone<TLeft, TRight>(IAsyncEnumerator<TLeft> leftEnumerator, IAsyncEnumerator<TRight> rightEnumerator)
             where TLeft : notnull
             where TRight : notnull
-            => CreateEitherOrBothFromOptions(await ReadNext(leftEnumerator), await ReadNext(rightEnumerator));
-
-        private static Option<EitherOrBoth<TLeft, TRight>> CreateEitherOrBothFromOptions<TLeft, TRight>(
-            Option<TLeft> leftElement, Option<TRight> rightElement)
-            where TLeft : notnull
-            where TRight : notnull
-            => leftElement.Match(
-                none: rightElement.Match(
-                    none: Option<EitherOrBoth<TLeft, TRight>>.None,
-                    some: right => EitherOrBoth<TLeft, TRight>.Right(right)),
-                some: left => rightElement.Match<Option<EitherOrBoth<TLeft, TRight>>>(
-                    none: () => EitherOrBoth<TLeft, TRight>.Left(left),
-                    some: right => EitherOrBoth<TLeft, TRight>.Both(left, right)));
-
-        private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
-            where TLeft : notnull
-            where TRight : notnull
-            => EitherOrBoth<TLeft, TRight>.Left(left);
-
-        private static Option<EitherOrBoth<TLeft, TRight>> Right<TLeft, TRight>(TRight right)
-            where TLeft : notnull
-            where TRight : notnull
-            => EitherOrBoth<TLeft, TRight>.Right(right);
-
-        private static Option<EitherOrBoth<TLeft, TRight>> Both<TLeft, TRight>(TLeft left, TRight right)
-            where TLeft : notnull
-            where TRight : notnull
-            => EitherOrBoth<TLeft, TRight>.Both(left, right);
+            => EitherOrBoth.FromOptions(await ReadNext(leftEnumerator), await ReadNext(rightEnumerator));
 
         private static async ValueTask<Option<TSource>> ReadNext<TSource>(IAsyncEnumerator<TSource> enumerator)
             where TSource : notnull
             => await enumerator.MoveNextAsync()
                 ? enumerator.Current
-                : Option<TSource>.None();
+                : Option<TSource>.None;
     }
 }
