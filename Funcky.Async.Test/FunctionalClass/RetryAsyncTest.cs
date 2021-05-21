@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Funcky.Monads;
 using Funcky.RetryPolicies;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 using Funcky.Xunit;
 using Xunit;
 using static Funcky.Async.Functional;
