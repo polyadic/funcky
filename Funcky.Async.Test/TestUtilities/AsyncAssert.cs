@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Funcky.Extensions;
+using Xunit;
 using Xunit.Sdk;
 
 namespace Funcky.Async.Test.TestUtilities
 {
-    public static class AsyncAssert
+    internal static class AsyncAssert
     {
         public static async Task Empty<TElement>(IAsyncEnumerable<TElement> asyncSequence)
         {
@@ -41,7 +42,7 @@ namespace Funcky.Async.Test.TestUtilities
             }
         }
 
-        internal static async Task Collection<TElement>(IAsyncEnumerable<TElement> asyncSequence, params Action<TElement>[] elementInspectors)
+        public static async Task Collection<TElement>(IAsyncEnumerable<TElement> asyncSequence, params Action<TElement>[] elementInspectors)
         {
             TElement[] elements = await asyncSequence.ToArrayAsync();
             var elementInspectorsLength = elementInspectors.Length;
@@ -64,5 +65,8 @@ namespace Funcky.Async.Test.TestUtilities
                 }
             }
         }
+
+        public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
+            => Assert.Equal(await expectedResult.ToListAsync(), await actual.ToListAsync());
     }
 }
