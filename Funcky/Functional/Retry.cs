@@ -9,8 +9,6 @@ namespace Funcky
 {
     public static partial class Functional
     {
-        private const int FirstTry = 1;
-
         /// <summary>
         /// Calls the given <paramref name="producer"/> over and over until it returns a value.
         /// </summary>
@@ -23,15 +21,15 @@ namespace Funcky
         /// </summary>
         public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-            => Enumerable
-                .Repeat(producer(), FirstTry)
+            => Sequence
+                .Return(producer())
                 .Concat(TailRetries(producer, retryPolicy))
                 .FirstOrDefault(IsSome);
 
         public static async Task<Option<TResult>> RetryAsync<TResult>(Func<Task<Option<TResult>>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
-            => await Enumerable
-                .Repeat(producer(), FirstTry)
+            => await Sequence
+                .Return(producer())
                 .Concat(TailRetriesAsync(producer, retryPolicy))
                 .FirstOrDefault(IsSome, Option<TResult>.None());
 
