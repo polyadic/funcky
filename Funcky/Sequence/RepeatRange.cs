@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Funcky
@@ -12,6 +13,7 @@ namespace Funcky
         /// <param name="sequence">The sequence of elements to be repeated.</param>
         /// <param name="count">The number of times to repeat the value in the generated sequence.</param>
         /// <returns>Returns an infinite IEnumerable cycling through the same elements.</returns>
+        [Pure]
         public static IEnumerable<TItem> RepeatRange<TItem>(IEnumerable<TItem> sequence, int count)
             where TItem : notnull
             => Enumerable
