@@ -42,13 +42,13 @@ namespace Funcky.Async.Extensions
             await using var leftEnumerator = left.GetAsyncEnumerator();
             await using var rightEnumerator = right.GetAsyncEnumerator();
 
-            for (var next = await Next(leftEnumerator, rightEnumerator); next.Match(false, True); next = await Next(leftEnumerator, rightEnumerator))
+            for (var next = await MoveNextOrNone(leftEnumerator, rightEnumerator); next.Match(false, True); next = await MoveNextOrNone(leftEnumerator, rightEnumerator))
             {
                 yield return resultSelector(next.GetOrElse(() => throw new Exception("Cannot happen.")));
             }
         }
 
-        private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> Next<TLeft, TRight>(IAsyncEnumerator<TLeft> leftEnumerator, IAsyncEnumerator<TRight> rightEnumerator)
+        private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> MoveNextOrNone<TLeft, TRight>(IAsyncEnumerator<TLeft> leftEnumerator, IAsyncEnumerator<TRight> rightEnumerator)
             where TLeft : notnull
             where TRight : notnull
             => CreateEitherOrBothFromOptions(await ReadNext(leftEnumerator), await ReadNext(rightEnumerator));
