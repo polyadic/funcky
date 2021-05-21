@@ -68,7 +68,7 @@ namespace Funcky.Async.Test.FunctionalClass
         {
             using var source = new CancellationTokenSource();
             source.Cancel();
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None()), source.Token));
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None), source.Token));
         }
 
         [Fact]
@@ -87,14 +87,14 @@ namespace Funcky.Async.Test.FunctionalClass
             var delay = TimeSpan.FromMilliseconds(10);
             using var source = new CancellationTokenSource();
             source.CancelAfter(delay);
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None()), new ConstantDelayPolicy(10, delay), source.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None), new ConstantDelayPolicy(10, delay), source.Token));
         }
 
         private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)
             => async () =>
             {
                 await Task.Delay(delay);
-                return Option<int>.None();
+                return Option<int>.None;
             };
     }
 }

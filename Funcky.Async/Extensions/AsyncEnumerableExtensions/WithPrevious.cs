@@ -14,7 +14,7 @@ namespace Funcky.Async.Extensions
         public static async IAsyncEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IAsyncEnumerable<TSource> source)
             where TSource : notnull
         {
-            var previous = Option<TSource>.None();
+            var previous = Option<TSource>.None;
 
             await foreach (var value in source)
             {
