@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ backport/2.4.x ]
   pull_request:
-    branches: [ master ]
+    branches: [ backport/2.4.x ]
 
 env:
   DOTNET_NOLOGO: 1
