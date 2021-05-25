@@ -39,7 +39,7 @@ namespace Funcky.Analyzers
         private static async Task<Document> FixCode(Document document, InvocationExpressionSyntax invocation, CancellationToken cancellationToken)
         {
             var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
-            editor.ReplaceNode(invocation, invocation.Expression);
+            editor.ReplaceNode(invocation, invocation.Expression.WithTriviaFrom(invocation));
             return editor.GetChangedDocument();
         }
     }
