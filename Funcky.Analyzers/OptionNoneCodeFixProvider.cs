@@ -29,7 +29,7 @@ namespace Funcky.Analyzers
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             title: "Replace method invocation with property access",
-                            equivalenceKey: $"Replace method invocation with property access {node.SpanStart}",
+                            equivalenceKey: "Replace method invocation with property access",
                             createChangedDocument: cancellationToken => FixCode(context.Document, invocationExpressionSyntax, cancellationToken)),
                         diagnostic);
                 }
