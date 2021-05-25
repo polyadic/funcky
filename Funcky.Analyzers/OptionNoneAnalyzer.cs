@@ -10,11 +10,11 @@ namespace Funcky.Analyzers
     public sealed class OptionNoneAnalyzer : DiagnosticAnalyzer
     {
         private static readonly DiagnosticDescriptor Rule = new(
-            id: "ƛ101",
+            id: "ƛ1001",
             title: "Replace method call to Option<TItem>.None() with property access",
             messageFormat: "Replace method call to Option<TItem>.None() with property access",
             category: "Funcky.Migration",
-            defaultSeverity: DiagnosticSeverity.Error,
+            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

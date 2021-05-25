@@ -13,7 +13,7 @@ namespace Funcky.Analyzers
     [ExportCodeFixProvider(LanguageNames.CSharp)]
     public sealed class OptionNoneCodeFixProvider : CodeFixProvider
     {
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("ƛ101");
+        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("ƛ1001");
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
