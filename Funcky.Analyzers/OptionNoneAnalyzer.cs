@@ -3,40 +3,35 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using static Funcky.Analyzers.Rules;
 
 namespace Funcky.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OptionNoneAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly DiagnosticDescriptor Rule = new(
-            id: "ƛ1001",
-            title: "Replace method call to Option<TItem>.None() with property access",
-            messageFormat: "Replace method call to Option<TItem>.None() with property access",
-            category: "Funcky.Migration",
-            defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true);
+        private const string NonePropertyName = "None";
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(ReplaceNoneMethodCallWithPropertyAccess);
 
         public override void Initialize(AnalysisContext context)
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(AnalyzeInvocations, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
         }
 
-        private static void AnalyzeInvocations(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
-            var optionSymbol = context.Compilation.GetTypeByMetadataName("Funcky.Monads.Option`1")!; // TODO: null check
             var node = (InvocationExpressionSyntax)context.Node;
 
             if (node.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax
+                && context.Compilation.GetGenericOptionType() is { } optionSymbol
                 && context.SemanticModel.GetSymbolInfo(memberAccessExpressionSyntax.Expression) is { Symbol: INamedTypeSymbol { IsGenericType: true } symbol }
                 && SymbolEqualityComparer.Default.Equals(optionSymbol, symbol.ConstructedFrom)
-                && memberAccessExpressionSyntax.Name.Identifier.Text == "None")
+                && memberAccessExpressionSyntax.Name.Identifier.Text == NonePropertyName)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, node.GetLocation()));
+                context.ReportDiagnostic(Diagnostic.Create(ReplaceNoneMethodCallWithPropertyAccess, node.GetLocation()));
             }
         }
     }

@@ -7,13 +7,14 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using static Funcky.Analyzers.Rules;
 
 namespace Funcky.Analyzers
 {
     [ExportCodeFixProvider(LanguageNames.CSharp)]
     public sealed class OptionNoneCodeFixProvider : CodeFixProvider
     {
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create("ƛ1001");
+        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(ReplaceNoneMethodCallWithPropertyAccess.Id);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
