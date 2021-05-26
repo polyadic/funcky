@@ -14,7 +14,7 @@ namespace Funcky.Analyzers
             title: "Replace method call to Option<TItem>.None() with property access",
             messageFormat: "Replace method call to Option<TItem>.None() with property access",
             category: "Funcky.Migration",
-            defaultSeverity: DiagnosticSeverity.Hidden,
+            defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
