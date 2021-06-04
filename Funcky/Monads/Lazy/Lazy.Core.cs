@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace Funcky.Monads.Lazy
+namespace Funcky.Monads
 {
     public static class Lazy
     {
