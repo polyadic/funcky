@@ -107,7 +107,7 @@ namespace Funcky.DataTypes
 
         [Pure]
         public override int GetHashCode()
-            => Match(HashFromLeft, HashFromRight, HashFromBoth);
+            => Match(left: HashFromLeft, right: HashFromRight, both: HashFromBoth);
 
         [Pure]
         private static int HashFromLeft(TLeft left)
