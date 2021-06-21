@@ -111,11 +111,11 @@ namespace Funcky.DataTypes
 
         [Pure]
         private static int HashFromLeft(TLeft left)
-            => left?.GetHashCode() ?? 0;
+            => left.GetHashCode();
 
         [Pure]
         private static int HashFromRight(TRight right)
-            => right?.GetHashCode() ?? 0;
+            => right.GetHashCode();
 
         [Pure]
         private static int HashFromBoth(TLeft left, TRight right)
