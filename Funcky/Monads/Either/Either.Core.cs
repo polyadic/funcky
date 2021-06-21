@@ -35,6 +35,8 @@ namespace Funcky.Monads
             Right,
         }
 
+        private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
+
         [Pure]
         public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
@@ -54,7 +56,7 @@ namespace Funcky.Monads
                 Side.Left => left(_left),
                 Side.Right => right(_right),
                 Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
-                _ => throw new NotSupportedException(UnknownSideMessage()),
+                _ => throw new NotSupportedException(UnknownSide),
             };
 
         public void Match(Action<TLeft> left, Action<TRight> right)
@@ -70,7 +72,7 @@ namespace Funcky.Monads
                 case Side.Uninitialized:
                     throw new NotSupportedException(UninitializedMatch);
                 default:
-                    throw new NotSupportedException(UnknownSideMessage());
+                    throw new NotSupportedException(UnknownSide);
             }
         }
 
@@ -89,10 +91,6 @@ namespace Funcky.Monads
             => Match(
                 left => left?.GetHashCode(),
                 right => right?.GetHashCode()) ?? 0;
-
-        [Pure]
-        private string UnknownSideMessage()
-            => $"Internal error: Enum variant {_side} is not handled";
     }
 
     public static class Either<TLeft>
