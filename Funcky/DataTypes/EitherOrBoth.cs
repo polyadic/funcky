@@ -13,6 +13,7 @@ namespace Funcky.DataTypes
         where TLeft : notnull
         where TRight : notnull
     {
+        private const string UninitializedMatch = "EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)";
         private readonly TLeft _left;
         private readonly TRight _right;
         private readonly Side _side;
@@ -68,8 +69,7 @@ namespace Funcky.DataTypes
                 Side.Left => left(_left),
                 Side.Right => right(_right),
                 Side.Both => both(_left, _right),
-                Side.Uninitialized => throw new NotSupportedException(
-                    "EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)"),
+                Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
                 _ => throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled"),
             };
 
@@ -87,7 +87,7 @@ namespace Funcky.DataTypes
                     both(_left, _right);
                     break;
                 case Side.Uninitialized:
-                    throw new NotSupportedException("EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)");
+                    throw new NotSupportedException(UninitializedMatch);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled");
             }
