@@ -15,7 +15,7 @@
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" OutputItemType="Analyzer" PrivateAssets="all" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" OutputItemType="Analyzer" PrivateAssets="all" Private="false" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
