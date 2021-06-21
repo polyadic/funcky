@@ -47,6 +47,8 @@ namespace Funcky.DataTypes
             Right,
         }
 
+        private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
+
         [Pure]
         public static bool operator ==(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
@@ -70,7 +72,7 @@ namespace Funcky.DataTypes
                 Side.Right => right(_right),
                 Side.Both => both(_left, _right),
                 Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
-                _ => throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled"),
+                _ => throw new NotSupportedException(UnknownSide),
             };
 
         public void Match(Action<TLeft> left, Action<TRight> right, Action<TLeft, TRight> both)
@@ -89,7 +91,7 @@ namespace Funcky.DataTypes
                 case Side.Uninitialized:
                     throw new NotSupportedException(UninitializedMatch);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled");
+                    throw new NotSupportedException(UnknownSide);
             }
         }
 
