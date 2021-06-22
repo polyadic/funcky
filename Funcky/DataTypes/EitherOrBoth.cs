@@ -13,6 +13,7 @@ namespace Funcky.DataTypes
         where TLeft : notnull
         where TRight : notnull
     {
+        private const string UninitializedMatch = "EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)";
         private readonly TLeft _left;
         private readonly TRight _right;
         private readonly Side _side;
@@ -46,6 +47,8 @@ namespace Funcky.DataTypes
             Right,
         }
 
+        private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
+
         [Pure]
         public static bool operator ==(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
@@ -68,9 +71,8 @@ namespace Funcky.DataTypes
                 Side.Left => left(_left),
                 Side.Right => right(_right),
                 Side.Both => both(_left, _right),
-                Side.Uninitialized => throw new NotSupportedException(
-                    "EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)"),
-                _ => throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled"),
+                Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
+                _ => throw new NotSupportedException(UnknownSide),
             };
 
         public void Match(Action<TLeft> left, Action<TRight> right, Action<TLeft, TRight> both)
@@ -87,9 +89,9 @@ namespace Funcky.DataTypes
                     both(_left, _right);
                     break;
                 case Side.Uninitialized:
-                    throw new NotSupportedException("EitherOrBoth constructed via default instead of a factory function (EitherOrBoth.Left, EitherOrBoth.Right or EitherOrBoth.Both)");
+                    throw new NotSupportedException(UninitializedMatch);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_side), $"Internal error: Enum variant {_side} is not handled");
+                    throw new NotSupportedException(UnknownSide);
             }
         }
 
@@ -105,15 +107,15 @@ namespace Funcky.DataTypes
 
         [Pure]
         public override int GetHashCode()
-            => Match(HashFromLeft, HashFromRight, HashFromBoth);
+            => Match(left: HashFromLeft, right: HashFromRight, both: HashFromBoth);
 
         [Pure]
         private static int HashFromLeft(TLeft left)
-            => left?.GetHashCode() ?? 0;
+            => left.GetHashCode();
 
         [Pure]
         private static int HashFromRight(TRight right)
-            => right?.GetHashCode() ?? 0;
+            => right.GetHashCode();
 
         [Pure]
         private static int HashFromBoth(TLeft left, TRight right)
