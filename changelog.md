@@ -37,6 +37,10 @@ This release also adds the inversion of `ActionToUnit`: `UnitToAction`
 * `Lazy.Return` creates a `Lazy<T>` from a value. \
   This is sugar over the `Lazy<T>` constructor, with the additional benefit of supporting type inference.
 
+### Documentation Improvements
+This release comes with a few small documentation improvements.
+Funcky users will now also see the `[Pure]` attributes which were previously not emitted.
+
 ## Funcky 2.4.1
 * Remove upper bounds on all Microsoft.Bcl.\* dependencies.
   Between the 2.3.0 and 2.4.0 release an overly restrictive upper bound was accidentally introduced for Microsoft.Bcl.AsyncInterfaces.
