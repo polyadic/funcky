@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## Funcky 2.5.0
 * Add the async equivalent of `Functional.NoOperation`: `Functional.NoOperationAsync`
 
 ### Reader Monad
