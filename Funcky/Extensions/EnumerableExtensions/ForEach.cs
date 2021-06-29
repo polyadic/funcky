@@ -19,7 +19,7 @@ namespace Funcky.Extensions
         }
 
         /// <summary>
-        /// The IEnumerable version of foreach. You can apply an Func{T, Unit} to each element. This is only useful when you have side effects.
+        /// The IEnumerable version of foreach. You can apply an <c><![CDATA[Func<T, Unit>]]></c> to each element. This is only useful when you have side effects.
         /// </summary>
         /// <typeparam name="T">the inner type of the enumerable.</typeparam>
         public static Unit ForEach<T>(this IEnumerable<T> elements, Func<T, Unit> action)
