@@ -7,11 +7,23 @@ namespace Funcky.Analyzer.Test
 {
     public class EnumerableRepeatOnceTest
     {
-        // No diagnostics expected to show up
         [Fact]
-        public async Task AnEmptyStringShowNoDiagnostic()
+        public async Task EnumerableRepeatWithAnyNumberButOneIssuesNoDiagnostic()
         {
-            var test = string.Empty;
+            var test = @"
+    using System;
+    using System.Linq;
+    
+    namespace ConsoleApplication1
+    {
+        class Program
+        {
+            private void Syntax()
+            {
+                var single = Enumerable.Repeat(1337, 2);
+            }
+        }
+    }";
 
             await VerifyCS.VerifyAnalyzerAsync(test);
         }
@@ -23,6 +35,7 @@ namespace Funcky.Analyzer.Test
             var test = @"
     using System;
     using System.Linq;
+    using Funcky;
     
     namespace ConsoleApplication1
     {
@@ -38,6 +51,7 @@ namespace Funcky.Analyzer.Test
             var fixtest = @"
     using System;
     using System.Linq;
+    using Funcky;
 
     namespace ConsoleApplication1
     {
@@ -61,6 +75,8 @@ namespace Funcky.Analyzer.Test
                 Enumerable
                 .Repeat("Test", 1)
                 .Select(s => s + "!");
+
+            var s2 = Sequence.Return("Test");
         }
     }
 }

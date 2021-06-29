@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Funcky.Analyzer
@@ -36,18 +37,37 @@ namespace Funcky.Analyzer
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: "Use Sequence.Return",
-                    createChangedDocument: CreateSequenceReturn(context.Document, declaration),
+                    createChangedDocument: CreateSequenceReturnAsync(context.Document, declaration),
                     equivalenceKey: nameof(CodeFixResources.CodeFixTitle)),
                 diagnostic);
         }
 
-        private Func<CancellationToken, Task<Document>> CreateSequenceReturn(Document document, InvocationExpressionSyntax declaration)
+        private Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
             => async (cancellationToken)
                 =>
                 {
                     SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                    SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration)));
 
-                    return document.WithSyntaxRoot(oldRoot);
+                    return document.WithSyntaxRoot(newRoot);
                 };
+
+        private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
+        {
+            return invocationExpr.ArgumentList.Arguments[1];
+        }
+
+        private SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
+        {
+            return SyntaxFactory.ExpressionStatement(
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName("Sequence"),
+                        SyntaxFactory.IdentifierName("Return")))
+                .WithArgumentList(
+                    SyntaxFactory.ArgumentList(
+                        SyntaxFactory.SingletonSeparatedList(firstArgument))));
+        }
     }
 }

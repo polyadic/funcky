@@ -24,44 +24,51 @@ namespace Funcky.Analyzer
         public override void Initialize(AnalysisContext context)
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
+            ////context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(FindEnumerableRepeateOnce, SyntaxKind.InvocationExpression);
         }
 
         private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpr = (InvocationExpressionSyntax)context.Node;
+            var syntaxMatcher = new SyntaxMatcher(context);
 
-            if (invocationExpr.Expression is not MemberAccessExpressionSyntax memberAccessExpr)
+            if (syntaxMatcher.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat)))
             {
-                return;
-            }
+                var invocationExpr = (InvocationExpressionSyntax)context.Node;
 
-            if (memberAccessExpr.Name.ToString() != nameof(Enumerable.Repeat))
-            {
-                return;
-            }
-
-            if (context.SemanticModel.GetSymbolInfo(memberAccessExpr).Symbol is not IMethodSymbol memberSymbol)
-            {
-                return;
-            }
-
-            if (memberSymbol.Name == nameof(Enumerable))
-            {
-                return;
-            }
-
-            var argumentList = invocationExpr.ArgumentList;
-            if (argumentList is not null && argumentList.Arguments.Count == 2)
-            {
-                if (argumentList.Arguments[1] is not null)
+                if (invocationExpr.ArgumentList is not ArgumentListSyntax argumentList)
                 {
-                    var diagnostic = Diagnostic.Create(Rule, invocationExpr.GetLocation());
-                    context.ReportDiagnostic(diagnostic);
+                    return;
                 }
+
+                if (argumentList.Arguments.Count != 2)
+                {
+                    return;
+                }
+
+                if (argumentList.Arguments[1] is not ArgumentSyntax repeatArgument)
+                {
+                    return;
+                }
+
+                if (repeatArgument.Expression is not LiteralExpressionSyntax literal)
+                {
+                    return;
+                }
+
+                if (literal.Token.Value as int? != 1)
+                {
+                    return;
+                }
+
+                context.ReportDiagnostic(CreateDiagnostic(invocationExpr));
             }
+        }
+
+        private static Diagnostic CreateDiagnostic(InvocationExpressionSyntax invocationExpr)
+        {
+            return Diagnostic.Create(Rule, invocationExpr.GetLocation());
         }
     }
 }
