@@ -54,20 +54,27 @@ namespace Funcky.Analyzer
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
         {
-            return invocationExpr.ArgumentList.Arguments[1];
+            return invocationExpr.ArgumentList.Arguments[0];
         }
 
         private SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
         {
-            return SyntaxFactory.ExpressionStatement(
-                SyntaxFactory.InvocationExpression(
+            return SyntaxFactory.InvocationExpression(
                     SyntaxFactory.MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
                         SyntaxFactory.IdentifierName("Sequence"),
                         SyntaxFactory.IdentifierName("Return")))
                 .WithArgumentList(
                     SyntaxFactory.ArgumentList(
-                        SyntaxFactory.SingletonSeparatedList(firstArgument))));
+                        SyntaxFactory.SingletonSeparatedList(firstArgument))
+                .WithCloseParenToken(
+                    SyntaxFactory.Token(
+                        SyntaxFactory.TriviaList(),
+                        SyntaxKind.CloseParenToken,
+                        SyntaxFactory.TriviaList(
+                            SyntaxFactory.Trivia(
+                                SyntaxFactory.SkippedTokensTrivia())))))
+                .NormalizeWhitespace();
         }
     }
 }
