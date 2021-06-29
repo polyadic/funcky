@@ -69,11 +69,7 @@ namespace Funcky.Analyzer
                         SyntaxFactory.SingletonSeparatedList(firstArgument))
                 .WithCloseParenToken(
                     SyntaxFactory.Token(
-                        SyntaxFactory.TriviaList(),
-                        SyntaxKind.CloseParenToken,
-                        SyntaxFactory.TriviaList(
-                            SyntaxFactory.Trivia(
-                                SyntaxFactory.SkippedTokensTrivia())))))
+                        SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
         }
     }

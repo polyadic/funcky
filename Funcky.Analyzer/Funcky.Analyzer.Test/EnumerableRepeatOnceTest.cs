@@ -28,17 +28,18 @@ namespace Funcky.Analyzer.Test
             await VerifyCS.VerifyAnalyzerAsync(test);
         }
 
-        // Diagnostic and CodeFix both triggered and checked for
         [Fact]
         public async Task UsingEnumerableRepeatOnceShowsTheSequenceReturnDiagnostic()
         {
             var test = @"
     using System;
     using System.Linq;
-    using Funcky;
-    
+
     namespace ConsoleApplication1
     {
+        class Sequence {
+            public static int Return(int value) => value;           
+        }
         class Program
         {
             private void Syntax()
@@ -51,10 +52,12 @@ namespace Funcky.Analyzer.Test
             var fixtest = @"
     using System;
     using System.Linq;
-    using Funcky;
 
     namespace ConsoleApplication1
     {
+        class Sequence {
+            public static int Return(int value) => value;           
+        }
         class Program
         {
             private void Syntax()
@@ -63,9 +66,9 @@ namespace Funcky.Analyzer.Test
             }
         }
     }";
-            var expected = VerifyCS.Diagnostic("EnumerableRepeatOnceAnalyzer").WithSpan(11, 30, 11, 56);
+            var expected = VerifyCS.Diagnostic("EnumerableRepeatOnceAnalyzer").WithSpan(14, 30, 14, 56);
 
-            ////await VerifyCS.VerifyAnalyzerAsync(test, expected);
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
         }
 
