@@ -124,6 +124,8 @@ namespace Funcky.DataTypes
 
     public static class EitherOrBoth
     {
+        /// <summary>Creates an <see cref="EitherOrBoth{TLeft,TRight}"/> from two <see cref="Option{TItem}"/>s.</summary>
+        /// <returns><see cref="Option{TItem}.None"/> if both <paramref name="leftElement"/> and <paramref name="rightElement"/> are <see cref="Option{TItem}.None"/>.</returns>
         [Pure]
         public static Option<EitherOrBoth<TLeft, TRight>> FromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
             where TLeft : notnull
