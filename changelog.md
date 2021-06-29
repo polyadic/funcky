@@ -5,9 +5,37 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Unreleased
 * Add the async equivalent of `Functional.NoOperation`: `Functional.NoOperationAsync`
 
-### Currying
-* Funcky provides currying also on `Action`s.
-* Added Property tests for Currying
+### Reader Monad
+This release includes the `Reader` monad including a bunch of factory methods
+and convenience extensions.
+
+```cs
+public static Reader<Enviroment, IEnumerable<string>> DefaultLayout(IEnumerable<DateTime> month)
+    => from colorizedMonthName in ColorizedMonthName(month)
+       from weekDayLine in WeekDayLine()
+       from weeksInMonth in month
+        .GroupBy(GetWeekOfYear)
+        .Select(FormatWeek)
+        .Sequence()
+       select BuildDefaultLayout(colorizedMonthName, weekDayLine, weeksInMonth);
+```
+
+### Improved `Action` Extensions
+Funcky now supports `Curry`, `Uncurry` and `Flip` for `Action`s too. \
+This release also adds the inversion of `ActionToUnit`: `UnitToAction`
+
+### More Extensions for `IEnumerable<T>`
+* `Intersperse`: Adds a given item in between all items of an enumerable.
+* `JoinToString`: Alias for `string.Join`.
+* `WithPrevious`: Similar to `WithFirst/Last/Index` but with the predecessor of each item.
+* `ForEach`: Add an overload to `ForEach` that accepts a `Unit`-returning `Func`.
+
+### Additional Factory Methods
+* `EitherOrBoth.FromOptions` creates an `EitherOrBoth` from two options.
+* `Lazy.FromFunc` creates a `Lazy<T>` from a `Func`. \
+   This is sugar over the `Lazy<T>` constructor, with the additional benefit of supporting type inference.
+* `Lazy.Return` creates a `Lazy<T>` from a value. \
+  This is sugar over the `Lazy<T>` constructor, with the additional benefit of supporting type inference.
 
 ## Funcky 2.4.1
 * Remove upper bounds on all Microsoft.Bcl.\* dependencies.
