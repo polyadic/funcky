@@ -65,7 +65,7 @@ namespace Funcky.Analyzer.Test
             }
         }
     }";
-            var expected = VerifyCS.Diagnostic("EnumerableRepeatOnceAnalyzer").WithSpan(14, 30, 14, 66).WithArguments("\"Hello world!\"");
+            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatOnceAnalyzer)).WithSpan(14, 30, 14, 66).WithArguments("\"Hello world!\"");
 
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);

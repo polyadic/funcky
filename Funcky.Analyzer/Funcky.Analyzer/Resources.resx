@@ -122,7 +122,7 @@
     <comment>The title of the diagnostic.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerMessageFormat" xml:space="preserve">
-    <value>Sequnce.Return({0}) could be used for Enumerable.Repeat({0}, 1) </value>
+    <value>Use Sequnce.Return({0}) instead of Enumerable.Repeat({0}, 1) </value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerTitle" xml:space="preserve">
@@ -130,14 +130,14 @@
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="EnumerableRepeatNeverAnalyzerDescription" xml:space="preserve">
-    <value>Description</value>
+    <value>Enumerable.Empty&lt;Type&gt;() returns an empty Enumerable</value>
     <comment>The title of the diagnostic.</comment>
   </data>
-    <data name="EnumerableRepeatNeverAnalyzerMessageFormat" xml:space="preserve">
-    <value>MessageFormat</value>
+  <data name="EnumerableRepeatNeverAnalyzerMessageFormat" xml:space="preserve">
+    <value>Use Enumerable.Empty&lt;{1}&gt;() instead of Enumerable.Repeat({0}, 0)</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
-    <data name="EnumerableRepeatNeverAnalyzerTitle" xml:space="preserve">
+  <data name="EnumerableRepeatNeverAnalyzerTitle" xml:space="preserve">
     <value>Use of Enumerable.Repeat with no element</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>

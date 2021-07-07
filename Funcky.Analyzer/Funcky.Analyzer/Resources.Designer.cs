@@ -61,7 +61,7 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
+        ///   Looks up a localized string similar to Enumerable.Empty&lt;Type&gt;() returns an empty Enumerable.
         /// </summary>
         internal static string EnumerableRepeatNeverAnalyzerDescription {
             get {
@@ -70,7 +70,7 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MessageFormat.
+        ///   Looks up a localized string similar to Use Enumerable.Empty&lt;{1}&gt;() instead of Enumerable.Repeat({0}, 0).
         /// </summary>
         internal static string EnumerableRepeatNeverAnalyzerMessageFormat {
             get {
@@ -97,7 +97,7 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sequnce.Return({0}) could be used for Enumerable.Repeat({0}, 1) .
+        ///   Looks up a localized string similar to Use Sequnce.Return({0}) instead of Enumerable.Repeat({0}, 1) .
         /// </summary>
         internal static string EnumerableRepeatOnceAnalyzerMessageFormat {
             get {

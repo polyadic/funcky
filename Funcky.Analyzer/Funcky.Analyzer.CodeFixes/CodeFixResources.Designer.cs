@@ -61,6 +61,15 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use Enumerable.Empty&lt;T&gt;.
+        /// </summary>
+        internal static string EnumerableRepeatNeverCodeFixTitle {
+            get {
+                return ResourceManager.GetString("EnumerableRepeatNeverCodeFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Sequence.Return.
         /// </summary>
         internal static string EnumerableRepeatOnceCodeFixTitle {
