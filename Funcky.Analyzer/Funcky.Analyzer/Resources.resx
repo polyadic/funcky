@@ -129,4 +129,16 @@
     <value>Use of Enumerable.Repeat for a single element</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
+  <data name="EnumerableRepeatNeverAnalyzerDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>The title of the diagnostic.</comment>
+  </data>
+    <data name="EnumerableRepeatNeverAnalyzerMessageFormat" xml:space="preserve">
+    <value>MessageFormat</value>
+    <comment>The format-able message the diagnostic displays.</comment>
+  </data>
+    <data name="EnumerableRepeatNeverAnalyzerTitle" xml:space="preserve">
+    <value>Use of Enumerable.Repeat with no element</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
+  </data>
 </root>

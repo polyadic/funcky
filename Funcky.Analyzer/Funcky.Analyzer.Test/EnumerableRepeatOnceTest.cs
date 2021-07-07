@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using VerifyCS = Funcky.Analyzer.Test.CSharpCodeFixVerifier<Funcky.Analyzer.EnumerableRepeatOnceAnalyzer, Funcky.Analyzer.EnumerableRepeatOnceCodeFix>;
@@ -38,13 +37,13 @@ namespace Funcky.Analyzer.Test
     namespace ConsoleApplication1
     {
         class Sequence {
-            public static int Return(int value) => value;           
+            public static string Return(string value) => value;           
         }
         class Program
         {
             private void Syntax()
             {
-                var single = Enumerable.Repeat(1337, 1);
+                var single = Enumerable.Repeat(""Hello world!"", 1);
             }
         }
     }";
@@ -56,17 +55,17 @@ namespace Funcky.Analyzer.Test
     namespace ConsoleApplication1
     {
         class Sequence {
-            public static int Return(int value) => value;           
+            public static string Return(string value) => value;           
         }
         class Program
         {
             private void Syntax()
             {
-                var single = Sequence.Return(1337);
+                var single = Sequence.Return(""Hello world!"");
             }
         }
     }";
-            var expected = VerifyCS.Diagnostic("EnumerableRepeatOnceAnalyzer").WithSpan(14, 30, 14, 56);
+            var expected = VerifyCS.Diagnostic("EnumerableRepeatOnceAnalyzer").WithSpan(14, 30, 14, 66).WithArguments("\"Hello world!\"");
 
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);

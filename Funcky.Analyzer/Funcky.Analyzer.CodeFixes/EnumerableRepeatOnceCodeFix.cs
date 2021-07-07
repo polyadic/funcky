@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Funcky.Analyzer.CodeFixResources;
 
 namespace Funcky.Analyzer
 {
@@ -16,6 +17,9 @@ namespace Funcky.Analyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatOnceCodeFix))]
     public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
     {
+        private const string SequenceClass = "Sequence";
+        private const string ReturnMethod = "Return";
+
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(EnumerableRepeatOnceAnalyzer.DiagnosticId);
 
@@ -25,52 +29,46 @@ namespace Funcky.Analyzer
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-
-            // TODO: Replace the following code with your own analysis, generating a CodeAction for each fix to suggest
-            var diagnostic = context.Diagnostics.First();
-            var diagnosticSpan = diagnostic.Location.SourceSpan;
-
-            // Find the type declaration identified by the diagnostic.
+            var diagnosticSpan = context.Diagnostics.First().Location.SourceSpan;
             var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First();
 
-            // Register a code action that will invoke the fix.
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title: "Use Sequence.Return",
-                    createChangedDocument: CreateSequenceReturnAsync(context.Document, declaration),
-                    equivalenceKey: nameof(CodeFixResources.CodeFixTitle)),
-                diagnostic);
+            context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
         }
+
+        private static Diagnostic GetDiagnostic(CodeFixContext context)
+            => context.Diagnostics.First();
+
+        private CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
+            => CodeAction.Create(
+                EnumerableRepeatOnceCodeFixTitle,
+                CreateSequenceReturnAsync(context.Document, declaration),
+                nameof(EnumerableRepeatOnceCodeFixTitle));
 
         private Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
-            => async (cancellationToken)
-                =>
-                {
-                    SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-                    SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration)));
+            => async cancellationToken
+                => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
-                    return document.WithSyntaxRoot(newRoot);
-                };
+        private async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
+        {
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            return oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration)));
+        }
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
-        {
-            return invocationExpr.ArgumentList.Arguments[0];
-        }
+            => invocationExpr.ArgumentList.Arguments[Argument.First];
 
         private SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
-        {
-            return SyntaxFactory.InvocationExpression(
-                    SyntaxFactory.MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        SyntaxFactory.IdentifierName("Sequence"),
-                        SyntaxFactory.IdentifierName("Return")))
-                .WithArgumentList(
-                    SyntaxFactory.ArgumentList(
-                        SyntaxFactory.SingletonSeparatedList(firstArgument))
-                .WithCloseParenToken(
-                    SyntaxFactory.Token(
-                        SyntaxKind.CloseParenToken)))
+            => SyntaxSequenceReturn()
+                .WithArgumentList(SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList(firstArgument))
+                .WithCloseParenToken(SyntaxFactory.Token(SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
-        }
+
+        private static InvocationExpressionSyntax SyntaxSequenceReturn()
+            => SyntaxFactory.InvocationExpression(
+                SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxFactory.IdentifierName(SequenceClass),
+                    SyntaxFactory.IdentifierName(ReturnMethod)));
     }
 }

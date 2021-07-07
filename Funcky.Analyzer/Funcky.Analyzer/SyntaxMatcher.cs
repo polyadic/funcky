@@ -5,51 +5,33 @@ namespace Funcky.Analyzer
 {
     public class SyntaxMatcher
     {
+        private const string Unknown = "<UNKNOWN>";
         private readonly SyntaxNodeAnalysisContext _analysisContext;
 
         public SyntaxMatcher(SyntaxNodeAnalysisContext analysisContext)
             => _analysisContext = analysisContext;
 
-        public bool MatchStaticCall(string className, string methodName)
-        {
-            var invocationExpr = (InvocationExpressionSyntax)_analysisContext.Node;
+        private InvocationExpressionSyntax InvocationExpr => (InvocationExpressionSyntax)_analysisContext.Node;
 
-            return invocationExpr.Expression is MemberAccessExpressionSyntax memberAccessExpr
+        public bool MatchStaticCall(string className, string methodName)
+            => InvocationExpr.Expression is MemberAccessExpressionSyntax memberAccessExpr
                 && memberAccessExpr.Name.Identifier.ValueText == methodName
                 && memberAccessExpr.Expression is IdentifierNameSyntax identifier
                 && identifier.Identifier.ValueText == className;
-        }
 
-        internal bool MatchArgument<TArgument>(int argumentPosition, TArgument argument)
-        {
-            var invocationExpr = (InvocationExpressionSyntax)_analysisContext.Node;
+        public bool MatchArgument<TArgument>(int argumentPosition, TArgument argument)
+            => InvocationExpr.ArgumentList is ArgumentListSyntax argumentList
+                && argumentList.Arguments.Count > argumentPosition
+                && argumentList.Arguments[argumentPosition] is ArgumentSyntax repeatArgument
+                && repeatArgument.Expression is LiteralExpressionSyntax literal
+                && literal.Token.Value is TArgument value
+                && value.Equals(argument);
 
-            if (invocationExpr.ArgumentList is not ArgumentListSyntax argumentList)
-            {
-                return false;
-            }
-
-            if (argumentList.Arguments.Count <= argumentPosition)
-            {
-                return false;
-            }
-
-            if (argumentList.Arguments[argumentPosition] is not ArgumentSyntax repeatArgument)
-            {
-                return false;
-            }
-
-            if (repeatArgument.Expression is not LiteralExpressionSyntax literal)
-            {
-                return false;
-            }
-
-            if (literal.Token.Value is TArgument value)
-            {
-                return value.Equals(argument);
-            }
-
-            return true;
-        }
+        public string GetArgumentAsString(int argumentPosition)
+            => InvocationExpr.ArgumentList is ArgumentListSyntax argumentList
+                && argumentList.Arguments.Count > argumentPosition
+                && argumentList.Arguments[argumentPosition] is ArgumentSyntax argument
+                    ? argument.ToString()
+                    : Unknown;
     }
 }

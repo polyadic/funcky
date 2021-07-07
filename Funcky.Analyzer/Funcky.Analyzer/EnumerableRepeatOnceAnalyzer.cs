@@ -14,7 +14,6 @@ namespace Funcky.Analyzer
     {
         public const string DiagnosticId = nameof(EnumerableRepeatOnceAnalyzer);
         private const string Category = nameof(Funcky);
-        private const int SecondArgument = 1;
 
         private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerTitle));
         private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerMessageFormat));
@@ -34,20 +33,20 @@ namespace Funcky.Analyzer
 
         private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
         {
-            var syntax = new SyntaxMatcher(context);
-
-            if (syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
-                && syntax.MatchArgument(SecondArgument, 1))
+            if (IsEnumerableRepeatOnce(new SyntaxMatcher(context)))
             {
                 context.ReportDiagnostic(CreateDiagnostic(context));
             }
         }
 
-        private static Diagnostic CreateDiagnostic(SyntaxNodeAnalysisContext context)
-        {
-            var invocationExpr = (InvocationExpressionSyntax)context.Node;
+        private static bool IsEnumerableRepeatOnce(SyntaxMatcher syntax)
+            => syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
+                && syntax.MatchArgument(Argument.Second, 1);
 
-            return Diagnostic.Create(Rule, invocationExpr.GetLocation());
-        }
+        private static Diagnostic CreateDiagnostic(SyntaxNodeAnalysisContext context)
+            => CreateDiagnostic(new SyntaxMatcher(context), (InvocationExpressionSyntax)context.Node);
+
+        private static Diagnostic CreateDiagnostic(SyntaxMatcher syntax, InvocationExpressionSyntax invocationExpr)
+            => Diagnostic.Create(Rule, invocationExpr.GetLocation(), syntax.GetArgumentAsString(Argument.First));
     }
 }

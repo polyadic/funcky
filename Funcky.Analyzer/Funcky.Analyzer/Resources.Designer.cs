@@ -61,6 +61,33 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string EnumerableRepeatNeverAnalyzerDescription {
+            get {
+                return ResourceManager.GetString("EnumerableRepeatNeverAnalyzerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MessageFormat.
+        /// </summary>
+        internal static string EnumerableRepeatNeverAnalyzerMessageFormat {
+            get {
+                return ResourceManager.GetString("EnumerableRepeatNeverAnalyzerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use of Enumerable.Repeat with no element.
+        /// </summary>
+        internal static string EnumerableRepeatNeverAnalyzerTitle {
+            get {
+                return ResourceManager.GetString("EnumerableRepeatNeverAnalyzerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Funcky provides Sequence.Return to create an IEnumerable of a single item.
         /// </summary>
         internal static string EnumerableRepeatOnceAnalyzerDescription {
