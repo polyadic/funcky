@@ -71,15 +71,5 @@ namespace Funcky.Analyzer.Test
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
         }
-
-        private void Syntax()
-        {
-            var single =
-                Enumerable
-                .Repeat("Test", 1)
-                .Select(s => s + "!");
-
-            var s2 = Sequence.Return("Test");
-        }
     }
 }
