@@ -4,6 +4,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using static Funcky.Analyzer.LocalizedResourceLoader;
+using static Funcky.Analyzer.Resources;
 
 namespace Funcky.Analyzer
 {
@@ -11,63 +13,40 @@ namespace Funcky.Analyzer
     public class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = nameof(EnumerableRepeatOnceAnalyzer);
-        private const string Category = "Funcky";
+        private const string Category = nameof(Funcky);
+        private const int SecondArgument = 1;
 
-        private static readonly LocalizableString Title = "Enumerable.Repeat";
-        private static readonly LocalizableString MessageFormat = "Enumerable.Repeat of single item.";
-        private static readonly LocalizableString Description = "Use Sequence.Return instead";
+        private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerTitle));
+        private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerMessageFormat));
+        private static readonly LocalizableString Description = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerDescription));
 
-        private static readonly DiagnosticDescriptor Rule = new("EnumerableRepeatOnceAnalyzer", Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+        private static readonly DiagnosticDescriptor Rule = new(nameof(EnumerableRepeatOnceAnalyzer), Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize(AnalysisContext context)
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            ////context.EnableConcurrentExecution();
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(FindEnumerableRepeateOnce, SyntaxKind.InvocationExpression);
         }
 
         private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
         {
-            var syntaxMatcher = new SyntaxMatcher(context);
+            var syntax = new SyntaxMatcher(context);
 
-            if (syntaxMatcher.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat)))
+            if (syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
+                && syntax.MatchArgument(SecondArgument, 1))
             {
-                var invocationExpr = (InvocationExpressionSyntax)context.Node;
-
-                if (invocationExpr.ArgumentList is not ArgumentListSyntax argumentList)
-                {
-                    return;
-                }
-
-                if (argumentList.Arguments.Count != 2)
-                {
-                    return;
-                }
-
-                if (argumentList.Arguments[1] is not ArgumentSyntax repeatArgument)
-                {
-                    return;
-                }
-
-                if (repeatArgument.Expression is not LiteralExpressionSyntax literal)
-                {
-                    return;
-                }
-
-                if (literal.Token.Value as int? != 1)
-                {
-                    return;
-                }
-
-                context.ReportDiagnostic(CreateDiagnostic(invocationExpr));
+                context.ReportDiagnostic(CreateDiagnostic(context));
             }
         }
 
-        private static Diagnostic CreateDiagnostic(InvocationExpressionSyntax invocationExpr)
+        private static Diagnostic CreateDiagnostic(SyntaxNodeAnalysisContext context)
         {
+            var invocationExpr = (InvocationExpressionSyntax)context.Node;
+
             return Diagnostic.Create(Rule, invocationExpr.GetLocation());
         }
     }

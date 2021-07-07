@@ -61,29 +61,29 @@ namespace Funcky.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type names should be all uppercase..
+        ///   Looks up a localized string similar to Funcky provides Sequence.Return to create an IEnumerable of a single item.
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string EnumerableRepeatOnceAnalyzerDescription {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("EnumerableRepeatOnceAnalyzerDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type name &apos;{0}&apos; contains lowercase letters.
+        ///   Looks up a localized string similar to Sequnce.Return({0}) could be used for Enumerable.Repeat({0}, 1) .
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string EnumerableRepeatOnceAnalyzerMessageFormat {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("EnumerableRepeatOnceAnalyzerMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type name contains lowercase letters.
+        ///   Looks up a localized string similar to Use of Enumerable.Repeat for a single element.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string EnumerableRepeatOnceAnalyzerTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("EnumerableRepeatOnceAnalyzerTitle", resourceCulture);
             }
         }
     }

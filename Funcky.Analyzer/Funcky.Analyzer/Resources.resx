@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
-    <value>Type names should be all uppercase.</value>
-    <comment>An optional longer localizable description of the diagnostic.</comment>
+  <data name="EnumerableRepeatOnceAnalyzerDescription" xml:space="preserve">
+    <value>Funcky provides Sequence.Return to create an IEnumerable of a single item</value>
+    <comment>The title of the diagnostic.</comment>
   </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
-    <value>Type name '{0}' contains lowercase letters</value>
+  <data name="EnumerableRepeatOnceAnalyzerMessageFormat" xml:space="preserve">
+    <value>Sequnce.Return({0}) could be used for Enumerable.Repeat({0}, 1) </value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
-    <value>Type name contains lowercase letters</value>
-    <comment>The title of the diagnostic.</comment>
+  <data name="EnumerableRepeatOnceAnalyzerTitle" xml:space="preserve">
+    <value>Use of Enumerable.Repeat for a single element</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
 </root>
