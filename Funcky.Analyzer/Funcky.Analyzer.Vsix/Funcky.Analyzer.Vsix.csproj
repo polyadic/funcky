@@ -19,7 +19,7 @@
         <VSSDKTargetPlatformRegRootSuffix>Roslyn</VSSDKTargetPlatformRegRootSuffix>
     </PropertyGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(MSBuildRuntimeType)' == 'Full'">
         <PackageReference Include="Microsoft.VSSDK.BuildTools" PrivateAssets="all" />
     </ItemGroup>
 
