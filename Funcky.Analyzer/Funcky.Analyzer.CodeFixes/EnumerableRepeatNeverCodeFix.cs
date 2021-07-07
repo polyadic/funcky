@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Funcky.Analyzer.CodeFixResources;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzer
 {
@@ -57,14 +58,14 @@ namespace Funcky.Analyzer
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
         private SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
-            => SyntaxFactory.InvocationExpression(
-                    SyntaxFactory.MemberAccessExpression(
+            => InvocationExpression(
+                    MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
-                        SyntaxFactory.IdentifierName(nameof(Enumerable)),
-                        SyntaxFactory.GenericName(SyntaxFactory.Identifier(nameof(Enumerable.Empty)))
-                        .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(SyntaxFactory.SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
+                        IdentifierName(nameof(Enumerable)),
+                        GenericName(Identifier(nameof(Enumerable.Empty)))
+                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
 
         private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
-            => SyntaxFactory.ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToDisplayString());
+            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToDisplayString());
     }
 }

@@ -33,13 +33,13 @@ namespace Funcky.Analyzer
 
         private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
         {
-            if (IsEnumerableRepeatOnce(new SyntaxMatcher(context)))
+            if (IsRepeatOnce(new SyntaxMatcher(context)))
             {
                 context.ReportDiagnostic(CreateDiagnostic(context));
             }
         }
 
-        private static bool IsEnumerableRepeatOnce(SyntaxMatcher syntax)
+        private static bool IsRepeatOnce(SyntaxMatcher syntax)
             => syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
                 && syntax.MatchArgument(Argument.Second, 1);
 

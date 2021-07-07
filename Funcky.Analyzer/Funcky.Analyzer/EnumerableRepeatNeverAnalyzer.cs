@@ -28,18 +28,18 @@ namespace Funcky.Analyzer
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(FindEnumerableRepeateOnce, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(FindEnumerableRepeateNever, SyntaxKind.InvocationExpression);
         }
 
-        private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
+        private void FindEnumerableRepeateNever(SyntaxNodeAnalysisContext context)
         {
-            if (IsEnumerableRepeatOnce(new SyntaxMatcher(context)))
+            if (IsRepeatNever(new SyntaxMatcher(context)))
             {
                 context.ReportDiagnostic(CreateDiagnostic(context));
             }
         }
 
-        private static bool IsEnumerableRepeatOnce(SyntaxMatcher syntax)
+        private static bool IsRepeatNever(SyntaxMatcher syntax)
             => syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
                 && syntax.MatchArgument(Argument.Second, 0);
 

@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Funcky.Analyzer.CodeFixResources;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzer
 {
@@ -60,15 +61,15 @@ namespace Funcky.Analyzer
 
         private SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
             => SyntaxSequenceReturn()
-                .WithArgumentList(SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList(firstArgument))
-                .WithCloseParenToken(SyntaxFactory.Token(SyntaxKind.CloseParenToken)))
+                .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument))
+                .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
 
         private static InvocationExpressionSyntax SyntaxSequenceReturn()
-            => SyntaxFactory.InvocationExpression(
-                SyntaxFactory.MemberAccessExpression(
+            => InvocationExpression(
+                MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxFactory.IdentifierName(SequenceClass),
-                    SyntaxFactory.IdentifierName(ReturnMethod)));
+                    IdentifierName(SequenceClass),
+                    IdentifierName(ReturnMethod)));
     }
 }

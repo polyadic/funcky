@@ -1,4 +1,4 @@
-﻿namespace Funcky.Analyzer
+namespace Funcky.Analyzer
 {
     public class Argument
     {

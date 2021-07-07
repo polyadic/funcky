@@ -31,15 +31,13 @@ namespace Funcky.Analyzer
 
         public string GetArgumentAsString(int argumentPosition)
             => GetArgument(argumentPosition) is { } argument
-                    ? argument.ToString()
-                    : DefaultValue;
+                ? argument.ToString()
+                : DefaultValue;
 
         internal string GetArgumentType(int argumentPosition)
-        {
-            return GetArgument(argumentPosition) is { } argument
+            => GetArgument(argumentPosition) is { } argument
                 ? SemanticModel.GetTypeInfo(argument.Expression).Type.ToDisplayString()
                 : DefaultValue;
-        }
 
         private ArgumentSyntax? GetArgument(int argumentPosition)
             => InvocationExpr.ArgumentList is ArgumentListSyntax argumentList
