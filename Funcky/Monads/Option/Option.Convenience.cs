@@ -1,7 +1,3 @@
-using System.Diagnostics.Contracts;
-using Funcky.Extensions;
-using static Funcky.Functional;
-
 namespace Funcky.Monads
 {
     public readonly partial struct Option<TItem>

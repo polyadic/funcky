@@ -1,5 +1,3 @@
-using Funcky.Monads;
-
 namespace Funcky.Extensions
 {
     public readonly struct ValueWithPrevious<TValue>

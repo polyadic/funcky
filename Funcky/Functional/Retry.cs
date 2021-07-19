@@ -1,4 +1,3 @@
-using Funcky.Monads;
 using static System.Threading.Thread;
 
 namespace Funcky

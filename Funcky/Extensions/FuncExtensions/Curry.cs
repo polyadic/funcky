@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 namespace Funcky.Extensions
 {
     public static partial class FuncExtensions

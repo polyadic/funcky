@@ -1,6 +1,3 @@
-using System.Diagnostics.Contracts;
-using static Funcky.Functional;
-
 namespace Funcky
 {
     public static partial class Sequence

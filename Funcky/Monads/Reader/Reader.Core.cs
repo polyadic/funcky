@@ -1,6 +1,3 @@
-using System.Diagnostics.Contracts;
-using static Funcky.Functional;
-
 namespace Funcky.Monads
 {
     public delegate TResult Reader<in TEnvironment, out TResult>(TEnvironment environment);

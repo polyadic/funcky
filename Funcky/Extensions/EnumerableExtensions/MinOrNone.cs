@@ -1,7 +1,3 @@
-using System.Diagnostics.Contracts;
-using Funcky.Monads;
-using static Funcky.Functional;
-
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions

@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 namespace Funcky.Monads
 {
     public readonly partial struct Option<TItem>

@@ -1,5 +1,3 @@
-using Funcky.Monads;
-
 namespace Funcky.Internal
 {
     internal static class OptionTupleExtensions

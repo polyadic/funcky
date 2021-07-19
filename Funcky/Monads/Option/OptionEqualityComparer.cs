@@ -1,5 +1,4 @@
 using Funcky.Internal;
-using static Funcky.Functional;
 
 namespace Funcky.Monads
 {

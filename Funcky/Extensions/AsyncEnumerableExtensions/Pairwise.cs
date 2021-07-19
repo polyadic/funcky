@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Funcky.Internal;
+﻿using Funcky.Internal;
 
 namespace Funcky.Extensions
 {

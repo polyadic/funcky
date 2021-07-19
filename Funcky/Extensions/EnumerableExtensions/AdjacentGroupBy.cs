@@ -1,6 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics.Contracts;
-using static Funcky.Functional;
 
 namespace Funcky.Extensions
 {
