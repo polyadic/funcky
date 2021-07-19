@@ -9,7 +9,6 @@
         <Version>2.5.0</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <AnalysisLevel>5</AnalysisLevel>
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>

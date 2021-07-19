@@ -11,5 +11,6 @@
 	</ItemGroup>
 	<PropertyGroup Label="Code Style">
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<AnalysisLevel>5.0</AnalysisLevel>
 	</PropertyGroup>
 </Project>
