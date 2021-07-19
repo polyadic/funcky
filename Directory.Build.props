@@ -6,7 +6,10 @@
 		<PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
 	</PropertyGroup>
-	<ItemGroup>
+	<ItemGroup Label="Code Style">
 		<PackageReference Include="Messerli.CodeStyle" PrivateAssets="all" />
 	</ItemGroup>
+	<PropertyGroup Label="Code Style">
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 </Project>
