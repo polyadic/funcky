@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Threading;
-using System.Threading.Tasks;
 using Funcky.Monads;
 
 namespace Funcky.Extensions

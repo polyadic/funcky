@@ -1,5 +1,4 @@
 #if !INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED
-using System;
 using System.Globalization;
 using static System.Globalization.CultureInfo;
 

@@ -1,4 +1,3 @@
-using System;
 using Funcky.Monads;
 
 namespace Funcky.Internal

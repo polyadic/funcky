@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.Contracts;
 #if SET_CURRENT_STACK_TRACE_SUPPORTED
 using System.Runtime.ExceptionServices;

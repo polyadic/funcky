@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Funcky.Internal;
 using static Funcky.Functional;
 

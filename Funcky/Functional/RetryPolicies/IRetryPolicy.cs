@@ -1,5 +1,3 @@
-using System;
-
 namespace Funcky
 {
     public interface IRetryPolicy
