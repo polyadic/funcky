@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Package to use Funcky with xUnit</Description>
         <PackageTags>Functional Monad xUnit</PackageTags>
