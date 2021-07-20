@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Funcky.Monads;
-
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions

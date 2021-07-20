@@ -1,7 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Funcky.Extensions
 {
     public static partial class AsyncEnumerableExtensions

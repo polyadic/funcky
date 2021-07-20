@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics.Contracts;
-
 namespace Funcky.Monads
 {
     public static partial class ReaderExtensions

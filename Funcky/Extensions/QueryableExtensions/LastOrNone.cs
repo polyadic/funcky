@@ -1,8 +1,4 @@
-using System;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Linq.Expressions;
-using Funcky.Monads;
 
 namespace Funcky.Extensions
 {

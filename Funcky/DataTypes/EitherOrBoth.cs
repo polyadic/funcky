@@ -1,7 +1,4 @@
-using System;
-using System.Diagnostics.Contracts;
 using Funcky.Internal;
-using Funcky.Monads;
 
 namespace Funcky.DataTypes
 {

@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics.Contracts;
-
 namespace Funcky
 {
     public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>

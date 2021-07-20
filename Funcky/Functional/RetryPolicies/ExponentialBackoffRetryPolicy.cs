@@ -1,5 +1,3 @@
-using System;
-
 namespace Funcky
 {
     public sealed class ExponentialBackoffRetryPolicy : IRetryPolicy

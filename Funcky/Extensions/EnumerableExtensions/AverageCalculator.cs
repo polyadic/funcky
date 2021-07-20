@@ -1,4 +1,3 @@
-using Funcky.Monads;
 using static Funcky.Monads.Option;
 
 namespace Funcky.Extensions

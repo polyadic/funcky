@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Funcky.Internal;
 
 namespace Funcky.Monads

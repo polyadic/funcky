@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Threading;
-using Funcky.Internal;
+﻿using Funcky.Internal;
 
 namespace Funcky.Extensions
 {
