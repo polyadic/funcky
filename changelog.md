@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## unreleased
+* Lazy Extension function ReadLines on StreamReader
+* Overload for Sequence.Generate without a seed value
+
 ## Funcky 2.5.0
 ### Reader Monad
 This release includes the `Reader` monad including a bunch of factory methods
