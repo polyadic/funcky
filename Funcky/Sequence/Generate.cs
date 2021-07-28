@@ -42,5 +42,21 @@ namespace Funcky
                 yield return previousItem = item;
             }
         }
+
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}"/> that yields values using the <paramref name="next"/> function
+        /// until a <see cref="Option{TItem}.None"/> is returned.
+        /// This is essentially the inverse operation of an <see cref="Enumerable.Aggregate{T}"/>.
+        /// </summary>
+        /// <param name="next">Generates the next item or <see cref="Option{TItem}.None"/> based on the previous item.</param>
+        [Pure]
+        public static IEnumerable<TItem> Generate<TItem>(Func<Option<TItem>> next)
+            where TItem : notnull
+        {
+            while (next().TryGetValue(out var item))
+            {
+                yield return item;
+            }
+        }
     }
 }

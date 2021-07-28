@@ -1,1 +1,4 @@
 #nullable enable
+Funcky.Extensions.StreamReaderExtensions
+static Funcky.Extensions.StreamReaderExtensions.ReadLines(this System.IO.StreamReader! streamReader) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Sequence.Generate<TItem>(System.Func<Funcky.Monads.Option<TItem>>! next) -> System.Collections.Generic.IEnumerable<TItem>!
