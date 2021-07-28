@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using System.Threading;
 using Funcky.Extensions;
@@ -7,25 +6,11 @@ using Xunit;
 
 namespace Funcky.Test.Extensions
 {
-    public sealed class ParseExtensionsTest
+    public sealed partial class ParseExtensionsTest
     {
         public ParseExtensionsTest()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
-        }
-
-        public enum MyEnum
-        {
-            Cool,
-            Warp,
-            FortyTwo,
-        }
-
-        [Theory]
-        [MemberData(nameof(BooleanStrings))]
-        public void GivenAStringParseBooleanOrNoneReturnsTheCorrectValue(Option<bool> expected, string input)
-        {
-            Assert.Equal(expected, input.ParseBooleanOrNone());
         }
 
         [Theory]
@@ -76,39 +61,6 @@ namespace Funcky.Test.Extensions
         {
             Assert.Equal(expected, input.ParseDecimalOrNone());
         }
-
-        [Theory]
-        [MemberData(nameof(DateTimeStrings))]
-        public void GivenAStringParseDateTimeOrNoneReturnsTheCorrectValue(Option<DateTime> expected, string input)
-        {
-            using var current = new DisposableCulture("de-CH");
-
-            Assert.Equal(expected, input.ParseDateTimeOrNone());
-        }
-
-        [Theory]
-        [MemberData(nameof(EnumStrings))]
-        public void GivenAStringParseEnumOrNoneReturnsTheCorrectValue(Option<MyEnum> expected, string input)
-        {
-            Assert.Equal(expected, input.ParseEnumOrNone<MyEnum>());
-        }
-
-        private static TheoryData<Option<bool>, string> BooleanStrings()
-            => new()
-            {
-                { Option<bool>.None(), string.Empty },
-                { Option.Some(true), "true" },
-                { Option.Some(false), "false" },
-                { Option.Some(true), "TrUe" },
-                { Option.Some(false), "FalsE" },
-                { Option<bool>.None(), "0" },
-                { Option<bool>.None(), "1" },
-                { Option<bool>.None(), "T" },
-                { Option<bool>.None(), "F" },
-                { Option<bool>.None(), "falsch" },
-                { Option<bool>.None(), "bool" },
-                { Option<bool>.None(), "none" },
-            };
 
         private static TheoryData<Option<byte>, string> ByteStrings()
             => new()
@@ -203,43 +155,18 @@ namespace Funcky.Test.Extensions
 
         private static TheoryData<Option<decimal>, string> DecimalStrings()
         => new()
-            {
-                { Option<decimal>.None(), string.Empty },
-                { Option<decimal>.None(), "no number" },
-                { Option.Some(-12.7m), "-12.7" },
-                { Option.Some(0.0m), "0" },
-                { Option.Some(-953542.999m), "-953542.999" },
-                { Option.Some(1337m), "1337.000" },
-                { Option<decimal>.None(), "1337E+02" },
-                { Option<decimal>.None(), "One" },
-                { Option<decimal>.None(), "+-1" },
-                { Option<decimal>.None(), "MCMI" },
-                { Option<decimal>.None(), "1337M" },
-            };
-
-        private static TheoryData<Option<DateTime>, string> DateTimeStrings()
-            => new()
-            {
-                { Option<DateTime>.None(), string.Empty },
-                { Option<DateTime>.None(), "no number" },
-                { Option.Some(new DateTime(1982, 2, 26)), "26.02.1982" },
-                { Option.Some(new DateTime(2008, 11, 1, 19, 35, 0)), "Sat, 01 Nov 2008 19:35:00" },
-                { Option<DateTime>.None(), "One" },
-                { Option<DateTime>.None(), "+-1" },
-                { Option<DateTime>.None(), "MCMI" },
-            };
-
-        private static TheoryData<Option<MyEnum>, string> EnumStrings()
-            => new()
-            {
-                { Option<MyEnum>.None(), string.Empty },
-                { Option.Some(MyEnum.Cool), "Cool" },
-                { Option.Some(MyEnum.FortyTwo), "FortyTwo" },
-                { Option.Some(MyEnum.Warp), "Warp" },
-                { Option<MyEnum>.None(), "NotCool" },
-                { Option<MyEnum>.None(), "WarpCool" },
-                { Option<MyEnum>.None(), "MyEnum.Cool" },
-                { Option<MyEnum>.None(), "fortytwo" },
-            };
+        {
+            { Option<decimal>.None(), string.Empty },
+            { Option<decimal>.None(), "no number" },
+            { Option.Some(-12.7m), "-12.7" },
+            { Option.Some(0.0m), "0" },
+            { Option.Some(-953542.999m), "-953542.999" },
+            { Option.Some(1337m), "1337.000" },
+            { Option<decimal>.None(), "1337E+02" },
+            { Option<decimal>.None(), "One" },
+            { Option<decimal>.None(), "+-1" },
+            { Option<decimal>.None(), "MCMI" },
+            { Option<decimal>.None(), "1337M" },
+        };
     }
 }
