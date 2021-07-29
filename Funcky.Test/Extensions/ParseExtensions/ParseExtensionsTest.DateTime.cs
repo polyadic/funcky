@@ -1,8 +1,11 @@
 using System;
+using FsCheck;
+using FsCheck.Xunit;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
+using static Funcky.Functional;
 
 namespace Funcky.Test.Extensions
 {
@@ -10,32 +13,55 @@ namespace Funcky.Test.Extensions
     {
         [Theory]
         [MemberData(nameof(DateTimeStrings))]
-        public void GivenAStringParseDateTimeOrNoneReturnsTheCorrectValue(Option<DateTime> expected, string input)
+        public void GivenAStringParseDateTimeOrNoneReturnsTheCorrectValue(Option<DateTime> expected, string? input)
         {
             using var current = new DisposableCulture("de-CH");
 
-            Assert.Equal(expected, input.ParseDateTimeOrNone());
+            Assert.Equal(expected, input!.ParseDateTimeOrNone());
         }
 
         [Theory]
         [MemberData(nameof(DateTimeStrings))]
-        public void TheParseOrNoneExtensionReturnTheSameValueAsTheTryParseMethods(string input)
+        public void TheParseOrNoneExtensionReturnTheSameValueAsTheTryParseMethods(Option<DateTime> expected, string? input)
         {
             using var current = new DisposableCulture("de-CH");
 
             if (DateTime.TryParse(input, out var dateTime))
             {
-                Assert.Equal(dateTime, FunctionalAssert.IsSome(input.ParseDateTimeOrNone()));
+                Assert.Equal(dateTime, FunctionalAssert.IsSome(input!.ParseDateTimeOrNone()));
             }
             else
             {
-                FunctionalAssert.IsNone(input.ParseDateTimeOrNone());
+                FunctionalAssert.IsNone(input!.ParseDateTimeOrNone());
             }
         }
 
-        private static TheoryData<Option<DateTime>, string> DateTimeStrings()
+        [Property]
+        public Property ParseDateTimeOrNoneReturnsTheSameAsTryParseForValidStrings(DateTime dateTime)
+        {
+            using var current = new DisposableCulture("de-CH");
+            var input = dateTime.ToString();
+
+            if (DateTime.TryParse(input, out var expected))
+            {
+                return input
+                    .ParseDateTimeOrNone()
+                    .Match(none: false, some: parsed => parsed == expected)
+                    .ToProperty();
+            }
+            else
+            {
+                return input
+                    .ParseDateTimeOrNone()
+                    .Match(none: true, some: False)
+                    .ToProperty();
+            }
+        }
+
+        private static TheoryData<Option<DateTime>, string?> DateTimeStrings()
             => new()
             {
+                { Option<DateTime>.None(), null },
                 { Option<DateTime>.None(), string.Empty },
                 { Option<DateTime>.None(), "no number" },
                 { Option.Some(new DateTime(1982, 2, 26)), "26.02.1982" },

@@ -1,4 +1,3 @@
-using System;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Xunit;
