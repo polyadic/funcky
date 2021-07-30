@@ -29,6 +29,7 @@ Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRe
 Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
+static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
 static Funcky.Functional.False() -> bool
 static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
 static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
