@@ -28,10 +28,10 @@ namespace Funcky.Analyzer
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(FindEnumerableRepeateNever, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(FindEnumerableRepeatNever, SyntaxKind.InvocationExpression);
         }
 
-        private void FindEnumerableRepeateNever(SyntaxNodeAnalysisContext context)
+        private void FindEnumerableRepeatNever(SyntaxNodeAnalysisContext context)
         {
             if (IsRepeatNever(new SyntaxMatcher(context)))
             {
