@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="Funcky.Analyzer.9ec5e9ed-a68b-4a0c-a9f7-c4019c7c2a94" Version="1.0" Language="en-US" Publisher="bruderer"/>
     <DisplayName>Funcky.Analyzer</DisplayName>
-    <Description xml:space="preserve">This is a the funcky diagnostic extension for the .NET Compiler Platform ("Roslyn") to interactivly debug the analyzers in a VS instance.</Description>
+    <Description xml:space="preserve">This the funcky diagnostic extension for the .NET Compiler Platform ("Roslyn") to interactivly debug the analyzers in a VS instance.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,)" />
