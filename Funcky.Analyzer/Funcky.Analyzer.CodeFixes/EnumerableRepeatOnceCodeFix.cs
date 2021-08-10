@@ -49,7 +49,7 @@ namespace Funcky.Analyzer
             => async cancellationToken
                 => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
-        private async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
+        private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -59,7 +59,7 @@ namespace Funcky.Analyzer
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
-        private SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
+        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
             => SyntaxSequenceReturn()
                 .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument))
                 .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
