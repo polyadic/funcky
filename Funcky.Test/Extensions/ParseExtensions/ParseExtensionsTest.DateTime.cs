@@ -26,6 +26,8 @@ namespace Funcky.Test.Extensions
         {
             using var current = new DisposableCulture("de-CH");
 
+            _ = expected;
+
             if (DateTime.TryParse(input, out var dateTime))
             {
                 Assert.Equal(dateTime, FunctionalAssert.IsSome(input!.ParseDateTimeOrNone()));
