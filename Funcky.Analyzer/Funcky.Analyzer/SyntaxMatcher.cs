@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,7 +8,6 @@ namespace Funcky.Analyzer
 {
     public class SyntaxMatcher
     {
-        private const string DefaultValue = "NIL";
         private readonly SyntaxNodeAnalysisContext _analysisContext;
 
         public SyntaxMatcher(SyntaxNodeAnalysisContext analysisContext)
@@ -32,12 +32,12 @@ namespace Funcky.Analyzer
         public string GetArgumentAsString(int argumentPosition)
             => GetArgument(argumentPosition) is { } argument
                 ? argument.ToString()
-                : DefaultValue;
+                : throw new NullReferenceException($"GetArgument({argumentPosition}) returned null.");
 
         internal string GetArgumentType(int argumentPosition)
             => GetArgument(argumentPosition) is { } argument
                 ? SemanticModel.GetTypeInfo(argument.Expression).Type.ToDisplayString()
-                : DefaultValue;
+                : throw new NullReferenceException($"GetArgument({argumentPosition}) returned null.");
 
         private ArgumentSyntax? GetArgument(int argumentPosition)
             => InvocationExpr.ArgumentList is ArgumentListSyntax argumentList
