@@ -40,7 +40,7 @@ namespace Funcky.Analyzer
         }
 
         private static bool IsRepeatOnce(SyntaxMatcher syntax)
-            => syntax.MatchStaticCall(nameof(Enumerable), nameof(Enumerable.Repeat))
+            => syntax.MatchStaticCall(typeof(Enumerable).FullName, nameof(Enumerable.Repeat))
                 && syntax.MatchArgument(Argument.Second, 1);
 
         private static Diagnostic CreateDiagnostic(SyntaxNodeAnalysisContext context)
