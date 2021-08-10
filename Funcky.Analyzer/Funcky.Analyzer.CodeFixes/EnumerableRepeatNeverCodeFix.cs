@@ -66,6 +66,6 @@ namespace Funcky.Analyzer
                         .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
 
         private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
-            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToMinimalDisplayString(model, firstArgument.SpanStart))
+            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToMinimalDisplayString(model, firstArgument.SpanStart));
     }
 }
