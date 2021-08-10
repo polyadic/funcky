@@ -66,6 +66,46 @@ namespace Funcky.Analyzer.Test
         }
 
         [Fact]
+        public async Task UsingEnumerableRepeatNeverViaConstantShowsTheSequenceReturnDiagnostic()
+        {
+            var test = @"
+    using System;
+    using System.Linq;
+
+    namespace ConsoleApplication1
+    {
+        class Program
+        {
+            private void Syntax()
+            {
+                const int never = 0;
+                var single = Enumerable.Repeat(""Hello world!"", never);
+            }
+        }
+    }";
+
+            var fixtest = @"
+    using System;
+    using System.Linq;
+
+    namespace ConsoleApplication1
+    {
+        class Program
+        {
+            private void Syntax()
+            {
+                const int never = 0;
+                var single = Enumerable.Empty<string>();
+            }
+        }
+    }";
+            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatNeverAnalyzer)).WithSpan(12, 30, 12, 70).WithArguments("\"Hello world!\"", "string");
+
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+        }
+
+        [Fact]
         public async Task UsingEnumerableRepeatNeverWorksWithDifferentTypes()
         {
             var test = @"

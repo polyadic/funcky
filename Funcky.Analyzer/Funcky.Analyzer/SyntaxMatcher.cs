@@ -25,8 +25,8 @@ namespace Funcky.Analyzer
 
         public bool MatchArgument<TArgument>(int argumentPosition, TArgument argumentValue)
             => GetArgument(argumentPosition) is { } argument
-                && argument.Expression is LiteralExpressionSyntax literal
-                && literal.Token.Value is TArgument value
+                && _analysisContext.SemanticModel.GetConstantValue(argument.Expression, _analysisContext.CancellationToken) is { HasValue: true, Value: var constantValue }
+                && constantValue is TArgument value
                 && value.Equals(argumentValue);
 
         public string GetArgumentAsString(int argumentPosition)

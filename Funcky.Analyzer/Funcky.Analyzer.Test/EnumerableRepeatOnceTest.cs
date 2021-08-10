@@ -70,5 +70,51 @@ namespace Funcky.Analyzer.Test
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
         }
+
+        [Fact]
+        public async Task UsingEnumerableRepeatOnceViaConstantShowsTheSequenceReturnDiagnostic()
+        {
+            var test = @"
+    using System;
+    using System.Linq;
+
+    namespace ConsoleApplication1
+    {
+        class Sequence {
+            public static string Return(string value) => value;           
+        }
+        class Program
+        {
+            private void Syntax()
+            {
+                const int once = 1;
+                var single = Enumerable.Repeat(""Hello world!"", once);
+            }
+        }
+    }";
+
+            var fixtest = @"
+    using System;
+    using System.Linq;
+
+    namespace ConsoleApplication1
+    {
+        class Sequence {
+            public static string Return(string value) => value;           
+        }
+        class Program
+        {
+            private void Syntax()
+            {
+                const int once = 1;
+                var single = Sequence.Return(""Hello world!"");
+            }
+        }
+    }";
+            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatOnceAnalyzer)).WithSpan(15, 30, 15, 69).WithArguments("\"Hello world!\"");
+
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+        }
     }
 }
