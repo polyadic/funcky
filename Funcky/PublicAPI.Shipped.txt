@@ -298,8 +298,6 @@ static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T? item, Funcky.G
 static Funcky.Extensions.ParseExtensions.ParseBooleanOrNone(this string! candidate) -> Funcky.Monads.Option<bool>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this string! candidate) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<byte>
-static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTime>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this string! candidate) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this string! candidate) -> Funcky.Monads.Option<double>

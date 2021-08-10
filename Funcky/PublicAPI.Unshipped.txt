@@ -1,11 +1,11 @@
 #nullable enable
 Funcky.Extensions.QueueExtensions
-static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider? provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, string?[]? formats, System.IFormatProvider? provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string? candidate, string? format, System.IFormatProvider? provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
-static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string? candidate, string?[]? formats, System.IFormatProvider? provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles styles = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this string! candidate, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles styles = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles style = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles style = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string! candidate, string! format, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles style = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string! candidate, string![]! formats, System.IFormatProvider? provider = null, System.Globalization.DateTimeStyles style = System.Globalization.DateTimeStyles.None) -> Funcky.Monads.Option<System.DateTime>
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
