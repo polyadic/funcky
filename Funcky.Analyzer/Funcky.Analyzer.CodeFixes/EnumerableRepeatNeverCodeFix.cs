@@ -18,6 +18,8 @@ namespace Funcky.Analyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatNeverCodeFix))]
     public sealed class EnumerableRepeatNeverCodeFix : CodeFixProvider
     {
+        private const string FullyQualifiedEnumerable = "System.Linq.Enumerable";
+
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(EnumerableRepeatNeverAnalyzer.DiagnosticId);
 
@@ -57,13 +59,15 @@ namespace Funcky.Analyzer
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
-        private SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
-            => InvocationExpression(
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName(nameof(Enumerable)),
-                        GenericName(Identifier(nameof(Enumerable.Empty)))
-                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
+        private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
+        {
+            return InvocationExpression(
+                               MemberAccessExpression(
+                                   SyntaxKind.SimpleMemberAccessExpression,
+                                   IdentifierName(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable).ToMinimalDisplayString(model, firstArgument.SpanStart)),
+                                   GenericName(nameof(Enumerable.Empty))
+                                   .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
+        }
 
         private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
             => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToMinimalDisplayString(model, firstArgument.SpanStart));

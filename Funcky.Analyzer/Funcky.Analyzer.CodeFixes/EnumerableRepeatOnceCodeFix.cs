@@ -18,8 +18,8 @@ namespace Funcky.Analyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatOnceCodeFix))]
     public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
     {
-        private const string SequenceClass = "Sequence";
-        private const string ReturnMethod = "Return";
+        private const string FullyQualifiedSequence = "Funcky.Sequence";
+        private const string Return = "Return";
 
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(EnumerableRepeatOnceAnalyzer.DiagnosticId);
@@ -52,24 +52,28 @@ namespace Funcky.Analyzer
         private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
-            return oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration)));
+            return oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration), semanticModel));
         }
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
-        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument)
-            => SyntaxSequenceReturn()
+        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
+            => SyntaxSequenceReturn(firstArgument, model)
                 .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument))
                 .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
 
-        private static InvocationExpressionSyntax SyntaxSequenceReturn()
+        private static InvocationExpressionSyntax SyntaxSequenceReturn(ArgumentSyntax firstArgument, SemanticModel model)
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(SequenceClass),
-                    IdentifierName(ReturnMethod)));
+                    IdentifierName(SequenceType(model).ToMinimalDisplayString(model, firstArgument.SpanStart)),
+                    IdentifierName(Return)));
+
+        private static INamedTypeSymbol SequenceType(SemanticModel model)
+            => model.Compilation.GetTypeByMetadataName(FullyQualifiedSequence);
     }
 }
