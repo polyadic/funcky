@@ -29,9 +29,6 @@
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.MSTest" Version="1.0.1-beta1.*" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.MSTest" Version="1.0.1-beta1.*" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.MSTest" Version="1.0.1-beta1.*" />
-		<PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.Analyzer.Testing.MSTest" Version="1.0.1-beta1.*" />
-		<PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeFix.Testing.MSTest" Version="1.0.1-beta1.*" />
-		<PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeRefactoring.Testing.MSTest" Version="1.0.1-beta1.*" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
 		<PackageReference Update="Microsoft.VSSDK.BuildTools" Version="17.0.1597"/>
 	</ItemGroup>
