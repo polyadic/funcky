@@ -1,5 +1,4 @@
 #if !SET_CURRENT_STACK_TRACE_SUPPORTED
-using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;

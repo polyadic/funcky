@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Funcky.Monads;
 using Funcky.Xunit;
@@ -88,7 +87,6 @@ namespace Funcky.Test
             Assert.Equal(expectedObject, JsonSerializer.Deserialize<MedicalId>(json));
         }
 
-        [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201", Justification = "Records are not yet supported by StyleCop")]
         private sealed record Person
         {
             public Person(string firstName, string lastName)
@@ -106,7 +104,6 @@ namespace Funcky.Test
             public string LastName { get; set; } = null!;
         }
 
-        [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201", Justification = "Records are not yet supported by StyleCop")]
         private sealed record MedicalId
         {
             public MedicalId(string bloodType, Option<Person> emergencyContact)

@@ -2,10 +2,9 @@
     <PropertyGroup>
         <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
         <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net4.8</TargetFrameworks>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <AnalysisLevel>5</AnalysisLevel>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FsCheck.Xunit" />

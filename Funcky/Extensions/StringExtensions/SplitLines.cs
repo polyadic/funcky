@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Funcky.Monads;
-
 namespace Funcky.Extensions
 {
     public static partial class StringExtensions

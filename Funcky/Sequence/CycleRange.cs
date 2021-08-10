@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Funcky.Extensions;
-using static Funcky.Functional;
-
 namespace Funcky
 {
     public static partial class Sequence

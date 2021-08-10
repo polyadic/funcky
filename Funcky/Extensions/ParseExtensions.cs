@@ -1,7 +1,4 @@
-using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
