@@ -1,0 +1,13 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            var single = Enumerable.Repeat(1337, 2);
+        }
+    }
+}

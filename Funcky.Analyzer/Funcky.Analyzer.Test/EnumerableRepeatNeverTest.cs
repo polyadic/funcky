@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using VerifyCS = Funcky.Analyzer.Test.CSharpCodeFixVerifier<Funcky.Analyzer.EnumerableRepeatNeverAnalyzer, Funcky.Analyzer.EnumerableRepeatNeverCodeFix>;
@@ -9,138 +10,42 @@ namespace Funcky.Analyzer.Test
         [Fact]
         public async Task EnumerableRepeatWithAnyNumberButZeroIssuesNoDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
-    
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Repeat(1337, 1);
-            }
-        }
-    }";
+            var inputCode = File.ReadAllText("TestCode/EnumerableRepeatWithAnyNumber.input");
 
-            await VerifyCS.VerifyAnalyzerAsync(test);
+            await VerifyCS.VerifyAnalyzerAsync(inputCode);
         }
 
         [Fact]
         public async Task UsingEnumerableRepeatNeverShowsTheSequenceReturnDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
+            var expectedDiagnostic = VerifyCS
+                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .WithSpan(10, 26, 10, 62)
+                .WithArguments("\"Hello world!\"", "string");
 
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Repeat(""Hello world!"", 0);
-            }
-        }
-    }";
-
-            var fixtest = @"
-    using System;
-    using System.Linq;
-
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Empty<string>();
-            }
-        }
-    }";
-            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatNeverAnalyzer)).WithSpan(11, 30, 11, 66).WithArguments("\"Hello world!\"", "string");
-
-            await VerifyCS.VerifyAnalyzerAsync(test, expected);
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatNeverAnalyzer, EnumerableRepeatNeverCodeFix>(expectedDiagnostic, "RepeatNever");
         }
 
         [Fact]
         public async Task UsingEnumerableRepeatNeverViaConstantShowsTheSequenceReturnDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
+            var expectedDiagnostic = VerifyCS
+                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .WithSpan(11, 26, 11, 66)
+                .WithArguments("\"Hello world!\"", "string");
 
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                const int never = 0;
-                var single = Enumerable.Repeat(""Hello world!"", never);
-            }
-        }
-    }";
-
-            var fixtest = @"
-    using System;
-    using System.Linq;
-
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                const int never = 0;
-                var single = Enumerable.Empty<string>();
-            }
-        }
-    }";
-            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatNeverAnalyzer)).WithSpan(12, 30, 12, 70).WithArguments("\"Hello world!\"", "string");
-
-            await VerifyCS.VerifyAnalyzerAsync(test, expected);
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatNeverAnalyzer, EnumerableRepeatNeverCodeFix>(expectedDiagnostic, "RepeatNeverWithConstant");
         }
 
         [Fact]
         public async Task UsingEnumerableRepeatNeverWorksWithDifferentTypes()
         {
-            var test = @"
-    using System;
-    using System.Linq;
+            var expectedDiagnostic = VerifyCS
+                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .WithSpan(10, 26, 10, 52)
+                .WithArguments("1337", "int");
 
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Repeat(1337, 0);
-            }
-        }
-    }";
-
-            var fixtest = @"
-    using System;
-    using System.Linq;
-
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Empty<int>();
-            }
-        }
-    }";
-            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatNeverAnalyzer)).WithSpan(11, 30, 11, 56).WithArguments("1337", "int");
-
-            await VerifyCS.VerifyAnalyzerAsync(test, expected);
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatNeverAnalyzer, EnumerableRepeatNeverCodeFix>(expectedDiagnostic, "RepeatNeverWithInt");
         }
     }
 }

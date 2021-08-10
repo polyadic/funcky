@@ -1,0 +1,20 @@
+using System;
+using System.Linq;
+using Funcky;
+
+namespace Funcky {
+    class Sequence {
+        public static string Return(string value) => value;           
+    }
+}
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            var single = Enumerable.Repeat("Hello world!", 1);
+        }
+    }
+}

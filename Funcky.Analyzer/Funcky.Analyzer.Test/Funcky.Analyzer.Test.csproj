@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+﻿<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -25,6 +25,12 @@
         <ProjectReference Include="..\..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Analyzer.CodeFixes\Funcky.Analyzer.CodeFixes.csproj" />
         <ProjectReference Include="..\Funcky.Analyzer\Funcky.Analyzer.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="TestCode\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

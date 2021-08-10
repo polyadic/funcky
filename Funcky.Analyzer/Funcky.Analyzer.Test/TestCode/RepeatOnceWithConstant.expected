@@ -1,0 +1,21 @@
+using System;
+using System.Linq;
+using Funcky;
+
+namespace Funcky {
+    class Sequence {
+        public static string Return(string value) => value;           
+    }
+}
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            const int once = 1;
+            var single = Sequence.Return("Hello world!");
+        }
+    }
+}

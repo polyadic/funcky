@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using VerifyCS = Funcky.Analyzer.Test.CSharpCodeFixVerifier<Funcky.Analyzer.EnumerableRepeatOnceAnalyzer, Funcky.Analyzer.EnumerableRepeatOnceCodeFix>;
@@ -9,112 +10,32 @@ namespace Funcky.Analyzer.Test
         [Fact]
         public async Task EnumerableRepeatWithAnyNumberButOneIssuesNoDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
-    
-    namespace ConsoleApplication1
-    {
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Repeat(1337, 2);
-            }
-        }
-    }";
+            var inputCode = File.ReadAllText("TestCode/EnumerableRepeatWithAnyNumber.input");
 
-            await VerifyCS.VerifyAnalyzerAsync(test);
+            await VerifyCS.VerifyAnalyzerAsync(inputCode);
         }
 
         [Fact]
         public async Task UsingEnumerableRepeatOnceShowsTheSequenceReturnDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
+            var expectedDiagnostic = VerifyCS
+                .Diagnostic(nameof(EnumerableRepeatOnceAnalyzer))
+                .WithSpan(17, 26, 17, 62)
+                .WithArguments("\"Hello world!\"");
 
-    namespace ConsoleApplication1
-    {
-        class Sequence {
-            public static string Return(string value) => value;           
-        }
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Enumerable.Repeat(""Hello world!"", 1);
-            }
-        }
-    }";
-
-            var fixtest = @"
-    using System;
-    using System.Linq;
-
-    namespace ConsoleApplication1
-    {
-        class Sequence {
-            public static string Return(string value) => value;           
-        }
-        class Program
-        {
-            private void Syntax()
-            {
-                var single = Sequence.Return(""Hello world!"");
-            }
-        }
-    }";
-            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatOnceAnalyzer)).WithSpan(14, 30, 14, 66).WithArguments("\"Hello world!\"");
-
-            await VerifyCS.VerifyAnalyzerAsync(test, expected);
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostic, "RepeatOnce");
         }
 
         [Fact]
         public async Task UsingEnumerableRepeatOnceViaConstantShowsTheSequenceReturnDiagnostic()
         {
-            var test = @"
-    using System;
-    using System.Linq;
+            var expectedDiagnostic = VerifyCS
+                .Diagnostic(nameof(EnumerableRepeatOnceAnalyzer))
+                .WithSpan(18, 26, 18, 65)
+                .WithArguments("\"Hello world!\"");
 
-    namespace ConsoleApplication1
-    {
-        class Sequence {
-            public static string Return(string value) => value;           
-        }
-        class Program
-        {
-            private void Syntax()
-            {
-                const int once = 1;
-                var single = Enumerable.Repeat(""Hello world!"", once);
-            }
-        }
-    }";
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostic, "RepeatOnceWithConstant");
 
-            var fixtest = @"
-    using System;
-    using System.Linq;
-
-    namespace ConsoleApplication1
-    {
-        class Sequence {
-            public static string Return(string value) => value;           
-        }
-        class Program
-        {
-            private void Syntax()
-            {
-                const int once = 1;
-                var single = Sequence.Return(""Hello world!"");
-            }
-        }
-    }";
-            var expected = VerifyCS.Diagnostic(nameof(EnumerableRepeatOnceAnalyzer)).WithSpan(15, 30, 15, 69).WithArguments("\"Hello world!\"");
-
-            await VerifyCS.VerifyAnalyzerAsync(test, expected);
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
         }
     }
 }
