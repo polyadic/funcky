@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Funcky.Analyzer.Test
 {
-    public class VerifierTests
+    public sealed class VerifierTests
     {
         [Fact]
         public void CS8632AndCS8669AreNullableWarnings()

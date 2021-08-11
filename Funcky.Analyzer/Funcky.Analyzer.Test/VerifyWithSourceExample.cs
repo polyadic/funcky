@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace Funcky.Analyzer.Test
 {
-    internal class VerifyWithSourceExample
+    internal sealed class VerifyWithSourceExample
     {
         public static async Task VerifyDiagnosticAndCodeFix<TAnalyzer, TCodeFix>(DiagnosticResult expectedDiagnostic, string testCode)
             where TAnalyzer : DiagnosticAnalyzer, new()

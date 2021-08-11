@@ -10,7 +10,7 @@ using static Funcky.Analyzer.Resources;
 namespace Funcky.Analyzer
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
+    public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = nameof(EnumerableRepeatNeverAnalyzer);
         private const string Category = nameof(Funcky);

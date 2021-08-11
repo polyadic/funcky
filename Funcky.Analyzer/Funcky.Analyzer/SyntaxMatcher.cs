@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Funcky.Analyzer
 {
-    public class SyntaxMatcher
+    public sealed class SyntaxMatcher
     {
         private const string NamespaceSeparator = ".";
         private readonly SyntaxNodeAnalysisContext _analysisContext;

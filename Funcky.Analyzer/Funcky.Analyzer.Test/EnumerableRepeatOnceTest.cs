@@ -5,7 +5,7 @@ using VerifyCS = Funcky.Analyzer.Test.CSharpCodeFixVerifier<Funcky.Analyzer.Enum
 
 namespace Funcky.Analyzer.Test
 {
-    public class EnumerableRepeatOnceTest
+    public sealed class EnumerableRepeatOnceTest
     {
         [Fact]
         public async Task EnumerableRepeatWithAnyNumberButOneIssuesNoDiagnostic()
