@@ -35,7 +35,6 @@ namespace Funcky.Analyzer.Test
                 .WithArguments("\"Hello world!\"");
 
             await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostic, "RepeatOnceWithConstant");
-
         }
     }
 }
