@@ -26,12 +26,12 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => HandleException<InvalidOperationException>.ToNone(() => queue.Dequeue());
+            => HandleException<InvalidOperationException>.ToNone(queue.Dequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => HandleException<InvalidOperationException>.ToNone(() => queue.Dequeue());
+            => HandleException<InvalidOperationException>.ToNone(queue.Dequeue);
 
 #endif
 
