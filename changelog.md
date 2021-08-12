@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## unreleased
+
+* Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
+
 ## Funcky 2.5.0
 ### Reader Monad
 This release includes the `Reader` monad including a bunch of factory methods
