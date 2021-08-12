@@ -1,0 +1,14 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            const int never = 0;
+            var single = Enumerable.Repeat("Hello world!", never);
+        }
+    }
+}
