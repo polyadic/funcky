@@ -1,0 +1,29 @@
+using System;
+using System.Linq;
+using Funcky.CodeAnalysis;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            Method(x: 10, y: 20);
+            Method(x: 10, y: 20);
+            Method(
+                x: 10, y: 20);
+            Method(
+                x: 10,
+                y: 20);
+        }
+
+        [UseWithArgumentNames]
+        private void Method(int x, int y) { }
+    }
+}
+
+namespace Funcky.CodeAnalysis
+{
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class UseWithArgumentNamesAttribute : Attribute { }
+}

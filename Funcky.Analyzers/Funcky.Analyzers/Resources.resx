@@ -141,4 +141,13 @@
     <value>Use of Enumerable.Repeat with no element</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
+  <data name="UseArgumentNamesAnalyzerDescription" xml:space="preserve">
+    <value>Use this method with argument names</value>
+  </data>
+  <data name="UseArgumentNamesAnalyzerMessageFormat" xml:space="preserve">
+    <value>Add argument name for argument '{0}'</value>
+  </data>
+  <data name="UseArgumentNamesAnalyzerTitle" xml:space="preserve">
+    <value>Use this method with argument names</value>
+  </data>
 </root>
