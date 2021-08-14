@@ -1,3 +1,5 @@
+using Funcky.CodeAnalysis;
+
 namespace Funcky.Monads
 {
     /// <remarks>
@@ -47,6 +49,7 @@ namespace Funcky.Monads
         public static Either<TLeft, TRight> Right(TRight right) => new(right);
 
         [Pure]
+        [UseWithArgumentNames]
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
             => _side switch
             {
@@ -56,6 +59,7 @@ namespace Funcky.Monads
                 _ => throw new NotSupportedException(UnknownSide),
             };
 
+        [UseWithArgumentNames]
         public void Match(Action<TLeft> left, Action<TRight> right)
         {
             switch (_side)
