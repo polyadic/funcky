@@ -162,6 +162,16 @@ namespace Funcky.Test.Monads
         }
 
         [Fact]
+        public void ErrorConstructorLeavesExistingStackTraceUnchanged()
+        {
+            var result = InterestingStackTrace(1);
+            var expectedStackTraceString = FunctionalAssert.IsError(result).StackTrace;
+            _ = result.Match(ok: Result.Ok, error: Result<int>.Error);
+            var stackTraceString = FunctionalAssert.IsError(result).StackTrace;
+            Assert.Equal(expectedStackTraceString, stackTraceString);
+        }
+
+        [Fact]
         public void SelectManyWithOkResultMatchesTherightValue()
             => FunctionalAssert.IsOk(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
 
