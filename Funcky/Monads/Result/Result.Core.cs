@@ -46,11 +46,14 @@ namespace Funcky.Monads
         #endif
         public static Result<TValidResult> Error(Exception item)
         {
-            #if SET_CURRENT_STACK_TRACE_SUPPORTED
-            ExceptionDispatchInfo.SetCurrentStackTrace(item);
-            #else
-            item.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
-            #endif
+            if (item.StackTrace is null)
+            {
+                #if SET_CURRENT_STACK_TRACE_SUPPORTED
+                    ExceptionDispatchInfo.SetCurrentStackTrace(item);
+                #else
+                    item.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
+                #endif
+            }
 
             return new Result<TValidResult>(item);
         }
