@@ -34,6 +34,9 @@ namespace Funcky.Monads
         public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
             => !lhs.Equals(rhs);
 
+        /// <summary>Creates a new <see cref="Result{TValidResult}"/> from an <see cref="Exception"/> and sets
+        /// the stack trace if not already set.</summary>
+        /// <remarks>This method has side effects: It sets the stack trace on <paramref name="item"/> if not already set.</remarks>
         #if SET_CURRENT_STACK_TRACE_SUPPORTED
         // Methods with AggressiveInlining are always excluded from the stack trace.
         // This is required for <c>SetCurrentStackTrace</c> to work properly.
