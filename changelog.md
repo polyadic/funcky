@@ -2,8 +2,10 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## unreleased
-
+## Unreleased
+* The behaviour of the `Result.Error` constructor has been changed regarding exceptions
+  with an already set stack trace. The original stack trace is now preserved.
+  Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
 * Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
 
 ## Funcky 2.5.0
