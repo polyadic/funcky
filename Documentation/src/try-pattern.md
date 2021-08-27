@@ -22,20 +22,20 @@ if (int.TryParse(inputString, out number))
 Out parameters are bad, and in consequence we think the TryVerb-pattern (`TryGet`, `TryParse`...) used in C# as an anti-pattern.
 
 
-We have added an overload for each and every "Try" function we have found in the .NET Framework.
+We have added an overload for each and every "Try" function we have found in the .NET Framework and we give an alternative in the Form <Verb>OrNone.
 
 
-## TryGetValue
+## GetValueOrNone
 
 Extension functions have been added to `IDictionary` and `IReadOnlyDictionary`
 
-## TryGetValues
+## GetValuesOrNone
 
 
 
 ## The parse functions
 
 ```cs
-Option<int> = "1234".TryParseInt();
+Option<int> = "1234".ParseIntOrNone();
 ```   
 

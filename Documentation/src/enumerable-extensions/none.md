@@ -1,4 +1,4 @@
-# `IEnumerable` extension method `.None`
+## None
 With the `.None` extension method, you can make `!enumerable.Any()` calls easier.
 
 That's all there is. You can replace:
