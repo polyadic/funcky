@@ -1,0 +1,9 @@
+% WithLast
+
+------X----h----b----2----A------|
+
+> WithLast
+
+------(Xf)-(hf)-(bf)-(2f)-(At)---|
+t := true
+f := false
