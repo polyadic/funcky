@@ -7,6 +7,16 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   with an already set stack trace. The original stack trace is now preserved.
   Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
 * Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
+* Extension functions for `System.Range` to allow the generations of `IEnumerable<T>`s from Range-Syntax:
+
+```cs
+  foreach(var i in 1..5) { }
+
+  // ^ must be used to indicate negative numbers
+  from x in 5..^2
+  from y in 1..3
+  select (x,y)
+```
 
 ## Funcky 2.5.0
 ### Reader Monad
