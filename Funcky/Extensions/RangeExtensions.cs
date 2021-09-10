@@ -1,5 +1,4 @@
 #if RANGE_SUPPORTED
-using System.Linq;
 using Funcky.Internal;
 
 namespace Funcky.Extensions
