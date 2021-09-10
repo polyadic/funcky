@@ -1,7 +1,7 @@
 % WhereNotNull
 
 ------N----2----4----N----N----1----7---|
-N:={}
+N:=Ø
 
 > WhereNotNull
 
