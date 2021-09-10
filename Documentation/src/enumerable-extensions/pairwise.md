@@ -1,5 +1,6 @@
 ## PairWise
 
+![pairwise with marbles](pairwise.svg)
 
 ### Example
 
