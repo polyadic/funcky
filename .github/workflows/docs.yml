@@ -10,6 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./Documentation
+
     steps:
       - uses: actions/checkout@v1
       - name: Setup mdBook
@@ -22,10 +27,8 @@ jobs:
       - run: yarn install
       - name: Build Marble Graphics
         run: yarn build-marble-graphics
-        working-directory: ./Documentation
       - name: Build Documentation
         run: mdbook build
-        working-directory: ./Documentation
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: success() && github.ref == 'refs/heads/main'
