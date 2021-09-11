@@ -1,0 +1,11 @@
+{
+  "name": "@polyadic/funcky-documentation",
+  "version": "1.0.0",
+  "scripts": {
+    "build-marble-graphics": "node scripts/build-marble-graphics.mjs"
+  },
+  "devDependencies": {
+    "glob": "^7.1.7",
+    "swirly": "^0.17.6"
+  }
+}

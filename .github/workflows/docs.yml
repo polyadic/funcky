@@ -16,6 +16,13 @@ jobs:
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: '0.4.2'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: yarn install
+      - name: Build Marble Graphics
+        run: yarn build-marble-graphics
+        working-directory: ./Documentation
       - name: Build Documentation
         run: mdbook build
         working-directory: ./Documentation
