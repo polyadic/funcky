@@ -320,11 +320,6 @@ static Funcky.Functional.Curry<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TRes
 static Funcky.Functional.Curry<T1, T2, T3>(System.Action<T1, T2, T3>! action) -> System.Func<T1, System.Func<T2, System.Action<T3>!>!>!
 static Funcky.Functional.Curry<T1, T2, TResult>(System.Func<T1, T2, TResult>! function) -> System.Func<T1, System.Func<T2, TResult>!>!
 static Funcky.Functional.Curry<T1, T2>(System.Action<T1, T2>! action) -> System.Func<T1, System.Action<T2>!>!
-static Funcky.Functional.False() -> bool
-static Funcky.Functional.False<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) -> bool
-static Funcky.Functional.False<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) -> bool
-static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
-static Funcky.Functional.False<T>(T ω) -> bool
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>! function) -> System.Func<T2, T1, T3, T4, T5, T6, T7, T8, TResult>!
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Action<T2, T1, T3, T4, T5, T6, T7, T8>!
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>! function) -> System.Func<T2, T1, T3, T4, T5, T6, T7, TResult>!
@@ -351,11 +346,6 @@ static Funcky.Functional.NoOperation<T1, T2>(T1 p1, T2 p2) -> void
 static Funcky.Functional.NoOperation<T1>(T1 p1) -> void
 static Funcky.Functional.Not<T>(System.Func<T, bool>! predicate) -> System.Func<T, bool>!
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer) -> TResult
-static Funcky.Functional.True() -> bool
-static Funcky.Functional.True<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) -> bool
-static Funcky.Functional.True<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) -> bool
-static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
-static Funcky.Functional.True<T>(T ω) -> bool
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Func<T8, TResult>!>!>!>!>!>!>!>! function) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7, T8>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, TResult>!>!>!>!>!>!>! function) -> System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>!
