@@ -35,7 +35,17 @@ static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.
 static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TItem>!>! selector, System.Func<int, TItem, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Range>! selector, System.Func<int, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Functional.False() -> bool
+static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
+static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
+static Funcky.Functional.False<T1, T2>(T1 ω1, T2 ω2) -> bool
+static Funcky.Functional.False<T1>(T1 ω1) -> bool
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
+static Funcky.Functional.True() -> bool
+static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
+static Funcky.Functional.True<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
+static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
+static Funcky.Functional.True<T1>(T1 ω1) -> bool
 static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
 static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
 static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
