@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, funcky3 ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, funcky3 ]
 
 env:
   DOTNET_NOLOGO: 1
