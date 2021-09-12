@@ -2,6 +2,27 @@
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
 Funcky.Monads.EitherExtensions
+Funcky.RetryPolicies.ConstantDelayPolicy
+Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
+Funcky.RetryPolicies.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ConstantDelayPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.DoNotRetryPolicy
+Funcky.RetryPolicies.DoNotRetryPolicy.DoNotRetryPolicy() -> void
+Funcky.RetryPolicies.DoNotRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.DoNotRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.ExponentialBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.IRetryPolicy
+Funcky.RetryPolicies.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.IRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.LinearBackoffRetryPolicy
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
+Funcky.RetryPolicies.NoDelayRetryPolicy
+Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
 static Funcky.Extensions.AsyncEnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Option<TItem>>! source) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
@@ -15,6 +36,8 @@ static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.
 static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TItem>!>! selector, System.Func<int, TItem, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Range>! selector, System.Func<int, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
+static Funcky.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!
 static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
 static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
 static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
