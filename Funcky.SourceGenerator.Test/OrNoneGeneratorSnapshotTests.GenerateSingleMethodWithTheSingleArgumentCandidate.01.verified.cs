@@ -10,6 +10,6 @@ namespace Funcky.Extensions
 {
     public static partial class ParseExtensions
     {
-        public static partial Option<bool> ParseBooleanOrNone(this string candidate) => bool.TryParse(candidate, out var result) ? result : Option<bool>.None();
+        public static partial Option<bool> ParseBooleanOrNone(this string candidate) => bool.TryParse(candidate, out var result) ? result : Option<bool>.None;
     }
 }

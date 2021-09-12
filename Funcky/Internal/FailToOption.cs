@@ -12,7 +12,7 @@ namespace Funcky.Internal
             }
             catch (TException)
             {
-                return Option<TResult>.None();
+                return Option<TResult>.None;
             }
         }
     }

@@ -7,15 +7,15 @@ namespace Funcky.Test.Monads
         [Fact]
         public void NoneIsLessThanSome()
         {
-            Assert.True(Option<int>.None() < Option.Some(10));
-            Assert.True(Option<int>.None() <= Option.Some(10));
+            Assert.True(Option<int>.None < Option.Some(10));
+            Assert.True(Option<int>.None <= Option.Some(10));
         }
 
         [Fact]
         public void SomeIsGreaterThanNone()
         {
-            Assert.True(Option.Some(10) > Option<int>.None());
-            Assert.True(Option.Some(10) >= Option<int>.None());
+            Assert.True(Option.Some(10) > Option<int>.None);
+            Assert.True(Option.Some(10) >= Option<int>.None);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void CompareToReturnsZeroWhenBothAreNone()
         {
-            Assert.Equal(0, Option<string>.None().CompareTo(Option<string>.None()));
+            Assert.Equal(0, Option<string>.None.CompareTo(Option<string>.None));
         }
 
         [Fact]
@@ -70,13 +70,13 @@ namespace Funcky.Test.Monads
         {
             var unsorted = ImmutableList.Create(
                 Option.Some(5),
-                Option<int>.None(),
+                Option<int>.None,
                 Option.Some(0),
                 Option.Some(10),
-                Option<int>.None());
+                Option<int>.None);
             var expected = ImmutableList.Create(
-                Option<int>.None(),
-                Option<int>.None(),
+                Option<int>.None,
+                Option<int>.None,
                 Option.Some(0),
                 Option.Some(5),
                 Option.Some(10));
@@ -95,8 +95,8 @@ namespace Funcky.Test.Monads
         [Fact]
         public void CompareToDoesNotThrowWhenTwoNoneValuesWhereItemTypeIsNotComparableAreCompared()
         {
-            var optionOne = Option<Person>.None();
-            var optionTwo = Option<Person>.None();
+            var optionOne = Option<Person>.None;
+            var optionTwo = Option<Person>.None;
             _ = optionOne.CompareTo(optionTwo);
         }
 
@@ -104,7 +104,7 @@ namespace Funcky.Test.Monads
         public void CompareToDoesNotThrowWhenNoneValueAndSomeValueWhereItemTypeIsNotComparableAreCompared()
         {
             var optionOne = Option.Some(new Person());
-            var optionTwo = Option<Person>.None();
+            var optionTwo = Option<Person>.None;
             _ = optionOne.CompareTo(optionTwo);
             _ = optionTwo.CompareTo(optionOne);
         }

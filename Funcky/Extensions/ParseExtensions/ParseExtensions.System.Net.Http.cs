@@ -14,7 +14,7 @@ namespace Funcky.Extensions
         public static Option<CacheControlHeaderValue> ParseCacheControlHeaderValueOrNone(this string? candidate)
             => CacheControlHeaderValue.TryParse(candidate, out var result)
                 ? result!
-                : Option<CacheControlHeaderValue>.None();
+                : Option<CacheControlHeaderValue>.None;
 
         [Pure]
         [OrNoneFromTryPattern(typeof(ContentDispositionHeaderValue), nameof(ContentDispositionHeaderValue.TryParse))]

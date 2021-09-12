@@ -5,7 +5,7 @@ namespace Funcky.Test.FunctionalClass
         [Fact]
         public void GivenTheNoOperationFunctionWeCanApplyItToMatch()
         {
-            var none = Option<int>.None();
+            var none = Option<int>.None;
 
             var sideEffect = 0;
             none.Match(none: Functional.NoOperation, some: i => sideEffect = i);

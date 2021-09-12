@@ -129,7 +129,7 @@ namespace Funcky.Test.Monads
             const int value = 10;
             var either = Either<string>.Return(value);
 
-            var sideEffect = Option<int>.None();
+            var sideEffect = Option<int>.None;
             either.Inspect(v => sideEffect = v);
             FunctionalAssert.IsSome(value, sideEffect);
         }
