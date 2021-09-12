@@ -9,6 +9,7 @@ namespace Funcky
         /// <param name="seed">The first value passed to <paramref name="next"/>. Not included in the returned <see cref="IEnumerable{T}"/>.</param>
         /// <param name="next">Generates the next item based on the previous item.</param>
         [Pure]
+        [Obsolete("Use Successors instead. Will be removed in Funcky 3.0")]
         public static IEnumerable<TItem> Generate<TItem>(TItem seed, Func<TItem, TItem> next)
             where TItem : notnull
         {
@@ -27,6 +28,7 @@ namespace Funcky
         /// <param name="seed">The first value passed to <paramref name="next"/>. Not included in the returned <see cref="IEnumerable{T}"/>.</param>
         /// <param name="next">Generates the next item or <see cref="Option{TItem}.None"/> based on the previous item.</param>
         [Pure]
+        [Obsolete("Use Successors instead. Will be removed in Funcky 3.0")]
         public static IEnumerable<TItem> Generate<TItem>(TItem seed, Func<TItem, Option<TItem>> next)
             where TItem : notnull
         {
