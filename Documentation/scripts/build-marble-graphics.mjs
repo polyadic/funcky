@@ -10,7 +10,7 @@ const glob = promisify(globWithCallback);
 
 const inputFiles = await glob("src/**/*.{swirly,swirl}");
 
-Promise.all(inputFiles.map(async path => {
+await Promise.all(inputFiles.map(async path => {
     const svgFileName = basename(path, extname(path)) + ".svg";
     const svgFilePath = joinPath(dirname(path), svgFileName);
 
