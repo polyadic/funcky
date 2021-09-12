@@ -9,16 +9,16 @@ namespace Funcky.Monads
                 ok: value => Result.Ok(selector(value)));
 
         [Pure]
-        public Result<TResult> SelectMany<TResult>(Func<TValidResult, Result<TResult>> resultSelector)
+        public Result<TResult> SelectMany<TResult>(Func<TValidResult, Result<TResult>> selector)
             => Match(
                 error: error => new Result<TResult>(error),
-                ok: resultSelector);
+                ok: selector);
 
         [Pure]
-        public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selectedResultSelector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
+        public Result<TResult> SelectMany<TSelectedResult, TResult>(Func<TValidResult, Result<TSelectedResult>> selector, Func<TValidResult, TSelectedResult, TResult> resultSelector)
             => Match(
                 error: error => new Result<TResult>(error),
-                ok: result => selectedResultSelector(result).Select(
+                ok: result => selector(result).Select(
                     maybe => resultSelector(result, maybe)));
     }
 }
