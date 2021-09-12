@@ -12,7 +12,7 @@ namespace Funcky.Test.TestUtils
             _result = result;
         }
 
-        public int Called { get; private set; } = 0;
+        public int Called { get; private set; }
 
         public Option<T> Produce()
         {
@@ -21,6 +21,7 @@ namespace Funcky.Test.TestUtils
             return Option.FromBoolean(_retriesNeeded == (Called - 1), _result);
         }
 
-        public Task<Option<T>> ProduceAsync() => Task.FromResult(Produce());
+        private bool IsReady()
+            => _retriesNeeded == Called - 1;
     }
 }
