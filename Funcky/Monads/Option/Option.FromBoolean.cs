@@ -32,6 +32,6 @@ namespace Funcky.Monads
             where TItem : notnull
             => boolean
                 ? selector()
-                : Option<TItem>.None();
+                : Option<TItem>.None;
     }
 }

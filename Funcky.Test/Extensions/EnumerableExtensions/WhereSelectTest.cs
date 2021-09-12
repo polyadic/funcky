@@ -9,7 +9,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-            _ = doNotEnumerate.WhereSelect(_ => Option<object>.None());
+            _ = doNotEnumerate.WhereSelect(_ => Option<object>.None);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WhereSelectFiltersEmptyFromSequence()
         {
-            var withNone = new List<Option<int>> { Option<int>.None(), 0, Option<int>.None(), 1337, Option<int>.None(), 42, 0, 12, Option<int>.None(), 1 };
+            var withNone = new List<Option<int>> { Option<int>.None, 0, Option<int>.None, 1337, Option<int>.None, 42, 0, 12, Option<int>.None, 1 };
             var expectedResult = new List<int> { 0, 1337, 42, 0, 12, 1 };
 
             Assert.Equal(expectedResult, withNone.WhereSelect());

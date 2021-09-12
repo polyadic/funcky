@@ -34,7 +34,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TResult> MinOrNone<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
             where TResult : notnull
-            => source.Select(selector).Aggregate(Option<TResult>.None(), AggregateMin);
+            => source.Select(selector).Aggregate(Option<TResult>.None, AggregateMin);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.

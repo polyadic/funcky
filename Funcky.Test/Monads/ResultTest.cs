@@ -63,7 +63,7 @@ namespace Funcky.Test.Monads
 
             var resultSum = result.Match(
                 ok: Option.Some,
-                error: _ => Option<int>.None());
+                error: _ => Option<int>.None);
 
             Assert.Equal(referenceSum, resultSum);
         }
@@ -72,10 +72,10 @@ namespace Funcky.Test.Monads
             => new()
             {
                 { Result.Ok(5), Result.Ok(10), Result.Ok(15), 30 },
-                { Result.Ok(42), Result.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None() },
+                { Result.Ok(42), Result.Ok(1337), Result<int>.Error(new InvalidCastException()), Option<int>.None },
                 { Result.Ok(1337), Result.Ok(42), Result.Ok(99), 1478 },
                 { Result.Ok(45856), Result.Ok(58788), Result.Ok(699554), 804198 },
-                { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), Option<int>.None() },
+                { Result<int>.Error(new InvalidCastException()), Result<int>.Error(new IOException()), Result<int>.Error(new MemberAccessException()), Option<int>.None },
             };
 
         [Theory]
