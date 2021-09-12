@@ -22,7 +22,7 @@ namespace Funcky.Extensions
                 => new(value, list.ElementAtOrNone(IndexOfPrevious(index)));
 #else
             => (value, index)
-                => new(value, IndexOfPrevious(index) < 0 ? Option<TSource>.None() : list[IndexOfPrevious(index)]);
+                => new(value, IndexOfPrevious(index) < 0 ? Option<TSource>.None : list[IndexOfPrevious(index)]);
 #endif
 
         private static int IndexOfPrevious(int index)
@@ -31,7 +31,7 @@ namespace Funcky.Extensions
         private static IEnumerable<ValueWithPrevious<TSource>> WithPreviousImplementation<TSource>(this IEnumerable<TSource> source)
             where TSource : notnull
         {
-            var previous = Option<TSource>.None();
+            var previous = Option<TSource>.None;
 
             foreach (var value in source)
             {
