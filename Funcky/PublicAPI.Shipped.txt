@@ -1,21 +1,9 @@
 #nullable enable
-Funcky.ConstantDelayPolicy
-Funcky.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
-Funcky.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.ConstantDelayPolicy.MaxRetries.get -> int
 Funcky.DataTypes.EitherOrBoth
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> other) -> bool
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
-Funcky.DoNotRetryPolicy
-Funcky.DoNotRetryPolicy.DoNotRetryPolicy() -> void
-Funcky.DoNotRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.DoNotRetryPolicy.MaxRetries.get -> int
-Funcky.ExponentialBackoffRetryPolicy
-Funcky.ExponentialBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.ExponentialBackoffRetryPolicy.ExponentialBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
-Funcky.ExponentialBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.Extensions.AsyncEnumerableExtensions
 Funcky.Extensions.DictionaryExtensions
 Funcky.Extensions.EnumerableExtensions
@@ -52,13 +40,6 @@ Funcky.Functional
 Funcky.GenericConstraints.RequireClass<T>.RequireClass() -> void
 Funcky.GenericConstraints.RequireStruct<T>
 Funcky.GenericConstraints.RequireStruct<T>.RequireStruct() -> void
-Funcky.IRetryPolicy
-Funcky.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.IRetryPolicy.MaxRetries.get -> int
-Funcky.LinearBackoffRetryPolicy
-Funcky.LinearBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
-Funcky.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.Monads.AwaitableOptionExtensions
 Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
@@ -118,8 +99,6 @@ Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult,
 Funcky.Monads.Result<TValidResult>.Select<TResult>(System.Func<TValidResult, TResult>! selector) -> Funcky.Monads.Result<TResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TResult>(System.Func<TValidResult, Funcky.Monads.Result<TResult>>! resultSelector) -> Funcky.Monads.Result<TResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.Func<TValidResult, Funcky.Monads.Result<TSelectedResult>>! selectedResultSelector, System.Func<TValidResult, TSelectedResult, TResult>! resultSelector) -> Funcky.Monads.Result<TResult>
-Funcky.NoDelayRetryPolicy
-Funcky.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
 Funcky.Sequence
 Funcky.Unit
 Funcky.Unit.CompareTo(Funcky.Unit other) -> int
@@ -452,8 +431,6 @@ static Funcky.Functional.NoOperation<T1, T2>(T1 p1, T2 p2) -> void
 static Funcky.Functional.NoOperation<T1>(T1 p1) -> void
 static Funcky.Functional.Not<T>(System.Func<T, bool>! predicate) -> System.Func<T, bool>!
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer) -> TResult
-static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
-static Funcky.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!>! producer, Funcky.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!
 static Funcky.Functional.True() -> bool
 static Funcky.Functional.True<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.True<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) -> bool
