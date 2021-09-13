@@ -1,7 +1,4 @@
-using System.Linq;
-using Funcky.Monads;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test
 {

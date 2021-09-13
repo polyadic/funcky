@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Funcky.Monads;
 using Xunit.Sdk;
-using static Funcky.Functional;
 
 namespace Funcky.Xunit
 {

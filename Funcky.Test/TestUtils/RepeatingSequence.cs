@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
 using FsCheck;
-using static Funcky.Functional;
 
 namespace Funcky.Test.TestUtils
 {

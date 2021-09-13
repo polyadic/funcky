@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Funcky.Extensions;
 using Funcky.Test.TestUtils;
 using Xunit;
 using Xunit.Sdk;

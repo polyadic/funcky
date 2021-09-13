@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using Funcky.Monads;
-
 namespace Funcky.Test.TestUtils
 {
     internal sealed class MaybeProducer<T>

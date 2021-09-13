@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Funcky.Extensions;
 using Funcky.Xunit;
 using Xunit;
 

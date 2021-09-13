@@ -22,4 +22,5 @@
     <ItemGroup>
         <ProjectReference Include="../Funcky/Funcky.csproj" />
     </ItemGroup>
+    <Import Project="..\GlobalUsings.props" />
 </Project>

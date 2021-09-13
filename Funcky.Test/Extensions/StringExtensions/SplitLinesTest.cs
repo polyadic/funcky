@@ -1,5 +1,3 @@
-using System.Linq;
-using Funcky.Extensions;
 using Xunit;
 
 namespace Funcky.Test.Extensions.StringExtensions

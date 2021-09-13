@@ -1,6 +1,8 @@
-#pragma warning disable SA1210 // Using directives should be ordered alphabetically by namespace
+// TODO: Move these to the .props file or remove them once a new preview (> preview 7) is released.
+// See: https://github.com/dotnet/sdk/issues/19521
 
-// TODO: Remove this once .NET 6 Preview 7 is available
+#pragma warning disable IDE0005, SA1210
+
 global using System;
 global using System.Collections.Generic;
 global using System.IO;
@@ -8,7 +10,6 @@ global using System.Linq;
 global using System.Threading;
 global using System.Threading.Tasks;
 
-// TODO: Move thse to .csproj once .NET 6 Preview 7 is available
 global using System.Diagnostics.Contracts;
 global using Funcky.Extensions;
 global using Funcky.Monads;
