@@ -27,7 +27,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void ConcatenatingAListOfStringsXXXX()
+        public void ConcatenatingAListOfStringsReturnsAllElementsWithoutASeparator()
         {
             var strings = new List<string> { "Alpha", "Beta", "Gamma" };
 
