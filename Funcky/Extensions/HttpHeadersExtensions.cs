@@ -6,6 +6,6 @@ namespace Funcky.Extensions
     public static partial class HttpHeadersExtensions
     {
         public static Option<IEnumerable<string>> GetValuesOrNone(this HttpHeaders headers, string name)
-            => FailToOption<IEnumerable<string>>.FromTryPatternHandleNull(headers.TryGetValues, name);
+            => FailToOption<IEnumerable<string>>.FromTryPattern(headers.TryGetValues, name);
     }
 }

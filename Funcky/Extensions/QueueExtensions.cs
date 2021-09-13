@@ -9,12 +9,12 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPatternHandleNull(queue.TryDequeue);
+            => FailToOption<TItem>.FromTryPattern(queue.TryDequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPatternHandleNull(queue.TryPeek);
+            => FailToOption<TItem>.FromTryPattern(queue.TryPeek);
 #else
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
@@ -31,11 +31,11 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPatternHandleNull(concurrentQueue.TryDequeue);
+            => FailToOption<TItem>.FromTryPattern(concurrentQueue.TryDequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPatternHandleNull(concurrentQueue.TryPeek);
+            => FailToOption<TItem>.FromTryPattern(concurrentQueue.TryPeek);
     }
 }
