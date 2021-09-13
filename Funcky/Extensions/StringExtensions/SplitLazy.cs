@@ -48,7 +48,7 @@ namespace Funcky.Extensions
 
         private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
             => Sequence
-                    .Generate(new SplitResult(0), previous => extractNext(text, previous.NextStartIndex))
+                    .Successors(extractNext(text, 0), previous => extractNext(text, previous.NextStartIndex))
                     .Select(r => r.Result);
 
         private static FindNextIndex IndexOfCharSeparator(char separator)
@@ -129,8 +129,8 @@ namespace Funcky.Extensions
 
             public readonly int NextStartIndex;
 
-            public SplitResult(int nextStartIndex, Option<string> result = default)
-                => (Result, NextStartIndex) = (result.GetOrElse(string.Empty), nextStartIndex);
+            public SplitResult(int nextStartIndex, string result)
+                => (Result, NextStartIndex) = (result, nextStartIndex);
         }
     }
 }
