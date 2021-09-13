@@ -1,10 +1,11 @@
 namespace Funcky.RetryPolicies
 {
-    public sealed class LinearBackoffRetryPolicy : IRetryPolicy
+    public sealed class LinearBackOffRetryPolicy
+        : IRetryPolicy
     {
         private readonly TimeSpan _firstDelay;
 
-        public LinearBackoffRetryPolicy(int maxRetry, TimeSpan firstDelay)
+        public LinearBackOffRetryPolicy(int maxRetry, TimeSpan firstDelay)
             => (MaxRetries, _firstDelay) = (maxRetry, firstDelay);
 
         public int MaxRetries { get; }
