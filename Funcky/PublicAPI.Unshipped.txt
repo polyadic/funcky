@@ -1,5 +1,9 @@
 #nullable enable
 Funcky.Extensions.QueueExtensions
+Funcky.RetryPolicies.LinearBackOffRetryPolicy
+Funcky.RetryPolicies.LinearBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.LinearBackOffRetryPolicy.LinearBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.LinearBackOffRetryPolicy.MaxRetries.get -> int
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
@@ -23,10 +27,6 @@ Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.IRetryPolicy
 Funcky.RetryPolicies.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
 Funcky.RetryPolicies.IRetryPolicy.MaxRetries.get -> int
-Funcky.RetryPolicies.LinearBackoffRetryPolicy
-Funcky.RetryPolicies.LinearBackoffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.RetryPolicies.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
-Funcky.RetryPolicies.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
