@@ -1,8 +1,5 @@
 using System.Collections.Concurrent;
-
-#if !QUEUE_TRY_OVERLOADS
 using Funcky.Internal;
-#endif
 
 namespace Funcky.Extensions
 {
@@ -12,41 +9,33 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => queue.TryDequeue(out var result)
-                ? result
-                : Option<TItem>.None();
+            => FailToOption<TItem>.FromTryPatternHandleNull(queue.TryDequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => queue.TryPeek(out var result)
-                ? result
-                : Option<TItem>.None();
+            => FailToOption<TItem>.FromTryPatternHandleNull(queue.TryPeek);
 #else
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => HandleException<InvalidOperationException>.ToNone(queue.Dequeue);
+            => FailToOption<TItem>.FromException<InvalidOperationException>(queue.Dequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => HandleException<InvalidOperationException>.ToNone(queue.Dequeue);
+            => FailToOption<TItem>.FromException<InvalidOperationException>(queue.Peek);
 
 #endif
 
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => concurrentQueue.TryDequeue(out var result)
-                ? result
-                : Option<TItem>.None();
+            => FailToOption<TItem>.FromTryPatternHandleNull(concurrentQueue.TryDequeue);
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => concurrentQueue.TryPeek(out var result)
-                ? result
-                : Option<TItem>.None();
+            => FailToOption<TItem>.FromTryPatternHandleNull(concurrentQueue.TryPeek);
     }
 }

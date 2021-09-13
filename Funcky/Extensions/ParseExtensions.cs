@@ -1,4 +1,5 @@
 using System.Globalization;
+using Funcky.Internal;
 
 namespace Funcky.Extensions
 {
@@ -6,130 +7,88 @@ namespace Funcky.Extensions
     {
         [Pure]
         public static Option<bool> ParseBooleanOrNone(this string candidate)
-            => bool.TryParse(candidate, out var boolResult)
-                ? boolResult
-                : Option<bool>.None();
+            => FailToOption<bool>.FromTryPattern(bool.TryParse, candidate);
 
         [Pure]
         public static Option<byte> ParseByteOrNone(this string candidate)
-            => byte.TryParse(candidate, out var byteResult)
-                ? byteResult
-                : Option<byte>.None();
+            => FailToOption<byte>.FromTryPattern(byte.TryParse, candidate);
 
         [Pure]
         public static Option<byte> ParseByteOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => byte.TryParse(candidate, styles, provider, out var byteResult)
-                ? byteResult
-                : Option<byte>.None();
+            => FailToOption<byte>.FromTryPattern(byte.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<short> ParseShortOrNone(this string candidate)
-            => short.TryParse(candidate, out var shortResult)
-                ? shortResult
-                : Option<short>.None();
+            => FailToOption<short>.FromTryPattern(short.TryParse, candidate);
 
         [Pure]
         public static Option<short> ParseShortOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => short.TryParse(candidate, styles, provider, out var shortResult)
-                ? shortResult
-                : Option<short>.None();
+            => FailToOption<short>.FromTryPattern(short.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<int> ParseIntOrNone(this string candidate)
-            => int.TryParse(candidate, out var integerResult)
-                ? Option.Some(integerResult)
-                : Option<int>.None();
+            => FailToOption<int>.FromTryPattern(int.TryParse, candidate);
 
         [Pure]
         public static Option<int> ParseIntOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => int.TryParse(candidate, styles, provider, out var integerResult)
-                ? Option.Some(integerResult)
-                : Option<int>.None();
+            => FailToOption<int>.FromTryPattern(int.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<long> ParseLongOrNone(this string candidate)
-            => long.TryParse(candidate, out var longResult)
-                ? longResult
-                : Option<long>.None();
+            => FailToOption<long>.FromTryPattern(long.TryParse, candidate);
 
         [Pure]
         public static Option<long> ParseLongOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => long.TryParse(candidate, styles, provider, out var longResult)
-                ? longResult
-                : Option<long>.None();
+            => FailToOption<long>.FromTryPattern(long.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<float> ParseFloatOrNone(this string candidate)
-            => float.TryParse(candidate, out var doubleResult)
-                ? Option.Some(doubleResult)
-                : Option<float>.None();
+            => FailToOption<float>.FromTryPattern(float.TryParse, candidate);
 
         [Pure]
         public static Option<float> ParseFloatOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => float.TryParse(candidate, styles, provider, out var doubleResult)
-                ? Option.Some(doubleResult)
-                : Option<float>.None();
+            => FailToOption<float>.FromTryPattern(float.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<double> ParseDoubleOrNone(this string candidate)
-            => double.TryParse(candidate, out var doubleResult)
-                ? doubleResult
-                : Option<double>.None();
+            => FailToOption<double>.FromTryPattern(double.TryParse, candidate);
 
         [Pure]
         public static Option<double> ParseDoubleOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => double.TryParse(candidate, styles, provider, out var doubleResult)
-                ? doubleResult
-                : Option<double>.None();
+            => FailToOption<double>.FromTryPattern(double.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<decimal> ParseDecimalOrNone(this string candidate)
-            => decimal.TryParse(candidate, out var decimalResult)
-                ? decimalResult
-                : Option<decimal>.None();
+            => FailToOption<decimal>.FromTryPattern(decimal.TryParse, candidate);
 
         [Pure]
         public static Option<decimal> ParseDecimalOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => decimal.TryParse(candidate, styles, provider, out var decimalResult)
-                ? decimalResult
-                : Option<decimal>.None();
+            => FailToOption<decimal>.FromTryPattern(decimal.TryParse, candidate, styles, provider);
 
         [Pure]
         public static Option<DateTime> ParseDateTimeOrNone(this string candidate)
-            => DateTime.TryParse(candidate, out var dateTime)
-                ? dateTime
-                : Option<DateTime>.None();
+            => FailToOption<DateTime>.FromTryPattern(DateTime.TryParse, candidate);
 
         [Pure]
         public static Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles)
-            => DateTime.TryParse(candidate, provider, styles, out var dateTime)
-                ? dateTime
-                : Option<DateTime>.None();
+            => FailToOption<DateTime>.FromTryPattern(DateTime.TryParse, candidate, provider, styles);
 
         [Pure]
         public static Option<TimeSpan> ParseTimeSpanOrNone(this string candidate)
-            => TimeSpan.TryParse(candidate, out var timeSpan)
-                ? timeSpan
-                : Option<TimeSpan>.None();
+            => FailToOption<TimeSpan>.FromTryPattern(TimeSpan.TryParse, candidate);
 
         [Pure]
         public static Option<TimeSpan> ParseTimeSpanOrNone(this string candidate, IFormatProvider provider)
-            => TimeSpan.TryParse(candidate, provider, out var timeSpan)
-                ? timeSpan
-                : Option<TimeSpan>.None();
+            => FailToOption<TimeSpan>.FromTryPattern(TimeSpan.TryParse, candidate, provider);
 
         [Pure]
         public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
             where TEnum : struct
-            => Enum.TryParse(candidate, out TEnum enumValue)
-                ? enumValue
-                : Option<TEnum>.None();
+            => FailToOption<TEnum>.FromTryPattern(Enum.TryParse, candidate);
 
         [Pure]
         public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate, bool ignoreCase)
             where TEnum : struct
-            => Enum.TryParse(candidate, ignoreCase, out TEnum enumValue)
-                ? enumValue
-                : Option<TEnum>.None();
+            => FailToOption<TEnum>.FromTryPattern(Enum.TryParse, candidate, ignoreCase);
     }
 }
