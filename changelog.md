@@ -7,6 +7,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   with an already set stack trace. The original stack trace is now preserved.
   Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
 * Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
+* `Sequence.Generate` has been deprecated in favour of the newly added `Sequence.Successors` function
+  which includes the first element (seed) in the generated sequence.
 
 ## Funcky 2.5.0
 ### Reader Monad

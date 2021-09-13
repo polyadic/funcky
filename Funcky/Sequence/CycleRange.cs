@@ -19,12 +19,7 @@ namespace Funcky
                 throw new ArgumentException("An empty sequence cannot be cycled", nameof(sequence));
             }
 
-            return CycleRangeExpression(list);
+            return Cycle(sequence).SelectMany(Identity);
         }
-
-        private static IEnumerable<TItem> CycleRangeExpression<TItem>(IEnumerable<TItem> sequence)
-            where TItem : notnull
-            => Generate(Unit.Value, Identity)
-                .SelectMany(_ => sequence);
     }
 }
