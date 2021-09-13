@@ -4,6 +4,7 @@ static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collec
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
+static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, TItem>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(TItem first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
