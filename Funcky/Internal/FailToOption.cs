@@ -1,4 +1,6 @@
+#if NULLABLE_ATTRIBUTES_SUPPORTED
 using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace Funcky.Internal
 {
