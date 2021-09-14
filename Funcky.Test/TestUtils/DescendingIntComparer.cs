@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Funcky.Test.TestUtils
 {
     internal sealed class DescendingIntComparer : IComparer<int>

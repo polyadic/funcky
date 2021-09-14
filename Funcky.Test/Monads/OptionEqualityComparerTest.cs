@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using FsCheck;
 using FsCheck.Xunit;
-using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test.Monads

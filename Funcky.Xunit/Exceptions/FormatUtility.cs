@@ -1,6 +1,3 @@
-using System;
-using Funcky.Monads;
-
 namespace Xunit.Sdk
 {
     internal static class FormatUtility

@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Funcky.Extensions;
-using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {

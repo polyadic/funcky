@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
 using Xunit;

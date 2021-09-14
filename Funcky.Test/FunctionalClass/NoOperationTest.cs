@@ -1,5 +1,4 @@
-﻿using Funcky.Monads;
-using Xunit;
+﻿using Xunit;
 
 namespace Funcky.Test.FunctionalClass
 {

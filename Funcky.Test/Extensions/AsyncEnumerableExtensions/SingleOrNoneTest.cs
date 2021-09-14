@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Funcky.Extensions;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 using static Funcky.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
 namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
