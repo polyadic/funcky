@@ -1,7 +1,5 @@
-using System;
 using FsCheck;
 using FsCheck.Xunit;
-using Funcky.Extensions;
 using Xunit;
 
 namespace Funcky.Test.Extensions

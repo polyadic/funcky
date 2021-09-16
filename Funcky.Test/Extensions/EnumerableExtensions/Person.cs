@@ -1,5 +1,3 @@
-using System;
-
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     internal sealed class Person : IComparable<Person>

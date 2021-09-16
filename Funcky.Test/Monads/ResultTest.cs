@@ -1,11 +1,6 @@
-using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using Funcky.Monads;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.Monads
 {

@@ -1,4 +1,3 @@
-using System;
 using Funcky.Xunit;
 using static System.Environment;
 using static Xunit.Sdk.FormatUtility;

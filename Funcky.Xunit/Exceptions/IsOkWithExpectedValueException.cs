@@ -1,5 +1,3 @@
-using System;
-using Funcky.Monads;
 using Funcky.Xunit;
 using static Xunit.Sdk.FormatUtility;
 

@@ -1,4 +1,3 @@
-using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test.Monads

@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-using Funcky.Extensions;
 using Funcky.Xunit;
 using Xunit;
 using static Funcky.Test.Extensions.AsyncEnumerableExtensions.TestData;

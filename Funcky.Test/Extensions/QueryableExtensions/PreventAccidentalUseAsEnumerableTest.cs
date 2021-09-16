@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Funcky.Extensions;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Xunit;
 

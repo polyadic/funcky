@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Funcky.Xunit;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {

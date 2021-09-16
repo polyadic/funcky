@@ -1,6 +1,4 @@
-using System;
 using FsCheck;
-using Funcky.Monads;
 using Result = Funcky.Monads.Result;
 
 namespace Funcky.Test

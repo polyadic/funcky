@@ -8,6 +8,7 @@ FodyWeavers.xsd
 
 ## mdbook
 /Documentation/book/
+/Documentation/**/*.svg
 
 # User-specific files
 *.suo

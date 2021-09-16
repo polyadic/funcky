@@ -1,7 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
-using Funcky.Extensions;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Funcky.Xunit;
 using Xunit;

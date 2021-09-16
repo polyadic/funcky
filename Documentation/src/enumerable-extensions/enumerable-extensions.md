@@ -11,7 +11,7 @@ Funcky offers a few additional ones which can come in handy.
 {{#include ./cartesian-product.md}}
 {{#include ./chunk.md}}
 {{#include ./for-each.md}}
-{{#include ./first-last-or-none.md}}
+{{#include ./first-or-none.md}}
 {{#include ./inspect.md}}
 {{#include ./interleave.md}}
 {{#include ./intersperse.md}}
