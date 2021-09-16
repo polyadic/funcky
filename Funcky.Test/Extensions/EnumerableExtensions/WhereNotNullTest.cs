@@ -1,4 +1,3 @@
-using Funcky.Extensions;
 using Funcky.Test.TestUtils;
 using Xunit;
 

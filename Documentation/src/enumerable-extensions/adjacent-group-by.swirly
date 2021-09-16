@@ -1,0 +1,15 @@
+% AdjacentGroupBy
+
+---a-a-a-b-b-c-c-a-a-
+
+> AdjacentGroupBy
+
+w = ----a-a-a---
+
+x = ----b-b---
+
+y = ----c-c---
+
+z = ----a-a---
+
+--w----x----y----z------

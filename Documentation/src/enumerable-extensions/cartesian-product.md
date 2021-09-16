@@ -6,6 +6,8 @@ The CartesianProduct extension function returns all possible pairs of two given 
 
 There are two overloads, one which lets you choose
 
+![cartesian-product with marbles](cartesian-product.svg "Marble me!")
+
 ### Examples
 
 Two sequences as input:

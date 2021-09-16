@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test.Monads

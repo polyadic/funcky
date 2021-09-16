@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using Funcky.Monads;
 using Funcky.Test.TestUtils;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {

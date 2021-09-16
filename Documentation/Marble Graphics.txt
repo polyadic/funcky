@@ -1,0 +1,9 @@
+To create the marble graphics we used swirly:
+
+Swirly - A marble diagram generator
+
+Source:
+https://github.com/timdp/swirly
+
+Interactive Webservice
+https://swirly.dev/

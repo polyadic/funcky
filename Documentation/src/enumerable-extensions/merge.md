@@ -1,5 +1,7 @@
 ## Merge
 
+![merge with marbles](merge.svg)
+
 ### Examples
 
 Given two sequences which are already ordered the same way:

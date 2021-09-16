@@ -1,6 +1,4 @@
-using System.Linq;
 using Xunit;
-using static Funcky.Functional;
 
 namespace Funcky.Test.FunctionalClass
 {

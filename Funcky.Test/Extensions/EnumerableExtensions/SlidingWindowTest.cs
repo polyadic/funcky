@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using FsCheck;
 using FsCheck.Xunit;
-using Funcky.Extensions;
 using Funcky.Test.TestUtils;
 using Xunit;
 

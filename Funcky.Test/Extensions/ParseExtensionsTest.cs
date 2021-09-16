@@ -1,8 +1,4 @@
-using System;
 using System.Globalization;
-using System.Threading;
-using Funcky.Extensions;
-using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test.Extensions

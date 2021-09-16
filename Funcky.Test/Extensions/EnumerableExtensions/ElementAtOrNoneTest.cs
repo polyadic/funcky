@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Funcky.Extensions;
-using Funcky.Xunit;
+﻿using Funcky.Xunit;
 using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions

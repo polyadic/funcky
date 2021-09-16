@@ -11,6 +11,6 @@ namespace Funcky
         [Pure]
         public static IEnumerable<TItem> Cycle<TItem>(TItem element)
             where TItem : notnull
-            => Generate(element, Identity);
+            => Successors(element, Identity);
     }
 }

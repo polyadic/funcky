@@ -1,5 +1,7 @@
 ## Partition
 
+![partition with marbles](partition.svg)
+
 ### Example
 
 ``` 

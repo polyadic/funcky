@@ -1,0 +1,7 @@
+% WhereSelect
+
+------A----2----4----N----X----1----P---|
+
+> WhereSelect(IsDigit ? Ø : ToLower)
+
+------a--------------n----x---------p---|
