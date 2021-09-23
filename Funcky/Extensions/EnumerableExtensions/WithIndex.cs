@@ -14,8 +14,11 @@ namespace Funcky.Extensions
         public static IEnumerable<ValueWithIndex<TSource>> WithIndex<TSource>(this IEnumerable<TSource> source)
             => source switch
             {
-                IList<TSource> list => new ListWithIndex<TSource>(list),
-                _ => source.Select(ValueWithIndex<TSource>.Create),
+                IList<TSource> list => new ListWithSelector<TSource, ValueWithIndex<TSource>>(list, list => ValueWithIndex<TSource>),
+                _ => source.Select(ValueWithIndex<TSource>),
             };
+
+        private static ValueWithIndex<TValue> ValueWithIndex<TValue>(TValue value, int index)
+            => new(value, index);
     }
 }

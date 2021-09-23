@@ -52,9 +52,10 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
         {
             var nonEnumerableList = new FailOnEnumerationList(5000);
-            var magicListWithIndex = nonEnumerableList.WithIndex();
+            var listWithIndex = nonEnumerableList.WithIndex();
 
-            Assert.Equal(1337, magicListWithIndex.ElementAt(1337).Index);
+            Assert.Equal(1337, listWithIndex.ElementAt(1337).Value);
+            Assert.Equal(listWithIndex.ElementAt(999).Value, listWithIndex.ElementAt(999).Index);
         }
 
         [Fact]

@@ -1,3 +1,5 @@
+using Funcky.Internal;
+
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
@@ -10,6 +12,17 @@ namespace Funcky.Extensions
         /// <returns>Returns a sequence mapping each element into a type which has an IsLast property which is true for the last element of the sequence.</returns>
         [Pure]
         public static IEnumerable<ValueWithLast<TSource>> WithLast<TSource>(this IEnumerable<TSource> source)
+            => source switch
+            {
+                IList<TSource> list => new ListWithSelector<TSource, ValueWithLast<TSource>>(list, ValueWithLast),
+                _ => source.WithLastImplementation(),
+            };
+
+        private static Func<TSource, int, ValueWithLast<TSource>> ValueWithLast<TSource>(IList<TSource> list)
+            => (value, index)
+                => new(value, index == list.Count - 1);
+
+        private static IEnumerable<ValueWithLast<TSource>> WithLastImplementation<TSource>(this IEnumerable<TSource> source)
         {
             using var enumerator = source.GetEnumerator();
 

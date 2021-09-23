@@ -2,12 +2,13 @@ using System.Collections;
 
 namespace Funcky.Internal
 {
-    internal class ListWithIndex<TSource> : IList<ValueWithIndex<TSource>>
+    internal class ListWithSelector<TSource, TResult> : IList<TResult>
     {
         private readonly IList<TSource> _source;
+        private readonly Func<TSource, int, TResult> _selector;
 
-        public ListWithIndex(IList<TSource> source)
-            => _source = source;
+        public ListWithSelector(IList<TSource> source, Func<IList<TSource>, Func<TSource, int, TResult>> selector)
+            => (_source, _selector) = (source, selector(source));
 
         public int Count
             => _source.Count;
@@ -15,36 +16,36 @@ namespace Funcky.Internal
         public bool IsReadOnly
             => true;
 
-        public ValueWithIndex<TSource> this[int index]
+        public TResult this[int index]
         {
-            get => new(_source[index], index);
+            get => _selector(_source[index], index);
             set => throw new InvalidOperationException();
         }
 
-        public void Add(ValueWithIndex<TSource> item)
+        public void Add(TResult item)
             => throw new InvalidOperationException();
 
         public void Clear()
             => throw new InvalidOperationException();
 
-        public bool Contains(ValueWithIndex<TSource> item)
+        public bool Contains(TResult item)
             => throw new InvalidOperationException();
 
-        public void CopyTo(ValueWithIndex<TSource>[] array, int arrayIndex)
+        public void CopyTo(TResult[] array, int arrayIndex)
             => throw new InvalidOperationException();
 
-        public IEnumerator<ValueWithIndex<TSource>> GetEnumerator()
+        public IEnumerator<TResult> GetEnumerator()
             => _source
-                .Select(ValueWithIndex<TSource>.Create)
+                .Select(_selector)
                 .GetEnumerator();
 
-        public int IndexOf(ValueWithIndex<TSource> item)
+        public int IndexOf(TResult item)
             => throw new InvalidOperationException();
 
-        public void Insert(int index, ValueWithIndex<TSource> item)
+        public void Insert(int index, TResult item)
             => throw new InvalidOperationException();
 
-        public bool Remove(ValueWithIndex<TSource> item)
+        public bool Remove(TResult item)
             => throw new InvalidOperationException();
 
         public void RemoveAt(int index)

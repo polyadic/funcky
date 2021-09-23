@@ -17,7 +17,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
         public int this[int index]
         {
-            get => index > 0 && index < _length ? index : throw new IndexOutOfRangeException();
+            get => index >= 0 && index < _length ? index : throw new IndexOutOfRangeException();
             set => throw new InvalidOperationException();
         }
 

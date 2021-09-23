@@ -9,8 +9,5 @@ namespace Funcky.Extensions
         public int Index { get; }
 
         public void Deconstruct(out TValue value, out int index) => (value, index) = (Value, Index);
-
-        public static ValueWithIndex<TValue> Create(TValue value, int index)
-            => new(value, index);
     }
 }
