@@ -1,3 +1,5 @@
+using Funcky.Internal;
+
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
@@ -10,6 +12,10 @@ namespace Funcky.Extensions
         /// <returns>Returns a sequence mapping each element together with an Index starting at 0.</returns>
         [Pure]
         public static IEnumerable<ValueWithIndex<TSource>> WithIndex<TSource>(this IEnumerable<TSource> source)
-            => source.Select((value, index) => new ValueWithIndex<TSource>(value, index));
+            => source switch
+            {
+                IList<TSource> list => new ListWithIndex<TSource>(list),
+                _ => source.Select(ValueWithIndex<TSource>.Create),
+            };
     }
 }

@@ -47,5 +47,23 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 Assert.Equal(valueWithIndex.Value, valueWithIndex.Index);
             }
         }
+
+        [Fact]
+        public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
+        {
+            var nonEnumerableList = new FailOnEnumerationList(5000);
+            var magicListWithIndex = nonEnumerableList.WithIndex();
+
+            Assert.Equal(1337, magicListWithIndex.ElementAt(1337).Index);
+        }
+
+        [Fact]
+        public void OptimizedSourceWithIndexCanBeEnumerated()
+        {
+            var length = 222;
+            var nonEnumerableList = Enumerable.Range(0, length).ToList();
+
+            Assert.Equal(length, nonEnumerableList.WithIndex().Aggregate(0, (sum, _) => sum + 1));
+        }
     }
 }
