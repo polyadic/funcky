@@ -10,7 +10,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void SplitIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.Split(42);
         }

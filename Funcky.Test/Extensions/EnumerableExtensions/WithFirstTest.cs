@@ -8,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WithFirstIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WithFirst();
         }

@@ -10,7 +10,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WithPreviousIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WithPrevious();
         }

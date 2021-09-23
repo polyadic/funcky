@@ -10,7 +10,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void AShuffleIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.Shuffle();
         }

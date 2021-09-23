@@ -8,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void ZipLongestIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.ZipLongest(doNotEnumerate, _ => Unit.Value);
         }

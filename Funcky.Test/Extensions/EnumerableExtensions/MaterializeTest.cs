@@ -10,7 +10,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void MaterializeEnumeratesNonCollection()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             Assert.Throws<XunitException>(() => doNotEnumerate.Materialize());
         }
