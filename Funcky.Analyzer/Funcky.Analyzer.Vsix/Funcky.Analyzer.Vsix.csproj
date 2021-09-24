@@ -5,6 +5,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>10.0</LangVersion>
         <RootNamespace>Funcky.Analyzer.Vsix</RootNamespace>
         <AssemblyName>Funcky.Analyzer.Vsix</AssemblyName>
         <IsPackable>false</IsPackable>

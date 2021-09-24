@@ -13,4 +13,7 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<AnalysisLevel>5.0</AnalysisLevel>
 	</PropertyGroup>
+	<PropertyGroup Label="C# Settings">
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 </Project>

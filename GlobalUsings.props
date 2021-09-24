@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 	<ItemGroup Label="Global Usings">
-		<Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" Link="GlobalUsings.cs" />
+		<Using Include="System.Diagnostics.Contracts" />
+		<Using Include="Funcky.Extensions" />
+		<Using Include="Funcky.Extensions" />
+		<Using Include="Funcky.Monads" />
+		<Using Include="Funcky.Functional" Static="true" />
 	</ItemGroup>
 </Project>
