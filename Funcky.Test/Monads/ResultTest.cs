@@ -1,6 +1,4 @@
 using System.Runtime.CompilerServices;
-using Funcky.Xunit;
-using Xunit;
 
 namespace Funcky.Test.Monads
 {

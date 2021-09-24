@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Extensions
 {
     internal sealed class SkipOnMonoFact : FactAttribute

@@ -1,7 +1,5 @@
 // ReSharper disable PossibleMultipleEnumeration
 
-using Xunit;
-
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class JoinStringsTest

@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Extensions
 {
     public sealed class SequenceTest
