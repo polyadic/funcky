@@ -1,6 +1,4 @@
 using System.Reflection;
-using Funcky.Xunit;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Funcky.Test.Extensions.StringExtensions

@@ -1,7 +1,6 @@
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {

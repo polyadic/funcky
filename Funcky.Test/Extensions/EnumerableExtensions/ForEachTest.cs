@@ -1,5 +1,4 @@
 using Funcky.Test.TestUtils;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions

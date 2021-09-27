@@ -1,5 +1,3 @@
-﻿using Xunit;
-
 namespace Funcky.Test.FunctionalClass
 {
     public sealed class NoOperationTest

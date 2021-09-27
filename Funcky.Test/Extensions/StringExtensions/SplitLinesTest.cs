@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Extensions.StringExtensions
 {
     public sealed class SplitLinesTest

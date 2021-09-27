@@ -15,4 +15,5 @@
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
     <Import Project="..\GlobalUsings.props" />
+    <Import Project="..\GlobalUsings.Test.props" />
 </Project>

@@ -1,6 +1,3 @@
-﻿using Funcky.Xunit;
-using Xunit;
-
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class ElementAtOrNoneTest

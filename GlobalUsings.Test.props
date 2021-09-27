@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<ItemGroup Label="Global Usings">
+		<Using Include="Xunit" />
+		<Using Include="Funcky.Xunit" />
+	</ItemGroup>
+</Project>

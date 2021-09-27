@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Xunit.Test.Extensions
 {
     public sealed class ToTheoryDataExtensionTest

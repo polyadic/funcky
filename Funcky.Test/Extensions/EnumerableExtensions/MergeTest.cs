@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
