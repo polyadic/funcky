@@ -19,20 +19,20 @@ namespace Funcky.Internal
         public TResult this[int index]
         {
             get => _selector(_source[index], index);
-            set => throw new InvalidOperationException();
+            set => throw new NotSupportedException();
         }
 
         public void Add(TResult item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void Clear()
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public bool Contains(TResult item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void CopyTo(TResult[] array, int arrayIndex)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public IEnumerator<TResult> GetEnumerator()
             => _source
@@ -40,16 +40,16 @@ namespace Funcky.Internal
                 .GetEnumerator();
 
         public int IndexOf(TResult item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void Insert(int index, TResult item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public bool Remove(TResult item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void RemoveAt(int index)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();

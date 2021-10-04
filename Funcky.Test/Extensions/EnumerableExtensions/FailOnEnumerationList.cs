@@ -18,37 +18,37 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public int this[int index]
         {
             get => index >= 0 && index < _length ? index : throw new IndexOutOfRangeException();
-            set => throw new InvalidOperationException();
+            set => throw new NotSupportedException();
         }
 
         public void Add(int item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void Clear()
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public bool Contains(int item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void CopyTo(int[] array, int arrayIndex)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public IEnumerator<int> GetEnumerator()
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public int IndexOf(int item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void Insert(int index, int item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public bool Remove(int item)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         public void RemoveAt(int index)
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
 
         IEnumerator IEnumerable.GetEnumerator()
-            => throw new InvalidOperationException();
+            => throw new NotSupportedException();
     }
 }
