@@ -14,7 +14,7 @@ namespace Funcky.Extensions
         public static IEnumerable<ValueWithFirst<TSource>> WithFirst<TSource>(this IEnumerable<TSource> source)
             => source switch
             {
-                IList<TSource> list => new ListWithSelector<TSource, ValueWithFirst<TSource>>(list, ValueWithFirst),
+                IList<TSource> list => ListWithSelector.Create(list, ValueWithFirst),
                 _ => source.WithFirstImplementation(),
             };
 

@@ -2,6 +2,12 @@ using System.Collections;
 
 namespace Funcky.Internal
 {
+    internal class ListWithSelector
+    {
+        public static ListWithSelector<TSource, TResult> Create<TSource, TResult>(IList<TSource> source, Func<IList<TSource>, Func<TSource, int, TResult>> selector)
+            => new(source, selector);
+    }
+
     internal class ListWithSelector<TSource, TResult> : IList<TResult>
     {
         private readonly IList<TSource> _source;

@@ -14,7 +14,7 @@ namespace Funcky.Extensions
         public static IEnumerable<ValueWithLast<TSource>> WithLast<TSource>(this IEnumerable<TSource> source)
             => source switch
             {
-                IList<TSource> list => new ListWithSelector<TSource, ValueWithLast<TSource>>(list, ValueWithLast),
+                IList<TSource> list => ListWithSelector.Create(list, ValueWithLast),
                 _ => source.WithLastImplementation(),
             };
 
