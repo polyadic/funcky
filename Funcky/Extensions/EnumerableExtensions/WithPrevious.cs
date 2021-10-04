@@ -11,7 +11,7 @@ namespace Funcky.Extensions
             where TSource : notnull
             => source switch
             {
-                IList<TSource> list => new ListWithSelector.Create(list, ValueWithPrevious),
+                IList<TSource> list => ListWithSelector.Create(list, ValueWithPrevious),
                 _ => source.WithPreviousImplementation(),
             };
 
