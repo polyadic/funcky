@@ -17,8 +17,13 @@ namespace Funcky.Extensions
 
         private static Func<TSource, int, ValueWithPrevious<TSource>> ValueWithPrevious<TSource>(IList<TSource> list)
             where TSource : notnull
+#if OPTIMIZED_ELEMENT_AT
             => (value, index)
                 => new(value, list.ElementAtOrNone(IndexOfPrevious(index)));
+#else
+            => (value, index)
+                => new(value, IndexOfPrevious(index) < 0 ? Option<TSource>.None() : list[IndexOfPrevious(index)]);
+#endif
 
         private static int IndexOfPrevious(int index)
             => index - 1;
