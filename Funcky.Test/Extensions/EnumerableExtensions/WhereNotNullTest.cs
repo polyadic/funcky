@@ -7,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WhereNotNullIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WhereNotNull();
         }

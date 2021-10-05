@@ -8,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void ForEachIsEvaluatedEagerly()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             Assert.Throws<XunitException>(() => doNotEnumerate.ForEach(Functional.NoOperation));
             Assert.Throws<XunitException>(() => doNotEnumerate.ForEach(UnitNoOperation));

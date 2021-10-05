@@ -9,7 +9,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void TakeEveryIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.TakeEvery(42);
         }

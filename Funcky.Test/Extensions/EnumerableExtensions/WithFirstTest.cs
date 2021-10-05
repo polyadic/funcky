@@ -7,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WithFirstIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WithFirst();
         }
@@ -47,6 +47,31 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             {
                 Assert.Equal(valueWithFirst.Value == 1, valueWithFirst.IsFirst);
             }
+        }
+
+        [Fact]
+        public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
+        {
+            var length = 5000;
+            var nonEnumerableList = new FailOnEnumerationList(length);
+            var listWithLast = nonEnumerableList.WithFirst();
+
+            Assert.Equal(1337, listWithLast.ElementAt(1337).Value);
+
+            Assert.True(listWithLast.ElementAt(0).IsFirst);
+            Assert.False(listWithLast.ElementAt(1).IsFirst);
+            Assert.False(listWithLast.ElementAt(2500).IsFirst);
+            Assert.False(listWithLast.ElementAt(length - 2).IsFirst);
+            Assert.False(listWithLast.ElementAt(length - 1).IsFirst);
+        }
+
+        [Fact]
+        public void OptimizedSourceWithIndexCanBeEnumerated()
+        {
+            var length = 222;
+            var nonEnumerableList = Enumerable.Range(0, length).ToList();
+
+            Assert.Equal(length, nonEnumerableList.WithFirst().Aggregate(0, (sum, _) => sum + 1));
         }
     }
 }

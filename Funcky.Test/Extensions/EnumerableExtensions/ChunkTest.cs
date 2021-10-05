@@ -7,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void ChunkIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.Chunk(42);
         }

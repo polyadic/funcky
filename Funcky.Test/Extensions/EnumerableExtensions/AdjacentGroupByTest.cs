@@ -7,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void AdjacentGroupByIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>);
             _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, EqualityComparer<int>.Default);
