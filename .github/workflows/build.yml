@@ -33,6 +33,13 @@ jobs:
       run: dotnet build --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true
     - name: Run Tests
       run: dotnet test --configuration Release --no-build
+
+  nupkg:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      name: Install Current .NET SDK
     - name: Generate NuGet Packages
       run: dotnet pack --configuration Release --output nupkg
     - uses: actions/upload-artifact@v2
