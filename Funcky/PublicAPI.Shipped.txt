@@ -2,7 +2,6 @@
 Funcky.DataTypes.EitherOrBoth
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> other) -> bool
-Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
 Funcky.Extensions.DictionaryExtensions
 Funcky.Extensions.EnumerableExtensions
@@ -35,7 +34,6 @@ Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Func
 Funcky.Functional
 Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
-Funcky.Monads.Either<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
 Funcky.Monads.Either<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right) -> TMatchResult
 Funcky.Monads.Either<TLeft, TRight>.Select<TResult>(System.Func<TRight, TResult>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
@@ -53,7 +51,6 @@ Funcky.Monads.Option<TItem>.Equals(Funcky.Monads.Option<TItem> other) -> bool
 Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! elseOption) -> TItem
 Funcky.Monads.Option<TItem>.GetOrElse(TItem elseOption) -> TItem
 Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! action) -> Funcky.Monads.Option<TItem>
-Funcky.Monads.Option<TItem>.Match(System.Action! none, System.Action<TItem>! some) -> void
 Funcky.Monads.Option<TItem>.Match<TResult>(System.Func<TResult>! none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Match<TResult>(TResult none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.OrElse(Funcky.Monads.Option<TItem> elseOption) -> Funcky.Monads.Option<TItem>
@@ -72,7 +69,6 @@ Funcky.Monads.ReaderExtensions
 Funcky.Monads.Result
 Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> other) -> bool
-Funcky.Monads.Result<TValidResult>.Match(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
 Funcky.Monads.Result<TValidResult>.Select<TResult>(System.Func<TValidResult, TResult>! selector) -> Funcky.Monads.Result<TResult>
 Funcky.Sequence
