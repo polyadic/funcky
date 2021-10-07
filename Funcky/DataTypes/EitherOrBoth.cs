@@ -72,7 +72,7 @@ namespace Funcky.DataTypes
                 _ => throw new NotSupportedException(UnknownSide),
             };
 
-        public void Match(Action<TLeft> left, Action<TRight> right, Action<TLeft, TRight> both)
+        public void Switch(Action<TLeft> left, Action<TRight> right, Action<TLeft, TRight> both)
         {
             switch (_side)
             {

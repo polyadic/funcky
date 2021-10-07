@@ -6,6 +6,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Removed in 2.x deprecated APIs 
 * Moved retry policies to a better namespace
 * Moved all Async Code to funcky-async
+* Use Switch instead of Match for Actions to improve type inference
 
 ## Unreleased
 * The behaviour of the `Result.Error` constructor has been changed regarding exceptions

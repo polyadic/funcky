@@ -90,7 +90,7 @@ namespace Funcky.Test.Monads
         public void MatchAcceptsActionsAsFunctions(Result<int> result, bool expected)
         {
             result
-              .Match(
+              .Switch(
                 ok: _ => Assert.True(expected),
                 error: _ => Assert.False(expected));
         }

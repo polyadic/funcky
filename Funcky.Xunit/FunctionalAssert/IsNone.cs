@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Funcky.Monads;
 using Xunit.Sdk;
@@ -15,7 +15,7 @@ namespace Funcky.Xunit
         {
             try
             {
-                option.Match(
+                option.Switch(
                     none: NoOperation,
                     some: value => throw new IsNoneException(value));
             }

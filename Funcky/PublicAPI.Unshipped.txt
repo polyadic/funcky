@@ -1,5 +1,9 @@
 #nullable enable
+Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
 Funcky.Extensions.QueueExtensions
+Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
+Funcky.Monads.Option<TItem>.Switch(System.Action! none, System.Action<TItem>! some) -> void
+Funcky.Monads.Result<TValidResult>.Switch(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.RetryPolicies.LinearBackOffRetryPolicy
 Funcky.RetryPolicies.LinearBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
 Funcky.RetryPolicies.LinearBackOffRetryPolicy.LinearBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void

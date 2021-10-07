@@ -1,4 +1,4 @@
-﻿using Funcky.Monads;
+using Funcky.Monads;
 using Xunit;
 
 namespace Funcky.Test.FunctionalClass
@@ -11,7 +11,7 @@ namespace Funcky.Test.FunctionalClass
             var none = Option<int>.None;
 
             var sideEffect = 0;
-            none.Match(Functional.NoOperation, i => sideEffect = i);
+            none.Switch(Functional.NoOperation, i => sideEffect = i);
 
             Assert.Equal(0, sideEffect);
         }
