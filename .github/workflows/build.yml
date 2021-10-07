@@ -46,3 +46,4 @@ jobs:
       with:
         name: nupkg
         path: nupkg/*
+        retention-days: 1
