@@ -39,7 +39,7 @@ namespace Funcky.Monads
         /// Performs a side effect when the option has a value.
         /// </summary>
         public void AndThen(Action<TItem> andThenFunction)
-            => Match(none: NoOperation, some: andThenFunction);
+            => Switch(none: NoOperation, some: andThenFunction);
 
         /// <summary>
         /// Performs a side effect when the option has a value and returns the option again.

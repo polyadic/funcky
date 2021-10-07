@@ -268,7 +268,7 @@ namespace Funcky.Test.Monads
         {
             var maybe = stringToParse.ParseInt32OrNone();
 
-            maybe.Match(
+            maybe.Switch(
                 none: Statement,
                 some: Statement);
         }

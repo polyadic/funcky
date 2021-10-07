@@ -70,7 +70,7 @@ namespace Funcky.Monads
                 : error(_error);
 
         [UseWithArgumentNames]
-        public void Match(Action<TValidResult> ok, Action<Exception> error)
+        public void Switch(Action<TValidResult> ok, Action<Exception> error)
         {
             if (_error is null)
             {

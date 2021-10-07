@@ -60,7 +60,7 @@ namespace Funcky.Monads
             };
 
         [UseWithArgumentNames]
-        public void Match(Action<TLeft> left, Action<TRight> right)
+        public void Switch(Action<TLeft> left, Action<TRight> right)
         {
             switch (_side)
             {

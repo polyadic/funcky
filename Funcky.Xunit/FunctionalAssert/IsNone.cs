@@ -19,7 +19,7 @@ namespace Funcky
         {
             try
             {
-                option.Match(
+                option.Switch(
                     none: NoOperation,
                     some: static value => throw new AssertActualExpectedException(
                         expected: "None",

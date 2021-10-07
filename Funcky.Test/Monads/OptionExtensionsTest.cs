@@ -15,9 +15,9 @@ namespace Funcky.Test.Monads
             var emptyUser = GetFirstNameFromUser(GetEmptyUser);
             var fullUser = GetFirstNameFromUser(GetCompleteUser);
 
-            noUser.Match(left: reason => Assert.Equal(Reason.UserNotFound, reason), right: _ => Assert.Fail("failed"));
-            emptyUser.Match(left: reason => Assert.Equal(Reason.NoFirstName, reason), right: _ => Assert.Fail("failed"));
-            fullUser.Match(left: _ => Assert.Fail("failed"), right: firstName => Assert.Equal("Name", firstName));
+            noUser.Switch(left: reason => Assert.Equal(Reason.UserNotFound, reason), right: _ => Assert.Fail("failed"));
+            emptyUser.Switch(left: reason => Assert.Equal(Reason.NoFirstName, reason), right: _ => Assert.Fail("failed"));
+            fullUser.Switch(left: _ => Assert.Fail("failed"), right: firstName => Assert.Equal("Name", firstName));
         }
 
         private static Either<Reason, string> GetFirstNameFromUser(Func<Option<User>> getUser)

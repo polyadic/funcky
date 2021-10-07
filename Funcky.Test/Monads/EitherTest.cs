@@ -92,7 +92,7 @@ namespace Funcky.Test.Monads
             var hasLeft = false;
             var hasRight = false;
 
-            value.Match(
+            value.Switch(
                 left: _ => Execute(() => hasLeft = true),
                 right: _ => Execute(() => hasRight = true));
 
@@ -108,7 +108,7 @@ namespace Funcky.Test.Monads
             var hasLeft = false;
             var hasRight = false;
 
-            value.Match(
+            value.Switch(
                 left: _ => Execute(() => hasLeft = true),
                 right: _ => Execute(() => hasRight = true));
 
