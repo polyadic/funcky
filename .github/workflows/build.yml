@@ -33,3 +33,9 @@ jobs:
       run: dotnet build --configuration Release --no-restore /p:FodyGenerateXsd=false /p:TreatWarningsAsErrors=true
     - name: Run Tests
       run: dotnet test --configuration Release --no-build
+    - name: Generate NuGet Packages
+      run: dotnet pack --configuration Release --output nupkg
+    - uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: nupkg/*
