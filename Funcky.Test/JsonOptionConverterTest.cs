@@ -1,6 +1,4 @@
 using System.Text.Json;
-using Funcky.Xunit;
-using Xunit;
 
 namespace Funcky.Test
 {

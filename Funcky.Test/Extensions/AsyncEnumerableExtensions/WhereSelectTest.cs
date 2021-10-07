@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
 {
     public sealed class WhereSelectTest

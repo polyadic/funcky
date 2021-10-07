@@ -6,7 +6,7 @@
 
         <!-- Avoid ID conflicts with the package project. -->
         <PackageId>*$(MSBuildProjectFile)*</PackageId>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <AnalysisLevel>5</AnalysisLevel>

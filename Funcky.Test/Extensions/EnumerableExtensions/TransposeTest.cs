@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class TransposeTest

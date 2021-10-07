@@ -1,6 +1,4 @@
 using Funcky.Test.TestUtils;
-using Funcky.Xunit;
-using Xunit;
 
 namespace Funcky.Test.FunctionalClass
 {

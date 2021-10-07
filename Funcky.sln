@@ -20,8 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 		Directory.Build.props = Directory.Build.props
 		FrameworkFeatureConstants.props = FrameworkFeatureConstants.props
 		global.json = global.json
-		GlobalUsings.cs = GlobalUsings.cs
 		GlobalUsings.props = GlobalUsings.props
+		GlobalUsings.Test.props = GlobalUsings.Test.props
 		Packages.props = Packages.props
 	EndProjectSection
 EndProject
