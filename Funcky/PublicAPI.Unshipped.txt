@@ -1,10 +1,13 @@
 #nullable enable
 Funcky.Extensions.QueueExtensions
+Funcky.Monads.EitherExtensions
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
+static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
 static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, TItem>! successor) -> System.Collections.Generic.IEnumerable<TItem>!

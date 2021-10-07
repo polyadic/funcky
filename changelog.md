@@ -9,6 +9,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
 * `Sequence.Generate` has been deprecated in favour of the newly added `Sequence.Successors` function
   which includes the first element (seed) in the generated sequence.
+* Add methods to convert from `Either` to `Option`: (#439)
+  * `LeftOrNone`: Returns the left value or `None` if the either value was right.
+  * `RightOrNone`: Returns the right value or `None` if the either value was left.
 
 ## Funcky 2.5.0
 ### Reader Monad
