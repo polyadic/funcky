@@ -26,7 +26,7 @@ namespace Funcky
             => await Sequence
                 .Return(producer())
                 .Concat(TailRetriesAsync(producer, retryPolicy))
-                .FirstOrDefault(IsSome, Option<TResult>.None());
+                .FirstOrDefault(IsSome, Option<TResult>.None()).ConfigureAwait(false);
 
         private static IEnumerable<Option<TResult>> TailRetries<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
             where TResult : notnull
@@ -57,8 +57,8 @@ namespace Funcky
             where TResult : notnull
             => async retryCount =>
             {
-                await Task.Delay(retryPolicy.Duration(retryCount));
-                return await producer();
+                await Task.Delay(retryPolicy.Duration(retryCount)).ConfigureAwait(false);
+                return await producer().ConfigureAwait(false);
             };
 
         private static async Task<TItem> FirstOrDefault<TItem>(
@@ -68,7 +68,7 @@ namespace Funcky
         {
             foreach (var item in enumerable)
             {
-                var awaitedItem = await item;
+                var awaitedItem = await item.ConfigureAwait(false);
                 if (predicate(awaitedItem))
                 {
                     return awaitedItem;

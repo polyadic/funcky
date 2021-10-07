@@ -31,9 +31,9 @@ namespace Funcky.Extensions
         {
             var lastItem = Option<TSource>.None();
 
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
-                if (await predicate(item, cancellationToken))
+                if (await predicate(item, cancellationToken).ConfigureAwait(false))
                 {
                     lastItem = item;
                 }

@@ -15,7 +15,7 @@ namespace Funcky.Extensions
             where TSource : notnull
         {
             var currentIndex = 0;
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 if (currentIndex == index)
                 {
