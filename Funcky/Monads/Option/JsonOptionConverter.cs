@@ -30,7 +30,7 @@ namespace Funcky.Monads
         [UnconditionalSuppressMessage("Trimming", "IL2046", Justification = "JsonSerializer is annotated with RequiresUnreferencedCode")]
         [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1134:Attributes should not share line", Justification = "Lambda attribute is fine on the same line")]
         public override void Write(Utf8JsonWriter writer, Option<TItem> value, JsonSerializerOptions options)
-            => value.Match(
+            => value.Switch(
                 none: writer.WriteNullValue,
                 some: [RequiresUnreferencedCode(UnreferencedCodeMessage)] (item) =>
                 {

@@ -75,7 +75,7 @@ namespace Funcky.Monads
         /// </para>
         /// </summary>
         [UseWithArgumentNames]
-        public void Match(Action none, Action<TItem> some)
+        public void Switch(Action none, Action<TItem> some)
         {
             if (_hasItem)
             {
