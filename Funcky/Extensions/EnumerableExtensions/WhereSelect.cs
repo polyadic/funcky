@@ -3,7 +3,7 @@ namespace Funcky.Extensions
     public static partial class EnumerableExtensions
     {
         /// <summary>
-        /// Filters out all the empty values from an IEnumerable&lt;Option&lt;T&gt;&gt; and therefore returns an <see cref="IEnumerable{TItem}"/>.
+        /// Filters out all the empty values from an <c>IEnumerable&lt;Option&lt;T&gt;&gt;</c> and therefore returns an <see cref="IEnumerable{TItem}"/>.
         /// </summary>
         [Pure]
         public static IEnumerable<TItem> WhereSelect<TItem>(this IEnumerable<Option<TItem>> sequence)
