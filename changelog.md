@@ -12,6 +12,16 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add methods to convert from `Either` to `Option`: [#439](https://github.com/polyadic/funcky/issues/439)
   * `LeftOrNone`: Returns the left value or `None` if the either value was right.
   * `RightOrNone`: Returns the right value or `None` if the either value was left.
+* Extension functions for `System.Range` to allow the generations of `IEnumerable<T>`s from Range-Syntax:
+
+```cs
+  foreach(var i in 1..5) { }
+
+  // negative numbers are not supported
+  from x in 5..2
+  from y in 1..3
+  select (x,y)
+```
 
 ## Funcky 2.5.0
 ### Reader Monad
