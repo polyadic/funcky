@@ -66,7 +66,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<int>> { 1, 42, Option<int>.None(), 9999, 5, Option<int>.None(), Option<int>.None(), 1337, -13, -1, 0, -1000, 555, Option<int>.None() };
 
             FunctionalAssert.IsSome(1092.5, numbers.AverageOrNone());
-            Assert.Equal(1092.5, numbers.WhereSelect(Identity).Average());
+            Assert.Equal(1092.5, numbers.WhereSelect().Average());
         }
 
         // Int64/long Tests
@@ -133,7 +133,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None(), 9999L, 5L, Option<long>.None(), Option<long>.None(), 1337L, -13L, -1L, 0L, -1000L, 555L, Option<long>.None() };
 
             FunctionalAssert.IsSome(1092.5, numbers.AverageOrNone());
-            Assert.Equal(1092.5, numbers.WhereSelect(Identity).Average());
+            Assert.Equal(1092.5, numbers.WhereSelect().Average());
         }
 
         // Single/float Tests
@@ -249,8 +249,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
             // floating point equal
             Assert.Equal(1038.788, average, 3);
-            Assert.Equal(1038.788, numbers.WhereSelect(Identity).Average(), 3);
-            Assert.Equal(numbers.WhereSelect(Identity).Average(), average);
+            Assert.Equal(1038.788, numbers.WhereSelect().Average(), 3);
+            Assert.Equal(numbers.WhereSelect().Average(), average);
         }
 
         // Double/double Tests
@@ -366,8 +366,8 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
 
             // floating point equal
             Assert.Equal(1038.788, average, 3);
-            Assert.Equal(1038.788, numbers.WhereSelect(Identity).Average(), 3);
-            Assert.Equal(numbers.WhereSelect(Identity).Average(), average);
+            Assert.Equal(1038.788, numbers.WhereSelect().Average(), 3);
+            Assert.Equal(numbers.WhereSelect().Average(), average);
         }
 
         // decimal
@@ -434,7 +434,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<decimal>> { 1.01m, 42.42m, Option<decimal>.None(), 9999.9m, 4.95m, Option<decimal>.None(), Option<decimal>.None(), 1337m, -13m, -1m, 0.0m, -1000.3m, 555.5m, Option<decimal>.None() };
 
             FunctionalAssert.IsSome(1092.648m, numbers.AverageOrNone());
-            Assert.Equal(1092.648m, numbers.WhereSelect(Identity).Average());
+            Assert.Equal(1092.648m, numbers.WhereSelect().Average());
         }
     }
 }

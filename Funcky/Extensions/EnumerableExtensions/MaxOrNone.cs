@@ -21,7 +21,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TSource> MaxOrNone<TSource>(this IEnumerable<Option<TSource>> source)
             where TSource : notnull
-            => source.WhereSelect(Identity).MaxOrNone(Identity);
+            => source.WhereSelect().MaxOrNone(Identity);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
