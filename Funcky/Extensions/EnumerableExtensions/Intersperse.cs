@@ -8,6 +8,6 @@ namespace Funcky.Extensions
             => source.WithFirst()
                 .SelectMany(s => s.IsFirst
                     ? Sequence.Return(s.Value)
-                    : Sequence.Return(element).Append(s.Value));
+                    : Sequence.Return(element, s.Value));
     }
 }
