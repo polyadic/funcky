@@ -33,10 +33,10 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void YouCanUseARangeInForeachSyntax()
         {
-            var expected = new List<int> { -2, -1, 0, 1 };
+            var expected = new List<int> { 2, 3, 4, 5, 6 };
             var list = new List<int>();
 
-            foreach (var index in ^2..2)
+            foreach (var index in 2..7)
             {
                 list.Add(index);
             }
@@ -47,10 +47,10 @@ namespace Funcky.Test.Extensions
         [Fact]
         public void ADownToRangeWorksAsExpected()
         {
-            var expected = new List<int> { 7, 6, 5, 4, 3, 2, 1, 0, -1 };
+            var expected = new List<int> { 11, 10, 9, 8, 7, 6, 5, 4, 3 };
             var list = new List<int>();
 
-            foreach (var index in 7..^2)
+            foreach (var index in 11..2)
             {
                 list.Add(index);
             }
@@ -58,10 +58,17 @@ namespace Funcky.Test.Extensions
             Assert.Equal(expected, list);
         }
 
-        [Property]
-        public Property AnyRangeProducedAValidEnumeration(NonNegativeInt start, bool signStart, NonNegativeInt end, bool signEnd)
+        [Fact]
+        public void RangeExtensionsDoNotSupportEndOfSyntax()
         {
-            var range = new Range(new Index(start.Get, signStart), new Index(end.Get, signEnd));
+            Assert.Throws<ArgumentException>(ForEachWithEndOfSyntax);
+            Assert.Throws<ArgumentException>(SelectWithImplicitEndOfSyntax);
+        }
+
+        [Property]
+        public Property AnyRangeProducedAValidEnumeration(NonNegativeInt start, NonNegativeInt end)
+        {
+            var range = new Range(new Index(start.Get), new Index(end.Get));
 
             var fromRange = from index in range select index;
 
@@ -74,25 +81,29 @@ namespace Funcky.Test.Extensions
                select x + y;
 
         private static IEnumerable<int> CreateRange(Range range)
-        => ToInt(range.Start) < ToInt(range.End)
-            ? Enumerable.Range(ToInt(range.Start), GetDistance(range))
-            : Enumerable.Range(ToInt(range.End) + 1, GetDistance(range)).Reverse();
+            => ToInt(range.Start) < ToInt(range.End)
+                ? Enumerable.Range(ToInt(range.Start), GetDistance(range))
+                : Enumerable.Range(ToInt(range.End) + 1, GetDistance(range)).Reverse();
 
         private static int GetDistance(Range range)
             => GetDistance(range.Start, range.End);
 
         private static int GetDistance(Index start, Index end)
-            => GetDistance(ToInt(start), ToInt(end));
-
-        private static int GetDistance(int start, int end)
-            => start > end
-            ? start - end
-            : end - start;
+            => Math.Abs(ToInt(end) - ToInt(start));
 
         private static int ToInt(Index index)
-            => index.IsFromEnd
-                ? -index.Value
-                : index.Value;
+            => index.Value;
+
+        private static void ForEachWithEndOfSyntax()
+        {
+            foreach (var index in ^11..2)
+            {
+                _ = index;
+            }
+        }
+
+        private static IEnumerable<int> SelectWithImplicitEndOfSyntax()
+            => (from x in 2.. select x).ToList();
     }
 }
 #endif

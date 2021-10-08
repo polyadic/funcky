@@ -54,7 +54,7 @@ namespace Funcky.Extensions
 
         private static int ToInt(Index index)
             => index.IsFromEnd
-                ? -index.Value
+                ? throw new ArgumentException("Index has set 'FromEnd = true': the Funcky range-extensions do not support syntax for negative numbers.", nameof(index))
                 : index.Value;
     }
 }
