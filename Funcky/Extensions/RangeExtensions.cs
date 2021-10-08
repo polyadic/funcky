@@ -17,16 +17,16 @@ namespace Funcky.Extensions
             => source.ToRangeEnumerable().SelectMany(selector);
 
         [Pure]
-        public static IEnumerable<TResult> SelectMany<TItem, TResult>(this Range source, Func<int, IEnumerable<TItem>> collectionSelector, Func<int, TItem, TResult> resultSelector)
-            => source.ToRangeEnumerable().SelectMany(collectionSelector, resultSelector);
+        public static IEnumerable<TResult> SelectMany<TItem, TResult>(this Range source, Func<int, IEnumerable<TItem>> selector, Func<int, TItem, TResult> resultSelector)
+            => source.ToRangeEnumerable().SelectMany(selector, resultSelector);
 
         [Pure]
-        public static IEnumerable<TResult> SelectMany<TResult>(this Range source, Func<int, Range> rangeSelector, Func<int, int, TResult> resultSelector)
-            => source.ToRangeEnumerable().SelectMany(TransformSelector(rangeSelector), resultSelector);
+        public static IEnumerable<TResult> SelectMany<TResult>(this Range source, Func<int, Range> selector, Func<int, int, TResult> resultSelector)
+            => source.ToRangeEnumerable().SelectMany(TransformSelector(selector), resultSelector);
 
         [Pure]
-        public static IEnumerable<TResult> SelectMany<TItem, TResult>(this IEnumerable<TItem> source, Func<TItem, Range> rangeSelector, Func<TItem, int, TResult> resultSelector)
-            => source.SelectMany(TransformSelector(rangeSelector), resultSelector);
+        public static IEnumerable<TResult> SelectMany<TItem, TResult>(this IEnumerable<TItem> source, Func<TItem, Range> selector, Func<TItem, int, TResult> resultSelector)
+            => source.SelectMany(TransformSelector(selector), resultSelector);
 
         private static IEnumerator<int> IterateRange(int start, int end)
         {
@@ -39,9 +39,9 @@ namespace Funcky.Extensions
         private static RangeEnumerable ToRangeEnumerable(this Range source)
             => new(source);
 
-        private static Func<TItem, RangeEnumerable> TransformSelector<TItem>(Func<TItem, Range> rangeSelector)
+        private static Func<TItem, RangeEnumerable> TransformSelector<TItem>(Func<TItem, Range> selector)
             => value
-                => rangeSelector(value).ToRangeEnumerable();
+                => selector(value).ToRangeEnumerable();
 
         private static int Advance(int index, int direction)
             => index + direction;
