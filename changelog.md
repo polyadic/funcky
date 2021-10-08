@@ -23,6 +23,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   select (x,y)
 ```
 
+* Add Option.FromBoolean to create an Option<Unit> from a boolean.
+
 ## Funcky 2.5.0
 ### Reader Monad
 This release includes the `Reader` monad including a bunch of factory methods
