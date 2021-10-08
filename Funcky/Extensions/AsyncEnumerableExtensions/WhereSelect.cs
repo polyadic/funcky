@@ -32,9 +32,9 @@ namespace Funcky.Extensions
             CancellationToken cancellationToken)
             where TOutput : notnull
         {
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
-                var projectedItem = await selector(item, cancellationToken);
+                var projectedItem = await selector(item, cancellationToken).ConfigureAwait(false);
                 foreach (var value in projectedItem.ToEnumerable())
                 {
                     yield return value;

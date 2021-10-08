@@ -1,5 +1,4 @@
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -8,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WithIndexIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WithIndex();
         }
@@ -46,6 +45,25 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             {
                 Assert.Equal(valueWithIndex.Value, valueWithIndex.Index);
             }
+        }
+
+        [Fact]
+        public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
+        {
+            var nonEnumerableList = new FailOnEnumerationList(5000);
+            var listWithIndex = nonEnumerableList.WithIndex();
+
+            Assert.Equal(1337, listWithIndex.ElementAt(1337).Value);
+            Assert.Equal(listWithIndex.ElementAt(999).Value, listWithIndex.ElementAt(999).Index);
+        }
+
+        [Fact]
+        public void OptimizedSourceWithIndexCanBeEnumerated()
+        {
+            var length = 222;
+            var nonEnumerableList = Enumerable.Range(0, length).ToList();
+
+            Assert.Equal(length, nonEnumerableList.WithIndex().Aggregate(0, (sum, _) => sum + 1));
         }
     }
 }

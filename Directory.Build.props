@@ -4,7 +4,6 @@
 		<Authors>Polyadic</Authors>
 		<PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
 	</PropertyGroup>
 	<ItemGroup Label="Code Style">
 		<PackageReference Include="Messerli.CodeStyle" PrivateAssets="all" />
@@ -13,4 +12,15 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<AnalysisLevel>5.0</AnalysisLevel>
 	</PropertyGroup>
+	<PropertyGroup Label="C# Settings">
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<PropertyGroup Label="Deterministic Builds and Source Link">
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	</PropertyGroup>
+	<ItemGroup Label="Deterministic Builds and Source Link">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+	</ItemGroup>
 </Project>

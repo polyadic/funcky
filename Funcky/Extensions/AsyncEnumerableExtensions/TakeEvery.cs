@@ -23,7 +23,7 @@ namespace Funcky.Extensions
         private static async IAsyncEnumerator<TSource> TakeEveryEnumerable<TSource>(this IAsyncEnumerable<TSource> source, int interval, CancellationToken cancellationToken = default)
         {
             var currentIndex = 0;
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 if (currentIndex % interval == 0)
                 {

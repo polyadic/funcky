@@ -1,6 +1,4 @@
 using System.Globalization;
-using Funcky.Xunit;
-using Xunit;
 
 namespace Funcky.Test.Monads
 {

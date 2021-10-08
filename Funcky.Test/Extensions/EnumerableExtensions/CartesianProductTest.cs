@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -9,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void CartesianProductIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.CartesianProduct(doNotEnumerate);
         }

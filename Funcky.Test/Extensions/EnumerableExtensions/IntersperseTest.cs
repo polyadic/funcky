@@ -1,5 +1,4 @@
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -8,7 +7,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void IntersperseIsEvaluatedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<int>();
+            var doNotEnumerate = new FailOnEnumerationSequence<int>();
             _ = doNotEnumerate.Intersperse(42);
         }
 

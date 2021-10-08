@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test
 {
     public sealed class SuccessorsTest

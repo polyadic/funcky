@@ -1,5 +1,3 @@
-using System.IO;
-using System.Threading.Tasks;
 using Xunit;
 using VerifyCS = Funcky.Analyzer.Test.CSharpCodeFixVerifier<Funcky.Analyzer.EnumerableRepeatOnceAnalyzer, Funcky.Analyzer.EnumerableRepeatOnceCodeFix>;
 

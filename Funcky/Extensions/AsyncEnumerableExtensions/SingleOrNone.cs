@@ -31,14 +31,15 @@ namespace Funcky.Extensions
         public static async ValueTask<Option<TSource>> SingleOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
         {
-            await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
+            var enumerator = source.GetAsyncEnumerator(cancellationToken);
+            await using var enumeratorGuard = enumerator.ConfigureAwait(false);
 
-            while (await enumerator.MoveNextAsync())
+            while (await enumerator.MoveNextAsync().ConfigureAwait(false))
             {
                 var currentItem = enumerator.Current;
-                if (await predicate(currentItem, cancellationToken))
+                if (await predicate(currentItem, cancellationToken).ConfigureAwait(false))
                 {
-                    await ThrowIfEnumeratorContainsMoreMatchingElements(enumerator, predicate, cancellationToken);
+                    await ThrowIfEnumeratorContainsMoreMatchingElements(enumerator, predicate, cancellationToken).ConfigureAwait(false);
                     return currentItem;
                 }
             }
@@ -48,9 +49,9 @@ namespace Funcky.Extensions
 
         private static async ValueTask ThrowIfEnumeratorContainsMoreMatchingElements<TSource>(IAsyncEnumerator<TSource> enumerator, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken)
         {
-            while (await enumerator.MoveNextAsync())
+            while (await enumerator.MoveNextAsync().ConfigureAwait(false))
             {
-                if (await predicate(enumerator.Current, cancellationToken))
+                if (await predicate(enumerator.Current, cancellationToken).ConfigureAwait(false))
                 {
                     throw new InvalidOperationException("Sequence contains more than one element");
                 }

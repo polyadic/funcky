@@ -1,4 +1,4 @@
-﻿using Funcky.Internal;
+using Funcky.Internal;
 
 namespace Funcky.Extensions
 {
@@ -30,14 +30,15 @@ namespace Funcky.Extensions
 #pragma warning disable 8425
         public static async IAsyncEnumerator<TResult> PairwiseInternal<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, CancellationToken cancellationToken)
         {
-            await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
+            var enumerator = source.GetAsyncEnumerator(cancellationToken);
+            await using var enumeratorGuard = enumerator.ConfigureAwait(false);
 
-            if (await enumerator.MoveNextAsync() == false)
+            if (await enumerator.MoveNextAsync().ConfigureAwait(false) == false)
             {
                 yield break;
             }
 
-            for (var previous = enumerator.Current; await enumerator.MoveNextAsync(); previous = enumerator.Current)
+            for (var previous = enumerator.Current; await enumerator.MoveNextAsync().ConfigureAwait(false); previous = enumerator.Current)
             {
                 yield return resultSelector(previous, enumerator.Current);
             }

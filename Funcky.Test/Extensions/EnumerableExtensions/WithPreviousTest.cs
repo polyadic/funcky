@@ -1,7 +1,5 @@
 using System.Collections.Immutable;
 using Funcky.Test.TestUtils;
-using Funcky.Xunit;
-using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -10,7 +8,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void WithPreviousIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerateSequence<object>();
+            var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
             _ = doNotEnumerate.WithPrevious();
         }
@@ -45,6 +43,41 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 new ValueWithPrevious<string>("baz", "bar"),
                 new ValueWithPrevious<string>("qux", "baz"));
             Assert.Equal(expectedSequenceWithPrevious, sequence.WithPrevious());
+        }
+
+        [Fact]
+        public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
+        {
+            var length = 200;
+            var nonEnumerableList = new FailOnEnumerationList(length);
+            var listWithLast = nonEnumerableList.WithPrevious();
+
+            Assert.Equal(137, listWithLast.ElementAt(137).Value);
+
+            Assert.Equal(0, listWithLast.ElementAt(0).Value);
+            FunctionalAssert.IsNone(listWithLast.ElementAt(0).Previous);
+
+            foreach (var index in Enumerable.Range(1, length - 1))
+            {
+                CheckValues(listWithLast, index);
+            }
+        }
+
+        [Fact]
+        public void OptimizedSourceWithIndexCanBeEnumerated()
+        {
+            var length = 222;
+            var nonEnumerableList = Enumerable.Range(0, length).ToList();
+
+            Assert.Equal(length, nonEnumerableList.WithPrevious().Aggregate(0, (sum, _) => sum + 1));
+        }
+
+        private static void CheckValues(IEnumerable<ValueWithPrevious<int>> listWithLast, int index)
+        {
+            Assert.Equal(index, listWithLast.ElementAt(index).Value);
+
+            var previous = FunctionalAssert.IsSome(listWithLast.ElementAt(index).Previous);
+            Assert.Equal(index - 1, previous);
         }
     }
 }

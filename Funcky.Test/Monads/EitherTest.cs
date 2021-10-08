@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Funcky.Test.Monads
 {
     public sealed partial class EitherTest
