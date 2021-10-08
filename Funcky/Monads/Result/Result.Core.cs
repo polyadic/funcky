@@ -67,7 +67,7 @@ namespace Funcky.Monads
                 ? ok(_result)
                 : error(_error);
 
-        public void Match(Action<TValidResult> ok, Action<Exception> error)
+        public void Switch(Action<TValidResult> ok, Action<Exception> error)
         {
             if (_error is null)
             {
