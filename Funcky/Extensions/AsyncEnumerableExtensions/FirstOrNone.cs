@@ -29,9 +29,9 @@ namespace Funcky.Extensions
         public static async ValueTask<Option<TSource>> FirstOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
         {
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
-                if (await predicate(item, cancellationToken))
+                if (await predicate(item, cancellationToken).ConfigureAwait(false))
                 {
                     return item;
                 }
