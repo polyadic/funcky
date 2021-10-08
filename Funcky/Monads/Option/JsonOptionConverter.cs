@@ -21,7 +21,7 @@ namespace Funcky.Monads
                     : JsonSerializer.Deserialize<TItem>(ref reader, options);
 
         public override void Write(Utf8JsonWriter writer, Option<TItem> value, JsonSerializerOptions options)
-            => value.Match(
+            => value.Switch(
                 none: writer.WriteNullValue,
                 some: item =>
                 {

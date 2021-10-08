@@ -56,7 +56,7 @@ namespace Funcky.Monads
                 _ => throw new NotSupportedException(UnknownSide),
             };
 
-        public void Match(Action<TLeft> left, Action<TRight> right)
+        public void Switch(Action<TLeft> left, Action<TRight> right)
         {
             switch (_side)
             {
