@@ -14,8 +14,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ```cs
   foreach(var i in 1..5) { }
 
-  // ^ must be used to indicate negative numbers
-  from x in 5..^2
+  // negative numbers are not supported
+  from x in 5..2
   from y in 1..3
   select (x,y)
 ```
