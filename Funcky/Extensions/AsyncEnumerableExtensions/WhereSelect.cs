@@ -4,6 +4,11 @@ namespace Funcky.Extensions
 {
     public static partial class AsyncEnumerableExtensions
     {
+        [Pure]
+        public static IAsyncEnumerable<TItem> WhereSelect<TItem>(this IAsyncEnumerable<Option<TItem>> source)
+            where TItem : notnull
+            => source.WhereSelect(Functional.Identity);
+
         /// <summary>
         /// Projects and filters an <see cref="IAsyncEnumerable{T}"/> at the same time.
         /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the <paramref name="selector"/>.
@@ -25,7 +30,7 @@ namespace Funcky.Extensions
             where TOutput : notnull
             => AsyncEnumerable.Create(cancellationToken => WhereSelectAwaitWithCancellationInternal(source, selector, cancellationToken));
 
-        #pragma warning disable 8425
+#pragma warning disable 8425
         private static async IAsyncEnumerator<TOutput> WhereSelectAwaitWithCancellationInternal<TSource, TOutput>(
             IAsyncEnumerable<TSource> source,
             Func<TSource, CancellationToken, ValueTask<Option<TOutput>>> selector,
@@ -41,6 +46,6 @@ namespace Funcky.Extensions
                 }
             }
         }
-        #pragma warning restore 8425
+#pragma warning restore 8425
     }
 }

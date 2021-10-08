@@ -23,6 +23,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   select (x,y)
 ```
 
+* Add overload to WhereSelect with no parameter.
+
 ## Funcky 2.5.0
 ### Reader Monad
 This release includes the `Reader` monad including a bunch of factory methods
