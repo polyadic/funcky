@@ -22,7 +22,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         private static Option<int> SquareEvenNumbers(int number)
-            => IsEven(number) ? number * number : Option<int>.None();
+            => Option.FromBoolean(IsEven(number), number * number);
 
         private static bool IsEven(int number)
             => number % 2 == 0;

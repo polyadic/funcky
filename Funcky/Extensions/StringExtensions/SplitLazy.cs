@@ -112,9 +112,9 @@ namespace Funcky.Extensions
         //           1   2   3   4
         private static ExtractElement ExtractBy(ExtractElement extractElement)
             => (text, startIndex)
-                => startIndex <= text.Length
-                    ? extractElement(text, startIndex)
-                    : Option<SplitResult>.None();
+                => from unit in Option.FromBoolean(startIndex <= text.Length)
+                   from element in extractElement(text, startIndex)
+                   select element;
 
         private static ExtractElement GetIndex(FindNextIndex getIndex)
             => (text, startIndex)

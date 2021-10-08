@@ -23,9 +23,9 @@ namespace Funcky.Extensions
 
         private static Func<Option<SplitResult>> EndOfString(int startIndex, string text)
             => ()
-                => startIndex < text.Length
-                ? new SplitResult(text.Length + 1, text.Substring(startIndex))
-                : Option<SplitResult>.None();
+                => Option
+                    .FromBoolean(startIndex < text.Length)
+                    .Select(_ => new SplitResult(text.Length + 1, text.Substring(startIndex)));
 
         private static Func<int, Option<SplitResult>> NewLine(string text, int startIndex)
             => index

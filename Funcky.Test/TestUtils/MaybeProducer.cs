@@ -18,9 +18,7 @@ namespace Funcky.Test.TestUtils
         {
             Called += 1;
 
-            return _retriesNeeded == (Called - 1)
-                ? _result
-                : Option<T>.None();
+            return Option.FromBoolean(_retriesNeeded == (Called - 1), _result);
         }
 
         public Task<Option<T>> ProduceAsync() => Task.FromResult(Produce());
