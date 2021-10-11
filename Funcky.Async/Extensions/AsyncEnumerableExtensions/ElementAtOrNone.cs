@@ -16,6 +16,6 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static async ValueTask<Option<TSource>> ElementAtOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, int index, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => await source.Select(Option.Some).ElementAtOrDefaultAsync(index, cancellationToken);
+            => await source.Select(Option.Some).ElementAtOrDefaultAsync(index, cancellationToken).ConfigureAwait(false);
     }
 }

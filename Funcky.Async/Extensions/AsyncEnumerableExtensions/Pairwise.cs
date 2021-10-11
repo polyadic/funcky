@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+using System.Diagnostics.Contracts;
 
 namespace Funcky.Async.Extensions
 {
@@ -29,7 +29,9 @@ namespace Funcky.Async.Extensions
         [Pure]
         private static async IAsyncEnumerator<TResult> PairwiseInternal<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, CancellationToken cancellationToken)
         {
-            await using var enumerator = source.GetAsyncEnumerator(cancellationToken);
+            #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+            await using var enumerator = source.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
+            #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
             if (await enumerator.MoveNextAsync() == false)
             {
