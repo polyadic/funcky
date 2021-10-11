@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
 {
     internal static class TestData

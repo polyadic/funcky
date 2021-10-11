@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Funcky.Async.Extensions;
 using Funcky.Xunit;
 using Xunit;

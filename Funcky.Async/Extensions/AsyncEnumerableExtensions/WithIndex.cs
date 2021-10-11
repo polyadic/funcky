@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using Funcky.Extensions;
 
 namespace Funcky.Async.Extensions
