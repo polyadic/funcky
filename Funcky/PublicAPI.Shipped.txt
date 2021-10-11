@@ -36,7 +36,6 @@ Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Func
 Funcky.Functional
 Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
-Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
 Funcky.Monads.Either<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right) -> TMatchResult
 Funcky.Monads.Either<TLeft, TRight>.Select<TResult>(System.Func<TRight, TResult>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>

@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Funcky.Monads;
 using Funcky.RetryPolicies;
 using Funcky.Test.TestUtilities;

@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Funcky.Async.Monads;
 using Funcky.Monads;
 using Xunit;

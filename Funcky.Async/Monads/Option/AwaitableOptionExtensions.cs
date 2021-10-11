@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Funcky.Monads;
 
 namespace Funcky.Async.Monads
