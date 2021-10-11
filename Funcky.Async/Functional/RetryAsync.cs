@@ -14,9 +14,9 @@ namespace Funcky.Async
             where TResult : notnull
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await (await producer()).Match(
-                none: (Func<ValueTask<TResult>>)(async () => await RetryAsync(producer, cancellationToken)),
-                some: result => new ValueTask<TResult>(result));
+            return await (await producer().ConfigureAwait(false)).Match(
+                none: (Func<ValueTask<TResult>>)(async () => await RetryAsync(producer, cancellationToken).ConfigureAwait(false)),
+                some: result => new ValueTask<TResult>(result)).ConfigureAwait(false);
         }
 
         public static async ValueTask<Option<TResult>> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
@@ -24,10 +24,11 @@ namespace Funcky.Async
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await AsyncSequence
-                .Return(await producer())
+                .Return(await producer().ConfigureAwait(false))
                 .Concat(TailRetriesAsync(producer, retryPolicy, cancellationToken))
                 .WhereSelect(Identity)
-                .FirstOrNoneAsync(cancellationToken);
+                .FirstOrNoneAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
 
         private static IAsyncEnumerable<Option<TResult>> TailRetriesAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
@@ -42,8 +43,8 @@ namespace Funcky.Async
             where TResult : notnull
             => async retryCount =>
             {
-                await Task.Delay(retryPolicy.Duration(retryCount), cancellationToken);
-                return await producer();
+                await Task.Delay(retryPolicy.Duration(retryCount), cancellationToken).ConfigureAwait(false);
+                return await producer().ConfigureAwait(false);
             };
     }
 }

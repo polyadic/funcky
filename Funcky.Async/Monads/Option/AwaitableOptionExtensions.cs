@@ -29,6 +29,7 @@ namespace Funcky.Async.Monads
         /// and are therefore exempt from typical semver guarantees.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "Intended")]
         public static ValueTaskAwaiter GetAwaiter(this Option<ValueTask> option)
             => option.GetOrElse(default(ValueTask)).GetAwaiter();
 
