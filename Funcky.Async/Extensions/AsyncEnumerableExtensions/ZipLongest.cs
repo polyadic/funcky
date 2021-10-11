@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Funcky.DataTypes;
 using Funcky.Monads;
 using static Funcky.Functional;
@@ -36,21 +37,23 @@ namespace Funcky.Async.Extensions
             where TLeft : notnull
             where TRight : notnull
         {
-            await using var leftEnumerator = left.GetAsyncEnumerator();
-            await using var rightEnumerator = right.GetAsyncEnumerator();
+            #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+            await using var leftEnumerator = left.ConfigureAwait(false).GetAsyncEnumerator();
+            await using var rightEnumerator = right.ConfigureAwait(false).GetAsyncEnumerator();
+            #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
-            for (var next = await MoveNextOrNone(leftEnumerator, rightEnumerator); next.Match(false, True); next = await MoveNextOrNone(leftEnumerator, rightEnumerator))
+            for (var next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false); next.Match(false, True); next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false))
             {
                 yield return resultSelector(next.GetOrElse(() => throw new Exception("Cannot happen.")));
             }
         }
 
-        private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> MoveNextOrNone<TLeft, TRight>(IAsyncEnumerator<TLeft> leftEnumerator, IAsyncEnumerator<TRight> rightEnumerator)
+        private static async ValueTask<Option<EitherOrBoth<TLeft, TRight>>> MoveNextOrNone<TLeft, TRight>(ConfiguredCancelableAsyncEnumerable<TLeft>.Enumerator leftEnumerator, ConfiguredCancelableAsyncEnumerable<TRight>.Enumerator rightEnumerator)
             where TLeft : notnull
             where TRight : notnull
-            => EitherOrBoth.FromOptions(await ReadNext(leftEnumerator), await ReadNext(rightEnumerator));
+            => EitherOrBoth.FromOptions(await ReadNext(leftEnumerator).ConfigureAwait(false), await ReadNext(rightEnumerator).ConfigureAwait(false));
 
-        private static async ValueTask<Option<TSource>> ReadNext<TSource>(IAsyncEnumerator<TSource> enumerator)
+        private static async ValueTask<Option<TSource>> ReadNext<TSource>(ConfiguredCancelableAsyncEnumerable<TSource>.Enumerator enumerator)
             where TSource : notnull
             => await enumerator.MoveNextAsync()
                 ? enumerator.Current
