@@ -1,11 +1,8 @@
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Extensions;
 using Funcky.Monads;
-using Funcky.Xunit;
 using Xunit;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions

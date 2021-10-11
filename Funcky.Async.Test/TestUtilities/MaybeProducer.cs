@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Funcky.Monads;
 
 namespace Funcky.Test.TestUtilities

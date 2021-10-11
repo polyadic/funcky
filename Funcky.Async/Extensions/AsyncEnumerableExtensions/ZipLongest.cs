@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
 using Funcky.DataTypes;
 using Funcky.Monads;
 using static Funcky.Functional;

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Xunit;

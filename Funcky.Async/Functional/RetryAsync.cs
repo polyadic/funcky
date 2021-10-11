@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Funcky.Async.Extensions;
 using Funcky.Monads;
 using Funcky.RetryPolicies;

@@ -5,10 +5,12 @@ Funcky.Async.Monads.OptionTaskAwaiter<TItem>
 Funcky.Async.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Async.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Async.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Async.Monads.OptionTaskAwaiter<TItem>.OptionTaskAwaiter() -> void
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OptionValueTaskAwaiter() -> void
 Funcky.AsyncSequence
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource?>! source) -> System.Collections.Generic.IAsyncEnumerable<TSource!>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource?>! source) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
