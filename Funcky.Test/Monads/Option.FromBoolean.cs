@@ -6,9 +6,7 @@ namespace Funcky.Test.Monads
         public void FromBooleanReturnsAMatchingOptionUnit()
         {
             FunctionalAssert.IsNone(Option.FromBoolean(false));
-            var value = FunctionalAssert.IsSome(Option.FromBoolean(true));
-
-            Assert.Equal(Unit.Value, value);
+            FunctionalAssert.IsSome(Unit.Value, Option.FromBoolean(true));
         }
 
         [Fact]
@@ -17,9 +15,7 @@ namespace Funcky.Test.Monads
             var expectedValue = 1337;
 
             FunctionalAssert.IsNone(Option.FromBoolean(false, expectedValue));
-            var value = FunctionalAssert.IsSome(Option.FromBoolean(true, expectedValue));
-
-            Assert.Equal(expectedValue, value);
+            FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, expectedValue));
         }
 
         [Fact]
@@ -28,9 +24,7 @@ namespace Funcky.Test.Monads
             var expectedValue = 1337;
 
             FunctionalAssert.IsNone(Option.FromBoolean(false, () => expectedValue));
-            var value = FunctionalAssert.IsSome(Option.FromBoolean(true, () => expectedValue));
-
-            Assert.Equal(expectedValue, value);
+            FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, () => expectedValue));
         }
     }
 }
