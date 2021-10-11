@@ -10,6 +10,15 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
             Assert.Equal(expectedSquares, squares);
         }
 
+        [Fact]
+        public async Task WhereSelectWithoutAnArgumentFiltersEmptyValuesFromIAsyncEnumerable()
+        {
+            var withNone = new List<Option<int>> { Option<int>.None(), 0, Option<int>.None(), 1337, Option<int>.None(), 42, 0, 12, Option<int>.None(), 1 }.ToAsyncEnumerable();
+            var expectedResult = new List<int> { 0, 1337, 42, 0, 12, 1 };
+
+            Assert.Equal(expectedResult, await withNone.WhereSelect().ToListAsync());
+        }
+
         private static Option<int> SquareEvenNumbers(int n)
             => Option.FromBoolean(n % 2 == 0, n * n);
 

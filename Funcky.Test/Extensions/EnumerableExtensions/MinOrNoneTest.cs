@@ -58,7 +58,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<int>> { 1, 42, Option<int>.None(), 9999, 5, Option<int>.None(), Option<int>.None(), 1337, -13, -1, 0, -1000, Option<int>.None() };
 
             FunctionalAssert.IsSome(-1000, numbers.MinOrNone());
-            Assert.Equal(-1000, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(-1000, numbers.WhereSelect().Min());
         }
 
         // Int64/long Tests
@@ -117,7 +117,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None(), 9999L, 5L, Option<long>.None(), Option<long>.None(), 1337L, -13L, -1L, 0L, -1000L, Option<long>.None() };
 
             FunctionalAssert.IsSome(-1000L, numbers.MinOrNone());
-            Assert.Equal(-1000L, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(-1000L, numbers.WhereSelect().Min());
         }
 
         // Single/float Tests
@@ -176,7 +176,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<float>> { 1.8f, 42.52f, Option<float>.None(), 9999.0001f, 5f, Option<float>.None(), Option<float>.None(), 1337.1337f, -13f, -1f, -0f, -1000.45f, Option<float>.None() };
 
             FunctionalAssert.IsSome(-1000.45f, numbers.MinOrNone());
-            Assert.Equal(-1000.45f, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(-1000.45f, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -195,7 +195,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<float>> { float.NegativeInfinity, 1.8f, 42.52f, float.PositiveInfinity };
 
             FunctionalAssert.IsSome(float.NegativeInfinity, numbers.MinOrNone());
-            Assert.Equal(float.NegativeInfinity, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(float.NegativeInfinity, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -205,7 +205,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<float>> { 1.8f, 42.52f, float.NaN, 42f };
 
             FunctionalAssert.IsSome(float.NaN, numbers.MinOrNone());
-            Assert.Equal(float.NaN, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(float.NaN, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<double>> { 1.8, 42.52, Option<double>.None(), 9999.0001, 5d, Option<double>.None(), Option<double>.None(), 1337.1337, -13d, -1d, -0d, -1000.45, Option<double>.None() };
 
             FunctionalAssert.IsSome(-1000.45, numbers.MinOrNone());
-            Assert.Equal(-1000.45, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(-1000.45, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<double>> { double.NegativeInfinity, 1.8, 42.52, double.PositiveInfinity };
 
             FunctionalAssert.IsSome(double.NegativeInfinity, numbers.MinOrNone());
-            Assert.Equal(double.NegativeInfinity, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(double.NegativeInfinity, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -302,7 +302,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<double>> { double.NegativeInfinity, 1.8, 42.52, double.NaN };
 
             FunctionalAssert.IsSome(double.NaN, numbers.MinOrNone());
-            Assert.Equal(double.NaN, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(double.NaN, numbers.WhereSelect().Min());
         }
 
         [Fact]
@@ -370,7 +370,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<Option<decimal>> { 1.8m, 42.52m, Option<decimal>.None(), 9999.0001m, 5m, Option<decimal>.None(), Option<decimal>.None(), 1337.1337m, -13m, -1m, -0m, -1000.45m, Option<decimal>.None() };
 
             FunctionalAssert.IsSome(-1000.45m, numbers.MinOrNone());
-            Assert.Equal(-1000.45m, numbers.WhereSelect(Identity).Min());
+            Assert.Equal(-1000.45m, numbers.WhereSelect().Min());
         }
 
         // Generic TSource implementing IComparable Tests

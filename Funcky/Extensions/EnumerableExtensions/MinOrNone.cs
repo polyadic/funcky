@@ -21,7 +21,7 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TSource> MinOrNone<TSource>(this IEnumerable<Option<TSource>> source)
             where TSource : notnull
-            => source.WhereSelect(Identity).MinOrNone(Identity);
+            => source.WhereSelect().MinOrNone(Identity);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
