@@ -11,7 +11,7 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static async ValueTask<Option<TSource>> LastOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => await source.Select(Option.Some).LastOrDefaultAsync(cancellationToken);
+            => await source.Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
         /// <summary>
         /// Returns the last element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.
@@ -19,18 +19,18 @@ namespace Funcky.Async.Extensions
         [Pure]
         public static async ValueTask<Option<TSource>> LastOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => await source.Where(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken);
+            => await source.Where(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
         /// <inheritdoc cref="LastOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
         public static async ValueTask<Option<TSource>> LastOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => await source.WhereAwait(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken);
+            => await source.WhereAwait(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
         /// <inheritdoc cref="LastOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
         [Pure]
         public static async ValueTask<Option<TSource>> LastOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             where TSource : notnull
-            => await source.WhereAwaitWithCancellation(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken);
+            => await source.WhereAwaitWithCancellation(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 }
