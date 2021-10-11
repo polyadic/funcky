@@ -1,3 +1,5 @@
+using Funcky.Test.TestUtils;
+
 namespace Funcky.Test.Monads
 {
     public sealed partial class OptionTest
@@ -25,6 +27,12 @@ namespace Funcky.Test.Monads
 
             FunctionalAssert.IsNone(Option.FromBoolean(false, () => expectedValue));
             FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, () => expectedValue));
+        }
+
+        [Fact]
+        public void TheBooleanSelectorIsLazyAndOnlyCalledWhenTheTrue()
+        {
+            FunctionalAssert.IsNone(Option.FromBoolean(false, FailOnCall.Function<string>));
         }
     }
 }
