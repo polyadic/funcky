@@ -40,6 +40,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzers.Test", "Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzers.Vsix", "Funcky.Analyzers\Funcky.Analyzers.Vsix\Funcky.Analyzers.Vsix.csproj", "{50AA2531-E3DA-4AD6-BBD4-C1B46ACD0804}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async", "Funcky.Async\Funcky.Async.csproj", "{38BC0217-F713-4B22-8080-06FFCCF692EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async.Test", "Funcky.Async.Test\Funcky.Async.Test.csproj", "{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +86,14 @@ Global
 		{50AA2531-E3DA-4AD6-BBD4-C1B46ACD0804}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50AA2531-E3DA-4AD6-BBD4-C1B46ACD0804}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50AA2531-E3DA-4AD6-BBD4-C1B46ACD0804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38BC0217-F713-4B22-8080-06FFCCF692EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38BC0217-F713-4B22-8080-06FFCCF692EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38BC0217-F713-4B22-8080-06FFCCF692EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38BC0217-F713-4B22-8080-06FFCCF692EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
