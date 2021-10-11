@@ -3,7 +3,6 @@
 	<ItemGroup Label="Global Usings">
 		<Using Include="System.Diagnostics.Contracts" />
 		<Using Include="Funcky.Extensions" />
-		<Using Include="Funcky.Extensions" />
 		<Using Include="Funcky.Monads" />
 		<Using Include="Funcky.Functional" Static="true" />
 	</ItemGroup>
