@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>10.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <AnalysisLevel>5</AnalysisLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Funcky.Async\Funcky.Async.csproj" />
+        <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
+    </ItemGroup>
+</Project>
