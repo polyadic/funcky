@@ -1,7 +1,5 @@
 using Funcky.Async.Extensions;
-using Funcky.Monads;
 using Funcky.RetryPolicies;
-using static Funcky.Functional;
 
 namespace Funcky.Async
 {
