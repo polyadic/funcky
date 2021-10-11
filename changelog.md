@@ -24,6 +24,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ```
 
 * Add overload to WhereSelect with no parameter.
+* Add Option.FromBoolean to create an `Option<Unit>` from a boolean.
 
 ## Funcky 2.5.0
 ### Reader Monad

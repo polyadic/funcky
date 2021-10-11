@@ -35,7 +35,7 @@ namespace Funcky.Test
         {
             Assert.Equal(
                 Enumerable.Range(0, 11),
-                Sequence.Successors(0, i => i < 10 ? i + 1 : Option<int>.None()));
+                Sequence.Successors(0, i => Option.FromBoolean(i < 10, i + 1)));
         }
     }
 }
