@@ -1,5 +1,25 @@
 #nullable enable
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
+Funcky.DataTypes.ValueWithFirst<TValue>
+Funcky.DataTypes.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
+Funcky.DataTypes.ValueWithFirst<TValue>.IsFirst.get -> bool
+Funcky.DataTypes.ValueWithFirst<TValue>.Value.get -> TValue
+Funcky.DataTypes.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
+Funcky.DataTypes.ValueWithIndex<TValue>
+Funcky.DataTypes.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
+Funcky.DataTypes.ValueWithIndex<TValue>.Index.get -> int
+Funcky.DataTypes.ValueWithIndex<TValue>.Value.get -> TValue
+Funcky.DataTypes.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
+Funcky.DataTypes.ValueWithLast<TValue>
+Funcky.DataTypes.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
+Funcky.DataTypes.ValueWithLast<TValue>.IsLast.get -> bool
+Funcky.DataTypes.ValueWithLast<TValue>.Value.get -> TValue
+Funcky.DataTypes.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
+Funcky.DataTypes.ValueWithPrevious<TValue>
+Funcky.DataTypes.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void
+Funcky.DataTypes.ValueWithPrevious<TValue>.Previous.get -> Funcky.Monads.Option<TValue>
+Funcky.DataTypes.ValueWithPrevious<TValue>.Value.get -> TValue
+Funcky.DataTypes.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Funcky.Monads.Option<TValue> previous) -> void
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
@@ -34,6 +54,10 @@ Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
+static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithFirst<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithIndex<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithLast<TSource>>!
+static Funcky.Extensions.EnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithPrevious<TSource>>!
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.DequeueOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Concurrent.ConcurrentQueue<TItem>! concurrentQueue) -> Funcky.Monads.Option<TItem>

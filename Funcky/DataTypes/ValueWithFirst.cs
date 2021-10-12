@@ -1,4 +1,4 @@
-namespace Funcky.Extensions
+namespace Funcky.DataTypes
 {
     public readonly struct ValueWithFirst<TValue>
     {

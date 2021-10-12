@@ -11,26 +11,6 @@ Funcky.Extensions.ParseExtensions
 Funcky.Extensions.QueryableExtensions
 Funcky.Extensions.StreamExtensions
 Funcky.Extensions.StringExtensions
-Funcky.Extensions.ValueWithFirst<TValue>
-Funcky.Extensions.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
-Funcky.Extensions.ValueWithFirst<TValue>.IsFirst.get -> bool
-Funcky.Extensions.ValueWithFirst<TValue>.Value.get -> TValue
-Funcky.Extensions.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
-Funcky.Extensions.ValueWithIndex<TValue>
-Funcky.Extensions.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
-Funcky.Extensions.ValueWithIndex<TValue>.Index.get -> int
-Funcky.Extensions.ValueWithIndex<TValue>.Value.get -> TValue
-Funcky.Extensions.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
-Funcky.Extensions.ValueWithLast<TValue>
-Funcky.Extensions.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
-Funcky.Extensions.ValueWithLast<TValue>.IsLast.get -> bool
-Funcky.Extensions.ValueWithLast<TValue>.Value.get -> TValue
-Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
-Funcky.Extensions.ValueWithPrevious<TValue>
-Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void
-Funcky.Extensions.ValueWithPrevious<TValue>.Previous.get -> Funcky.Monads.Option<TValue>
-Funcky.Extensions.ValueWithPrevious<TValue>.Value.get -> TValue
-Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Funcky.Monads.Option<TValue> previous) -> void
 Funcky.Functional
 Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
@@ -172,10 +152,6 @@ static Funcky.Extensions.EnumerableExtensions.Transpose<TSource>(this System.Col
 static Funcky.Extensions.EnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IEnumerable<TSource?>! source) -> System.Collections.Generic.IEnumerable<TSource!>!
 static Funcky.Extensions.EnumerableExtensions.WhereNotNull<TSource>(this System.Collections.Generic.IEnumerable<TSource?>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TInput, TOutput>(this System.Collections.Generic.IEnumerable<TInput>! inputs, System.Func<TInput, Funcky.Monads.Option<TOutput>>! selector) -> System.Collections.Generic.IEnumerable<TOutput>!
-static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithFirst<TSource>>!
-static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithIndex<TSource>>!
-static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithLast<TSource>>!
-static Funcky.Extensions.EnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>!
 static Funcky.Extensions.FuncExtensions.Compose<TInput, TIntermediate, TOutput>(this System.Func<TIntermediate, TOutput>! f, System.Func<TInput, TIntermediate>! g) -> System.Func<TInput, TOutput>!

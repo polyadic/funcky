@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
+using Funcky.DataTypes;
 using Funcky.Extensions;
 using Funcky.Monads;
 using Funcky.Xunit;
