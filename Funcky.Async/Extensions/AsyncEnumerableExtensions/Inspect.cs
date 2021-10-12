@@ -39,7 +39,7 @@ namespace Funcky.Async.Extensions
         {
             await foreach (var element in elements.WithCancellation(cancellationToken))
             {
-                await action(element);
+                await action(element).ConfigureAwait(false);
                 yield return element;
             }
         }
