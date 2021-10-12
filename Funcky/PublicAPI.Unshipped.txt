@@ -1,5 +1,9 @@
 #nullable enable
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
+Funcky.DataTypes.Unit
+Funcky.DataTypes.Unit.CompareTo(Funcky.DataTypes.Unit other) -> int
+Funcky.DataTypes.Unit.Equals(Funcky.DataTypes.Unit other) -> bool
+Funcky.DataTypes.Unit.Unit() -> void
 Funcky.DataTypes.ValueWithFirst<TValue>
 Funcky.DataTypes.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
 Funcky.DataTypes.ValueWithFirst<TValue>.IsFirst.get -> bool
@@ -51,8 +55,18 @@ Funcky.RetryPolicies.LinearBackOffRetryPolicy.LinearBackOffRetryPolicy(int maxRe
 Funcky.RetryPolicies.LinearBackOffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
+override Funcky.DataTypes.Unit.Equals(object? obj) -> bool
+override Funcky.DataTypes.Unit.GetHashCode() -> int
+static Funcky.DataTypes.Unit.Value.get -> Funcky.DataTypes.Unit
+static Funcky.DataTypes.Unit.operator !=(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
+static Funcky.DataTypes.Unit.operator <(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
+static Funcky.DataTypes.Unit.operator <=(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
+static Funcky.DataTypes.Unit.operator ==(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
+static Funcky.DataTypes.Unit.operator >(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
+static Funcky.DataTypes.Unit.operator >=(Funcky.DataTypes.Unit lhs, Funcky.DataTypes.Unit rhs) -> bool
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
-static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
+static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.DataTypes.Unit
+static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Func<T, Funcky.DataTypes.Unit>! action) -> Funcky.DataTypes.Unit
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithFirst<TSource>>!
 static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.ValueWithIndex<TSource>>!
@@ -68,6 +82,15 @@ static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.
 static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TItem>!>! selector, System.Func<int, TItem, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Range>! selector, System.Func<int, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Functional.ActionToUnit(System.Action! action) -> System.Func<Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6, T7>(System.Action<T1, T2, T3, T4, T5, T6, T7>! action) -> System.Func<T1, T2, T3, T4, T5, T6, T7, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5, T6>(System.Action<T1, T2, T3, T4, T5, T6>! action) -> System.Func<T1, T2, T3, T4, T5, T6, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3, T4, T5>(System.Action<T1, T2, T3, T4, T5>! action) -> System.Func<T1, T2, T3, T4, T5, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3, T4>(System.Action<T1, T2, T3, T4>! action) -> System.Func<T1, T2, T3, T4, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2, T3>(System.Action<T1, T2, T3>! action) -> System.Func<T1, T2, T3, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1, T2>(System.Action<T1, T2>! action) -> System.Func<T1, T2, Funcky.DataTypes.Unit>!
+static Funcky.Functional.ActionToUnit<T1>(System.Action<T1>! action) -> System.Func<T1, Funcky.DataTypes.Unit>!
 static Funcky.Functional.False() -> bool
 static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
 static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
@@ -79,12 +102,22 @@ static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) ->
 static Funcky.Functional.True<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T1>(T1 ω1) -> bool
+static Funcky.Functional.UnitToAction(System.Func<Funcky.DataTypes.Unit>! action) -> System.Action!
+static Funcky.Functional.UnitToAction<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7, T8>!
+static Funcky.Functional.UnitToAction<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7>!
+static Funcky.Functional.UnitToAction<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3, T4, T5, T6>!
+static Funcky.Functional.UnitToAction<T1, T2, T3, T4, T5>(System.Func<T1, T2, T3, T4, T5, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3, T4, T5>!
+static Funcky.Functional.UnitToAction<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3, T4>!
+static Funcky.Functional.UnitToAction<T1, T2, T3>(System.Func<T1, T2, T3, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2, T3>!
+static Funcky.Functional.UnitToAction<T1, T2>(System.Func<T1, T2, Funcky.DataTypes.Unit>! action) -> System.Action<T1, T2>!
+static Funcky.Functional.UnitToAction<T1>(System.Func<T1, Funcky.DataTypes.Unit>! action) -> System.Action<T1>!
 static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
 static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
-static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
+static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.DataTypes.Unit>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.DataTypes.Unit>!
 static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, TItem>! successor) -> System.Collections.Generic.IEnumerable<TItem>!

@@ -1,4 +1,4 @@
-namespace Funcky
+namespace Funcky.DataTypes
 {
     public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
     {

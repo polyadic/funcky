@@ -1,5 +1,6 @@
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
+using Funcky.DataTypes;
 using Xunit;
 using static Funcky.Functional;
 
