@@ -1,6 +1,3 @@
-using System.Diagnostics.Contracts;
-using Funcky.Extensions;
-
 namespace Funcky.Async.Extensions
 {
     public static partial class AsyncEnumerableExtensions

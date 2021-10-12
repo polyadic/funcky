@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 namespace Funcky.Async
 {
     public static partial class Functional
