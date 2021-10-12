@@ -28,7 +28,7 @@ namespace Funcky.Async.Extensions
 
         private static async IAsyncEnumerator<TSource> InspectInternal<TSource>(this IAsyncEnumerable<TSource> elements, Action<TSource> action, CancellationToken cancellationToken)
         {
-            await foreach (var element in elements.WithCancellation(cancellationToken))
+            await foreach (var element in elements.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
                 action(element);
                 yield return element;
