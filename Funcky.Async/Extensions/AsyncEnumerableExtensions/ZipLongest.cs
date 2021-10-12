@@ -1,8 +1,5 @@
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Funcky.DataTypes;
-using Funcky.Monads;
-using static Funcky.Functional;
 
 namespace Funcky.Async.Extensions
 {
