@@ -26,21 +26,21 @@ namespace Funcky.Async.Extensions
         public static IAsyncEnumerable<TSource> InspectAwait<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> action)
             => AsyncEnumerable.Create(cancellationToken => source.InspectAwaitInternal(action, cancellationToken));
 
-        private static async IAsyncEnumerator<TSource> InspectInternal<TSource>(this IAsyncEnumerable<TSource> elements, Action<TSource> action, CancellationToken cancellationToken)
+        private static async IAsyncEnumerator<TSource> InspectInternal<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
         {
-            await foreach (var element in elements.ConfigureAwait(false).WithCancellation(cancellationToken))
+            await foreach (var item in source.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
-                action(element);
-                yield return element;
+                action(item);
+                yield return item;
             }
         }
 
         private static async IAsyncEnumerator<TSource> InspectAwaitInternal<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> action, CancellationToken cancellationToken)
         {
-            await foreach (var element in elements.ConfigureAwait(false).WithCancellation(cancellationToken))
+            await foreach (var item in source.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
-                await action(element).ConfigureAwait(false);
-                yield return element;
+                await action(item).ConfigureAwait(false);
+                yield return item;
             }
         }
     }
