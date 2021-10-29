@@ -1,3 +1,4 @@
+// ReSharper disable PossibleMultipleEnumeration
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class MaxOrNoneTest
@@ -20,7 +21,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfInt32sMaxOrNoneComputesTheMax()
+        public void GivenASequenceOfInt32ValuesMaxOrNoneComputesTheMax()
         {
             var numbers = new List<int> { 1, 42, 9999, 5, 1337, -13, -1, 0, -1000 };
 
@@ -45,7 +46,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt32sWhereAllValuesAreNoneMaxOrNoneComputesNone()
+        public void GivenASequenceOfOptionInt32ValuesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
             var numbers = new List<Option<int>> { Option<int>.None, Option<int>.None, Option<int>.None };
 
@@ -53,7 +54,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt32sMaxOrNoneComputesTheMaxIgnoringTheNones()
+        public void GivenASequenceOfOptionInt32ValuesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
             var numbers = new List<Option<int>> { 1, 42, Option<int>.None, 9999, 5, Option<int>.None, Option<int>.None, 1337, -13, -1, 0, -1000, Option<int>.None };
 
@@ -79,7 +80,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfInt64sMaxOrNoneComputesTheMax()
+        public void GivenASequenceOfInt64ValuesMaxOrNoneComputesTheMax()
         {
             var numbers = new List<long> { 1L, 42L, 9999L, 5L, 1337L, -13L, -1L, 0L, -1000L };
 
@@ -104,7 +105,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt64sWhereAllValuesAreNoneMaxOrNoneComputesNone()
+        public void GivenASequenceOfOptionInt64ValuesWhereAllValuesAreNoneMaxOrNoneComputesNone()
         {
             var numbers = new List<Option<long>> { Option<long>.None, Option<long>.None, Option<long>.None };
 
@@ -112,7 +113,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt64sMaxOrNoneComputesTheMaxIgnoringTheNones()
+        public void GivenASequenceOfOptionInt64ValuesMaxOrNoneComputesTheMaxIgnoringTheNones()
         {
             var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None, 9999L, 5L, Option<long>.None, Option<long>.None, 1337L, -13L, -1L, 0L, -1000L, Option<long>.None };
 
