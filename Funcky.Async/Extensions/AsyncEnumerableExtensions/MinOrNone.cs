@@ -85,11 +85,29 @@ namespace Funcky.Async.Extensions
             where TResult : notnull
             => source.WhereSelect(selector).MinOrNoneAsync(Identity, cancellationToken);
 
+        /// <summary>
+        /// Invokes a transform function on each element of a sequence and returns the minimum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
+        /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static ValueTask<Option<TResult>> MinOrNoneAwaitAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
             => source.WhereSelectAwait(selector).MinOrNoneAsync(Identity, cancellationToken);
 
+        /// <summary>
+        /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">A sequence of generic values of <typeparamref name="TSource"/> to determine the minimum value of.</param>
+        /// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
         public static ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellation<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
