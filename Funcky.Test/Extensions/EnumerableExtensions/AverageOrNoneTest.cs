@@ -1,3 +1,4 @@
+// ReSharper disable PossibleMultipleEnumeration
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class AverageOrNoneTest
@@ -28,7 +29,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfInt32sAverageOrNoneComputesTheAverage()
+        public void GivenASequenceOfInt32ValuesAverageOrNoneComputesTheAverage()
         {
             var numbers = new List<int> { 1, 42, 9999, 5, 1337, -13, -1, 0, -1000, 17 };
 
@@ -53,7 +54,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt32sWhereAllValuesAreNoneAverageOrNoneComputesNone()
+        public void GivenASequenceOfOptionInt32ValuesWhereAllValuesAreNoneAverageOrNoneComputesNone()
         {
             var numbers = new List<Option<int>> { Option<int>.None, Option<int>.None, Option<int>.None };
 
@@ -61,7 +62,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt32sMinOrNoneComputesTheMinIgnoringTheNones()
+        public void GivenASequenceOfOptionInt32ValuesMinOrNoneComputesTheMinIgnoringTheNones()
         {
             var numbers = new List<Option<int>> { 1, 42, Option<int>.None, 9999, 5, Option<int>.None, Option<int>.None, 1337, -13, -1, 0, -1000, 555, Option<int>.None };
 
@@ -95,7 +96,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfInt64sAverageOrNoneComputesTheAverage()
+        public void GivenASequenceOfInt64ValuesAverageOrNoneComputesTheAverage()
         {
             var numbers = new List<long> { 1L, 42L, 9999L, 5L, 1337L, -13L, -1L, 0L, -1000L, 17L };
 
@@ -120,7 +121,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt64sWhereAllValuesAreNoneAverageOrNoneComputesNone()
+        public void GivenASequenceOfOptionInt64ValuesWhereAllValuesAreNoneAverageOrNoneComputesNone()
         {
             var numbers = new List<Option<long>> { Option<long>.None, Option<long>.None, Option<long>.None };
 
@@ -128,7 +129,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenASequenceOfOptionInt64sMinOrNoneComputesTheMinIgnoringTheNones()
+        public void GivenASequenceOfOptionInt64ValuesMinOrNoneComputesTheMinIgnoringTheNones()
         {
             var numbers = new List<Option<long>> { 1L, 42L, Option<long>.None, 9999L, 5L, Option<long>.None, Option<long>.None, 1337L, -13L, -1L, 0L, -1000L, 555L, Option<long>.None };
 
