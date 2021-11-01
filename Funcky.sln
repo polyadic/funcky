@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31808.319
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky", "Funcky\Funcky.csproj", "{A51E4B16-901A-4D9B-A0E1-E263FD93F2ED}"
 EndProject
@@ -31,19 +30,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Xunit.Test", "Funcky
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzer", "Analyzer", "{BBE35279-7416-4B9D-B89D-B6D1FF369681}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzer", "Funcky.Analyzer\Funcky.Analyzer\Funcky.Analyzer.csproj", "{8E073C3E-5F66-4951-BB3A-9AA18E02F673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzer", "Funcky.Analyzer\Funcky.Analyzer\Funcky.Analyzer.csproj", "{8E073C3E-5F66-4951-BB3A-9AA18E02F673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzer.CodeFixes", "Funcky.Analyzer\Funcky.Analyzer.CodeFixes\Funcky.Analyzer.CodeFixes.csproj", "{CA137E21-7EC8-48CA-9320-A3CFBAE9504C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzer.CodeFixes", "Funcky.Analyzer\Funcky.Analyzer.CodeFixes\Funcky.Analyzer.CodeFixes.csproj", "{CA137E21-7EC8-48CA-9320-A3CFBAE9504C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzer.Package", "Funcky.Analyzer\Funcky.Analyzer.Package\Funcky.Analyzer.Package.csproj", "{F571AB63-A7BB-49DD-9195-84139E295D73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzer.Package", "Funcky.Analyzer\Funcky.Analyzer.Package\Funcky.Analyzer.Package.csproj", "{F571AB63-A7BB-49DD-9195-84139E295D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Analyzer.Test", "Funcky.Analyzer\Funcky.Analyzer.Test\Funcky.Analyzer.Test.csproj", "{5E7625D1-3E01-4FD0-8893-536C7FA64B67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzer.Test", "Funcky.Analyzer\Funcky.Analyzer.Test\Funcky.Analyzer.Test.csproj", "{5E7625D1-3E01-4FD0-8893-536C7FA64B67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzer.Vsix", "Funcky.Analyzer\Funcky.Analyzer.Vsix\Funcky.Analyzer.Vsix.csproj", "{FD669D90-63FD-4A7F-8A39-F33C5D5CA028}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async", "Funcky.Async\Funcky.Async.csproj", "{E89C6C44-CA00-418B-8848-DD7C1E7ACB8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async.Test", "Funcky.Async.Test\Funcky.Async.Test.csproj", "{69B25497-BFE5-422F-817F-2667EE16076A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Test.Internal", "Funcky.Test.Internal\Funcky.Test.Internal.csproj", "{60DF907B-351D-48C9-80D8-E824C2BE2256}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +96,10 @@ Global
 		{69B25497-BFE5-422F-817F-2667EE16076A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69B25497-BFE5-422F-817F-2667EE16076A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69B25497-BFE5-422F-817F-2667EE16076A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60DF907B-351D-48C9-80D8-E824C2BE2256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60DF907B-351D-48C9-80D8-E824C2BE2256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60DF907B-351D-48C9-80D8-E824C2BE2256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60DF907B-351D-48C9-80D8-E824C2BE2256}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

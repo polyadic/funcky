@@ -1,4 +1,5 @@
 using Funcky.RetryPolicies;
+using Funcky.Test.Internal;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.FunctionalClass
