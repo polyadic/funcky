@@ -1,6 +1,6 @@
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Test.Internal.Data
 {
-    internal sealed class Person : IComparable<Person>, IEquatable<Person>
+    public sealed class Person : IComparable<Person>, IEquatable<Person>
     {
         public Person(int age)
             => Age = age;
