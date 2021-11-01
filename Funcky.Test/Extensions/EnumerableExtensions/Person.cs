@@ -1,6 +1,6 @@
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
-    internal sealed class Person : IComparable<Person>
+    internal sealed class Person : IComparable<Person>, IEquatable<Person>
     {
         public Person(int age)
         {
@@ -10,10 +10,19 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         public int Age { get; }
 
         public int CompareTo(Person? other)
-        {
-            return other != null
+            => other != null
                 ? Age.CompareTo(other.Age)
                 : -1;
-        }
+
+        public static Person Create(int age)
+            => new(age);
+
+        public static Person? Create(int? age)
+            => age.HasValue
+                ? new Person(age.Value)
+                : null;
+
+        public bool Equals(Person? other)
+             => other?.Age == Age;
     }
 }
