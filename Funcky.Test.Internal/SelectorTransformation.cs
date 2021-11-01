@@ -1,8 +1,9 @@
-using Funcky.Test.Extensions.EnumerableExtensions;
+using Funcky.Monads;
+using Funcky.Test.Internal.Data;
 
-namespace Funcky.Test.TestUtils
+namespace Funcky.Test.Internal
 {
-    internal class SelectorTransformation
+    public class SelectorTransformation
     {
         public static Func<Option<T>, Option<T>> TransformNullableSelector<T>(Func<T?, T?> selector)
             where T : struct
