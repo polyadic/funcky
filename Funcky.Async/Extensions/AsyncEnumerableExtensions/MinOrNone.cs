@@ -67,7 +67,7 @@ namespace Funcky.Async.Extensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        public static ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellation<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
+        public static ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellationAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
             => source.SelectAwaitWithCancellation(selector).AggregateAsync(Option<TResult>.None, MinAggregator.Aggregate, cancellationToken);
 
@@ -109,7 +109,7 @@ namespace Funcky.Async.Extensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The minimum value in the sequence or None.</returns>
         [Pure]
-        public static ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellation<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
+        public static ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellationAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
             => source.WhereSelectAwaitWithCancellation(selector).MinOrNoneAsync(Identity, cancellationToken);
     }
