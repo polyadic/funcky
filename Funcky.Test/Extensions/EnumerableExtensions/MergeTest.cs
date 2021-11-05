@@ -1,4 +1,8 @@
+// ReSharper disable PossibleMultipleEnumeration
+
 using System.Collections.Immutable;
+using FsCheck;
+using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
@@ -31,20 +35,14 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(nonEmptySequence, emptySequence.Merge(nonEmptySequence));
         }
 
-        [Theory]
-        [InlineData(1, 2)]
-        [InlineData(2, 1)]
-        [InlineData(-42, 42)]
-        [InlineData(42, -42)]
-        [InlineData(100, 1000)]
-        [InlineData(1000, 100)]
-        public void TwoSingleSequencesAreMergedCorrectly(int first, int second)
+        [Property]
+        public Property TwoSingleSequencesAreMergedCorrectly(int first, int second)
         {
             var sequence1 = Sequence.Return(first);
             var sequence2 = Sequence.Return(second);
 
             var merged = sequence1.Merge(sequence2);
-            Assert.True(merged.First() < merged.Last());
+            return (merged.First() <= merged.Last()).ToProperty();
         }
 
         [Fact]
