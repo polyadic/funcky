@@ -36,7 +36,7 @@
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build"/>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
-    </ItemGroup>
+	</ItemGroup>
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
 </Project>
