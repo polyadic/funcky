@@ -27,6 +27,9 @@
         <AdditionalFiles Include="PublicAPI.Shipped.txt" />
         <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="DataTypes\" />
+    </ItemGroup>
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
 </Project>

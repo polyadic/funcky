@@ -31,6 +31,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Add overload to WhereSelect with no parameter.
 * Add Option.FromBoolean to create an `Option<Unit>` from a boolean.
+* Move `EitherOrBoth` to the `Funcky` namespace.
 
 ## Funcky 2.5.0
 ### Reader Monad
