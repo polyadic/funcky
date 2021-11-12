@@ -1,5 +1,3 @@
-using Funcky.DataTypes;
-
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions

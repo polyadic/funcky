@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Funcky.DataTypes;
 
 namespace Funcky.Async.Extensions
 {
