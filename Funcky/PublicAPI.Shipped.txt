@@ -1,8 +1,4 @@
 #nullable enable
-Funcky.DataTypes.EitherOrBoth
-Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
-Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> other) -> bool
-Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
 Funcky.Extensions.DictionaryExtensions
 Funcky.Extensions.EnumerableExtensions
 Funcky.Extensions.FuncExtensions
@@ -81,8 +77,6 @@ Funcky.Unit
 Funcky.Unit.CompareTo(Funcky.Unit other) -> int
 Funcky.Unit.Equals(Funcky.Unit other) -> bool
 Funcky.Unit.Unit() -> void
-override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> bool
-override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
 override Funcky.Monads.Either<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.Monads.Either<TLeft, TRight>.GetHashCode() -> int
 override Funcky.Monads.JsonOptionConverterFactory.CanConvert(System.Type! typeToConvert) -> bool
@@ -94,12 +88,6 @@ override Funcky.Monads.Result<TValidResult>.Equals(object? obj) -> bool
 override Funcky.Monads.Result<TValidResult>.GetHashCode() -> int
 override Funcky.Unit.Equals(object? obj) -> bool
 override Funcky.Unit.GetHashCode() -> int
-static Funcky.DataTypes.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>
-static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
-static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
-static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> lhs, Funcky.DataTypes.EitherOrBoth<TLeft, TRight> rhs) -> bool
-static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.operator ==(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> lhs, Funcky.DataTypes.EitherOrBoth<TLeft, TRight> rhs) -> bool
-static Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Right(TRight right) -> Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
 static Funcky.Extensions.DictionaryExtensions.GetValueOrNone<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<TValue>
 static Funcky.Extensions.DictionaryExtensions.GetValueOrNone<TKey, TValue>(this System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>! dictionary, TKey readOnlyKey) -> Funcky.Monads.Option<TValue>
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey, TElement, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Func<TSource, TElement>! elementSelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TElement>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
@@ -185,8 +173,6 @@ static Funcky.Extensions.EnumerableExtensions.WithFirst<TSource>(this System.Col
 static Funcky.Extensions.EnumerableExtensions.WithIndex<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithIndex<TSource>>!
 static Funcky.Extensions.EnumerableExtensions.WithLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithLast<TSource>>!
 static Funcky.Extensions.EnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
-static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
-static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>!
 static Funcky.Extensions.FuncExtensions.Compose<TInput, TIntermediate, TOutput>(this System.Func<TIntermediate, TOutput>! f, System.Func<TInput, TIntermediate>! g) -> System.Func<TInput, TOutput>!
 static Funcky.Extensions.FuncExtensions.Compose<TInput, TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
 static Funcky.Extensions.FuncExtensions.Compose<TIntermediate, TOutput>(this System.Func<TIntermediate, TOutput>! f, System.Func<TIntermediate>! g) -> System.Func<TOutput>!
