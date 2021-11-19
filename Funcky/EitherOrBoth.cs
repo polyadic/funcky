@@ -1,7 +1,7 @@
 using Funcky.CodeAnalysis;
 using Funcky.Internal;
 
-namespace Funcky.DataTypes
+namespace Funcky
 {
     /// <remarks>
     /// EitherOrBoth values constructed using <c>default</c> are in an invalid state.
