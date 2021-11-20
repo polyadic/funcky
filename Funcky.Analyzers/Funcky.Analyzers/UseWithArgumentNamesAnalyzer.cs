@@ -17,9 +17,9 @@ namespace Funcky.Analyzers
         private const string Category = nameof(Funcky);
         private static readonly DiagnosticDescriptor Descriptor = new(
             id: DiagnosticId,
-            title: Resources.UseArgumentNamesAnalyzerTitle,
-            messageFormat: Resources.UseArgumentNamesAnalyzerMessageFormat,
-            description: Resources.UseArgumentNamesAnalyzerDescription,
+            title: Resources.UseWithArgumentNamesAnalyzerAnalyzerTitle,
+            messageFormat: Resources.UseWithArgumentNamesAnalyzerMessageFormat,
+            description: Resources.UseWithArgumentNamesAnalyzerDescription,
             category: Category,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
