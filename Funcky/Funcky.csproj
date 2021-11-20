@@ -28,6 +28,10 @@
         <AdditionalFiles Include="PublicAPI.Shipped.txt" />
         <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
+    <ItemGroup>
+        <None Include="build/Funcky.targets" Pack="true" PackagePath="build"/>
+        <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
+    </ItemGroup>
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
 </Project>
