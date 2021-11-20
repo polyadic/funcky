@@ -9,10 +9,11 @@
 		<PackageReference Update="xunit.extensibility.core" Version="[2.4.0, 3)" />
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
+		<PackageReference Update="IsExternalInit" Version="1.0.0" />
 		<PackageReference Update="Messerli.CodeStyle" Version="2.0.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.0" />
 		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
-		<PackageReference Update="IsExternalInit" Version="1.0.0" />
+		<PackageReference Update="Nullable" Version="1.3.0" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
 		<PackageReference Update="System.Linq.Async" Version="4.1.1" />
