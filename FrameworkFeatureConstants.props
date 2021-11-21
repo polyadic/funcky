@@ -4,7 +4,7 @@
 		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;NULLABLE_ATTRIBUTES_SUPPORTED;SPLIT_ACCEPTS_STRING_SEPARATOR;LAZY_RETURN_CONSTRUCTOR;QUEUE_TRY_OVERLOADS;OPTIMIZED_ELEMENT_AT;RANGE_SUPPORTED</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0'">
-		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED</DefineConstants>
+		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;DYNAMICALLY_ACCESSED_MEMBERS_ATTRIBUTE_SUPPORTED</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>

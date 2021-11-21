@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,8 +11,10 @@ namespace Funcky.Monads
                typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
 
         public override JsonConverter CreateConverter(Type optionType, JsonSerializerOptions options)
-            => (JsonConverter)Activator.CreateInstance(
-                typeof(JsonOptionConverter<>).MakeGenericType(optionType.GetGenericArguments()),
-                options)!;
+            => (JsonConverter)Activator.CreateInstance(GetConverterType(optionType.GetGenericArguments().Single()), options)!;
+
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "JsonOptionConverter<> doesn't call anything on typeToConvert")]
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+        private static Type GetConverterType(Type typeToConvert) => typeof(JsonOptionConverter<>).MakeGenericType(typeToConvert);
     }
 }
