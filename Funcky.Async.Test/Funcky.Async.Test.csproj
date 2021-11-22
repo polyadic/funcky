@@ -7,12 +7,14 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FsCheck.Xunit" />
+        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Async\Funcky.Async.csproj" />
+        <ProjectReference Include="..\Funcky.Test.Internal\Funcky.Test.Internal.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
 </Project>
