@@ -25,6 +25,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Add overload to WhereSelect with no parameter.
 * Add Option.FromBoolean to create an `Option<Unit>` from a boolean.
+* Funcky automatically adds global usings for the most important namespaces of funcky
+  when the `FunckyImplicitUsings` property is set. This requires the .NET 6 SDK.
 
 ## Funcky 2.5.0
 ### Reader Monad
