@@ -2,6 +2,10 @@
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
 Funcky.Monads.EitherExtensions
+Funcky.Monads.JsonOptionConverterFactory
+Funcky.Monads.JsonOptionConverterFactory.JsonOptionConverterFactory() -> void
+override Funcky.Monads.JsonOptionConverterFactory.CanConvert(System.Type! typeToConvert) -> bool
+override Funcky.Monads.JsonOptionConverterFactory.CreateConverter(System.Type! optionType, System.Text.Json.JsonSerializerOptions! options) -> System.Text.Json.Serialization.JsonConverter!
 static Funcky.Extensions.AsyncEnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Option<TItem>>! source) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.WhereSelect<TItem>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
