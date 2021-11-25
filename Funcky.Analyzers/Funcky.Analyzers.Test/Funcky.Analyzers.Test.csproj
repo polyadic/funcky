@@ -16,9 +16,9 @@
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
         <PackageReference Include="Microsoft.CodeAnalysis" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.MSTest" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.MSTest" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.MSTest" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" />
     </ItemGroup>
 
     <ItemGroup>
