@@ -11,14 +11,14 @@ namespace Funcky.Analyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = nameof(EnumerableRepeatNeverAnalyzer);
+        public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}02";
         private const string Category = nameof(Funcky);
 
         private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerTitle));
         private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerMessageFormat));
         private static readonly LocalizableString Description = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerDescription));
 
-        private static readonly DiagnosticDescriptor Rule = new(nameof(EnumerableRepeatNeverAnalyzer), Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+        private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
