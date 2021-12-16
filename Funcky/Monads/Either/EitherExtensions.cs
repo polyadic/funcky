@@ -3,6 +3,7 @@ namespace Funcky.Monads;
 public static class EitherExtensions
 {
     /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a right value.</summary>
+    [Pure]
     public static Option<TLeft> LeftOrNone<TLeft, TRight>(this Either<TLeft, TRight> either)
         where TLeft : notnull
         => either.Match(
@@ -10,9 +11,16 @@ public static class EitherExtensions
             right: static _ => Option<TLeft>.None());
 
     /// <summary>Returns the right value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a left value.</summary>
+    [Pure]
     public static Option<TRight> RightOrNone<TLeft, TRight>(this Either<TLeft, TRight> either)
         where TRight : notnull
         => either.Match(
             left: static _ => Option<TRight>.None(),
             right: Option.Some);
+
+    [Pure]
+    public static Either<TRight, TLeft> Flip<TRight, TLeft>(this Either<TLeft, TRight> either)
+    => either.Match(
+        left: Either<TRight, TLeft>.Right,
+        right: Either<TRight, TLeft>.Left);
 }

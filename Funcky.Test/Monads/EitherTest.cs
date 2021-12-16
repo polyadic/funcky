@@ -1,3 +1,6 @@
+using FsCheck;
+using FsCheck.Xunit;
+
 namespace Funcky.Test.Monads
 {
     public sealed partial class EitherTest
@@ -110,6 +113,15 @@ namespace Funcky.Test.Monads
 
             Assert.False(hasLeft);
             Assert.True(hasRight);
+        }
+
+        [Property]
+        public Property FlippingAnEitherFlipsTheTypesOfTheEitherTheValueIsUntouched(int value)
+        {
+            var either = Either<string, int>.Right(value);
+            var expected = Either<int, string>.Left(value);
+
+            return (expected == either.Flip()).ToProperty();
         }
 
         private static void Execute(Action action) => action();
