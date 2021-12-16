@@ -1,6 +1,7 @@
 #nullable enable
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
+Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
 Funcky.Monads.EitherExtensions
 Funcky.Monads.JsonOptionConverterFactory
 Funcky.Monads.JsonOptionConverterFactory.JsonOptionConverterFactory() -> void
