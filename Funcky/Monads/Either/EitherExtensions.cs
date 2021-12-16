@@ -17,10 +17,4 @@ public static class EitherExtensions
         => either.Match(
             left: static _ => Option<TRight>.None(),
             right: Option.Some);
-
-    [Pure]
-    public static Either<TRight, TLeft> Flip<TRight, TLeft>(this Either<TLeft, TRight> either)
-    => either.Match(
-        left: Either<TRight, TLeft>.Right,
-        right: Either<TRight, TLeft>.Left);
 }

@@ -88,6 +88,12 @@ namespace Funcky.Monads
             => Match(
                 left => left?.GetHashCode(),
                 right => right?.GetHashCode()) ?? 0;
+
+        [Pure]
+        public Either<TRight, TLeft> Flip()
+            => Match(
+                left: Either<TRight, TLeft>.Right,
+                right: Either<TRight, TLeft>.Left);
     }
 
     public static class Either<TLeft>
