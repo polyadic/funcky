@@ -33,7 +33,7 @@ to guide users of Funcky
   which includes the first element (seed) in the generated sequence.
 
 ### Improvements to `Option`
-* Add `Option.FromBoolean` to create an `Option<Unit>` from a boolean.
+* Add `Option.FromBoolean` to create an `Option<T>` from a boolean.
 
 ### Improvements to `Result`
 The behaviour of the `Result.Error` constructor has been changed regarding exceptions
