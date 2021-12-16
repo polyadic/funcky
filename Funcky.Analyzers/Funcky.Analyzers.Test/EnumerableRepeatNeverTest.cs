@@ -17,7 +17,7 @@ namespace Funcky.Analyzers.Test
         public async Task UsingEnumerableRepeatNeverShowsTheSequenceReturnDiagnostic()
         {
             var expectedDiagnostic = VerifyCS
-                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .Diagnostic(EnumerableRepeatNeverAnalyzer.DiagnosticId)
                 .WithSpan(10, 26, 10, 62)
                 .WithArguments("\"Hello world!\"", "string");
 
@@ -28,7 +28,7 @@ namespace Funcky.Analyzers.Test
         public async Task UsingEnumerableRepeatNeverViaConstantShowsTheSequenceReturnDiagnostic()
         {
             var expectedDiagnostic = VerifyCS
-                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .Diagnostic(EnumerableRepeatNeverAnalyzer.DiagnosticId)
                 .WithSpan(11, 26, 11, 66)
                 .WithArguments("\"Hello world!\"", "string");
 
@@ -39,7 +39,7 @@ namespace Funcky.Analyzers.Test
         public async Task UsingEnumerableRepeatNeverWorksWithDifferentTypes()
         {
             var expectedDiagnostic = VerifyCS
-                .Diagnostic(nameof(EnumerableRepeatNeverAnalyzer))
+                .Diagnostic(EnumerableRepeatNeverAnalyzer.DiagnosticId)
                 .WithSpan(10, 26, 10, 52)
                 .WithArguments("1337", "int");
 
