@@ -21,7 +21,7 @@ to guide users of Funcky
   // negative numbers are not supported
   from x in 5..2
   from y in 1..3
-  select (x,y)
+  select (x, y)
   ```
 
 ### Improvements to `Sequence`
