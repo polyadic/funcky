@@ -40,10 +40,14 @@ The behaviour of the `Result.Error` constructor has been changed regarding excep
 with an already set stack trace. The original stack trace is now preserved.
 Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
 
+### Improvements to `Either`
+* Add `Either.Flip` to swaps left with right.
+
 ### Tooling
 * Funcky automatically adds global usings for the most important namespaces of funcky
   when the `FunckyImplicitUsings` property is set. This requires .NET SDK ≥ 6.0 and C# ≥ 10.0.
 * Funcky now supports [trimming](https://docs.microsoft.com/en-us/dotnet/core/deploying/trimming/trim-self-contained) for self-contained deployments.
+* `Option<T>` now works with the new [System.Text.Json source generation](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-source-generation?pivots=dotnet-6-0).
 * The `Funcky` package now supports [Source Link](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink) and deterministic builds.
 * The symbols package is now finally working again.
 
