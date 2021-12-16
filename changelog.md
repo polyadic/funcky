@@ -2,31 +2,54 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-* The behaviour of the `Result.Error` constructor has been changed regarding exceptions
-  with an already set stack trace. The original stack trace is now preserved.
-  Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
-* Added extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`
-* `Sequence.Generate` has been deprecated in favour of the newly added `Sequence.Successors` function
-  which includes the first element (seed) in the generated sequence.
-* Add methods to convert from `Either` to `Option`: [#439](https://github.com/polyadic/funcky/issues/439)
-  * `LeftOrNone`: Returns the left value or `None` if the either value was right.
-  * `RightOrNone`: Returns the right value or `None` if the either value was left.
-* Extension functions for `System.Range` to allow the generations of `IEnumerable<T>`s from Range-Syntax:
+## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
+### Analyzers
+This release comes with a new package `Funcky.Analyzers`, which we'll use
+to guide users of Funcky
 
-```cs
+### New extensions
+* Add extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`.
+* Add extension `ConcatToString` as an alias for `string.Concat`.
+* Add overload to `WhereSelect` with no parameter.
+* Add methods to convert from `Either` to `Option`: [#439](https://github.com/polyadic/funcky/issues/439)
+    * `LeftOrNone`: Returns the left value or `None` if the either value was right.
+    * `RightOrNone`: Returns the right value or `None` if the either value was left.
+* Extension functions for `System.Range` to allow the generations of `IEnumerable<T>`s from Range-Syntax:
+  ```cs
   foreach(var i in 1..5) { }
 
   // negative numbers are not supported
   from x in 5..2
   from y in 1..3
-  select (x,y)
-```
+  select (x, y)
+  ```
 
-* Add overload to WhereSelect with no parameter.
-* Add Option.FromBoolean to create an `Option<Unit>` from a boolean.
+### Improvements to `Sequence`
+* `Sequence.Return` now accepts multiple parameters:
+  ```cs
+  Sequence.Return(1, 2, 3)
+  ```
+* ⚠️ `Sequence.Generate` has been deprecated in favour of the newly added `Sequence.Successors` function
+  which includes the first element (seed) in the generated sequence.
+
+### Improvements to `Option`
+* Add `Option.FromBoolean` to create an `Option<T>` from a boolean.
+
+### Improvements to `Result`
+The behaviour of the `Result.Error` constructor has been changed regarding exceptions
+with an already set stack trace. The original stack trace is now preserved.
+Previously this resulted in the stacktrace being replaced (.NET < 5.0) or an error (.NET ≥ 5.0).
+
+### Improvements to `Either`
+* Add `Either.Flip` to swaps left with right.
+
+### Tooling
 * Funcky automatically adds global usings for the most important namespaces of funcky
-  when the `FunckyImplicitUsings` property is set. This requires the .NET 6 SDK.
+  when the `FunckyImplicitUsings` property is set. This requires .NET SDK ≥ 6.0 and C# ≥ 10.0.
+* Funcky now supports [trimming](https://docs.microsoft.com/en-us/dotnet/core/deploying/trimming/trim-self-contained) for self-contained deployments.
+* `Option<T>` now works with the new [System.Text.Json source generation](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-source-generation?pivots=dotnet-6-0).
+* The `Funcky` package now supports [Source Link](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink) and deterministic builds.
+* The symbols package is now finally working again.
 
 ## Funcky 2.5.0
 ### Reader Monad

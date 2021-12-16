@@ -1,46 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
-
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
         <AnalysisLevel>5</AnalysisLevel>
     </PropertyGroup>
-
-    <PropertyGroup>
-        <PackageId>Funcky.Analyzers</PackageId>
-        <PackageVersion>1.0.0.0</PackageVersion>
-        <Authors>bruderer</Authors>
-        <PackageProjectUrl>https://github.com/polyadic/funcky/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/polyadic/funcky/</RepositoryUrl>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <Description>Funcky.Analyzers</Description>
-        <Copyright>Copyright</Copyright>
-        <PackageTags>Funcky.Analyzers, analyzers</PackageTags>
-        <DevelopmentDependency>true</DevelopmentDependency>
+    <PropertyGroup Label="Packing">
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
         <NoPackageAnalysis>true</NoPackageAnalysis>
-
+    </PropertyGroup>
+    <PropertyGroup Label="NuGet Metadata">
+        <PackageId>Funcky.Analyzers</PackageId>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Description>Analyzers to guide to the correct usage of Funcky.</Description>
+        <PackageTags>funcky, analyzers, roslyn</PackageTags>
+        <DevelopmentDependency>true</DevelopmentDependency>
+    </PropertyGroup>
+    <PropertyGroup>
         <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" />
     </ItemGroup>
-
     <ItemGroup>
         <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
     </ItemGroup>
-
     <Target Name="_AddAnalyzersToOutput">
         <ItemGroup>
             <TfmSpecificPackageFile Include="$(OutputPath)\Funcky.Analyzers.dll" PackagePath="analyzers/dotnet/cs" />
             <TfmSpecificPackageFile Include="$(OutputPath)\Funcky.Analyzers.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
         </ItemGroup>
     </Target>
-
 </Project>
