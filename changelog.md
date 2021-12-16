@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
+### Analyzers
+This release comes with a new package `Funcky.Analyzers`, which we'll use
+to guide users of Funcky
+
 ### New extensions
 * Add extensions `DequeueOrNone` and `PeekOrNone` on `Queue` and `ConcurrentQueue`.
 * Add extension `ConcatToString` as an alias for `string.Concat`.

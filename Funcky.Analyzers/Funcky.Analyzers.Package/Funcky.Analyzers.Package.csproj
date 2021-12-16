@@ -7,13 +7,12 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
         <AnalysisLevel>5</AnalysisLevel>
     </PropertyGroup>
 
     <PropertyGroup>
         <PackageId>Funcky.Analyzers</PackageId>
-        <PackageVersion>1.0.0.0</PackageVersion>
+        <PackageVersion>1.0.0</PackageVersion>
         <Authors>bruderer</Authors>
         <PackageProjectUrl>https://github.com/polyadic/funcky/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/polyadic/funcky/</RepositoryUrl>
