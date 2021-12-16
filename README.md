@@ -17,6 +17,46 @@ Funcky is a functional library for C# which encourages correct usage of the func
 
 Provides interoperability between Funcky and EF Core
 
+## Features
+See our in progress [documentation](https://polyadic.github.io/funcky/) for more examples.
+
+### Option Monad
+The `Option` monad is the centerpiece of Funcky. It provides a safe and easy structure for working with optional values. \
+It follows naming already established by LINQ (`Select`, `SelectMany`, `Where`).
+
+```cs
+Option<string> input = ...;
+
+var result = input
+    .SelectMany(v => v.ParseIntOrNone())
+    .Where(n => n >= 0)
+    .Select(n => $"Non-Zero: {n}");
+
+result.AndThen(Console.WriteLine);
+```
+
+### IEnumerable Extensions
+Funcky provides a plethora of extensions for `IEnumerable` that help with writing code using Functional programming paradigms.
+
+```cs
+Sequence.Return(1, 2, 3, 4)
+    .Pairwise((left, right) => left + right) // [3, 5, 7]
+    .Intersperse(-1) // [3, -1, 5, -1, 7]
+    .Inspect(item => Console.WriteLine(item))
+    .SlidingWindow(3) // [[3, -1, 5], [-1, 5, -1], [5, -1, 7]]
+    .WhereSelect(window => window.AverageOrNone()) // [2, 1, 3]
+    .JoinToString(", "); // "2, 1, 3"
+```
+
+### … and more
+* Extensions that provide interoperability with `Option` for `IQueryable`, `IAsyncEnumerable`, `string`.
+* Fundamental functions: `Identity`, `True`, `False`, etc.
+* «Constructors» for `IEnumerable`: `Sequence.Return`, `Sequence.Successors`, etc.
+* `Unit` type
+* `Result` monad
+* `Reader` monad
+* `Either` monad
+
 ## Motivation
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
@@ -57,16 +97,11 @@ We think the approach is very nice but cumbersome in usage, however we really lo
 
 MoreLinq provides more extension functions on `IEnumerable`, but has no additional functional concepts. We also provide additional extension functions on `IEnumerable`, but we also try to make them work in combination with our Monads and the async Monad. The different Monad-Syntaxes in C# (Linq, async) do not play niceley together.
 
-### And more…
+### … and more
 
 * [Functional.Primitives.Extensions](https://github.com/JohannesMoersch/Functional)
 * [Functional.Maybe](https://github.com/AndreyTsvetkov/Functional.Maybe)
 * [Tango](https://github.com/gabrielschade/tango)
-
-
-## Features
-
-See our [documentation](https://polyadic.github.io/funcky/) (still in progress)
 
 ## Contributing
 Contributions are more than welcome. Just open a PR :)
