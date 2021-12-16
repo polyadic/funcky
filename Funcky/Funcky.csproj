@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+﻿<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
     <PropertyGroup>
         <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
@@ -9,6 +9,7 @@
         <Version>2.5.0</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -35,6 +36,7 @@
     <ItemGroup>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build"/>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
