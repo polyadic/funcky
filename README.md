@@ -62,10 +62,6 @@ We think the approach is very nice but cumbersome in usage, however we really lo
 
 MoreLinq provides more extension functions on `IEnumerable`, but has no additional functional concepts. We also provide additional extension functions on `IEnumerable`, but we also try to make them work in combination with our Monads and the async Monad. The different Monad-Syntaxes in C# (Linq, async) do not play niceley together.
 
-### [Galaxus.Functional](https://github.com/DigitecGalaxus/Galaxus.Functional)
-
-This is a very simple Functional Library with similar ideas in spirit but not as mature.
-
 ### And more…
 
 * [Functional.Primitives.Extensions](https://github.com/JohannesMoersch/Functional)
