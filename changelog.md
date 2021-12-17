@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+* Add `ParseVersionOrNone` extension.
+
 ## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
 ### Analyzers
 This release comes with a new package `Funcky.Analyzers`, which we'll use
