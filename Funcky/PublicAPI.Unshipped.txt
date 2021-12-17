@@ -1,1 +1,3 @@
 #nullable enable
+static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> input) -> Funcky.Monads.Option<System.Version!>
+static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? input) -> Funcky.Monads.Option<System.Version!>
