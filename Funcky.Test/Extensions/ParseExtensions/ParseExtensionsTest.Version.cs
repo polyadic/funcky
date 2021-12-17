@@ -1,3 +1,6 @@
+using FsCheck;
+using FsCheck.Xunit;
+
 namespace Funcky.Test.Extensions.ParseExtensions;
 
 public sealed class ParseExtensionsTest
@@ -25,26 +28,26 @@ public sealed class ParseExtensionsTest
     }
     #endif
 
-    [Theory]
-    [InlineData("1")]
-    [InlineData("")]
-    [InlineData("invalid-version")]
-    public void ParseVersionIsTheSameAsTryParseForInvalidVersions(string input)
+    [Property]
+    public Property ParseVersionIsTheSameAsTryParse(string input)
     {
-        Assert.False(Version.TryParse(input, out _));
-        FunctionalAssert.IsNone(input.ParseVersionOrNone());
+        var parsed = input.ParseVersionOrNone();
+        var result = Version.TryParse(input, out var expected)
+            ? parsed.Match(none: false, some: version => version == expected)
+            : parsed.Match(none: true, some: False);
+        return result.ToProperty();
     }
 
     #if PARSE_READ_ONLY_SPAN_SUPPORTED
-    [Theory]
-    [InlineData("1")]
-    [InlineData("")]
-    [InlineData("invalid-version")]
-    public void ParseVersionIsTheSameAsTryParseForInvalidVersionsWithReadOnlySpan(string input)
+    [Property]
+    public Property ParseVersionIsTheSameAsTryParseWithReadOnlySpan(string input)
     {
         var inputSpan = input.AsSpan();
-        Assert.False(Version.TryParse(inputSpan, out _));
-        FunctionalAssert.IsNone(inputSpan.ParseVersionOrNone());
+        var parsed = inputSpan.ParseVersionOrNone();
+        var result = Version.TryParse(inputSpan, out var expected)
+            ? parsed.Match(none: false, some: version => version == expected)
+            : parsed.Match(none: true, some: False);
+        return result.ToProperty();
     }
     #endif
 }
