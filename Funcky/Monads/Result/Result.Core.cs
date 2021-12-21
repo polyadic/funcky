@@ -93,6 +93,12 @@ namespace Funcky.Monads
             => Match(
                 ok: result => result?.GetHashCode(),
                 error: error => error.GetHashCode()) ?? 0;
+
+        [Pure]
+        public override string ToString()
+            => Match(
+                ok: static result => $"Ok({result})",
+                error: static exception => $"Error({exception.GetType().FullName}: {exception.Message})");
     }
 
     public static class Result
