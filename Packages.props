@@ -18,7 +18,7 @@
 	<ItemGroup Label="Test Dependencies">
 		<PackageReference Update="System.Linq.Async" Version="4.1.1" />
 		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-		<PackageReference Update="xunit" Version="2.4.1" />
+		<PackageReference Update="xunit" Version="2.4.2-pre.12" />
 		<PackageReference Update="xunit.runner.visualstudio" Version="2.4.3" />
 		<PackageReference Update="FsCheck.Xunit" Version="2.14.3" />
 	</ItemGroup>

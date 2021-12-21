@@ -161,7 +161,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var average = FunctionalAssert.IsSome(numbers.AverageOrNone());
 
             // floating point equal
-            Assert.Equal(numbers.First(), average, 3);
+            Assert.Equal(numbers.First(), average, precision: 3);
         }
 
         [Fact]
@@ -237,7 +237,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var average = FunctionalAssert.IsSome(numbers.AverageOrNone());
 
             // floating point equal
-            Assert.Equal(1.4f, average, 3);
+            Assert.Equal(1.4f, average, precision: 3);
         }
 
         [Fact]
