@@ -7,6 +7,8 @@ namespace Funcky.Xunit
 {
     public static partial class FunctionalAssert
     {
+        /// <summary>Asserts that the given <paramref name="option"/> is <c>Some</c> and contains the given <paramref name="expectedValue"/>.</summary>
+        /// <exception cref="AssertActualExpectedException">Thrown when the option is <c>None</c>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsSome<TItem>(TItem expectedValue, Option<TItem> option)
             where TItem : notnull
@@ -15,15 +17,22 @@ namespace Funcky.Xunit
             {
                 Assert.Equal(Option.Some(expectedValue), option);
             }
-            catch (EqualException)
+            catch (EqualException exception)
             {
-                throw new IsSomeWithExpectedValueException(expectedValue, option);
+                throw new AssertActualExpectedException(
+                    expected: exception.Expected,
+                    actual: exception.Actual,
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsSome)}() Failure");
             }
         }
 
+        /// <summary>Asserts that the given <paramref name="option"/> is <c>Some</c>.</summary>
+        /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="option"/> is <c>None</c>.</exception>
+        /// <returns>Returns the value in <paramref name="option"/> if it was <c>Some</c>.</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
+        [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
         public static TItem IsSome<TItem>(Option<TItem> option)
             where TItem : notnull
         {
@@ -31,9 +40,12 @@ namespace Funcky.Xunit
             {
                 return option.Match(
                     some: Identity,
-                    none: () => throw new IsSomeException());
+                    none: static () => throw new AssertActualExpectedException(
+                        expected: "Some(...)",
+                        actual: "None",
+                        userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsSome)}() Failure"));
             }
-            catch (IsSomeException exception)
+            catch (AssertActualExpectedException exception)
             {
                 throw exception;
             }

@@ -7,22 +7,8 @@ namespace Funcky.Xunit
 {
     public static partial class FunctionalAssert
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
-        public static TResult IsOk<TResult>(Result<TResult> result)
-        {
-            try
-            {
-                return result.Match(
-                    ok: Identity,
-                    error: exception => throw new IsOkException(exception));
-            }
-            catch (IsOkException exception)
-            {
-                throw exception;
-            }
-        }
-
+        /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c> and contains the given <paramref name="expectedResult"/>.</summary>
+        /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void IsOk<TResult>(TResult expectedResult, Result<TResult> result)
         {
@@ -30,10 +16,39 @@ namespace Funcky.Xunit
             {
                 Assert.Equal(Result.Ok(expectedResult), result);
             }
-            catch (EqualException)
+            catch (EqualException exception)
             {
-                throw new IsOkWithExpectedValueException(expectedResult, result.Select(value => (object?)value));
+                throw new AssertActualExpectedException(
+                    expected: exception.Expected,
+                    actual: exception.Actual,
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure");
             }
         }
+
+        /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c>.</summary>
+        /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
+        /// <returns>Returns the value in <paramref name="result"/> if it was <c>Ok</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
+        [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
+        public static TResult IsOk<TResult>(Result<TResult> result)
+        {
+            try
+            {
+                return result.Match(
+                    ok: Identity,
+                    error: static exception => throw new AssertActualExpectedException(
+                        expected: "Ok(...)",
+                        actual: $"Error({FormatException(exception)})",
+                        userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure"));
+            }
+            catch (AssertActualExpectedException exception)
+            {
+                throw exception;
+            }
+        }
+
+        private static string FormatException(Exception exception)
+            => $"{exception.GetType().FullName}: {exception.Message}";
     }
 }

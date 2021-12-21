@@ -6,6 +6,8 @@ namespace Funcky.Xunit
 {
     public static partial class FunctionalAssert
     {
+        /// <summary>Asserts that the given <paramref name="result"/> is <c>Error</c>.</summary>
+        /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="result"/> is <c>Ok</c>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
         public static Exception IsError<TResult>(Result<TResult> result)
@@ -14,9 +16,12 @@ namespace Funcky.Xunit
             {
                 return result.Match(
                     error: Identity,
-                    ok: value => throw new IsErrorException(value));
+                    ok: static value => throw new AssertActualExpectedException(
+                        expected: "Error(...)",
+                        actual: $"Ok({value})",
+                        userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsError)}() Failure"));
             }
-            catch (IsErrorException exception)
+            catch (AssertActualExpectedException exception)
             {
                 throw exception;
             }
