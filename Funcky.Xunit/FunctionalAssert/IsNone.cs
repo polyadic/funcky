@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Xunit.Sdk;
 
 namespace Funcky.Xunit
@@ -8,7 +7,11 @@ namespace Funcky.Xunit
     {
         /// <summary>Asserts that the given <paramref name="option"/> is <c>None</c>.</summary>
         /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="option"/> is <c>Some</c>.</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        #if STACK_TRACE_HIDDEN_SUPPORTED
+        [System.Diagnostics.StackTraceHidden]
+        #else
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        #endif
         [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
         [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
         public static void IsNone<TItem>(Option<TItem> option)
