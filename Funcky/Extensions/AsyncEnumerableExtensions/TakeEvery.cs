@@ -39,7 +39,7 @@ namespace Funcky.Extensions
         {
             if (interval <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(interval), interval, "Interval must be bigger than 0");
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, "Interval must be larger than 0");
             }
         }
     }

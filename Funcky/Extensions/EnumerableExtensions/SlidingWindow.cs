@@ -38,7 +38,7 @@ namespace Funcky.Extensions
         {
             if (width <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(width), width, "The width of the window must be bigger than 0");
+                throw new ArgumentOutOfRangeException(nameof(width), width, "The width of the window must be larger than 0");
             }
         }
     }

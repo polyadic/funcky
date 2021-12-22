@@ -41,7 +41,7 @@ namespace Funcky.Extensions
         {
             if (size <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
+                throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be larger than 0");
             }
         }
 
