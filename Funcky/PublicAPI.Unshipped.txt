@@ -41,6 +41,8 @@ static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBot
 static Funcky.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
 static Funcky.EitherOrBoth<TLeft, TRight>.operator ==(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
 static Funcky.EitherOrBoth<TLeft, TRight>.Right(TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
+static Funcky.Extensions.EnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Extensions.EnumerableExtensions.Chunk<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
