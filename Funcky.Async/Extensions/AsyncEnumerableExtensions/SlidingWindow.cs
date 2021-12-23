@@ -1,9 +1,9 @@
 using System.Runtime.CompilerServices;
 using Funcky.Internal;
 
-namespace Funcky.Extensions
+namespace Funcky.Async.Extensions
 {
-    public static partial class EnumerableExtensions
+    public static partial class AsyncEnumerableExtensions
     {
         /// <summary>
         /// SlidingWindow returns a sequence of sliding windows of the given width.
@@ -18,14 +18,14 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type of the source elements.</typeparam>
         /// <returns>Returns a sequence of equally sized window sequences.</returns>
         [Pure]
-        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
+        public static IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IAsyncEnumerable<TSource> source, int width)
             => SlidingWindowEnumerable(source, ValidateWindowWidth(width));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IEnumerable<IEnumerable<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)
+        private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IAsyncEnumerable<TSource> source, int width)
         {
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
-            foreach (var element in source)
+            await foreach (var element in source)
             {
                 if (slidingWindow.Enqueue(element).IsFull)
                 {
