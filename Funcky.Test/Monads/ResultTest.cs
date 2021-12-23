@@ -182,16 +182,10 @@ namespace Funcky.Test.Monads
 
         private static void IsInterestingStackTraceFirst(Exception exception)
         {
-            if (exception.StackTrace is not null)
-            {
-                var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.NotNull(exception.StackTrace);
 
-                Assert.Matches(@"^\s+(\w+) Funcky\.Test\.Monads\.ResultTest\.InterestingStackTrace\s*\((System\.)?Int32 n\)", lines.First());
-            }
-            else
-            {
-                FunctionalAssert.Unmatched("else");
-            }
+            var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.Matches(@"^\s+(\w+) Funcky\.Test\.Monads\.ResultTest\.InterestingStackTrace\s*\((System\.)?Int32 n\)", lines.First());
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

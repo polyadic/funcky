@@ -38,6 +38,7 @@ namespace Funcky.Xunit
 
         [Pure]
         public static TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(this IEnumerable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>> enumerable)
+            where T8 : notnull
             => enumerable.Aggregate(new TheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(), AddElementToTheoryData);
 
         [Pure]
@@ -145,6 +146,7 @@ namespace Funcky.Xunit
         }
 
         private static TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> AddElementToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> theoryData, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple)
+            where T8 : notnull
         {
             theoryData.Add(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7, tuple.Rest);
 
