@@ -3,17 +3,20 @@ using FsCheck.Xunit;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
 {
     public sealed class ShuffleTest
     {
         [Fact]
-        public void AShuffleIsEnumeratedLazily()
+        public void AShuffleIsEnumeratedLazilyAsync()
         {
             var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-            _ = doNotEnumerate.Shuffle();
+            var task = doNotEnumerate.Shuffle();
+
+            Assert.Throws<XunitException>(() => task.Result);
         }
 
         [Property]

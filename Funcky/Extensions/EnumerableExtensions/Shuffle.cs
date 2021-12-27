@@ -12,6 +12,11 @@ namespace Funcky.Extensions
         [Pure]
         public static IEnumerable<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
             where TSource : notnull
-            => ToRandomEnumerable(source.ToList(), new Random());
+        {
+            foreach (var element in ToRandomEnumerable(source.ToList(), new Random()))
+            {
+                yield return element;
+            }
+        }
     }
 }
