@@ -113,5 +113,7 @@ static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IAsyncEnu
 static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IAsyncEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IAsyncEnumerable<TSource>!>! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.AsyncSequence.Concat<TSource>(params System.Collections.Generic.IAsyncEnumerable<TSource>![]! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
+static Funcky.AsyncSequence.FromNullable<T>(T? item) -> System.Collections.Generic.IAsyncEnumerable<T!>!
+static Funcky.AsyncSequence.FromNullable<T>(T? item) -> System.Collections.Generic.IAsyncEnumerable<T>!
 static Funcky.AsyncSequence.Return<TItem>(TItem item) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.AsyncSequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
