@@ -1,4 +1,4 @@
-namespace Funcky.Test.TestUtils
+namespace Funcky.Async.Test.TestUtilities
 {
     internal sealed class DescendingIntComparer : IComparer<int>
     {

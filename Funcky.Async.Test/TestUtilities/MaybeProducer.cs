@@ -1,6 +1,6 @@
 using Funcky.Monads;
 
-namespace Funcky.Test.TestUtilities
+namespace Funcky.Async.Test.TestUtilities
 {
     internal sealed class MaybeProducer<T>
         where T : notnull

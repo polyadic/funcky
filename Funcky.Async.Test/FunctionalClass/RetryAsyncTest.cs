@@ -1,6 +1,6 @@
+using Funcky.Async.Test.TestUtilities;
 using Funcky.Monads;
 using Funcky.RetryPolicies;
-using Funcky.Test.TestUtilities;
 using Funcky.Xunit;
 using Xunit;
 using static Funcky.Async.Functional;
