@@ -34,7 +34,7 @@
         <IsTrimmable>true</IsTrimmable>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="build/Funcky.targets" Pack="true" PackagePath="build"/>
+        <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
