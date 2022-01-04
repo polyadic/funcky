@@ -31,19 +31,12 @@ namespace Funcky.Extensions
         /// <returns>A sequence of results based on equally sized chunks.</returns>
         [Pure]
         public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        {
-            ValidateChunkSize(size);
+            => ChunkEnumerable(source, ValidateChunkSize(size), resultSelector);
 
-            return ChunkEnumerable(source, size, resultSelector);
-        }
-
-        private static void ValidateChunkSize(int size)
-        {
-            if (size <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
-            }
-        }
+        private static int ValidateChunkSize(int size)
+            => size > 0
+                ? size
+                : throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
 
         private static IEnumerable<TResult> ChunkEnumerable<TSource, TResult>(IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
         {

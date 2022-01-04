@@ -1,52 +1,48 @@
-using Funcky.Test.TestUtils;
+using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
+using Xunit;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
 {
     public sealed class ChunkTest
     {
         [Fact]
         public void ChunkIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerationSequence<object>();
+            var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
             _ = doNotEnumerate.Chunk(42);
         }
 
         [Fact]
-        public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
+        public async Task GivenAnEmptyEnumerableChunkReturnsAnEmptyListAsync()
         {
-            var numbers = Enumerable.Empty<int>();
+            var numbers = AsyncEnumerable.Empty<int>();
 
             var chunked = numbers.Chunk(3);
 
-            Assert.Empty(chunked);
+            await AsyncAssert.Empty(chunked);
         }
 
         [Fact]
-        public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
+        public async Task GivenAnSingleElementListWeGetEnumerableWithOneElement()
         {
-            var numbers = Sequence.Return(1);
+            var numbers = AsyncSequence.Return(1);
 
             var chunked = numbers.Chunk(3);
+            var expected = AsyncSequence.Return(new List<int> { 1 });
 
-            Assert.Collection(
-                chunked,
-                a =>
-                {
-                    Assert.Collection(
-                        a,
-                        aa => Assert.Equal(1, aa));
-                });
+            await AsyncAssert.Equal(expected, chunked);
         }
 
         [Fact]
-        public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
+        public async Task GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerablesAsync()
         {
-            var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            var numbers = AsyncSequence.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
             var chunked = numbers.Chunk(3);
 
-            Assert.Collection(
+            await AsyncAssert.Collection(
                 chunked,
                 a =>
                 {
@@ -75,14 +71,14 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
+        public async Task GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
         {
-            var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
+            var numbers = AsyncSequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j");
 
             const int chunkSize = 4;
-            IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
+            var chunked = numbers.Chunk(chunkSize);
 
-            Assert.Collection(
+            await AsyncAssert.Collection(
                 chunked,
                 a =>
                 {
@@ -92,9 +88,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 {
                     Assert.Equal(b.Count, chunkSize);
                 },
-                c =>
+                async c =>
                 {
-                    Assert.Equal(c.Count, numbers.Count % chunkSize);
+                    Assert.Equal(c.Count, await numbers.CountAsync() % chunkSize);
                 });
         }
 
@@ -104,19 +100,20 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [InlineData(-42)]
         public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
         {
-            var numbers = Sequence.Return("test");
+            var numbers = AsyncSequence.Return(1);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Funcky.Extensions.EnumerableExtensions.Chunk(numbers, invalidChunkSize));
+            Assert.Throws<ArgumentOutOfRangeException>(() => numbers.Chunk(invalidChunkSize));
         }
 
         [Fact]
-        public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
+        public async Task ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequenceAsync()
         {
-            var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
+            var magicSquare = AsyncSequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
 
-            magicSquare
-                .Chunk(3, Enumerable.Average)
-                .ForEach(average => Assert.Equal(5, average));
+            await foreach (var average in magicSquare.Chunk(3, Enumerable.Average))
+            {
+                Assert.Equal(5, average);
+            }
         }
     }
 }
