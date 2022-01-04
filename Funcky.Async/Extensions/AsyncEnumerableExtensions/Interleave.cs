@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Funcky.Async.Extensions
 {
@@ -22,9 +23,14 @@ namespace Funcky.Async.Extensions
         /// <param name="source">the source sequences.</param>
         /// <returns>one sequences with all the elements interleaved.</returns>
         [Pure]
-        public static async IAsyncEnumerable<TSource> Interleave<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source)
+        public static IAsyncEnumerable<TSource> Interleave<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source) => InterleaveInternal(source);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async IAsyncEnumerable<TSource> InterleaveInternal<TSource>(
+            IEnumerable<IAsyncEnumerable<TSource>> source,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            var enumerators = GetInterleaveEnumerators(source);
+            var enumerators = GetInterleaveEnumerators(source, cancellationToken);
 
             try
             {
@@ -39,8 +45,10 @@ namespace Funcky.Async.Extensions
             }
         }
 
-        private static ImmutableList<IAsyncEnumerator<TSource>> GetInterleaveEnumerators<TSource>(IEnumerable<IAsyncEnumerable<TSource>> source)
-            => source.Select(s => s.GetAsyncEnumerator()).ToImmutableList();
+        private static ImmutableList<IAsyncEnumerator<TSource>> GetInterleaveEnumerators<TSource>(
+            IEnumerable<IAsyncEnumerable<TSource>> source,
+            CancellationToken cancellationToken)
+            => source.Select(s => s.GetAsyncEnumerator(cancellationToken)).ToImmutableList();
 
         private static async IAsyncEnumerable<TSource> InterleaveEnumeratorAsync<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators)
         {
