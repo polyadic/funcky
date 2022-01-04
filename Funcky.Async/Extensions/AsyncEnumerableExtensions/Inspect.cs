@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Funcky.Async.Extensions
 {
     public static partial class AsyncEnumerableExtensions
@@ -12,7 +14,7 @@ namespace Funcky.Async.Extensions
         /// <returns>Returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
         [Pure]
         public static IAsyncEnumerable<TSource> Inspect<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> action)
-            => AsyncEnumerable.Create(cancellationToken => source.InspectInternal(action, cancellationToken));
+            => InspectInternal(source, action);
 
         /// <summary>
         /// An IEnumerable that calls and awaits the function on each element before yielding it. It can be used to encode side effects without enumerating.
@@ -24,9 +26,13 @@ namespace Funcky.Async.Extensions
         /// <returns>Returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
         [Pure]
         public static IAsyncEnumerable<TSource> InspectAwait<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> action)
-            => AsyncEnumerable.Create(cancellationToken => source.InspectAwaitInternal(action, cancellationToken));
+            => InspectAwaitInternal(source, action);
 
-        private static async IAsyncEnumerator<TSource> InspectInternal<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async IAsyncEnumerable<TSource> InspectInternal<TSource>(
+            this IAsyncEnumerable<TSource> source,
+            Action<TSource> action,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await foreach (var item in source.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
@@ -35,9 +41,13 @@ namespace Funcky.Async.Extensions
             }
         }
 
-        private static async IAsyncEnumerator<TSource> InspectAwaitInternal<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> action, CancellationToken cancellationToken)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async IAsyncEnumerable<TSource> InspectAwaitInternal<TSource>(
+            this IAsyncEnumerable<TSource> source,
+            Func<TSource, ValueTask> action,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            await foreach (var item in source.WithCancellation(cancellationToken))
+            await foreach (var item in source.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
                 await action(item).ConfigureAwait(false);
                 yield return item;
