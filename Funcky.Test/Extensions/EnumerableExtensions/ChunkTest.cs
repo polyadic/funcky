@@ -77,7 +77,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
         {
-            var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j");
+            var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
 
             const int chunkSize = 4;
             IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
