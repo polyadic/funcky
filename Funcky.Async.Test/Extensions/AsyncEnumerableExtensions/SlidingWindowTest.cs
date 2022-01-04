@@ -80,5 +80,12 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
                 window2 => { Assert.Equal(Enumerable.Range(1, width), window2); },
                 window3 => { Assert.Equal(Enumerable.Range(2, width), window3); });
         }
+
+        [Fact]
+        public async Task CancellationIsPropagated()
+        {
+            var canceledToken = new CancellationToken(canceled: true);
+            _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().SlidingWindow(1).ToListAsync(canceledToken);
+        }
     }
 }
