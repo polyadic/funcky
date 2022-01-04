@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Funcky.Async.Extensions
 {
     public static partial class AsyncEnumerableExtensions
@@ -60,14 +62,14 @@ namespace Funcky.Async.Extensions
                 ? size
                 : throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
 
-        private static async IAsyncEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IAsyncEnumerable<TSource> source, int size)
+        private static async IAsyncEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IAsyncEnumerable<TSource> source, int size, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            var asyncEnumerator = source.GetAsyncEnumerator();
+            var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
             await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
 
             while (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
-                yield return await TakeSkipAsync(asyncEnumerator, size).ToListAsync().ConfigureAwait(false);
+                yield return await TakeSkipAsync(asyncEnumerator, size).ToListAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
