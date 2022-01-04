@@ -1,4 +1,5 @@
 using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
 using Xunit;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
@@ -39,6 +40,13 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
             {
                 Assert.Equal((index, index + 1), pair);
             }
+        }
+
+        [Fact]
+        public async Task CancellationIsPropagated()
+        {
+            var canceledToken = new CancellationToken(canceled: true);
+            _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Pairwise().ToListAsync(canceledToken);
         }
     }
 }
