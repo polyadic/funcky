@@ -31,11 +31,7 @@ namespace Funcky.Extensions
         /// <returns>A sequence of results based on equally sized chunks.</returns>
         [Pure]
         public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        {
-            ValidateChunkSize(size);
-
-            return ChunkEnumerable(source, size, resultSelector);
-        }
+            => ChunkEnumerable(source, ValidateChunkSize(size), resultSelector);
 
         private static int ValidateChunkSize(int size)
             => size > 0
@@ -48,7 +44,7 @@ namespace Funcky.Extensions
 
             while (sourceEnumerator.MoveNext())
             {
-                yield return TakeSkip(sourceEnumerator, size).ToImmutableList();
+                yield return resultSelector(TakeSkip(sourceEnumerator, size).ToImmutableList());
             }
         }
 
