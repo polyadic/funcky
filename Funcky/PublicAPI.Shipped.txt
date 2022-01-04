@@ -148,8 +148,6 @@ static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System
 static Funcky.Extensions.EnumerableExtensions.AverageOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, long>! selector) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.EnumerableExtensions.CartesianProduct<TFirstSource, TSecondSource, TResult>(this System.Collections.Generic.IEnumerable<TFirstSource>! firstSequence, System.Collections.Generic.IEnumerable<TSecondSource>! secondSequence, System.Func<TFirstSource, TSecondSource, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.CartesianProduct<TFirstSource, TSecondSource>(this System.Collections.Generic.IEnumerable<TFirstSource>! firstSequence, System.Collections.Generic.IEnumerable<TSecondSource>! secondSequence) -> System.Collections.Generic.IEnumerable<(TFirstSource First, TSecondSource Second)>!
-static Funcky.Extensions.EnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
-static Funcky.Extensions.EnumerableExtensions.Chunk<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.ElementAtOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int index) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.ExclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
@@ -561,7 +559,6 @@ static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelecto
 static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
 static Funcky.Monads.Result.Ok<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.Return<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
-static Funcky.Monads.Result<TValidResult>.Error(System.Exception! item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool

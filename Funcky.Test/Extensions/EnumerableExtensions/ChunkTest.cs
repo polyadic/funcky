@@ -80,21 +80,21 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j");
 
             const int chunkSize = 4;
-            var chunked = numbers.Chunk(chunkSize);
+            IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
 
             Assert.Collection(
                 chunked,
                 a =>
                 {
-                    Assert.Equal(a.Count(), chunkSize);
+                    Assert.Equal(a.Count, chunkSize);
                 },
                 b =>
                 {
-                    Assert.Equal(b.Count(), chunkSize);
+                    Assert.Equal(b.Count, chunkSize);
                 },
                 c =>
                 {
-                    Assert.Equal(c.Count(), numbers.Count() % chunkSize);
+                    Assert.Equal(c.Count, numbers.Count() % chunkSize);
                 });
         }
 
@@ -104,7 +104,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [InlineData(-42)]
         public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
         {
-            var numbers = Sequence.Return("test");
+            var numbers = Sequence.Return(1);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => Funcky.Extensions.EnumerableExtensions.Chunk(numbers, invalidChunkSize));
         }
