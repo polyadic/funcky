@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Funcky.Async.Extensions
 {
     public static partial class AsyncEnumerableExtensions
@@ -48,15 +50,15 @@ namespace Funcky.Async.Extensions
             => SplitEnumerator(source, separator, equalityComparer)
                 .Select(resultSelector);
 
-        private static async IAsyncEnumerable<IReadOnlyList<TSource>> SplitEnumerator<TSource>(IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> equalityComparer)
+        private static async IAsyncEnumerable<IReadOnlyList<TSource>> SplitEnumerator<TSource>(IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> equalityComparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
             where TSource : notnull
         {
-            var asyncEnumerator = source.GetAsyncEnumerator();
+            var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
             await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
 
             while (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
-                yield return await TakeSkipWhile(asyncEnumerator, TakeSkipPredicate(separator, equalityComparer)).ToListAsync().ConfigureAwait(false);
+                yield return await TakeSkipWhile(asyncEnumerator, TakeSkipPredicate(separator, equalityComparer)).ToListAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
