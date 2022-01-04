@@ -37,7 +37,7 @@ namespace Funcky.Monads
 
         /// <summary>Creates a new <see cref="Result{TValidResult}"/> from an <see cref="Exception"/> and sets
         /// the stack trace if not already set.</summary>
-        /// <remarks>This method has side effects: It sets the stack trace on <paramref name="item"/> if not already set.</remarks>
+        /// <remarks>This method has side effects: It sets the stack trace on <paramref name="exception"/> if not already set.</remarks>
         #if SET_CURRENT_STACK_TRACE_SUPPORTED
         // Methods with AggressiveInlining are always excluded from the stack trace.
         // This is required for <c>SetCurrentStackTrace</c> to work properly.
@@ -48,18 +48,18 @@ namespace Funcky.Monads
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         #endif
         #endif
-        public static Result<TValidResult> Error(Exception item)
+        public static Result<TValidResult> Error(Exception exception)
         {
-            if (item.StackTrace is null)
+            if (exception.StackTrace is null)
             {
                 #if SET_CURRENT_STACK_TRACE_SUPPORTED
-                    ExceptionDispatchInfo.SetCurrentStackTrace(item);
+                    ExceptionDispatchInfo.SetCurrentStackTrace(exception);
                 #else
-                    item.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
+                    exception.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
                 #endif
             }
 
-            return new Result<TValidResult>(item);
+            return new Result<TValidResult>(exception);
         }
 
         [Pure]
