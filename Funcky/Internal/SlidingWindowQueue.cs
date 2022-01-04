@@ -1,6 +1,6 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 
-namespace Funcky.Extensions
+namespace Funcky.Internal
 {
     internal sealed class SlidingWindowQueue<TSource>
     {
@@ -11,8 +11,8 @@ namespace Funcky.Extensions
         public SlidingWindowQueue(int width)
             => _width = width;
 
-        public IEnumerable<TSource> Window
-            => _window;
+        public IReadOnlyList<TSource> Window
+            => _window.ToImmutableList();
 
         public bool IsFull
             => _width == _currentWidth;
