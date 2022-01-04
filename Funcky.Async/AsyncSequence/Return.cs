@@ -4,6 +4,10 @@ namespace Funcky
     {
         [Pure]
         public static IAsyncEnumerable<TItem> Return<TItem>(TItem item)
-            => AsyncEnumerable.Repeat(item, 1);
+            => Return(items: item);
+
+        [Pure]
+        public static IAsyncEnumerable<TItem> Return<TItem>(params TItem[] items)
+            => items.ToAsyncEnumerable();
     }
 }

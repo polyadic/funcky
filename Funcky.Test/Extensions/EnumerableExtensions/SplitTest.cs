@@ -25,15 +25,16 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void SplitAnEnumerableCorrectly()
         {
-            IEnumerable<int> sequence = new List<int> { 12, 14, 7, 41, 31, 19, 7, 9, 11, 99, 99 };
+            var sequence = Sequence.Return(12, 14, 7, 41, 31, 19, 7, 9, 11, 99, 99);
 
             var parts = sequence.Split(7);
 
-            Assert.Collection(
-                parts,
-                part => Assert.Equal(new List<int> { 12, 14 }, part),
-                part => Assert.Equal(new[] { 41, 31, 19 }, part),
-                part => Assert.Equal(new[] { 9, 11, 99, 99 }, part));
+            var expected = Sequence.Return(
+                Sequence.Return(12, 14),
+                Sequence.Return(41, 31, 19),
+                Sequence.Return(9, 11, 99, 99));
+
+            Assert.Equal(expected, parts);
         }
     }
 }
