@@ -14,9 +14,9 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-            var task = doNotEnumerate.Shuffle();
+            var shuffled = doNotEnumerate.Shuffle();
 
-            Assert.Throws<XunitException>(() => task.Result);
+            Assert.ThrowsAsync<XunitException>(async () => await shuffled);
         }
 
         [Property]
