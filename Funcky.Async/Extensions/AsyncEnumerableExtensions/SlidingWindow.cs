@@ -25,7 +25,7 @@ namespace Funcky.Async.Extensions
         private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IAsyncEnumerable<TSource> source, int width)
         {
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
-            await foreach (var element in source)
+            await foreach (var element in source.ConfigureAwait(false))
             {
                 if (slidingWindow.Enqueue(element).IsFull)
                 {
