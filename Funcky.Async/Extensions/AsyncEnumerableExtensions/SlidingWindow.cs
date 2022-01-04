@@ -22,10 +22,13 @@ namespace Funcky.Async.Extensions
             => SlidingWindowEnumerable(source, ValidateWindowWidth(width));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IAsyncEnumerable<TSource> source, int width)
+        private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(
+            IAsyncEnumerable<TSource> source,
+            int width,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
-            await foreach (var element in source.ConfigureAwait(false))
+            await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 if (slidingWindow.Enqueue(element).IsFull)
                 {
