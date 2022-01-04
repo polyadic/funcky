@@ -10,8 +10,8 @@ namespace Funcky.Async.Extensions
         /// The nth sequence will start with the nth element of the source sequence.
         /// </summary>
         /// <remarks>
-        /// The returned windows always have  'width' many elements.
-        /// i.e. if your source Sequence is smaller than the window, there will be an empty result.
+        /// The returned windows always have 'width' many elements.
+        /// i.e. if your source sequence is smaller than the window, there will be an empty result.
         /// </remarks>
         /// <param name="source">The source sequence.</param>
         /// <param name="width">The width of the sliding window.</param>
