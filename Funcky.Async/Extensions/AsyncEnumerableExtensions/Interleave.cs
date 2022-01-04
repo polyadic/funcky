@@ -28,7 +28,7 @@ namespace Funcky.Async.Extensions
 
             try
             {
-                await foreach (var element in InterleaveEnumeratorAsync(enumerators))
+                await foreach (var element in InterleaveEnumeratorAsync(enumerators).ConfigureAwait(false))
                 {
                     yield return element;
                 }
