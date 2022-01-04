@@ -63,7 +63,7 @@ namespace Funcky.Async.Extensions
 
             try
             {
-                await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElementsAsync(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false)), GetMergeComparer(comparer)))
+                await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false)), GetMergeComparer(comparer)))
                 {
                     yield return element;
                 }
@@ -83,7 +83,7 @@ namespace Funcky.Async.Extensions
         private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
             => comparer.GetOrElse(Comparer<TSource>.Default);
 
-        private static async Task<bool> HasMoreElementsAsync<TSource>(IAsyncEnumerator<TSource> enumerator)
+        private static async Task<bool> HasMoreElements<TSource>(IAsyncEnumerator<TSource> enumerator)
             => !await enumerator.MoveNextAsync().ConfigureAwait(false);
 
         private static async IAsyncEnumerable<TSource> MergeEnumerators<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators, IComparer<TSource> comparer)

@@ -14,11 +14,11 @@ namespace Funcky.Extensions
         [Pure]
 #if NET6_0_OR_GREATER
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(IEnumerable<TSource> source, int size)
+        public static IEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(IEnumerable<TSource> source, int size)
 #else
-        public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
 #endif
-            => ChunkEnumerable(source, ValidateChunkSize(size));
+            => Chunk(source, size, Identity);
 
         /// <summary>
         /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
@@ -30,16 +30,19 @@ namespace Funcky.Extensions
         /// <param name="resultSelector">The result selector will be applied on each chunked sequence and can produce a desired result.</param>
         /// <returns>A sequence of results based on equally sized chunks.</returns>
         [Pure]
-        public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> resultSelector)
-            => ChunkEnumerable(source, ValidateChunkSize(size))
-                .Select(resultSelector);
+        public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
+        {
+            ValidateChunkSize(size);
+
+            return ChunkEnumerable(source, size, resultSelector);
+        }
 
         private static int ValidateChunkSize(int size)
             => size > 0
                 ? size
                 : throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
 
-        private static IEnumerable<IEnumerable<TSource>> ChunkEnumerable<TSource>(IEnumerable<TSource> source, int size)
+        private static IEnumerable<TResult> ChunkEnumerable<TSource, TResult>(IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
         {
             using var sourceEnumerator = source.GetEnumerator();
 

@@ -42,7 +42,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void SlidingWindowReturnsTheCorrectAmountOfWindowsAllOfEvenSize()
         {
-            var width = 5;
+            const int width = 5;
             var source = Enumerable.Range(0, 10);
             var windows = source.SlidingWindow(width).ToList();
 
@@ -65,7 +65,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void SlidingWindowReturnsASequenceOfConsecutiveWindows()
         {
-            var width = 4;
+            const int width = 4;
             var source = Enumerable.Range(0, 6);
 
             Assert.Collection(
