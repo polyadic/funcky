@@ -80,7 +80,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             var numbers = new List<string> { "a", "b", "c", "d", "e", "g", "h", "i", "j" };
 
             const int chunkSize = 4;
-            var chunked = (IEnumerable<IReadOnlyList<string>>)numbers.Chunk(chunkSize);
+            IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
 
             Assert.Collection(
                 chunked,
