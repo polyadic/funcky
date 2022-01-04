@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Funcky.Async.Extensions
 {
     public static partial class AsyncEnumerableExtensions
@@ -21,11 +23,15 @@ namespace Funcky.Async.Extensions
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the result Sequence.</typeparam>
         /// <returns>Returns a sequence of ValueTuple-pairs.</returns>
-        public static IAsyncEnumerable<TResult> Pairwise<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-            => AsyncEnumerable.Create(cancellationToken => PairwiseInternal(source, resultSelector, cancellationToken));
-
         [Pure]
-        private static async IAsyncEnumerator<TResult> PairwiseInternal<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector, CancellationToken cancellationToken)
+        public static IAsyncEnumerable<TResult> Pairwise<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
+            => PairwiseInternal(source, resultSelector);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static async IAsyncEnumerable<TResult> PairwiseInternal<TSource, TResult>(
+            this IAsyncEnumerable<TSource> source,
+            Func<TSource, TSource, TResult> resultSelector,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
             await using var enumerator = source.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();

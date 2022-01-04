@@ -405,7 +405,6 @@ static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TSelecto
 static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TElement>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TElement>!>!
 static Funcky.Monads.Result.Ok<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.Return<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
-static Funcky.Monads.Result<TValidResult>.Error(System.Exception! item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!

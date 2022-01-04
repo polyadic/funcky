@@ -23,6 +23,7 @@
         <Compile Include="..\Funcky\Internal\Aggregators\MaxAggregator.cs" Link="Internal\Aggregators\MaxAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\MinAggregator.cs" Link="Internal\Aggregators\MinAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Mixer.cs" Link="Internal\Mixer.cs" />
+        <Compile Include="..\Funcky\Internal\SlidingWindowQueue.cs" Link="Internal\SlidingWindowQueue.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
