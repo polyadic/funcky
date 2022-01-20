@@ -35,11 +35,11 @@ namespace Funcky.Analyzers
 
         public string GetArgumentType(int argumentPosition)
             => GetArgument(argumentPosition) is { } argument
-                ? SemanticModel.GetTypeInfo(argument.Expression).Type.ToDisplayString()
+                ? SemanticModel.GetTypeInfo(argument.Expression).Type?.ToDisplayString() ?? string.Empty
                 : throw new NullReferenceException($"GetArgument({argumentPosition}) returned null.");
 
         private ArgumentSyntax? GetArgument(int argumentPosition)
-            => InvocationExpr.ArgumentList is ArgumentListSyntax argumentList
+            => InvocationExpr.ArgumentList is { } argumentList
                 && argumentList.Arguments.Count > argumentPosition
                     ? argumentList.Arguments[argumentPosition]
                     : null;
