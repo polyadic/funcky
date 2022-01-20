@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+
+    <PropertyGroup>
+        <AssemblyName>Funcky.SourceGenerator</AssemblyName>
+        <RootNamespace>Funcky.SourceGenerator</RootNamespace>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\OrNoneFromTryPatternAttribute.template" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Templates\OrNoneFromTryPatternAttribute.template" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Test" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+    </ItemGroup>
+</Project>
