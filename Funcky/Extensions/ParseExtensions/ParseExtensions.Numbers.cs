@@ -6,59 +6,59 @@ namespace Funcky.Extensions
     public static partial class ParseExtensions
     {
         [Pure]
-        public static Option<byte> ParseByteOrNone(this string candidate)
-            => FailToOption<byte>.FromTryPattern(byte.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(byte), nameof(byte.TryParse))]
+        public static partial Option<byte> ParseByteOrNone(this string candidate);
 
         [Pure]
-        public static Option<byte> ParseByteOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<byte>.FromTryPattern(byte.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(byte), nameof(byte.TryParse))]
+        public static partial Option<byte> ParseByteOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<short> ParseShortOrNone(this string candidate)
-            => FailToOption<short>.FromTryPattern(short.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(short), nameof(short.TryParse))]
+        public static partial Option<short> ParseShortOrNone(this string candidate);
 
         [Pure]
-        public static Option<short> ParseShortOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<short>.FromTryPattern(short.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(short), nameof(short.TryParse))]
+        public static partial Option<short> ParseShortOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<int> ParseIntOrNone(this string candidate)
-            => FailToOption<int>.FromTryPattern(int.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(int), nameof(int.TryParse))]
+        public static partial Option<int> ParseIntOrNone(this string candidate);
 
         [Pure]
-        public static Option<int> ParseIntOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<int>.FromTryPattern(int.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(int), nameof(int.TryParse))]
+        public static partial Option<int> ParseIntOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<long> ParseLongOrNone(this string candidate)
-            => FailToOption<long>.FromTryPattern(long.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(long), nameof(long.TryParse))]
+        public static partial Option<long> ParseLongOrNone(this string candidate);
 
         [Pure]
-        public static Option<long> ParseLongOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<long>.FromTryPattern(long.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(long), nameof(long.TryParse))]
+        public static partial Option<long> ParseLongOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<float> ParseFloatOrNone(this string candidate)
-            => FailToOption<float>.FromTryPattern(float.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(float), nameof(float.TryParse))]
+        public static partial Option<float> ParseFloatOrNone(this string candidate);
 
         [Pure]
-        public static Option<float> ParseFloatOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<float>.FromTryPattern(float.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(float), nameof(float.TryParse))]
+        public static partial Option<float> ParseFloatOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<double> ParseDoubleOrNone(this string candidate)
-            => FailToOption<double>.FromTryPattern(double.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(double), nameof(double.TryParse))]
+        public static partial Option<double> ParseDoubleOrNone(this string candidate);
 
         [Pure]
-        public static Option<double> ParseDoubleOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<double>.FromTryPattern(double.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(double), nameof(double.TryParse))]
+        public static partial Option<double> ParseDoubleOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
-        public static Option<decimal> ParseDecimalOrNone(this string candidate)
-            => FailToOption<decimal>.FromTryPattern(decimal.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(decimal), nameof(decimal.TryParse))]
+        public static partial Option<decimal> ParseDecimalOrNone(this string candidate);
 
         [Pure]
-        public static Option<decimal> ParseDecimalOrNone(this string candidate, NumberStyles styles, IFormatProvider provider)
-            => FailToOption<decimal>.FromTryPattern(decimal.TryParse, candidate, styles, provider);
+        [OrNoneFromTryPattern(typeof(decimal), nameof(decimal.TryParse))]
+        public static partial Option<decimal> ParseDecimalOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
     }
 }

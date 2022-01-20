@@ -5,8 +5,8 @@ namespace Funcky.Extensions
     public static partial class ParseExtensions
     {
         [Pure]
-        public static Option<bool> ParseBooleanOrNone(this string candidate)
-            => FailToOption<bool>.FromTryPattern(bool.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
+        public static partial Option<bool> ParseBooleanOrNone(this string candidate);
 
         [Pure]
         public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
