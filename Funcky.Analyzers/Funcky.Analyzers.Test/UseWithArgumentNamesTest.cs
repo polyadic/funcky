@@ -13,6 +13,13 @@ namespace Funcky.Analyzers.Test
         }
 
         [Fact]
+        public async Task ArgumentsForCallsToMethodsWithoutAttributeGetNoDiagnostic()
+        {
+            var inputCode = await File.ReadAllTextAsync("TestCode/ValidUseWithArgumentNamesNoAttribute.input");
+            await VerifyCS.VerifyAnalyzerAsync(inputCode);
+        }
+
+        [Fact]
         public async Task UsagesOfMethodsAnnotatedWithShouldUseNamedArgumentsAttributeGetWarningAndAreFixed()
         {
             var expectedDiagnostics = new[]
