@@ -3,8 +3,10 @@ using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.Simplification;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzers
@@ -47,9 +49,24 @@ namespace Funcky.Analyzers
 
         private static ArgumentSyntax AddArgumentName(ArgumentSyntax argument, IParameterSymbol parameter)
             => argument
-                .WithNameColon(NameColon(parameter.Name)
+                .WithNameColon(NameColon(IdentifierName(CreateIdentifier(parameter.Name)))
                     .WithLeadingTrivia(argument.Expression.GetLeadingTrivia())
                     .WithTrailingTrivia(Space))
                 .WithExpression(argument.Expression.WithoutLeadingTrivia());
+
+        private static SyntaxToken CreateIdentifier(string identifier)
+            => NeedsEscaping(identifier)
+                ? CreateEscapedIdentifier(identifier).WithAdditionalAnnotations(Simplifier.Annotation)
+                : Identifier(identifier);
+
+        private static SyntaxToken CreateEscapedIdentifier(string identifier)
+            => Identifier(
+                leading: default,
+                contextualKind: SyntaxKind.None,
+                text: "@" + identifier,
+                valueText: identifier,
+                trailing: default);
+
+        private static bool NeedsEscaping(string identifier) => SyntaxFacts.GetKeywordKind(identifier) != SyntaxKind.None;
     }
 }

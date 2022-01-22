@@ -15,10 +15,14 @@ namespace ConsoleApplication1
             Method(
                 10,
                 20);
+            MethodWithKeywordAsArgument(10);
         }
 
         [UseWithArgumentNames]
         private void Method(int x, int y) { }
+
+        [UseWithArgumentNames]
+        private void MethodWithKeywordAsArgument(int @int) { }
     }
 }
 

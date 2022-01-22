@@ -31,6 +31,7 @@ namespace Funcky.Analyzers.Test
                 VerifyCS.Diagnostic().WithSpan(14, 21, 14, 23).WithArguments("y"),
                 VerifyCS.Diagnostic().WithSpan(16, 17, 16, 19).WithArguments("x"),
                 VerifyCS.Diagnostic().WithSpan(17, 17, 17, 19).WithArguments("y"),
+                VerifyCS.Diagnostic().WithSpan(18, 41, 18, 43).WithArguments("int"),
             };
 
             await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<UseWithArgumentNamesAnalyzer, AddArgumentNameCodeFix>(expectedDiagnostics, "UseWithArgumentNames");
