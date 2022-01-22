@@ -10,11 +10,11 @@ namespace Funcky.Analyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "λ0003";
+        public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}03";
+        private const string Category = nameof(Funcky);
 
         private const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
 
-        private const string Category = nameof(Funcky);
         private static readonly DiagnosticDescriptor Descriptor = new(
             id: DiagnosticId,
             title: Resources.UseWithArgumentNamesAnalyzerAnalyzerTitle,
