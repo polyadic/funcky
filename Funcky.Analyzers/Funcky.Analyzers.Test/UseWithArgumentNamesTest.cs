@@ -6,6 +6,13 @@ namespace Funcky.Analyzers.Test
     public sealed class UseWithArgumentNamesTest
     {
         [Fact]
+        public async Task ParametersThatAlreadyUseArgumentNamesGetNoDiagnostic()
+        {
+            var inputCode = await File.ReadAllTextAsync("TestCode/ValidUseWithArgumentNames.input");
+            await VerifyCS.VerifyAnalyzerAsync(inputCode);
+        }
+
+        [Fact]
         public async Task UsagesOfMethodsAnnotatedWithShouldUseNamedArgumentsAttributeGetWarning()
         {
             var expectedDiagnostics = new[]
