@@ -90,8 +90,8 @@ namespace Funcky.Monads
         [Pure]
         public override int GetHashCode()
             => Match(
-                left => left?.GetHashCode(),
-                right => right?.GetHashCode()) ?? 0;
+                left: left => left?.GetHashCode(),
+                right: right => right?.GetHashCode()) ?? 0;
 
         [Pure]
         public Either<TRight, TLeft> Flip()
