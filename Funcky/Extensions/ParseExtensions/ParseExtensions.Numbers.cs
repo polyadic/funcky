@@ -14,6 +14,14 @@ namespace Funcky.Extensions
         public static partial Option<byte> ParseByteOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
+        [OrNoneFromTryPattern(typeof(sbyte), nameof(byte.TryParse))]
+        public static partial Option<sbyte> ParseSByteOrNone(this string candidate);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(sbyte), nameof(byte.TryParse))]
+        public static partial Option<sbyte> ParseSByteOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
+
+        [Pure]
         [OrNoneFromTryPattern(typeof(short), nameof(short.TryParse))]
         public static partial Option<short> ParseShortOrNone(this string candidate);
 
@@ -22,8 +30,24 @@ namespace Funcky.Extensions
         public static partial Option<short> ParseShortOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
+        [OrNoneFromTryPattern(typeof(ushort), nameof(ushort.TryParse))]
+        public static partial Option<ushort> ParseUShortOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(ushort), nameof(ushort.TryParse))]
+        public static partial Option<ushort> ParseUShortOrNone(this string candidate);
+
+        [Pure]
         [OrNoneFromTryPattern(typeof(int), nameof(int.TryParse))]
         public static partial Option<int> ParseIntOrNone(this string candidate);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(uint), nameof(uint.TryParse))]
+        public static partial Option<uint> ParseUIntOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(uint), nameof(uint.TryParse))]
+        public static partial Option<uint> ParseUIntOrNone(this string candidate);
 
         [Pure]
         [OrNoneFromTryPattern(typeof(int), nameof(int.TryParse))]
@@ -36,6 +60,14 @@ namespace Funcky.Extensions
         [Pure]
         [OrNoneFromTryPattern(typeof(long), nameof(long.TryParse))]
         public static partial Option<long> ParseLongOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(ulong), nameof(ulong.TryParse))]
+        public static partial Option<ulong> ParseULongOrNone(this string candidate);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(ulong), nameof(ulong.TryParse))]
+        public static partial Option<ulong> ParseULongOrNone(this string candidate, NumberStyles styles, IFormatProvider provider);
 
         [Pure]
         [OrNoneFromTryPattern(typeof(float), nameof(float.TryParse))]
