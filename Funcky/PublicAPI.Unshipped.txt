@@ -1,4 +1,6 @@
 #nullable enable
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> input) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? input) -> Funcky.Monads.Option<System.Version!>
