@@ -22,21 +22,6 @@ public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
     public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax methodDeclaration)
         => WithImplementation(methodDeclaration.WithAttributeLists(default));
 
-    private SyntaxList<AttributeListSyntax> RemoveOrNoneFromTryPatternAttribute(MethodDeclarationSyntax methodDeclaration)
-    {
-        var nodeToRemove = methodDeclaration.GetAttributeByUsedName("OrNoneFromTryPattern");
-
-        return methodDeclaration.AttributeLists.Aggregate(default(SyntaxList<AttributeListSyntax>), (current, attributeList) => AttributeListSyntaxes(current, attributeList, nodeToRemove));
-    }
-
-    private SyntaxList<AttributeListSyntax> AttributeListSyntaxes(SyntaxList<AttributeListSyntax> newAttributes, AttributeListSyntax attributeList, AttributeSyntax nodeToRemove)
-    {
-        return attributeList.RemoveNode(nodeToRemove, SyntaxRemoveOptions.KeepNoTrivia) is { Attributes.Count: > 0 } cleanedAttributeList
-               && VisitAttributeList(cleanedAttributeList) is AttributeListSyntax newAttribute
-            ? newAttributes.Add(newAttribute)
-            : newAttributes;
-    }
-
     private MethodDeclarationSyntax WithImplementation(MethodDeclarationSyntax methodDeclaration)
         => methodDeclaration
             .WithExpressionBody(ArrowExpressionClause(CallFromTryPattern().WithArgumentList(ForwardAllArguments(methodDeclaration))))
