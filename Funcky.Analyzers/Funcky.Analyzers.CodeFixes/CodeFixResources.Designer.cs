@@ -61,6 +61,15 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add argument name &apos;{0}&apos;.
+        /// </summary>
+        internal static string AddArgumentNameCodeFixTitle {
+            get {
+                return ResourceManager.GetString("AddArgumentNameCodeFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Enumerable.Empty&lt;T&gt;.
         /// </summary>
         internal static string EnumerableRepeatNeverCodeFixTitle {

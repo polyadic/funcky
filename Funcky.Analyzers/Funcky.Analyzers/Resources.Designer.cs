@@ -113,5 +113,32 @@ namespace Funcky.Analyzers {
                 return ResourceManager.GetString("EnumerableRepeatOnceAnalyzerTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this method with argument names.
+        /// </summary>
+        internal static string UseWithArgumentNamesAnalyzerAnalyzerTitle {
+            get {
+                return ResourceManager.GetString("UseWithArgumentNamesAnalyzerAnalyzerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this method with argument names.
+        /// </summary>
+        internal static string UseWithArgumentNamesAnalyzerDescription {
+            get {
+                return ResourceManager.GetString("UseWithArgumentNamesAnalyzerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add argument name for argument &apos;{0}&apos;.
+        /// </summary>
+        internal static string UseWithArgumentNamesAnalyzerMessageFormat {
+            get {
+                return ResourceManager.GetString("UseWithArgumentNamesAnalyzerMessageFormat", resourceCulture);
+            }
+        }
     }
 }

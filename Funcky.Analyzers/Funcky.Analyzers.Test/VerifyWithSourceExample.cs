@@ -18,5 +18,18 @@ namespace Funcky.Analyzers.Test
 
             await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyCodeFixAsync(inputCode, expectedDiagnostic, expectedCode);
         }
+
+        public static async Task VerifyDiagnosticAndCodeFix<TAnalyzer, TCodeFix>(DiagnosticResult[] expectedDiagnostics, string testCode)
+            where TAnalyzer : DiagnosticAnalyzer, new()
+            where TCodeFix : CodeFixProvider, new()
+        {
+            var inputCode = File.ReadAllText($"TestCode/{testCode}.input");
+
+            await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyAnalyzerAsync(inputCode, expectedDiagnostics);
+
+            var expectedCode = File.ReadAllText($"TestCode/{testCode}.expected");
+
+            await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyCodeFixAsync(inputCode, expectedDiagnostics, expectedCode);
+        }
     }
 }

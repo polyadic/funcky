@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Funcky.CodeAnalysis;
 
 namespace Funcky.Monads
 {
@@ -24,8 +25,11 @@ namespace Funcky.Monads
         public static Option<TItem> None() => default;
 
         [Pure]
+        [UseWithArgumentNames]
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
-            => Match(() => none, some);
+            => Match(
+                none: () => none,
+                some: some);
 
         /// <summary>
         /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option
@@ -39,6 +43,7 @@ namespace Funcky.Monads
         /// </list></para>
         /// </summary>
         [Pure]
+        [UseWithArgumentNames]
         public TResult Match<TResult>(Func<TResult> none, Func<TItem, TResult> some)
             => _hasItem
                   ? some(_item)
@@ -54,6 +59,7 @@ namespace Funcky.Monads
         /// </list>
         /// </para>
         /// </summary>
+        [UseWithArgumentNames]
         public void Match(Action none, Action<TItem> some)
         {
             if (_hasItem)
