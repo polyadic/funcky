@@ -1,4 +1,11 @@
 #nullable enable
+Funcky.Extensions.EitherPartitions<TLeft, TRight>
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TLeft>! left, out System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions(System.Collections.Generic.IReadOnlyCollection<TLeft>! left, System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Left.get -> System.Collections.Generic.IReadOnlyCollection<TLeft>!
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collections.Generic.IReadOnlyCollection<TRight>!
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TLeft>!, System.Collections.Generic.IReadOnlyCollection<TRight>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> input) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? input) -> Funcky.Monads.Option<System.Version!>
