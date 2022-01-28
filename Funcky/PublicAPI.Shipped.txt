@@ -5,6 +5,7 @@ Funcky.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
 Funcky.ConstantDelayPolicy.MaxRetries.get -> int
 Funcky.DataTypes.EitherOrBoth
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>
+Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.EitherOrBoth() -> void
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(Funcky.DataTypes.EitherOrBoth<TLeft, TRight> other) -> bool
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
 Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
@@ -32,23 +33,28 @@ Funcky.Extensions.ValueWithFirst<TValue>
 Funcky.Extensions.ValueWithFirst<TValue>.Deconstruct(out TValue value, out bool isFirst) -> void
 Funcky.Extensions.ValueWithFirst<TValue>.IsFirst.get -> bool
 Funcky.Extensions.ValueWithFirst<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithFirst<TValue>.ValueWithFirst() -> void
 Funcky.Extensions.ValueWithFirst<TValue>.ValueWithFirst(TValue value, bool isFirst) -> void
 Funcky.Extensions.ValueWithIndex<TValue>
 Funcky.Extensions.ValueWithIndex<TValue>.Deconstruct(out TValue value, out int index) -> void
 Funcky.Extensions.ValueWithIndex<TValue>.Index.get -> int
 Funcky.Extensions.ValueWithIndex<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithIndex<TValue>.ValueWithIndex() -> void
 Funcky.Extensions.ValueWithIndex<TValue>.ValueWithIndex(TValue value, int index) -> void
 Funcky.Extensions.ValueWithLast<TValue>
 Funcky.Extensions.ValueWithLast<TValue>.Deconstruct(out TValue value, out bool isLast) -> void
 Funcky.Extensions.ValueWithLast<TValue>.IsLast.get -> bool
 Funcky.Extensions.ValueWithLast<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast() -> void
 Funcky.Extensions.ValueWithLast<TValue>.ValueWithLast(TValue value, bool isLast) -> void
 Funcky.Extensions.ValueWithPrevious<TValue>
 Funcky.Extensions.ValueWithPrevious<TValue>.Deconstruct(out TValue value, out Funcky.Monads.Option<TValue> previous) -> void
 Funcky.Extensions.ValueWithPrevious<TValue>.Previous.get -> Funcky.Monads.Option<TValue>
 Funcky.Extensions.ValueWithPrevious<TValue>.Value.get -> TValue
+Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious() -> void
 Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Funcky.Monads.Option<TValue> previous) -> void
 Funcky.Functional
+Funcky.GenericConstraints.RequireClass<T>
 Funcky.GenericConstraints.RequireClass<T>.RequireClass() -> void
 Funcky.GenericConstraints.RequireStruct<T>
 Funcky.GenericConstraints.RequireStruct<T>.RequireStruct() -> void
@@ -61,6 +67,7 @@ Funcky.LinearBackoffRetryPolicy.LinearBackoffRetryPolicy(int maxRetry, System.Ti
 Funcky.LinearBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.Monads.AwaitableOptionExtensions
 Funcky.Monads.Either<TLeft, TRight>
+Funcky.Monads.Either<TLeft, TRight>.Either() -> void
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
 Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
 Funcky.Monads.Either<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
@@ -88,6 +95,7 @@ Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! action) -> Funcky.Mona
 Funcky.Monads.Option<TItem>.Match(System.Action! none, System.Action<TItem>! some) -> void
 Funcky.Monads.Option<TItem>.Match<TResult>(System.Func<TResult>! none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Match<TResult>(TResult none, System.Func<TItem, TResult>! some) -> TResult
+Funcky.Monads.Option<TItem>.Option() -> void
 Funcky.Monads.Option<TItem>.OrElse(Funcky.Monads.Option<TItem> elseOption) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.OrElse(System.Func<Funcky.Monads.Option<TItem>>! elseOption) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.Select<TResult>(System.Func<TItem, TResult>! selector) -> Funcky.Monads.Option<TResult>
@@ -103,10 +111,12 @@ Funcky.Monads.OptionTaskAwaiter<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionTaskAwaiter<TItem>.OptionTaskAwaiter() -> void
 Funcky.Monads.OptionValueTaskAwaiter<TItem>
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.OptionValueTaskAwaiter() -> void
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
@@ -115,6 +125,7 @@ Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> other) -> bool
 Funcky.Monads.Result<TValidResult>.Match(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
+Funcky.Monads.Result<TValidResult>.Result() -> void
 Funcky.Monads.Result<TValidResult>.Select<TResult>(System.Func<TValidResult, TResult>! selector) -> Funcky.Monads.Result<TResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TResult>(System.Func<TValidResult, Funcky.Monads.Result<TResult>>! resultSelector) -> Funcky.Monads.Result<TResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.Func<TValidResult, Funcky.Monads.Result<TSelectedResult>>! selectedResultSelector, System.Func<TValidResult, TSelectedResult, TResult>! resultSelector) -> Funcky.Monads.Result<TResult>
@@ -552,4 +563,3 @@ static Funcky.Unit.operator ==(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.Value.get -> Funcky.Unit
-~Funcky.GenericConstraints.RequireClass<T>
