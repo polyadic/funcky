@@ -54,6 +54,7 @@ Funcky.Extensions.ValueWithPrevious<TValue>.Value.get -> TValue
 Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious() -> void
 Funcky.Extensions.ValueWithPrevious<TValue>.ValueWithPrevious(TValue value, Funcky.Monads.Option<TValue> previous) -> void
 Funcky.Functional
+Funcky.GenericConstraints.RequireClass<T>
 Funcky.GenericConstraints.RequireClass<T>.RequireClass() -> void
 Funcky.GenericConstraints.RequireStruct<T>
 Funcky.GenericConstraints.RequireStruct<T>.RequireStruct() -> void
@@ -562,4 +563,3 @@ static Funcky.Unit.operator ==(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.operator >=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.Value.get -> Funcky.Unit
-~Funcky.GenericConstraints.RequireClass<T>
