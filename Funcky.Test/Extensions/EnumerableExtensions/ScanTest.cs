@@ -11,7 +11,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerationSequence<int>();
 
-            _ = doNotEnumerate.InclusiveScan(0, (sum, element) => sum + element);
+            _ = doNotEnumerate.InclusiveScan(0, AddElement);
         }
 
         [Property]
@@ -26,9 +26,9 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         public void InclusiveScanCalculatesInclusivePrefixSum()
         {
             var numbers = new List<int> { 1, 5, 7, 42, 1337 };
-            var ip = new List<int> { 1, 6, 13, 55, 1392 };
+            var inclusivePrefixSum = new List<int> { 1, 6, 13, 55, 1392 };
 
-            Assert.Equal(ip, numbers.InclusiveScan(0, (sum, element) => sum + element));
+            Assert.Equal(inclusivePrefixSum, numbers.InclusiveScan(0, AddElement));
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerationSequence<int>();
 
-            _ = doNotEnumerate.ExclusiveScan(0, (sum, element) => sum + element);
+            _ = doNotEnumerate.ExclusiveScan(0, AddElement);
         }
 
         [Property]
@@ -51,9 +51,12 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
         public void ExclusiveScanCalculatesExclusivePrefixSum()
         {
             var numbers = new List<int> { 1, 5, 7, 42, 1337 };
-            var ip = new List<int> { 0, 1, 6, 13, 55 };
+            var exclusivePrefixSum = new List<int> { 0, 1, 6, 13, 55 };
 
-            Assert.Equal(ip, numbers.ExclusiveScan(0, (sum, element) => sum + element));
+            Assert.Equal(exclusivePrefixSum, numbers.ExclusiveScan(0, AddElement));
         }
+
+        private static int AddElement(int sum, int element)
+            => sum + element;
     }
 }
