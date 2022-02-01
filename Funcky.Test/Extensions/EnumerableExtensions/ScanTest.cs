@@ -22,13 +22,19 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
             return empty.InclusiveScan(neutral, func).None().ToProperty();
         }
 
-        [Fact]
-        public void InclusiveScanCalculatesInclusivePrefixSum()
+        [Property]
+        public Property InclusiveScanCalculatesInclusivePrefixSum(int neutralElement, List<int> numbers)
         {
-            var numbers = new List<int> { 1, 5, 7, 42, 1337 };
-            var inclusivePrefixSum = new List<int> { 1, 6, 13, 55, 1392 };
+            var result = true;
+            var prefixSum = neutralElement;
 
-            Assert.Equal(inclusivePrefixSum, numbers.InclusiveScan(0, AddElement));
+            foreach (var (element, inclusiveSum) in numbers.Zip(numbers.InclusiveScan(neutralElement, AddElement), Tuple.Create))
+            {
+                prefixSum = AddElement(prefixSum, element);
+                result = result && inclusiveSum == prefixSum;
+            }
+
+            return result.ToProperty();
         }
 
         [Fact]
@@ -47,13 +53,19 @@ namespace Funcky.Test.Extensions.AsyncEnumerableExtensions
             return empty.ExclusiveScan(neutral, func).None().ToProperty();
         }
 
-        [Fact]
-        public void ExclusiveScanCalculatesExclusivePrefixSum()
+        [Property]
+        public Property ExclusiveScanCalculatesExclusivePrefixSum(int neutralElement, List<int> numbers)
         {
-            var numbers = new List<int> { 1, 5, 7, 42, 1337 };
-            var exclusivePrefixSum = new List<int> { 0, 1, 6, 13, 55 };
+            var result = true;
+            var prefixSum = neutralElement;
 
-            Assert.Equal(exclusivePrefixSum, numbers.ExclusiveScan(0, AddElement));
+            foreach (var (element, exclusiveSum) in numbers.Zip(numbers.ExclusiveScan(neutralElement, AddElement), Tuple.Create))
+            {
+                result = result && exclusiveSum == prefixSum;
+                prefixSum = AddElement(prefixSum, element);
+            }
+
+            return result.ToProperty();
         }
 
         private static int AddElement(int sum, int element)
