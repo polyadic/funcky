@@ -38,7 +38,13 @@ namespace Funcky.Internal
             => throw new NotSupportedException();
 
         public void CopyTo(TResult[] array, int arrayIndex)
-            => throw new NotSupportedException();
+        {
+            var index = arrayIndex;
+            foreach (var element in _source.Skip(arrayIndex).Select(_selector))
+            {
+                array[index++] = element;
+            }
+        }
 
         public IEnumerator<TResult> GetEnumerator()
             => _source

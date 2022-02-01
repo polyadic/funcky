@@ -3,11 +3,11 @@ namespace Funcky
     public static partial class Sequence
     {
         [Pure]
-        public static IEnumerable<TItem> Return<TItem>(TItem item)
-            => Enumerable.Repeat(item, 1);
+        public static IReadOnlyList<TItem> Return<TItem>(TItem item)
+            => Return(items: item);
 
         [Pure]
-        public static IEnumerable<TItem> Return<TItem>(params TItem[] items)
+        public static IReadOnlyList<TItem> Return<TItem>(params TItem[] items)
             => items;
     }
 }
