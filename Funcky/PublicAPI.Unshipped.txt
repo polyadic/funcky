@@ -59,3 +59,5 @@ static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T1>(T1 ω1) -> bool
 static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! exception) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Sequence.Return<TItem>(TItem item) -> System.Collections.Generic.IReadOnlyList<TItem>!
+static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IReadOnlyList<TItem>!
