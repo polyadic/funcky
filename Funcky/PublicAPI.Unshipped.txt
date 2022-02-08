@@ -11,6 +11,8 @@ Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyCollection<TValidResult>!
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions() -> void
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! action) -> Funcky.Monads.Either<TLeft, TRight>
+Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! action) -> Funcky.Monads.Result<TValidResult>
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
 static Funcky.Extensions.EnumerableExtensions.ExclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
 static Funcky.Extensions.EnumerableExtensions.InclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
