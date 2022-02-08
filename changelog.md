@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Unreleased
 * Add `ParseVersionOrNone` extension.
 
+### Funcky.Xunit
+* Breaking: Funcky.Xunit now uses the `Funcky` namespace, instead of `Funcky.Xunit`.
+
 ## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
 ### Analyzers
 This release comes with a new package `Funcky.Analyzers`, which we'll use
