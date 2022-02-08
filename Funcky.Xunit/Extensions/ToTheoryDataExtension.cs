@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Funcky.Xunit
+namespace Funcky.Extensions
 {
     public static class ToTheoryDataExtension
     {
