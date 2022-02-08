@@ -4,6 +4,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 * Add `ParseVersionOrNone` extension.
+* Implement `Inspect` for `Either` and `Result`.
 
 ## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
 ### Analyzers
