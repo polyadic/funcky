@@ -21,5 +21,27 @@ namespace Funcky.Extensions
             => Enum.TryParse(candidate, ignoreCase, out TEnum result)
                 ? result
                 : Option<TEnum>.None();
+
+#if READ_ONLY_SPAN_SUPPORTED
+        [Pure]
+        [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
+        public static partial Option<bool> ParseBooleanOrNone(this ReadOnlySpan<char> candidate);
+
+#if NET6_0_OR_GREATER
+        [Pure]
+        public static Option<TEnum> ParseEnumOrNone<TEnum>(this ReadOnlySpan<char> candidate)
+            where TEnum : struct
+            => Enum.TryParse(candidate, out TEnum result)
+                ? result
+                : Option<TEnum>.None();
+
+        [Pure]
+        public static Option<TEnum> ParseEnumOrNone<TEnum>(this ReadOnlySpan<char> candidate, bool ignoreCase)
+            where TEnum : struct
+            => Enum.TryParse(candidate, ignoreCase, out TEnum result)
+                ? result
+                : Option<TEnum>.None();
+#endif
+#endif
     }
 }
