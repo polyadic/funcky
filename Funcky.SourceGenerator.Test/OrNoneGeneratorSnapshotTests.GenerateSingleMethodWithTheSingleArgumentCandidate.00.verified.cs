@@ -3,7 +3,8 @@ using System;
 
 namespace Funcky.Internal
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [global::System.Diagnostics.Conditional("COMPILE_TIME_ONLY")]
+    [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = true)]
     internal class OrNoneFromTryPatternAttribute : Attribute
     {
         public OrNoneFromTryPatternAttribute(Type type, string method)

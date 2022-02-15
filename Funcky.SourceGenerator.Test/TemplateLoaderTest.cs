@@ -7,7 +7,7 @@ namespace Funcky.SourceGenerator.Test
         [Fact]
         public void CanLoadTemplateAsStringFromResourceName()
         {
-            Assert.StartsWith("namespace Funcky.Internal", CodeFromTemplate("OrNoneFromTryPatternAttribute.source"));
+            Assert.StartsWith("using System;", CodeFromTemplate("OrNoneFromTryPatternAttribute"));
         }
     }
 }

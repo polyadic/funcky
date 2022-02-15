@@ -5,13 +5,9 @@ namespace Funcky.SourceGenerator
     internal class TemplateLoader
     {
         public static string CodeFromTemplate(string source)
-        {
-            using var resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetTemplateName(source));
-
-            return resourceStream is not null
+            => Assembly.GetExecutingAssembly().GetManifestResourceStream(GetTemplateName(source)) is { } resourceStream
                 ? ResourceString(resourceStream)
                 : throw new FileNotFoundException("Resource not found", GetTemplateName(source));
-        }
 
         private static string ResourceString(Stream resourceStream)
         {
