@@ -7,11 +7,11 @@ namespace Funcky.Internal
     {
         public delegate bool TryDelegate([MaybeNullWhen(false)] out TResult result);
 
-        public delegate bool TryDelegate<TInput>(TInput input, [MaybeNullWhen(false)] out TResult result);
+        public delegate bool TryDelegate<in TInput>(TInput input, [MaybeNullWhen(false)] out TResult result);
 
-        public delegate bool TryDelegate<TInput, T1>(TInput input, T1 p1, [MaybeNullWhen(false)] out TResult result);
+        public delegate bool TryDelegate<in TInput, in T1>(TInput input, T1 p1, [MaybeNullWhen(false)] out TResult result);
 
-        public delegate bool TryDelegate<TInput, T1, T2>(TInput input, T1 p1, T2 p2, [MaybeNullWhen(false)] out TResult result);
+        public delegate bool TryDelegate<in TInput, in T1, in T2>(TInput input, T1 p1, T2 p2, [MaybeNullWhen(false)] out TResult result);
 
         public static Option<TResult> FromTryPattern(TryDelegate @try)
             => @try(out TResult? result)

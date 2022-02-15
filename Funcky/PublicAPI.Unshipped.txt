@@ -1,9 +1,11 @@
 #nullable enable
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
 static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
 static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate) -> Funcky.Monads.Option<sbyte>
 static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<sbyte>
 static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseUIntOrNone(this string! candidate) -> Funcky.Monads.Option<uint>
 static Funcky.Extensions.ParseExtensions.ParseUIntOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
 static Funcky.Extensions.ParseExtensions.ParseULongOrNone(this string! candidate) -> Funcky.Monads.Option<ulong>
