@@ -30,7 +30,7 @@ namespace Funcky.Analyzers
             context.RegisterSyntaxNodeAction(FindEnumerableRepeateOnce, SyntaxKind.InvocationExpression);
         }
 
-        private void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
+        private static void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
         {
             if (IsRepeatOnce(new SyntaxMatcher(context)))
             {

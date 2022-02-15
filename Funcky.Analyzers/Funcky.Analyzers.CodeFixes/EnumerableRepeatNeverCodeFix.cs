@@ -26,9 +26,8 @@ namespace Funcky.Analyzers
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var diagnosticSpan = context.Diagnostics.First().Location.SourceSpan;
-            var declaration = root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First();
 
-            if (declaration is not null)
+            if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration)
             {
                 context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
             }
@@ -48,17 +47,10 @@ namespace Funcky.Analyzers
                 => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
         private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
-        {
-            var oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-
-            if (oldRoot is not null && semanticModel is not null)
-            {
-                return oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel));
-            }
-
-            throw new Exception("foobar");
-        }
+            =>
+            await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
+                ? oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel))
+                : throw new Exception("oldRoot or semanticModel are null");
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
