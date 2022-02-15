@@ -29,13 +29,7 @@ namespace Funcky.SourceGenerator
         private static SourceProductionContext CreateSourceByClass(SourceProductionContext context, IGrouping<string, MethodPartial> methodByClass)
         {
             var usings = methodByClass.SelectMany(c => c.AdditionalUsings).Distinct(new UsingsComparer());
-
             var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, usings, methodByClass.Select(m => m.PartialMethod));
-
-            ////foreach (var left in methodByClass)
-            ////{
-            ////    context.ReportDiagnostic(Diagnostic.Create(CreateTypeMismatchDiagnostic(), syntaxTree.GetLocation()));
-            ////}
 
             context.AddSource($"{methodByClass.First().ClassName}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + EmitCode(syntaxTree.NormalizeWhitespace()));
 
@@ -111,29 +105,5 @@ namespace Funcky.SourceGenerator
 
         private static void RegisterOrNoneAttribute(IncrementalGeneratorPostInitializationContext context)
             => context.AddSource("OrNoneFromTryPatternAttribute.g.cs", CodeFromTemplate(OrNoneFromTryPatternAttributeTemplate));
-
-        private static DiagnosticDescriptor CreateTypeMismatchDiagnostic()
-            => new(
-                id: "FUSR0001",
-                title: "Type mismatch",
-                messageFormat: "A description about the problem",
-                category: "tests",
-                defaultSeverity: DiagnosticSeverity.Warning,
-                isEnabledByDefault: true);
     }
-
-    internal class UsingsComparer : IEqualityComparer<UsingDirectiveSyntax>
-    {
-        public bool Equals(UsingDirectiveSyntax left, UsingDirectiveSyntax right)
-        {
-            return left.Name.ToFullString() == right.Name.ToFullString();
-        }
-
-        public int GetHashCode(UsingDirectiveSyntax usingDirectiveSyntax)
-        {
-            return usingDirectiveSyntax.Name.ToFullString().GetHashCode();
-        }
-    }
-
-    internal record MethodPartial(string NamespaceName, string ClassName, IEnumerable<UsingDirectiveSyntax> AdditionalUsings, MethodDeclarationSyntax PartialMethod);
 }

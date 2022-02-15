@@ -8,8 +8,9 @@ namespace Funcky.SourceGenerator;
 
 public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
 {
-    private const string FailToOption = "FailToOption";
-    private const string FromTryPattern = "FromTryPattern";
+    private static readonly SyntaxToken OutParameter = Identifier("result");
+    private static readonly SimpleNameSyntax OptionNone = IdentifierName("None");
+
     private readonly string _methodName;
     private readonly TypeSyntax _typeSyntax;
 
@@ -24,38 +25,46 @@ public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
 
     private MethodDeclarationSyntax WithImplementation(MethodDeclarationSyntax methodDeclaration)
         => methodDeclaration
-            .WithExpressionBody(ArrowExpressionClause(CallFromTryPattern().WithArgumentList(ForwardAllArguments(methodDeclaration))))
+            .WithExpressionBody(
+                ArrowExpressionClause(
+                    ConditionalExpression(
+                        TryParseCondition(methodDeclaration),
+                        IdentifierName(OutParameter),
+                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, methodDeclaration.ReturnType, OptionNone)))))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
-    private InvocationExpressionSyntax CallFromTryPattern()
-        => InvocationExpression(
-            MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                GenericName(Identifier(FailToOption)).AddTypeArgumentListArguments(_typeSyntax),
-                IdentifierName(FromTryPattern)));
+    private InvocationExpressionSyntax TryParseCondition(MethodDeclarationSyntax methodDeclaration)
+    {
+        return InvocationExpression(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    _typeSyntax,
+                    IdentifierName(_methodName)))
+            .WithArgumentList(ForwardAllArguments(methodDeclaration));
+    }
 
-    private ArgumentListSyntax ForwardAllArguments(MethodDeclarationSyntax methodDeclaration)
+    private static ArgumentListSyntax ForwardAllArguments(MethodDeclarationSyntax methodDeclaration)
         => ArgumentList(SeparatedList<ArgumentSyntax>(MethodGroupAndAllArguments(methodDeclaration)));
 
-    private SyntaxNodeOrToken[] MethodGroupAndAllArguments(MethodDeclarationSyntax methodDeclarationSyntax)
+    private static SyntaxNodeOrToken[] MethodGroupAndAllArguments(MethodDeclarationSyntax methodDeclarationSyntax)
     {
-        var result = new List<SyntaxNodeOrToken>
-        {
-            MethodGroupArgument(),
-        };
+        List<SyntaxNodeOrToken> result = new();
 
         foreach (var parameter in methodDeclarationSyntax.ParameterList.Parameters)
         {
-            result.Add(Token(SyntaxKind.CommaToken));
             result.Add(Argument(IdentifierName(parameter.Identifier.Text)));
+            result.Add(Token(SyntaxKind.CommaToken));
         }
+
+        result.Add(OutParameterArgument());
 
         return result.ToArray();
     }
 
-    private ArgumentSyntax MethodGroupArgument()
-        => Argument(MemberAccessExpression(
-            SyntaxKind.SimpleMemberAccessExpression,
-            _typeSyntax,
-            IdentifierName(_methodName)));
+    private static ArgumentSyntax OutParameterArgument()
+        => Argument(DeclarationExpression(InlineVarDeclaration(), SingleVariableDesignation(OutParameter)))
+            .WithRefOrOutKeyword(Token(SyntaxKind.OutKeyword));
+
+    private static IdentifierNameSyntax InlineVarDeclaration()
+        => IdentifierName(Identifier(TriviaList(), SyntaxKind.VarKeyword, "var", "var", TriviaList()));
 }
