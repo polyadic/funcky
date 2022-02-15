@@ -11,11 +11,15 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
             where TEnum : struct
-            => FailToOption<TEnum>.FromTryPattern(Enum.TryParse, candidate);
+            => Enum.TryParse(candidate, out TEnum result)
+                ? result
+                : Option<TEnum>.None();
 
         [Pure]
         public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate, bool ignoreCase)
             where TEnum : struct
-            => FailToOption<TEnum>.FromTryPattern(Enum.TryParse, candidate, ignoreCase);
+            => Enum.TryParse(candidate, ignoreCase, out TEnum result)
+                ? result
+                : Option<TEnum>.None();
     }
 }
