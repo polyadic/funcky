@@ -12,7 +12,7 @@ namespace Funcky.Extensions
         /// <param name="separator">A single element of type <typeparamref name="TSource"/> separating the parts.</param>
         /// <returns>A sequence of sequences.</returns>
         [Pure]
-        public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source, TSource separator)
+        public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IEnumerable<TSource> source, TSource separator)
             where TSource : notnull
             => source.Split(separator, EqualityComparer<TSource>.Default);
 
@@ -25,7 +25,7 @@ namespace Funcky.Extensions
         /// <param name="equalityComparer">Override the default equality comparer.</param>
         /// <returns>A sequence of sequences.</returns>
         [Pure]
-        public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
+        public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
             this IEnumerable<TSource> source,
             TSource separator,
             IEqualityComparer<TSource> equalityComparer)
@@ -48,7 +48,7 @@ namespace Funcky.Extensions
             this IEnumerable<TSource> source,
             TSource separator,
             IEqualityComparer<TSource> equalityComparer,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+            Func<IReadOnlyList<TSource>, TResult> resultSelector)
             where TSource : notnull
         {
             using var sourceEnumerator = source.GetEnumerator();
