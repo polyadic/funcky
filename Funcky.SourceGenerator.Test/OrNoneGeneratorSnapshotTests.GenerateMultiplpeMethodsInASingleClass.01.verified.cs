@@ -10,7 +10,7 @@ namespace Funcky.Extensions
 {
     public static partial class ParseExtensions
     {
-        public static partial Option<bool> ParseBooleanOrNone(this string candidate) => FailToOption<bool>.FromTryPattern(bool.TryParse, candidate);
-        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles) => FailToOption<DateTime>.FromTryPattern(DateTime.TryParse, candidate, provider, styles);
+        public static partial Option<bool> ParseBooleanOrNone(this string candidate) => bool.TryParse(candidate, out var result) ? result : Option<bool>.None();
+        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles) => DateTime.TryParse(candidate, provider, styles, out var result) ? result : Option<DateTime>.None();
     }
 }
