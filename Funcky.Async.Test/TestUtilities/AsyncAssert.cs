@@ -64,5 +64,24 @@ namespace Funcky.Async.Test.TestUtilities
 
         public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
             => Assert.Equal(await expectedResult.ToListAsync(), await actual.ToListAsync());
+
+        public static async Task<TElement> Single<TElement>(IAsyncEnumerable<TElement> asyncSequence)
+        {
+            var enumerator = asyncSequence.GetAsyncEnumerator();
+
+            if (await enumerator.MoveNextAsync())
+            {
+                var maybeResult = enumerator.Current;
+
+                if (await enumerator.MoveNextAsync())
+                {
+                    throw SingleException.MoreThanOne();
+                }
+
+                return maybeResult;
+            }
+
+            throw SingleException.Empty();
+        }
     }
 }

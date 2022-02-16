@@ -119,3 +119,7 @@ static Funcky.AsyncSequence.RepeatRange<TItem>(System.Collections.Generic.IAsync
 static Funcky.AsyncSequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.AsyncSequence.Return<TItem>(TItem item) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.AsyncSequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
+static Funcky.AsyncSequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TItem>>>! successor) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
+static Funcky.AsyncSequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, System.Threading.Tasks.ValueTask<TItem>>! successor) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
+static Funcky.AsyncSequence.Successors<TItem>(TItem first, System.Func<TItem, System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TItem>>>! successor) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
+static Funcky.AsyncSequence.Successors<TItem>(TItem first, System.Func<TItem, System.Threading.Tasks.ValueTask<TItem>>! successor) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
