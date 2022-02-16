@@ -15,7 +15,7 @@ namespace Funcky.Extensions
         /// </summary>
         /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
         /// <returns>A tuple with the items for which the predicate holds, and for those for which it doesn't.</returns>
-        public static (IEnumerable<TItem> True, IEnumerable<TItem> False) Partition<TItem>(
+        public static (IReadOnlyList<TItem> True, IReadOnlyList<TItem> False) Partition<TItem>(
             this IEnumerable<TItem> source,
             Func<TItem, bool> predicate)
             => source.Partition(predicate, ValueTuple.Create);
@@ -29,7 +29,7 @@ namespace Funcky.Extensions
         public static TResult Partition<TItem, TResult>(
             this IEnumerable<TItem> source,
             Func<TItem, bool> predicate,
-            Func<IEnumerable<TItem>, IEnumerable<TItem>, TResult> resultSelector)
+            Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> resultSelector)
             => source
                 .Aggregate(new PartitionBuilder<TItem>(predicate), PartitionBuilder<TItem>.Add)
                 .Build(resultSelector);
