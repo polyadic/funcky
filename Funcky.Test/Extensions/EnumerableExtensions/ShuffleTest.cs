@@ -1,17 +1,18 @@
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class ShuffleTest
     {
         [Fact]
-        public void AShuffleIsEnumeratedLazily()
+        public void AShuffleIsEnumeratedEagerly()
         {
             var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-            _ = doNotEnumerate.Shuffle();
+            Assert.Throws<XunitException>(() => doNotEnumerate.Shuffle());
         }
 
         [Property]
