@@ -18,11 +18,11 @@ namespace Funcky.Extensions
         /// <typeparam name="TSource">The type of the source elements.</typeparam>
         /// <returns>Returns a sequence of equally sized window sequences.</returns>
         [Pure]
-        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
             => SlidingWindowEnumerable(source, ValidateWindowWidth(width));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IEnumerable<IEnumerable<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)
+        private static IEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)
         {
             var slidingWindow = new SlidingWindowQueue<TSource>(width);
             foreach (var element in source)
