@@ -5,6 +5,7 @@ Funcky.EitherOrBoth<TLeft, TRight>.EitherOrBoth() -> void
 Funcky.EitherOrBoth<TLeft, TRight>.Equals(Funcky.EitherOrBoth<TLeft, TRight> other) -> bool
 Funcky.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
 Funcky.EitherOrBoth<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
+Funcky.Extensions.ActionExtensions
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
 Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funcky.Monads.Option<TMaybe>>! selector, System.Func<TItem, TMaybe, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
@@ -41,6 +42,29 @@ static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBot
 static Funcky.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
 static Funcky.EitherOrBoth<TLeft, TRight>.operator ==(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
 static Funcky.EitherOrBoth<TLeft, TRight>.Right(TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
+static Funcky.Extensions.ActionExtensions.Compose<TInput, TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
+static Funcky.Extensions.ActionExtensions.Compose<TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TIntermediate>! g) -> System.Action!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3, T4, T5, T6, T7>(this System.Action<T1, T2, T3, T4, T5, T6, T7>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Action<T7>!>!>!>!>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3, T4, T5, T6>(this System.Action<T1, T2, T3, T4, T5, T6>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Action<T6>!>!>!>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3, T4, T5>(this System.Action<T1, T2, T3, T4, T5>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Action<T5>!>!>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3, T4>(this System.Action<T1, T2, T3, T4>! action) -> System.Func<T1, System.Func<T2, System.Func<T3, System.Action<T4>!>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2, T3>(this System.Action<T1, T2, T3>! action) -> System.Func<T1, System.Func<T2, System.Action<T3>!>!>!
+static Funcky.Extensions.ActionExtensions.Curry<T1, T2>(this System.Action<T1, T2>! action) -> System.Func<T1, System.Action<T2>!>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Action<T2, T1, T3, T4, T5, T6, T7, T8>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3, T4, T5, T6, T7>(this System.Action<T1, T2, T3, T4, T5, T6, T7>! action) -> System.Action<T2, T1, T3, T4, T5, T6, T7>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3, T4, T5, T6>(this System.Action<T1, T2, T3, T4, T5, T6>! action) -> System.Action<T2, T1, T3, T4, T5, T6>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3, T4, T5>(this System.Action<T1, T2, T3, T4, T5>! action) -> System.Action<T2, T1, T3, T4, T5>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3, T4>(this System.Action<T1, T2, T3, T4>! action) -> System.Action<T2, T1, T3, T4>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2, T3>(this System.Action<T1, T2, T3>! action) -> System.Action<T2, T1, T3>!
+static Funcky.Extensions.ActionExtensions.Flip<T1, T2>(this System.Action<T1, T2>! function) -> System.Action<T2, T1>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7, T8>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3, T4, T5, T6, T7>(this System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Action<T7>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3, T4, T5, T6>(this System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Action<T6>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3, T4, T5>(this System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Action<T5>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3, T4>(this System.Func<T1, System.Func<T2, System.Func<T3, System.Action<T4>!>!>!>! action) -> System.Action<T1, T2, T3, T4>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2, T3>(this System.Func<T1, System.Func<T2, System.Action<T3>!>!>! action) -> System.Action<T1, T2, T3>!
+static Funcky.Extensions.ActionExtensions.Uncurry<T1, T2>(this System.Func<T1, System.Action<T2>!>! action) -> System.Action<T1, T2>!
 static Funcky.Extensions.EnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.Chunk<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
