@@ -12,9 +12,7 @@ namespace Funcky.Extensions
         [Pure]
         public static IReadOnlyList<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
             where TSource : notnull
-            => source
-                .ToList()
-                .ToRandomList(new Random());
+            => source.Shuffle(new Random());
 
         /// <summary>
         /// Returns the given sequence eagerly in random Order in O(n).
