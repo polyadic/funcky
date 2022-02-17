@@ -20,6 +20,10 @@ static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(
 static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
 static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TValidResult>!, System.Collections.Generic.IReadOnlyCollection<System.Exception!>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source) -> Funcky.Extensions.ResultPartitions<TValidResult>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(string? candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(string? candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
 static Funcky.Extensions.ParseExtensions.ParseBooleanOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<bool>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<byte>
