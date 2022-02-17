@@ -83,6 +83,8 @@ static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(string? candidate) -> F
 static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Guid>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
+static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
 static Funcky.Extensions.ParseExtensions.ParseLongOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<long>
 static Funcky.Extensions.ParseExtensions.ParseLongOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
 static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<sbyte>
@@ -111,3 +113,5 @@ static Funcky.Extensions.ParseExtensions.ParseUShortOrNone(this string! candidat
 static Funcky.Extensions.ParseExtensions.ParseUShortOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? candidate) -> Funcky.Monads.Option<System.Version!>
+static Funcky.Extensions.ParseExtensions.TryParseIPEndPointOrNone(string! candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.ParseExtensions.TryParseIPEndPointOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
