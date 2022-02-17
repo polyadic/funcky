@@ -113,5 +113,24 @@ static Funcky.Extensions.ParseExtensions.ParseUShortOrNone(this string! candidat
 static Funcky.Extensions.ParseExtensions.ParseUShortOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? candidate) -> Funcky.Monads.Option<System.Version!>
+static Funcky.Extensions.ParseExtensions.TryParseAuthenticationHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.AuthenticationHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseCacheControlHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.CacheControlHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseContentDispositionHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentDispositionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseContentRangeHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentRangeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseEntityTagHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.EntityTagHeaderValue!>
 static Funcky.Extensions.ParseExtensions.TryParseIPEndPointOrNone(string! candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
 static Funcky.Extensions.ParseExtensions.TryParseIPEndPointOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.ParseExtensions.TryParseMediaTypeHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseMediaTypeWithQualityHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseNameValueHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseNameValueWithParametersHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueWithParametersHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseProductHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseProductInfoHeaderValueOrNone(string! candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductInfoHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseRangeConditionHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeConditionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseRangeHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseRetryConditionHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RetryConditionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseStringWithQualityHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.StringWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseTransferCodingHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseTransferCodingWithQualityHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseViaHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
+static Funcky.Extensions.ParseExtensions.TryParseWarningHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
