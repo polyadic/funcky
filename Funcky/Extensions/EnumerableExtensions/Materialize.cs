@@ -63,7 +63,7 @@ namespace Funcky.Extensions
             public bool Remove(T item) => _collection.Remove(item);
         }
 
-        private sealed class ListAsReadOnlyCollectionProxy<T> : CollectionAsReadOnlyCollectionProxy<T>, IList<T>
+        private sealed class ListAsReadOnlyCollectionProxy<T> : CollectionAsReadOnlyCollectionProxy<T>, IList<T>, IReadOnlyList<T>
         {
             private readonly IList<T> _list;
 

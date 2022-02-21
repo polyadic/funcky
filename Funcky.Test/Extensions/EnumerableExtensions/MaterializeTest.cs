@@ -69,6 +69,13 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.IsAssignableFrom<IList<int>>(collection.Materialize());
         }
 
+        [Fact]
+        public void MaterializingAnIListReturnsAnIReadOnlyList()
+        {
+            var collection = new FailOnEnumerateList<int>(Count: 0);
+            Assert.IsAssignableFrom<IReadOnlyList<int>>(collection.Materialize());
+        }
+
         private static HashSet<string> ToHashSet(IEnumerable<string> s)
             => s.ToHashSet();
 
