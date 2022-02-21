@@ -8,7 +8,5 @@ internal class UsingsComparer : IEqualityComparer<UsingDirectiveSyntax>
     => left.Name.ToFullString() == right.Name.ToFullString();
 
     public int GetHashCode(UsingDirectiveSyntax usingDirectiveSyntax)
-    {
-        return usingDirectiveSyntax.Name.ToFullString().GetHashCode();
-    }
+    => usingDirectiveSyntax.Name.ToFullString().GetHashCode();
 }
