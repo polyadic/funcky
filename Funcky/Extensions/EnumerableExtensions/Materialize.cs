@@ -44,25 +44,23 @@ namespace Funcky.Extensions
 
             public CollectionAsReadOnlyCollectionProxy(ICollection<T> collection) => _collection = collection;
 
-            int ICollection<T>.Count => _collection.Count;
+            public int Count => _collection.Count;
 
-            bool ICollection<T>.IsReadOnly => _collection.IsReadOnly;
-
-            int IReadOnlyCollection<T>.Count => _collection.Count;
+            public bool IsReadOnly => _collection.IsReadOnly;
 
             public IEnumerator<T> GetEnumerator() => _collection.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            void ICollection<T>.Add(T item) => _collection.Add(item);
+            public void Add(T item) => _collection.Add(item);
 
-            void ICollection<T>.Clear() => _collection.Clear();
+            public void Clear() => _collection.Clear();
 
-            bool ICollection<T>.Contains(T item) => _collection.Contains(item);
+            public bool Contains(T item) => _collection.Contains(item);
 
-            void ICollection<T>.CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
+            public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
 
-            bool ICollection<T>.Remove(T item) => _collection.Remove(item);
+            public bool Remove(T item) => _collection.Remove(item);
         }
 
         private sealed class ListAsReadOnlyCollectionProxy<T> : CollectionAsReadOnlyCollectionProxy<T>, IList<T>
