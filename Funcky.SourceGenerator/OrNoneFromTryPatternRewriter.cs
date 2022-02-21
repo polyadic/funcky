@@ -48,7 +48,7 @@ public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
 
     private static SyntaxNodeOrToken[] MethodGroupAndAllArguments(MethodDeclarationSyntax methodDeclarationSyntax)
     {
-        List<SyntaxNodeOrToken> result = new();
+        var result = new List<SyntaxNodeOrToken>();
 
         foreach (var parameter in methodDeclarationSyntax.ParameterList.Parameters)
         {
