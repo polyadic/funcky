@@ -11,7 +11,7 @@ internal static class SyntaxNodeHelper
         {
             null => null,
             TSyntaxNode parent => parent,
-            _ => syntaxNode.Parent.TryGetParentSyntax<TSyntaxNode>(),
+            var parent => parent.TryGetParentSyntax<TSyntaxNode>(),
         };
 
     public static AttributeSyntax GetAttributeByUsedName(this MemberDeclarationSyntax methodDeclaration, string usedName)
