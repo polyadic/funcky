@@ -19,6 +19,14 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
             Assert.ThrowsAsync<XunitException>(async () => await shuffled);
         }
 
+        [Fact]
+        public async Task AShuffleWithASpecificRandomDistributionAlwaysReturnsTheSameShuffle()
+        {
+            var source = AsyncEnumerable.Range(0, 16);
+
+            Assert.Equal(Sequence.Return(3, 2, 6, 15, 14, 0, 5, 8, 11, 7, 9, 12, 1, 13, 10, 4), await source.Shuffle(new System.Random(1337)));
+        }
+
         [Property]
         public Property AShuffleHasTheSameElementsAsTheSource(List<int> source)
             => source
