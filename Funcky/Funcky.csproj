@@ -36,7 +36,10 @@
     <ItemGroup>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
     </ItemGroup>
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />

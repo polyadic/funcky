@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Xunit.Sdk;
 
-namespace Funcky.Xunit
+namespace Funcky
 {
     public static partial class FunctionalAssert
     {

@@ -1,5 +1,6 @@
 using FsCheck;
 using FsCheck.Xunit;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Monads
 {
@@ -34,7 +35,7 @@ namespace Funcky.Test.Monads
         {
             var value = default(Either<string, int>);
             Assert.Throws<NotSupportedException>(() =>
-                value.Match(Identity, i => i.ToString()));
+                value.Match(left: Identity, right: i => i.ToString()));
         }
 
         [Theory]
@@ -114,6 +115,34 @@ namespace Funcky.Test.Monads
             Assert.False(hasLeft);
             Assert.True(hasRight);
         }
+
+        [Fact]
+        public void InspectDoesNothingWhenEitherIsLeft()
+        {
+            var either = Either<string, int>.Left("foo");
+            either.Inspect(_ => throw new XunitException("Side effect was unexpectedly called"));
+        }
+
+        [Fact]
+        public void InspectCallsSideEffectWhenEitherIsRight()
+        {
+            const int value = 10;
+            var either = Either<string>.Return(value);
+
+            var sideEffect = Option<int>.None();
+            either.Inspect(v => sideEffect = v);
+            FunctionalAssert.IsSome(value, sideEffect);
+        }
+
+        [Theory]
+        [MemberData(nameof(LeftAndRight))]
+        public void InspectReturnsOriginalValue(Either<string, int> either)
+        {
+            Assert.Equal(either, either.Inspect(NoOperation));
+        }
+
+        public static TheoryData<Either<string, int>> LeftAndRight()
+            => new() { Either<string>.Return(123), Either<string, int>.Left("foo") };
 
         [Property]
         public Property FlippingAnEitherFlipsTheTypesOfTheEitherTheValueIsUntouched(int value)

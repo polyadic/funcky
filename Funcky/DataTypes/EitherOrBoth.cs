@@ -1,3 +1,4 @@
+using Funcky.CodeAnalysis;
 using Funcky.Internal;
 
 namespace Funcky.DataTypes
@@ -62,6 +63,7 @@ namespace Funcky.DataTypes
         public static EitherOrBoth<TLeft, TRight> Right(TRight right) => new(right);
 
         [Pure]
+        [UseWithArgumentNames]
         public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right, Func<TLeft, TRight, TMatchResult> both)
             => _side switch
             {
@@ -72,6 +74,7 @@ namespace Funcky.DataTypes
                 _ => throw new NotSupportedException(UnknownSide),
             };
 
+        [UseWithArgumentNames]
         public void Match(Action<TLeft> left, Action<TRight> right, Action<TLeft, TRight> both)
         {
             switch (_side)

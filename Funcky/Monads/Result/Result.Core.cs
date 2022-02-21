@@ -1,3 +1,4 @@
+using Funcky.CodeAnalysis;
 #if SET_CURRENT_STACK_TRACE_SUPPORTED
 using System.Runtime.ExceptionServices;
 #if STACK_TRACE_HIDDEN_SUPPORTED
@@ -62,11 +63,13 @@ namespace Funcky.Monads
         }
 
         [Pure]
+        [UseWithArgumentNames]
         public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
             => _error is null
                 ? ok(_result)
                 : error(_error);
 
+        [UseWithArgumentNames]
         public void Match(Action<TValidResult> ok, Action<Exception> error)
         {
             if (_error is null)

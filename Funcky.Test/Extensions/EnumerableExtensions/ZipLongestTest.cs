@@ -36,7 +36,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.Equal(3, zipped.Count);
             foreach (var value in zipped)
             {
-                Assert.True(value.Match(False, False, True));
+                Assert.True(value.Match(left: False, right: False, both: True));
             }
         }
 

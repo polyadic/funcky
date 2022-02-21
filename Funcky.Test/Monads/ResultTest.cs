@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Monads
 {
@@ -179,6 +180,34 @@ namespace Funcky.Test.Monads
         [Fact]
         public void SelectManyReturnErrorResultWithErrorResultMatchesTherightValue()
             => FunctionalAssert.IsError(Result<int>.Error(new Exception("Any")).SelectMany(i => Result<int>.Error(new Exception("Other"))));
+
+        [Fact]
+        public void InspectDoesNothingWhenResultIsError()
+        {
+            var result = Result<string>.Error(new Exception());
+            result.Inspect(_ => throw new XunitException("Side effect was unexpectedly called"));
+        }
+
+        [Fact]
+        public void InspectCallsSideEffectWhenResultIsOk()
+        {
+            const int value = 10;
+            var either = Result.Return(value);
+
+            var sideEffect = Option<int>.None();
+            either.Inspect(v => sideEffect = v);
+            FunctionalAssert.IsSome(value, sideEffect);
+        }
+
+        [Theory]
+        [MemberData(nameof(OkAndError))]
+        public void InspectReturnsOriginalValue(Result<int> result)
+        {
+            Assert.Equal(result, result.Inspect(NoOperation));
+        }
+
+        public static TheoryData<Result<int>> OkAndError()
+            => new() { Result<int>.Error(new Exception()), Result.Ok(123) };
 
         private static void IsInterestingStackTraceFirst(Exception exception)
         {

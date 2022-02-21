@@ -11,6 +11,28 @@ Funcky.Collections.RedNode<TItem>.Children.get -> System.Collections.Generic.IRe
 Funcky.Collections.RedNode<TItem>.Parent.get -> Funcky.Collections.RedNode<TItem>?
 Funcky.Collections.RedNode<TItem>.RedNode(Funcky.Collections.GreenNode<TItem>! value, Funcky.Collections.RedNode<TItem>? parent) -> void
 Funcky.Collections.RedNode<TItem>.Value.get -> TItem
+Funcky.Extensions.EitherPartitions<TLeft, TRight>
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TLeft>! left, out System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions() -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions(System.Collections.Generic.IReadOnlyCollection<TLeft>! left, System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Left.get -> System.Collections.Generic.IReadOnlyCollection<TLeft>!
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collections.Generic.IReadOnlyCollection<TRight>!
+Funcky.Extensions.ResultPartitions<TValidResult>
+Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, out System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections.Generic.IReadOnlyCollection<System.Exception!>!
+Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyCollection<TValidResult>!
+Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions() -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! action) -> Funcky.Monads.Either<TLeft, TRight>
+Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! action) -> Funcky.Monads.Result<TValidResult>
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.AnyOrElse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEnumerable<TSource>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.AnyOrElse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<System.Collections.Generic.IEnumerable<TSource>!>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.ExclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
+static Funcky.Extensions.EnumerableExtensions.InclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TLeft>!, System.Collections.Generic.IReadOnlyCollection<TRight>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
+static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TValidResult>!, System.Collections.Generic.IReadOnlyCollection<System.Exception!>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source) -> Funcky.Extensions.ResultPartitions<TValidResult>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> input) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? input) -> Funcky.Monads.Option<System.Version!>
