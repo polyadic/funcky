@@ -9,9 +9,10 @@ namespace Funcky.Extensions
         [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
         public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate);
 
+        // TODO for funcky3 change parameter styles to style to be consistent with .NET
         [Pure]
         [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
-        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles style);
+        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles);
 
 #if READ_ONLY_SPAN_SUPPORTED
         [Pure]
