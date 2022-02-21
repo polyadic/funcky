@@ -65,7 +65,7 @@ namespace Funcky.Extensions
         }
 
         [Fact]
-        public Task GenerateMultiplpeMethodsInASingleClass()
+        public Task GenerateMultipleMethodsInASingleClass()
         {
             const string source = @"using System.Diagnostics.Contracts;
 using Funcky.Internal;
