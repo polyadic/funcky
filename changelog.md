@@ -5,6 +5,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Unreleased
 * Add `ParseVersionOrNone` extension.
 * Implement `Inspect` for `Either` and `Result`.
+* Use Source Generator to emit more `*OrNone` functions.
 
 ### Funcky.Xunit
 * Breaking: Funcky.Xunit now uses the `Funcky` namespace, instead of `Funcky.Xunit`.
