@@ -1,12 +1,9 @@
-namespace Collections;
+namespace Funcky.Collections;
 
 public sealed class GreenNode<TItem>
 {
     public GreenNode(TItem value, IEnumerable<GreenNode<TItem>> children)
-    {
-        Value = value;
-        Children = children;
-    }
+        => (Value, Children) = (value, children);
 
     public TItem Value { get; }
 

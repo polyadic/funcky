@@ -1,4 +1,4 @@
-namespace Collections;
+namespace Funcky.Collections;
 
 public sealed class RedNode<TItem>
 {
