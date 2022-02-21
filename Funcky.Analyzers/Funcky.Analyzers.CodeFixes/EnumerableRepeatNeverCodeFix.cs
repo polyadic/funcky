@@ -26,31 +26,31 @@ namespace Funcky.Analyzers
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var diagnosticSpan = context.Diagnostics.First().Location.SourceSpan;
-            var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First();
 
-            context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
+            if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration)
+            {
+                context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
+            }
         }
 
         private static Diagnostic GetDiagnostic(CodeFixContext context)
             => context.Diagnostics.First();
 
-        private CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
+        private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
             => CodeAction.Create(
                 EnumerableRepeatNeverCodeFixTitle,
                 CreateSequenceReturnAsync(context.Document, declaration),
                 nameof(EnumerableRepeatNeverCodeFixTitle));
 
-        private Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
+        private static Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
             => async cancellationToken
                 => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
-        private async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
-        {
-            var oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-
-            return oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel));
-        }
+        private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
+            =>
+            await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
+                ? oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel))
+                : throw new Exception("oldRoot or semanticModel are null");
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
@@ -59,11 +59,11 @@ namespace Funcky.Analyzers
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable).ToMinimalDisplayString(model, firstArgument.SpanStart)),
+                    IdentifierName(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable)?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty),
                     GenericName(nameof(Enumerable.Empty))
                         .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
 
         private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
-            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type.ToMinimalDisplayString(model, firstArgument.SpanStart));
+            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty);
     }
 }

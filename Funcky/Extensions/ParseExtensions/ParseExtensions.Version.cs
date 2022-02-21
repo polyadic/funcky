@@ -1,18 +1,17 @@
 using Funcky.Internal;
 
-namespace Funcky.Extensions;
-
-public static partial class ParseExtensions
+namespace Funcky.Extensions
 {
-    /// <seealso cref="Version.TryParse(string?,out System.Version?)"/>
-    public static Option<Version> ParseVersionOrNone(this string? input)
-        => FailToOption<Version>.FromTryPattern(Version.TryParse, input);
+    public static partial class ParseExtensions
+    {
+        [Pure]
+        [OrNoneFromTryPattern(typeof(Version), nameof(Version.TryParse))]
+        public static partial Option<Version> ParseVersionOrNone(this string? candidate);
 
-    #if PARSE_READ_ONLY_SPAN_SUPPORTED
-    /// <seealso cref="Version.TryParse(System.ReadOnlySpan{char},out System.Version?)"/>
-    public static Option<Version> ParseVersionOrNone(this ReadOnlySpan<char> input)
-        => Version.TryParse(input, out var version)
-            ? version
-            : Option<Version>.None();
-    #endif
+#if READ_ONLY_SPAN_SUPPORTED
+        [Pure]
+        [OrNoneFromTryPattern(typeof(Version), nameof(Version.TryParse))]
+        public static partial Option<Version> ParseVersionOrNone(this ReadOnlySpan<char> candidate);
+#endif
+    }
 }

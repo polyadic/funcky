@@ -6,19 +6,40 @@ namespace Funcky.Extensions
     public static partial class ParseExtensions
     {
         [Pure]
-        public static Option<DateTime> ParseDateTimeOrNone(this string candidate)
-            => FailToOption<DateTime>.FromTryPattern(DateTime.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate);
+
+        // TODO for funcky3 change parameter styles to style to be consistent with .NET
+        [Pure]
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles);
+
+#if READ_ONLY_SPAN_SUPPORTED
+        [Pure]
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+        public static partial Option<DateTime> ParseDateTimeOrNone(this ReadOnlySpan<char> candidate);
 
         [Pure]
-        public static Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles)
-            => FailToOption<DateTime>.FromTryPattern(DateTime.TryParse, candidate, provider, styles);
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+        public static partial Option<DateTime> ParseDateTimeOrNone(this ReadOnlySpan<char> candidate, IFormatProvider provider, DateTimeStyles style);
+#endif
 
         [Pure]
-        public static Option<TimeSpan> ParseTimeSpanOrNone(this string candidate)
-            => FailToOption<TimeSpan>.FromTryPattern(TimeSpan.TryParse, candidate);
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParseExact))]
+        public static partial Option<DateTime> ParseExactDateTimeOrNone(this string candidate, string format, IFormatProvider provider, DateTimeStyles style);
 
         [Pure]
-        public static Option<TimeSpan> ParseTimeSpanOrNone(this string candidate, IFormatProvider provider)
-            => FailToOption<TimeSpan>.FromTryPattern(TimeSpan.TryParse, candidate, provider);
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParseExact))]
+        public static partial Option<DateTime> ParseExactDateTimeOrNone(this string candidate, string[] formats, IFormatProvider provider, DateTimeStyles style);
+
+#if READ_ONLY_SPAN_SUPPORTED
+        [Pure]
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParseExact))]
+        public static partial Option<DateTime> ParseExactDateTimeOrNone(this ReadOnlySpan<char> candidate, ReadOnlySpan<char> format, IFormatProvider provider, DateTimeStyles style);
+
+        [Pure]
+        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParseExact))]
+        public static partial Option<DateTime> ParseExactDateTimeOrNone(this ReadOnlySpan<char> candidate, string[] formats, IFormatProvider provider, DateTimeStyles style);
+#endif
     }
 }

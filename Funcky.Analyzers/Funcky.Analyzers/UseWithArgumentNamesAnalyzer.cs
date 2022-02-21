@@ -33,7 +33,7 @@ namespace Funcky.Analyzers
             context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
         }
 
-        private void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var node = (InvocationExpressionSyntax)context.Node;
 
@@ -43,8 +43,7 @@ namespace Funcky.Analyzers
             {
                 foreach (var argument in node.ArgumentList.Arguments)
                 {
-                    if (argument.NameColon is null &&
-                        context.SemanticModel.GetOperation(argument) is IArgumentOperation argumentOperation)
+                    if (argument.NameColon is null && context.SemanticModel.GetOperation(argument) is IArgumentOperation { Parameter: { } } argumentOperation)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation(), argumentOperation.Parameter.Name));
                     }

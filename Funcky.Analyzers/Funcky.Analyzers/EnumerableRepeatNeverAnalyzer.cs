@@ -30,7 +30,7 @@ namespace Funcky.Analyzers
             context.RegisterSyntaxNodeAction(FindEnumerableRepeatNever, SyntaxKind.InvocationExpression);
         }
 
-        private void FindEnumerableRepeatNever(SyntaxNodeAnalysisContext context)
+        private static void FindEnumerableRepeatNever(SyntaxNodeAnalysisContext context)
         {
             if (IsRepeatNever(new SyntaxMatcher(context)))
             {

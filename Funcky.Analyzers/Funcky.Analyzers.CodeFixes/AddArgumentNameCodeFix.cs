@@ -23,29 +23,31 @@ namespace Funcky.Analyzers
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-
-            foreach (var diagnostic in context.Diagnostics)
+            if (await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false) is { } root
+                && await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false) is { } semanticModel)
             {
-                var argumentSyntax = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<ArgumentSyntax>();
-                var operation = (IArgumentOperation)semanticModel.GetOperation(argumentSyntax);
-                context.RegisterCodeFix(CreateFix(context, argumentSyntax, operation.Parameter), diagnostic);
+                foreach (var diagnostic in context.Diagnostics)
+                {
+                    if (root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<ArgumentSyntax>() is { } argumentSyntax
+                        && semanticModel.GetOperation(argumentSyntax) is IArgumentOperation { Parameter: { } } argumentOperation)
+                    {
+                        context.RegisterCodeFix(CreateFix(context, argumentSyntax, argumentOperation.Parameter), diagnostic);
+                    }
+                }
             }
         }
 
-        private CodeAction CreateFix(CodeFixContext context, ArgumentSyntax argument, IParameterSymbol parameter)
+        private static CodeAction CreateFix(CodeFixContext context, ArgumentSyntax argument, IParameterSymbol parameter)
             => CodeAction.Create(
                 string.Format(CodeFixResources.AddArgumentNameCodeFixTitle, parameter.Name),
                 AddArgumentLabelAsync(context.Document, argument, parameter),
                 nameof(AddArgumentNameCodeFix));
 
         private static Func<CancellationToken, Task<Document>> AddArgumentLabelAsync(Document document, ArgumentSyntax argument, IParameterSymbol parameter)
-            => async cancellationToken =>
-            {
-                var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken);
-                return document.WithSyntaxRoot(syntaxRoot.ReplaceNode(argument, AddArgumentName(argument, parameter)));
-            };
+            => async cancellationToken
+                => await document.GetSyntaxRootAsync(cancellationToken) is { } syntaxRoot
+                    ? document.WithSyntaxRoot(syntaxRoot.ReplaceNode(argument, AddArgumentName(argument, parameter)))
+                    : document;
 
         private static ArgumentSyntax AddArgumentName(ArgumentSyntax argument, IParameterSymbol parameter)
             => argument
@@ -67,6 +69,7 @@ namespace Funcky.Analyzers
                 valueText: identifier,
                 trailing: default);
 
-        private static bool NeedsEscaping(string identifier) => SyntaxFacts.GetKeywordKind(identifier) != SyntaxKind.None;
+        private static bool NeedsEscaping(string identifier)
+            => SyntaxFacts.GetKeywordKind(identifier) is not SyntaxKind.None;
     }
 }

@@ -1,5 +1,8 @@
 using System.Collections.Concurrent;
+#if QUEUE_TRY_OVERLOADS
+#else
 using Funcky.Internal;
+#endif
 
 namespace Funcky.Extensions
 {
@@ -9,12 +12,16 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPattern(queue.TryDequeue);
+            => queue.TryDequeue(out var result)
+                ? result
+                : Option<TItem>.None();
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this Queue<TItem> queue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPattern(queue.TryPeek);
+            => queue.TryPeek(out var result)
+                ? result
+                : Option<TItem>.None();
 #else
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this Queue<TItem> queue)
@@ -31,11 +38,15 @@ namespace Funcky.Extensions
         [Pure]
         public static Option<TItem> DequeueOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPattern(concurrentQueue.TryDequeue);
+            => concurrentQueue.TryDequeue(out var result)
+                ? result
+                : Option<TItem>.None();
 
         [Pure]
         public static Option<TItem> PeekOrNone<TItem>(this ConcurrentQueue<TItem> concurrentQueue)
             where TItem : notnull
-            => FailToOption<TItem>.FromTryPattern(concurrentQueue.TryPeek);
+            => concurrentQueue.TryPeek(out var result)
+                ? result
+                : Option<TItem>.None();
     }
 }

@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+
+    <PropertyGroup>
+        <AssemblyName>Funcky.SourceGenerator.Test</AssemblyName>
+        <RootNamespace>Funcky.SourceGenerator.Test</RootNamespace>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10.0</LangVersion>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Verify.XUnit" />
+        <PackageReference Include="Verify.SourceGenerators" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" />
+        <ProjectReference Include="..\Funcky\Funcky.csproj" />
+    </ItemGroup>
+
+</Project>

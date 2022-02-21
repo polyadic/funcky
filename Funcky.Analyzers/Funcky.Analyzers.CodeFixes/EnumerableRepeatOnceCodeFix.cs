@@ -27,31 +27,30 @@ namespace Funcky.Analyzers
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var diagnosticSpan = context.Diagnostics.First().Location.SourceSpan;
-            var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First();
 
-            context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
+            if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration)
+            {
+                context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
+            }
         }
 
         private static Diagnostic GetDiagnostic(CodeFixContext context)
             => context.Diagnostics.First();
 
-        private CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
+        private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
             => CodeAction.Create(
                 EnumerableRepeatOnceCodeFixTitle,
                 CreateSequenceReturnAsync(context.Document, declaration),
                 nameof(EnumerableRepeatOnceCodeFixTitle));
 
-        private Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
+        private static Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
             => async cancellationToken
                 => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
         private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-
-            return oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration), semanticModel));
-        }
+            => await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
+                ? oldRoot.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration), semanticModel))
+                : throw new Exception("oldRoot or semanticModel are null");
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
@@ -66,10 +65,10 @@ namespace Funcky.Analyzers
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(SequenceType(model).ToMinimalDisplayString(model, firstArgument.SpanStart)),
+                    IdentifierName(SequenceType(model)?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty),
                     IdentifierName(Return)));
 
-        private static INamedTypeSymbol SequenceType(SemanticModel model)
+        private static INamedTypeSymbol? SequenceType(SemanticModel model)
             => model.Compilation.GetTypeByMetadataName(FullyQualifiedSequence);
     }
 }
