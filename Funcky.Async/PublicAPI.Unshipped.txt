@@ -100,15 +100,6 @@ static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithLast<TSource>(this 
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IAsyncEnumerable<TLeft>! left, System.Collections.Generic.IAsyncEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IAsyncEnumerable<TLeft>! left, System.Collections.Generic.IAsyncEnumerable<TRight>! right) -> System.Collections.Generic.IAsyncEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
-static Funcky.Async.Functional.NoOperationAsync() -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3, T4, T5, T6, T7, T8>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3, T4, T5, T6, T7>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3, T4, T5, T6>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3, T4, T5>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3, T4>(T1 p1, T2 p2, T3 p3, T4 p4) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2, T3>(T1 p1, T2 p2, T3 p3) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1, T2>(T1 p1, T2 p2) -> System.Threading.Tasks.Task!
-static Funcky.Async.Functional.NoOperationAsync<T1>(T1 p1) -> System.Threading.Tasks.Task!
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
 static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Async.Monads.OptionTaskAwaiter<TItem>
