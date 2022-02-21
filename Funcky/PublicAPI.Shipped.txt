@@ -163,8 +163,6 @@ static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collec
 static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collections.Generic.IEnumerable<T>! source, string! separator) -> string!
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Monads.Option<TSource>
-static Funcky.Extensions.EnumerableExtensions.Materialize<TItem, TMaterialization>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<System.Collections.Generic.IEnumerable<TItem>!, TMaterialization>! materialize) -> System.Collections.Generic.IEnumerable<TItem>!
-static Funcky.Extensions.EnumerableExtensions.Materialize<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
 static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Option<TResult>
 static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source) -> Funcky.Monads.Option<TSource>
