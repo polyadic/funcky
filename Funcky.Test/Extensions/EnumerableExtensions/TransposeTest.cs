@@ -1,3 +1,5 @@
+using Funcky.Test.TestUtils;
+
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
     public sealed class TransposeTest
@@ -69,33 +71,27 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         private static IEnumerable<IEnumerable<int>> MagicSquare() =>
-            new List<IEnumerable<int>>
-            {
-                new List<int> { 4, 9, 2 },
-                new List<int> { 3, 5, 7 },
-                new List<int> { 8, 1, 6 },
-            };
+            Sequence.Return(
+                Sequence.Return(4, 9, 2),
+                Sequence.Return(3, 5, 7),
+                Sequence.Return(8, 1, 6));
 
         private static IEnumerable<IEnumerable<int>> MatrixExample() =>
-            new List<IEnumerable<int>>
-            {
-                new List<int> { 1, 2, 3, 4 },
-                new List<int> { 5, 6, 7, 8 },
-                new List<int> { 9, 10, 11, 12 },
-            };
+            Sequence.Return(
+                Sequence.Return(1, 2, 3, 4),
+                Sequence.Return(5, 6, 7, 8),
+                Sequence.Return(9, 10, 11, 12));
 
         private static IEnumerable<IEnumerable<int>> JaggedMatrixExample() =>
-            new List<IEnumerable<int>>
-            {
-                new List<int> { 1, 2, 3, 4 },
-                new List<int> { 6, 9, 42 },
-                new List<int> { 5 },
-                new List<int> { 10 },
-            };
+            Sequence.Return(
+                Sequence.Return(1, 2, 3, 4),
+                Sequence.Return(6, 9, 42),
+                Sequence.Return(5),
+                Sequence.Return(10));
 
-        private IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns) =>
+        private static IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns) =>
             from row in Enumerable.Range(0, rows)
             select from column in Enumerable.Range(0, columns)
-                select new CountCreation();
+                   select new CountCreation();
     }
 }
