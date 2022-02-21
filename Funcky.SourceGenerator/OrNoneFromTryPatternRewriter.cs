@@ -34,14 +34,12 @@ public class OrNoneFromTryPatternRewriter : CSharpSyntaxRewriter
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
     private InvocationExpressionSyntax TryParseCondition(MethodDeclarationSyntax methodDeclaration)
-    {
-        return InvocationExpression(
-                MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    _typeSyntax,
-                    IdentifierName(_methodName)))
+        => InvocationExpression(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                _typeSyntax,
+                IdentifierName(_methodName)))
             .WithArgumentList(ForwardAllArguments(methodDeclaration));
-    }
 
     private static ArgumentListSyntax ForwardAllArguments(MethodDeclarationSyntax methodDeclaration)
         => ArgumentList(SeparatedList<ArgumentSyntax>(MethodGroupAndAllArguments(methodDeclaration)));
