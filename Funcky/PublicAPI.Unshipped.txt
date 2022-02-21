@@ -1,13 +1,13 @@
 #nullable enable
 Funcky.Collections.GreenNode<TItem>
-Funcky.Collections.GreenNode<TItem>.Children.get -> System.Collections.Generic.IEnumerable<Funcky.Collections.GreenNode<TItem>!>!
-Funcky.Collections.GreenNode<TItem>.GreenNode(TItem value, System.Collections.Generic.IEnumerable<Funcky.Collections.GreenNode<TItem>!>! children) -> void
+Funcky.Collections.GreenNode<TItem>.Children.get -> System.Collections.Generic.List<Funcky.Collections.GreenNode<TItem>!>!
+Funcky.Collections.GreenNode<TItem>.GreenNode(TItem value) -> void
 Funcky.Collections.GreenNode<TItem>.Value.get -> TItem
 Funcky.Collections.RedGreenTree<TItem>
 Funcky.Collections.RedGreenTree<TItem>.RedGreenTree(Funcky.Collections.GreenNode<TItem>! rootNode) -> void
 Funcky.Collections.RedGreenTree<TItem>.RootNode.get -> Funcky.Collections.RedNode<TItem>!
 Funcky.Collections.RedNode<TItem>
-Funcky.Collections.RedNode<TItem>.Children.get -> System.Collections.Generic.IEnumerable<Funcky.Collections.RedNode<TItem>!>!
+Funcky.Collections.RedNode<TItem>.Children.get -> System.Collections.Generic.IReadOnlyList<Funcky.Collections.RedNode<TItem>!>!
 Funcky.Collections.RedNode<TItem>.Parent.get -> Funcky.Collections.RedNode<TItem>?
 Funcky.Collections.RedNode<TItem>.RedNode(Funcky.Collections.GreenNode<TItem>! value, Funcky.Collections.RedNode<TItem>? parent) -> void
 Funcky.Collections.RedNode<TItem>.Value.get -> TItem

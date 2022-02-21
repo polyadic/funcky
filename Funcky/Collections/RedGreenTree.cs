@@ -8,6 +8,15 @@ namespace Funcky.Collections
             => _rootNode = rootNode;
 
         public RedNode<TItem> RootNode
-            => new(_rootNode, null);
+        {
+            get
+            {
+                var root = new RedNode<TItem>(_rootNode, null);
+
+                root.Children.Materialize();
+
+                return root;
+            }
+        }
     }
 }

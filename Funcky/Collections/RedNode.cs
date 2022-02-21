@@ -5,13 +5,16 @@ public sealed class RedNode<TItem>
     private readonly GreenNode<TItem> _value;
 
     public RedNode(GreenNode<TItem> value, RedNode<TItem>? parent)
-        => (_value, Parent) = (value, parent);
+    {
+        _value = value;
+        Parent = parent;
+        Children = value.Children.Select(ToRedNode).ToList();
+    }
 
     public TItem Value
         => _value.Value;
 
-    public IEnumerable<RedNode<TItem>> Children
-        => _value.Children.Select(ToRedNode);
+    public IReadOnlyList<RedNode<TItem>> Children { get; }
 
     public RedNode<TItem>? Parent { get; }
 
