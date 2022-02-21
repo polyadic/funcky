@@ -62,8 +62,8 @@ namespace Funcky.SourceGenerator
                     .ToString()
                 : throw new Exception("Method value on attribute missing.");
 
-        private static TypeSyntax GetTypeValue(Compilation compilation, MethodDeclarationSyntax component, AttributeSyntax attribute) =>
-            attribute.ArgumentList?.Arguments.Count > 0 && attribute.ArgumentList?.Arguments[0].Expression is TypeOfExpressionSyntax iconExpr
+        private static TypeSyntax GetTypeValue(Compilation compilation, MethodDeclarationSyntax component, AttributeSyntax attribute)
+            => attribute.ArgumentList?.Arguments.Count > 0 && attribute.ArgumentList?.Arguments[0].Expression is TypeOfExpressionSyntax iconExpr
                 ? iconExpr.Type
                 : throw new Exception("Type value on attribute missing.");
 
