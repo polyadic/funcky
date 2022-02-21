@@ -21,7 +21,7 @@ namespace Funcky.Extensions
 
             public static PartitionBuilder<TItem> Add(PartitionBuilder<TItem> builder, TItem item) => builder.Add(item);
 
-            public TResult Build<TResult>(Func<IEnumerable<TItem>, IEnumerable<TItem>, TResult> selector) => selector(_left, _right);
+            public TResult Build<TResult>(Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> selector) => selector(_left, _right);
 
             private PartitionBuilder<TItem> Add(TItem item)
                 => _predicate(item)
