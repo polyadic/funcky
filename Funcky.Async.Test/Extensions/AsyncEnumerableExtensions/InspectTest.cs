@@ -20,7 +20,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-            _ = doNotEnumerate.InspectAwait(static async o => await Task.FromResult(o));
+            _ = doNotEnumerate.InspectAwait(static _ => ValueTask.CompletedTask);
         }
 
         [Fact]
