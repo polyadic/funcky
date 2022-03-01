@@ -1,7 +1,6 @@
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Xunit;
-using static Funcky.Async.Functional;
 using static Funcky.Functional;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
@@ -21,7 +20,7 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
         {
             var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-            _ = doNotEnumerate.InspectAwait(static async o => await NoOperationAsync(o));
+            _ = doNotEnumerate.InspectAwait(static _ => ValueTask.CompletedTask);
         }
 
         [Fact]
