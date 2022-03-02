@@ -22,5 +22,16 @@ namespace Funcky.Test
                 .CycleRange(sequence.Get)
                 .IsSequenceRepeating(sequence.Get)
                 .NTimes(arbitraryElements.Get);
+
+        [Property]
+        public void CycleRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+        {
+            var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+
+            Sequence
+                .CycleRange(enumerateOnce)
+                .Take(sequence.Get.Count * 3)
+                .ForEach(NoOperation);
+        }
     }
 }
