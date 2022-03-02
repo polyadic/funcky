@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Funcky.Extensions
 {
     public static partial class EnumerableExtensions
@@ -11,6 +13,8 @@ namespace Funcky.Extensions
         /// <typeparam name="TSecondSource">The type of the elements in the second sequence.</typeparam>
         /// <returns>Returns a list of all combinations as pairs.</returns>
         [Pure]
+        [Obsolete("Use SelectMany / for in instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static IEnumerable<(TFirstSource First, TSecondSource Second)> CartesianProduct<TFirstSource, TSecondSource>(
             this IEnumerable<TFirstSource> firstSequence,
             IEnumerable<TSecondSource> secondSequence)
@@ -27,6 +31,8 @@ namespace Funcky.Extensions
         /// <typeparam name="TResult">The result type of the given projection.</typeparam>
         /// <returns>sequence of elements returned by <paramref name="resultSelector"/>.</returns>
         [Pure]
+        [Obsolete("Use SelectMany / for in instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static IEnumerable<TResult> CartesianProduct<TFirstSource, TSecondSource, TResult>(
             this IEnumerable<TFirstSource> firstSequence,
             IEnumerable<TSecondSource> secondSequence,
