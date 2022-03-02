@@ -7,6 +7,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Moved retry policies to a better namespace
 * Moved all Async Code to funcky-async
 * Use Switch instead of Match for Actions to improve type inference
+* Removed all CartesianProduct overloads
 
 ## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
 ### Analyzers
