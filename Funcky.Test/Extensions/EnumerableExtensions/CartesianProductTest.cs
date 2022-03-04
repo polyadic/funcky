@@ -1,3 +1,4 @@
+#pragma warning disable CS0618
 using System.Collections.Immutable;
 using Funcky.Test.TestUtils;
 
