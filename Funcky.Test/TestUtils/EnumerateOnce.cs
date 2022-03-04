@@ -20,7 +20,7 @@ public class EnumerateOnce<T> : IEnumerable<T>
         {
             var maybeValue = _once.DequeueOrNone();
 
-            if (maybeValue.Match(false, True))
+            if (maybeValue.Match(none: false, some: True))
             {
                 yield return maybeValue.GetOrElse(() => throw new Exception("cannot happen!"));
             }
