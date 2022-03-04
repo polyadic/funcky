@@ -221,8 +221,11 @@ namespace Funcky.Test.Monads
             var none = Option<int>.None;
             var some = Option.Some(42);
 
-            Assert.False(none.AndThen(_ => Option.Some(1337)).Match(none: false, some: v => v == 1337));
-            Assert.True(some.AndThen(_ => Option.Some(1337)).Match(none: false, some: v => v == 1337));
+            FunctionalAssert.IsNone(none.AndThen(_ => 1337));
+            Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => 1337)));
+
+            FunctionalAssert.IsNone(none.AndThen(_ => Option.Some(1337)));
+            Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => Option.Some(1337))));
         }
 
         [Fact]
