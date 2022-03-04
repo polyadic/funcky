@@ -25,7 +25,7 @@ namespace Funcky.Monads
 
         [Pure]
         public TResult Match<TResult>(TResult none, Func<TItem, TResult> some)
-            => Match(() => none, some);
+            => Match(none: () => none, some: some);
 
         /// <summary>
         /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option

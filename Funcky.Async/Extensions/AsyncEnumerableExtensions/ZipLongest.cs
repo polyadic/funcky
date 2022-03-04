@@ -38,7 +38,7 @@ namespace Funcky.Async.Extensions
             await using var rightEnumerator = right.ConfigureAwait(false).GetAsyncEnumerator();
             #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
-            for (var next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false); next.Match(false, True); next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false))
+            for (var next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false); next.Match(none: false, some: True); next = await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false))
             {
                 yield return resultSelector(next.GetOrElse(() => throw new Exception("Cannot happen.")));
             }

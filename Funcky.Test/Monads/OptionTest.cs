@@ -102,7 +102,7 @@ namespace Funcky.Test.Monads
         {
             const string input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
             {
                 _ = FunctionalAssert.IsSome(number);
             }
@@ -159,7 +159,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(false, True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
             {
                 var value = number.Match(
                     none: () => 0,
@@ -221,8 +221,11 @@ namespace Funcky.Test.Monads
             var none = Option<int>.None;
             var some = Option.Some(42);
 
-            Assert.False(none.AndThen(_ => Option.Some(1337)).Match(false, v => v == 1337));
-            Assert.True(some.AndThen(_ => Option.Some(1337)).Match(false, v => v == 1337));
+            FunctionalAssert.IsNone(none.AndThen(_ => 1337));
+            Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => 1337)));
+
+            FunctionalAssert.IsNone(none.AndThen(_ => Option.Some(1337)));
+            Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => Option.Some(1337))));
         }
 
         [Fact]
