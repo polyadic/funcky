@@ -22,7 +22,7 @@ namespace Funcky.Extensions
                 ? result
                 : Option<TEnum>.None();
 
-#if NETSTANDARD2_1 || NET5_0_OR_GREATER
+#if !NETSTANDARD2_0
         [Pure]
         public static Option<object> ParseEnumOrNone(this string candidate, Type type)
             => Enum.TryParse(type, candidate, out var result)
