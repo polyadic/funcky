@@ -8,7 +8,7 @@ namespace Funcky.Extensions
         /// <typeparam name="T">the inner type of the enumerable.</typeparam>
         public static Unit ForEach<T>(this IEnumerable<T> elements, Action<T> action)
             => elements
-                .ForEach(Functional.ActionToUnit(action));
+                .ForEach(ActionToUnit(action));
 
         /// <summary>
         /// The IEnumerable version of foreach. You can apply an <c><![CDATA[Func<T, Unit>]]></c> to each element. This is only useful when you have side effects.
