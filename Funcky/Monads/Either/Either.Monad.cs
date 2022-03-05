@@ -10,7 +10,7 @@ namespace Funcky.Monads
         public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
             => Match(
                 left: Either<TLeft, TResult>.Left,
-                right: right => Either<TLeft, TResult>.Right(selector(right)));
+                right: right => selector(right));
 
         [Pure]
         public Either<TLeft, TResult> SelectMany<TResult>(Func<TRight, Either<TLeft, TResult>> selector)

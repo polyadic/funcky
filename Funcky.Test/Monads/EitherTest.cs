@@ -153,6 +153,13 @@ namespace Funcky.Test.Monads
             return (expected == either.Flip()).ToProperty();
         }
 
+        [Fact]
+        public void CanBeCreatedImplicitlyFromRightValue()
+        {
+            static Unit AcceptsEither(Either<string, int> either) => Unit.Value;
+            _ = AcceptsEither(10);
+        }
+
         private static void Execute(Action action) => action();
     }
 }
