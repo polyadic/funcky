@@ -24,10 +24,7 @@ namespace Funcky
                 throw new AssertActualExpectedException(
                     expected: exception.Expected,
                     actual: exception.Actual,
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure",
-                    expectedTitle: null, // The other constructor overload is missing in 2.4.2-pre.12. See https://github.com/xunit/xunit/issues/2449
-                    actualTitle: null,
-                    innerException: null);
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure");
             }
         }
 
