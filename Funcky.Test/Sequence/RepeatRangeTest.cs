@@ -22,5 +22,15 @@ namespace Funcky.Test
                 .RepeatRange(list, count.Get)
                 .IsSequenceRepeating(list)
                 .NTimes(count.Get);
+
+        [Property]
+        public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+        {
+            var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+
+            Sequence
+                .RepeatRange(enumerateOnce, 3)
+                .ForEach(NoOperation);
+        }
     }
 }
