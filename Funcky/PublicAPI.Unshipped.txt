@@ -141,3 +141,4 @@ static Funcky.Extensions.ParseExtensions.TryParseTransferCodingWithQualityHeader
 static Funcky.Extensions.ParseExtensions.TryParseViaHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
 static Funcky.Extensions.ParseExtensions.TryParseWarningHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Monads.Either<TLeft, TRight>.implicit operator Funcky.Monads.Either<TLeft, TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
