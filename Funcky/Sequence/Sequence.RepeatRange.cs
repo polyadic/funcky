@@ -12,8 +12,12 @@ namespace Funcky
         [Pure]
         public static IEnumerable<TItem> RepeatRange<TItem>(IEnumerable<TItem> sequence, int count)
             where TItem : notnull
+            => RepeatCollection(sequence.Materialize(), count);
+
+        private static IEnumerable<TItem> RepeatCollection<TItem>(IReadOnlyCollection<TItem> collection, int count)
+            where TItem : notnull
             => Enumerable
                 .Repeat(Unit.Value, count)
-                .SelectMany(_ => sequence);
+                .SelectMany(_ => collection);
     }
 }

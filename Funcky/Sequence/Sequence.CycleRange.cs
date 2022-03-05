@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Funcky
 {
     public static partial class Sequence
@@ -11,15 +13,20 @@ namespace Funcky
         [Pure]
         public static IEnumerable<TItem> CycleRange<TItem>(IEnumerable<TItem> sequence)
             where TItem : notnull
-        {
-            var list = sequence.ToList();
+            => CycleSequenceIfNotEmpty(sequence.Materialize());
 
-            if (list.None())
-            {
-                throw new ArgumentException("An empty sequence cannot be cycled", nameof(sequence));
-            }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IEnumerable<TItem> CycleSequenceIfNotEmpty<TItem>(IReadOnlyCollection<TItem> sequence)
+            where TItem : notnull
+            => sequence.Count != 0
+                ? ProjectCycles(sequence)
+                : throw new ArgumentException("An empty sequence cannot be cycled", nameof(sequence));
 
-            return Cycle(sequence).SelectMany(Identity);
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IEnumerable<TItem> ProjectCycles<TItem>(IReadOnlyCollection<TItem> list)
+            where TItem : notnull
+            => from cycle in Cycle(list)
+               from element in cycle
+               select element;
     }
 }
