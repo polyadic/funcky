@@ -25,6 +25,7 @@
         <ProjectReference Include="..\..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" />
+        <ProjectReference Include="..\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" />
     </ItemGroup>
 
     <ItemGroup>
