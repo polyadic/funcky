@@ -48,19 +48,17 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node, OperationAnalysisContext context)
         => IsPartOfCatchFilterClause(node)
-           || (IsPartOfLoopCondition(node) && context.ContainingSymbol.IsIteratorMethod());
-
-    private static bool IsPartOfLoopCondition(SyntaxNode node)
-        => IsPartOfWhileCondition(node) || IsPartOfDoWhileCondition(node);
-
-    private static bool IsPartOfWhileCondition(SyntaxNode node)
-        => node.Parent is WhileStatementSyntax whileStatementSyntax
-           && whileStatementSyntax.Condition == node;
-
-    private static bool IsPartOfDoWhileCondition(SyntaxNode node)
-        => node.Parent is DoStatementSyntax whileStatementSyntax
-           && whileStatementSyntax.Condition == node;
+           || (IsInLoopCondition(node) && context.ContainingSymbol.IsIteratorMethod());
 
     private static bool IsPartOfCatchFilterClause(SyntaxNode node)
         => node.Parent is CatchFilterClauseSyntax;
+
+    private static bool IsInLoopCondition(SyntaxNode node)
+        => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n));
+
+    private static bool IsConditionOfWhileStatement(SyntaxNode n)
+        => n.Parent is WhileStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == n;
+
+    private static bool IsConditionOfDoStatement(SyntaxNode n)
+        => n.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == n;
 }

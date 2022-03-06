@@ -194,4 +194,44 @@ public static class C
 }";
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(10, 9, 10, 34));
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedAsChildExpressionOfWhileConditionInIterator()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static IEnumerable<int> M()
+    {
+        var option = new Option<int>();
+        while (option.TryGetValue(out _) || True()) { yield break; }
+    }
+
+    private static bool True() => true;
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedAsChildExpressionOfDoWhileConditionInIterator()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static IEnumerable<int> M()
+    {
+        var option = new Option<int>();
+        do { yield break; } while (option.TryGetValue(out _) || True());
+    }
+
+    private static bool True() => true;
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
 }
