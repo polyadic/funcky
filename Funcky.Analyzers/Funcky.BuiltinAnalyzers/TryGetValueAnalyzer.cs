@@ -33,7 +33,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         var operation = (IInvocationOperation)context.Operation;
 
         if (IsTryGetValueMethod(operation, context.Compilation)
-            && !IsAllowedUsageOfTryGetValue(operation.Syntax, context))
+            && !IsAllowedUsageOfTryGetValue(operation.Syntax))
         {
             context.ReportDiagnostic(Diagnostic.Create(Descriptor, operation.Syntax.GetLocation()));
         }
@@ -46,9 +46,9 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
             && SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType.OriginalDefinition, optionType);
     }
 
-    private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node, OperationAnalysisContext context)
+    private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
         => IsPartOfCatchFilterClause(node)
-           || (IsInLoopCondition(node) && context.ContainingSymbol.IsIteratorMethod());
+           || (IsInLoopCondition(node) && node.IsWithinIterator());
 
     private static bool IsPartOfCatchFilterClause(SyntaxNode node)
         => node.Parent is CatchFilterClauseSyntax;

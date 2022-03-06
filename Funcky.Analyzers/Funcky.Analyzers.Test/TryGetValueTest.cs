@@ -234,4 +234,25 @@ public static class C
 }";
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInWhileConditionOfIteratorLocalFunction()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static void M()
+    {
+        IEnumerable<int> I()
+        {
+            var option = new Option<int>();
+            while (option.TryGetValue(out _)) { yield break; }
+        }
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
 }

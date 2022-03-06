@@ -5,23 +5,21 @@ namespace Funcky.BuiltinAnalyzers;
 
 internal static class MethodSymbolExtensions
 {
-    public static bool IsIteratorMethod(this ISymbol symbol)
-        => symbol is IMethodSymbol methodSymbol && methodSymbol.IsIterator();
+    public static bool IsWithinIterator(this SyntaxNode node)
+        => node.Ancestors().FirstOrDefault(IsReturnableConstruct) is { } returnableConstruct
+            && returnableConstruct.IsIterator();
 
     // Source: https://github.com/dotnet/roslyn/blob/1a20545501d7a3749c2b93c8dced687617df50ab/src/Features/CSharp/Portable/MakeMethodAsynchronous/CSharpMakeMethodAsynchronousCodeFixProvider.cs#L136
-    public static bool IsIterator(this IMethodSymbol methodSymbol)
+    private static bool IsIterator(this SyntaxNode node)
     {
-        return methodSymbol.Locations.Any(l => ContainsYield(GetSourceTreeOrThrow(l).GetRoot().FindNode(l.SourceSpan)));
+        return ContainsYield(node);
 
-        bool ContainsYield(SyntaxNode node)
+        static bool ContainsYield(SyntaxNode node)
             => node.DescendantNodes(descendIntoChildren: n => n == node || !IsReturnableConstruct(n)).Any(IsYield);
 
         static bool IsYield(SyntaxNode node)
             => node.IsKind(SyntaxKind.YieldBreakStatement) || node.IsKind(SyntaxKind.YieldReturnStatement);
     }
-
-    private static SyntaxTree GetSourceTreeOrThrow(Location location)
-        => location.SourceTree ?? throw new InvalidOperationException($"Location {location} unexpectedly had no source tree");
 
     private static bool IsReturnableConstruct(SyntaxNode node)
         => node.Kind()
