@@ -57,9 +57,9 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
     private static bool IsInLoopCondition(SyntaxNode node)
         => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n));
 
-    private static bool IsConditionOfWhileStatement(SyntaxNode n)
-        => n.Parent is WhileStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == n;
+    private static bool IsConditionOfWhileStatement(SyntaxNode node)
+        => node.Parent is WhileStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
 
-    private static bool IsConditionOfDoStatement(SyntaxNode n)
-        => n.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == n;
+    private static bool IsConditionOfDoStatement(SyntaxNode node)
+        => node.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
 }
