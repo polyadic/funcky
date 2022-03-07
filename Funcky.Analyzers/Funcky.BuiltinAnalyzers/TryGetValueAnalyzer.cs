@@ -49,13 +49,19 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
         => IsPartOfCatchFilterClause(node)
-           || (IsInLoopCondition(node) && node.IsWithinIterator());
+           || (IsInLoopCondition(node) && node.IsWithinIterator())
+           || (IsInIfConditionWithYield(node) && node.IsWithinIterator());
 
     private static bool IsPartOfCatchFilterClause(SyntaxNode node)
         => node.Parent is CatchFilterClauseSyntax;
 
     private static bool IsInLoopCondition(SyntaxNode node)
         => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n));
+
+    private static bool IsInIfConditionWithYield(SyntaxNode node)
+        => node.AncestorsAndSelf().Any(n => n.Parent is IfStatementSyntax ifStatement
+            && ifStatement.Condition == n
+            && ifStatement.ContainsYield());
 
     private static bool IsConditionOfWhileStatement(SyntaxNode node)
         => node.Parent is WhileStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;

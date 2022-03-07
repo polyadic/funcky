@@ -255,4 +255,91 @@ public static class C
 }";
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInIfConditionOfIteratorWhenIfContainsYieldReturn()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static void M()
+    {
+        IEnumerable<int> I()
+        {
+            var option = new Option<int>();
+            if (option.TryGetValue(out var item)) yield return item;
+        }
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInIfConditionOfIteratorWhenIfContainsYieldBreak()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static void M()
+    {
+        IEnumerable<int> I()
+        {
+            var option = new Option<int>();
+            if (!option.TryGetValue(out var item)) yield break;
+            yield return item;
+        }
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInIfConditionOfIteratorWhenElseContainsYieldReturn()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static void M()
+    {
+        IEnumerable<int> I()
+        {
+            var option = new Option<int>();
+            if (!option.TryGetValue(out var item)) { }
+            else { yield return item; }
+        }
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInIfConditionOfIteratorWhenItContainsNoYield()
+    {
+        const string inputCode = @"
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public static void M()
+    {
+        IEnumerable<int> I()
+        {
+            var option = new Option<int>();
+            if (option.TryGetValue(out var item)) { }
+            yield break;
+        }
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(12, 17, 12, 49));
+    }
 }
