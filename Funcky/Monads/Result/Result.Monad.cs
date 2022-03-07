@@ -6,7 +6,7 @@ namespace Funcky.Monads
         public Result<TResult> Select<TResult>(Func<TValidResult, TResult> selector)
             => Match(
                 error: error => new Result<TResult>(error),
-                ok: value => Result.Ok(selector(value)));
+                ok: value => selector(value));
 
         [Pure]
         public Result<TResult> SelectMany<TResult>(Func<TValidResult, Result<TResult>> resultSelector)

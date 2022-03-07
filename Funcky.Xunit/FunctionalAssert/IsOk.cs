@@ -17,7 +17,7 @@ namespace Funcky
         {
             try
             {
-                Assert.Equal(Result.Ok(expectedResult), result);
+                Assert.Equal(expectedResult, result);
             }
             catch (EqualException exception)
             {

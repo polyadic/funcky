@@ -209,6 +209,13 @@ namespace Funcky.Test.Monads
         public static TheoryData<Result<int>> OkAndError()
             => new() { Result<int>.Error(new Exception()), Result.Ok(123) };
 
+        [Fact]
+        public void CanBeCreatedImplicitlyFromOkValue()
+        {
+            static Unit AcceptsResult(Result<int> result) => Unit.Value;
+            _ = AcceptsResult(10);
+        }
+
         private static void IsInterestingStackTraceFirst(Exception exception)
         {
             Assert.NotNull(exception.StackTrace);

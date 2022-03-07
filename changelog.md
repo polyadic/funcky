@@ -7,6 +7,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Implement `Inspect` for `Either` and `Result`.
 * Use Source Generator to emit more `*OrNone` functions.
 * Cartesian Product deprecated.
+* Add implicit converions for `Either` and `Result`.
 
 ### Funcky.Xunit
 * Breaking: Funcky.Xunit now uses the `Funcky` namespace, instead of `Funcky.Xunit`.
