@@ -28,12 +28,6 @@ jobs:
       with:
         dotnet-version: '5.0.x'
 
-    # Workaround for slow `dotnet restore` performance.
-    # See: https://github.com/actions/virtual-environments/issues/3577#issuecomment-1013139027
-    - name: Use clean NuGet config
-      if: success() && runner.os == 'Windows'
-      run: dotnet new nugetconfig
-
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
