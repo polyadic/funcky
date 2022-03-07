@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.SourceGenerator", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.SourceGenerator.Test", "Funcky.SourceGenerator.Test\Funcky.SourceGenerator.Test.csproj", "{C1412F64-1D24-4245-8DC7-F4AF01815F58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.BuiltinAnalyzers", "Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj", "{539432B9-1257-4237-91FD-5D237855765E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{C1412F64-1D24-4245-8DC7-F4AF01815F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1412F64-1D24-4245-8DC7-F4AF01815F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1412F64-1D24-4245-8DC7-F4AF01815F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{539432B9-1257-4237-91FD-5D237855765E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{539432B9-1257-4237-91FD-5D237855765E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{539432B9-1257-4237-91FD-5D237855765E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{539432B9-1257-4237-91FD-5D237855765E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{50AA2531-E3DA-4AD6-BBD4-C1B46ACD0804} = {BBE35279-7416-4B9D-B89D-B6D1FF369681}
 		{1EE94F73-967E-49D1-BA68-EA2783EA0244} = {18ED7503-3198-455D-861E-84841C48069C}
 		{C1412F64-1D24-4245-8DC7-F4AF01815F58} = {18ED7503-3198-455D-861E-84841C48069C}
+		{539432B9-1257-4237-91FD-5D237855765E} = {BBE35279-7416-4B9D-B89D-B6D1FF369681}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F800283-D010-4227-94C9-09C02B0411DE}

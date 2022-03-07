@@ -23,5 +23,7 @@
 * [IEnumerable Extensions](./enumerable-extensions/enumerable-extensions.md)
 * [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
+* [Analyzer Rules]()
+  * [λ0001](./analyzer-rules/λ0001.md)
 
 [Changelog](changelog.md)
