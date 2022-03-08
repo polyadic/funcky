@@ -59,7 +59,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
         {
-            var someNumber = "1337".ParseIntOrNone();
+            var someNumber = "1337".ParseInt32OrNone();
             var someDate = "12.2.2009".ParseDateTimeOrNone();
 
             var result = someNumber.SelectMany(_ => someDate, Tuple.Create);
@@ -71,7 +71,7 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
         {
-            var someNumber = "1337".ParseIntOrNone();
+            var someNumber = "1337".ParseInt32OrNone();
             var someDate = "12.2.2009".ParseDateTimeOrNone();
 
             var result = from number in someNumber
@@ -85,9 +85,9 @@ namespace Funcky.Test.Monads
         [Fact]
         public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
         {
-            var someNumber = "1337".ParseIntOrNone();
+            var someNumber = "1337".ParseInt32OrNone();
             var someDate = "12.2.2009".ParseDateTimeOrNone();
-            var someOtherNumber = "not a number".ParseIntOrNone();
+            var someOtherNumber = "not a number".ParseInt32OrNone();
 
             var result = from number in someNumber
                          from date in someDate
@@ -102,7 +102,7 @@ namespace Funcky.Test.Monads
         {
             const string input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
             {
                 _ = FunctionalAssert.IsSome(number);
             }
@@ -159,7 +159,7 @@ namespace Funcky.Test.Monads
         {
             var input = "123,some,x,1337,42,1,1000";
 
-            foreach (var number in input.Split(',').Select(ParseExtensions.ParseIntOrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
+            foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
             {
                 var value = number.Match(
                     none: () => 0,
@@ -266,7 +266,7 @@ namespace Funcky.Test.Monads
         [InlineData("")]
         public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
         {
-            var maybe = stringToParse.ParseIntOrNone();
+            var maybe = stringToParse.ParseInt32OrNone();
 
             maybe.Match(
                 none: Statement,

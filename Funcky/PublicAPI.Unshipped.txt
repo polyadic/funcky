@@ -88,6 +88,18 @@ static Funcky.Extensions.ParseExtensions.ParseFloatOrNone(this System.ReadOnlySp
 static Funcky.Extensions.ParseExtensions.ParseFloatOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
 static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(string? candidate) -> Funcky.Monads.Option<System.Guid>
 static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this string! candidate) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this string! candidate) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this string! candidate) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
@@ -100,12 +112,28 @@ static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate
 static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<sbyte>
 static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<short>
 static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this string! candidate) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
 static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string! candidate) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this string! candidate) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this string! candidate) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<ulong>
 static Funcky.Extensions.ParseExtensions.ParseUIntOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<uint>
 static Funcky.Extensions.ParseExtensions.ParseUIntOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
 static Funcky.Extensions.ParseExtensions.ParseUIntOrNone(this string! candidate) -> Funcky.Monads.Option<uint>

@@ -34,28 +34,28 @@ namespace Funcky.Test.Extensions
         [MemberData(nameof(ShortStrings))]
         public void GivenAStringParseShortOrNoneReturnsTheCorrectValue(Option<short> expected, string input)
         {
-            Assert.Equal(expected, input.ParseShortOrNone());
+            Assert.Equal(expected, input.ParseInt16OrNone());
         }
 
         [Theory]
         [MemberData(nameof(IntStrings))]
         public void GivenAStringParseIntOrNoneReturnsTheCorrectValue(Option<int> expected, string input)
         {
-            Assert.Equal(expected, input.ParseIntOrNone());
+            Assert.Equal(expected, input.ParseInt32OrNone());
         }
 
         [Theory]
         [MemberData(nameof(LongStrings))]
         public void GivenAStringParseLongOrNoneReturnsTheCorrectValue(Option<long> expected, string input)
         {
-            Assert.Equal(expected, input.ParseLongOrNone());
+            Assert.Equal(expected, input.ParseInt64OrNone());
         }
 
         [Theory]
         [MemberData(nameof(FloatStrings))]
         public void GivenAStringParseFloatOrNoneReturnsTheCorrectValue(Option<float> expected, string input)
         {
-            Assert.Equal(expected, input.ParseFloatOrNone());
+            Assert.Equal(expected, input.ParseSingleOrNone());
         }
 
         [Theory]
