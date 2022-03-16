@@ -150,4 +150,13 @@
   <data name="UseWithArgumentNamesAnalyzerAnalyzerTitle" xml:space="preserve">
     <value>Use this method with argument names</value>
   </data>
+  <data name="JoinToStringEmptyAnalyzerDescription" xml:space="preserve">
+    <value>Prefer ConcatToString to JoinToString with an empty string</value>
+  </data>
+  <data name="JoinToStringEmptyAnalyzerMessageFormat" xml:space="preserve">
+    <value>Use {0}.ConcatToString() instead of {0}.JoinToString({1})</value>
+  </data>
+  <data name="JoinToStringEmptyAnalyzerTitle" xml:space="preserve">
+    <value>Use .ConcatToString instead of .JoinToString(string.Empty)</value>
+  </data>
 </root>
