@@ -15,6 +15,11 @@ namespace Funcky.Analyzers;
 [ExportCodeRefactoringProvider(LanguageNames.CSharp)]
 public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
 {
+    private const string FromBoolean = "FromBoolean";
+    private const string Where = "Where";
+    private const string Return = "Return";
+    private const string Some = "Some";
+
     public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
     {
         var (document, cancellationToken) = (context.Document, context.CancellationToken);
@@ -25,10 +30,10 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             && root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
             && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } whereInvocationCandidate
             && semanticModel.GetOperation(whereInvocationCandidate) is IInvocationOperation whereInvocationCandidateOperation
-            && whereInvocationCandidateOperation.TargetMethod.Name == "Where"
+            && whereInvocationCandidateOperation.TargetMethod.Name == Where
             && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, whereInvocationCandidateOperation.TargetMethod.ContainingType.ConstructedFrom)
             && whereInvocationCandidateOperation.Instance is IInvocationOperation optionReturnInvocationCandidateOperation
-            && optionReturnInvocationCandidateOperation.TargetMethod.Name is "Return" or "Some"
+            && optionReturnInvocationCandidateOperation.TargetMethod.Name is Return or Some
             && SymbolEqualityComparer.Default.Equals(symbols.OptionType, optionReturnInvocationCandidateOperation.TargetMethod.ContainingType))
         {
             context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocationCandidateOperation.Syntax)));
@@ -38,7 +43,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private static Symbols? GetSymbolsRequiredForRefactoring(Compilation compilation)
         => compilation.GetOptionType() is { } optionType
            && compilation.GetGenericOptionType() is { } genericOptionType
-           && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == "FromBoolean")
+           && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == FromBoolean)
             ? new Symbols(optionType, genericOptionType)
             : null;
 
@@ -50,8 +55,8 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             var value = returnInvocation.ArgumentList.Arguments.Single().Expression;
             var returnMethodName = GetMethodName(returnInvocation);
             SimpleNameSyntax fromBooleanName = returnMethodName is GenericNameSyntax genericNameSyntax
-                ? genericNameSyntax.WithIdentifier(Identifier("FromBoolean"))
-                : IdentifierName("FromBoolean");
+                ? genericNameSyntax.WithIdentifier(Identifier(FromBoolean))
+                : IdentifierName(FromBoolean);
 
             var replacement = InvocationExpression(
                     MemberAccessExpression(
