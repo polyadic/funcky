@@ -83,35 +83,3 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
                     ArgumentList(SingletonSeparatedList(Argument(value)))),
         };
 }
-
-internal static class CompilationExtensions
-{
-    public static INamedTypeSymbol? GetGenericOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option`1");
-
-    public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");
-}
-
-internal sealed class ReplaceParameterReferenceRewriter : CSharpSyntaxRewriter
-{
-    private readonly SemanticModel _semanticModel;
-    private readonly string _parameterName;
-    private readonly ExpressionSyntax _replacement;
-
-    public ReplaceParameterReferenceRewriter(SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
-        : base(visitIntoStructuredTrivia: false)
-    {
-        _semanticModel = semanticModel;
-        _parameterName = parameterName;
-        _replacement = replacement;
-    }
-
-    public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
-    {
-        if (_semanticModel.GetOperation(node) is IParameterReferenceOperation { Parameter.Name: var name } && name == _parameterName)
-        {
-            return _replacement.WithTriviaFrom(node);
-        }
-
-        return node;
-    }
-}
