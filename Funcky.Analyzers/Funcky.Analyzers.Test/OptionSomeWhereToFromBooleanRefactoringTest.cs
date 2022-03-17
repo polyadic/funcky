@@ -44,6 +44,24 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     }
 
     [Fact]
+    public async Task WorksWithLambdaPredicateDependentOnParameter()
+    {
+        await VerifyRefactoring(
+            "var x = Option.Return(\"foo\").[||]Where(v => v.Length == 3);",
+            "var x = Option.FromBoolean(\"foo\".Length == 3, \"foo\");",
+            OptionCode);
+    }
+
+    [Fact]
+    public async Task WorksWithVariableInReturnAndLambdaPredicateDependentOnParameter()
+    {
+        await VerifyRefactoring(
+            "var input = \"foo\"; var x = Option.Return(input).[||]Where(v => v.Length == 3);",
+            "var input = \"foo\"; var x = Option.FromBoolean(input.Length == 3, input);",
+            OptionCode);
+    }
+
+    [Fact]
     public async Task PreservesLeadingTrivia()
     {
         // TODO: find out why we get a newline in the leading trivia
