@@ -27,10 +27,10 @@ namespace Funcky.Analyzers
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(FindEnumerableRepeateOnce, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(FindEnumerableRepeatOnce, SyntaxKind.InvocationExpression);
         }
 
-        private static void FindEnumerableRepeateOnce(SyntaxNodeAnalysisContext context)
+        private static void FindEnumerableRepeatOnce(SyntaxNodeAnalysisContext context)
         {
             if (IsRepeatOnce(new SyntaxMatcher(context)))
             {
