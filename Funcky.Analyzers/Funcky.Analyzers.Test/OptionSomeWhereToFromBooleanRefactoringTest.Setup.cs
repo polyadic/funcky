@@ -41,15 +41,19 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     }
 }";
 
-    private static async Task VerifyRefactoring(string source, string fixedSource, string supportSource)
-        => await VerifyCS.VerifyRefactoringAsync(
-            WrapInMethod(source).ReplaceLineEndings() + Environment.NewLine + supportSource,
-            WrapInMethod(fixedSource).ReplaceLineEndings() + Environment.NewLine + supportSource);
+    private static readonly IEnumerable<string> DefaultUsings = Sequence.Return("using Funcky.Monads;");
 
-    private static string WrapInMethod(string statement)
+    private static async Task VerifyRefactoring(string source, string fixedSource, string supportSource, IEnumerable<string>? usings = null)
+    {
+        usings ??= DefaultUsings;
+        await VerifyCS.VerifyRefactoringAsync(
+            WrapInMethod(source, usings).ReplaceLineEndings() + Environment.NewLine + supportSource,
+            WrapInMethod(fixedSource, usings).ReplaceLineEndings() + Environment.NewLine + supportSource);
+    }
+
+    private static string WrapInMethod(string statement, IEnumerable<string>? usings)
         => $@"
-using System.Collections.Generic;
-using Funcky.Monads;
+{usings?.JoinToString(Environment.NewLine) ?? string.Empty}
 
 public static class C
 {{

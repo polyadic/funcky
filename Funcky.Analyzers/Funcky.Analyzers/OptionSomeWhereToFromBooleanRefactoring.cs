@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.Simplification;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzers;
@@ -51,8 +52,9 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             var replacement = InvocationExpression(
                     MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName(nonGenericOptionType.ToMinimalDisplayString(editor.SemanticModel, whereInvocation.SpanStart)),
-                        fromBooleanName),
+                        (ExpressionSyntax)editor.Generator.TypeExpressionForStaticMemberAccess(nonGenericOptionType),
+                        fromBooleanName)
+                        .WithAdditionalAnnotations(Simplifier.Annotation),
                     ArgumentList(SeparatedList(new[] { Argument(ApplyPredicate(editor.SemanticModel, predicate, value)), Argument(value) })))
                 .WithLeadingTrivia(returnInvocation.GetLeadingTrivia());
 
