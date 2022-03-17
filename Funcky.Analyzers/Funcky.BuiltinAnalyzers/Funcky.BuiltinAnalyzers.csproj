@@ -8,7 +8,7 @@
     <ItemGroup>
         <!-- We use 2.7.0 for compatibility with VS 2019 and .NET Core SDK 3.x.
              See https://docs.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support for VS compatibility.-->
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="3.7.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis" VersionOverride="3.7.0" />
         <!-- Microsoft.CodeAnalysis.CSharp 3.7.0 comes with an older, buggy version of Microsoft.CodeAnalysis.Analyzers -->
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" VersionOverride="3.3.3" PrivateAssets="all" />
     </ItemGroup>
