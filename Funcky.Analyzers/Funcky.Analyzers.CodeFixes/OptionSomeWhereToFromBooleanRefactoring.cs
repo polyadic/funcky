@@ -29,14 +29,10 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         if (GetSymbolsRequiredForRefactoring(semanticModel.Compilation) is { } symbols
             && root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
             && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } whereInvocationCandidate
-            && semanticModel.GetOperation(whereInvocationCandidate) is IInvocationOperation whereInvocationCandidateOperation
-            && whereInvocationCandidateOperation.TargetMethod.Name == Where
-            && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, whereInvocationCandidateOperation.TargetMethod.ContainingType.ConstructedFrom)
-            && whereInvocationCandidateOperation.Instance is IInvocationOperation optionReturnInvocationCandidateOperation
-            && optionReturnInvocationCandidateOperation.TargetMethod.Name is Return or Some
-            && SymbolEqualityComparer.Default.Equals(symbols.OptionType, optionReturnInvocationCandidateOperation.TargetMethod.ContainingType))
+            && IsWhereInvocation(whereInvocationCandidate, semanticModel, symbols, out var whereInvocation)
+            && IsOptionReturnInvocation(whereInvocation.Instance, symbols, out var optionReturnInvocation))
         {
-            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocationCandidateOperation.Syntax)));
+            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
         }
     }
 
@@ -46,6 +42,24 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
            && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == FromBoolean)
             ? new Symbols(optionType, genericOptionType)
             : null;
+
+    private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, out IInvocationOperation whereInvocation)
+    {
+        whereInvocation = null!;
+        return semanticModel.GetOperation(syntax) is IInvocationOperation operation
+           && operation.TargetMethod.Name == Where
+           && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
+           && (whereInvocation = operation) is var _;
+    }
+
+    private static bool IsOptionReturnInvocation(IOperation? candidate, Symbols symbols, out IInvocationOperation returnInvocationOperation)
+    {
+        returnInvocationOperation = null!;
+        return candidate is IInvocationOperation operation
+            && operation.TargetMethod.Name is Return or Some
+            && SymbolEqualityComparer.Default.Equals(symbols.OptionType, operation.TargetMethod.ContainingType)
+            && (returnInvocationOperation = operation) is var _;
+    }
 
     private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
         => async cancellationToken =>
