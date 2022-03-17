@@ -73,8 +73,8 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private ExpressionSyntax ApplyPredicate(SemanticModel semanticModel, ExpressionSyntax predicate, ExpressionSyntax value)
         => predicate switch
         {
-            SimpleLambdaExpressionSyntax lambda => (ExpressionSyntax)new Rewriter(semanticModel, lambda.Parameter.Identifier.Text, value).Visit(lambda.Body),
-            ParenthesizedLambdaExpressionSyntax lambda => (ExpressionSyntax)new Rewriter(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value).Visit(lambda.Body),
+            SimpleLambdaExpressionSyntax lambda => (ExpressionSyntax)new ReplaceParameterReferenceRewriter(semanticModel, lambda.Parameter.Identifier.Text, value).Visit(lambda.Body),
+            ParenthesizedLambdaExpressionSyntax lambda => (ExpressionSyntax)new ReplaceParameterReferenceRewriter(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value).Visit(lambda.Body),
             _ when semanticModel.GetOperation(predicate) is IMethodReferenceOperation
                 => InvocationExpression(
                     predicate,
@@ -89,13 +89,13 @@ internal static class CompilationExtensions
     public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");
 }
 
-internal sealed class Rewriter : CSharpSyntaxRewriter
+internal sealed class ReplaceParameterReferenceRewriter : CSharpSyntaxRewriter
 {
     private readonly SemanticModel _semanticModel;
     private readonly string _parameterName;
     private readonly ExpressionSyntax _replacement;
 
-    public Rewriter(SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
+    public ReplaceParameterReferenceRewriter(SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
         : base(visitIntoStructuredTrivia: false)
     {
         _semanticModel = semanticModel;
