@@ -27,12 +27,11 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         var semanticModel = await document.GetSemanticModelAsync(cancellationToken) ?? throw new InvalidOperationException("Unable to get semantic model");
 
         if (GetSymbolsRequiredForRefactoring(semanticModel.Compilation) is { } symbols
-            && root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
-            && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } whereInvocationCandidate
-            && IsWhereInvocation(whereInvocationCandidate, semanticModel, symbols, out var whereInvocation)
+            && FindInvocationExpression(context, root) is { } invocationExpression
+            && IsWhereInvocation(invocationExpression, semanticModel, symbols, out var whereInvocation)
             && IsOptionReturnInvocation(whereInvocation.Instance, symbols, out var optionReturnInvocation))
         {
-            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
+            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, invocationExpression, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
         }
     }
 
@@ -41,6 +40,12 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
            && compilation.GetGenericOptionType() is { } genericOptionType
            && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == FromBoolean)
             ? new Symbols(optionType, genericOptionType)
+            : null;
+
+    private static InvocationExpressionSyntax? FindInvocationExpression(CodeRefactoringContext context, SyntaxNode root)
+        => root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
+            && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } expression
+            ? expression
             : null;
 
     private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, out IInvocationOperation whereInvocation)
