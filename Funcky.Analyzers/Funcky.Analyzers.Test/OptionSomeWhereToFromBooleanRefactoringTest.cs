@@ -14,6 +14,16 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
             OptionCodeWithoutFromBoolean);
     }
 
+    [Fact]
+    public async Task DoesNotSuggestRefactoringWhenPredicateUsesBlockBody()
+    {
+        const string source = "Option<int> b = Option.Return(10).[||]Where(_ => { return true; });";
+        await VerifyRefactoring(
+            source,
+            source,
+            OptionCode);
+    }
+
     [Theory]
     [InlineData("Return")]
     [InlineData("Some")]

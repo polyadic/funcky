@@ -21,6 +21,8 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private const string Return = "Return";
     private const string Some = "Some";
 
+    private delegate ExpressionSyntax ApplyPredicate(ExpressionSyntax value);
+
     public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
     {
         var (document, cancellationToken) = (context.Document, context.CancellationToken);
@@ -30,9 +32,10 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         if (GetSymbolsRequiredForRefactoring(semanticModel.Compilation) is { } symbols
             && FindInvocationExpression(context, root) is { } invocationExpression
             && IsWhereInvocation(invocationExpression, semanticModel, symbols, out var whereInvocation)
-            && IsOptionReturnInvocation(whereInvocation.Instance, symbols, out var optionReturnInvocation))
+            && IsOptionReturnInvocation(whereInvocation.Instance, symbols, out var optionReturnInvocation)
+            && TryGetPredicateApplier(invocationExpression, semanticModel) is { } applyPredicate)
         {
-            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, invocationExpression, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
+            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, applyPredicate, invocationExpression, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
         }
     }
 
@@ -67,11 +70,22 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             && (returnInvocationOperation = operation) is var _;
     }
 
-    private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
+    private static ApplyPredicate? TryGetPredicateApplier(InvocationExpressionSyntax whereInvocation, SemanticModel semanticModel)
+        => whereInvocation.ArgumentList.Arguments.FirstOrDefault()?.Expression switch
+        {
+            SimpleLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda
+                => value => expressionBody.ReplaceParameterReferences(semanticModel, lambda.Parameter.Identifier.Text, value),
+            ParenthesizedLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda
+                => value => expressionBody.ReplaceParameterReferences(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value),
+            { } predicate when semanticModel.GetOperation(predicate) is IMethodReferenceOperation
+                => value => InvocationExpression(predicate, ArgumentList(SingletonSeparatedList(Argument(value)))),
+            _ => null,
+        };
+
+    private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, ApplyPredicate applyPredicate, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
         => async cancellationToken =>
         {
             var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
-            var predicate = whereInvocation.ArgumentList.Arguments.First().Expression;
             var returnValue = returnInvocation.ArgumentList.Arguments.Single().Expression;
 
             editor.ReplaceNode(
@@ -80,7 +94,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
                     returnInvocation,
                     symbols,
                     editor.Generator,
-                    ApplyPredicate(editor.SemanticModel, predicate, returnValue),
+                    applyPredicate(returnValue),
                     returnValue));
 
             return editor.GetChangedDocument();
@@ -112,18 +126,6 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             SimpleNameSyntax simpleNameSyntax => simpleNameSyntax,
             MemberAccessExpressionSyntax memberAccessExpressionSyntax => memberAccessExpressionSyntax.Name,
             var expression => throw new InvalidOperationException($"Unexpected invocation expression: {expression}"),
-        };
-
-    private static ExpressionSyntax ApplyPredicate(SemanticModel semanticModel, ExpressionSyntax predicate, ExpressionSyntax value)
-        => predicate switch
-        {
-            SimpleLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda => expressionBody.ReplaceParameterReferences(semanticModel, lambda.Parameter.Identifier.Text, value),
-            ParenthesizedLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda => expressionBody.ReplaceParameterReferences(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value),
-            _ when semanticModel.GetOperation(predicate) is IMethodReferenceOperation
-                => InvocationExpression(
-                    predicate,
-                    ArgumentList(SingletonSeparatedList(Argument(value)))),
-            var expression => throw new InvalidOperationException($"Unexpected predicate expression: {expression}"),
         };
 
     private sealed record Symbols(INamedTypeSymbol OptionType, INamedTypeSymbol GenericOptionType);
