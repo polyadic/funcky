@@ -13,6 +13,7 @@
     <ItemGroup>
         <PackageReference Include="IsExternalInit" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+        <PackageReference Include="Nullable" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>

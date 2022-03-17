@@ -1,4 +1,5 @@
 using System.Composition;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
@@ -48,18 +49,18 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             ? expression
             : null;
 
-    private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, out IInvocationOperation whereInvocation)
+    private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? whereInvocation)
     {
-        whereInvocation = null!;
+        whereInvocation = null;
         return semanticModel.GetOperation(syntax) is IInvocationOperation operation
            && operation.TargetMethod.Name == Where
            && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
            && (whereInvocation = operation) is var _;
     }
 
-    private static bool IsOptionReturnInvocation(IOperation? candidate, Symbols symbols, out IInvocationOperation returnInvocationOperation)
+    private static bool IsOptionReturnInvocation(IOperation? candidate, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? returnInvocationOperation)
     {
-        returnInvocationOperation = null!;
+        returnInvocationOperation = null;
         return candidate is IInvocationOperation operation
             && operation.TargetMethod.Name is Return or Some
             && SymbolEqualityComparer.Default.Equals(symbols.OptionType, operation.TargetMethod.ContainingType)
