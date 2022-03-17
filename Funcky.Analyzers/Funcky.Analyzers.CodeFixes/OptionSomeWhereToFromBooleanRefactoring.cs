@@ -72,27 +72,39 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         {
             var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
             var predicate = whereInvocation.ArgumentList.Arguments.First().Expression;
-            var value = returnInvocation.ArgumentList.Arguments.Single().Expression;
-            var returnMethodName = GetMethodName(returnInvocation);
-            SimpleNameSyntax fromBooleanName = returnMethodName is GenericNameSyntax genericNameSyntax
-                ? genericNameSyntax.WithIdentifier(Identifier(FromBoolean))
-                : IdentifierName(FromBoolean);
-
-            var replacement = InvocationExpression(
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        (ExpressionSyntax)editor.Generator.TypeExpressionForStaticMemberAccess(symbols.OptionType),
-                        fromBooleanName)
-                        .WithAdditionalAnnotations(Simplifier.Annotation),
-                    ArgumentList(SeparatedList(new[] { Argument(ApplyPredicate(editor.SemanticModel, predicate, value)), Argument(value) })))
-                .WithLeadingTrivia(returnInvocation.GetLeadingTrivia());
+            var returnValue = returnInvocation.ArgumentList.Arguments.Single().Expression;
 
             editor.ReplaceNode(
                 whereInvocation,
-                replacement);
+                CreateFromBooleanInvocation(
+                    returnInvocation,
+                    symbols,
+                    editor.Generator,
+                    ApplyPredicate(editor.SemanticModel, predicate, returnValue),
+                    returnValue));
 
             return editor.GetChangedDocument();
         };
+
+    private InvocationExpressionSyntax CreateFromBooleanInvocation(
+        InvocationExpressionSyntax returnInvocation,
+        Symbols symbols,
+        SyntaxGenerator generator,
+        ExpressionSyntax condition,
+        ExpressionSyntax returnValue)
+        => InvocationExpression(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(symbols.OptionType),
+                    GetFromBooleanName(returnInvocation))
+                    .WithAdditionalAnnotations(Simplifier.Annotation),
+                ArgumentList(SeparatedList(new[] { Argument(condition), Argument(returnValue) })))
+            .WithLeadingTrivia(returnInvocation.GetLeadingTrivia());
+
+    private SimpleNameSyntax GetFromBooleanName(InvocationExpressionSyntax returnInvocation)
+        => GetMethodName(returnInvocation) is GenericNameSyntax genericNameSyntax
+            ? genericNameSyntax.WithIdentifier(Identifier(FromBoolean))
+            : IdentifierName(FromBoolean);
 
     private SimpleNameSyntax GetMethodName(InvocationExpressionSyntax invocationExpressionSyntax)
         => invocationExpressionSyntax.Expression switch
