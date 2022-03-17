@@ -47,8 +47,7 @@ namespace Funcky.Analyzers
                 => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
 
         private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
-            =>
-            await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
+            => await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
                 ? oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel))
                 : throw new Exception("oldRoot or semanticModel are null");
 
