@@ -122,7 +122,7 @@
     <comment>The title of the diagnostic.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerMessageFormat" xml:space="preserve">
-    <value>Use Sequnce.Return({0}) instead of Enumerable.Repeat({0}, 1) </value>
+    <value>Use Sequence.Return({0}) instead of Enumerable.Repeat({0}, 1) </value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerTitle" xml:space="preserve">

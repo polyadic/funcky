@@ -97,7 +97,7 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Sequnce.Return({0}) instead of Enumerable.Repeat({0}, 1) .
+        ///   Looks up a localized string similar to Use Sequence.Return({0}) instead of Enumerable.Repeat({0}, 1) .
         /// </summary>
         internal static string EnumerableRepeatOnceAnalyzerMessageFormat {
             get {
