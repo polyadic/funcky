@@ -20,28 +20,32 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         var (document, cancellationToken) = (context.Document, context.CancellationToken);
         var root = await document.GetSyntaxRootAsync(cancellationToken) ?? throw new InvalidOperationException("Missing syntax root");
         var semanticModel = await document.GetSemanticModelAsync(cancellationToken) ?? throw new InvalidOperationException("Unable to get semantic model");
-        var optionType = semanticModel.Compilation.GetGenericOptionType();
-        var nonGenericOptionType = semanticModel.Compilation.GetOptionType();
 
-        if (root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
+        if (GetSymbolsRequiredForRefactoring(semanticModel.Compilation) is { } symbols
+            && root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
             && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } whereInvocationCandidate
             && semanticModel.GetOperation(whereInvocationCandidate) is IInvocationOperation whereInvocationCandidateOperation
             && whereInvocationCandidateOperation.TargetMethod.Name == "Where"
-            && SymbolEqualityComparer.Default.Equals(optionType, whereInvocationCandidateOperation.TargetMethod.ContainingType.ConstructedFrom)
+            && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, whereInvocationCandidateOperation.TargetMethod.ContainingType.ConstructedFrom)
             && whereInvocationCandidateOperation.Instance is IInvocationOperation optionReturnInvocationCandidateOperation
             && optionReturnInvocationCandidateOperation.TargetMethod.Name is "Return" or "Some"
-            && SymbolEqualityComparer.Default.Equals(nonGenericOptionType, optionReturnInvocationCandidateOperation.TargetMethod.ContainingType)
-            && nonGenericOptionType.GetMembers().Any(m => m is IMethodSymbol && m.IsStatic && m.Name == "FromBoolean"))
+            && SymbolEqualityComparer.Default.Equals(symbols.OptionType, optionReturnInvocationCandidateOperation.TargetMethod.ContainingType))
         {
-            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocationCandidateOperation.Syntax)));
+            context.RegisterRefactoring(CodeAction.Create("Replace with Option.FromBoolean", ReplaceWithOptionFromBoolean(document, symbols, whereInvocationCandidate, (InvocationExpressionSyntax)optionReturnInvocationCandidateOperation.Syntax)));
         }
     }
 
-    private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
+    private static Symbols? GetSymbolsRequiredForRefactoring(Compilation compilation)
+        => compilation.GetOptionType() is { } optionType
+           && compilation.GetGenericOptionType() is { } genericOptionType
+           && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == "FromBoolean")
+            ? new Symbols(optionType, genericOptionType)
+            : null;
+
+    private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
         => async cancellationToken =>
         {
             var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
-            var nonGenericOptionType = editor.SemanticModel.Compilation.GetTypeByMetadataName("Funcky.Monads.Option")!;
             var predicate = whereInvocation.ArgumentList.Arguments.First().Expression;
             var value = returnInvocation.ArgumentList.Arguments.Single().Expression;
             var returnMethodName = GetMethodName(returnInvocation);
@@ -52,7 +56,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             var replacement = InvocationExpression(
                     MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
-                        (ExpressionSyntax)editor.Generator.TypeExpressionForStaticMemberAccess(nonGenericOptionType),
+                        (ExpressionSyntax)editor.Generator.TypeExpressionForStaticMemberAccess(symbols.OptionType),
                         fromBooleanName)
                         .WithAdditionalAnnotations(Simplifier.Annotation),
                     ArgumentList(SeparatedList(new[] { Argument(ApplyPredicate(editor.SemanticModel, predicate, value)), Argument(value) })))
@@ -82,4 +86,6 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
                     predicate,
                     ArgumentList(SingletonSeparatedList(Argument(value)))),
         };
+
+    private sealed record Symbols(INamedTypeSymbol OptionType, INamedTypeSymbol GenericOptionType);
 }
