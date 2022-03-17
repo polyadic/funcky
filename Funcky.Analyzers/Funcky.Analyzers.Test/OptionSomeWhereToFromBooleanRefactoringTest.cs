@@ -17,7 +17,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     [Fact]
     public async Task DoesNotSuggestRefactoringWhenPredicateUsesBlockBody()
     {
-        const string source = "Option<int> b = Option.Return(10).[||]Where(_ => { return true; });";
+        const string source = "Option<int> b = Option.Return(10).[||]Where(_ => { var x = 1; return true; });";
         await VerifyRefactoring(
             source,
             source,
@@ -51,6 +51,15 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
         await VerifyRefactoring(
             "Option<int> x = Option.Return(10).[||]Where(Predicate);",
             "Option<int> x = Option.FromBoolean(Predicate(10), 10);",
+            OptionCode);
+    }
+
+    [Fact]
+    public async Task WorksWhenLambdaUsesBlockBodyWithSingleReturnStatement()
+    {
+        await VerifyRefactoring(
+            "Option<int> x = Option.Return(10).[||]Where(x => { return x == 10; });",
+            "Option<int> x = Option.FromBoolean(10 == 10, 10);",
             OptionCode);
     }
 

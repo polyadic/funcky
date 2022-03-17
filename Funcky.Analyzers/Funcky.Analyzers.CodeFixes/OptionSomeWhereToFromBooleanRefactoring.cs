@@ -73,12 +73,28 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private static ApplyPredicate? TryGetPredicateApplier(InvocationExpressionSyntax whereInvocation, SemanticModel semanticModel)
         => whereInvocation.ArgumentList.Arguments.FirstOrDefault()?.Expression switch
         {
-            SimpleLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda
-                => value => expressionBody.ReplaceParameterReferences(semanticModel, lambda.Parameter.Identifier.Text, value),
-            ParenthesizedLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda
-                => value => expressionBody.ReplaceParameterReferences(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value),
+            LambdaExpressionSyntax lambda when
+                TryGetSingleParameter(lambda) is { } parameter
+                && TryGetLambdaExpression(lambda) is { } expression
+                => value => expression.ReplaceParameterReferences(semanticModel, parameter.Identifier.Text, value),
             { } predicate when semanticModel.GetOperation(predicate) is IMethodReferenceOperation
                 => value => InvocationExpression(predicate, ArgumentList(SingletonSeparatedList(Argument(value)))),
+            _ => null,
+        };
+
+    private static ParameterSyntax? TryGetSingleParameter(LambdaExpressionSyntax lambda)
+        => lambda switch
+        {
+            SimpleLambdaExpressionSyntax { Parameter: var parameter } => parameter,
+            ParenthesizedLambdaExpressionSyntax { ParameterList.Parameters: { Count: 1 } parameters } => parameters.Single(),
+            _ => null,
+        };
+
+    private static ExpressionSyntax? TryGetLambdaExpression(LambdaExpressionSyntax lambda)
+        => lambda switch
+        {
+            { ExpressionBody: { } expressionBody } => expressionBody,
+            { Block.Statements: { Count: 1 } statements } when statements.Single() is ReturnStatementSyntax { Expression: var returnExpression } => returnExpression,
             _ => null,
         };
 
