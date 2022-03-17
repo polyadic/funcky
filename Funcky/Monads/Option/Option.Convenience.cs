@@ -7,7 +7,7 @@ namespace Funcky.Monads
 
         [Pure]
         public Option<TItem> Where(Func<TItem, bool> predicate)
-            => SelectMany(item => predicate(item) ? item : None());
+            => SelectMany(item => Option.FromBoolean(predicate(item), item));
 
         [Pure]
         public Option<TItem> OrElse(Option<TItem> elseOption)
