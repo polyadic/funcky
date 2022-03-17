@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.Simplification;
 using static Funcky.Analyzers.CodeFixResources;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -49,25 +50,26 @@ namespace Funcky.Analyzers
                 =>
                 {
                     var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-                    editor.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration), editor.SemanticModel));
+                    editor.ReplaceNode(declaration, CreateSequenceReturnRoot(ExtractFirstArgument(declaration), editor.SemanticModel, editor.Generator));
                     return editor.GetChangedDocument();
                 };
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
-        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
-            => SyntaxSequenceReturn(firstArgument, model)
+        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
+            => SyntaxSequenceReturn(model, generator)
                 .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument))
                 .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
 
-        private static InvocationExpressionSyntax SyntaxSequenceReturn(ArgumentSyntax firstArgument, SemanticModel model)
+        private static InvocationExpressionSyntax SyntaxSequenceReturn(SemanticModel model, SyntaxGenerator generator)
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(SequenceType(model)?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty),
-                    IdentifierName(Return)));
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(SequenceType(model)!),
+                    IdentifierName(Return))
+                    .WithAdditionalAnnotations(Simplifier.Annotation));
 
         private static INamedTypeSymbol? SequenceType(SemanticModel model)
             => model.Compilation.GetTypeByMetadataName(FullyQualifiedSequence);

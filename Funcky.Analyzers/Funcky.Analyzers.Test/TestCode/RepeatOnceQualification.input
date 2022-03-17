@@ -1,0 +1,44 @@
+namespace Funcky
+{
+    class Sequence
+    {
+        public static System.Collections.Generic.IEnumerable<T> Return<T>(T value) => null!;
+    }
+}
+
+namespace WithUsingStatic
+{
+    using static Funcky.Sequence;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = System.Linq.Enumerable.Repeat(10, 1);
+        }
+    }
+}
+
+namespace WithFullyQualifiedName
+{
+    public class C
+    {
+        public void M()
+        {
+            _ = System.Linq.Enumerable.Repeat(10, 1);
+        }
+    }
+}
+
+namespace WithUsingAlias
+{
+    using Seq = Funcky.Sequence;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = System.Linq.Enumerable.Repeat(10, 1);
+        }
+    }
+}

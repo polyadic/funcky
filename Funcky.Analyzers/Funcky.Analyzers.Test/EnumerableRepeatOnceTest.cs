@@ -34,5 +34,18 @@ namespace Funcky.Analyzers.Test
 
             await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostic, "RepeatOnceWithConstant");
         }
+
+        [Fact]
+        public async Task CodeFixWorksWithDifferentUsingStyles()
+        {
+            var expectedDiagnostics = new[]
+            {
+                VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(17, 17, 17, 53).WithArguments("10"),
+                VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(28, 17, 28, 53).WithArguments("10"),
+                VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(41, 17, 41, 53).WithArguments("10"),
+            };
+
+            await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostics, "RepeatOnceQualification");
+        }
     }
 }
