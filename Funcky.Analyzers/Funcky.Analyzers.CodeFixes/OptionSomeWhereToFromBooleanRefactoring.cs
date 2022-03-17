@@ -111,17 +111,19 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         {
             SimpleNameSyntax simpleNameSyntax => simpleNameSyntax,
             MemberAccessExpressionSyntax memberAccessExpressionSyntax => memberAccessExpressionSyntax.Name,
+            var expression => throw new InvalidOperationException($"Unexpected invocation expression: {expression}"),
         };
 
-    private ExpressionSyntax ApplyPredicate(SemanticModel semanticModel, ExpressionSyntax predicate, ExpressionSyntax value)
+    private static ExpressionSyntax ApplyPredicate(SemanticModel semanticModel, ExpressionSyntax predicate, ExpressionSyntax value)
         => predicate switch
         {
-            SimpleLambdaExpressionSyntax lambda => (ExpressionSyntax)new ReplaceParameterReferenceRewriter(semanticModel, lambda.Parameter.Identifier.Text, value).Visit(lambda.Body),
-            ParenthesizedLambdaExpressionSyntax lambda => (ExpressionSyntax)new ReplaceParameterReferenceRewriter(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value).Visit(lambda.Body),
+            SimpleLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda => expressionBody.ReplaceParameterReferences(semanticModel, lambda.Parameter.Identifier.Text, value),
+            ParenthesizedLambdaExpressionSyntax { ExpressionBody: { } expressionBody } lambda => expressionBody.ReplaceParameterReferences(semanticModel, lambda.ParameterList.Parameters.Single().Identifier.Text, value),
             _ when semanticModel.GetOperation(predicate) is IMethodReferenceOperation
                 => InvocationExpression(
                     predicate,
                     ArgumentList(SingletonSeparatedList(Argument(value)))),
+            var expression => throw new InvalidOperationException($"Unexpected predicate expression: {expression}"),
         };
 
     private sealed record Symbols(INamedTypeSymbol OptionType, INamedTypeSymbol GenericOptionType);

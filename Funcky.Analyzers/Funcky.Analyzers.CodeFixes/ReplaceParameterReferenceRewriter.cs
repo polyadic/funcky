@@ -29,3 +29,10 @@ internal sealed class ReplaceParameterReferenceRewriter : CSharpSyntaxRewriter
         return node;
     }
 }
+
+internal static class SyntaxNodeExtensions
+{
+    public static TNode ReplaceParameterReferences<TNode>(this TNode node, SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
+        where TNode : SyntaxNode
+        => (TNode)new ReplaceParameterReferenceRewriter(semanticModel, parameterName, replacement).Visit(node);
+}
