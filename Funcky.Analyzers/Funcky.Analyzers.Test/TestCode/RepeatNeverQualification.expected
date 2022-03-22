@@ -1,0 +1,36 @@
+namespace WithUsingStatic
+{
+    using static System.Linq.Enumerable;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = Empty<string>();
+        }
+    }
+}
+
+namespace WithFullyQualifiedName
+{
+    public class C
+    {
+        public void M()
+        {
+            _ = System.Linq.Enumerable.Empty<string>();
+        }
+    }
+}
+
+namespace WithUsingAlias
+{
+    using Seq = System.Linq.Enumerable;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = Seq.Empty<string>();
+        }
+    }
+}

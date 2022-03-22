@@ -5,6 +5,8 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.Simplification;
 using static Funcky.Analyzers.CodeFixResources;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -44,24 +46,24 @@ namespace Funcky.Analyzers
 
         private static Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration)
             => async cancellationToken
-                => document.WithSyntaxRoot(await ReplaceWithSequenceReturn(document, declaration, cancellationToken).ConfigureAwait(false));
-
-        private static async Task<SyntaxNode> ReplaceWithSequenceReturn(Document document, InvocationExpressionSyntax declaration, CancellationToken cancellationToken)
-            =>
-            await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } oldRoot && await document.GetSemanticModelAsync(cancellationToken) is { } semanticModel
-                ? oldRoot.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), semanticModel))
-                : throw new Exception("oldRoot or semanticModel are null");
+                =>
+                {
+                    var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
+                    editor.ReplaceNode(declaration, CreateEnumerableReturnRoot(ExtractFirstArgument(declaration), editor.SemanticModel, editor.Generator));
+                    return editor.GetChangedDocument();
+                };
 
         private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
             => invocationExpr.ArgumentList.Arguments[Argument.First];
 
-        private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model)
+        private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable)?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty),
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable)!),
                     GenericName(nameof(Enumerable.Empty))
-                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model))))));
+                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model)))))
+                    .WithAdditionalAnnotations(Simplifier.Annotation));
 
         private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
             => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty);

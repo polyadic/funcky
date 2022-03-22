@@ -1,0 +1,36 @@
+namespace WithUsingStatic
+{
+    using static System.Linq.Enumerable;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = Repeat("value", 0);
+        }
+    }
+}
+
+namespace WithFullyQualifiedName
+{
+    public class C
+    {
+        public void M()
+        {
+            _ = System.Linq.Enumerable.Repeat("value", 0);
+        }
+    }
+}
+
+namespace WithUsingAlias
+{
+    using Seq = System.Linq.Enumerable;
+
+    public class C
+    {
+        public void M()
+        {
+            _ = Seq.Repeat("value", 0);
+        }
+    }
+}
