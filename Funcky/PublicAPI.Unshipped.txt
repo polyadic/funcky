@@ -13,6 +13,7 @@ Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions() -> void
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
 Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! action) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Option<TItem>.TryGetValue(out TItem item) -> bool
+Funcky.Monads.OptionExtensions
 Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! action) -> Funcky.Monads.Result<TValidResult>
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
 static Funcky.Extensions.EnumerableExtensions.AnyOrElse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEnumerable<TSource>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -170,4 +171,6 @@ static Funcky.Extensions.ParseExtensions.TryParseTransferCodingWithQualityHeader
 static Funcky.Extensions.ParseExtensions.TryParseViaHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
 static Funcky.Extensions.ParseExtensions.TryParseWarningHeaderValueOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Monads.Either<TLeft, TRight>.implicit operator Funcky.Monads.Either<TLeft, TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! getLeft) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft leftValue) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
