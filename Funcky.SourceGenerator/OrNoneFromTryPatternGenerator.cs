@@ -93,9 +93,9 @@ namespace Funcky.SourceGenerator
 
         private static Func<AttributeListSyntax, bool> HasOrNoneAttribute(GeneratorSyntaxContext context, CancellationToken cancellationToken)
             => attributeList
-                => attributeList.Attributes.Any(IsDiscriminatedUnionAttribute(context, cancellationToken));
+                => attributeList.Attributes.Any(IsOrNoneFromTryPatternAttribute(context, cancellationToken));
 
-        private static Func<AttributeSyntax, bool> IsDiscriminatedUnionAttribute(GeneratorSyntaxContext context, CancellationToken cancellationToken)
+        private static Func<AttributeSyntax, bool> IsOrNoneFromTryPatternAttribute(GeneratorSyntaxContext context, CancellationToken cancellationToken)
             => attribute
                 => context.SemanticModel.GetSymbolInfo(attribute, cancellationToken).Symbol is IMethodSymbol attributeSymbol
                     && attributeSymbol.ContainingType.ToDisplayString() == "Funcky.Internal.OrNoneFromTryPatternAttribute";
