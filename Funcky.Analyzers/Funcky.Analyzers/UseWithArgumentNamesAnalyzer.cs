@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -34,24 +33,24 @@ namespace Funcky.Analyzers
             {
                 if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol)
                 {
-                    context.RegisterSyntaxNodeAction(AnalyzeInvocation(attributeSymbol), SyntaxKind.InvocationExpression);
+                    context.RegisterOperationAction(AnalyzeInvocation(attributeSymbol), OperationKind.Invocation);
                 }
             });
         }
 
-        private static Action<SyntaxNodeAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol)
+        private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol)
             => context =>
             {
-                var node = (InvocationExpressionSyntax)context.Node;
+                var invocation = (IInvocationOperation)context.Operation;
 
-                if (context.SemanticModel.GetOperation(node) is IInvocationOperation invocation
-                    && invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
+                if (invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
                 {
-                    foreach (var argument in node.ArgumentList.Arguments)
+                    foreach (var argument in invocation.Arguments)
                     {
-                        if (argument.NameColon is null && context.SemanticModel.GetOperation(argument) is IArgumentOperation { Parameter: { } } argumentOperation)
+                        if (argument.Syntax is ArgumentSyntax { NameColon: null } argumentSyntax
+                            && argument.Parameter?.Name is { } parameterName)
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation(), argumentOperation.Parameter.Name));
+                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, argumentSyntax.GetLocation(), parameterName));
                         }
                     }
                 }
