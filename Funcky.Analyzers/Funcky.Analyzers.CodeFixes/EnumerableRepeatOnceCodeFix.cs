@@ -16,7 +16,6 @@ namespace Funcky.Analyzers
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatOnceCodeFix))]
     public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
     {
-        private const string FullyQualifiedSequence = "Funcky.Sequence";
         private const string Return = "Return";
 
         public override ImmutableArray<string> FixableDiagnosticIds
@@ -67,11 +66,8 @@ namespace Funcky.Analyzers
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(SequenceType(model)!),
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetSequenceType()!),
                     IdentifierName(Return))
                     .WithAdditionalAnnotations(Simplifier.Annotation));
-
-        private static INamedTypeSymbol? SequenceType(SemanticModel model)
-            => model.Compilation.GetTypeByMetadataName(FullyQualifiedSequence);
     }
 }

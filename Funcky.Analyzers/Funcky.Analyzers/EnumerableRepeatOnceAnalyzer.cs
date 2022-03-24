@@ -30,8 +30,8 @@ namespace Funcky.Analyzers
 
             context.RegisterCompilationStartAction(static context =>
             {
-                if (context.Compilation.GetTypeByMetadataName(typeof(Enumerable).FullName) is { } enumerableType
-                    && context.Compilation.GetTypeByMetadataName("Funcky.Sequence") is not null)
+                if (context.Compilation.GetEnumerableType() is { } enumerableType
+                    && context.Compilation.GetSequenceType() is not null)
                 {
                     context.RegisterOperationAction(FindEnumerableRepeatOnce(enumerableType), OperationKind.Invocation);
                 }
