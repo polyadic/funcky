@@ -25,6 +25,13 @@ namespace Funcky.Analyzers.Test
         }
 
         [Fact]
+        public async Task UsingEnumerableRepeatOnceShowsNoDiagnosticWhenSequenceTypeIsNotAvailable()
+        {
+            var inputCode = File.ReadAllText("TestCode/RepeatOnceMissingSequenceType.input");
+            await VerifyCS.VerifyAnalyzerAsync(inputCode);
+        }
+
+        [Fact]
         public async Task UsingEnumerableRepeatOnceViaConstantShowsTheSequenceReturnDiagnostic()
         {
             var expectedDiagnostic = VerifyCS
