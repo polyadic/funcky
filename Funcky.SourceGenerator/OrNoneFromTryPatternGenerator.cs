@@ -40,17 +40,17 @@ namespace Funcky.SourceGenerator
             => context.SyntaxProvider.CreateSyntaxProvider(predicate: IsSyntaxTargetForGeneration, transform: GetSemanticTargetForGeneration)
                 .WhereNotNull()
                 .Combine(context.CompilationProvider)
-                .Select((state, cancellationToken) => ToMethodPartial(state.Left, state.Right, context, cancellationToken))
+                .Select((state, _) => ToMethodPartial(state.Left, state.Right))
                 .WhereNotNull()
                 .Collect();
 
-        private static MethodPartial? ToMethodPartial(MethodDeclarationSyntax methodDeclaration, Compilation compilation, IncrementalGeneratorInitializationContext context, CancellationToken cancellationToken)
+        private static MethodPartial? ToMethodPartial(MethodDeclarationSyntax methodDeclaration, Compilation compilation)
         {
             var attribute = methodDeclaration.GetAttributeByUsedName("OrNoneFromTryPattern");
             var compilationUnit = methodDeclaration.TryGetParentSyntax<CompilationUnitSyntax>()!;
 
             return GetNamespaceName(methodDeclaration) is { } namespaceName && GetClassName(methodDeclaration) is { } className
-                ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, GetMethodValue(compilation, methodDeclaration, attribute), GetTypeValue(compilation, methodDeclaration, attribute)))
+                ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, GetMethodValue(compilation, methodDeclaration, attribute), GetTypeValue(attribute)))
                 : null;
         }
 
@@ -62,7 +62,7 @@ namespace Funcky.SourceGenerator
                     .ToString()
                 : throw new Exception("Method value on attribute missing.");
 
-        private static TypeSyntax GetTypeValue(Compilation compilation, MethodDeclarationSyntax component, AttributeSyntax attribute)
+        private static TypeSyntax GetTypeValue(AttributeSyntax attribute)
             => attribute.ArgumentList?.Arguments.Count > 0 && attribute.ArgumentList?.Arguments[0].Expression is TypeOfExpressionSyntax iconExpr
                 ? iconExpr.Type
                 : throw new Exception("Type value on attribute missing.");
