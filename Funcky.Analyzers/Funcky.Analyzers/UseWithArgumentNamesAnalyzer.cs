@@ -30,25 +30,31 @@ namespace Funcky.Analyzers
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
+            context.RegisterCompilationStartAction(static context =>
+            {
+                if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol)
+                {
+                    context.RegisterSyntaxNodeAction(AnalyzeInvocation(attributeSymbol), SyntaxKind.InvocationExpression);
+                }
+            });
         }
 
-        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
-        {
-            var node = (InvocationExpressionSyntax)context.Node;
-
-            if (context.SemanticModel.GetOperation(node) is IInvocationOperation invocation &&
-                context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol &&
-                invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
+        private static Action<SyntaxNodeAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol)
+            => context =>
             {
-                foreach (var argument in node.ArgumentList.Arguments)
+                var node = (InvocationExpressionSyntax)context.Node;
+
+                if (context.SemanticModel.GetOperation(node) is IInvocationOperation invocation
+                    && invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
                 {
-                    if (argument.NameColon is null && context.SemanticModel.GetOperation(argument) is IArgumentOperation { Parameter: { } } argumentOperation)
+                    foreach (var argument in node.ArgumentList.Arguments)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation(), argumentOperation.Parameter.Name));
+                        if (argument.NameColon is null && context.SemanticModel.GetOperation(argument) is IArgumentOperation { Parameter: { } } argumentOperation)
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation(), argumentOperation.Parameter.Name));
+                        }
                     }
                 }
-            }
-        }
+            };
     }
 }
