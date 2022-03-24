@@ -1,8 +1,10 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.LocalizedResourceLoader;
+using static Funcky.Analyzers.OperationMatching;
 using static Funcky.Analyzers.Resources;
 
 namespace Funcky.Analyzers
@@ -40,26 +42,27 @@ namespace Funcky.Analyzers
             {
                 var operation = (IInvocationOperation)context.Operation;
 
-                if (IsRepeatNever(enumerableType, operation))
+                if (MatchRepeatNever(enumerableType, operation, out var valueArgument))
                 {
-                    context.ReportDiagnostic(CreateDiagnostic(operation));
+                    context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
                 }
             };
 
-        private static bool IsRepeatNever(INamedTypeSymbol enumerableType, IInvocationOperation operation)
-            => SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType, enumerableType)
-                && operation.TargetMethod.Name == nameof(Enumerable.Repeat)
-                && operation.Arguments.Length is 2
-                && operation.Arguments[Argument.Second] is { Value.ConstantValue: { HasValue: true, Value: 0 } };
-
-        private static Diagnostic CreateDiagnostic(IInvocationOperation operation)
+        private static bool MatchRepeatNever(
+            INamedTypeSymbol enumerableType,
+            IInvocationOperation operation,
+            [NotNullWhen(true)] out IArgumentOperation? valueArgument)
         {
-            var argumentValue = operation.Arguments[Argument.First].Value;
-            return Diagnostic.Create(
+            valueArgument = null;
+            return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+                && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(0));
+        }
+
+        private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
+            => Diagnostic.Create(
                 Rule,
                 operation.Syntax.GetLocation(),
-                argumentValue.Syntax.ToString(),
-                argumentValue.Type?.ToDisplayString());
-        }
+                valueArgument.Value.Syntax.ToString(),
+                valueArgument.Value.Type?.ToDisplayString());
     }
 }
