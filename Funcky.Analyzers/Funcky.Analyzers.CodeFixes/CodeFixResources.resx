@@ -129,4 +129,8 @@
     <value>Use Sequence.Return</value>
     <comment>The title of the code fix.</comment>
   </data>
+  <data name="JoinToStringEmptyCodeFixTitle" xml:space="preserve">
+    <value>Use ConcatToString</value>
+    <comment>The title of the code fix.</comment>
+  </data>
 </root>

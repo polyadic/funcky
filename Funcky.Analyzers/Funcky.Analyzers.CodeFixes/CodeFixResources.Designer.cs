@@ -86,5 +86,14 @@ namespace Funcky.Analyzers {
                 return ResourceManager.GetString("EnumerableRepeatOnceCodeFixTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use ConcatToString.
+        /// </summary>
+        internal static string JoinToStringEmptyCodeFixTitle {
+            get {
+                return ResourceManager.GetString("JoinToStringEmptyCodeFixTitle", resourceCulture);
+            }
+        }
     }
 }

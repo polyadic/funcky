@@ -26,8 +26,15 @@ internal static class OperationMatching
             && matchFirstArgument(operation.Arguments[0])
             && matchSecondArgument(operation.Arguments[1])
             && (firstArgument = operation.Arguments[0]) is var _
-            && (secondArgument = operation.Arguments[0]) is var _;
+            && (secondArgument = operation.Arguments[1]) is var _;
     }
+
+    public static bool MatchField(
+        IFieldReferenceOperation operation,
+        INamedTypeSymbol type,
+        string fieldName)
+        => SymbolEqualityComparer.Default.Equals(operation.Type, type)
+           && operation.Field.Name == fieldName;
 
     public static bool AnyArgument(IArgumentOperation operation) => true;
 

@@ -10,11 +10,11 @@ namespace Funcky.Analyzers.Test
             where TAnalyzer : DiagnosticAnalyzer, new()
             where TCodeFix : CodeFixProvider, new()
         {
-            var inputCode = File.ReadAllText($"TestCode/{testCode}.input");
+            var inputCode = await File.ReadAllTextAsync($"TestCode/{testCode}.input");
 
             await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyAnalyzerAsync(inputCode, expectedDiagnostic);
 
-            var expectedCode = File.ReadAllText($"TestCode/{testCode}.expected");
+            var expectedCode = await File.ReadAllTextAsync($"TestCode/{testCode}.expected");
 
             await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyCodeFixAsync(inputCode, expectedDiagnostic, expectedCode);
         }
@@ -23,11 +23,11 @@ namespace Funcky.Analyzers.Test
             where TAnalyzer : DiagnosticAnalyzer, new()
             where TCodeFix : CodeFixProvider, new()
         {
-            var inputCode = File.ReadAllText($"TestCode/{testCode}.input");
+            var inputCode = await File.ReadAllTextAsync($"TestCode/{testCode}.input");
 
             await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyAnalyzerAsync(inputCode, expectedDiagnostics);
 
-            var expectedCode = File.ReadAllText($"TestCode/{testCode}.expected");
+            var expectedCode = await File.ReadAllTextAsync($"TestCode/{testCode}.expected");
 
             await CSharpCodeFixVerifier<TAnalyzer, TCodeFix>.VerifyCodeFixAsync(inputCode, expectedDiagnostics, expectedCode);
         }

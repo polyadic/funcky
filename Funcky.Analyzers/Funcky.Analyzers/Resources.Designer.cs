@@ -115,6 +115,33 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prefer ConcatToString to JoinToString with an empty string.
+        /// </summary>
+        internal static string JoinToStringEmptyAnalyzerDescription {
+            get {
+                return ResourceManager.GetString("JoinToStringEmptyAnalyzerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use {0}.ConcatToString() instead of {0}.JoinToString({1}).
+        /// </summary>
+        internal static string JoinToStringEmptyAnalyzerMessageFormat {
+            get {
+                return ResourceManager.GetString("JoinToStringEmptyAnalyzerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use .ConcatToString instead of .JoinToString(string.Empty).
+        /// </summary>
+        internal static string JoinToStringEmptyAnalyzerTitle {
+            get {
+                return ResourceManager.GetString("JoinToStringEmptyAnalyzerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use this method with argument names.
         /// </summary>
         internal static string UseWithArgumentNamesAnalyzerAnalyzerTitle {

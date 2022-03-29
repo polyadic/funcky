@@ -13,6 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
         <PackageReference Include="Nullable" PrivateAssets="all" />

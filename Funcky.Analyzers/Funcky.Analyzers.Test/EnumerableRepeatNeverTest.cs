@@ -8,7 +8,7 @@ namespace Funcky.Analyzers.Test
         [Fact]
         public async Task EnumerableRepeatWithAnyNumberButZeroIssuesNoDiagnostic()
         {
-            var inputCode = File.ReadAllText("TestCode/EnumerableRepeatWithAnyNumber.input");
+            var inputCode = await File.ReadAllTextAsync("TestCode/EnumerableRepeatWithAnyNumber.input");
 
             await VerifyCS.VerifyAnalyzerAsync(inputCode);
         }
