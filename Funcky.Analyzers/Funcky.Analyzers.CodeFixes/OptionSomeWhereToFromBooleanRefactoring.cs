@@ -41,7 +41,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
 
     private static Symbols? GetSymbolsRequiredForRefactoring(Compilation compilation)
         => compilation.GetOptionType() is { } optionType
-           && compilation.GetGenericOptionType() is { } genericOptionType
+           && compilation.GetOptionOfTType() is { } genericOptionType
            && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == FromBoolean)
             ? new Symbols(optionType, genericOptionType)
             : null;

@@ -1,9 +1,10 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.LocalizedResourceLoader;
+using static Funcky.Analyzers.OperationMatching;
 using static Funcky.Analyzers.Resources;
 
 namespace Funcky.Analyzers
@@ -27,25 +28,41 @@ namespace Funcky.Analyzers
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(FindEnumerableRepeatNever, SyntaxKind.InvocationExpression);
-        }
-
-        private static void FindEnumerableRepeatNever(SyntaxNodeAnalysisContext context)
-        {
-            if (IsRepeatNever(new SyntaxMatcher(context)))
+            context.RegisterCompilationStartAction(static context =>
             {
-                context.ReportDiagnostic(CreateDiagnostic(context));
-            }
+                if (context.Compilation.GetEnumerableType() is { } enumerableType)
+                {
+                    context.RegisterOperationAction(FindEnumerableRepeatNever(enumerableType), OperationKind.Invocation);
+                }
+            });
         }
 
-        private static bool IsRepeatNever(SyntaxMatcher syntax)
-            => syntax.MatchStaticCall(typeof(Enumerable).FullName, nameof(Enumerable.Repeat))
-                && syntax.MatchArgument(Argument.Second, 0);
+        private static Action<OperationAnalysisContext> FindEnumerableRepeatNever(INamedTypeSymbol enumerableType)
+            => context =>
+            {
+                var operation = (IInvocationOperation)context.Operation;
 
-        private static Diagnostic CreateDiagnostic(SyntaxNodeAnalysisContext context)
-            => CreateDiagnostic(new SyntaxMatcher(context), (InvocationExpressionSyntax)context.Node);
+                if (MatchRepeatNever(enumerableType, operation, out var valueArgument))
+                {
+                    context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
+                }
+            };
 
-        private static Diagnostic CreateDiagnostic(SyntaxMatcher syntax, InvocationExpressionSyntax invocationExpr)
-            => Diagnostic.Create(Rule, invocationExpr.GetLocation(), syntax.GetArgumentAsString(Argument.First), syntax.GetArgumentType(Argument.First));
+        private static bool MatchRepeatNever(
+            INamedTypeSymbol enumerableType,
+            IInvocationOperation operation,
+            [NotNullWhen(true)] out IArgumentOperation? valueArgument)
+        {
+            valueArgument = null;
+            return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+                && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(0));
+        }
+
+        private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
+            => Diagnostic.Create(
+                Rule,
+                operation.Syntax.GetLocation(),
+                valueArgument.Value.Syntax.ToString(),
+                valueArgument.Value.Type?.ToDisplayString());
     }
 }

@@ -16,8 +16,6 @@ namespace Funcky.Analyzers
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatNeverCodeFix))]
     public sealed class EnumerableRepeatNeverCodeFix : CodeFixProvider
     {
-        private const string FullyQualifiedEnumerable = "System.Linq.Enumerable";
-
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(EnumerableRepeatNeverAnalyzer.DiagnosticId);
 
@@ -60,7 +58,7 @@ namespace Funcky.Analyzers
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetTypeByMetadataName(FullyQualifiedEnumerable)!),
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetEnumerableType()!),
                     GenericName(nameof(Enumerable.Empty))
                         .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model)))))
                     .WithAdditionalAnnotations(Simplifier.Annotation));

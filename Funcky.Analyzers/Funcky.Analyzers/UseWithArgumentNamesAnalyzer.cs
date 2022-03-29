@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -30,25 +29,31 @@ namespace Funcky.Analyzers
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
+            context.RegisterCompilationStartAction(static context =>
+            {
+                if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol)
+                {
+                    context.RegisterOperationAction(AnalyzeInvocation(attributeSymbol), OperationKind.Invocation);
+                }
+            });
         }
 
-        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
-        {
-            var node = (InvocationExpressionSyntax)context.Node;
-
-            if (context.SemanticModel.GetOperation(node) is IInvocationOperation invocation &&
-                context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol &&
-                invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
+        private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol)
+            => context =>
             {
-                foreach (var argument in node.ArgumentList.Arguments)
+                var invocation = (IInvocationOperation)context.Operation;
+
+                if (invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
                 {
-                    if (argument.NameColon is null && context.SemanticModel.GetOperation(argument) is IArgumentOperation { Parameter: { } } argumentOperation)
+                    foreach (var argument in invocation.Arguments)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation(), argumentOperation.Parameter.Name));
+                        if (argument.Syntax is ArgumentSyntax { NameColon: null } argumentSyntax
+                            && argument.Parameter?.Name is { } parameterName)
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, argumentSyntax.GetLocation(), parameterName));
+                        }
                     }
                 }
-            }
-        }
+            };
     }
 }
