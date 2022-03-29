@@ -13,8 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Funcky.Analyzers;
 
 [Shared]
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatNeverCodeFix))]
-
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(JoinToStringEmptyCodeFix))]
 public sealed class JoinToStringEmptyCodeFix : CodeFixProvider
 {
     private const string ConcatToString = "ConcatToString";
@@ -48,16 +47,16 @@ public sealed class JoinToStringEmptyCodeFix : CodeFixProvider
     private static Func<CancellationToken, Task<Document>> CreateConcatToStringAsync(Document document, InvocationExpressionSyntax declaration)
         => async cancellationToken
             =>
-        {
-            var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-
-            if (declaration.Expression is MemberAccessExpressionSyntax memberAccess)
             {
-                editor.ReplaceNode(declaration, CreateConcatToStringRoot(memberAccess.Expression));
-            }
+                var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
-            return editor.GetChangedDocument();
-        };
+                if (declaration.Expression is MemberAccessExpressionSyntax memberAccess)
+                {
+                    editor.ReplaceNode(declaration, CreateConcatToStringRoot(memberAccess.Expression));
+                }
+
+                return editor.GetChangedDocument();
+            };
 
     private static SyntaxNode CreateConcatToStringRoot(ExpressionSyntax target)
         => SyntaxConcatToString(target)
