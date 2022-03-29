@@ -53,8 +53,8 @@ namespace Funcky.Analyzers
                     return editor.GetChangedDocument();
                 };
 
-        private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpr)
-            => invocationExpr.ArgumentList.Arguments[Argument.First];
+        private static ArgumentSyntax ExtractFirstArgument(InvocationExpressionSyntax invocationExpression)
+            => invocationExpression.ArgumentList.Arguments[Argument.First];
 
         private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
             => SyntaxSequenceReturn(model, generator)

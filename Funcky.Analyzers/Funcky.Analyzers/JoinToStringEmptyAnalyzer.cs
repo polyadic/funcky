@@ -68,7 +68,7 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
     private static bool IsStringEmptyField(INamedTypeSymbol stringType, IArgumentOperation argument)
         => argument.Value is IFieldReferenceOperation fieldReferenceOperation && MatchField(fieldReferenceOperation, stringType, nameof(string.Empty));
 
-    private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument, IArgumentOperation stringArgument)
+    private static Diagnostic CreateDiagnostic(IOperation operation, IArgumentOperation valueArgument, IArgumentOperation stringArgument)
         => Diagnostic.Create(
             Rule,
             operation.Syntax.GetLocation(),
