@@ -47,10 +47,7 @@ public static partial class FunctionalAssert
                 left: static left => throw new AssertActualExpectedException(
                     expected: "Right(...)",
                     actual: $"Left({left})",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsRight)}() Failure",
-                    expectedTitle: null, // The other constructor overload is missing in 2.4.2-pre.12. See https://github.com/xunit/xunit/issues/2449
-                    actualTitle: null,
-                    innerException: null));
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsRight)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {
