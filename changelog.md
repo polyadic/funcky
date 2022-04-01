@@ -11,6 +11,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Funcky.Xunit
 * Breaking: Funcky.Xunit now uses the `Funcky` namespace, instead of `Funcky.Xunit`.
+* Add assertion methods for testing `Either`: `FunctionalAssert.IsLeft` and `FunctionalAssert.IsRight`.
 
 ## Funcky 2.6.0 | Funcky.Analyzers 1.0.0
 ### Analyzers

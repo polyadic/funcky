@@ -98,6 +98,12 @@ namespace Funcky.Monads
             => Match(
                 left: Either<TRight, TLeft>.Right,
                 right: Either<TRight, TLeft>.Left);
+
+        [Pure]
+        public override string ToString()
+            => Match(
+                left: static left => $"Left({left})",
+                right: static right => $"Right({right})");
     }
 
     public static class Either<TLeft>

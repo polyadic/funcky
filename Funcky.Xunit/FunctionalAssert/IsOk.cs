@@ -47,10 +47,7 @@ namespace Funcky
                     error: static exception => throw new AssertActualExpectedException(
                         expected: "Ok(...)",
                         actual: $"Error({FormatException(exception)})",
-                        userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure",
-                        expectedTitle: null, // The other constructor overload is missing in 2.4.2-pre.12. See https://github.com/xunit/xunit/issues/2449
-                        actualTitle: null,
-                        innerException: null));
+                        userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure"));
             }
             catch (AssertActualExpectedException exception)
             {
