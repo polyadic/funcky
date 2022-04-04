@@ -4,7 +4,7 @@ using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Xunit;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions
 {
     public sealed class SlidingWindowTest
     {
