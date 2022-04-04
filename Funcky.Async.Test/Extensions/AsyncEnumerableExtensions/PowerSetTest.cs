@@ -1,4 +1,6 @@
-using Funcky.Test.TestUtils;
+using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
+using Xunit;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions
 {
@@ -7,26 +9,26 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void APowerSetIsEnumeratedLazily()
         {
-            var doNotEnumerate = new FailOnEnumerationSequence<object>();
+            var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
             _ = doNotEnumerate.PowerSet();
         }
 
         [Fact]
-        public void ThePowerSetOfTheEmptySetIsSetOfTheEmptySet()
+        public async Task ThePowerSetOfTheEmptySetIsSetOfTheEmptySet()
         {
-            var powerSet = Enumerable.Empty<string>().PowerSet();
+            var powerSet = AsyncEnumerable.Empty<string>().PowerSet();
 
-            Assert.Empty(powerSet.First());
+            Assert.Empty(await powerSet.FirstAsync());
         }
 
         [Fact]
-        public void ThePowerSetIsTheSetOfAllSubSets()
+        public async Task ThePowerSetIsTheSetOfAllSubSets()
         {
-            var sequence = Sequence.Return("Alpha", "Beta", "Gamma");
+            var sequence = AsyncSequence.Return("Alpha", "Beta", "Gamma");
             var powerSet = sequence.PowerSet();
 
-            Assert.Collection(
+            await AsyncAssert.Collection(
                 powerSet,
                 subset => { Assert.Equal(Enumerable.Empty<string>(), subset); },
                 subset => { Assert.Equal(Sequence.Return("Alpha"), subset); },
