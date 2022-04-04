@@ -24,7 +24,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         }
 
         [Fact]
-        public void MaterializeReturnsImmutableCollectionWhenEnumerate()
+        public void MaterializeReturnsImmutableCollectionWhenEnumerated()
         {
             var sequence = Enumerable.Repeat("Hello world!", 3);
 
@@ -34,9 +34,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void MaterializeWithMaterializationReturnsCorrectCollectionWhenEnumerate()
         {
-            var list = Enumerable.Repeat("Hello world!", 3);
+            var sequence = Enumerable.Repeat("Hello world!", 3);
 
-            Assert.IsType<HashSet<string>>(list.Materialize(ToHashSet));
+            Assert.IsType<HashSet<string>>(sequence.Materialize(ToHashSet));
         }
 
         [Fact]

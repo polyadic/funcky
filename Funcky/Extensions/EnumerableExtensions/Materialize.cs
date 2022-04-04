@@ -1,5 +1,5 @@
 using System.Collections;
-using static Funcky.Internal.Materializations;
+using System.Collections.Immutable;
 
 namespace Funcky.Extensions
 {
@@ -34,6 +34,9 @@ namespace Funcky.Extensions
                 ICollection<TItem> collection => new CollectionAsReadOnlyCollectionProxy<TItem>(collection),
                 _ => materialize(source),
             };
+
+        private static IReadOnlyCollection<TItem> DefaultMaterialization<TItem>(IEnumerable<TItem> source)
+            => source.ToImmutableList();
 
         private class CollectionAsReadOnlyCollectionProxy<T> : ICollection<T>, IReadOnlyCollection<T>
         {
