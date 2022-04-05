@@ -31,7 +31,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
             Assert.IsType<HashSet<string>>(await sequence.Materialize(ToHashSet));
         }
 
-        private static ValueTask<HashSet<string>> ToHashSet(IAsyncEnumerable<string> s)
-            => s.ToHashSetAsync();
+        private static ValueTask<HashSet<string>> ToHashSet(IAsyncEnumerable<string> sequence, CancellationToken cancellationToken)
+            => sequence.ToHashSetAsync(cancellationToken);
     }
 }
