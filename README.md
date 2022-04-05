@@ -7,6 +7,7 @@ Funcky is a functional library for C# which encourages correct usage of the func
 [![Licence: Apache](https://img.shields.io/badge/licence-Apache-green)](https://raw.githubusercontent.com/polyadic/funcky/main/LICENSE-Apache)
 
 ## Packages
+
 * **Funcky** \
   [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
 * **Funcky.XUnit** \
@@ -16,13 +17,16 @@ Funcky is a functional library for C# which encourages correct usage of the func
 * **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)**: Provides interoperability between Funcky and EF Core \
   [![NuGet package](https://buildstats.info/nuget/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
   [![git: polyadic/funcky-efcore](https://img.shields.io/badge/git-polyadic%2Ffuncky--efcore-blue)](https://github.com/polyadic/funcky-efcore)
-
-Provides interoperability between Funcky and EF Core
+* **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)**: Provides source generator for discriminated union support in C# \
+  [![NuGet package](https://buildstats.info/nuget/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
+  [![git: polyadic/funcky-discriminated-union](https://img.shields.io/badge/git-polyadic%2Ffuncky--discriminated--union-blue)](https://github.com/polyadic/funcky-discriminated-union)
 
 ## Features
+
 See our in progress [documentation](https://polyadic.github.io/funcky/) for more examples.
 
 ### Option Monad
+
 The `Option` monad is the centerpiece of Funcky. It provides a safe and easy structure for working with optional values. \
 It follows naming already established by LINQ (`Select`, `SelectMany`, `Where`).
 
@@ -38,6 +42,7 @@ result.AndThen(Console.WriteLine);
 ```
 
 ### IEnumerable Extensions
+
 Funcky provides a plethora of extensions for `IEnumerable` that help with writing code using Functional programming paradigms.
 
 ```cs
@@ -51,6 +56,7 @@ Sequence.Return(1, 2, 3, 4)
 ```
 
 ### … and more
+
 * Extensions that provide interoperability with `Option` for `IQueryable`, `IAsyncEnumerable`, `string`.
 * Fundamental functions: `Identity`, `True`, `False`, etc.
 * «Constructors» for `IEnumerable`: `Sequence.Return`, `Sequence.Successors`, etc.
@@ -106,10 +112,12 @@ MoreLinq provides more extension functions on `IEnumerable`, but has no addition
 * [Tango](https://github.com/gabrielschade/tango)
 
 ## Contributing
+
 Contributions are more than welcome. Just open a PR :)
 If you want something easy to work on, there are a few issues marked with [good first issue].
 
 ### Documentation
+
 To build the documentation you need [mdBook] installed.
 When working on the documentation it's useful to have `mdbook` watching and automatically rebuilding on changes:
 
@@ -118,6 +126,7 @@ mdbook serve Documentation
 ```
 
 ## Dependency Policy
+
 The core `Funcky` package is not allowed to have dependencies. Backwards compatibility packages from Microsoft that are included in
 newer framework versions (e.g. [`Microsoft.Bcl.AsyncInterfaces`], [`System.Collections.Immutable`]) are exempt from this rule.
 
