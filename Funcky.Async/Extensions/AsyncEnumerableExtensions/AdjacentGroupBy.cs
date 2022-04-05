@@ -11,7 +11,7 @@ namespace Funcky.Async.Extensions
         /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <returns>An IEnumerable{IGrouping{TKey, TSource}}  where each IGrouping{TKey,TElement} object contains a sequence of objects and a key.</returns>
+        /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
         [Pure]
         public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
             this IAsyncEnumerable<TSource> source,
@@ -26,7 +26,7 @@ namespace Funcky.Async.Extensions
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
         /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-        /// <returns>An IEnumerable{IGrouping{TKey, TSource}}  where each IGrouping{TKey,TElement} object contains a sequence of objects and a key.</returns>
+        /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
         [Pure]
         public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
             this IAsyncEnumerable<TSource> source,
@@ -39,11 +39,11 @@ namespace Funcky.Async.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-        /// <typeparam name="TElement">The type of the elements in each IGrouping{TKey,TElement}.</typeparam>
+        /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <param name="elementSelector">A function to map each source element to an element in the IGrouping{TKey,TElement}.</param>
-        /// <returns>An IEnumerable{IGrouping{TKey, TSource}}  where each IGrouping{TKey,TElement} object contains a sequence of objects and a key.</returns>
+        /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
+        /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
         [Pure]
         public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
             this IAsyncEnumerable<TSource> source,
@@ -56,12 +56,12 @@ namespace Funcky.Async.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-        /// <typeparam name="TElement">The type of the elements in each IGrouping{TKey,TElement}.</typeparam>
+        /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <param name="elementSelector">A function to map each source element to an element in the IGrouping{TKey,TElement}.</param>
+        /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
         /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-        /// <returns>An IEnumerable{IGrouping{TKey, TSource}}  where each IGrouping{TKey,TElement} object contains a sequence of objects and a key.</returns>
+        /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
         [Pure]
         public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
             this IAsyncEnumerable<TSource> source,
@@ -78,7 +78,7 @@ namespace Funcky.Async.Extensions
         /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <param name="resultSelector">A function to map each source element to an element in the IGrouping{TKey,TElement}.</param>
+        /// <param name="resultSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
         /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
         [Pure]
         public static IAsyncEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TResult>(
@@ -92,11 +92,11 @@ namespace Funcky.Async.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-        /// <typeparam name="TElement">The type of the elements in each IGrouping{TKey,TElement}.</typeparam>
+        /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
         /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <param name="elementSelector">A function to map each source element to an element in the IGrouping{TKey,TElement}.</param>
+        /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
         /// <param name="resultSelector">A function to create a result value from each group.</param>
         /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
         [Pure]
@@ -131,11 +131,11 @@ namespace Funcky.Async.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-        /// <typeparam name="TElement">The type of the elements in each IGrouping{TKey,TElement}.</typeparam>
+        /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
         /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="keySelector">A function to extract the key for each element.</param>
-        /// <param name="elementSelector">A function to map each source element to an element in the IGrouping{TKey,TElement}.</param>
+        /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
         /// <param name="resultSelector">A function to create a result value from each group.</param>
         /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
         /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
