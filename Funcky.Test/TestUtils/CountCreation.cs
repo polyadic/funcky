@@ -1,4 +1,4 @@
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.TestUtils
 {
     internal sealed class CountCreation
     {
