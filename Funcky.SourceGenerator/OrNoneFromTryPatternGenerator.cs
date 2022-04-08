@@ -3,6 +3,7 @@ using Funcky.SourceGenerator.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Funcky.SourceGenerator.OrNoneFromTryPatternValidator;
 using static Funcky.SourceGenerator.TemplateLoader;
 
 namespace Funcky.SourceGenerator
@@ -31,9 +32,18 @@ namespace Funcky.SourceGenerator
             var usings = methodByClass.SelectMany(c => c.AdditionalUsings).Distinct(new UsingsComparer());
             var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, usings, methodByClass.Select(m => m.PartialMethod));
 
+            ReportDiagnostics(context, methodByClass);
             context.AddSource($"{methodByClass.First().ClassName}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + EmitCode(syntaxTree.NormalizeWhitespace()));
 
             return context;
+        }
+
+        private static void ReportDiagnostics(SourceProductionContext context, IEnumerable<MethodPartial> methodPartials)
+        {
+            foreach (var diagnostic in methodPartials.SelectMany(m => m.Diagnostics))
+            {
+                context.ReportDiagnostic(diagnostic);
+            }
         }
 
         private static IncrementalValueProvider<ImmutableArray<MethodPartial>> GetOrNonePartialMethods(IncrementalGeneratorInitializationContext context)
@@ -49,8 +59,15 @@ namespace Funcky.SourceGenerator
             var attribute = methodDeclaration.GetAttributeByUsedName("OrNoneFromTryPattern");
             var compilationUnit = methodDeclaration.TryGetParentSyntax<CompilationUnitSyntax>()!;
 
+            var targetMethodName = GetMethodValue(compilation, methodDeclaration, attribute);
+            var targetTypeSyntax = GetTypeValue(attribute);
+            var semanticModel = compilation.GetSemanticModel(methodDeclaration.SyntaxTree);
+
+            var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration)!;
+            var diagnostics = ValidateNullabilityOfParameters(semanticModel, methodSymbol, semanticModel.GetSymbolInfo(targetTypeSyntax).Symbol, targetMethodName).ToImmutableArray();
+
             return GetNamespaceName(methodDeclaration) is { } namespaceName && GetClassName(methodDeclaration) is { } className
-                ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, GetMethodValue(compilation, methodDeclaration, attribute), GetTypeValue(attribute)))
+                ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, targetMethodName, targetTypeSyntax), diagnostics)
                 : null;
         }
 
