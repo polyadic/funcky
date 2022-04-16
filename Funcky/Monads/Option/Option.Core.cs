@@ -23,6 +23,7 @@ namespace Funcky.Monads
             _hasItem = true;
         }
 
+        /// <summary>Returns an empty option.</summary>
         [Pure]
         public static Option<TItem> None() => default;
 
@@ -106,5 +107,12 @@ namespace Funcky.Monads
         public static Option<TItem> Return<TItem>(TItem item)
             where TItem : notnull
             => new(item);
+
+        /// <summary>Returns an empty option.</summary>
+        /// <remarks>This method is intended to be used as a method-group. Use <see cref="Option{TItem}.None"/> in all other cases.</remarks>
+        [Pure]
+        public static Option<TItem> None<TItem>()
+            where TItem : notnull
+            => default;
     }
 }
