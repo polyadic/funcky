@@ -45,7 +45,7 @@ public static class C
 
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionCode,
-            VerifyCS.Diagnostic().WithSpan(8, 41, 8, 57),
+            VerifyCS.Diagnostic().WithSpan(8, 41, 8, 57).WithArguments("int"),
             fixedCode + Environment.NewLine + OptionCode);
     }
 
