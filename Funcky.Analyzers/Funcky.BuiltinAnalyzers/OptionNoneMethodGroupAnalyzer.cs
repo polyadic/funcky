@@ -8,7 +8,7 @@ namespace Funcky.BuiltinAnalyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class OptionNoneMethodGroupAnalyzer : DiagnosticAnalyzer
 {
-    public static readonly DiagnosticDescriptor Descriptor = new(
+    public static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
         id: "λ0002",
         title: "Prefer Option.None<T>() over Option<T>.None() when used as a method group.",
         messageFormat: "Use Option.None<{0}> instead of Option<{0}>.None.",

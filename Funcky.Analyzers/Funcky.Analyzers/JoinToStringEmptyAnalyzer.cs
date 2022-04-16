@@ -22,7 +22,7 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
 
     private static readonly LocalizableString Description = LoadFromResource(nameof(JoinToStringEmptyAnalyzerDescription));
 
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
