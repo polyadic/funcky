@@ -342,4 +342,25 @@ public static class C
 }";
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(12, 17, 12, 49));
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueAsMethodReferenceIsDisallowed()
+    {
+        const string inputCode = @"
+#nullable enable
+
+using Funcky.Monads;
+using System.Collections.Generic;
+
+public static class C
+{
+    public delegate bool TryGetValueFunc<T>(out T? item);
+
+    public static void M(Option<int> option)
+    {
+        TryGetValueFunc<int> func = option.TryGetValue;
+    }
+}";
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(13, 37, 13, 55));
+    }
 }
