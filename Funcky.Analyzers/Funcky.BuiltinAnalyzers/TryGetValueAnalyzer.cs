@@ -26,26 +26,33 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
-        context.RegisterOperationAction(AnalyzeInvocation, OperationKind.Invocation);
+        context.RegisterCompilationStartAction(OnCompilationStarted);
     }
 
-    private static void AnalyzeInvocation(OperationAnalysisContext context)
+    private static void OnCompilationStarted(CompilationStartAnalysisContext context)
     {
-        var operation = (IInvocationOperation)context.Operation;
-
-        if (IsTryGetValueMethod(operation, context.Compilation)
-            && !IsAllowedUsageOfTryGetValue(operation.Syntax))
+        if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
         {
-            context.ReportDiagnostic(Diagnostic.Create(Descriptor, operation.Syntax.GetLocation()));
+            context.RegisterOperationAction(AnalyzeInvocation(optionOfTType), OperationKind.Invocation);
         }
     }
 
-    private static bool IsTryGetValueMethod(IInvocationOperation operation, Compilation compilation)
-    {
-        var optionType = compilation.GetTypeByMetadataName("Funcky.Monads.Option`1");
-        return operation.TargetMethod.MetadataName == "TryGetValue"
-            && SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType.OriginalDefinition, optionType);
-    }
+    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol optionOfTType)
+        => context
+            =>
+            {
+                var operation = (IInvocationOperation)context.Operation;
+
+                if (IsTryGetValueMethod(operation, optionOfTType)
+                    && !IsAllowedUsageOfTryGetValue(operation.Syntax))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, operation.Syntax.GetLocation()));
+                }
+            };
+
+    private static bool IsTryGetValueMethod(IInvocationOperation operation, INamedTypeSymbol optionOfTType)
+        => operation.TargetMethod.MetadataName == WellKnownMemberNames.OptionOfT.TryGetValue
+           && SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType.OriginalDefinition, optionOfTType);
 
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
         => IsPartOfCatchFilterClause(node)
