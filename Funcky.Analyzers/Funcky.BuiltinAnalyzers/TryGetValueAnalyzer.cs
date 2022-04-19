@@ -26,26 +26,38 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
-        context.RegisterOperationAction(AnalyzeInvocation, OperationKind.Invocation);
+        context.RegisterCompilationStartAction(OnCompilationStarted);
     }
 
-    private static void AnalyzeInvocation(OperationAnalysisContext context)
+    private static void OnCompilationStarted(CompilationStartAnalysisContext context)
     {
-        var operation = (IInvocationOperation)context.Operation;
-
-        if (IsTryGetValueMethod(operation, context.Compilation)
-            && !IsAllowedUsageOfTryGetValue(operation.Syntax))
+        if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
         {
-            context.ReportDiagnostic(Diagnostic.Create(Descriptor, operation.Syntax.GetLocation()));
+            context.RegisterOperationAction(AnalyzeOperation(optionOfTType), OperationKind.Invocation, OperationKind.MethodReference);
         }
     }
 
-    private static bool IsTryGetValueMethod(IInvocationOperation operation, Compilation compilation)
-    {
-        var optionType = compilation.GetTypeByMetadataName("Funcky.Monads.Option`1");
-        return operation.TargetMethod.MetadataName == "TryGetValue"
-            && SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType.OriginalDefinition, optionType);
-    }
+    private static Action<OperationAnalysisContext> AnalyzeOperation(INamedTypeSymbol optionOfTType)
+        => context
+            =>
+            {
+                if (ShouldReportDiagnostic(context.Operation, optionOfTType))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, context.Operation.Syntax.GetLocation()));
+                }
+            };
+
+    private static bool ShouldReportDiagnostic(IOperation operation, INamedTypeSymbol optionOfTType)
+        => operation switch
+        {
+            IInvocationOperation invocation => IsTryGetValueMethod(invocation.TargetMethod, optionOfTType) && !IsAllowedUsageOfTryGetValue(invocation.Syntax),
+            IMethodReferenceOperation methodReference => IsTryGetValueMethod(methodReference.Method, optionOfTType),
+            _ => throw new InvalidOperationException($"Internal error: Unexpectedly called with an unexpected operation '{operation.GetType()}'"),
+        };
+
+    private static bool IsTryGetValueMethod(IMethodSymbol method, INamedTypeSymbol optionOfTType)
+        => method.MetadataName == WellKnownMemberNames.OptionOfT.TryGetValue
+           && SymbolEqualityComparer.Default.Equals(method.ContainingType.OriginalDefinition, optionOfTType);
 
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
         => IsPartOfCatchFilterClause(node)
