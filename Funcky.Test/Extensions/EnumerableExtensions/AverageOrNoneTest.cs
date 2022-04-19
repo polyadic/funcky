@@ -14,7 +14,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt32AverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42, 1);
+            var numbers = Sequence.Return(42);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -47,7 +47,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt32AverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42), 1);
+            var numbers = Sequence.Return(Option.Some(42));
 
             FunctionalAssert.IsSome(42, numbers.AverageOrNone());
         }
@@ -81,7 +81,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt64AverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42L, 1);
+            var numbers = Sequence.Return(42L);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -114,7 +114,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt64AverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42L), 1);
+            var numbers = Sequence.Return(Option.Some(42L));
 
             FunctionalAssert.IsSome(42, numbers.AverageOrNone());
         }
@@ -148,7 +148,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleSinglesAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.42f, 1);
+            var numbers = Sequence.Return(42.42f);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.AverageOrNone());
         }
@@ -224,7 +224,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithAOptionalSinglesSingleAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42f), 1);
+            var numbers = Sequence.Return(Option.Some(42.42f));
 
             FunctionalAssert.IsSome(42.42f, numbers.AverageOrNone());
         }
@@ -265,7 +265,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleDoubleAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.42, 1);
+            var numbers = Sequence.Return(42.42);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.AverageOrNone());
         }
@@ -341,7 +341,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithAOptionalSingleDoubleAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42), 1);
+            var numbers = Sequence.Return(Option.Some(42.42));
 
             FunctionalAssert.IsSome(42.42, numbers.AverageOrNone());
         }
@@ -382,7 +382,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleDecimalAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.42m, 1);
+            var numbers = Sequence.Return(42.42m);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -415,7 +415,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionDecimalAverageOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42), 1);
+            var numbers = Sequence.Return(Option.Some(42));
 
             FunctionalAssert.IsSome(42, numbers.AverageOrNone());
         }

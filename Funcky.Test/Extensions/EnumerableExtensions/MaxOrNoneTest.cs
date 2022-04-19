@@ -14,7 +14,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt32MaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42, 1);
+            var numbers = Sequence.Return(42);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MaxOrNone());
         }
@@ -39,7 +39,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt32MaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42), 1);
+            var numbers = Sequence.Return(Option.Some(42));
 
             FunctionalAssert.IsSome(42, numbers.MaxOrNone());
         }
@@ -73,7 +73,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt64MaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42L, 1);
+            var numbers = Sequence.Return(42L);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MaxOrNone());
         }
@@ -98,7 +98,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt64MaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42L), 1);
+            var numbers = Sequence.Return(Option.Some(42L));
 
             FunctionalAssert.IsSome(42L, numbers.MaxOrNone());
         }
@@ -132,7 +132,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleSingleMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0f, 1);
+            var numbers = Sequence.Return(42.0f);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MaxOrNone());
         }
@@ -157,7 +157,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionSinglesMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42f), 1);
+            var numbers = Sequence.Return(Option.Some(42.42f));
 
             FunctionalAssert.IsSome(42.42f, numbers.MaxOrNone());
         }
@@ -228,7 +228,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleDoubleMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0, 1);
+            var numbers = Sequence.Return(42.0);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MaxOrNone());
         }
@@ -253,7 +253,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionDoublesMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42), 1);
+            var numbers = Sequence.Return(Option.Some(42.42));
 
             FunctionalAssert.IsSome(42.42, numbers.MaxOrNone());
         }
@@ -324,7 +324,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleDecimalMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0m, 1);
+            var numbers = Sequence.Return(42.0m);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MaxOrNone());
         }
@@ -349,7 +349,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionDecimalsMaxOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42m), 1);
+            var numbers = Sequence.Return(Option.Some(42.42m));
 
             FunctionalAssert.IsSome(42.42m, numbers.MaxOrNone());
         }
@@ -383,7 +383,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleGenericIComparableMaxOrNoneReturnsTheSingleElement()
         {
-            var people = Enumerable.Repeat(new Person(42), 1);
+            var people = Sequence.Return(new Person(42));
 
             FunctionalAssert.IsSome(people.First(), people.MaxOrNone());
         }
@@ -408,7 +408,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionGenericIComparablesMaxOrNoneReturnsTheSingleElement()
         {
-            var people = Enumerable.Repeat(Option.Some(new Person(42)), 1);
+            var people = Sequence.Return(Option.Some(new Person(42)));
 
             var person = FunctionalAssert.IsSome(people.MaxOrNone());
             Assert.Equal(42, person.Age);

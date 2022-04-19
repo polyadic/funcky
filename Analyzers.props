@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<ItemGroup Label="Funcky Analyzers">
+		<ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers\Funcky.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	</ItemGroup>
+</Project>

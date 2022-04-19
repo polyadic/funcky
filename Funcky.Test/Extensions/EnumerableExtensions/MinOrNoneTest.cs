@@ -14,7 +14,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt32MinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42, 1);
+            var numbers = Sequence.Return(42);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -39,7 +39,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt32MinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42), 1);
+            var numbers = Sequence.Return(Option.Some(42));
 
             FunctionalAssert.IsSome(42, numbers.MinOrNone());
         }
@@ -73,7 +73,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleInt64MinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42L, 1);
+            var numbers = Sequence.Return(42L);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -98,7 +98,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionInt64MinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42L), 1);
+            var numbers = Sequence.Return(Option.Some(42L));
 
             FunctionalAssert.IsSome(42L, numbers.MinOrNone());
         }
@@ -132,7 +132,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASinglesSingleMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0f, 1);
+            var numbers = Sequence.Return(42.0f);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -157,7 +157,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionSinglesMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42f), 1);
+            var numbers = Sequence.Return(Option.Some(42.42f));
 
             FunctionalAssert.IsSome(42.42f, numbers.MinOrNone());
         }
@@ -229,7 +229,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithADoublesSingleMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0, 1);
+            var numbers = Sequence.Return(42.0);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -254,7 +254,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionDoublesMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42), 1);
+            var numbers = Sequence.Return(Option.Some(42.42));
 
             FunctionalAssert.IsSome(42.42, numbers.MinOrNone());
         }
@@ -326,7 +326,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithADecimalsSingleMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(42.0m, 1);
+            var numbers = Sequence.Return(42.0m);
 
             FunctionalAssert.IsSome(numbers.First(), numbers.MinOrNone());
         }
@@ -351,7 +351,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionDecimalsMinOrNoneReturnsTheSingleElement()
         {
-            var numbers = Enumerable.Repeat(Option.Some(42.42m), 1);
+            var numbers = Sequence.Return(Option.Some(42.42m));
 
             FunctionalAssert.IsSome(42.42m, numbers.MinOrNone());
         }
@@ -385,7 +385,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleGenericIComparableMinOrNoneReturnsTheSingleElement()
         {
-            var people = Enumerable.Repeat(new Person(42), 1);
+            var people = Sequence.Return(new Person(42));
 
             FunctionalAssert.IsSome(people.First(), people.MinOrNone());
         }
@@ -410,7 +410,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions
         [Fact]
         public void GivenASequenceWithASingleOptionGenericIComparablesMinOrNoneReturnsTheSingleElement()
         {
-            var people = Enumerable.Repeat(Option.Some(new Person(42)), 1);
+            var people = Sequence.Return(Option.Some(new Person(42)));
 
             var person = FunctionalAssert.IsSome(people.MinOrNone());
             Assert.Equal(42, person.Age);
