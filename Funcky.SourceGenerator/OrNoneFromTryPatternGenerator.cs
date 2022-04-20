@@ -49,7 +49,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         var attribute = methodDeclaration.GetAttributeByUsedName("OrNoneFromTryPattern");
         var compilationUnit = methodDeclaration.TryGetParentSyntax<CompilationUnitSyntax>()!;
 
-        return GetNamespaceName(methodDeclaration) is { } namespaceName && GetClassName(methodDeclaration) is { } className
+        return GetNamespaceName(methodDeclaration, compilation) is { } namespaceName && GetClassName(methodDeclaration) is { } className
             ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, GetMethodValue(compilation, methodDeclaration, attribute), GetTypeValue(compilation, methodDeclaration, attribute)))
             : null;
     }
@@ -73,11 +73,11 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             ?.Identifier
             .ToString();
 
-    private static string? GetNamespaceName(SyntaxNode methodDeclaration)
-        => methodDeclaration
-            .TryGetParentSyntax<NamespaceDeclarationSyntax>()
-            ?.Name
-            .ToString();
+    private static string? GetNamespaceName(SyntaxNode methodDeclaration, Compilation compilation)
+        => compilation.GetSemanticModel(methodDeclaration.SyntaxTree)
+            .GetDeclaredSymbol(methodDeclaration)?
+            .ContainingNamespace
+            .ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 
     private static MethodDeclarationSyntax CreateMethodImplementation(MethodDeclarationSyntax methodDeclaration, string methodName, TypeSyntax typeSyntax)
         => (MethodDeclarationSyntax)new OrNoneFromTryPatternRewriter(methodName, typeSyntax)
