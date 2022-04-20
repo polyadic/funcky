@@ -1,13 +1,12 @@
-namespace Funcky.Extensions
+namespace Funcky.Extensions;
+
+public readonly struct ValueWithFirst<TValue>
 {
-    public readonly struct ValueWithFirst<TValue>
-    {
-        public ValueWithFirst(TValue value, bool isFirst) => (Value, IsFirst) = (value, isFirst);
+    public ValueWithFirst(TValue value, bool isFirst) => (Value, IsFirst) = (value, isFirst);
 
-        public TValue Value { get; }
+    public TValue Value { get; }
 
-        public bool IsFirst { get; }
+    public bool IsFirst { get; }
 
-        public void Deconstruct(out TValue value, out bool isFirst) => (value, isFirst) = (Value, IsFirst);
-    }
+    public void Deconstruct(out TValue value, out bool isFirst) => (value, isFirst) = (Value, IsFirst);
 }

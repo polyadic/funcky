@@ -1,8 +1,7 @@
-namespace Funcky
+namespace Funcky;
+
+public static partial class Functional
 {
-    public static partial class Functional
-    {
-        [Pure]
-        public static T Identity<T>(T value) => value;
-    }
+    [Pure]
+    public static T Identity<T>(T value) => value;
 }

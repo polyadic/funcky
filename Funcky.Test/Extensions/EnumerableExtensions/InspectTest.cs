@@ -1,31 +1,30 @@
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Test.Extensions.EnumerableExtensions;
+
+public sealed class InspectTest
 {
-    public sealed class InspectTest
+    [Fact]
+    public void InspectIsEnumeratedLazily()
     {
-        [Fact]
-        public void InspectIsEnumeratedLazily()
-        {
-            var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-            _ = doNotEnumerate.Inspect(NoOperation);
-        }
+        _ = doNotEnumerate.Inspect(NoOperation);
+    }
 
-        [Fact]
-        public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
-        {
-            var sideEffect = 0;
-            var numbers = new List<int> { 1, 2, 3, 42 };
+    [Fact]
+    public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
+    {
+        var sideEffect = 0;
+        var numbers = new List<int> { 1, 2, 3, 42 };
 
-            var numbersWithSideEffect = numbers
-                .Inspect(n => { ++sideEffect; });
+        var numbersWithSideEffect = numbers
+            .Inspect(n => { ++sideEffect; });
 
-            Assert.Equal(0, sideEffect);
+        Assert.Equal(0, sideEffect);
 
-            numbersWithSideEffect.ForEach(NoOperation);
+        numbersWithSideEffect.ForEach(NoOperation);
 
-            Assert.Equal(numbers.Count, sideEffect);
-        }
+        Assert.Equal(numbers.Count, sideEffect);
     }
 }

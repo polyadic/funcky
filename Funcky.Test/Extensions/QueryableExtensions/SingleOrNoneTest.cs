@@ -1,14 +1,13 @@
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test.Extensions.QueryableExtensions
+namespace Funcky.Test.Extensions.QueryableExtensions;
+
+public sealed class SingleOrNoneTest
 {
-    public sealed class SingleOrNoneTest
-    {
-        [Fact]
-        public void SingleOrNoneIsEvaluatedUsingExpressions()
-            => _ = Enumerable.Empty<int>()
-                .AsQueryable()
-                .PreventAccidentalUseAsEnumerable()
-                .SingleOrNone();
-    }
+    [Fact]
+    public void SingleOrNoneIsEvaluatedUsingExpressions()
+        => _ = Enumerable.Empty<int>()
+            .AsQueryable()
+            .PreventAccidentalUseAsEnumerable()
+            .SingleOrNone();
 }

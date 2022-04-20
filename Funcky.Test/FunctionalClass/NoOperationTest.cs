@@ -1,16 +1,15 @@
-namespace Funcky.Test.FunctionalClass
+namespace Funcky.Test.FunctionalClass;
+
+public sealed class NoOperationTest
 {
-    public sealed class NoOperationTest
+    [Fact]
+    public void GivenTheNoOperationFunctionWeCanApplyItToMatch()
     {
-        [Fact]
-        public void GivenTheNoOperationFunctionWeCanApplyItToMatch()
-        {
-            var none = Option<int>.None;
+        var none = Option<int>.None;
 
-            var sideEffect = 0;
-            none.Switch(none: Functional.NoOperation, some: i => sideEffect = i);
+        var sideEffect = 0;
+        none.Switch(none: Functional.NoOperation, some: i => sideEffect = i);
 
-            Assert.Equal(0, sideEffect);
-        }
+        Assert.Equal(0, sideEffect);
     }
 }

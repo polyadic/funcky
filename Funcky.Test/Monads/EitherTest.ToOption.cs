@@ -1,35 +1,34 @@
-namespace Funcky.Test.Monads
-{
-    public sealed partial class EitherTest
-    {
-        public sealed class LeftOrNone
-        {
-            [Fact]
-            public void ReturnsValueWhenEitherIsLeft()
-            {
-                FunctionalAssert.IsSome("test", Either<string, int>.Left("test").LeftOrNone());
-            }
+namespace Funcky.Test.Monads;
 
-            [Fact]
-            public void ReturnsNoneWhenEitherIsRight()
-            {
-                FunctionalAssert.IsNone(Either<string>.Return(10).LeftOrNone());
-            }
+public sealed partial class EitherTest
+{
+    public sealed class LeftOrNone
+    {
+        [Fact]
+        public void ReturnsValueWhenEitherIsLeft()
+        {
+            FunctionalAssert.IsSome("test", Either<string, int>.Left("test").LeftOrNone());
         }
 
-        public sealed class RightOrNone
+        [Fact]
+        public void ReturnsNoneWhenEitherIsRight()
         {
-            [Fact]
-            public void ReturnsValueWhenEitherIsRight()
-            {
-                FunctionalAssert.IsSome("test", Either<int>.Return("test").RightOrNone());
-            }
+            FunctionalAssert.IsNone(Either<string>.Return(10).LeftOrNone());
+        }
+    }
 
-            [Fact]
-            public void ReturnsNoneWhenEitherIsLeft()
-            {
-                FunctionalAssert.IsNone(Either<int, string>.Left(10).RightOrNone());
-            }
+    public sealed class RightOrNone
+    {
+        [Fact]
+        public void ReturnsValueWhenEitherIsRight()
+        {
+            FunctionalAssert.IsSome("test", Either<int>.Return("test").RightOrNone());
+        }
+
+        [Fact]
+        public void ReturnsNoneWhenEitherIsLeft()
+        {
+            FunctionalAssert.IsNone(Either<int, string>.Left(10).RightOrNone());
         }
     }
 }

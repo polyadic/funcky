@@ -1,10 +1,9 @@
 using Microsoft.CodeAnalysis;
 
-namespace Funcky.SourceGenerator.Extensions
+namespace Funcky.SourceGenerator.Extensions;
+
+internal static class IncrementalValuesProviderExtensions
 {
-    internal static class IncrementalValuesProviderExtensions
-    {
-        public static IncrementalValuesProvider<TSource> WhereNotNull<TSource>(this IncrementalValuesProvider<TSource?> source)
-            => source.Where(x => x is not null)!;
-    }
+    public static IncrementalValuesProvider<TSource> WhereNotNull<TSource>(this IncrementalValuesProvider<TSource?> source)
+        => source.Where(x => x is not null)!;
 }

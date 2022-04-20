@@ -1,10 +1,9 @@
 using Microsoft.CodeAnalysis;
 
-namespace Funcky.Analyzers
+namespace Funcky.Analyzers;
+
+internal static class LocalizedResourceLoader
 {
-    internal static class LocalizedResourceLoader
-    {
-        internal static LocalizableString LoadFromResource(string resourceName)
-            => new LocalizableResourceString(resourceName, Resources.ResourceManager, typeof(Resources));
-    }
+    internal static LocalizableString LoadFromResource(string resourceName)
+        => new LocalizableResourceString(resourceName, Resources.ResourceManager, typeof(Resources));
 }

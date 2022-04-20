@@ -1,13 +1,12 @@
-namespace Funcky.Extensions
-{
-    public static partial class StringExtensions
-    {
-        private const int NotFoundValue = -1;
+namespace Funcky.Extensions;
 
-        [Pure]
-        private static Option<int> MapIndexToOption(int index)
-            => index == NotFoundValue
-                ? Option<int>.None
-                : index;
-    }
+public static partial class StringExtensions
+{
+    private const int NotFoundValue = -1;
+
+    [Pure]
+    private static Option<int> MapIndexToOption(int index)
+        => index == NotFoundValue
+            ? Option<int>.None
+            : index;
 }

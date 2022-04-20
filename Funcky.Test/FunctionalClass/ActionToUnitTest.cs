@@ -1,25 +1,24 @@
-namespace Funcky.Test.FunctionalClass
+namespace Funcky.Test.FunctionalClass;
+
+public sealed class ActionToUnitTest
 {
-    public sealed class ActionToUnitTest
+    [Fact]
+    public void OverloadResolutionWorks()
     {
-        [Fact]
-        public void OverloadResolutionWorks()
-        {
-            _ = ActionToUnit(ActionWithNoParameters);
-            _ = ActionToUnit<int>(ActionWithOneParameter);
-            _ = ActionToUnit<int, int>(ActionWithTwoParameters);
-        }
+        _ = ActionToUnit(ActionWithNoParameters);
+        _ = ActionToUnit<int>(ActionWithOneParameter);
+        _ = ActionToUnit<int, int>(ActionWithTwoParameters);
+    }
 
-        private static void ActionWithNoParameters()
-        {
-        }
+    private static void ActionWithNoParameters()
+    {
+    }
 
-        private static void ActionWithOneParameter(int foo)
-        {
-        }
+    private static void ActionWithOneParameter(int foo)
+    {
+    }
 
-        private static void ActionWithTwoParameters(int foo, int bar)
-        {
-        }
+    private static void ActionWithTwoParameters(int foo, int bar)
+    {
     }
 }

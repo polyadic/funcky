@@ -1,48 +1,47 @@
 using System.Collections.Immutable;
 
-namespace Funcky.Internal
+namespace Funcky.Internal;
+
+internal sealed class SlidingWindowQueue<TSource>
 {
-    internal sealed class SlidingWindowQueue<TSource>
+    private readonly int _width;
+    private int _currentWidth;
+    private ImmutableQueue<TSource> _window = ImmutableQueue<TSource>.Empty;
+
+    public SlidingWindowQueue(int width)
+        => _width = width;
+
+    public IReadOnlyList<TSource> Window
+        => _window.ToImmutableList();
+
+    public bool IsFull
+        => _width == _currentWidth;
+
+    public SlidingWindowQueue<TSource> Enqueue(TSource element)
     {
-        private readonly int _width;
-        private int _currentWidth;
-        private ImmutableQueue<TSource> _window = ImmutableQueue<TSource>.Empty;
+        EnqueueWithWidth(element);
+        KeepWindowWidth();
 
-        public SlidingWindowQueue(int width)
-            => _width = width;
+        return this;
+    }
 
-        public IReadOnlyList<TSource> Window
-            => _window.ToImmutableList();
+    private void EnqueueWithWidth(TSource element)
+    {
+        _window = _window.Enqueue(element);
+        _currentWidth += 1;
+    }
 
-        public bool IsFull
-            => _width == _currentWidth;
+    private void DequeueWithWidth()
+    {
+        _window = _window.Dequeue();
+        _currentWidth -= 1;
+    }
 
-        public SlidingWindowQueue<TSource> Enqueue(TSource element)
+    private void KeepWindowWidth()
+    {
+        if (_currentWidth > _width)
         {
-            EnqueueWithWidth(element);
-            KeepWindowWidth();
-
-            return this;
-        }
-
-        private void EnqueueWithWidth(TSource element)
-        {
-            _window = _window.Enqueue(element);
-            _currentWidth += 1;
-        }
-
-        private void DequeueWithWidth()
-        {
-            _window = _window.Dequeue();
-            _currentWidth -= 1;
-        }
-
-        private void KeepWindowWidth()
-        {
-            if (_currentWidth > _width)
-            {
-                DequeueWithWidth();
-            }
+            DequeueWithWidth();
         }
     }
 }

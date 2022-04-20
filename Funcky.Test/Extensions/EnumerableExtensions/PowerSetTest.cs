@@ -1,41 +1,40 @@
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Test.Extensions.EnumerableExtensions;
+
+public sealed class PowerSetTest
 {
-    public sealed class PowerSetTest
+    [Fact]
+    public void APowerSetIsEnumeratedLazily()
     {
-        [Fact]
-        public void APowerSetIsEnumeratedLazily()
-        {
-            var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-            _ = doNotEnumerate.PowerSet();
-        }
+        _ = doNotEnumerate.PowerSet();
+    }
 
-        [Fact]
-        public void ThePowerSetOfTheEmptySetIsSetOfTheEmptySet()
-        {
-            var powerSet = Enumerable.Empty<string>().PowerSet();
+    [Fact]
+    public void ThePowerSetOfTheEmptySetIsSetOfTheEmptySet()
+    {
+        var powerSet = Enumerable.Empty<string>().PowerSet();
 
-            Assert.Empty(powerSet.First());
-        }
+        Assert.Empty(powerSet.First());
+    }
 
-        [Fact]
-        public void ThePowerSetIsTheSetOfAllSubSets()
-        {
-            var sequence = Sequence.Return("Alpha", "Beta", "Gamma");
-            var powerSet = sequence.PowerSet();
+    [Fact]
+    public void ThePowerSetIsTheSetOfAllSubSets()
+    {
+        var sequence = Sequence.Return("Alpha", "Beta", "Gamma");
+        var powerSet = sequence.PowerSet();
 
-            Assert.Collection(
-                powerSet,
-                subset => { Assert.Equal(Enumerable.Empty<string>(), subset); },
-                subset => { Assert.Equal(Sequence.Return("Alpha"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Beta"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Alpha", "Beta"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Gamma"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Alpha", "Gamma"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Beta", "Gamma"), subset); },
-                subset => { Assert.Equal(Sequence.Return("Alpha", "Beta", "Gamma"), subset); });
-        }
+        Assert.Collection(
+            powerSet,
+            subset => { Assert.Equal(Enumerable.Empty<string>(), subset); },
+            subset => { Assert.Equal(Sequence.Return("Alpha"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Beta"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Alpha", "Beta"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Gamma"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Alpha", "Gamma"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Beta", "Gamma"), subset); },
+            subset => { Assert.Equal(Sequence.Return("Alpha", "Beta", "Gamma"), subset); });
     }
 }

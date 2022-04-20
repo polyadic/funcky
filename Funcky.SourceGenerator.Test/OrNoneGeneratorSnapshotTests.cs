@@ -1,12 +1,12 @@
-namespace Funcky.SourceGenerator.Test
+namespace Funcky.SourceGenerator.Test;
+
+[UsesVerify] // 👈 Adds hooks for Verify into XUnit
+public class OrNoneGeneratorSnapshotTests
 {
-    [UsesVerify] // 👈 Adds hooks for Verify into XUnit
-    public class OrNoneGeneratorSnapshotTests
+    [Fact]
+    public Task GenerateSingleMethodWithTheSingleArgumentCandidate()
     {
-        [Fact]
-        public Task GenerateSingleMethodWithTheSingleArgumentCandidate()
-        {
-            const string source = @"using System.Diagnostics.Contracts;
+        const string source = @"using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
@@ -20,13 +20,13 @@ namespace Funcky.Extensions
     }
 }";
 
-            return TestHelper.Verify(source);
-        }
+        return TestHelper.Verify(source);
+    }
 
-        [Fact]
-        public Task GenerateSingleMethodWithMultipleArgumentsToForward()
-        {
-            const string source = @"using System.Diagnostics.Contracts;
+    [Fact]
+    public Task GenerateSingleMethodWithMultipleArgumentsToForward()
+    {
+        const string source = @"using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
@@ -40,13 +40,13 @@ namespace Funcky.Extensions
     }
 }";
 
-            return TestHelper.Verify(source);
-        }
+        return TestHelper.Verify(source);
+    }
 
-        [Fact]
-        public Task GenerateMethodWhichHasConstraints()
-        {
-            const string source = @"using System.Diagnostics.Contracts;
+    [Fact]
+    public Task GenerateMethodWhichHasConstraints()
+    {
+        const string source = @"using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
@@ -61,13 +61,13 @@ namespace Funcky.Extensions
     }
 }";
 
-            return TestHelper.Verify(source);
-        }
+        return TestHelper.Verify(source);
+    }
 
-        [Fact]
-        public Task GenerateMultipleMethodsInASingleClass()
-        {
-            const string source = @"using System.Diagnostics.Contracts;
+    [Fact]
+    public Task GenerateMultipleMethodsInASingleClass()
+    {
+        const string source = @"using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
@@ -85,7 +85,6 @@ namespace Funcky.Extensions
     }
 }";
 
-            return TestHelper.Verify(source);
-        }
+        return TestHelper.Verify(source);
     }
 }
