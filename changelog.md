@@ -11,7 +11,7 @@ This release is the last non-breaking release for Funcky before 3.0.
   that return a type that has a keyword in C# `int`, `long`, etc. use the name of the BCL type instead. \
   Example: `ParseIntOrNone` becomes `ParseInt32OrNone`. \
   The old methods will be removed in Funcky 3.
-* In preparation for Funcky 3 we deprecated `Option.None<T>` when used as method group. Use `Option.None<T>` instead.
+* In preparation for Funcky 3 we deprecated `Option<T>.None` when used as method group. Use `Option.None<T>` instead.
 
 ### New `ParseOrNone` extensions
 With the help of a source generator we have added a lot of new ParseOrNone methods for various types from the BCL:
