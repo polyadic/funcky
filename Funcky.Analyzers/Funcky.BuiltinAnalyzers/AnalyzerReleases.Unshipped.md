@@ -3,6 +3,7 @@
 
 ### New Rules
 
-| Rule ID | Category | Severity | Notes               |
-|---------|----------|----------|---------------------|
-| λ0001   | Funcky   | Error    | TryGetValueAnalyzer |
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
+λ0001 | Funcky | Error | TryGetValueAnalyzer
+λ0002 | Funcky.Deprecation | Warning | OptionNoneMethodGroupAnalyzer

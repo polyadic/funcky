@@ -172,6 +172,7 @@ static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? candida
 static Funcky.Extensions.ParseExtensions.ParseViaHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
 static Funcky.Extensions.ParseExtensions.ParseWarningHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Monads.Either<TLeft, TRight>.implicit operator Funcky.Monads.Either<TLeft, TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.Option.None<TItem>() -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! getLeft) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>

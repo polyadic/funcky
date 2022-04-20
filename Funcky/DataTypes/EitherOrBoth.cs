@@ -134,7 +134,7 @@ namespace Funcky.DataTypes
                 left: Left<TLeft, TRight>,
                 right: Right<TLeft, TRight>,
                 leftAndRight: Both,
-                none: Option<EitherOrBoth<TLeft, TRight>>.None);
+                none: Option.None<EitherOrBoth<TLeft, TRight>>);
 
         private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
             where TLeft : notnull
