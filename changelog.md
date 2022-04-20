@@ -12,14 +12,14 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * In preparation for Funcky 3 we deprecated `Option.None<T>` when used as method group. Use `Option.None<T>` instead.
 
 ### New `ParseOrNone` extensions
-With the help of a source generate we have added a lot of new ParseOrNone methods for various types from the BCL:
+With the help of a source generator we have added a lot of new ParseOrNone methods for various types from the BCL:
   * Unsigned integer types
   * `DateOnly`, `TimeOnly`
   * `Version`
   * Support for `ReadOnlySpan<T>` as input
   * ... and more
 
-### Convenience for `Either` and Result`
+### Convenience for `Either` and `Result`
 * Add implicit conversions for `Either` and `Result`.
 * Implement `Inspect` for `Either` and `Result`.
 * Partition for `IEnumerable<Either>` and `IEnumerable<Result>`.
