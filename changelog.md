@@ -22,9 +22,9 @@ With the help of a source generator we have added a lot of new ParseOrNone metho
   * ... and more
 
 ### Convenience for `Either` and `Result`
-* Add implicit conversions for `Either` and `Result`.
+* Added implicit conversions for `Either` and `Result`.
 * Implement `Inspect` for `Either` and `Result`.
-* Partition for `IEnumerable<Either>` and `IEnumerable<Result>`.
+* Added `Partition` for `IEnumerable<Either>` and `IEnumerable<Result>`.
 * Added `ToString` on `Either` and `Result`.
 * Implement `ToEither` on `Option`.
 
