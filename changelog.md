@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 2.7.0 | Funcky.XUnit 1.0.0 | Funcky.Analyzers 1.1.0
+This release is the last non-breaking release for Funcky before 3.0.
+
 ### Deprecations
 * `EnumerableExtensions.CartesianProduct` will be removed in Funcky 3.
 * To align our naming with that of the BCL, the `ParseOrNone` methods
