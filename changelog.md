@@ -3,11 +3,40 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-* Add `ParseVersionOrNone` extension.
+### Deprecations
+* `EnumerableExtensions.CartesianProduct` will be removed in Funcky 3.
+* To align our naming with that of the BCL, the `ParseOrNone` methods
+  that return a type that has a keyword in C# `int`, `long`, etc. use the name of the BCL type instead. \
+  Example: `ParseIntOrNone` becomes `ParseInt32OrNone`. \
+  The old methods will be removed in Funcky 3.
+* In preparation for Funcky 3 we deprecated `Option.None<T>` when used as method group. Use `Option.None<T>` instead.
+
+### New `ParseOrNone` extensions
+With the help of a source generate we have added a lot of new ParseOrNone methods for various types from the BCL:
+  * Unsigned integer types
+  * `DateOnly`, `TimeOnly`
+  * `Version`
+  * Support for `ReadOnlySpan<T>` as input
+  * ... and more
+
+### Convenience for `Either` and Result`
+* Add implicit conversions for `Either` and `Result`.
 * Implement `Inspect` for `Either` and `Result`.
-* Use Source Generator to emit more `*OrNone` functions.
-* Cartesian Product deprecated.
-* Add implicit converions for `Either` and `Result`.
+* Partition for `IEnumerable<Either>` and `IEnumerable<Result>`.
+* Added `ToString` on `Either` and `Result`.
+* Implement `ToEither` on `Option`.
+
+### `IEnumerable<T>` extensions
+* `AnyOrElse`
+* Prefix sum: `InclusiveScan` and `ExclusiveScan`
+
+### Analyzers
+This release adds two new analyzer rules:
+
+* λ1003: Warning when certain methods, such as `Match` are used without argument labels
+* λ1004: Warning that suggests `.ConcatToString()` over `.JoinToString("")`
+
+Both of these warnings come with corresponding code fixes.
 
 ### Funcky.Xunit
 * Breaking: Funcky.Xunit now uses the `Funcky` namespace, instead of `Funcky.Xunit`.
