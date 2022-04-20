@@ -2,16 +2,16 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    /// <summary>Partitions the result values in an <see cref="IEnumerable{T}"/> into an ok and an error partition.</summary>
+    /// <summary>Partitions the result values in an <see cref="IEnumerable{T}"/> into an error and ok partition.</summary>
     public static ResultPartitions<TValidResult> Partition<TValidResult>(this IEnumerable<Result<TValidResult>> source)
-        => source.Partition((left, right) => new ResultPartitions<TValidResult>(left, right));
+        => source.Partition((error, ok) => new ResultPartitions<TValidResult>(error, ok));
 
-    /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into an ok and an error partition.</summary>
-    public static TResult Partition<TValidResult, TResult>(this IEnumerable<Result<TValidResult>> source, Func<IReadOnlyCollection<TValidResult>, IReadOnlyCollection<Exception>, TResult> resultSelector)
+    /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into an error and ok partition.</summary>
+    public static TResult Partition<TValidResult, TResult>(this IEnumerable<Result<TValidResult>> source, Func<IReadOnlyCollection<Exception>, IReadOnlyCollection<TValidResult>, TResult> resultSelector)
         => source
-            .Aggregate(PartitionBuilder<TValidResult, Exception>.Default, Add)
+            .Aggregate(PartitionBuilder<Exception, TValidResult>.Default, Add)
             .Build(resultSelector);
 
-    private static PartitionBuilder<TValidResult, Exception> Add<TValidResult>(PartitionBuilder<TValidResult, Exception> builder, Result<TValidResult> result)
-        => result.Match(ok: builder.AddLeft, error: builder.AddRight);
+    private static PartitionBuilder<Exception, TValidResult> Add<TValidResult>(PartitionBuilder<Exception, TValidResult> builder, Result<TValidResult> result)
+        => result.Match(error: builder.AddLeft, ok: builder.AddRight);
 }

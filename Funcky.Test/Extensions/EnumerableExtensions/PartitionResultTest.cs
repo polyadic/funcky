@@ -5,9 +5,9 @@ public sealed class PartitionResultTest
     [Fact]
     public void ReturnsTwoEmptyEnumerablesWhenSourceIsEmpty()
     {
-        var (left, right) = Enumerable.Empty<Either<int, string>>().Partition();
-        Assert.Empty(left);
-        Assert.Empty(right);
+        var (error, ok) = Enumerable.Empty<Either<int, string>>().Partition();
+        Assert.Empty(error);
+        Assert.Empty(ok);
     }
 
     [Fact]
@@ -17,7 +17,7 @@ public sealed class PartitionResultTest
         var exceptions = Sequence.Return(new Exception("foo"), new InvalidOperationException("bar"));
         var input = values.Select(Result.Ok).Interleave(exceptions.Select(Result<int>.Error));
 
-        var (ok, error) = input.Partition();
+        var (error, ok) = input.Partition();
 
         Assert.Equal(values, ok);
         Assert.Equal(exceptions, error);
