@@ -19,6 +19,12 @@ Funcky.ExponentialBackoffRetryPolicy.ExponentialBackoffRetryPolicy(int maxRetry,
 Funcky.ExponentialBackoffRetryPolicy.MaxRetries.get -> int
 Funcky.Extensions.AsyncEnumerableExtensions
 Funcky.Extensions.DictionaryExtensions
+Funcky.Extensions.EitherPartitions<TLeft, TRight>
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TLeft>! left, out System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions() -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions(System.Collections.Generic.IReadOnlyCollection<TLeft>! left, System.Collections.Generic.IReadOnlyCollection<TRight>! right) -> void
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Left.get -> System.Collections.Generic.IReadOnlyCollection<TLeft>!
+Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collections.Generic.IReadOnlyCollection<TRight>!
 Funcky.Extensions.EnumerableExtensions
 Funcky.Extensions.FuncExtensions
 Funcky.Extensions.HttpHeadersExtensions
@@ -27,6 +33,12 @@ Funcky.Extensions.ParseExtensions
 Funcky.Extensions.QueryableExtensions
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
+Funcky.Extensions.ResultPartitions<TValidResult>
+Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, out System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections.Generic.IReadOnlyCollection<System.Exception!>!
+Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyCollection<TValidResult>!
+Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions() -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
 Funcky.Extensions.StreamExtensions
 Funcky.Extensions.StringExtensions
 Funcky.Extensions.ValueWithFirst<TValue>
@@ -70,6 +82,7 @@ Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Either() -> void
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
 Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
+Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! action) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Match(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
 Funcky.Monads.Either<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right) -> TMatchResult
 Funcky.Monads.Either<TLeft, TRight>.Select<TResult>(System.Func<TRight, TResult>! selector) -> Funcky.Monads.Either<TLeft, TResult>
@@ -102,11 +115,13 @@ Funcky.Monads.Option<TItem>.Select<TResult>(System.Func<TItem, TResult>! selecto
 Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funcky.Monads.Option<TMaybe>>! maybeSelector, System.Func<TItem, TMaybe, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.SelectMany<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.ToEnumerable() -> System.Collections.Generic.IEnumerable<TItem>!
+Funcky.Monads.Option<TItem>.TryGetValue(out TItem item) -> bool
 Funcky.Monads.Option<TItem>.Where(System.Func<TItem, bool>! predicate) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionComparer
 Funcky.Monads.OptionComparer<TItem>
 Funcky.Monads.OptionEqualityComparer
 Funcky.Monads.OptionEqualityComparer<TItem>
+Funcky.Monads.OptionExtensions
 Funcky.Monads.OptionTaskAwaiter<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
@@ -123,6 +138,7 @@ Funcky.Monads.ReaderExtensions
 Funcky.Monads.Result
 Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> other) -> bool
+Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! action) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Match(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
 Funcky.Monads.Result<TValidResult>.Result() -> void
@@ -140,6 +156,7 @@ override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> boo
 override Funcky.DataTypes.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
 override Funcky.Monads.Either<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.Monads.Either<TLeft, TRight>.GetHashCode() -> int
+override Funcky.Monads.Either<TLeft, TRight>.ToString() -> string!
 override Funcky.Monads.JsonOptionConverterFactory.CanConvert(System.Type! typeToConvert) -> bool
 override Funcky.Monads.JsonOptionConverterFactory.CreateConverter(System.Type! optionType, System.Text.Json.JsonSerializerOptions! options) -> System.Text.Json.Serialization.JsonConverter!
 override Funcky.Monads.Option<TItem>.Equals(object? obj) -> bool
@@ -147,6 +164,7 @@ override Funcky.Monads.Option<TItem>.GetHashCode() -> int
 override Funcky.Monads.Option<TItem>.ToString() -> string!
 override Funcky.Monads.Result<TValidResult>.Equals(object? obj) -> bool
 override Funcky.Monads.Result<TValidResult>.GetHashCode() -> int
+override Funcky.Monads.Result<TValidResult>.ToString() -> string!
 override Funcky.Unit.Equals(object? obj) -> bool
 override Funcky.Unit.GetHashCode() -> int
 static Funcky.DataTypes.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.DataTypes.EitherOrBoth<TLeft, TRight>>
@@ -188,6 +206,8 @@ static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey, TRe
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector, System.Collections.Generic.IEqualityComparer<TKey>! comparer) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.AdjacentGroupBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>! comparer) -> System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>!>!
+static Funcky.Extensions.EnumerableExtensions.AnyOrElse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEnumerable<TSource>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.AnyOrElse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<System.Collections.Generic.IEnumerable<TSource>!>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<decimal>! source) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<double>! source) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.EnumerableExtensions.AverageOrNone(this System.Collections.Generic.IEnumerable<float>! source) -> Funcky.Monads.Option<float>
@@ -214,10 +234,12 @@ static Funcky.Extensions.EnumerableExtensions.Chunk<TSource, TResult>(this Syste
 static Funcky.Extensions.EnumerableExtensions.Chunk<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.ConcatToString<T>(this System.Collections.Generic.IEnumerable<T>! source) -> string!
 static Funcky.Extensions.EnumerableExtensions.ElementAtOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int index) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.ExclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
 static Funcky.Extensions.EnumerableExtensions.FirstOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.FirstOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> void
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Func<T, Funcky.Unit>! action) -> Funcky.Unit
+static Funcky.Extensions.EnumerableExtensions.InclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
 static Funcky.Extensions.EnumerableExtensions.Inspect<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence, params System.Collections.Generic.IEnumerable<TSource>![]! otherSequences) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -246,6 +268,10 @@ static Funcky.Extensions.EnumerableExtensions.Pairwise<TSource, TResult>(this Sy
 static Funcky.Extensions.EnumerableExtensions.Pairwise<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<(TSource Front, TSource Back)>!
 static Funcky.Extensions.EnumerableExtensions.Partition<TItem, TResult>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate, System.Func<System.Collections.Generic.IEnumerable<TItem>!, System.Collections.Generic.IEnumerable<TItem>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate) -> (System.Collections.Generic.IEnumerable<TItem>! True, System.Collections.Generic.IEnumerable<TItem>! False)
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TLeft>!, System.Collections.Generic.IReadOnlyCollection<TRight>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
+static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TValidResult>!, System.Collections.Generic.IReadOnlyCollection<System.Exception!>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source) -> Funcky.Extensions.ResultPartitions<TValidResult>
 static Funcky.Extensions.EnumerableExtensions.PowerSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.Shuffle<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.SingleOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
@@ -317,27 +343,153 @@ static Funcky.Extensions.HttpHeadersExtensions.TryGetValues(this System.Net.Http
 static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T item, Funcky.GenericConstraints.RequireStruct<T>? ω = null) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T? item) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Extensions.ObjectExtensions.ToEnumerable<T>(this T? item, Funcky.GenericConstraints.RequireClass<T!>? ω = null) -> System.Collections.Generic.IEnumerable<T!>!
+static Funcky.Extensions.ParseExtensions.ParseAuthenticationHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.AuthenticationHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this string? candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this string? candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
 static Funcky.Extensions.ParseExtensions.ParseBooleanOrNone(this string! candidate) -> Funcky.Monads.Option<bool>
+static Funcky.Extensions.ParseExtensions.ParseBooleanOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<bool>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this string! candidate) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<byte>
+static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<byte>
+static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<byte>
+static Funcky.Extensions.ParseExtensions.ParseCacheControlHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.CacheControlHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseContentDispositionHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentDispositionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseContentRangeHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentRangeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseDateOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOffsetOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOffsetOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOffsetOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOffsetOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
 static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this string! candidate) -> Funcky.Monads.Option<System.DateTime>
 static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this string! candidate) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<decimal>
+static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this string! candidate) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<double>
+static Funcky.Extensions.ParseExtensions.ParseEntityTagHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.EntityTagHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! type) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! type, bool ignoreCase) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this System.ReadOnlySpan<char> candidate, System.Type! type) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this System.ReadOnlySpan<char> candidate, System.Type! type, bool ignoreCase) -> Funcky.Monads.Option<object!>
 static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
 static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this System.ReadOnlySpan<char> candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this string! candidate, string! format) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this string! candidate, string! format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this string! candidate, string![]! formats) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this string! candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOffsetOrNone(this string! candidate, string! format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOffsetOrNone(this string! candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOffsetOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOffsetOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTimeOffset>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string! candidate, string! format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this string! candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+static Funcky.Extensions.ParseExtensions.ParseExactGuidOrNone(this string? candidate, string? format) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseExactGuidOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this string! candidate, string! format) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this string! candidate, string! format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this string! candidate, string![]! formats) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this string! candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this string! candidate, string! format, System.IFormatProvider! formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this string! candidate, string! format, System.IFormatProvider! formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this string! candidate, string![]! formats, System.IFormatProvider! formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this string! candidate, string![]! formats, System.IFormatProvider! formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, string![]! formats, System.IFormatProvider! formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseExactTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, System.ReadOnlySpan<char> format, System.IFormatProvider! formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseFloatOrNone(this string! candidate) -> Funcky.Monads.Option<float>
 static Funcky.Extensions.ParseExtensions.ParseFloatOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(this string? candidate) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this string! candidate) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt16OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this string! candidate) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt32OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this string! candidate) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseInt64OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this string! candidate) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIntOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
+static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
+static Funcky.Extensions.ParseExtensions.ParseIPEndPointOrNone(this string! candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.ParseExtensions.ParseIPEndPointOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
 static Funcky.Extensions.ParseExtensions.ParseLongOrNone(this string! candidate) -> Funcky.Monads.Option<long>
 static Funcky.Extensions.ParseExtensions.ParseLongOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<long>
+static Funcky.Extensions.ParseExtensions.ParseMediaTypeHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseMediaTypeWithQualityHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseNameValueHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseNameValueWithParametersHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueWithParametersHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseProductHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseProductInfoHeaderValueOrNone(this string! candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductInfoHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseRangeConditionHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeConditionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseRangeHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseRetryConditionHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RetryConditionHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate) -> Funcky.Monads.Option<sbyte>
+static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<sbyte>
+static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<sbyte>
+static Funcky.Extensions.ParseExtensions.ParseSByteOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<sbyte>
 static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this string! candidate) -> Funcky.Monads.Option<short>
 static Funcky.Extensions.ParseExtensions.ParseShortOrNone(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<short>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this string! candidate) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseSingleOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<float>
+static Funcky.Extensions.ParseExtensions.ParseStringWithQualityHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.StringWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this string! candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.TimeOnly>
+static Funcky.Extensions.ParseExtensions.ParseTimeOnlyOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.TimeOnly>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this string! candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider! provider) -> Funcky.Monads.Option<System.TimeSpan>
+static Funcky.Extensions.ParseExtensions.ParseTransferCodingHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseTransferCodingWithQualityHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string! candidate) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<ushort>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this string! candidate) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt32OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<uint>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this string! candidate) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this string! candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider! provider) -> Funcky.Monads.Option<ulong>
+static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this string? candidate) -> Funcky.Monads.Option<System.Version!>
+static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Version!>
+static Funcky.Extensions.ParseExtensions.ParseViaHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseWarningHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Extensions.ParseExtensions.TryParseBoolean(this string! candidate) -> Funcky.Monads.Option<bool>
 static Funcky.Extensions.ParseExtensions.TryParseByte(this string! candidate) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.TryParseByte(this string! candidate, System.Globalization.NumberStyles styles, System.IFormatProvider! provider) -> Funcky.Monads.Option<byte>
@@ -433,10 +585,10 @@ static Funcky.Functional.Curry<T1, T2, T3>(System.Action<T1, T2, T3>! action) ->
 static Funcky.Functional.Curry<T1, T2, TResult>(System.Func<T1, T2, TResult>! function) -> System.Func<T1, System.Func<T2, TResult>!>!
 static Funcky.Functional.Curry<T1, T2>(System.Action<T1, T2>! action) -> System.Func<T1, System.Action<T2>!>!
 static Funcky.Functional.False() -> bool
+static Funcky.Functional.False<T>(T ω) -> bool
 static Funcky.Functional.False<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.False<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.False<T0, T1>(T0 ω0, T1 ω1) -> bool
-static Funcky.Functional.False<T>(T ω) -> bool
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>! function) -> System.Func<T2, T1, T3, T4, T5, T6, T7, T8, TResult>!
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>! action) -> System.Action<T2, T1, T3, T4, T5, T6, T7, T8>!
 static Funcky.Functional.Flip<T1, T2, T3, T4, T5, T6, T7, TResult>(System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>! function) -> System.Func<T2, T1, T3, T4, T5, T6, T7, TResult>!
@@ -466,10 +618,10 @@ static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
 static Funcky.Functional.RetryAsync<TResult>(System.Func<System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!>! producer, Funcky.IRetryPolicy! retryPolicy) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TResult>>!
 static Funcky.Functional.True() -> bool
+static Funcky.Functional.True<T>(T ω) -> bool
 static Funcky.Functional.True<T0, T1, T2, T3>(T0 ω0, T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.True<T0, T1, T2>(T0 ω0, T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T0, T1>(T0 ω0, T1 ω1) -> bool
-static Funcky.Functional.True<T>(T ω) -> bool
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Func<T8, TResult>!>!>!>!>!>!>!>! function) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Action<T8>!>!>!>!>!>!>!>! action) -> System.Action<T1, T2, T3, T4, T5, T6, T7, T8>!
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, TResult>!>!>!>!>!>!>! function) -> System.Func<T1, T2, T3, T4, T5, T6, T7, TResult>!
@@ -497,6 +649,7 @@ static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Opt
 static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
 static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Monads.OptionTaskAwaiter<TItem>
 static Funcky.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Monads.OptionValueTaskAwaiter<TItem>
+static Funcky.Monads.Either<TLeft, TRight>.implicit operator Funcky.Monads.Either<TLeft, TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Either<TLeft, TRight>.Left(TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
@@ -514,6 +667,7 @@ static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>!
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.FromNullable<T>(T? item) -> Funcky.Monads.Option<T!>
 static Funcky.Monads.Option.FromNullable<T>(T? item) -> Funcky.Monads.Option<T>
+static Funcky.Monads.Option.None<TItem>() -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.Return<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.Some<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
@@ -529,6 +683,8 @@ static Funcky.Monads.OptionComparer<TItem>.Create(System.Comparison<TItem>! comp
 static Funcky.Monads.OptionComparer<TItem>.Default.get -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionEqualityComparer.Create<TItem>(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionEqualityComparer<TItem>.Default.get -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! getLeft) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
 static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.Reader<TEnvironment>.Return<TSource>(TSource value) -> Funcky.Monads.Reader<TEnvironment, TSource>!
@@ -539,6 +695,7 @@ static Funcky.Monads.ReaderExtensions.Sequence<TEnvironment, TElement>(this Syst
 static Funcky.Monads.Result.Ok<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.Return<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! item) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult item) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
