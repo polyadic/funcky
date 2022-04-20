@@ -5,6 +5,7 @@ Funcky.EitherOrBoth<TLeft, TRight>.Equals(Funcky.EitherOrBoth<TLeft, TRight> oth
 Funcky.EitherOrBoth<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right, System.Func<TLeft, TRight, TMatchResult>! both) -> TMatchResult
 Funcky.EitherOrBoth<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right, System.Action<TLeft, TRight>! both) -> void
 Funcky.Extensions.ActionExtensions
+Funcky.IBuffer<TSource>
 Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
@@ -70,6 +71,7 @@ static Funcky.Extensions.EnumerableExtensions.Chunk<TSource>(System.Collections.
 static Funcky.Extensions.EnumerableExtensions.ForEach<T>(this System.Collections.Generic.IEnumerable<T>! elements, System.Action<T>! action) -> Funcky.Unit
 static Funcky.Extensions.EnumerableExtensions.Materialize<TItem, TMaterialization>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<System.Collections.Generic.IEnumerable<TItem>!, TMaterialization>! materialize) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
 static Funcky.Extensions.EnumerableExtensions.Materialize<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
+static Funcky.Extensions.EnumerableExtensions.Memoize<TSource>(this System.Collections.Generic.IEnumerable<TSource>! sequence) -> Funcky.IBuffer<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Partition<TItem, TResult>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate, System.Func<System.Collections.Generic.IReadOnlyList<TItem>!, System.Collections.Generic.IReadOnlyList<TItem>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate) -> (System.Collections.Generic.IReadOnlyList<TItem>! True, System.Collections.Generic.IReadOnlyList<TItem>! False)
 static Funcky.Extensions.EnumerableExtensions.Shuffle<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IReadOnlyList<TSource>!
@@ -94,5 +96,7 @@ static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T1>(T1 ω1) -> bool
 static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! exception) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence) -> Funcky.IBuffer<TItem>!
+static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> Funcky.IBuffer<TItem>!
 static Funcky.Sequence.Return<TItem>(TItem item) -> System.Collections.Generic.IReadOnlyList<TItem>!
 static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IReadOnlyList<TItem>!

@@ -10,14 +10,8 @@ namespace Funcky
         /// <param name="count">The number of times to repeat the value in the generated sequence.</param>
         /// <returns>Returns an infinite IEnumerable cycling through the same elements.</returns>
         [Pure]
-        public static IEnumerable<TItem> RepeatRange<TItem>(IEnumerable<TItem> sequence, int count)
+        public static IBuffer<TItem> RepeatRange<TItem>(IEnumerable<TItem> sequence, int count)
             where TItem : notnull
-            => RepeatCollection(sequence.Materialize(), count);
-
-        private static IEnumerable<TItem> RepeatCollection<TItem>(IReadOnlyCollection<TItem> collection, int count)
-            where TItem : notnull
-            => Enumerable
-                .Repeat(Unit.Value, count)
-                .SelectMany(_ => collection);
+            => CycleBuffer.Create(sequence, count);
     }
 }
