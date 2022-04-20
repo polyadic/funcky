@@ -61,6 +61,11 @@ namespace Funcky.Extensions
 
                 while (true)
                 {
+                    if (_disposed)
+                    {
+                        throw new ObjectDisposedException("Buffer already disposed.");
+                    }
+
                     if (index == _buffer.Count)
                     {
                         if (_source.MoveNext())
