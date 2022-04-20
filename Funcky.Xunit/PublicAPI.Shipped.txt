@@ -1,0 +1,34 @@
+#nullable enable
+Funcky.Extensions.ToTheoryDataExtension
+Funcky.FunctionalAssert
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5, T6 Item6, T7 Item7, T8 Item8, T9 Item9, T10 Item10)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9, T10>!>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5, T6 Item6, T7 Item7, T8 Item8, T9 Item9)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5, T6, T7, System.Tuple<T8, T9>!>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8, T9>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5, T6 Item6, T7 Item7, T8 Item8)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5, T6, T7, T8>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7, T8>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5, T6 Item6, T7 Item7)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6, T7>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5, T6, T7>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6, T7>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5, T6 Item6)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5, T6>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5, T6>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5, T6>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4, T5 Item5)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4, T5>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4, T5>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4, T5>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3, T4 Item4)>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3, T4>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3, T4>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3, T4>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2, T3 Item3)>! enumerable) -> Xunit.TheoryData<T1, T2, T3>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2, T3>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2, T3>!>! enumerable) -> Xunit.TheoryData<T1, T2, T3>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2>(this System.Collections.Generic.IEnumerable<(T1 Item1, T2 Item2)>! enumerable) -> Xunit.TheoryData<T1, T2>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2>(this System.Collections.Generic.IEnumerable<System.Tuple<T1, T2>!>! enumerable) -> Xunit.TheoryData<T1, T2>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.Tuple<T1>!>! enumerable) -> Xunit.TheoryData<T1>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.ValueTuple<T1>>! enumerable) -> Xunit.TheoryData<T1>!
+static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<T1>! enumerable) -> Xunit.TheoryData<T1>!
+static Funcky.FunctionalAssert.IsError<TResult>(Funcky.Monads.Result<TResult> result) -> System.Exception!
+static Funcky.FunctionalAssert.IsLeft<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TLeft
+static Funcky.FunctionalAssert.IsLeft<TLeft, TRight>(TLeft expectedLeft, Funcky.Monads.Either<TLeft, TRight> either) -> void
+static Funcky.FunctionalAssert.IsNone<TItem>(Funcky.Monads.Option<TItem> option) -> void
+static Funcky.FunctionalAssert.IsOk<TResult>(Funcky.Monads.Result<TResult> result) -> TResult
+static Funcky.FunctionalAssert.IsOk<TResult>(TResult expectedResult, Funcky.Monads.Result<TResult> result) -> void
+static Funcky.FunctionalAssert.IsRight<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TRight
+static Funcky.FunctionalAssert.IsRight<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
+static Funcky.FunctionalAssert.IsSome<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
+static Funcky.FunctionalAssert.IsSome<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void

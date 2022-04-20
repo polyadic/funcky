@@ -22,6 +22,7 @@
     <ItemGroup>
         <PackageReference Include="xunit.assert" />
         <PackageReference Include="xunit.extensibility.core" />
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../Funcky/Funcky.csproj" />
