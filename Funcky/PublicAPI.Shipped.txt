@@ -34,11 +34,11 @@ Funcky.Extensions.QueryableExtensions
 Funcky.Extensions.QueueExtensions
 Funcky.Extensions.RangeExtensions
 Funcky.Extensions.ResultPartitions<TValidResult>
-Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, out System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error, out System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok) -> void
 Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections.Generic.IReadOnlyCollection<System.Exception!>!
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyCollection<TValidResult>!
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions() -> void
-Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok, System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error) -> void
+Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyCollection<System.Exception!>! error, System.Collections.Generic.IReadOnlyCollection<TValidResult>! ok) -> void
 Funcky.Extensions.StreamExtensions
 Funcky.Extensions.StringExtensions
 Funcky.Extensions.ValueWithFirst<TValue>
@@ -270,7 +270,7 @@ static Funcky.Extensions.EnumerableExtensions.Partition<TItem, TResult>(this Sys
 static Funcky.Extensions.EnumerableExtensions.Partition<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate) -> (System.Collections.Generic.IEnumerable<TItem>! True, System.Collections.Generic.IEnumerable<TItem>! False)
 static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TLeft>!, System.Collections.Generic.IReadOnlyCollection<TRight>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
-static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<TValidResult>!, System.Collections.Generic.IReadOnlyCollection<System.Exception!>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyCollection<System.Exception!>!, System.Collections.Generic.IReadOnlyCollection<TValidResult>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source) -> Funcky.Extensions.ResultPartitions<TValidResult>
 static Funcky.Extensions.EnumerableExtensions.PowerSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.Shuffle<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
