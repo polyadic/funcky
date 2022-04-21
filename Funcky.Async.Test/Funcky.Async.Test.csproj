@@ -17,4 +17,5 @@
         <ProjectReference Include="..\Funcky.Test.Internal\Funcky.Test.Internal.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
+    <Import Project="..\Analyzers.props" />
 </Project>
