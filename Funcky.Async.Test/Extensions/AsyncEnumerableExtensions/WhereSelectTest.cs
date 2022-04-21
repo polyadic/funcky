@@ -1,6 +1,4 @@
 using Funcky.Async.Extensions;
-using Funcky.Monads;
-using Xunit;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 

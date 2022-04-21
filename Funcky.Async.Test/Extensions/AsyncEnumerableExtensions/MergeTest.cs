@@ -5,7 +5,6 @@ using FsCheck.Xunit;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.TestUtils;
-using Xunit;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 

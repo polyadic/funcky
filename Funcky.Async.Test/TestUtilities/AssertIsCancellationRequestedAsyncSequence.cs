@@ -1,5 +1,3 @@
-using Xunit;
-
 #pragma warning disable CS1998
 
 namespace Funcky.Async.Test.TestUtilities;

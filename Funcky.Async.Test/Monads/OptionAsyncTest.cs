@@ -1,6 +1,4 @@
 using Funcky.Async.Monads;
-using Funcky.Monads;
-using Xunit;
 
 namespace Funcky.Async.Test.Monads;
 
