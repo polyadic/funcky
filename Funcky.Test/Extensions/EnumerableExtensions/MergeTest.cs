@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.Test.Internal;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
