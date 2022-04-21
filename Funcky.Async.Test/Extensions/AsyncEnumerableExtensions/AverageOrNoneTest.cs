@@ -2,7 +2,6 @@
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Async.Extensions;
-using Funcky.Monads;
 using Funcky.Test.Internal;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;

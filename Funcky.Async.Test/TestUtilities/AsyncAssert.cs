@@ -1,5 +1,3 @@
-using Funcky.Extensions;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Funcky.Async.Test.TestUtilities;

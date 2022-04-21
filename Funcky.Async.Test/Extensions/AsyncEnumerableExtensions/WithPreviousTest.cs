@@ -1,9 +1,6 @@
 using System.Collections.Immutable;
 using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
-using Funcky.Extensions;
-using Funcky.Monads;
-using Xunit;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 

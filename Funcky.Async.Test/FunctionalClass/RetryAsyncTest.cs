@@ -1,7 +1,5 @@
-using Funcky.Monads;
 using Funcky.RetryPolicies;
 using Funcky.Test.TestUtilities;
-using Xunit;
 using static Funcky.Async.Functional;
 
 namespace Funcky.Async.Test.FunctionalClass;

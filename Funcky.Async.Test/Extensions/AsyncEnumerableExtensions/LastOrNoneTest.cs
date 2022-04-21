@@ -1,7 +1,5 @@
 using Funcky.Async.Extensions;
-using Xunit;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
-using static Funcky.Functional;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 

@@ -1,5 +1,3 @@
-using Funcky.Monads;
-
 namespace Funcky.Test.TestUtilities;
 
 internal sealed class MaybeProducer<T>
