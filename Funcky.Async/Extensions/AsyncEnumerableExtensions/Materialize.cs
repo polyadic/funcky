@@ -11,8 +11,8 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of the enumerated items.</returns>
-    public static async ValueTask<IReadOnlyCollection<TItem>> Materialize<TItem>(this IAsyncEnumerable<TItem> source, CancellationToken cancellationToken = default)
-        => await source.Materialize(DefaultMaterializationAsync, cancellationToken).ConfigureAwait(false);
+    public static async ValueTask<IReadOnlyCollection<TItem>> MaterializeAsync<TItem>(this IAsyncEnumerable<TItem> source, CancellationToken cancellationToken = default)
+        => await source.MaterializeAsync(DefaultMaterializationAsync, cancellationToken).ConfigureAwait(false);
 
     /// <summary>
     /// Materializes all the items of a lazy <see cref="IEnumerable{TItem}" />. If the underlying sequence is a collection type we do not actively enumerate them.
@@ -24,7 +24,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="materialize">A function which materializes a given sequence into a collection.</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of the enumerated items.</returns>
-    public static async ValueTask<IReadOnlyCollection<TItem>> Materialize<TItem, TMaterialization>(
+    public static async ValueTask<IReadOnlyCollection<TItem>> MaterializeAsync<TItem, TMaterialization>(
         this IAsyncEnumerable<TItem> source,
         Func<IAsyncEnumerable<TItem>, CancellationToken, ValueTask<TMaterialization>> materialize,
         CancellationToken cancellationToken = default)

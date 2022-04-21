@@ -13,7 +13,7 @@ public sealed class ShuffleTest
     {
         var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-        var shuffled = doNotEnumerate.Shuffle();
+        var shuffled = doNotEnumerate.ShuffleAsync();
 
         Assert.ThrowsAsync<XunitException>(async () => await shuffled);
     }
@@ -23,20 +23,20 @@ public sealed class ShuffleTest
     {
         var source = AsyncEnumerable.Range(0, 16);
 
-        Assert.Equal(Sequence.Return(3, 2, 6, 15, 14, 0, 5, 8, 11, 7, 9, 12, 1, 13, 10, 4), await source.Shuffle(new System.Random(1337)));
+        Assert.Equal(Sequence.Return(3, 2, 6, 15, 14, 0, 5, 8, 11, 7, 9, 12, 1, 13, 10, 4), await source.ShuffleAsync(new System.Random(1337)));
     }
 
     [Property]
     public Property AShuffleHasTheSameElementsAsTheSource(List<int> source)
         => source
             .ToAsyncEnumerable()
-            .Shuffle()
+            .ShuffleAsync()
             .Result
             .All(source.Contains)
             .ToProperty();
 
     [Property]
     public Property AShuffleHasTheSameLengthAsTheSource(List<int> source)
-        => (source.ToAsyncEnumerable().Shuffle().Result.Count() == source.Count)
+        => (source.ToAsyncEnumerable().ShuffleAsync().Result.Count() == source.Count)
             .ToProperty();
 }
