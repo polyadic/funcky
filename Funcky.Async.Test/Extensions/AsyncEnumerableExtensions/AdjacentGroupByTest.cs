@@ -1,6 +1,7 @@
-using Funcky.Test.TestUtils;
+using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions;
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public sealed class AdjacentGroupByTest
 {
@@ -13,7 +14,7 @@ public sealed class AdjacentGroupByTest
     [Fact]
     public void AdjacentGroupByIsEnumeratedLazily()
     {
-        var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
         _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>);
         _ = doNotEnumerate.AdjacentGroupBy(FailOnCall.Function<object, int>, EqualityComparer<int>.Default);
@@ -26,81 +27,82 @@ public sealed class AdjacentGroupByTest
     }
 
     [Fact]
-    public void GivenAnEmptySequenceAnyKeySelectorReturnsAnEmptySequence()
+    public async Task GivenAnEmptySequenceAnyKeySelectorReturnsAnEmptySequence()
     {
-        var empty = Enumerable.Empty<DateTime>();
+        var empty = AsyncEnumerable.Empty<DateTime>();
 
-        Assert.Empty(empty.AdjacentGroupBy(date => date.Month));
-        Assert.Empty(empty.AdjacentGroupBy(date => date.DayOfYear / 7));
-        Assert.Empty(empty.AdjacentGroupBy(date => date.Year));
+        await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.Month));
+        await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.DayOfYear / 7));
+        await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.Year));
     }
 
     [Fact]
-    public void GivenConstantKeySelectorOneGroupWithTheConstantsKeyWillBeSelected()
+    public async Task GivenConstantKeySelectorOneGroupWithTheConstantsKeyWillBeSelected()
     {
         const int groupKey = 42;
         const int elementCount = 20;
-        var range = Enumerable.Range(0, elementCount);
+        var range = AsyncEnumerable.Range(0, elementCount);
         var group = range.AdjacentGroupBy(n => groupKey);
 
-        var grouping = Assert.Single(group);
+        var grouping = await AsyncAssert.Single(group);
         Assert.Equal(groupKey, grouping.Key);
-        Assert.Equal(elementCount, grouping.Count());
+        Assert.Equal(elementCount, await grouping.CountAsync());
     }
 
     [Fact]
-    public void GivenASelectorSwitchingBetween0And1WeGetANewSequenceOnEachSwitch()
+    public async Task GivenASelectorSwitchingBetween0And1WeGetANewSequenceOnEachSwitch()
     {
-        var range = Enumerable.Range(0, 100);
+        var range = AsyncEnumerable.Range(0, 100);
 
-        Assert.Equal(25, range.AdjacentGroupBy(n => (n / 4) % 2).Count());
+        Assert.Equal(25, await range.AdjacentGroupBy(n => (n / 4) % 2).CountAsync());
     }
 
     [Fact]
-    public void GivenAYearGroupByCreatesMonthsCorrectly()
+    public async Task GivenAYearGroupByCreatesMonthsCorrectly()
     {
         var dates = DateGenerator(2020);
 
         var months = dates.AdjacentGroupBy(date => date.Month);
 
-        Assert.Equal(DaysInALeapYear, dates.Count());
-        Assert.Equal(MonthsInAYear, months.Count());
-        Assert.Equal(DaysInMonthsOfALeapYear(), months.Select(month => month.Count()));
+        Assert.Equal(DaysInALeapYear, await dates.CountAsync());
+        Assert.Equal(MonthsInAYear, await months.CountAsync());
+        await AsyncAssert.Equal(DaysInMonthsOfALeapYear(), months.SelectAwait(async month => await month.CountAsync()));
     }
 
     [Fact]
-    public void GivenTwoYearsGroupByAdjacentGroupsJanuaryOfTwoDifferentYearsInTwoDifferentGroups()
+    public async Task GivenTwoYearsGroupByAdjacentGroupsJanuaryOfTwoDifferentYearsInTwoDifferentGroups()
     {
         var dates = DateGenerator(2019, 2020);
 
         var months = dates.AdjacentGroupBy(date => date.Month);
 
-        Assert.Equal(DaysInAYear + DaysInALeapYear, dates.Count());
-        Assert.Equal(2 * MonthsInAYear, months.Count());
-        Assert.Equal(Sequence.Concat(DaysInMonthsOfAYear(), DaysInMonthsOfALeapYear()), months.Select(month => month.Count()));
+        Assert.Equal(DaysInAYear + DaysInALeapYear, await dates.CountAsync());
+        Assert.Equal(2 * MonthsInAYear, await months.CountAsync());
+        await AsyncAssert.Equal(DaysInMonthsOfAYear().Concat(DaysInMonthsOfALeapYear()), months.SelectAwait(async month => await month.CountAsync()));
     }
 
     [Fact]
-    public void GivenAdjacentGroupByWithResultSelectorProjectsTheResultCorrectly()
+    public async Task GivenAdjacentGroupByWithResultSelectorProjectsTheResultCorrectly()
     {
         var dates = DateGenerator(2020);
 
         var months = dates.AdjacentGroupBy(date => date.Month, (key, list) => list.Count());
 
-        Assert.Equal(DaysInMonthsOfALeapYear(), months);
+        await AsyncAssert.Equal(DaysInMonthsOfALeapYear(), months);
     }
 
     [Fact]
-    public void GivenAdjacentGroupByWithElementSelectorProjectsTheResultCorrectly()
+    public async Task GivenAdjacentGroupByWithElementSelectorProjectsTheResultCorrectly()
     {
-        var numbers = Enumerable.Range(1, 5);
+        var numbers = AsyncEnumerable.Range(1, 5);
 
         var grouped = numbers.AdjacentGroupBy(number => number / 3, number => number * -1);
-
-        Assert.Equal("-3,-4,-5", string.Join(",", grouped.Last()));
+        Assert.Equal("-3,-4,-5", string.Join(",", await (await grouped.LastAsync()).ToListAsync()));
     }
 
-    private static IEnumerable<DateTime> DateGenerator(int startYear, Option<int> endYear = default)
+#pragma warning disable CS1998
+    private static async IAsyncEnumerable<DateTime> DateGenerator(int startYear, Option<int> endYear = default)
+#pragma warning restore CS1998
     {
         var current = new DateTime(startYear, 1, 1);
 
@@ -111,10 +113,10 @@ public sealed class AdjacentGroupByTest
         }
     }
 
-    private static IEnumerable<int> DaysInMonthsOfAYear()
-        => Sequence.Return(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    private static IAsyncEnumerable<int> DaysInMonthsOfAYear()
+        => AsyncSequence.Return(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
-    private static IEnumerable<int> DaysInMonthsOfALeapYear()
+    private static IAsyncEnumerable<int> DaysInMonthsOfALeapYear()
         => DaysInMonthsOfAYear()
             .Select((value, index) => index == February ? DaysInFebruraryInLeapYears : value);
 }
