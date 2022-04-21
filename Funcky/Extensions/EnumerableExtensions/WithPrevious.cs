@@ -1,43 +1,42 @@
 using Funcky.Internal;
 
-namespace Funcky.Extensions
-{
-    public static partial class EnumerableExtensions
-    {
-        /// <summary>Returns a sequence mapping each element together with its predecessor.</summary>
-        /// <exception cref="ArgumentNullException">Thrown when any value in <paramref name="source"/> is <see langword="null"/>.</exception>
-        [Pure]
-        public static IEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IEnumerable<TSource> source)
-            where TSource : notnull
-            => source switch
-            {
-                IList<TSource> list => ListWithSelector.Create(list, ValueWithPrevious),
-                _ => source.WithPreviousImplementation(),
-            };
+namespace Funcky.Extensions;
 
-        private static Func<TSource, int, ValueWithPrevious<TSource>> ValueWithPrevious<TSource>(IList<TSource> list)
-            where TSource : notnull
+public static partial class EnumerableExtensions
+{
+    /// <summary>Returns a sequence mapping each element together with its predecessor.</summary>
+    /// <exception cref="ArgumentNullException">Thrown when any value in <paramref name="source"/> is <see langword="null"/>.</exception>
+    [Pure]
+    public static IEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IEnumerable<TSource> source)
+        where TSource : notnull
+        => source switch
+        {
+            IList<TSource> list => ListWithSelector.Create(list, ValueWithPrevious),
+            _ => source.WithPreviousImplementation(),
+        };
+
+    private static Func<TSource, int, ValueWithPrevious<TSource>> ValueWithPrevious<TSource>(IList<TSource> list)
+        where TSource : notnull
 #if OPTIMIZED_ELEMENT_AT
-            => (value, index)
-                => new(value, list.ElementAtOrNone(IndexOfPrevious(index)));
+        => (value, index)
+            => new(value, list.ElementAtOrNone(IndexOfPrevious(index)));
 #else
-            => (value, index)
-                => new(value, IndexOfPrevious(index) < 0 ? Option<TSource>.None : list[IndexOfPrevious(index)]);
+        => (value, index)
+            => new(value, IndexOfPrevious(index) < 0 ? Option<TSource>.None : list[IndexOfPrevious(index)]);
 #endif
 
-        private static int IndexOfPrevious(int index)
-            => index - 1;
+    private static int IndexOfPrevious(int index)
+        => index - 1;
 
-        private static IEnumerable<ValueWithPrevious<TSource>> WithPreviousImplementation<TSource>(this IEnumerable<TSource> source)
-            where TSource : notnull
+    private static IEnumerable<ValueWithPrevious<TSource>> WithPreviousImplementation<TSource>(this IEnumerable<TSource> source)
+        where TSource : notnull
+    {
+        var previous = Option<TSource>.None;
+
+        foreach (var value in source)
         {
-            var previous = Option<TSource>.None;
-
-            foreach (var value in source)
-            {
-                yield return new ValueWithPrevious<TSource>(value, previous);
-                previous = value;
-            }
+            yield return new ValueWithPrevious<TSource>(value, previous);
+            previous = value;
         }
     }
 }

@@ -1,13 +1,12 @@
 using static Funcky.SourceGenerator.TemplateLoader;
 
-namespace Funcky.SourceGenerator.Test
+namespace Funcky.SourceGenerator.Test;
+
+public class TemplateLoaderTest
 {
-    public class TemplateLoaderTest
+    [Fact]
+    public void CanLoadTemplateAsStringFromResourceName()
     {
-        [Fact]
-        public void CanLoadTemplateAsStringFromResourceName()
-        {
-            Assert.StartsWith("using System;", CodeFromTemplate("OrNoneFromTryPatternAttribute"));
-        }
+        Assert.StartsWith("using System;", CodeFromTemplate("OrNoneFromTryPatternAttribute"));
     }
 }

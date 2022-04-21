@@ -1,45 +1,44 @@
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Test.Extensions.EnumerableExtensions;
+
+public class ConcatStringsTest
 {
-    public class ConcatStringsTest
+    [Fact]
+    public void ConcatenatingAnEmptySetOfStringsReturnsAnEmptyString()
     {
-        [Fact]
-        public void ConcatenatingAnEmptySetOfStringsReturnsAnEmptyString()
-        {
-            var empty = Enumerable.Empty<string>();
+        var empty = Enumerable.Empty<string>();
 
-            Assert.Equal(string.Empty, empty.ConcatToString());
-        }
+        Assert.Equal(string.Empty, empty.ConcatToString());
+    }
 
-        [Fact]
-        public void ConcatenatingASetWithExactlyOneElementReturnsTheElement()
-        {
-            var singleElement = Sequence.Return("Alpha");
+    [Fact]
+    public void ConcatenatingASetWithExactlyOneElementReturnsTheElement()
+    {
+        var singleElement = Sequence.Return("Alpha");
 
-            Assert.Equal("Alpha", singleElement.ConcatToString());
-        }
+        Assert.Equal("Alpha", singleElement.ConcatToString());
+    }
 
-        [Fact]
-        public void ConcatenatingAListOfStringsReturnsAllElementsWithoutASeparator()
-        {
-            var strings = new List<string> { "Alpha", "Beta", "Gamma" };
+    [Fact]
+    public void ConcatenatingAListOfStringsReturnsAllElementsWithoutASeparator()
+    {
+        var strings = new List<string> { "Alpha", "Beta", "Gamma" };
 
-            Assert.Equal("AlphaBetaGamma", strings.ConcatToString());
-        }
+        Assert.Equal("AlphaBetaGamma", strings.ConcatToString());
+    }
 
-        [Fact]
-        public void ConcatenatingNonStringsWorksToo()
-        {
-            var strings = new List<int> { 1, 2, 3 };
+    [Fact]
+    public void ConcatenatingNonStringsWorksToo()
+    {
+        var strings = new List<int> { 1, 2, 3 };
 
-            Assert.Equal("123", strings.ConcatToString());
-        }
+        Assert.Equal("123", strings.ConcatToString());
+    }
 
-        [Fact]
-        public void NullsAreHandledAsEmptyStringsWhileConcatenating()
-        {
-            var strings = new List<string?> { "Alpha", null, "Gamma" };
+    [Fact]
+    public void NullsAreHandledAsEmptyStringsWhileConcatenating()
+    {
+        var strings = new List<string?> { "Alpha", null, "Gamma" };
 
-            Assert.Equal("AlphaGamma", strings.ConcatToString());
-        }
+        Assert.Equal("AlphaGamma", strings.ConcatToString());
     }
 }

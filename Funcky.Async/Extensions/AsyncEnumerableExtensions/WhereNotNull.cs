@@ -1,15 +1,14 @@
-namespace Funcky.Async.Extensions
-{
-    public static partial class AsyncEnumerableExtensions
-    {
-        [Pure]
-        public static IAsyncEnumerable<TSource> WhereNotNull<TSource>(this IAsyncEnumerable<TSource?> source)
-            where TSource : class
-            => source.WhereSelect(Option.FromNullable);
+namespace Funcky.Async.Extensions;
 
-        [Pure]
-        public static IAsyncEnumerable<TSource> WhereNotNull<TSource>(this IAsyncEnumerable<TSource?> source)
-            where TSource : struct
-            => source.WhereSelect(Option.FromNullable);
-    }
+public static partial class AsyncEnumerableExtensions
+{
+    [Pure]
+    public static IAsyncEnumerable<TSource> WhereNotNull<TSource>(this IAsyncEnumerable<TSource?> source)
+        where TSource : class
+        => source.WhereSelect(Option.FromNullable);
+
+    [Pure]
+    public static IAsyncEnumerable<TSource> WhereNotNull<TSource>(this IAsyncEnumerable<TSource?> source)
+        where TSource : struct
+        => source.WhereSelect(Option.FromNullable);
 }

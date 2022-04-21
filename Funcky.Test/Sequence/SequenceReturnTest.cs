@@ -1,24 +1,23 @@
 using FsCheck;
 using FsCheck.Xunit;
 
-namespace Funcky.Test
+namespace Funcky.Test;
+
+public sealed class SequenceReturnTest
 {
-    public sealed class SequenceReturnTest
+    [Property]
+    public Property ReturnOfASingleItemElevatesThatItemIntoASingleItemedEnumerable(int item)
     {
-        [Property]
-        public Property ReturnOfASingleItemElevatesThatItemIntoASingleItemedEnumerable(int item)
-        {
-            var sequence = Sequence.Return(item);
+        var sequence = Sequence.Return(item);
 
-            return (sequence.SingleOrNone() == item).ToProperty();
-        }
+        return (sequence.SingleOrNone() == item).ToProperty();
+    }
 
-        [Property]
-        public Property SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters(string one, string two, string three)
-        {
-            var sequence = Sequence.Return(one, two, three);
+    [Property]
+    public Property SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters(string one, string two, string three)
+    {
+        var sequence = Sequence.Return(one, two, three);
 
-            return Enumerable.SequenceEqual(new[] { one, two, three }, sequence).ToProperty();
-        }
+        return Enumerable.SequenceEqual(new[] { one, two, three }, sequence).ToProperty();
     }
 }

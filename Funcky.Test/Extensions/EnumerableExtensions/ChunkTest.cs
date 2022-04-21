@@ -1,122 +1,121 @@
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test.Extensions.EnumerableExtensions
+namespace Funcky.Test.Extensions.EnumerableExtensions;
+
+public sealed class ChunkTest
 {
-    public sealed class ChunkTest
+    [Fact]
+    public void ChunkIsEnumeratedLazily()
     {
-        [Fact]
-        public void ChunkIsEnumeratedLazily()
-        {
-            var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-            _ = doNotEnumerate.Chunk(42);
-        }
+        _ = doNotEnumerate.Chunk(42);
+    }
 
-        [Fact]
-        public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
-        {
-            var numbers = Enumerable.Empty<int>();
+    [Fact]
+    public void GivenAnEmptyEnumerableChunkReturnsAnEmptyList()
+    {
+        var numbers = Enumerable.Empty<int>();
 
-            var chunked = numbers.Chunk(3);
+        var chunked = numbers.Chunk(3);
 
-            Assert.Empty(chunked);
-        }
+        Assert.Empty(chunked);
+    }
 
-        [Fact]
-        public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
-        {
-            var numbers = Sequence.Return(1);
+    [Fact]
+    public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
+    {
+        var numbers = Sequence.Return(1);
 
-            var chunked = numbers.Chunk(3);
+        var chunked = numbers.Chunk(3);
 
-            Assert.Collection(
-                chunked,
-                a =>
-                {
-                    Assert.Collection(
-                        a,
-                        aa => Assert.Equal(1, aa));
-                });
-        }
+        Assert.Collection(
+            chunked,
+            a =>
+            {
+                Assert.Collection(
+                    a,
+                    aa => Assert.Equal(1, aa));
+            });
+    }
 
-        [Fact]
-        public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
-        {
-            var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    [Fact]
+    public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
+    {
+        var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-            var chunked = numbers.Chunk(3);
+        var chunked = numbers.Chunk(3);
 
-            Assert.Collection(
-                chunked,
-                a =>
-                {
-                    Assert.Collection(
-                        a,
-                        aa => Assert.Equal(1, aa),
-                        ab => Assert.Equal(2, ab),
-                        ac => Assert.Equal(3, ac));
-                },
-                b =>
-                {
-                    Assert.Collection(
-                        b,
-                        ba => Assert.Equal(4, ba),
-                        bb => Assert.Equal(5, bb),
-                        bc => Assert.Equal(6, bc));
-                },
-                c =>
-                {
-                    Assert.Collection(
-                        c,
-                        ca => Assert.Equal(7, ca),
-                        cb => Assert.Equal(8, cb),
-                        cc => Assert.Equal(9, cc));
-                });
-        }
+        Assert.Collection(
+            chunked,
+            a =>
+            {
+                Assert.Collection(
+                    a,
+                    aa => Assert.Equal(1, aa),
+                    ab => Assert.Equal(2, ab),
+                    ac => Assert.Equal(3, ac));
+            },
+            b =>
+            {
+                Assert.Collection(
+                    b,
+                    ba => Assert.Equal(4, ba),
+                    bb => Assert.Equal(5, bb),
+                    bc => Assert.Equal(6, bc));
+            },
+            c =>
+            {
+                Assert.Collection(
+                    c,
+                    ca => Assert.Equal(7, ca),
+                    cb => Assert.Equal(8, cb),
+                    cc => Assert.Equal(9, cc));
+            });
+    }
 
-        [Fact]
-        public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
-        {
-            var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
+    [Fact]
+    public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
+    {
+        var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
 
-            const int chunkSize = 4;
-            IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
+        const int chunkSize = 4;
+        IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
 
-            Assert.Collection(
-                chunked,
-                a =>
-                {
-                    Assert.Equal(a.Count, chunkSize);
-                },
-                b =>
-                {
-                    Assert.Equal(b.Count, chunkSize);
-                },
-                c =>
-                {
-                    Assert.Equal(c.Count, numbers.Count() % chunkSize);
-                });
-        }
+        Assert.Collection(
+            chunked,
+            a =>
+            {
+                Assert.Equal(a.Count, chunkSize);
+            },
+            b =>
+            {
+                Assert.Equal(b.Count, chunkSize);
+            },
+            c =>
+            {
+                Assert.Equal(c.Count, numbers.Count() % chunkSize);
+            });
+    }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        [InlineData(-42)]
-        public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
-        {
-            var numbers = Sequence.Return(1);
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-42)]
+    public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
+    {
+        var numbers = Sequence.Return(1);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Funcky.Extensions.EnumerableExtensions.Chunk(numbers, invalidChunkSize));
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => Funcky.Extensions.EnumerableExtensions.Chunk(numbers, invalidChunkSize));
+    }
 
-        [Fact]
-        public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
-        {
-            var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
+    [Fact]
+    public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
+    {
+        var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
 
-            magicSquare
-                .Chunk(3, Enumerable.Average)
-                .ForEach(average => Assert.Equal(5, average));
-        }
+        magicSquare
+            .Chunk(3, Enumerable.Average)
+            .ForEach(average => Assert.Equal(5, average));
     }
 }

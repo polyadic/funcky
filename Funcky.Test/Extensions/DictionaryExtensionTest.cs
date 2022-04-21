@@ -1,25 +1,24 @@
-namespace Funcky.Test.Extensions
+namespace Funcky.Test.Extensions;
+
+public sealed class DictionaryExtensionTest
 {
-    public sealed class DictionaryExtensionTest
+    [Fact]
+    public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
     {
-        [Fact]
-        public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
+        var dictionary = new Dictionary<string, string> { ["some"] = "value" };
 
-            var maybe = dictionary.GetValueOrNone(key: "some");
+        var maybe = dictionary.GetValueOrNone(key: "some");
 
-            FunctionalAssert.IsSome("value", maybe);
-        }
+        FunctionalAssert.IsSome("value", maybe);
+    }
 
-        [Fact]
-        public void GivenADictionaryWhenWeLookForAnInexistentValueWithGetValueOrNoneThenTheResultShouldBeANoneOfTheGivenType()
-        {
-            var dictionary = new Dictionary<string, string> { ["some"] = "value" };
+    [Fact]
+    public void GivenADictionaryWhenWeLookForAnInexistentValueWithGetValueOrNoneThenTheResultShouldBeANoneOfTheGivenType()
+    {
+        var dictionary = new Dictionary<string, string> { ["some"] = "value" };
 
-            var maybe = dictionary.GetValueOrNone(readOnlyKey: "none");
+        var maybe = dictionary.GetValueOrNone(readOnlyKey: "none");
 
-            FunctionalAssert.IsNone(maybe);
-        }
+        FunctionalAssert.IsNone(maybe);
     }
 }

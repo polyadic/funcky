@@ -1,12 +1,11 @@
-namespace Funcky.Test.TestUtils
-{
-    internal sealed class CountCreation
-    {
-        public CountCreation()
-        {
-            Count += 1;
-        }
+namespace Funcky.Test.TestUtils;
 
-        public static int Count { get; private set; }
+internal sealed class CountCreation
+{
+    public CountCreation()
+    {
+        Count += 1;
     }
+
+    public static int Count { get; private set; }
 }

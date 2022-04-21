@@ -7,62 +7,61 @@ using static Funcky.Analyzers.LocalizedResourceLoader;
 using static Funcky.Analyzers.OperationMatching;
 using static Funcky.Analyzers.Resources;
 
-namespace Funcky.Analyzers
+namespace Funcky.Analyzers;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
+    public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}02";
+    private const string Category = nameof(Funcky);
+
+    private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerTitle));
+    private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerMessageFormat));
+    private static readonly LocalizableString Description = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerDescription));
+
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize(AnalysisContext context)
     {
-        public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}02";
-        private const string Category = nameof(Funcky);
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+        context.EnableConcurrentExecution();
 
-        private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerTitle));
-        private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerMessageFormat));
-        private static readonly LocalizableString Description = LoadFromResource(nameof(EnumerableRepeatNeverAnalyzerDescription));
-
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize(AnalysisContext context)
+        context.RegisterCompilationStartAction(static context =>
         {
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
-
-            context.RegisterCompilationStartAction(static context =>
+            if (context.Compilation.GetEnumerableType() is { } enumerableType)
             {
-                if (context.Compilation.GetEnumerableType() is { } enumerableType)
-                {
-                    context.RegisterOperationAction(FindEnumerableRepeatNever(enumerableType), OperationKind.Invocation);
-                }
-            });
-        }
-
-        private static Action<OperationAnalysisContext> FindEnumerableRepeatNever(INamedTypeSymbol enumerableType)
-            => context =>
-            {
-                var operation = (IInvocationOperation)context.Operation;
-
-                if (MatchRepeatNever(enumerableType, operation, out var valueArgument))
-                {
-                    context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
-                }
-            };
-
-        private static bool MatchRepeatNever(
-            INamedTypeSymbol enumerableType,
-            IInvocationOperation operation,
-            [NotNullWhen(true)] out IArgumentOperation? valueArgument)
-        {
-            valueArgument = null;
-            return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
-                && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(0));
-        }
-
-        private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
-            => Diagnostic.Create(
-                Rule,
-                operation.Syntax.GetLocation(),
-                valueArgument.Value.Syntax.ToString(),
-                valueArgument.Value.Type?.ToDisplayString());
+                context.RegisterOperationAction(FindEnumerableRepeatNever(enumerableType), OperationKind.Invocation);
+            }
+        });
     }
+
+    private static Action<OperationAnalysisContext> FindEnumerableRepeatNever(INamedTypeSymbol enumerableType)
+        => context =>
+        {
+            var operation = (IInvocationOperation)context.Operation;
+
+            if (MatchRepeatNever(enumerableType, operation, out var valueArgument))
+            {
+                context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
+            }
+        };
+
+    private static bool MatchRepeatNever(
+        INamedTypeSymbol enumerableType,
+        IInvocationOperation operation,
+        [NotNullWhen(true)] out IArgumentOperation? valueArgument)
+    {
+        valueArgument = null;
+        return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+            && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(0));
+    }
+
+    private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
+        => Diagnostic.Create(
+            Rule,
+            operation.Syntax.GetLocation(),
+            valueArgument.Value.Syntax.ToString(),
+            valueArgument.Value.Type?.ToDisplayString());
 }

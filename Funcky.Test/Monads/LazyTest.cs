@@ -1,6 +1,5 @@
-namespace Funcky.Test.Monads
+namespace Funcky.Test.Monads;
+
+public sealed partial class LazyTest
 {
-    public sealed partial class LazyTest
-    {
-    }
 }
