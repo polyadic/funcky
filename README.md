@@ -34,7 +34,7 @@ It follows naming already established by LINQ (`Select`, `SelectMany`, `Where`).
 Option<string> input = ...;
 
 var result = input
-    .SelectMany(v => v.ParseIntOrNone())
+    .SelectMany(v => v.ParseInt32OrNone())
     .Where(n => n >= 0)
     .Select(n => $"Non-Zero: {n}");
 
