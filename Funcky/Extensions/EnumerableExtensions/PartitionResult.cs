@@ -7,7 +7,7 @@ public static partial class EnumerableExtensions
         => source.Partition((error, ok) => new ResultPartitions<TValidResult>(error, ok));
 
     /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into an error and ok partition.</summary>
-    public static TResult Partition<TValidResult, TResult>(this IEnumerable<Result<TValidResult>> source, Func<IReadOnlyCollection<Exception>, IReadOnlyCollection<TValidResult>, TResult> resultSelector)
+    public static TResult Partition<TValidResult, TResult>(this IEnumerable<Result<TValidResult>> source, Func<IReadOnlyList<Exception>, IReadOnlyList<TValidResult>, TResult> resultSelector)
         => source
             .Aggregate(PartitionBuilder<Exception, TValidResult>.Default, Add)
             .Build(resultSelector);
