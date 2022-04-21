@@ -137,5 +137,9 @@ static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAsync<TSource>(this
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAwaitAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Threading.Tasks.ValueTask<bool>>! predicate) -> System.Threading.Tasks.ValueTask<bool>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAwaitWithCancellationAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<bool>>! predicate) -> System.Threading.Tasks.ValueTask<bool>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithFirst<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithFirst<TSource>>!
+static Funcky.AsyncSequence.Concat<TSource>(params System.Collections.Generic.IAsyncEnumerable<TSource>![]! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
+static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IAsyncEnumerable<System.Collections.Generic.IAsyncEnumerable<TSource>!>! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
+static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IAsyncEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
+static Funcky.AsyncSequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IAsyncEnumerable<TSource>!>! sources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.AsyncSequence.Return<TItem>(TItem item) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
 static Funcky.AsyncSequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
