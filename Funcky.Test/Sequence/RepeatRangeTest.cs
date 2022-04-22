@@ -71,7 +71,8 @@ public sealed class RepeatRangeTest
 
         return repeatRange
             .IsSequenceRepeating(list)
-            .NTimes(count.Get);
+            .NTimes(count.Get)
+            .ToProperty();
     }
 
     [Property]

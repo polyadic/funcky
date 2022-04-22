@@ -2,20 +2,21 @@ using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test;
+namespace Funcky.Async.Test;
 
 public sealed class CycleTest
 {
     [Property]
     public Property CycleCanProduceArbitraryManyItems(int value, PositiveInt arbitraryElements)
-        => (Sequence.Cycle(value).Take(arbitraryElements.Get).Count() == arbitraryElements.Get)
+        => (AsyncSequence.Cycle(value).Take(arbitraryElements.Get).CountAsync().Result == arbitraryElements.Get)
             .ToProperty();
 
     [Property]
     public Property CycleRepeatsTheElementArbitraryManyTimes(int value, PositiveInt arbitraryElements)
-        => Sequence
+        => AsyncSequence
             .Cycle(value)
-            .IsSequenceRepeating(Sequence.Return(value))
+            .IsSequenceRepeating(AsyncSequence.Return(value))
             .NTimes(arbitraryElements.Get)
+            .Result
             .ToProperty();
 }

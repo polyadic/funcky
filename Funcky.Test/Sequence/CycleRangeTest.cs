@@ -37,7 +37,8 @@ public sealed class CycleRangeTest
 
         return cycleRange
             .IsSequenceRepeating(sequence.Get)
-            .NTimes(arbitraryElements.Get);
+            .NTimes(arbitraryElements.Get)
+            .ToProperty();
     }
 
     [Property]

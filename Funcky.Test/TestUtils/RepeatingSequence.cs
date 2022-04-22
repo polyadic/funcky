@@ -5,9 +5,7 @@ namespace Funcky.Test.TestUtils;
 public static class RepeatingSequence
 {
     public static RepeatingSequenceHelper IsSequenceRepeating(this IEnumerable<int> sequence, IEnumerable<int> pattern)
-    {
-        return new(sequence, pattern);
-    }
+        => new(sequence, pattern);
 
     public class RepeatingSequenceHelper
     {
@@ -20,14 +18,15 @@ public static class RepeatingSequence
             _pattern = pattern;
         }
 
-        public Property NTimes(int count)
+        public bool NTimes(int count)
             => Enumerable
                 .Range(0, count)
-                .Aggregate(true, (b, i)
-                    => b && _sequence
-                        .Skip(i * _pattern.Count())
-                        .Zip(_pattern, (l, r) => l == r)
-                        .All(Identity))
-                .ToProperty();
+                .Aggregate(true, AggregateEquality);
+
+        public bool AggregateEquality(bool b, int i)
+            => b && _sequence
+                .Skip(i * _pattern.Count())
+                .Zip(_pattern, (l, r) => l == r)
+                .All(Identity);
     }
 }
