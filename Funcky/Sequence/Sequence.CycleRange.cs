@@ -30,10 +30,7 @@ public static partial class Sequence
         private bool _disposed;
 
         public CycleBuffer(IEnumerable<T> source, Option<int> maxCycles = default)
-        {
-            _source = source.GetEnumerator();
-            _maxCycles = maxCycles;
-        }
+            => (_source, _maxCycles) = (source.GetEnumerator(), maxCycles);
 
         public void Dispose()
         {
@@ -41,36 +38,34 @@ public static partial class Sequence
             {
                 _source.Dispose();
                 _buffer.Clear();
+                _disposed = true;
             }
-
-            _disposed = true;
         }
 
         public IEnumerator<T> GetEnumerator()
-            => _disposed
-            ? throw new ObjectDisposedException("Buffer already disposed.")
-            : GetEnumeratorInternal();
+        {
+            ThrowIfDisposed();
+
+            return GetEnumeratorInternal();
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            ThrowIfDisposed();
+
+            return GetEnumeratorInternal();
         }
 
         private IEnumerator<T> GetEnumeratorInternal()
         {
-            if (_maxCycles.Match(none: false, some: maxCycles => maxCycles is 0))
+            if (HasNoCycles())
             {
                 yield break;
             }
 
-            var index = 0;
-
-            while (true)
+            for (var index = 0; true; ++index)
             {
-                if (_disposed)
-                {
-                    throw new ObjectDisposedException("Buffer already disposed.");
-                }
+                ThrowIfDisposed();
 
                 if (index == _buffer.Count)
                 {
@@ -84,7 +79,7 @@ public static partial class Sequence
                     }
                 }
 
-                yield return _buffer[index++];
+                yield return _buffer[index];
             }
 
             if (_buffer.Count is 0)
@@ -99,18 +94,34 @@ public static partial class Sequence
                 }
             }
 
+            // this can change on Dispose!
+            var bufferCount = _buffer.Count;
+
             for (int cycle = 1; IsCycling(cycle); ++cycle)
             {
-                foreach (var value in _buffer)
+                for (var index = 0; index < bufferCount; ++index)
                 {
-                    yield return value;
+                    ThrowIfDisposed();
+
+                    yield return _buffer[index];
                 }
             }
         }
+
+        private bool HasNoCycles()
+            => _maxCycles.Match(none: false, some: maxCycles => maxCycles is 0);
 
         private bool IsCycling(int cycle)
             => _maxCycles.Match(
                 none: true,
                 some: maxCycles => cycle < maxCycles);
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(CycleBuffer));
+            }
+        }
     }
 }

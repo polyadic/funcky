@@ -31,7 +31,7 @@ public sealed class RepeatRangeTest
     [Fact]
     public void RepeatRangeThrowsWhenAlreadyDisposedEvenIfYouDisposeBetweenMoveNext()
     {
-        var list = new List<int> { 1337, 2 };
+        var list = new List<int> { 1337, 2, 5 };
 
         var repeats = 5;
 
@@ -48,7 +48,7 @@ public sealed class RepeatRangeTest
 #pragma warning restore IDISP016
 #pragma warning restore IDISP017
 
-            Assert.ThrowsAny<Exception>(() => enumerator.MoveNext());
+            Assert.ThrowsAny<ObjectDisposedException>(() => enumerator.MoveNext());
         }
     }
 

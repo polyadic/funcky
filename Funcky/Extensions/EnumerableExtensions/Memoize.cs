@@ -35,13 +35,17 @@ namespace Funcky.Extensions
                 => _source = source.GetEnumerator();
 
             public IEnumerator<T> GetEnumerator()
-                => _disposed
-                ? throw new ObjectDisposedException("Buffer already disposed.")
-                : GetEnumeratorInternal();
+            {
+                ThrowIfDisposed();
+
+                return GetEnumeratorInternal();
+            }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return GetEnumerator();
+                ThrowIfDisposed();
+
+                return GetEnumeratorInternal();
             }
 
             public void Dispose()
@@ -50,21 +54,15 @@ namespace Funcky.Extensions
                 {
                     _source.Dispose();
                     _buffer.Clear();
+                    _disposed = true;
                 }
-
-                _disposed = true;
             }
 
             private IEnumerator<T> GetEnumeratorInternal()
             {
-                var index = 0;
-
-                while (true)
+                for (var index = 0; true; index++)
                 {
-                    if (_disposed)
-                    {
-                        throw new ObjectDisposedException("Buffer already disposed.");
-                    }
+                    ThrowIfDisposed();
 
                     if (index == _buffer.Count)
                     {
@@ -78,7 +76,15 @@ namespace Funcky.Extensions
                         }
                     }
 
-                    yield return _buffer[index++];
+                    yield return _buffer[index];
+                }
+            }
+
+            private void ThrowIfDisposed()
+            {
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException(nameof(MemoizedBuffer));
                 }
             }
         }
