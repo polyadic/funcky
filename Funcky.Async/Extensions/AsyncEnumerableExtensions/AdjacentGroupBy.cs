@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Funcky.Async.Extensions;
 
@@ -16,7 +17,7 @@ public static partial class AsyncEnumerableExtensions
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector)
-        => AdjacentGroupBy(source, keySelector, Identity, CreateGrouping, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(source, keySelector, Identity, CreateGrouping, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and compares the keys by using a specified comparer.
@@ -32,7 +33,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupBy(source, keySelector, Identity, CreateGrouping, comparer);
+        => AdjacentGroupByInternal(source, keySelector, Identity, CreateGrouping, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
@@ -49,7 +50,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector)
-        => AdjacentGroupBy(source, keySelector, elementSelector, CreateGrouping, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(source, keySelector, elementSelector, CreateGrouping, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and projects the elements for each group by using a specified function.
@@ -68,7 +69,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupBy(source, keySelector, elementSelector, CreateGrouping, comparer);
+        => AdjacentGroupByInternal(source, keySelector, elementSelector, CreateGrouping, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key.
@@ -85,7 +86,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
-        => AdjacentGroupBy(source, keySelector, Identity, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(source, keySelector, Identity, resultSelector, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
@@ -105,7 +106,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
         Func<TKey, IEnumerable<TElement>, TResult> resultSelector)
-        => AdjacentGroupBy(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
@@ -124,7 +125,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupBy(source, keySelector, Identity, resultSelector, comparer);
+        => AdjacentGroupByInternal(source, keySelector, Identity, resultSelector, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
@@ -140,14 +141,23 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
-    public static async IAsyncEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TElement, TResult>(
+    public static IAsyncEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
         Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
         IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByInternal(source, keySelector, elementSelector, resultSelector, comparer);
+
+    private static async IAsyncEnumerable<TResult> AdjacentGroupByInternal<TSource, TKey, TElement, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, TKey> keySelector,
+        Func<TSource, TElement> elementSelector,
+        Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
+        IEqualityComparer<TKey> comparer,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var asyncEnumerator = source.GetAsyncEnumerator();
+        var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
         await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
 
         if (!await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
