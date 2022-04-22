@@ -21,7 +21,7 @@ internal readonly struct PartitionBuilder<TLeft, TRight>
     public PartitionBuilder<TLeft, TRight> AddRight(TRight right)
         => With(right: _right.Add(right));
 
-    public TResult Build<TResult>(Func<IReadOnlyCollection<TLeft>, IReadOnlyCollection<TRight>, TResult> selector) => selector(_left, _right);
+    public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector) => selector(_left, _right);
 
     public PartitionBuilder<TLeft, TRight> With(IImmutableList<TLeft>? left = null, IImmutableList<TRight>? right = null) => new(left ?? _left, right ?? _right);
 }

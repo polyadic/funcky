@@ -2,11 +2,11 @@ namespace Funcky.Extensions;
 
 public readonly struct EitherPartitions<TLeft, TRight>
 {
-    public EitherPartitions(IReadOnlyCollection<TLeft> left, IReadOnlyCollection<TRight> right) => (Left, Right) = (left, right);
+    public EitherPartitions(IReadOnlyList<TLeft> left, IReadOnlyList<TRight> right) => (Left, Right) = (left, right);
 
-    public IReadOnlyCollection<TLeft> Left { get; }
+    public IReadOnlyList<TLeft> Left { get; }
 
-    public IReadOnlyCollection<TRight> Right { get; }
+    public IReadOnlyList<TRight> Right { get; }
 
-    public void Deconstruct(out IReadOnlyCollection<TLeft> left, out IReadOnlyCollection<TRight> right) => (left, right) = (Left, Right);
+    public void Deconstruct(out IReadOnlyList<TLeft> left, out IReadOnlyList<TRight> right) => (left, right) = (Left, Right);
 }
