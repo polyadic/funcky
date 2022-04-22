@@ -14,14 +14,12 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwaitWithCancellation<TSource, TKey>(
         this IAsyncEnumerable<TSource> source,
-        Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default, cancellationToken);
+        Func<TSource, CancellationToken, ValueTask<TKey>> keySelector)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and compares the keys by using a specified comparer.
@@ -31,15 +29,13 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwaitWithCancellation<TSource, TKey>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
-        IEqualityComparer<TKey> comparer,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, comparer, cancellationToken);
+        IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
@@ -50,15 +46,13 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TElement>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
-        Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, elementSelector, CreateGroupingAwait, EqualityComparer<TKey>.Default, cancellationToken);
+        Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, CreateGroupingAwait, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and projects the elements for each group by using a specified function.
@@ -70,16 +64,14 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TElement>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
-        IEqualityComparer<TKey> comparer,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, elementSelector, CreateGroupingAwait, comparer, cancellationToken);
+        IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, CreateGroupingAwait, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key.
@@ -90,15 +82,13 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="resultSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
-        Func<TKey, IEnumerable<TSource>, CancellationToken, ValueTask<TResult>> resultSelector,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, ValueTaskFromResult, resultSelector, EqualityComparer<TKey>.Default, cancellationToken);
+        Func<TKey, IEnumerable<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, resultSelector, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
@@ -111,16 +101,14 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
-        Func<TKey, IEnumerable<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default, cancellationToken);
+        Func<TKey, IEnumerable<TElement>, CancellationToken, ValueTask<TResult>> resultSelector)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
@@ -132,16 +120,14 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TKey, IEnumerable<TSource>, CancellationToken, ValueTask<TResult>> resultSelector,
-        IEqualityComparer<TKey> comparer,
-        CancellationToken cancellationToken = default)
-        => AdjacentGroupByAwaitWithCancellation(source, keySelector, ValueTaskFromResult, resultSelector, comparer, cancellationToken);
+        IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, resultSelector, comparer);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
@@ -155,16 +141,23 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
-    public static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TElement, TResult>(
+    public static IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellation<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
         Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
-        IEqualityComparer<TKey> comparer,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, resultSelector, comparer);
+
+    public static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellationInternal<TSource, TKey, TElement, TResult>(
+    this IAsyncEnumerable<TSource> source,
+    Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
+    Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
+    Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
+    IEqualityComparer<TKey> comparer,
+    [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
         await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
