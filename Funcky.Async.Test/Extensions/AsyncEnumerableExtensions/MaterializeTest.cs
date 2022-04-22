@@ -11,7 +11,7 @@ public sealed class MaterializeTest
     {
         var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-        await Assert.ThrowsAsync<XunitException>(async () => await doNotEnumerate.Materialize());
+        await Assert.ThrowsAsync<XunitException>(async () => await doNotEnumerate.MaterializeAsync());
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public sealed class MaterializeTest
     {
         var sequence = AsyncEnumerable.Repeat("Hello world!", 3);
 
-        Assert.IsType<List<string>>(await sequence.Materialize());
+        Assert.IsType<List<string>>(await sequence.MaterializeAsync());
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public sealed class MaterializeTest
     {
         var sequence = AsyncEnumerable.Repeat("Hello world!", 3);
 
-        Assert.IsType<HashSet<string>>(await sequence.Materialize(ToHashSet));
+        Assert.IsType<HashSet<string>>(await sequence.MaterializeAsync(ToHashSet));
     }
 
     private static ValueTask<HashSet<string>> ToHashSet(IAsyncEnumerable<string> sequence, CancellationToken cancellationToken)
