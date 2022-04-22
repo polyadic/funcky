@@ -29,13 +29,13 @@ public static partial class Sequence
 
     /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
     [Pure]
-    public static IEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, TItem> successor)
-        where TItem : notnull
-        => Successors(Option.Some(first), previous => Option.Some(successor(previous)));
-
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
-    [Pure]
     public static IEnumerable<TItem> Successors<TItem>(Option<TItem> first, Func<TItem, TItem> successor)
         where TItem : notnull
         => Successors(first, previous => Option.Some(successor(previous)));
+
+    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
+    [Pure]
+    public static IEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, TItem> successor)
+        where TItem : notnull
+        => Successors(Option.Some(first), previous => Option.Some(successor(previous)));
 }

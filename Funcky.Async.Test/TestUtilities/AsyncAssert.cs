@@ -60,29 +60,23 @@ internal static class AsyncAssert
         }
     }
 
-    public static async ValueTask<TElement> Single<TElement>(IAsyncEnumerable<TElement> asyncSequence)
+    public static async Task<T> Single<T>(IAsyncEnumerable<T> asyncSequence)
     {
-        var asyncEnumerator = asyncSequence.GetAsyncEnumerator();
-        try
+        await using var asyncEnumerator = asyncSequence.GetAsyncEnumerator();
+
+        if (await asyncEnumerator.MoveNextAsync() is false)
         {
-            if (!await asyncEnumerator.MoveNextAsync())
-            {
-                throw SingleException.Empty(null);
-            }
-
-            var result = asyncEnumerator.Current;
-
-            if (await asyncEnumerator.MoveNextAsync())
-            {
-                throw SingleException.MoreThanOne(await asyncSequence.CountAsync(), null);
-            }
-
-            return result;
+            SingleException.Empty(null);
         }
-        finally
+
+        var result = asyncEnumerator.Current;
+
+        if (await asyncEnumerator.MoveNextAsync())
         {
-            await asyncEnumerator.DisposeAsync();
+            SingleException.MoreThanOne(await asyncSequence.CountAsync(), null);
         }
+
+        return result;
     }
 
     public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
