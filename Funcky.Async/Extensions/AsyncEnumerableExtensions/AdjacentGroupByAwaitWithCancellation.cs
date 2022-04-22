@@ -151,13 +151,13 @@ public static partial class AsyncEnumerableExtensions
         IEqualityComparer<TKey> comparer)
         => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, resultSelector, comparer);
 
-    public static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellationInternal<TSource, TKey, TElement, TResult>(
-    this IAsyncEnumerable<TSource> source,
-    Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
-    Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
-    Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
-    IEqualityComparer<TKey> comparer,
-    [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    private static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellationInternal<TSource, TKey, TElement, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
+        Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
+        Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
+        IEqualityComparer<TKey> comparer,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
         await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
