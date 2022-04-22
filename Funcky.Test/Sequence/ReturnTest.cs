@@ -3,7 +3,7 @@ using FsCheck.Xunit;
 
 namespace Funcky.Test;
 
-public sealed class SequenceReturnTest
+public sealed class ReturnTest
 {
     [Property]
     public Property ReturnOfASingleItemElevatesThatItemIntoASingleItemedEnumerable(int item)
