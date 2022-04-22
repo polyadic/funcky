@@ -60,6 +60,31 @@ internal static class AsyncAssert
         }
     }
 
+    public static async ValueTask<TElement> Single<TElement>(IAsyncEnumerable<TElement> asyncSequence)
+    {
+        var asyncEnumerator = asyncSequence.GetAsyncEnumerator();
+        try
+        {
+            if (!await asyncEnumerator.MoveNextAsync())
+            {
+                throw SingleException.Empty(null);
+            }
+
+            var result = asyncEnumerator.Current;
+
+            if (await asyncEnumerator.MoveNextAsync())
+            {
+                throw SingleException.MoreThanOne(await asyncSequence.CountAsync(), null);
+            }
+
+            return result;
+        }
+        finally
+        {
+            await asyncEnumerator.DisposeAsync();
+        }
+    }
+
     public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
         => Assert.Equal(await expectedResult.ToListAsync(), await actual.ToListAsync());
 }
