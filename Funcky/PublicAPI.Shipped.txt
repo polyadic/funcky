@@ -523,8 +523,6 @@ static Funcky.Sequence.Cycle<TItem>(TItem element) -> System.Collections.Generic
 static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.FromNullable<T>(T? item) -> System.Collections.Generic.IEnumerable<T!>!
 static Funcky.Sequence.FromNullable<T>(T? item) -> System.Collections.Generic.IEnumerable<T>!
-static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, Funcky.Monads.Option<TItem>>! next) -> System.Collections.Generic.IEnumerable<TItem>!
-static Funcky.Sequence.Generate<TItem>(TItem seed, System.Func<TItem, TItem>! next) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, Funcky.Monads.Option<TItem>>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
 static Funcky.Sequence.Successors<TItem>(Funcky.Monads.Option<TItem> first, System.Func<TItem, TItem>! successor) -> System.Collections.Generic.IEnumerable<TItem>!
