@@ -71,7 +71,7 @@ Funcky.Monads.Option<TItem>.OrElse(System.Func<Funcky.Monads.Option<TItem>>! els
 Funcky.Monads.Option<TItem>.Select<TResult>(System.Func<TItem, TResult>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.SelectMany<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.ToEnumerable() -> System.Collections.Generic.IEnumerable<TItem>!
-Funcky.Monads.Option<TItem>.TryGetValue(out TItem item) -> bool
+Funcky.Monads.Option<TItem>.TryGetValue(out TItem? item) -> bool
 Funcky.Monads.Option<TItem>.Where(System.Func<TItem, bool>! predicate) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionComparer
 Funcky.Monads.OptionComparer<TItem>
