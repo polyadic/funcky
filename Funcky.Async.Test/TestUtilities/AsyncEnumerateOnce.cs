@@ -1,6 +1,6 @@
 using Xunit.Sdk;
 
-namespace Funcky.Test.TestUtils;
+namespace Funcky.Async.Test.TestUtilities;
 
 public class AsyncEnumerateOnce
 {
