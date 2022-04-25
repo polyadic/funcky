@@ -1,87 +1,95 @@
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test;
+namespace Funcky.Async.Test;
 
 public sealed class RepeatRangeTest
 {
     [Fact]
-    public void RepeatRangeIsEnumeratedLazily()
+    public async Task RepeatRangeIsEnumeratedLazily()
     {
-        var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-        using var repeatRange = Sequence.RepeatRange(doNotEnumerate, 2);
+        await using var repeatRange = AsyncSequence.RepeatRange(doNotEnumerate, 2);
     }
 
     [Fact]
-    public void RepeatRangeThrowsWhenAlreadyDisposed()
+    public async Task RepeatRangeThrowsWhenAlreadyDisposedAsync()
     {
-        var repeatRange = Sequence.RepeatRange(Sequence.Return(1337), 5);
+        var repeatRange = AsyncSequence.RepeatRange(AsyncSequence.Return(1337), 5);
 
 #pragma warning disable IDISP016 // we test behaviour after Dispose
 #pragma warning disable IDISP017 // we test behaviour after Dispose
-        repeatRange.Dispose();
+        await repeatRange.DisposeAsync();
 #pragma warning restore IDISP016
 #pragma warning restore IDISP017
 
-        Assert.Throws<ObjectDisposedException>(() => repeatRange.ForEach(NoOperation));
+        await Assert.ThrowsAsync<ObjectDisposedException>(() => repeatRange.ForEachAsync(NoOperation<int>));
     }
 
     [Fact]
-    public void RepeatRangeThrowsWhenAlreadyDisposedEvenIfYouDisposeBetweenMoveNext()
+    public async Task RepeatRangeThrowsWhenAlreadyDisposedEvenIfYouDisposeBetweenMoveNextAsync()
     {
-        var list = new List<int> { 1337, 2, 5 };
+        var list = AsyncSequence.Return(1337, 2, 5);
 
         var repeats = 5;
 
-        foreach (var i in Enumerable.Range(0, list.Count * repeats))
+        foreach (var i in Enumerable.Range(0, await list.CountAsync() * repeats))
         {
-            var repeatRange = Sequence.RepeatRange(list, repeats);
-            using var enumerator = repeatRange.GetEnumerator();
+            var repeatRange = AsyncSequence.RepeatRange(list, repeats);
+            await using var enumerator = repeatRange.GetAsyncEnumerator();
 
-            Assert.True(Enumerable.Range(0, i).All(_ => enumerator.MoveNext()));
+            Assert.True(await AsyncEnumerable.Range(0, i).AllAwaitAsync(async _ => await enumerator.MoveNextAsync()).ConfigureAwait(false));
 
 #pragma warning disable IDISP016 // we test behaviour after Dispose
 #pragma warning disable IDISP017 // we test behaviour after Dispose
-            repeatRange.Dispose();
+            await repeatRange.DisposeAsync();
 #pragma warning restore IDISP016
 #pragma warning restore IDISP017
 
-            Assert.ThrowsAny<ObjectDisposedException>(() => enumerator.MoveNext());
+            await Assert.ThrowsAnyAsync<ObjectDisposedException>(async () => await enumerator.MoveNextAsync());
         }
     }
 
     [Property]
     public Property TheLengthOfTheGeneratedRepeatRangeIsCorrect(List<int> list, NonNegativeInt count)
-    {
-        using var repeatRange = Sequence.RepeatRange(list, count.Get);
-
-        var materialized = repeatRange.ToList();
-
-        var shouldBeTrue = materialized.Count == list.Count * count.Get;
-
-        return (materialized.Count == list.Count * count.Get).ToProperty();
-    }
+        => TheLengthOfTheGeneratedRepeatRangeIsCorrectAsync(list, count.Get)
+            .Result
+            .ToProperty();
 
     [Property]
     public Property TheSequenceRepeatsTheGivenNumberOfTimes(List<int> list, NonNegativeInt count)
-    {
-        using var repeatRange = Sequence.RepeatRange(list, count.Get);
-
-        return repeatRange
-            .IsSequenceRepeating(list)
-            .NTimes(count.Get)
+        => TheSequenceRepeatsTheGivenNumberOfTimesAsync(list.ToAsyncEnumerable(), count.Get)
+            .Result
             .ToProperty();
-    }
 
     [Property]
-    public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+    public async Task RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync(NonEmptySet<int> sequence)
     {
-        var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+        var enumerateOnce = AsyncEnumerateOnce.Create(sequence.Get);
 
-        using var repeatRange = Sequence.RepeatRange(enumerateOnce, 3);
+        await using var repeatRange = AsyncSequence.RepeatRange(enumerateOnce, 3);
 
-        repeatRange.ForEach(NoOperation);
+        await repeatRange.ForEachAsync(NoOperation<int>);
+    }
+
+    private static async Task<bool> TheLengthOfTheGeneratedRepeatRangeIsCorrectAsync(List<int> list, int count)
+    {
+        await using var repeatRange = AsyncSequence.RepeatRange(list.ToAsyncEnumerable(), count);
+
+        var materialized = await repeatRange.ToListAsync();
+
+        return materialized.Count == list.Count * count;
+    }
+
+    private static async Task<bool> TheSequenceRepeatsTheGivenNumberOfTimesAsync(IAsyncEnumerable<int> asyncEnumerable, int count)
+    {
+        await using var repeatRange = AsyncSequence.RepeatRange(asyncEnumerable, count);
+
+        return await repeatRange
+            .IsSequenceRepeating(asyncEnumerable)
+            .NTimes(count);
     }
 }

@@ -15,7 +15,7 @@ namespace Funcky.Test
         [Fact]
         public void TheUnderlyingEnumerableIsOnlyEnumeratedOnce()
         {
-            var enumerateOnce = new EnumerateOnce<string>(Sequence.Return("Alpha", "Beta"));
+            var enumerateOnce = EnumerateOnce.Create(Sequence.Return("Alpha", "Beta"));
             using var memoized = enumerateOnce.Memoize();
 
             Assert.Equal("Alpha", memoized.First());

@@ -31,7 +31,7 @@ public sealed class RepeatRangeTest
     [Fact]
     public void RepeatRangeThrowsWhenAlreadyDisposedEvenIfYouDisposeBetweenMoveNext()
     {
-        var list = new List<int> { 1337, 2, 5 };
+        var list = Sequence.Return(1337, 2, 5);
 
         var repeats = 5;
 
@@ -78,7 +78,7 @@ public sealed class RepeatRangeTest
     [Property]
     public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
     {
-        var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+        var enumerateOnce = EnumerateOnce.Create(sequence.Get);
 
         using var repeatRange = Sequence.RepeatRange(enumerateOnce, 3);
 

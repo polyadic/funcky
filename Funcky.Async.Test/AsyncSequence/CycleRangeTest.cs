@@ -1,64 +1,68 @@
-using System.Collections.Immutable;
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test;
+namespace Funcky.Async.Test;
 
 public sealed class CycleRangeTest
 {
     [Fact]
-    public void CycleRangeIsEnumeratedLazily()
+    public async Task CycleRangeIsEnumeratedLazilyAsync()
     {
-        var doNotEnumerate = new FailOnEnumerationSequence<object>();
+        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
-        using var cycleRange = Sequence.CycleRange(doNotEnumerate);
+        await using var cycleRange = AsyncSequence.CycleRange(doNotEnumerate);
     }
 
     [Fact]
     public void CyclingAnEmptySetThrowsAnArgumentException()
-            => Assert.Throws<InvalidOperationException>(CycleEmptySequence);
+            => Assert.ThrowsAsync<InvalidOperationException>(CycleEmptySequenceAsync);
 
     [Property]
-    public Property CycleRangeCanProduceArbitraryManyItems(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
-    {
-        using var cycleRange = Sequence
-            .CycleRange(sequence.Get);
-
-        return (cycleRange.Take(arbitraryElements.Get).Count() == arbitraryElements.Get)
+    public Property CycleRangeCanProduceArbitraryManyItemsAsync(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
+        => (GetArbitraryManyItemsAsync(sequence.Get, arbitraryElements.Get).Result == arbitraryElements.Get)
             .ToProperty();
-    }
 
     [Property]
     public Property CycleRangeRepeatsTheElementsArbitraryManyTimes(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
-    {
-        using var cycleRange = Sequence
-            .CycleRange(sequence.Get);
+        => CycleRangeRepeatsTheElementsArbitraryManyTimesAsync(sequence.Get.ToAsyncEnumerable(), arbitraryElements.Get)
+            .Result.ToProperty();
 
-        return cycleRange
-            .IsSequenceRepeating(sequence.Get)
-            .NTimes(arbitraryElements.Get)
-            .ToProperty();
+    [Fact]
+    public async Task CycleRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync()
+    {
+        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var enumerateOnce = AsyncEnumerateOnce.Create(sequence);
+
+        await using var cycleRange = AsyncSequence.CycleRange(enumerateOnce);
+
+        await cycleRange
+            .Take(sequence.Count() * 3)
+            .ForEachAsync(NoOperation<string>);
     }
 
-    [Property]
-    public void CycleRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+    private static async Task<int> GetArbitraryManyItemsAsync(IEnumerable<int> sequence, int arbitraryElements)
     {
-        var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+        await using var cycleRange = AsyncSequence.CycleRange(sequence.ToAsyncEnumerable());
 
-        using var cycleRange = Sequence
-            .CycleRange(enumerateOnce);
-
-        cycleRange
-            .Take(sequence.Get.Count * 3)
-            .ForEach(NoOperation);
+        return await cycleRange.Take(arbitraryElements).CountAsync();
     }
 
-    private static void CycleEmptySequence()
+    private static async Task CycleEmptySequenceAsync()
     {
-        using var cycledRange = Sequence.CycleRange(ImmutableList<string>.Empty);
-        using var enumerator = cycledRange.GetEnumerator();
+        await using var cycledRange = AsyncSequence.CycleRange(AsyncSequence.Return<string>());
+        await using var enumerator = cycledRange.GetAsyncEnumerator();
 
-        enumerator.MoveNext();
+        await enumerator.MoveNextAsync();
+    }
+
+    private async Task<bool> CycleRangeRepeatsTheElementsArbitraryManyTimesAsync(IAsyncEnumerable<int> asyncEnumerable, int arbitraryElements)
+    {
+        await using var cycleRange = AsyncSequence.CycleRange(asyncEnumerable);
+
+        return await cycleRange
+            .IsSequenceRepeating(asyncEnumerable)
+            .NTimes(arbitraryElements);
     }
 }

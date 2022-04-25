@@ -25,7 +25,7 @@ public sealed class InspectTest
     public async Task GivenAnAsyncEnumerableAndInjectWeCanApplySideEffectsToAsyncEnumerables()
     {
         var sideEffect = 0;
-        var numbers = new List<int> { 1, 2, 3, 42 }.ToAsyncEnumerable();
+        var numbers = AsyncSequence.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
             .Inspect(n => { ++sideEffect; });
@@ -41,7 +41,7 @@ public sealed class InspectTest
     public async Task GivenAnAsyncEnumerableAndInjectAnAsynchronouseActionWeCanApplySideEffectsToAsyncEnumerables()
     {
         var sideEffect = 0;
-        var numbers = new List<int> { 1, 2, 3, 42 }.ToAsyncEnumerable();
+        var numbers = AsyncSequence.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
             .InspectAwait(n =>

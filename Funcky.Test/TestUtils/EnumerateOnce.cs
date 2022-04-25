@@ -3,13 +3,20 @@ using Xunit.Sdk;
 
 namespace Funcky.Test.TestUtils;
 
+public class EnumerateOnce
+{
+    public static EnumerateOnce<T> Create<T>(IEnumerable<T> sequence)
+        where T : notnull
+        => new(new Queue<T>(sequence));
+}
+
 public class EnumerateOnce<T> : IEnumerable<T>
     where T : notnull
 {
     private readonly Queue<T> _once;
     private bool _first = true;
 
-    public EnumerateOnce(IEnumerable<T> sequence)
+    internal EnumerateOnce(IEnumerable<T> sequence)
         => _once = new Queue<T>(sequence);
 
     public IEnumerator<T> GetEnumerator()

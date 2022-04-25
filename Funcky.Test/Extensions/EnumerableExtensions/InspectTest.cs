@@ -16,7 +16,7 @@ public sealed class InspectTest
     public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
     {
         var sideEffect = 0;
-        var numbers = new List<int> { 1, 2, 3, 42 };
+        var numbers = Sequence.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
             .Inspect(n => { ++sideEffect; });
