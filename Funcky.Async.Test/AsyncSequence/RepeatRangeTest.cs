@@ -65,14 +65,15 @@ public sealed class RepeatRangeTest
             .Result
             .ToProperty();
 
-    [Property]
-    public async Task RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync(NonEmptySet<int> sequence)
+    [Fact]
+    public async Task RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync()
     {
-        var enumerateOnce = AsyncEnumerateOnce.Create(sequence.Get);
+        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var enumerateOnce = AsyncEnumerateOnce.Create(sequence);
 
         await using var repeatRange = AsyncSequence.RepeatRange(enumerateOnce, 3);
 
-        await repeatRange.ForEachAsync(NoOperation<int>);
+        await repeatRange.ForEachAsync(NoOperation<string>);
     }
 
     private static async Task<bool> TheLengthOfTheGeneratedRepeatRangeIsCorrectAsync(List<int> list, int count)

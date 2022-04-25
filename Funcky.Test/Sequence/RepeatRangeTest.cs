@@ -75,10 +75,11 @@ public sealed class RepeatRangeTest
             .ToProperty();
     }
 
-    [Property]
-    public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+    [Fact]
+    public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce()
     {
-        var enumerateOnce = EnumerateOnce.Create(sequence.Get);
+        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var enumerateOnce = EnumerateOnce.Create(sequence);
 
         using var repeatRange = Sequence.RepeatRange(enumerateOnce, 3);
 
