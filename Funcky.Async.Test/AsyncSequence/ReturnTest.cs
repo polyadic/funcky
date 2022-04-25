@@ -1,6 +1,7 @@
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Async.Extensions;
+using Funcky.Async.Test.TestUtilities;
 
 namespace Funcky.Async.Test;
 
@@ -14,11 +15,19 @@ public sealed class ReturnTest
         return (sequence.SingleOrNoneAsync().Result == item).ToProperty();
     }
 
-    [Property]
-    public Property SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters(string one, string two, string three)
+    [Fact]
+    public async Task SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters()
     {
-        var sequence = Sequence.Return(one, two, three);
+        string one = "Alpha";
+        string two = "Beta";
+        string three = "Gamma";
 
-        return Enumerable.SequenceEqual(new[] { one, two, three }, sequence).ToProperty();
+        var sequence = AsyncSequence.Return(one, two, three);
+
+        await AsyncAssert.Collection(
+            sequence,
+            element1 => Assert.Equal(one, element1),
+            element2 => Assert.Equal(two, element2),
+            element3 => Assert.Equal(three, element3));
     }
 }

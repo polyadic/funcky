@@ -13,11 +13,19 @@ public sealed class ReturnTest
         return (sequence.SingleOrNone() == item).ToProperty();
     }
 
-    [Property]
-    public Property SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters(string one, string two, string three)
+    [Fact]
+    public void SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters()
     {
+        string one = "Alpha";
+        string two = "Beta";
+        string three = "Gamma";
+
         var sequence = Sequence.Return(one, two, three);
 
-        return Enumerable.SequenceEqual(new[] { one, two, three }, sequence).ToProperty();
+        Assert.Collection(
+            sequence,
+            element1 => Assert.Equal(one, element1),
+            element2 => Assert.Equal(two, element2),
+            element3 => Assert.Equal(three, element3));
     }
 }
