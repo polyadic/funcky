@@ -14,7 +14,6 @@ public static partial class Sequence
     /// </summary>
     [Pure]
     public static IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources)
-        => from source in sources
-           from element in source
-           select element;
+        => sources
+            .SelectMany(Identity);
 }

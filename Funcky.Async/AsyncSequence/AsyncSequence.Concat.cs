@@ -14,25 +14,22 @@ public static partial class AsyncSequence
     /// </summary>
     [Pure]
     public static IAsyncEnumerable<TSource> Concat<TSource>(IAsyncEnumerable<IAsyncEnumerable<TSource>> sources)
-        => from source in sources
-           from element in source
-           select element;
+        => sources
+            .SelectMany(Identity);
 
     /// <summary>
     /// Concatenates multiple sequences together.
     /// </summary>
     [Pure]
     public static IAsyncEnumerable<TSource> Concat<TSource>(IEnumerable<IAsyncEnumerable<TSource>> sources)
-        => from source in sources.ToAsyncEnumerable()
-           from element in source
-           select element;
+        => sources.ToAsyncEnumerable()
+            .SelectMany(Identity);
 
     /// <summary>
     /// Concatenates multiple sequences together.
     /// </summary>
     [Pure]
     public static IAsyncEnumerable<TSource> Concat<TSource>(IAsyncEnumerable<IEnumerable<TSource>> sources)
-        => from source in sources
-           from element in source.ToAsyncEnumerable()
-           select element;
+        => sources
+            .SelectMany(AsyncEnumerable.ToAsyncEnumerable);
 }
