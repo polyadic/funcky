@@ -21,8 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 		global.json = global.json
 		GlobalUsings.props = GlobalUsings.props
 		GlobalUsings.Test.props = GlobalUsings.Test.props
-		Packages.props = Packages.props
 		NuGet.config = NuGet.config
+		Packages.props = Packages.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
@@ -45,15 +45,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.SourceGenerator", "Funcky.SourceGenerator\Funcky.SourceGenerator.csproj", "{1EE94F73-967E-49D1-BA68-EA2783EA0244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.SourceGenerator.Test", "Funcky.SourceGenerator.Test\Funcky.SourceGenerator.Test.csproj", "{C1412F64-1D24-4245-8DC7-F4AF01815F58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.SourceGenerator.Test", "Funcky.SourceGenerator.Test\Funcky.SourceGenerator.Test.csproj", "{C1412F64-1D24-4245-8DC7-F4AF01815F58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.BuiltinAnalyzers", "Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj", "{539432B9-1257-4237-91FD-5D237855765E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.BuiltinAnalyzers", "Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj", "{539432B9-1257-4237-91FD-5D237855765E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async", "Funcky.Async\Funcky.Async.csproj", "{38BC0217-F713-4B22-8080-06FFCCF692EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Async.Test", "Funcky.Async.Test\Funcky.Async.Test.csproj", "{FCD81939-0D7E-432C-B9E4-E5A6BD32CD7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Test.Internal", "Funcky.Test.Internal\Funcky.Test.Internal.csproj", "{60DF907B-351D-48C9-80D8-E824C2BE2256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Test.Internal", "Funcky.Test.Internal\Funcky.Test.Internal.csproj", "{60DF907B-351D-48C9-80D8-E824C2BE2256}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
