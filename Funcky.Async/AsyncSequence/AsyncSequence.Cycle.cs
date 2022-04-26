@@ -11,10 +11,6 @@ public static partial class AsyncSequence
     [Pure]
     public static IAsyncEnumerable<TItem> Cycle<TItem>(TItem element)
         where TItem : notnull
-#if NET5_0
-        => Successors(element, ValueTask.FromResult);
-#else
-        => Successors(element, value => new ValueTask<TItem>(value));
-#endif
-
+        => Sequence.Cycle(element)
+            .ToAsyncEnumerable();
 }
