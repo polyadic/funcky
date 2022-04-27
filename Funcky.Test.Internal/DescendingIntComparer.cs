@@ -1,6 +1,6 @@
-namespace Funcky.Test.TestUtils;
+namespace Funcky.Test.Internal;
 
-internal sealed class DescendingIntComparer : IComparer<int>
+public sealed class DescendingIntComparer : IComparer<int>
 {
     private DescendingIntComparer()
     {

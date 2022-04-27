@@ -1,6 +1,13 @@
 using Xunit.Sdk;
 
-namespace Funcky.Test.TestUtils;
+namespace Funcky.Async.Test.TestUtilities;
+
+public class AsyncEnumerateOnce
+{
+    public static AsyncEnumerateOnce<T> Create<T>(IEnumerable<T> sequence)
+        where T : notnull
+        => new(new Queue<T>(sequence));
+}
 
 public class AsyncEnumerateOnce<T> : IAsyncEnumerable<T>
     where T : notnull
@@ -8,11 +15,8 @@ public class AsyncEnumerateOnce<T> : IAsyncEnumerable<T>
     private readonly Queue<T> _once;
     private bool _first = true;
 
-    private AsyncEnumerateOnce(Queue<T> queue)
+    internal AsyncEnumerateOnce(Queue<T> queue)
         => _once = queue;
-
-    public static async Task<AsyncEnumerateOnce<T>> Create(IAsyncEnumerable<T> sequence)
-        => new(new Queue<T>(await sequence.ToListAsync()));
 
 #pragma warning disable CS1998
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)

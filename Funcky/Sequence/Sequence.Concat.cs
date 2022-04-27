@@ -2,9 +2,18 @@ namespace Funcky;
 
 public static partial class Sequence
 {
+    /// <summary>
+    /// Concatenates multiple sequences together.
+    /// </summary>
     [Pure]
-    public static IEnumerable<TSource> Concat<TSource>(params IEnumerable<TSource>[] sources) => Concat(sources.AsEnumerable());
+    public static IEnumerable<TSource> Concat<TSource>(params IEnumerable<TSource>[] sources)
+        => Concat(sources.AsEnumerable());
 
+    /// <summary>
+    /// Concatenates multiple sequences together.
+    /// </summary>
     [Pure]
-    public static IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources) => sources.SelectMany(Identity);
+    public static IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources)
+        => sources
+            .SelectMany(Identity);
 }

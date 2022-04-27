@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
@@ -37,25 +36,27 @@ public sealed class CycleRangeTest
 
         return cycleRange
             .IsSequenceRepeating(sequence.Get)
-            .NTimes(arbitraryElements.Get);
+            .NTimes(arbitraryElements.Get)
+            .ToProperty();
     }
 
-    [Property]
-    public void CycleRangeEnumeratesUnderlyingEnumerableOnlyOnce(NonEmptySet<int> sequence)
+    [Fact]
+    public void CycleRangeEnumeratesUnderlyingEnumerableOnlyOnce()
     {
-        var enumerateOnce = new EnumerateOnce<int>(sequence.Get);
+        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var enumerateOnce = EnumerateOnce.Create(sequence);
 
         using var cycleRange = Sequence
             .CycleRange(enumerateOnce);
 
         cycleRange
-            .Take(sequence.Get.Count * 3)
+            .Take(sequence.Count() * 3)
             .ForEach(NoOperation);
     }
 
     private static void CycleEmptySequence()
     {
-        using var cycledRange = Sequence.CycleRange(ImmutableList<string>.Empty);
+        using var cycledRange = Sequence.CycleRange(Sequence.Return<string>());
         using var enumerator = cycledRange.GetEnumerator();
 
         enumerator.MoveNext();

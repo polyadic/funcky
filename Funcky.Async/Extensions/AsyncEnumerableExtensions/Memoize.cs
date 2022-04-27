@@ -1,8 +1,6 @@
-using System.Collections;
+namespace Funcky.Async.Extensions;
 
-namespace Funcky.Extensions;
-
-public static partial class EnumerableExtensions
+public static partial class AsyncEnumerableExtensions
 {
     /// <summary>
     /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
@@ -12,53 +10,46 @@ public static partial class EnumerableExtensions
     /// <param name="sequence">The source sequence.</param>
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
-    public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> sequence)
+    public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> sequence)
         where TSource : notnull
-        => sequence is IBuffer<TSource> buffer
+        => sequence is IAsyncBuffer<TSource> buffer
             ? buffer
-            : MemoizedBuffer.Create(sequence);
+            : MemoizedAsyncBuffer.Create(sequence);
 
-    private static class MemoizedBuffer
+    private static class MemoizedAsyncBuffer
     {
-        public static MemoizedBuffer<TSource> Create<TSource>(IEnumerable<TSource> source)
+        public static MemoizedAsyncBuffer<TSource> Create<TSource>(IAsyncEnumerable<TSource> source)
             => new(source);
     }
 
-    private sealed class MemoizedBuffer<T> : IBuffer<T>
+    private sealed class MemoizedAsyncBuffer<T> : IAsyncBuffer<T>
     {
         private readonly List<T> _buffer = new();
-        private readonly IEnumerator<T> _source;
+        private readonly IAsyncEnumerator<T> _source;
 
         private bool _disposed;
 
-        public MemoizedBuffer(IEnumerable<T> source)
-            => _source = source.GetEnumerator();
+        public MemoizedAsyncBuffer(IAsyncEnumerable<T> source)
+            => _source = source.GetAsyncEnumerator();
 
-        public IEnumerator<T> GetEnumerator()
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             ThrowIfDisposed();
 
-            return GetEnumeratorInternal();
+            return GetAsyncEnumeratorInternal();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            ThrowIfDisposed();
-
-            return GetEnumeratorInternal();
-        }
-
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
             if (!_disposed)
             {
-                _source.Dispose();
+                await _source.DisposeAsync().ConfigureAwait(false);
                 _buffer.Clear();
                 _disposed = true;
             }
         }
 
-        private IEnumerator<T> GetEnumeratorInternal()
+        private async IAsyncEnumerator<T> GetAsyncEnumeratorInternal()
         {
             for (var index = 0; true; index++)
             {
@@ -66,7 +57,7 @@ public static partial class EnumerableExtensions
 
                 if (index == _buffer.Count)
                 {
-                    if (_source.MoveNext())
+                    if (await _source.MoveNextAsync().ConfigureAwait(false))
                     {
                         _buffer.Add(_source.Current);
                     }
@@ -84,7 +75,7 @@ public static partial class EnumerableExtensions
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(nameof(MemoizedBuffer));
+                throw new ObjectDisposedException(nameof(MemoizedAsyncBuffer));
             }
         }
     }
