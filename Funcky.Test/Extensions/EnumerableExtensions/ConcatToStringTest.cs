@@ -1,6 +1,6 @@
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
-public class ConcatStringsTest
+public class ConcatToStringTest
 {
     [Fact]
     public void ConcatenatingAnEmptySetOfStringsReturnsAnEmptyString()
@@ -21,7 +21,7 @@ public class ConcatStringsTest
     [Fact]
     public void ConcatenatingAListOfStringsReturnsAllElementsWithoutASeparator()
     {
-        var strings = new List<string> { "Alpha", "Beta", "Gamma" };
+        var strings = Sequence.Return("Alpha", "Beta", "Gamma");
 
         Assert.Equal("AlphaBetaGamma", strings.ConcatToString());
     }
@@ -29,15 +29,15 @@ public class ConcatStringsTest
     [Fact]
     public void ConcatenatingNonStringsWorksToo()
     {
-        var strings = new List<int> { 1, 2, 3 };
+        var numbers = Sequence.Return(1, 2, 3);
 
-        Assert.Equal("123", strings.ConcatToString());
+        Assert.Equal("123", numbers.ConcatToString());
     }
 
     [Fact]
     public void NullsAreHandledAsEmptyStringsWhileConcatenating()
     {
-        var strings = new List<string?> { "Alpha", null, "Gamma" };
+        var strings = Sequence.Return("Alpha", null, "Gamma");
 
         Assert.Equal("AlphaGamma", strings.ConcatToString());
     }
