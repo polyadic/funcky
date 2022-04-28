@@ -11,8 +11,8 @@ public sealed class JoinToStringTest
     {
         var empty = AsyncEnumerable.Empty<string>();
 
-        Assert.Equal(string.Empty, await empty.JoinToString(", "));
-        Assert.Equal(string.Empty, await empty.JoinToString(','));
+        Assert.Equal(string.Empty, await empty.JoinToStringAsync(", "));
+        Assert.Equal(string.Empty, await empty.JoinToStringAsync(','));
     }
 
     [Fact]
@@ -20,8 +20,8 @@ public sealed class JoinToStringTest
     {
         var singleElement = AsyncSequence.Return("Alpha");
 
-        Assert.Equal("Alpha", await singleElement.JoinToString(", "));
-        Assert.Equal("Alpha", await singleElement.JoinToString(','));
+        Assert.Equal("Alpha", await singleElement.JoinToStringAsync(", "));
+        Assert.Equal("Alpha", await singleElement.JoinToStringAsync(','));
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public sealed class JoinToStringTest
     {
         var strings = AsyncSequence.Return("Alpha", "Beta", "Gamma");
 
-        Assert.Equal("Alpha, Beta, Gamma", await strings.JoinToString(", "));
-        Assert.Equal("Alpha,Beta,Gamma", await strings.JoinToString(','));
+        Assert.Equal("Alpha, Beta, Gamma", await strings.JoinToStringAsync(", "));
+        Assert.Equal("Alpha,Beta,Gamma", await strings.JoinToStringAsync(','));
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public sealed class JoinToStringTest
     {
         var numbers = AsyncSequence.Return(1, 2, 3);
 
-        Assert.Equal("1, 2, 3", await numbers.JoinToString(", "));
-        Assert.Equal("1,2,3", await numbers.JoinToString(','));
+        Assert.Equal("1, 2, 3", await numbers.JoinToStringAsync(", "));
+        Assert.Equal("1,2,3", await numbers.JoinToStringAsync(','));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public sealed class JoinToStringTest
     {
         var strings = AsyncSequence.Return("Alpha", null, "Gamma");
 
-        Assert.Equal("Alpha, , Gamma", await strings.JoinToString(", "));
-        Assert.Equal("Alpha,,Gamma", await strings.JoinToString(','));
+        Assert.Equal("Alpha, , Gamma", await strings.JoinToStringAsync(", "));
+        Assert.Equal("Alpha,,Gamma", await strings.JoinToStringAsync(','));
     }
 }

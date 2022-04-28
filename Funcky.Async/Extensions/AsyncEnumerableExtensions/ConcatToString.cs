@@ -10,7 +10,7 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="T">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <returns>Concatenated string.</returns>
     [Pure]
-    public static async Task<string> ConcatToString<T>(this IAsyncEnumerable<T> source)
+    public static async Task<string> ConcatToStringAsync<T>(this IAsyncEnumerable<T> source)
     {
         var result = new StringBuilder();
 

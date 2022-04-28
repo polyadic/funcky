@@ -12,7 +12,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="separator">A single character to separate the individual elements.</param>
     /// <returns>Joined string with separators between the elements.</returns>
     [Pure]
-    public static Task<string> JoinToString<T>(this IAsyncEnumerable<T> source, char separator)
+    public static Task<string> JoinToStringAsync<T>(this IAsyncEnumerable<T> source, char separator)
         => JoinToStringInternal(separator.ToString(), source);
 
     /// <summary>
@@ -23,7 +23,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="separator">A string to separate the individual elements.</param>
     /// <returns>Joined string with separators between the elements.</returns>
     [Pure]
-    public static Task<string> JoinToString<T>(this IAsyncEnumerable<T> source, string separator)
+    public static Task<string> JoinToStringAsync<T>(this IAsyncEnumerable<T> source, string separator)
         => JoinToStringInternal(separator, source);
 
     private static async Task<string> JoinToStringInternal<T>(string separator, IAsyncEnumerable<T> values)

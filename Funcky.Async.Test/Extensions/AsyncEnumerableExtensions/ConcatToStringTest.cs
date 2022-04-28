@@ -1,3 +1,5 @@
+using Funcky.Async.Extensions;
+
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public class ConcatToStringTest
@@ -7,7 +9,7 @@ public class ConcatToStringTest
     {
         var empty = AsyncEnumerable.Empty<string>();
 
-        Assert.Equal(string.Empty, await empty.ConcatToString());
+        Assert.Equal(string.Empty, await empty.ConcatToStringAsync());
     }
 
     [Fact]
@@ -15,7 +17,7 @@ public class ConcatToStringTest
     {
         var singleElement = AsyncSequence.Return("Alpha");
 
-        Assert.Equal("Alpha", await singleElement.ConcatToString());
+        Assert.Equal("Alpha", await singleElement.ConcatToStringAsync());
     }
 
     [Fact]
@@ -23,7 +25,7 @@ public class ConcatToStringTest
     {
         var strings = AsyncSequence.Return("Alpha", "Beta", "Gamma");
 
-        Assert.Equal("AlphaBetaGamma", await strings.ConcatToString());
+        Assert.Equal("AlphaBetaGamma", await strings.ConcatToStringAsync());
     }
 
     [Fact]
@@ -31,7 +33,7 @@ public class ConcatToStringTest
     {
         var numbers = AsyncSequence.Return(1, 2, 3);
 
-        Assert.Equal("123", await numbers.ConcatToString());
+        Assert.Equal("123", await numbers.ConcatToStringAsync());
     }
 
     [Fact]
@@ -39,6 +41,6 @@ public class ConcatToStringTest
     {
         var strings = AsyncSequence.Return("Alpha", null, "Gamma");
 
-        Assert.Equal("AlphaGamma", await strings.ConcatToString());
+        Assert.Equal("AlphaGamma", await strings.ConcatToStringAsync());
     }
 }
