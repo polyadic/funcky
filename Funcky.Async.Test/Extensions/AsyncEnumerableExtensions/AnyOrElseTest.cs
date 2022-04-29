@@ -2,6 +2,7 @@ using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
+
 public sealed class AnyOrElseTest
 {
     [Fact]
@@ -27,16 +28,16 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsSourceEnumerableWhenNonEmpty()
     {
-        var source = Sequence.Return(1, 2, 3);
-        var fallback = Sequence.Return(4, 5, 6);
+        var source = AsyncSequence.Return(1, 2, 3);
+        var fallback = AsyncSequence.Return(4, 5, 6);
         Assert.Equal(source, source.AnyOrElse(fallback));
     }
 
     [Fact]
     public void IsFallbackEnumerableWhenSourceIsEmpty()
     {
-        var source = Enumerable.Empty<int>();
-        var fallback = Sequence.Return(1, 2, 3);
+        var source = AsyncEnumerable.Empty<int>();
+        var fallback = AsyncSequence.Return(1, 2, 3);
         Assert.Equal(fallback, source.AnyOrElse(fallback));
     }
 }
