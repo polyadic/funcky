@@ -2,7 +2,7 @@
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
-public sealed class JoinStringsTest
+public sealed class JoinToStringTest
 {
     [Fact]
     public void JoiningAnEmptySetOfStringsReturnsAnEmptyString()
@@ -25,7 +25,7 @@ public sealed class JoinStringsTest
     [Fact]
     public void JoiningAListOfStringsAddsSeparatorsBetweenTheElements()
     {
-        var strings = new List<string> { "Alpha", "Beta", "Gamma" };
+        var strings = Sequence.Return("Alpha", "Beta", "Gamma");
 
         Assert.Equal("Alpha, Beta, Gamma", strings.JoinToString(", "));
         Assert.Equal("Alpha,Beta,Gamma", strings.JoinToString(','));
@@ -34,16 +34,16 @@ public sealed class JoinStringsTest
     [Fact]
     public void JoiningNonStringsReturnASeparatedListToo()
     {
-        var strings = new List<int> { 1, 2, 3 };
+        var numbers = Sequence.Return(1, 2, 3);
 
-        Assert.Equal("1, 2, 3", strings.JoinToString(", "));
-        Assert.Equal("1,2,3", strings.JoinToString(','));
+        Assert.Equal("1, 2, 3", numbers.JoinToString(", "));
+        Assert.Equal("1,2,3", numbers.JoinToString(','));
     }
 
     [Fact]
     public void NullsAreHandledAsEmptyStringsWhileJoining()
     {
-        var strings = new List<string?> { "Alpha", null, "Gamma" };
+        var strings = Sequence.Return("Alpha", null, "Gamma");
 
         Assert.Equal("Alpha, , Gamma", strings.JoinToString(", "));
         Assert.Equal("Alpha,,Gamma", strings.JoinToString(','));
