@@ -16,25 +16,20 @@ public static partial class AsyncEnumerableExtensions
 
     private static async IAsyncEnumerable<TSource> AnyOrElseInternal<TSource>(IAsyncEnumerable<TSource> source, Func<IAsyncEnumerable<TSource>> fallback, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
-        var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
+        var hasItems = false;
 
-        if (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
+        await foreach (var item in source.WithCancellation(cancellationToken))
         {
-            yield return asyncEnumerator.Current;
-        }
-        else
-        {
-            asyncEnumerator = fallback().GetAsyncEnumerator(cancellationToken);
-            await sourceEnumerator.DisposeAsync();
-            sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
+            hasItems = true;
+            yield return item;
         }
 
-        while (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
+        if (!hasItems)
         {
-            yield return asyncEnumerator.Current;
+            await foreach (var item in fallback().WithCancellation(cancellationToken))
+            {
+                yield return item;
+            }
         }
-
-        await sourceEnumerator.DisposeAsync();
     }
 }
