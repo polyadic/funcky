@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>Funcky.FsCheck</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Funcky/Funcky.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FsCheck.Xunit" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="FunckyGenerators.fs" />
+    </ItemGroup>
+    <Import Project="..\FrameworkFeatureConstants.props" />
+</Project>
