@@ -26,18 +26,18 @@ public sealed class AnyOrElseTest
     }
 
     [Fact]
-    public void IsSourceEnumerableWhenNonEmpty()
+    public async Task IsSourceEnumerableWhenNonEmpty()
     {
         var source = AsyncSequence.Return(1, 2, 3);
         var fallback = AsyncSequence.Return(4, 5, 6);
-        Assert.Equal(source, source.AnyOrElse(fallback));
+        await AsyncAssert.Equal(source, source.AnyOrElse(fallback));
     }
 
     [Fact]
-    public void IsFallbackEnumerableWhenSourceIsEmpty()
+    public async Task IsFallbackEnumerableWhenSourceIsEmpty()
     {
         var source = AsyncEnumerable.Empty<int>();
         var fallback = AsyncSequence.Return(1, 2, 3);
-        Assert.Equal(fallback, source.AnyOrElse(fallback));
+        await AsyncAssert.Equal(fallback, source.AnyOrElse(fallback));
     }
 }
