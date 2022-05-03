@@ -13,7 +13,11 @@ public static partial class EnumerableExtensions
         => source switch
         {
             IReadOnlyCollection<TSource> collection => collection.Count > 0 ? collection : fallback(),
+#if NET6_0_OR_GREATER
+            _ when source.TryGetNonEnumeratedCount(out var count) => count > 0 ? source : fallback(),
+#else
             ICollection<TSource> collection => collection.Count > 0 ? collection : fallback(),
+#endif
             _ => AnyOrElseInternal(source, fallback),
         };
 

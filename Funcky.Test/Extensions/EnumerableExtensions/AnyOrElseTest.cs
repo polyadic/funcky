@@ -13,7 +13,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsSourceEnumerableWhenNonEmpty()
     {
-        var source = Sequence.Return(1, 2, 3).ToEnumerable();
+        var source = Sequence.Return(1, 2, 3).EraseNonEnumeratedCount();
         var fallback = Sequence.Return(4, 5, 6);
         Assert.Equal(source, source.AnyOrElse(fallback));
     }
@@ -21,7 +21,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsFallbackEnumerableWhenSourceIsEmpty()
     {
-        var source = Enumerable.Empty<int>().ToEnumerable();
+        var source = Enumerable.Empty<int>().EraseNonEnumeratedCount();
         var fallback = Sequence.Return(1, 2, 3);
         Assert.Equal(fallback, source.AnyOrElse(fallback));
     }
@@ -36,7 +36,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void FallbackIsEnumeratedLazily()
     {
-        var source = Enumerable.Empty<int>().ToEnumerable();
+        var source = Enumerable.Empty<int>().EraseNonEnumeratedCount();
         _ = source.AnyOrElse(new FailOnEnumerationSequence<int>());
     }
 
@@ -55,4 +55,22 @@ public sealed class AnyOrElseTest
         var fallback = Enumerable.Empty<int>();
         Assert.Same(fallback, source.AnyOrElse(fallback));
     }
+
+#if NET6_0_OR_GREATER
+    [Fact]
+    public void ReturnsSourceDirectlyWhenSourceIsNonEmptyAndNonEnumeratedCountIsKnown()
+    {
+        var source = new FailOnEnumerationList(length: 1).Select(Identity);
+        var fallback = Enumerable.Empty<int>();
+        Assert.Same(source, source.AnyOrElse(fallback));
+    }
+
+    [Fact]
+    public void ReturnsFallbackDirectlyWhenSourceIsEmptyAndNonEnumeratedCountIsKnown()
+    {
+        var source = new FailOnEnumerationList(length: 0).Select(Identity);
+        var fallback = Enumerable.Empty<int>();
+        Assert.Same(fallback, source.AnyOrElse(fallback));
+    }
+#endif
 }
