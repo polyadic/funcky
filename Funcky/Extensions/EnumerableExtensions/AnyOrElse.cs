@@ -12,11 +12,7 @@ public static partial class EnumerableExtensions
     public static IEnumerable<TSource> AnyOrElse<TSource>(this IEnumerable<TSource> source, Func<IEnumerable<TSource>> fallback)
         => source switch
         {
-#if NET6_0_OR_GREATER
             _ when source.TryGetNonEnumeratedCount(out var count) => count > 0 ? source : fallback(),
-#else
-            ICollection<TSource> collection => collection.Count > 0 ? collection : fallback(),
-#endif
             _ => AnyOrElseInternal(source, fallback),
         };
 
