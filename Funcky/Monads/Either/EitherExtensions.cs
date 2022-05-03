@@ -1,6 +1,6 @@
 namespace Funcky.Monads;
 
-public static class EitherExtensions
+public static partial class EitherExtensions
 {
     /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a right value.</summary>
     [Pure]

@@ -46,5 +46,13 @@ type FunckyGenerators =
               return PriorityQueue(values) } |> Arb.fromGen
 #endif
 
+    static member option<'a>() =
+        { new Arbitrary<Funcky.Monads.Option<'a>>() with
+            override _.Generator =
+                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate |> Gen.map Option.Some)]
+            override _.Shrinker o =
+                o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
+        }
+
     [<CompiledName("Register")>]
     static member register() = Arb.registerByType typeof<FunckyGenerators> |> ignore
