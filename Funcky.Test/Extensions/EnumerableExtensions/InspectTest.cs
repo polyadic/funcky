@@ -8,9 +8,22 @@ public sealed class InspectTest
     public void InspectIsEnumeratedLazily()
     {
         var doNotEnumerate = new FailOnEnumerationSequence<object>();
-
         _ = doNotEnumerate.Inspect(NoOperation);
     }
+
+#if NET6_0_OR_GREATER
+    [Fact]
+    public void InspectPreservesNonEnumeratedItemCount()
+    {
+        var source = Sequence.Return(1, 2, 3);
+        Assert.True(source.TryGetNonEnumeratedCount(out var expectedCount));
+
+        var inspected = source.Inspect(NoOperation);
+
+        Assert.True(inspected.TryGetNonEnumeratedCount(out var count));
+        Assert.Equal(expectedCount, count);
+    }
+#endif
 
     [Fact]
     public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
