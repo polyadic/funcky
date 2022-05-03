@@ -13,7 +13,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsSourceEnumerableWhenNonEmpty()
     {
-        var source = Sequence.Return(1, 2, 3).Select(Identity);
+        var source = Sequence.Return(1, 2, 3).ToEnumerable();
         var fallback = Sequence.Return(4, 5, 6);
         Assert.Equal(source, source.AnyOrElse(fallback));
     }
@@ -21,7 +21,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsFallbackEnumerableWhenSourceIsEmpty()
     {
-        var source = Enumerable.Empty<int>().Select(Identity);
+        var source = Enumerable.Empty<int>().ToEnumerable();
         var fallback = Sequence.Return(1, 2, 3);
         Assert.Equal(fallback, source.AnyOrElse(fallback));
     }
@@ -36,7 +36,7 @@ public sealed class AnyOrElseTest
     [Fact]
     public void FallbackIsEnumeratedLazily()
     {
-        var source = Enumerable.Empty<int>().Select(Identity);
+        var source = Enumerable.Empty<int>().ToEnumerable();
         _ = source.AnyOrElse(new FailOnEnumerationSequence<int>());
     }
 
