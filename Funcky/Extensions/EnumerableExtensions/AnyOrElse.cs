@@ -12,8 +12,7 @@ public static partial class EnumerableExtensions
     public static IEnumerable<TSource> AnyOrElse<TSource>(this IEnumerable<TSource> source, Func<IEnumerable<TSource>> fallback)
         => source switch
         {
-            IReadOnlyCollection<TSource> collection => collection.Count > 0 ? collection : fallback(),
-            ICollection<TSource> collection => collection.Count > 0 ? collection : fallback(),
+            _ when source.TryGetNonEnumeratedCount(out var count) => count > 0 ? source : fallback(),
             _ => AnyOrElseInternal(source, fallback),
         };
 
