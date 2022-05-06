@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
@@ -72,5 +73,13 @@ public sealed class WithFirstTest
         var nonEnumerableList = Enumerable.Range(0, length).ToList();
 
         Assert.Equal(length, nonEnumerableList.WithFirst().Aggregate(0, (sum, _) => sum + 1));
+    }
+
+    [Fact]
+    [SuppressMessage("Assertions", "xUnit2017:Do not use Contains() to check if a value exists in a collection")]
+    public void ContainsWorksOnListWithFirst()
+    {
+        var sequence = Sequence.Return(1, 2, 3).ToList();
+        Assert.True(sequence.WithFirst().Contains(new ValueWithFirst<int>(1, isFirst: true)));
     }
 }
