@@ -10,6 +10,7 @@ Funcky.Extensions.EitherPartitions<TLeft, TRight>.Deconstruct(out System.Collect
 Funcky.Extensions.EitherPartitions<TLeft, TRight>.EitherPartitions(System.Collections.Generic.IReadOnlyList<TLeft>! left, System.Collections.Generic.IReadOnlyList<TRight>! right) -> void
 Funcky.Extensions.EitherPartitions<TLeft, TRight>.Left.get -> System.Collections.Generic.IReadOnlyList<TLeft>!
 Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collections.Generic.IReadOnlyList<TRight>!
+Funcky.Extensions.PriorityQueueExtensions
 Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyList<System.Exception!>! error, out System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> void
 Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections.Generic.IReadOnlyList<System.Exception!>!
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyList<TValidResult>!
@@ -93,6 +94,8 @@ static Funcky.Extensions.EnumerableExtensions.Split<TSource>(this System.Collect
 static Funcky.Extensions.EnumerableExtensions.Transpose<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! source) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
+static Funcky.Extensions.PriorityQueueExtensions.DequeueOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
+static Funcky.Extensions.PriorityQueueExtensions.PeekOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Functional.False() -> bool
 static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
 static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
