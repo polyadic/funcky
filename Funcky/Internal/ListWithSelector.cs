@@ -35,7 +35,7 @@ internal class ListWithSelector<TSource, TResult> : IList<TResult>
         => throw new NotSupportedException();
 
     public bool Contains(TResult item)
-        => throw new NotSupportedException();
+        => _source.Select(_selector).Contains(item);
 
     public void CopyTo(TResult[] array, int arrayIndex)
     {
