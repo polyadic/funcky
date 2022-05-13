@@ -8,6 +8,6 @@ public static class HttpHeadersNonValidatedExtensions
     public static Option<HeaderStringValues> GetValuesOrNone(this HttpHeadersNonValidated headers, string headerName)
         => headers.TryGetValues(headerName, out var values)
             ? values
-            : Option.None<HeaderStringValues>();
+            : Option<HeaderStringValues>.None;
 }
 #endif

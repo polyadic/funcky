@@ -7,12 +7,12 @@ public static class PriorityQueueExtensions
         where TElement : notnull
         => priorityQueue.TryDequeue(out var element, out var priority)
             ? Option.Some((element, priority))
-            : Option.None<(TElement, TPriority)>();
+            : Option<(TElement, TPriority)>.None;
 
     public static Option<(TElement Element, TPriority Priority)> PeekOrNone<TElement, TPriority>(this PriorityQueue<TElement, TPriority> priorityQueue)
         where TElement : notnull
         => priorityQueue.TryPeek(out var element, out var priority)
             ? Option.Some((element, priority))
-            : Option.None<(TElement, TPriority)>();
+            : Option<(TElement, TPriority)>.None;
 }
 #endif

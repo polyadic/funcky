@@ -6,6 +6,6 @@ public static partial class EnumerableExtensions
     public static Option<int> GetNonEnumeratedCountOrNone<TSource>(this IEnumerable<TSource> source)
         => source.TryGetNonEnumeratedCount(out var count)
             ? count
-            : Option.None<int>();
+            : Option<int>.None;
 #endif
 }
