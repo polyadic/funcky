@@ -47,7 +47,7 @@ public sealed class SlidingWindowTest
         var windows = source.SlidingWindow(width).ToList();
 
         Assert.Equal(6, windows.Count);
-        windows.ForEach(w => Assert.Equal(width, w.Count()));
+        windows.ForEach(w => Assert.Equal(width, w.Count));
     }
 
     [Theory]

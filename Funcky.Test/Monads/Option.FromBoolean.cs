@@ -14,7 +14,7 @@ public sealed partial class OptionTest
     [Fact]
     public void FromBooleanWithValueReturnsAMatchingOptionValue()
     {
-        var expectedValue = 1337;
+        const int expectedValue = 1337;
 
         FunctionalAssert.IsNone(Option.FromBoolean(false, expectedValue));
         FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, expectedValue));

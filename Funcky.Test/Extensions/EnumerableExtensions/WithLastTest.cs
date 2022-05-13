@@ -51,7 +51,7 @@ public sealed class WithLastTest
     [Fact]
     public void ElementAtAccessIsOptimizedOnAnIListSourceWithIndex()
     {
-        var length = 5000;
+        const int length = 5000;
         var nonEnumerableList = new FailOnEnumerationList(length);
         var listWithLast = nonEnumerableList.WithLast();
 
@@ -67,7 +67,7 @@ public sealed class WithLastTest
     [Fact]
     public void OptimizedSourceWithIndexCanBeEnumerated()
     {
-        var length = 222;
+        const int length = 222;
         var nonEnumerableList = Enumerable.Range(0, length).ToList();
 
         Assert.Equal(length, nonEnumerableList.WithLast().Aggregate(0, (sum, _) => sum + 1));

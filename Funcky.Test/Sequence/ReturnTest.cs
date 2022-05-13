@@ -16,9 +16,9 @@ public sealed class ReturnTest
     [Fact]
     public void SequenceReturnCreatesAnEnumerableFromAnArbitraryNumberOfParameters()
     {
-        string one = "Alpha";
-        string two = "Beta";
-        string three = "Gamma";
+        const string one = "Alpha";
+        const string two = "Beta";
+        const string three = "Gamma";
 
         var sequence = Sequence.Return(one, two, three);
 

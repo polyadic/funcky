@@ -33,7 +33,7 @@ public sealed class RepeatRangeTest
     {
         var list = Sequence.Return(1337, 2, 5);
 
-        var repeats = 5;
+        const int repeats = 5;
 
         foreach (var i in Enumerable.Range(0, list.Count * repeats))
         {
@@ -58,8 +58,6 @@ public sealed class RepeatRangeTest
         using var repeatRange = Sequence.RepeatRange(list, count.Get);
 
         var materialized = repeatRange.ToList();
-
-        var shouldBeTrue = materialized.Count == list.Count * count.Get;
 
         return (materialized.Count == list.Count * count.Get).ToProperty();
     }

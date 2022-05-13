@@ -34,7 +34,7 @@ public sealed class RepeatRangeTest
     {
         var list = AsyncSequence.Return(1337, 2, 5);
 
-        var repeats = 5;
+        const int repeats = 5;
 
         foreach (var i in Enumerable.Range(0, await list.CountAsync() * repeats))
         {
