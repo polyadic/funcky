@@ -10,6 +10,6 @@
 		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;DYNAMICALLY_ACCESSED_MEMBERS_ATTRIBUTE_SUPPORTED</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED</DefineConstants>
+		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED;PRIORITY_QUEUE;TRY_GET_NON_ENUMERATED_COUNT;HTTP_HEADERS_NON_VALIDATED</DefineConstants>
 	</PropertyGroup>
 </Project>

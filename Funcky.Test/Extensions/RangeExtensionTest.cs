@@ -4,7 +4,7 @@ using FsCheck.Xunit;
 
 namespace Funcky.Test.Extensions;
 
-public class RangeExtensionTest
+public sealed class RangeExtensionTest
 {
     [Fact]
     public void ThereIsAMatchingSelectManyForAllCombinationsOfRangeAndEnumerable()
