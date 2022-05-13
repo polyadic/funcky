@@ -41,7 +41,7 @@ public sealed class AdjacentGroupByTest
         const int groupKey = 42;
         const int elementCount = 20;
         var range = Enumerable.Range(0, elementCount);
-        var group = range.AdjacentGroupBy(n => groupKey);
+        var group = range.AdjacentGroupBy(_ => groupKey);
 
         var grouping = Assert.Single(group);
         Assert.Equal(groupKey, grouping.Key);

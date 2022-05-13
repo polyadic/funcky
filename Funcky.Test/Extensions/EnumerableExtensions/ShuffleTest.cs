@@ -32,6 +32,6 @@ public sealed class ShuffleTest
 
     [Property]
     public Property AShuffleHasTheSameLengthAsTheSource(List<int> source)
-        => (source.Shuffle().Count() == source.Count)
+        => (source.Shuffle().Count == source.Count)
             .ToProperty();
 }

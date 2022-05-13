@@ -32,7 +32,7 @@ public sealed class InspectTest
         var numbers = Sequence.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
-            .Inspect(n => { ++sideEffect; });
+            .Inspect(_ => { ++sideEffect; });
 
         Assert.Equal(0, sideEffect);
 

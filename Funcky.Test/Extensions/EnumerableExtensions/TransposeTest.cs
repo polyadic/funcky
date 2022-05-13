@@ -70,27 +70,27 @@ public sealed class TransposeTest
             row => { Assert.Equal(new[] { 4 }, row); });
     }
 
-    private static IEnumerable<IEnumerable<int>> MagicSquare() =>
-        Sequence.Return(
+    private static IEnumerable<IEnumerable<int>> MagicSquare()
+        => Sequence.Return(
             Sequence.Return(4, 9, 2),
             Sequence.Return(3, 5, 7),
             Sequence.Return(8, 1, 6));
 
-    private static IEnumerable<IEnumerable<int>> MatrixExample() =>
-        Sequence.Return(
+    private static IEnumerable<IEnumerable<int>> MatrixExample()
+        => Sequence.Return(
             Sequence.Return(1, 2, 3, 4),
             Sequence.Return(5, 6, 7, 8),
             Sequence.Return(9, 10, 11, 12));
 
-    private static IEnumerable<IEnumerable<int>> JaggedMatrixExample() =>
-        Sequence.Return(
+    private static IEnumerable<IEnumerable<int>> JaggedMatrixExample()
+        => Sequence.Return(
             Sequence.Return(1, 2, 3, 4),
             Sequence.Return(6, 9, 42),
             Sequence.Return(5),
             Sequence.Return(10));
 
-    private static IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns) =>
-        from row in Enumerable.Range(0, rows)
-        select from column in Enumerable.Range(0, columns)
-               select new CountCreation();
+    private static IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
+        => from row in Enumerable.Range(0, rows)
+           select from column in Enumerable.Range(0, columns)
+                  select new CountCreation();
 }

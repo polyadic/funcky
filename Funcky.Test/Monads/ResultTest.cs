@@ -175,11 +175,11 @@ public sealed partial class ResultTest
 
     [Fact]
     public void SelectManyReturnErrorResultWithOkResultMatchesTherightValue()
-        => FunctionalAssert.IsError(Result.Ok(1).SelectMany(i => Result<int>.Error(new Exception("Any"))));
+        => FunctionalAssert.IsError(Result.Ok(1).SelectMany(_ => Result<int>.Error(new Exception("Any"))));
 
     [Fact]
     public void SelectManyReturnErrorResultWithErrorResultMatchesTherightValue()
-        => FunctionalAssert.IsError(Result<int>.Error(new Exception("Any")).SelectMany(i => Result<int>.Error(new Exception("Other"))));
+        => FunctionalAssert.IsError(Result<int>.Error(new Exception("Any")).SelectMany(_ => Result<int>.Error(new Exception("Other"))));
 
     [Fact]
     public void InspectDoesNothingWhenResultIsError()

@@ -50,7 +50,7 @@ public sealed class CycleRangeTest
             .CycleRange(enumerateOnce);
 
         cycleRange
-            .Take(sequence.Count() * 3)
+            .Take(sequence.Count * 3)
             .ForEach(NoOperation);
     }
 

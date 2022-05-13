@@ -44,7 +44,7 @@ public sealed class InspectTest
         var numbers = AsyncSequence.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
-            .InspectAwait(n =>
+            .InspectAwait(_ =>
             {
                 ++sideEffect;
                 return default;

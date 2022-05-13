@@ -37,7 +37,7 @@ public sealed class RetryTest
     [InlineData(90)]
     public void RetriesWithDoNotRetryPolicyAlwaysTriesNumberOfRetriesTimes(int numberOfRetries)
     {
-        var produceString = "Hello world!";
+        const string produceString = "Hello world!";
         var producer = new MaybeProducer<string>(1000, produceString);
 
         Assert.Equal(Option<string>.None, Retry(producer.Produce, new NoDelayRetryPolicy(numberOfRetries)));
@@ -52,7 +52,7 @@ public sealed class RetryTest
     [InlineData(90)]
     public void RetriesWithDoNotRetryRetriesUntilValueProduced(int numberOfRetries)
     {
-        var produceString = "Hello world!";
+        const string produceString = "Hello world!";
         var producer = new MaybeProducer<string>(numberOfRetries, produceString);
 
         Assert.Equal(produceString, Retry(producer.Produce, new NoDelayRetryPolicy(1000)));

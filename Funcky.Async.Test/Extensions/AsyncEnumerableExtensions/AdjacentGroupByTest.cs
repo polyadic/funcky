@@ -86,7 +86,7 @@ public sealed class AdjacentGroupByTest
     {
         var dates = DateGenerator(2020);
 
-        var months = dates.AdjacentGroupBy(date => date.Month, (key, list) => list.Count());
+        var months = dates.AdjacentGroupBy(date => date.Month, (_, list) => list.Count());
 
         await AsyncAssert.Equal(DaysInMonthsOfALeapYear(), months);
     }

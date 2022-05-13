@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public sealed class FirstSingleLastOrNoneTest
@@ -29,14 +31,14 @@ public sealed class FirstSingleLastOrNoneTest
             { new List<int> { 1, 2, 3 }, new List<string> { "a", "b", "c" } },
         };
 
-    private static bool ExpectedOptionValue<T>(List<T> valueEnumerable) =>
+    private static bool ExpectedOptionValue(ICollection valueEnumerable) =>
         valueEnumerable.Count switch
         {
             0 => false,
             _ => true,
         };
 
-    private static void ExpectedSingleOrNoneBehaviour<T>(List<T> list, Func<bool> singleOrNone)
+    private static void ExpectedSingleOrNoneBehaviour(ICollection list, Func<bool> singleOrNone)
     {
         switch (list.Count)
         {

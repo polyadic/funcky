@@ -10,7 +10,7 @@ public class ForEachTest
     {
         var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-        Assert.Throws<XunitException>(() => doNotEnumerate.ForEach(Functional.NoOperation));
+        Assert.Throws<XunitException>(() => doNotEnumerate.ForEach(NoOperation));
         Assert.Throws<XunitException>(() => doNotEnumerate.ForEach(UnitNoOperation));
     }
 
@@ -57,10 +57,10 @@ public class ForEachTest
         => throw new XunitException("Should not execute");
 
     private static Func<int, Unit> UnitAdd(ICollection<int> state)
-        => i
+        => item
             =>
             {
-                state.Add(i);
+                state.Add(item);
                 return Unit.Value;
             };
 

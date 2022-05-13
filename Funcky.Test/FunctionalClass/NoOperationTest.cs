@@ -8,7 +8,7 @@ public sealed class NoOperationTest
         var none = Option<int>.None;
 
         var sideEffect = 0;
-        none.Switch(none: Functional.NoOperation, some: i => sideEffect = i);
+        none.Switch(none: NoOperation, some: i => sideEffect = i);
 
         Assert.Equal(0, sideEffect);
     }

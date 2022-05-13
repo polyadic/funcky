@@ -157,7 +157,7 @@ public sealed partial class OptionTest
     [Fact]
     public void MatchOverloadWithTwoFuncObjectsWorksCorrectly()
     {
-        var input = "123,some,x,1337,42,1,1000";
+        const string input = "123,some,x,1337,42,1,1000";
 
         foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
         {
