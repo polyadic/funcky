@@ -6,17 +6,14 @@ namespace Funcky.Test.Extensions;
 
 public sealed class PriorityQueueExtensionsTest
 {
-    public PriorityQueueExtensionsTest() =>
-        Arb
-            .Register<PriorityQueueArbitrary>();
+    public PriorityQueueExtensionsTest()
+        => FunckyGenerators.Register();
 
     [Property]
     public Property PeekOrNoneReturnsLogicallyTheSameAsTryPeek(PriorityQueue<string, int> priorityQueue)
-    {
-        return (priorityQueue.TryPeek(out var element, out var priority)
+        => (priorityQueue.TryPeek(out var element, out var priority)
             ? priorityQueue.PeekOrNone().Match(none: false, some: IsSame(element, priority))
             : priorityQueue.PeekOrNone().Match(none: true, some: False)).ToProperty();
-    }
 
     [Property]
     public Property DequeueOrNoneReturnsLogicallyTheSameAsTryDequeue(PriorityQueue<string, int> priorityQueue)

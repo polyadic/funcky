@@ -6,9 +6,7 @@ namespace Funcky.Test.Monads;
 public sealed partial class EitherTest
 {
     public EitherTest()
-    {
-        FunckyGenerators.Register();
-    }
+        => FunckyGenerators.Register();
 
     [Property]
     public Property AssociativityHolds(
