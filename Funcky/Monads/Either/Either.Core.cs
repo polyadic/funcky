@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Funcky.CodeAnalysis;
 
 namespace Funcky.Monads;
@@ -8,7 +9,6 @@ namespace Funcky.Monads;
 /// </remarks>
 public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
 {
-    private const string UninitializedMatch = "Either constructed via default instead of a factory function (Either.Left or Either.Right)";
     private readonly TLeft _left;
     private readonly TRight _right;
     private readonly Side _side;
@@ -34,8 +34,6 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
         Right,
     }
 
-    private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
-
     [Pure]
     public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
 
@@ -51,29 +49,20 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     [UseWithArgumentNames]
     public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
-        => _side switch
-        {
-            Side.Left => left(_left),
-            Side.Right => right(_right),
-            Side.Uninitialized => throw new NotSupportedException(UninitializedMatch),
-            _ => throw new NotSupportedException(UnknownSide),
-        };
+        => TryGetRight(out var r, out var l)
+            ? right(r)
+            : left(l);
 
     [UseWithArgumentNames]
     public void Switch(Action<TLeft> left, Action<TRight> right)
     {
-        switch (_side)
+        if (TryGetRight(out var r, out var l))
         {
-            case Side.Left:
-                left(_left);
-                break;
-            case Side.Right:
-                right(_right);
-                break;
-            case Side.Uninitialized:
-                throw new NotSupportedException(UninitializedMatch);
-            default:
-                throw new NotSupportedException(UnknownSide);
+            right(r);
+        }
+        else
+        {
+            left(l);
         }
     }
 
@@ -104,6 +93,19 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
         => Match(
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
+
+    internal bool TryGetRight([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
+    {
+        right = _right;
+        left = _left;
+        return _side switch
+        {
+            Side.Right => true,
+            Side.Left => false,
+            Side.Uninitialized => throw new NotSupportedException($"Either constructed via default instead of a factory function ({nameof(Either<TLeft, TRight>)}.{nameof(Left)} or {nameof(Either<TLeft, TRight>)}.{nameof(Right)})"),
+            _ => throw new NotSupportedException($"Internal error: Enum variant {_side} is not handled"),
+        };
+    }
 }
 
 public static class Either<TLeft>
