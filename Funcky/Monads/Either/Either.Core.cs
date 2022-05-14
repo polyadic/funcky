@@ -73,8 +73,8 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     public bool Equals(Either<TLeft, TRight> other)
         => Equals(_side, other._side)
-           && Equals(_right, other._right)
-           && Equals(_left, other._left);
+            && Equals(_right, other._right)
+            && Equals(_left, other._left);
 
     [Pure]
     public override int GetHashCode()
