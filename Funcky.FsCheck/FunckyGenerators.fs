@@ -54,5 +54,11 @@ type FunckyGenerators =
                 o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
         }
 
+    static member generateLazy<'a>() =
+        Arb.fromGen (Arb.generate<'a> |> Gen.map Lazy.Return)
+
+    static member generateReader<'env, 'a>() =
+        Arb.fromGen (Arb.generate<Func<'env, 'a>> |> Gen.map Reader<'env>.FromFunc)
+
     [<CompiledName("Register")>]
     static member register() = Arb.registerByType typeof<FunckyGenerators> |> ignore
