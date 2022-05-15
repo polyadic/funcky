@@ -16,7 +16,7 @@ public static partial class OptionExtensions
         where TItem : notnull
         => option.Match(
             none: Either<TLeft>.Return(Option<TItem>.None),
-            some: right => right.Select(Option.Return));
+            some: static right => right.Select(Option.Return));
 
     [Pure]
     public static Result<Option<TValidResult>> Traverse<TItem, TValidResult>(
@@ -31,8 +31,8 @@ public static partial class OptionExtensions
         this Option<Result<TItem>> option)
         where TItem : notnull
         => option.Match(
-            none: Result.Return(Option<TItem>.None),
-            some: item => item.Select(Option.Return));
+            none: static () => Result.Return(Option<TItem>.None),
+            some: static item => item.Select(Option.Return));
 
     [Pure]
     public static Lazy<Option<T>> Traverse<TItem, T>(
@@ -48,7 +48,7 @@ public static partial class OptionExtensions
         where TItem : notnull
         => option.Match(
             none: Lazy.Return(Option<TItem>.None),
-            some: item => item.Select(Option.Return));
+            some: static item => item.Select(Option.Return));
 
     [Pure]
     public static IEnumerable<Option<T>> Traverse<TItem, T>(
@@ -63,8 +63,8 @@ public static partial class OptionExtensions
         this Option<IEnumerable<TItem>> option)
         where TItem : notnull
         => option.Match(
-            none: Funcky.Sequence.Return(Option<TItem>.None),
-            some: item => item.Select(Option.Return));
+            none: static () => Funcky.Sequence.Return(Option<TItem>.None),
+            some: static item => item.Select(Option.Return));
 
     [Pure]
     public static Reader<TEnvironment, Option<TResult>> Traverse<TItem, TEnvironment, TResult>(
@@ -79,6 +79,6 @@ public static partial class OptionExtensions
         this Option<Reader<TEnvironment, TItem>> option)
         where TItem : notnull
         => option.Match(
-            none: Reader<TEnvironment>.Return(Option<TItem>.None),
-            some: item => item.Select(Option.Return));
+            none: static () => Reader<TEnvironment>.Return(Option<TItem>.None),
+            some: static item => item.Select(Option.Return));
 }

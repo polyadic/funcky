@@ -94,7 +94,7 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
 
-    internal bool TryGetRight([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
+    private bool TryGetRight([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
     {
         right = _right;
         left = _left;
