@@ -2,7 +2,6 @@ namespace Funcky.FsCheck
 
 open System
 open System.Collections.Generic
-open System.ComponentModel
 open FsCheck
 open Funcky.Monads
 open Microsoft.FSharp.Core
@@ -36,14 +35,16 @@ type FunckyGenerators =
             Arb.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
 
     static member tuple2<'a, 'b>() =
-       gen { let! value1 = Arb.generate<'a>
-             let! value2 = Arb.generate<'b>
-             return ValueTuple.Create(value1, value2) } |> Arb.fromGen
+       Arb.fromGen <|
+           gen { let! value1 = Arb.generate<'a>
+                 let! value2 = Arb.generate<'b>
+                 return ValueTuple.Create(value1, value2) }
 
 #if PRIORITY_QUEUE
     static member priorityQueue<'a, 'priority>() =
-        gen { let! values = Arb.generate<List<ValueTuple<'a, 'priority>>>
-              return PriorityQueue(values) } |> Arb.fromGen
+         Arb.fromGen <|
+             gen { let! values = Arb.generate<List<ValueTuple<'a, 'priority>>>
+                   return PriorityQueue(values) }
 #endif
 
     static member option<'a>() =
