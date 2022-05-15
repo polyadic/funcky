@@ -1,16 +1,5 @@
 #nullable enable
 Funcky.Async.Functional
-Funcky.Async.Monads.AwaitableOptionExtensions
-Funcky.Async.Monads.OptionTaskAwaiter<TItem>
-Funcky.Async.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
-Funcky.Async.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
-Funcky.Async.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
-Funcky.Async.Monads.OptionTaskAwaiter<TItem>.OptionTaskAwaiter() -> void
-Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
-Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
-Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
-Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
-Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>.OptionValueTaskAwaiter() -> void
 Funcky.AsyncSequence
 Funcky.IAsyncBuffer<TSource>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy<TSource, TKey, TElement, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Func<TSource, TElement>! elementSelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TElement>!, TResult>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
@@ -136,10 +125,6 @@ static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithLast<TSource>(this 
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.WithPrevious<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Extensions.ValueWithPrevious<TSource>>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IAsyncEnumerable<TLeft>! left, System.Collections.Generic.IAsyncEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IAsyncEnumerable<TLeft>! left, System.Collections.Generic.IAsyncEnumerable<TRight>! right) -> System.Collections.Generic.IAsyncEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
-static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
-static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
-static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Async.Monads.OptionTaskAwaiter<TItem>
-static Funcky.Async.Monads.AwaitableOptionExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Async.Monads.OptionValueTaskAwaiter<TItem>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source) -> System.Threading.Tasks.ValueTask<bool>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Threading.Tasks.ValueTask<bool>
 static Funcky.Async.Extensions.AsyncEnumerableExtensions.NoneAwaitAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Threading.Tasks.ValueTask<bool>>! predicate) -> System.Threading.Tasks.ValueTask<bool>
