@@ -27,6 +27,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+        <PackageReference Include="Nullable" PrivateAssets="all" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
     <ItemGroup>
