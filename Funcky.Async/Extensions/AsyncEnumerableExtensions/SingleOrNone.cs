@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Funcky.Async.Extensions;
 
 public static partial class AsyncEnumerableExtensions
@@ -7,6 +9,7 @@ public static partial class AsyncEnumerableExtensions
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown if there is more than one element in the sequence.</exception>
     [Pure]
+    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.Select(Option.Some).SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -16,6 +19,7 @@ public static partial class AsyncEnumerableExtensions
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown if more than one element satisfies the condition.</exception>
     [Pure]
+    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<Option<TSource>> SingleOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.Where(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
