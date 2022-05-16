@@ -27,6 +27,12 @@ public readonly partial struct Option<TItem>
     [Pure]
     public static Option<TItem> None => default;
 
+    /// <summary>Returns an empty option.</summary>
+    /// <remarks>This method is intended to be used as a method-group. Use <see cref="Option{TItem}.None"/> in all other cases.</remarks>
+    [Pure]
+    public static Option<TItem> GetNone()
+        => None;
+
     /// <summary>Extracts the value out of this option. This function should be used as a last resort.</summary>
     /// <remarks>The only allowed uses of this function are as part of a loop condition in an iterator or as part of a catch filter clause (<c>catch ... when</c>).
     /// All other uses will result in a <c>λ0001: Disallowed use of TryGetValue</c> error.</remarks>
@@ -105,11 +111,4 @@ public static partial class Option
     public static Option<TItem> Return<TItem>(TItem item)
         where TItem : notnull
         => new(item);
-
-    /// <summary>Returns an empty option.</summary>
-    /// <remarks>This method is intended to be used as a method-group. Use <see cref="Option{TItem}.None"/> in all other cases.</remarks>
-    [Pure]
-    public static Option<TItem> None<TItem>()
-        where TItem : notnull
-        => default;
 }
