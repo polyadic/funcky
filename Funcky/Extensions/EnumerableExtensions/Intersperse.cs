@@ -7,6 +7,6 @@ public static partial class EnumerableExtensions
     public static IEnumerable<TSource> Intersperse<TSource>(this IEnumerable<TSource> source, TSource element)
         => source.WithFirst()
             .SelectMany(s => s.IsFirst
-                ? Sequence.Return(s.Value)
-                : Sequence.Return(element, s.Value));
+                ? Funcky.Sequence.Return(s.Value)
+                : Funcky.Sequence.Return(element, s.Value));
 }

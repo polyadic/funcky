@@ -14,6 +14,7 @@
         <PackageReference Include="xunit.runner.visualstudio" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Funcky.FsCheck\Funcky.FsCheck.fsproj" />
         <ProjectReference Include="..\Funcky.Test.Internal\Funcky.Test.Internal.csproj" />
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />

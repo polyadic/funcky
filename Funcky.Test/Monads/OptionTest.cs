@@ -1,4 +1,5 @@
 using System.Globalization;
+using Funcky.FsCheck;
 
 namespace Funcky.Test.Monads;
 
@@ -6,6 +7,7 @@ public sealed partial class OptionTest
 {
     public OptionTest()
     {
+        FunckyGenerators.Register();
         Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
     }
 

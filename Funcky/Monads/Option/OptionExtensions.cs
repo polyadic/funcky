@@ -1,11 +1,11 @@
 namespace Funcky.Monads;
 
-public static class OptionExtensions
+public static partial class OptionExtensions
 {
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, TLeft left)
         where TRight : notnull
         => option.Match(
-            none: () => Either<TLeft, TRight>.Left(left),
+            none: Either<TLeft, TRight>.Left(left),
             some: Either<TLeft, TRight>.Right);
 
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, Func<TLeft> getLeft)
