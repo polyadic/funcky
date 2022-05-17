@@ -57,7 +57,7 @@ public static partial class EitherExtensions
             right: static right => right.Select(Either<TLeft>.Return));
 
     [Pure]
-    public static Reader<TEnvironment, Either<TLeft, TResult>> Traverse<TLeft, TEnvironment, TRight, TResult>(
+    public static Reader<TEnvironment, Either<TLeft, TResult>> Traverse<TLeft, TRight, TEnvironment, TResult>(
         this Either<TLeft, TRight> either,
         Func<TRight, Reader<TEnvironment, TResult>> selector)
         => either.Select(selector).Sequence();
