@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Funcky.Extensions;
@@ -9,6 +10,7 @@ public static partial class QueryableExtensions
     /// </summary>
     /// <typeparam name="TSource">the inner type of the queryable.</typeparam>
     [Pure]
+    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static Option<TSource> SingleOrNone<TSource>(this IQueryable<TSource> source)
         where TSource : notnull
         => source
@@ -20,6 +22,7 @@ public static partial class QueryableExtensions
     /// </summary>
     /// <typeparam name="TSource">the inner type of the queryable.</typeparam>
     [Pure]
+    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static Option<TSource> SingleOrNone<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         where TSource : notnull
         => source
