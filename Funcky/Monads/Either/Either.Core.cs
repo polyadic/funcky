@@ -49,14 +49,14 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     [UseWithArgumentNames]
     public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
-        => TryGetRight(out var r, out var l)
+        => TryGetValue(out var r, out var l)
             ? right(r)
             : left(l);
 
     [UseWithArgumentNames]
     public void Switch(Action<TLeft> left, Action<TRight> right)
     {
-        if (TryGetRight(out var r, out var l))
+        if (TryGetValue(out var r, out var l))
         {
             right(r);
         }
@@ -94,7 +94,7 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
 
-    private bool TryGetRight([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
+    private bool TryGetValue([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
     {
         right = _right;
         left = _left;
