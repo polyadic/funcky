@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -27,7 +30,7 @@ public static partial class EnumerableExtensions
         Func<TSource, Reader<TEnvironment, TResult>> selector)
         => source.Select(selector).Sequence();
 
-    public static Lazy<IEnumerable<T>> Traverse<TSource, T>(
+    public static Lazy<IEnumerable<T>> Traverse<TSource, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
         IEnumerable<TSource> source,
         Func<TSource, Lazy<T>> selector)
         => source.Select(selector).Sequence();

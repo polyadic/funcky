@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
+
 namespace Funcky.Monads;
 
 public static partial class OptionExtensions
@@ -35,7 +38,7 @@ public static partial class OptionExtensions
             some: static item => item.Select(Option.Return));
 
     [Pure]
-    public static Lazy<Option<T>> Traverse<TItem, T>(
+    public static Lazy<Option<T>> Traverse<TItem, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
         this Option<TItem> option,
         Func<TItem, Lazy<T>> selector)
         where TItem : notnull
@@ -43,12 +46,12 @@ public static partial class OptionExtensions
         => option.Select(selector).Sequence();
 
     [Pure]
-    public static Lazy<Option<TItem>> Sequence<TItem>(
+    public static Lazy<Option<TItem>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>(
         this Option<Lazy<TItem>> option)
         where TItem : notnull
-        => option.Match(
-            none: Lazy.Return(Option<TItem>.None),
-            some: static item => item.Select(Option.Return));
+         => option.Match(
+             none: Lazy.Return(Option<TItem>.None),
+             some: SequenceLazy.Some);
 
     [Pure]
     public static IEnumerable<Option<T>> Traverse<TItem, T>(
@@ -81,4 +84,12 @@ public static partial class OptionExtensions
         => option.Match(
             none: static () => Reader<TEnvironment>.Return(Option<TItem>.None),
             some: static item => item.Select(Option.Return));
+
+    private static class SequenceLazy
+    {
+        // Workaround for https://github.com/dotnet/linker/issues/1416
+        public static Lazy<Option<TItem>> Some<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>(Lazy<TItem> item)
+            where TItem : notnull
+            => item.Select(Option.Return);
+    }
 }

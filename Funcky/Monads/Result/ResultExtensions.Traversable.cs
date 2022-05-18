@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
+
 namespace Funcky.Monads;
 
 public static class ResultExtensions
@@ -31,17 +34,17 @@ public static class ResultExtensions
             ok: static ok => ok.Select(Result.Return));
 
     [Pure]
-    public static Lazy<Result<T>> Traverse<TValidResult, T>(
+    public static Lazy<Result<T>> Traverse<TValidResult, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
         this Result<TValidResult> result,
         Func<TValidResult, Lazy<T>> selector)
         => result.Select(selector).Sequence();
 
     [Pure]
-    public static Lazy<Result<TValidResult>> Sequence<TValidResult>(
+    public static Lazy<Result<TValidResult>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TValidResult>(
         this Result<Lazy<TValidResult>> result)
         => result.Match(
             error: static error => Lazy.Return(Result<TValidResult>.Error(error)),
-            ok: static ok => ok.Select(Result.Return));
+            ok: SequenceLazy.Ok<TValidResult>);
 
     [Pure]
     public static IEnumerable<Result<T>> Traverse<TValidResult, T>(
@@ -68,4 +71,11 @@ public static class ResultExtensions
         => result.Match(
             error: static error => Reader<TEnvironment>.Return(Result<TValidResult>.Error(error)),
             ok: static ok => ok.Select(Result.Return));
+
+    private static class SequenceLazy
+    {
+        // Workaround for https://github.com/dotnet/linker/issues/1416
+        public static Lazy<Result<TValidResult>> Ok<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TValidResult>(Lazy<TValidResult> ok)
+            => ok.Select(Result.Return);
+    }
 }

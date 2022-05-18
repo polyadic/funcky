@@ -1,5 +1,7 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Funcky.Internal;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 
 namespace Funcky.Extensions;
 
@@ -24,8 +26,8 @@ public static partial class EnumerableExtensions
             => sequence.Select(reader => reader(environment));
 
     [Pure]
-    public static Lazy<IEnumerable<TSource>> Sequence<TSource>(this IEnumerable<Lazy<TSource>> sequence)
-        => Lazy.FromFunc(() => sequence.Select(lazy => lazy.Value));
+    public static Lazy<IEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IEnumerable<Lazy<TSource>> sequence)
+        => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
 
     private static UnsafeEither<TLeft, IReadOnlyList<TRight>> Traverse<TSource, TLeft, TRight>(
         this IEnumerable<TSource> source,
@@ -46,5 +48,15 @@ public static partial class EnumerableExtensions
         }
 
         return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
+    }
+
+    // Workaround for https://github.com/dotnet/linker/issues/1416
+    private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>
+    {
+        private readonly IEnumerable<Lazy<TSource>> _source;
+
+        public SequenceLazy(IEnumerable<Lazy<TSource>> source) => _source = source;
+
+        public IEnumerable<TSource> Invoke() => _source.Select(static lazy => lazy.Value);
     }
 }

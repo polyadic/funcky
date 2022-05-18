@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
+
 namespace Funcky.Monads;
 
 public static partial class EitherExtensions
@@ -31,17 +34,17 @@ public static partial class EitherExtensions
             right: static right => right.Select(Either<TLeft>.Return));
 
     [Pure]
-    public static Lazy<Either<TLeft, T>> Traverse<TLeft, TRight, T>(
+    public static Lazy<Either<TLeft, T>> Traverse<TLeft, TRight, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
         this Either<TLeft, TRight> either,
         Func<TRight, Lazy<T>> selector)
         => either.Select(selector).Sequence();
 
     [Pure]
-    public static Lazy<Either<TLeft, TRight>> Sequence<TLeft, TRight>(
+    public static Lazy<Either<TLeft, TRight>> Sequence<TLeft, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TRight>(
         this Either<TLeft, Lazy<TRight>> either)
         => either.Match(
             left: static left => Lazy.Return(Either<TLeft, TRight>.Left(left)),
-            right: static right => right.Select(Either<TLeft>.Return));
+            right: SequenceLazy.Right<TLeft, TRight>);
 
     [Pure]
     public static IEnumerable<Either<TLeft, T>> Traverse<TLeft, TRight, T>(
@@ -68,4 +71,11 @@ public static partial class EitherExtensions
         => either.Match(
             left: static left => Reader<TEnvironment>.Return(Either<TLeft, TRight>.Left(left)),
             right: static right => right.Select(Either<TLeft>.Return));
+
+    private static class SequenceLazy
+    {
+        // Workaround for https://github.com/dotnet/linker/issues/1416
+        public static Lazy<Either<TLeft, TRight>> Right<TLeft, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TRight>(Lazy<TRight> right)
+            => right.Select(Either<TLeft>.Return<TRight>);
+    }
 }
