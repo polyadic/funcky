@@ -24,3 +24,9 @@ internal readonly struct PartitionBuilder<TLeft, TRight>
 
     public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector) => selector(Left, Right);
 }
+
+internal static class PartitionBuilder
+{
+    public static Func<PartitionBuilder<TItem, TItem>, TItem, PartitionBuilder<TItem, TItem>> Add<TItem>(Func<TItem, bool> predicate)
+        => (builder, item) => predicate(item) ? builder.AddLeft(item) : builder.AddRight(item);
+}
