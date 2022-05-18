@@ -11,6 +11,7 @@ env:
 
 jobs:
   build:
+    name: Build and Test
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
@@ -36,6 +37,7 @@ jobs:
       run: dotnet test --configuration Release --no-build
 
   trimming-test:
+    name: Trimming Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +47,7 @@ jobs:
       run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
 
   nupkg:
+    name: Generate NuGet Packages
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
