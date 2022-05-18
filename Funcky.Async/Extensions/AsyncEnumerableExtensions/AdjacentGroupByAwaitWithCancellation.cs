@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Async.Extensions;
 
@@ -187,7 +188,7 @@ public static partial class AsyncEnumerableExtensions
         TKey key,
         IImmutableList<TElement> elements,
         CancellationToken cancellationToken)
-        => ValueTaskFromResult(new AsyncGrouping<TKey, TElement>(key, elements), cancellationToken);
+        => ValueTaskFromResult(new AsyncGrouping<TKey, TElement>(key, elements));
 
     private static async Task<(IImmutableList<TElement> Group, TKey Key)> CreateGroupAndKeyAsync<TSource, TKey, TElement>(
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
@@ -200,11 +201,4 @@ public static partial class AsyncEnumerableExtensions
 
         return (group, key);
     }
-
-    private static ValueTask<TResult> ValueTaskFromResult<TResult>(TResult result, CancellationToken cancellationToken)
-#if VALUE_TASK_HAS_FROM_RESULT
-                => ValueTask.FromResult(result);
-#else
-                => new(result);
-#endif
 }

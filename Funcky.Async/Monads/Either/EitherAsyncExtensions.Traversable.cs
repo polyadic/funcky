@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
 
@@ -41,10 +42,6 @@ public static class EitherAsyncExtensions
     public static ValueTask<Either<TLeft, TRight>> Sequence<TLeft, TRight>(
         this Either<TLeft, ValueTask<TRight>> either)
         => either.Match<ValueTask<Either<TLeft, TRight>>>(
-#if VALUE_TASK_HAS_FROM_RESULT
-            left: static left => ValueTask.FromResult(Either<TLeft, TRight>.Left(left)),
-#else
-            left: static left => new ValueTask<Either<TLeft, TRight>>(Either<TLeft, TRight>.Left(left)),
-#endif
+            left: static left => ValueTaskFromResult(Either<TLeft, TRight>.Left(left)),
             right: static async right => Either<TLeft>.Return(await right.ConfigureAwait(false)));
 }

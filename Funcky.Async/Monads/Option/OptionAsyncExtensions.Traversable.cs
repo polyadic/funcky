@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
 
@@ -50,10 +51,6 @@ public static class OptionAsyncExtensions
         this Option<ValueTask<TItem>> option)
         where TItem : notnull
         => option.Match<ValueTask<Option<TItem>>>(
-#if VALUE_TASK_HAS_FROM_RESULT
-            none: static () => ValueTask.FromResult(Option<TItem>.None),
-#else
-            none: static () => new ValueTask<Option<TItem>>(Option<TItem>.None),
-#endif
+            none: static () => ValueTaskFromResult(Option<TItem>.None),
             some: static async item => Option.Return(await item.ConfigureAwait(false)));
 }
