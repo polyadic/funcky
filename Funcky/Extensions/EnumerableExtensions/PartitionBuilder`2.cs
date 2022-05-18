@@ -6,22 +6,21 @@ internal readonly struct PartitionBuilder<TLeft, TRight>
 {
     public static readonly PartitionBuilder<TLeft, TRight> Default = new(left: null, right: null);
 
-    private readonly IImmutableList<TLeft> _left;
-    private readonly IImmutableList<TRight> _right;
-
     public PartitionBuilder(IImmutableList<TLeft>? left = null, IImmutableList<TRight>? right = null)
     {
-        _left = left ?? ImmutableList<TLeft>.Empty;
-        _right = right ?? ImmutableList<TRight>.Empty;
+        Left = left ?? ImmutableList<TLeft>.Empty;
+        Right = right ?? ImmutableList<TRight>.Empty;
     }
 
+    private IImmutableList<TLeft> Left { get; init; }
+
+    private IImmutableList<TRight> Right { get; init; }
+
     public PartitionBuilder<TLeft, TRight> AddLeft(TLeft left)
-        => With(left: _left.Add(left));
+        => this with { Left = Left.Add(left) };
 
     public PartitionBuilder<TLeft, TRight> AddRight(TRight right)
-        => With(right: _right.Add(right));
+        => this with { Right = Right.Add(right) };
 
-    public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector) => selector(_left, _right);
-
-    public PartitionBuilder<TLeft, TRight> With(IImmutableList<TLeft>? left = null, IImmutableList<TRight>? right = null) => new(left ?? _left, right ?? _right);
+    public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector) => selector(Left, Right);
 }
