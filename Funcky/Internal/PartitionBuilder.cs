@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Funcky.Extensions;
+namespace Funcky.Internal;
 
 internal sealed class PartitionBuilder<TLeft, TRight>
 {
