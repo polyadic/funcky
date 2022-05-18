@@ -57,6 +57,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Test.Internal", "Fun
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Funcky.FsCheck", "Funcky.FsCheck\Funcky.FsCheck.fsproj", "{AC29055D-546B-4C32-8A7B-F7CF9541B08E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.TrimmingTest", "Funcky.TrimmingTest\Funcky.TrimmingTest.csproj", "{F35DB62D-22A8-41E8-B3BB-CD9064974190}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{AC29055D-546B-4C32-8A7B-F7CF9541B08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC29055D-546B-4C32-8A7B-F7CF9541B08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC29055D-546B-4C32-8A7B-F7CF9541B08E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

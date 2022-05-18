@@ -35,6 +35,15 @@ jobs:
     - name: Run Tests
       run: dotnet test --configuration Release --no-build
 
+  trimming-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      name: Install Current .NET SDK
+    - name: Run trimming test
+      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
+
   nupkg:
     runs-on: ubuntu-latest
     steps:
