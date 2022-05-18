@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Funcky.Internal;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 
 namespace Funcky.Async.Extensions;
 
@@ -31,8 +32,8 @@ public static partial class AsyncEnumerableExtensions
             => sequence.Select(reader => reader(environment));
 
     [Pure]
-    public static Lazy<IAsyncEnumerable<TSource>> Sequence<TSource>(this IAsyncEnumerable<Lazy<TSource>> sequence)
-        => Lazy.FromFunc(() => sequence.Select(lazy => lazy.Value));
+    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> sequence)
+        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(sequence).Invoke);
 
     private static async ValueTask<UnsafeEither<TLeft, IReadOnlyList<TRight>>> TraverseAsync<TSource, TLeft, TRight>(
         this IAsyncEnumerable<TSource> source,
@@ -54,5 +55,15 @@ public static partial class AsyncEnumerableExtensions
         }
 
         return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
+    }
+
+    private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>
+    {
+        private readonly IAsyncEnumerable<Lazy<TSource>> _source;
+
+        public SequenceLazyInternal(IAsyncEnumerable<Lazy<TSource>> source) => _source = source;
+
+        // Workaround for https://github.com/dotnet/linker/issues/1416
+        public IAsyncEnumerable<TSource> Invoke() => _source.Select(lazy => lazy.Value);
     }
 }
