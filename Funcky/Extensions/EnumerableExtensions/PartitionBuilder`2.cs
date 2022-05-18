@@ -39,4 +39,10 @@ internal static class PartitionBuilder
 {
     public static Func<PartitionBuilder<TItem, TItem>, TItem, PartitionBuilder<TItem, TItem>> Add<TItem>(Func<TItem, bool> predicate)
         => (builder, item) => predicate(item) ? builder.AddLeft(item) : builder.AddRight(item);
+
+    public static PartitionBuilder<TLeft, TRight> Add<TLeft, TRight>(PartitionBuilder<TLeft, TRight> builder, Either<TLeft, TRight> either)
+        => either.Match(left: builder.AddLeft, right: builder.AddRight);
+
+    public static PartitionBuilder<Exception, TValidResult> Add<TValidResult>(PartitionBuilder<Exception, TValidResult> builder, Result<TValidResult> result)
+        => result.Match(error: builder.AddLeft, ok: builder.AddRight);
 }
