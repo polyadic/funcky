@@ -21,6 +21,22 @@ public sealed class PartitionTest
     }
 
     [Fact]
+    public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncPredicate()
+    {
+        var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitAsync(x => ValueTask.FromResult(IsEven(x)));
+        Assert.Equal(new[] { 0, 2, 4 }, evens);
+        Assert.Equal(new[] { 1, 3, 5 }, odds);
+    }
+
+    [Fact]
+    public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncCancellablePredicate()
+    {
+        var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitWithCancellationAsync((x, _) => ValueTask.FromResult(IsEven(x)));
+        Assert.Equal(new[] { 0, 2, 4 }, evens);
+        Assert.Equal(new[] { 1, 3, 5 }, odds);
+    }
+
+    [Fact]
     public async Task RightItemsAreEmptyWhenPredicateMatchesAllItems()
     {
         var (left, right) = await AsyncEnumerable.Range(0, 6).PartitionAsync(True);
