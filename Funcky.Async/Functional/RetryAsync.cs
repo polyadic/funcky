@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Funcky.Async.Extensions;
 using Funcky.RetryPolicies;
 
@@ -9,7 +8,6 @@ public static partial class Functional
     /// <summary>
     /// Calls the given <paramref name="producer"/> over and over until it returns a value.
     /// </summary>
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<TResult> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken = default)
         where TResult : notnull
     {
@@ -19,7 +17,6 @@ public static partial class Functional
             some: result => new ValueTask<TResult>(result)).ConfigureAwait(false);
     }
 
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<Option<TResult>> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
         where TResult : notnull
     {

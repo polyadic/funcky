@@ -1,5 +1,3 @@
-#pragma warning disable RS0026
-
 namespace Funcky.Async.Extensions;
 
 public static partial class AsyncEnumerableExtensions

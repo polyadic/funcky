@@ -1,5 +1,3 @@
-#pragma warning disable RS0026
-
 using System.Collections.Immutable;
 
 namespace Funcky.Async.Extensions;

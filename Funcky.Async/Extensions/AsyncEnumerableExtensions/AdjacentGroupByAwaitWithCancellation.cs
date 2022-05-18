@@ -1,5 +1,3 @@
-#pragma warning disable RS0026
-
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 

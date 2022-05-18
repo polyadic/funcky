@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Funcky.Async.Extensions;
 
 public static partial class AsyncEnumerableExtensions
@@ -8,7 +6,6 @@ public static partial class AsyncEnumerableExtensions
     /// Returns the first element of a sequence as an <see cref="Option{T}" />, or a <see cref="Option{T}.None" /> value if the sequence contains no elements.
     /// </summary>
     [Pure]
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<Option<TSource>> FirstOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.Select(Option.Some).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -17,7 +14,6 @@ public static partial class AsyncEnumerableExtensions
     /// Returns the first element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.
     /// </summary>
     [Pure]
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "Cancellation token")]
     public static async ValueTask<Option<TSource>> FirstOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.Where(predicate).Select(Option.Some).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
