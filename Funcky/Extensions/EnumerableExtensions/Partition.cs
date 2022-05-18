@@ -31,6 +31,6 @@ public static partial class EnumerableExtensions
         Func<TItem, bool> predicate,
         Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> resultSelector)
         => source
-            .Aggregate(PartitionBuilder<TItem, TItem>.Default, PartitionBuilder.Add(predicate))
+            .Aggregate(new PartitionBuilder<TItem, TItem>(), PartitionBuilder.Add(predicate))
             .Build(resultSelector);
 }

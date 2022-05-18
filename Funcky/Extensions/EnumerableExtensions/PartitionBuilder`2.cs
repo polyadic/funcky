@@ -2,27 +2,37 @@ using System.Collections.Immutable;
 
 namespace Funcky.Extensions;
 
-internal readonly struct PartitionBuilder<TLeft, TRight>
+internal sealed class PartitionBuilder<TLeft, TRight>
 {
-    public static readonly PartitionBuilder<TLeft, TRight> Default = new(left: null, right: null);
+    private ImmutableArray<TLeft>.Builder? _left;
+    private ImmutableArray<TRight>.Builder? _right;
 
-    public PartitionBuilder(IImmutableList<TLeft>? left = null, IImmutableList<TRight>? right = null)
+    public PartitionBuilder()
     {
-        Left = left ?? ImmutableList<TLeft>.Empty;
-        Right = right ?? ImmutableList<TRight>.Empty;
+        _left = ImmutableArray.CreateBuilder<TLeft>();
+        _right = ImmutableArray.CreateBuilder<TRight>();
     }
 
-    private IImmutableList<TLeft> Left { get; init; }
+    private ImmutableArray<TLeft>.Builder Left => _left ??= ImmutableArray.CreateBuilder<TLeft>();
 
-    private IImmutableList<TRight> Right { get; init; }
+    private ImmutableArray<TRight>.Builder Right => _right ??= ImmutableArray.CreateBuilder<TRight>();
 
     public PartitionBuilder<TLeft, TRight> AddLeft(TLeft left)
-        => this with { Left = Left.Add(left) };
+    {
+        Left.Add(left);
+        return this;
+    }
 
     public PartitionBuilder<TLeft, TRight> AddRight(TRight right)
-        => this with { Right = Right.Add(right) };
+    {
+        Right.Add(right);
+        return this;
+    }
 
-    public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector) => selector(Left, Right);
+    public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector)
+        => selector(
+            _left?.ToImmutable() ?? ImmutableArray<TLeft>.Empty,
+            _right?.ToImmutable() ?? ImmutableArray<TRight>.Empty);
 }
 
 internal static class PartitionBuilder
