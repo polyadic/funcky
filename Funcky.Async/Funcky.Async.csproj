@@ -18,6 +18,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <IsTrimmable>true</IsTrimmable>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\Funcky\Internal\Aggregators\DecimalAverageAggregator.cs" Link="Internal\Aggregators\DecimalAverageAggregator.cs" />
