@@ -34,6 +34,7 @@
     </ItemGroup>
     <PropertyGroup>
         <IsTrimmable>true</IsTrimmable>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     </PropertyGroup>
     <ItemGroup>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />

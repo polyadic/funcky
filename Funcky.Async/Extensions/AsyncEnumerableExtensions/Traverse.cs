@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 
 namespace Funcky.Async.Extensions;
 
@@ -33,7 +34,7 @@ public static partial class AsyncEnumerableExtensions
         => source.Select(selector).Sequence();
 
     [Pure]
-    public static Lazy<IAsyncEnumerable<T>> Traverse<TSource, T>(
+    public static Lazy<IAsyncEnumerable<T>> Traverse<TSource, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
         IAsyncEnumerable<TSource> source,
         Func<TSource, Lazy<T>> selector)
         => source.Select(selector).Sequence();
