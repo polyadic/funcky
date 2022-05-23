@@ -4,35 +4,23 @@ namespace Funcky.Internal;
 
 internal sealed class PartitionBuilder<TLeft, TRight>
 {
-    private ImmutableArray<TLeft>.Builder? _left;
-    private ImmutableArray<TRight>.Builder? _right;
-
-    public PartitionBuilder()
-    {
-        _left = ImmutableArray.CreateBuilder<TLeft>();
-        _right = ImmutableArray.CreateBuilder<TRight>();
-    }
-
-    private ImmutableArray<TLeft>.Builder Left => _left ??= ImmutableArray.CreateBuilder<TLeft>();
-
-    private ImmutableArray<TRight>.Builder Right => _right ??= ImmutableArray.CreateBuilder<TRight>();
+    private readonly ImmutableArray<TLeft>.Builder _left = ImmutableArray.CreateBuilder<TLeft>();
+    private readonly ImmutableArray<TRight>.Builder _right = ImmutableArray.CreateBuilder<TRight>();
 
     public PartitionBuilder<TLeft, TRight> AddLeft(TLeft left)
     {
-        Left.Add(left);
+        _left.Add(left);
         return this;
     }
 
     public PartitionBuilder<TLeft, TRight> AddRight(TRight right)
     {
-        Right.Add(right);
+        _right.Add(right);
         return this;
     }
 
     public TResult Build<TResult>(Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> selector)
-        => selector(
-            _left?.ToImmutable() ?? ImmutableArray<TLeft>.Empty,
-            _right?.ToImmutable() ?? ImmutableArray<TRight>.Empty);
+        => selector(_left.ToImmutable(), _right.ToImmutable());
 }
 
 internal static class PartitionBuilder
