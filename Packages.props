@@ -6,7 +6,7 @@
 		<PackageReference Update="System.Text.Json" Version="4.7.2" />
 		<PackageReference Update="xunit.assert" Version="[2.4.0, 3)" />
 		<PackageReference Update="xunit.extensibility.core" Version="[2.4.0, 3)" />
-		<PackageReference Update="System.Linq.Async" Version="[6.0.1, 7)" />
+		<PackageReference Update="System.Linq.Async" Version="[5.0.0, 7)" />
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
 		<PackageReference Update="IsExternalInit" Version="1.0.2" />
