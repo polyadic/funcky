@@ -12,6 +12,7 @@
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
+        <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
@@ -31,6 +32,7 @@
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMemberTypes.cs" Link="Compatibility\DynamicallyAccessedMemberTypes.cs" />
         <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMembersAttribute.cs" Link="Compatibility\DynamicallyAccessedMembersAttribute.cs" />
+        <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />

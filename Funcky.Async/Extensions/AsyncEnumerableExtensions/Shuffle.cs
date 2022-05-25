@@ -1,5 +1,3 @@
-#pragma warning disable RS0026
-
 using Funcky.Internal;
 
 namespace Funcky.Async.Extensions;

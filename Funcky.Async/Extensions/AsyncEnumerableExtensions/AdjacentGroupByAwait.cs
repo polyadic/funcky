@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Async.Extensions;
 
@@ -193,11 +194,4 @@ public static partial class AsyncEnumerableExtensions
 
         return (group, key);
     }
-
-    private static ValueTask<TResult> ValueTaskFromResult<TResult>(TResult result)
-#if VALUE_TASK_HAS_FROM_RESULT
-        => ValueTask.FromResult(result);
-#else
-        => new(result);
-#endif
 }

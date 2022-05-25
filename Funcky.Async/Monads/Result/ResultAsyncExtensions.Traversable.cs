@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
 
@@ -41,10 +42,6 @@ public static class ResultAsyncExtensions
     public static ValueTask<Result<TValidResult>> Sequence<TValidResult>(
         this Result<ValueTask<TValidResult>> result)
         => result.Match<ValueTask<Result<TValidResult>>>(
-#if VALUE_TASK_HAS_FROM_RESULT
-            error: static error => ValueTask.FromResult(Result<TValidResult>.Error(error)),
-#else
-            error: static error => new ValueTask<Result<TValidResult>>(Result<TValidResult>.Error(error)),
-#endif
+            error: static error => ValueTaskFromResult(Result<TValidResult>.Error(error)),
             ok: static async ok => Result.Return(await ok.ConfigureAwait(false)));
 }

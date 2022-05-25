@@ -7,20 +7,17 @@ namespace Funcky.Async.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "<Pending>")]
     public static async ValueTask<Either<TLeft, IReadOnlyList<TSource>>> SequenceAsync<TLeft, TSource>(
         this IAsyncEnumerable<Either<TLeft, TSource>> source,
         CancellationToken cancellationToken = default)
         => (await source.TraverseAsync(UnsafeEither.FromEither, cancellationToken).ConfigureAwait(false)).ToEither();
 
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "<Pending>")]
     public static async ValueTask<Option<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
         this IAsyncEnumerable<Option<TSource>> source,
         CancellationToken cancellationToken = default)
         where TSource : notnull
         => (await source.TraverseAsync(UnsafeEither.FromOption, cancellationToken).ConfigureAwait(false)).ToOption();
 
-    [SuppressMessage("ApiDesign", "RS0026:Do not add multiple public overloads with optional parameters", Justification = "<Pending>")]
     public static async ValueTask<Result<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
         this IAsyncEnumerable<Result<TSource>> source,
         CancellationToken cancellationToken = default)

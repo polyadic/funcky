@@ -1,3 +1,5 @@
+using Funcky.Internal;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -31,6 +33,6 @@ public static partial class EnumerableExtensions
         Func<TItem, bool> predicate,
         Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> resultSelector)
         => source
-            .Aggregate(new PartitionBuilder<TItem>(predicate), PartitionBuilder<TItem>.Add)
+            .Aggregate(new PartitionBuilder<TItem, TItem>(), PartitionBuilder.Add(predicate))
             .Build(resultSelector);
 }
