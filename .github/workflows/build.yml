@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        systemLinqAsync: [ '5.0.0' ]
+        systemLinqAsync: [ '5.0.0', '6.0.1' ]
     env:
       SystemLinqAsyncVersion: ${{matrix.systemLinqAsync}}
     runs-on: ${{ matrix.os }}
