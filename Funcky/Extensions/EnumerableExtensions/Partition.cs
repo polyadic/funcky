@@ -17,10 +17,10 @@ public static partial class EnumerableExtensions
     /// </summary>
     /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
     /// <returns>A tuple with the items for which the predicate holds, and for those for which it doesn't.</returns>
-    public static (IReadOnlyList<TItem> True, IReadOnlyList<TItem> False) Partition<TItem>(
+    public static Partitions<TItem> Partition<TItem>(
         this IEnumerable<TItem> source,
         Func<TItem, bool> predicate)
-        => source.Partition(predicate, ValueTuple.Create);
+        => source.Partition(predicate, Partitions.Create);
 
     /// <summary>
     /// Partitions the items in an <see cref="IEnumerable{T}"/> by the given <paramref name="predicate"/>.
