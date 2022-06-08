@@ -8,7 +8,7 @@ public static partial class AsyncEnumerableExtensions
     public static ValueTask<ResultPartitions<TValidResult>> PartitionAsync<TValidResult>(
         this IAsyncEnumerable<Result<TValidResult>> source,
         CancellationToken cancellationToken = default)
-        => source.PartitionAsync((error, ok) => new ResultPartitions<TValidResult>(error, ok), cancellationToken);
+        => source.PartitionAsync(ResultPartitions.Create, cancellationToken);
 
     /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into an error and ok partition.</summary>
     public static async ValueTask<TResult> PartitionAsync<TValidResult, TResult>(
