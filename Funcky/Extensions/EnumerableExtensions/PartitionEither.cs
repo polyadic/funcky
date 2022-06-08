@@ -13,4 +13,17 @@ public static partial class EnumerableExtensions
         => source
             .Aggregate(new PartitionBuilder<TLeft, TRight>(), PartitionBuilder.Add)
             .Build(resultSelector);
+
+    /// <summary>Partitions the values in an <see cref="IEnumerable{T}"/> into a left and a right partition.</summary>
+    public static EitherPartitions<TLeft, TRight> Partition<TSource, TLeft, TRight>(
+        this IEnumerable<TSource> source,
+        Func<TSource, Either<TLeft, TRight>> selector)
+        => source.Select(selector).Partition();
+
+    /// <inheritdoc cref="Partition{TSource,TLeft,TRight}(System.Collections.Generic.IEnumerable{TSource}, System.Func{TSource, Funcky.Monads.Either{TLeft,TRight}})"/>
+    public static TResult Partition<TSource, TLeft, TRight, TResult>(
+        this IEnumerable<TSource> source,
+        Func<TSource, Either<TLeft, TRight>> selector,
+        Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector)
+        => source.Select(selector).Partition(resultSelector);
 }
