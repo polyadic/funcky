@@ -8,7 +8,7 @@ public static partial class EnumerableExtensions
     public static EitherPartitions<TLeft, TRight> Partition<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
         => source.Partition(EitherPartitions.Create);
 
-    /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into a left and a right partition.</summary>
+    /// <inheritdoc cref="Partition{TLeft,TRight}(System.Collections.Generic.IEnumerable{Funcky.Monads.Either{TLeft,TRight}})"/>
     public static TResult Partition<TLeft, TRight, TResult>(this IEnumerable<Either<TLeft, TRight>> source, Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector)
         => source
             .Aggregate(new PartitionBuilder<TLeft, TRight>(), PartitionBuilder.Add)

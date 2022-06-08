@@ -10,7 +10,7 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken = default)
         => source.PartitionAsync((left, right) => new EitherPartitions<TLeft, TRight>(left, right), cancellationToken);
 
-    /// <summary>Partitions the either values in an <see cref="IAsyncEnumerable{T}"/> into a left and a right partition.</summary>
+    /// <inheritdoc cref="PartitionAsync{TLeft,TRight}(System.Collections.Generic.IAsyncEnumerable{Funcky.Monads.Either{TLeft,TRight}},System.Threading.CancellationToken)"/>
     public static async ValueTask<TResult> PartitionAsync<TLeft, TRight, TResult>(
         this IAsyncEnumerable<Either<TLeft, TRight>> source,
         Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector,
