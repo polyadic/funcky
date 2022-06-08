@@ -19,4 +19,19 @@ public static partial class AsyncEnumerableExtensions
             .AggregateAsync(new PartitionBuilder<TLeft, TRight>(), PartitionBuilder.Add, cancellationToken)
             .ConfigureAwait(false))
             .Build(resultSelector);
+
+    /// Partitions the items in an <see cref="IAsyncEnumerable{T}"/> into a left and a right partition.
+    public static ValueTask<EitherPartitions<TLeft, TRight>> PartitionAsync<TSource, TLeft, TRight>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, Either<TLeft, TRight>> selector,
+        CancellationToken cancellationToken = default)
+        => source.Select(selector).PartitionAsync((left, right) => new EitherPartitions<TLeft, TRight>(left, right), cancellationToken);
+
+    /// <inheritdoc cref="PartitionAsync{TSource,TLeft,TRight}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Func{TSource,Funcky.Monads.Either{TLeft,TRight}},System.Threading.CancellationToken)"/>
+    public static ValueTask<TResult> PartitionAsync<TSource, TLeft, TRight, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, Either<TLeft, TRight>> selector,
+        Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector,
+        CancellationToken cancellationToken = default)
+        => source.Select(selector).PartitionAsync(resultSelector, cancellationToken);
 }
