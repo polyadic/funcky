@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace System.Linq;
 
-public static class EnumerableCompatibility
+internal static class EnumerableCompatibility
 {
     public static bool TryGetNonEnumeratedCount<TSource>(this IEnumerable<TSource> source, out int count)
     {
