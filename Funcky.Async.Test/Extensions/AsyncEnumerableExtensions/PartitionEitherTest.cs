@@ -24,4 +24,15 @@ public sealed class PartitionEitherTest
         Assert.Equal(new[] { 10, 20 }, left);
         Assert.Equal(new[] { "a", "b" }, right);
     }
+
+    [Fact]
+    public async Task PartitionsItemsIntoLeftAndRightWithSelector()
+    {
+        var input = Enumerable.Range(0, count: 10).Materialize();
+        var (left, right) = await input.ToAsyncEnumerable().PartitionAsync(n => IsEven(n) ? Either<int, int>.Right(n) : Either<int, int>.Left(n));
+        Assert.Equal(input.Where(Not<int>(IsEven)), left);
+        Assert.Equal(input.Where(IsEven), right);
+    }
+
+    private static bool IsEven(int n) => n % 2 == 0;
 }
