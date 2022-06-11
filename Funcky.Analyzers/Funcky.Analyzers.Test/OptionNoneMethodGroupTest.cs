@@ -11,15 +11,10 @@ public sealed class OptionNoneMethodGroupTest
     {
         public static Option<TItem> None() => default;
     }
-
-    public static class Option
-    {
-        public static Option<TItem> None<TItem>() => default;
-    }
 }";
 
     [Fact]
-    public async Task ReplacesOptionOfTNoneWithOptionNone()
+    public async Task ReplacesOptionOfTNoneWithLambda()
     {
         const string inputCode = @"
 using Funcky.Monads;
@@ -39,7 +34,7 @@ public static class C
 {
     public static void M()
     {
-        System.Func<Option<int>> func = Option.None<int>;
+        System.Func<Option<int>> func = () => Option<int>.None();
     }
 }";
 

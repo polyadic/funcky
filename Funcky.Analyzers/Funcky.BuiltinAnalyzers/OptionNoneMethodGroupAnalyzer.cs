@@ -10,8 +10,8 @@ public sealed class OptionNoneMethodGroupAnalyzer : DiagnosticAnalyzer
 {
     public static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
         id: "λ0002",
-        title: "Prefer Option.None<T>() over Option<T>.None() when used as a method group",
-        messageFormat: "Use Option.None<{0}> instead of Option<{0}>.None",
+        title: "Prefer a lambda over the method group Option<T>.None",
+        messageFormat: "Use () => Option<{0}>.None() instead of Option<{0}>.None",
         category: "Funcky.Deprecation",
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
@@ -28,7 +28,7 @@ public sealed class OptionNoneMethodGroupAnalyzer : DiagnosticAnalyzer
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
-        if (context.Compilation.GetOptionType() is not null && context.Compilation.GetOptionOfTType() is { } optionOfTType)
+        if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
         {
             context.RegisterOperationAction(AnalyzeInvocation(optionOfTType), OperationKind.MethodReference);
         }

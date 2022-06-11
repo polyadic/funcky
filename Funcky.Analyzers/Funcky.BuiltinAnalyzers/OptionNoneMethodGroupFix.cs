@@ -3,11 +3,9 @@ using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.Simplification;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.BuiltinAnalyzers;
@@ -25,44 +23,35 @@ public sealed class OptionNoneCodeFix : CodeFixProvider
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         if (await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false) is { } root
-            && await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false) is { } semanticModel
-            && semanticModel.Compilation.GetOptionType() is { } optionType)
+            && await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false) is { } semanticModel)
         {
             foreach (var diagnostic in context.Diagnostics)
             {
                 if (root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<ExpressionSyntax>(node => semanticModel.GetOperation(node) is IMethodReferenceOperation) is { } syntax
                     && semanticModel.GetOperation(syntax) is IMethodReferenceOperation methodReference)
                 {
-                    context.RegisterCodeFix(CreateFix(context, methodReference, optionType), diagnostic);
+                    context.RegisterCodeFix(CreateFix(context, methodReference), diagnostic);
                 }
             }
         }
     }
 
-    private static CodeAction CreateFix(CodeFixContext context, IMethodReferenceOperation methodReference, INamedTypeSymbol optionType)
+    private static CodeAction CreateFix(CodeFixContext context, IMethodReferenceOperation methodReference)
         => CodeAction.Create(
-            "Use Option.None<T>",
-            AddArgumentLabelAsync(context.Document, methodReference, optionType),
+            "Replace method group with lambda",
+            AddArgumentLabelAsync(context.Document, methodReference),
             nameof(OptionNoneCodeFix));
 
-    private static Func<CancellationToken, Task<Document>> AddArgumentLabelAsync(Document document, IMethodReferenceOperation methodReference, INamedTypeSymbol optionType)
+    private static Func<CancellationToken, Task<Document>> AddArgumentLabelAsync(Document document, IMethodReferenceOperation methodReference)
         => async cancellationToken
             =>
             {
                 var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
-                editor.ReplaceNode(methodReference.Syntax, GenerateOptionNoneMemberAccess(editor.Generator, methodReference, optionType));
+                editor.ReplaceNode(methodReference.Syntax, GenerateOptionNoneLambda(methodReference));
                 return editor.GetChangedDocument();
             };
 
-    private static SyntaxNode GenerateOptionNoneMemberAccess(SyntaxGenerator generator, IMethodReferenceOperation methodReference, INamedTypeSymbol optionType)
-    {
-        var itemType = methodReference.Method.ContainingType.TypeArguments.Single();
-        return MemberAccessExpression(
-            SyntaxKind.SimpleMemberAccessExpression,
-            (TypeSyntax)generator.TypeExpression(optionType),
-            GenericName(
-                Identifier(WellKnownMemberNames.Option.None),
-                TypeArgumentList(SingletonSeparatedList((TypeSyntax)generator.TypeExpression(itemType)))))
-            .WithAdditionalAnnotations(Simplifier.Annotation);
-    }
+    private static SyntaxNode GenerateOptionNoneLambda(IMethodReferenceOperation methodReference)
+        => ParenthesizedLambdaExpression(InvocationExpression(
+            (ExpressionSyntax)methodReference.Syntax));
 }
