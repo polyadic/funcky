@@ -134,7 +134,7 @@ public static class EitherOrBoth
             left: Left<TLeft, TRight>,
             right: Right<TLeft, TRight>,
             leftAndRight: Both,
-            none: Option.None<EitherOrBoth<TLeft, TRight>>);
+            none: static () => Option<EitherOrBoth<TLeft, TRight>>.None);
 
     private static Option<EitherOrBoth<TLeft, TRight>> Left<TLeft, TRight>(TLeft left)
         where TLeft : notnull
