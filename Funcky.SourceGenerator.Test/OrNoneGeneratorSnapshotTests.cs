@@ -5,7 +5,10 @@ public class OrNoneGeneratorSnapshotTests
 {
     private const string OptionSource = @"namespace Funcky.Monads
 {
-    public struct Option<TItem> where TItem : notnull { }
+    public struct Option<TItem> where TItem : notnull
+    {
+        public static implicit operator Option<TItem>(TItem item) => default;
+    }
 }";
 
     [Fact]
@@ -29,7 +32,8 @@ namespace Funcky.Extensions
     [Fact]
     public Task GenerateSingleMethodWithMultipleArgumentsToForward()
     {
-        const string source = @"using System.Diagnostics.Contracts;
+        const string source = @"using System;
+using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
@@ -47,7 +51,8 @@ namespace Funcky.Extensions
     [Fact]
     public Task GenerateMultipleMethodsInASingleClass()
     {
-        const string source = @"using System.Diagnostics.Contracts;
+        const string source = @"using System;
+using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
