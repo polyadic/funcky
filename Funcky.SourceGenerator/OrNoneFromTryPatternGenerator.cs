@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Funcky.SourceGenerator.TemplateLoader;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.SourceGenerator;
 
@@ -23,15 +24,14 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
 
     private static void RegisterOrNonePartials(SourceProductionContext context, ImmutableArray<MethodPartial> partialMethods)
         => _ = partialMethods
-            .GroupBy(partialMethod => $"{partialMethod.NamespaceName}.{partialMethod.ClassName}")
+            .GroupBy(partialMethod => partialMethod.SourceTree.FilePath)
             .Aggregate(context, CreateSourceByClass);
 
     private static SourceProductionContext CreateSourceByClass(SourceProductionContext context, IGrouping<string, MethodPartial> methodByClass)
     {
-        var usings = methodByClass.SelectMany(c => c.AdditionalUsings).Distinct(new UsingsComparer());
-        var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, usings, methodByClass.Select(m => m.PartialMethod));
+        var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, methodByClass.SelectMany(m => m.Methods));
 
-        context.AddSource($"{methodByClass.First().ClassName}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + EmitCode(syntaxTree.NormalizeWhitespace()));
+        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + EmitCode(syntaxTree.NormalizeWhitespace()));
 
         return context;
     }
@@ -40,38 +40,87 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         => context.SyntaxProvider.CreateSyntaxProvider(predicate: IsSyntaxTargetForGeneration, transform: GetSemanticTargetForGeneration)
             .WhereNotNull()
             .Combine(context.CompilationProvider)
-            .Select((state, cancellationToken) => ToMethodPartial(state.Left, state.Right, context, cancellationToken))
+            .Select((state, _) => ToMethodPartial(state.Left, state.Right))
             .WhereNotNull()
             .Collect();
 
-    private static MethodPartial? ToMethodPartial(MethodDeclarationSyntax methodDeclaration, Compilation compilation, IncrementalGeneratorInitializationContext context, CancellationToken cancellationToken)
+    private static MethodPartial? ToMethodPartial(SemanticTarget semanticTarget, Compilation compilation)
     {
-        var attribute = methodDeclaration.GetAttributeByUsedName("OrNoneFromTryPattern");
-        var compilationUnit = methodDeclaration.TryGetParentSyntax<CompilationUnitSyntax>()!;
+        var methods =
+            from attribute in semanticTarget.Attributes
+            from method in attribute.Type.GetMembers().OfType<IMethodSymbol>()
+            where method.Name == attribute.MethodName
+            select GenerateOrNoneMethod(attribute.Type, method);
 
-        return GetNamespaceName(methodDeclaration, compilation) is { } namespaceName && GetClassName(methodDeclaration) is { } className
-            ? new MethodPartial(namespaceName, className, compilationUnit.Usings.ToList(), CreateMethodImplementation(methodDeclaration, GetMethodValue(compilation, methodDeclaration, attribute), GetTypeValue(compilation, methodDeclaration, attribute)))
+        return GetNamespaceName(semanticTarget.ClassDeclarationSyntax, compilation) is { } namespaceName
+            ? new MethodPartial(namespaceName, semanticTarget.ClassDeclarationSyntax.Identifier.ToString(), methods.ToImmutableArray(), semanticTarget.ClassDeclarationSyntax.SyntaxTree)
             : null;
     }
 
-    private static string GetMethodValue(Compilation compilation, MethodDeclarationSyntax method, AttributeSyntax attribute)
-        => attribute.ArgumentList?.Arguments.Count > 1 && attribute.ArgumentList?.Arguments[1].Expression is { } descriptionExpr
-            ? compilation
-                .GetSemanticModel(method.SyntaxTree)
-                .GetConstantValue(descriptionExpr)
-                .ToString()
-            : throw new Exception("Method value on attribute missing.");
+    private static MethodDeclarationSyntax GenerateOrNoneMethod(ITypeSymbol type, IMethodSymbol method)
+        => MethodDeclaration(
+            ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>"),
+            GetMethodName(type, method))
+            .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
+            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(p => p.RefKind == RefKind.None).Select(GenerateParameter))))
+            .WithExpressionBody(ArrowExpressionClause(GenerateOrNoneImplementation(type, method)))
+            .WithAttributeLists(SingletonList(AttributeList(SingletonSeparatedList(Attribute(IdentifierName("global::System.Diagnostics.Contracts.Pure"))))))
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
-    private static TypeSyntax GetTypeValue(Compilation compilation, MethodDeclarationSyntax component, AttributeSyntax attribute)
-        => attribute.ArgumentList?.Arguments.Count > 0 && attribute.ArgumentList?.Arguments[0].Expression is TypeOfExpressionSyntax iconExpr
-            ? iconExpr.Type
-            : throw new Exception("Type value on attribute missing.");
+    private static ExpressionSyntax GenerateOrNoneImplementation(ITypeSymbol type, IMethodSymbol method)
+        => ConditionalExpression(
+            condition: InvocationExpression(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    ParseTypeName(method.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
+                    IdentifierName(method.Name)),
+                GenerateTryMethodArgumentList(method)),
+            whenTrue: IdentifierName(method.Parameters.Single(p => p.RefKind == RefKind.Out).Name),
+            whenFalse: DefaultExpression(ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>")));
 
-    private static string? GetClassName(SyntaxNode methodDeclaration)
-        => methodDeclaration
-            .TryGetParentSyntax<ClassDeclarationSyntax>()
-            ?.Identifier
-            .ToString();
+    private static ArgumentListSyntax GenerateTryMethodArgumentList(IMethodSymbol method)
+        => ArgumentList(SeparatedList(method.Parameters.Select(GenerateTryMethodArgument)));
+
+    private static ArgumentSyntax GenerateTryMethodArgument(IParameterSymbol parameter, int index)
+        => parameter.RefKind == RefKind.Out
+            ? Argument(nameColon: null, Token(SyntaxKind.OutKeyword), DeclarationExpression(IdentifierName(Identifier(TriviaList(), SyntaxKind.VarKeyword, "var", "var", TriviaList())), SingleVariableDesignation(Identifier(GetParameterName(parameter, index)))))
+            : Argument(IdentifierName(GetParameterName(parameter, index)));
+
+    private static ParameterSyntax GenerateParameter(IParameterSymbol parameter, int index)
+        => Parameter(Identifier(GetParameterName(parameter, index)))
+            .WithModifiers(index == 0 ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList())
+            .WithType(GenerateTypeSyntax(parameter.Type))
+            .WithDefault(GetParameterDefaultValue(parameter));
+
+    private static TypeSyntax GenerateTypeSyntax(ITypeSymbol type)
+    {
+        var parsedType = ParseTypeName(type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)));
+        return type.NullableAnnotation is not NullableAnnotation.None
+            ? parsedType
+            : parsedType
+                .WithLeadingTrivia(Trivia(NullableDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true)))
+                .WithTrailingTrivia(Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true)));
+    }
+
+    private static SemanticTarget? GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellationToken)
+        => context.Node is ClassDeclarationSyntax classDeclarationSyntax
+            && context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax, cancellationToken) is { } classSymbol
+            && classSymbol.GetAttributes()
+                .Where(a => a.AttributeClass?.ToDisplayString() == "Funcky.Internal.OrNoneFromTryPatternAttribute")
+                .Where(a => a.ApplicationSyntaxReference?.GetSyntax().Ancestors().OfType<ClassDeclarationSyntax>().FirstOrDefault() == classDeclarationSyntax)
+                .Select(ParseAttribute)
+                .ToImmutableArray() is { Length: >=1 } attributes
+                ? new SemanticTarget(classDeclarationSyntax, attributes)
+                : null;
+
+    private static ParsedAttribute ParseAttribute(AttributeData attribute)
+        => attribute.ConstructorArguments.Length >= 2
+            && attribute.ConstructorArguments[0].Value is INamedTypeSymbol type
+            && attribute.ConstructorArguments[1].Value is string methodName
+                ? new ParsedAttribute(
+                    type,
+                    methodName)
+                : throw new InvalidOperationException("Invalid attribute: expected a named type and a method name");
 
     private static string? GetNamespaceName(SyntaxNode methodDeclaration, Compilation compilation)
         => compilation.GetSemanticModel(methodDeclaration.SyntaxTree)
@@ -79,30 +128,35 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             .ContainingNamespace
             .ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 
-    private static MethodDeclarationSyntax CreateMethodImplementation(MethodDeclarationSyntax methodDeclaration, string methodName, TypeSyntax typeSyntax)
-        => (MethodDeclarationSyntax)new OrNoneFromTryPatternRewriter(methodName, typeSyntax)
-            .Visit(methodDeclaration);
-
     private static string EmitCode(SyntaxNode syntaxNode)
         => syntaxNode.ToFullString();
 
-    private static MethodDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellationToken)
-        => context.Node is MethodDeclarationSyntax methodDeclaration && methodDeclaration.AttributeLists.Any(HasOrNoneAttribute(context, cancellationToken))
-            ? methodDeclaration
+    private static string GetMethodName(ITypeSymbol type, IMethodSymbol method)
+    {
+        const string tryPrefix = "Try";
+        const string orNoneSuffix = "OrNone";
+        return method.Name.StartsWith(tryPrefix)
+            ? $"{method.Name.Substring(tryPrefix.Length)}{type.Name}{orNoneSuffix}"
+            : $"{method.Name}{type.Name}{orNoneSuffix}";
+    }
+
+    private static string GetParameterName(IParameterSymbol parameter, int index)
+        => index == 0
+            ? "candidate"
+            : parameter.Name;
+
+    private static EqualsValueClauseSyntax? GetParameterDefaultValue(IParameterSymbol parameter)
+        => parameter.HasExplicitDefaultValue
+            ? throw new InvalidOperationException("Default values are not supported")
             : null;
 
-    private static Func<AttributeListSyntax, bool> HasOrNoneAttribute(GeneratorSyntaxContext context, CancellationToken cancellationToken)
-        => attributeList
-            => attributeList.Attributes.Any(IsDiscriminatedUnionAttribute(context, cancellationToken));
-
-    private static Func<AttributeSyntax, bool> IsDiscriminatedUnionAttribute(GeneratorSyntaxContext context, CancellationToken cancellationToken)
-        => attribute
-            => context.SemanticModel.GetSymbolInfo(attribute, cancellationToken).Symbol is IMethodSymbol attributeSymbol
-                && attributeSymbol.ContainingType.ToDisplayString() == "Funcky.Internal.OrNoneFromTryPatternAttribute";
-
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node, CancellationToken cancellationToken)
-        => node is MethodDeclarationSyntax { AttributeLists.Count: > 0 };
+        => node is ClassDeclarationSyntax { AttributeLists.Count: > 0 };
 
     private static void RegisterOrNoneAttribute(IncrementalGeneratorPostInitializationContext context)
         => context.AddSource("OrNoneFromTryPatternAttribute.g.cs", CodeFromTemplate(OrNoneFromTryPatternAttributeTemplate));
+
+    private sealed record SemanticTarget(ClassDeclarationSyntax ClassDeclarationSyntax, ImmutableArray<ParsedAttribute> Attributes);
+
+    private sealed record ParsedAttribute(INamedTypeSymbol Type, string MethodName);
 }

@@ -33,8 +33,7 @@ public static class TestHelper
     /// </summary>
     private static IEnumerable<PortableExecutableReference> GetDependencyReferences()
         => Return(
-            MetadataReference.CreateFromFile(typeof(Attribute).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(Monads.Option).Assembly.Location));
+            MetadataReference.CreateFromFile(typeof(Attribute).Assembly.Location));
 
     /// <summary>
     /// Parse the provided string into a C# syntax tree.
