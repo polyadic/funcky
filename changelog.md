@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Next Patch
+## Funcky 2.7.1
 ### Deprecations
 * `Option.None<T>()`: We originally introduced the `Option.None<T>` method as a future proof replacement to `Option<T>.None` for use in method groups,
   because Funcky 3 changes `Option<T>.None` to a property. This turned out to be confusing to users especially because both method are always suggested in autocomplete.
