@@ -44,7 +44,7 @@ jobs:
     - name: Generate NuGet Packages
       run: dotnet pack --configuration Release --output nupkg
     - uses: actions/upload-artifact@v2
-      if: success() && github.ref == 'refs/heads/main'
+      if: success() && github.ref == 'refs/heads/release/2.7.x'
       with:
         name: nupkg
         path: nupkg/*
