@@ -24,13 +24,13 @@ public static partial class AsyncEnumerableExtensions
         => (await source.TraverseAsync(UnsafeEither.FromResult, cancellationToken).ConfigureAwait(false)).ToResult();
 
     [Pure]
-    public static Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IAsyncEnumerable<Reader<TEnvironment, TSource>> sequence)
+    public static Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IAsyncEnumerable<Reader<TEnvironment, TSource>> source)
         => environment
-            => sequence.Select(reader => reader(environment));
+            => source.Select(reader => reader(environment));
 
     [Pure]
-    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> sequence)
-        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(sequence).Invoke);
+    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> source)
+        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
 
     private static async ValueTask<UnsafeEither<TLeft, IReadOnlyList<TRight>>> TraverseAsync<TSource, TLeft, TRight>(
         this IAsyncEnumerable<TSource> source,
