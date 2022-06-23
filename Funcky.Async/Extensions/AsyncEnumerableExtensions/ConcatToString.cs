@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Funcky.Async.Extensions;
+namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {

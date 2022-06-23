@@ -1,4 +1,3 @@
-using Funcky.Async.Extensions;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;

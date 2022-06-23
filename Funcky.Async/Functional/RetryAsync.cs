@@ -1,4 +1,3 @@
-using Funcky.Async.Extensions;
 using Funcky.RetryPolicies;
 
 namespace Funcky.Async;

@@ -1,7 +1,5 @@
 // ReSharper disable PossibleMultipleEnumeration
 
-using Funcky.Async.Extensions;
-
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public sealed class JoinToStringTest

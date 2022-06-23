@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using FsCheck.Xunit;
-using Funcky.Async.Extensions;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.Internal;
 

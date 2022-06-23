@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using static Funcky.Async.ValueTaskFactory;
 
-namespace Funcky.Async.Extensions;
+namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
