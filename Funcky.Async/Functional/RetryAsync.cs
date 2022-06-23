@@ -1,8 +1,8 @@
 using Funcky.RetryPolicies;
 
-namespace Funcky.Async;
+namespace Funcky;
 
-public static partial class Functional
+public static partial class AsyncFunctional
 {
     /// <summary>
     /// Calls the given <paramref name="producer"/> over and over until it returns a value.

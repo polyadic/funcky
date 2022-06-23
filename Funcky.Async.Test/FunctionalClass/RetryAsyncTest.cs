@@ -1,6 +1,6 @@
 using Funcky.Async.Test.TestUtilities;
 using Funcky.RetryPolicies;
-using static Funcky.Async.Functional;
+using static Funcky.AsyncFunctional;
 
 namespace Funcky.Async.Test.FunctionalClass;
 
