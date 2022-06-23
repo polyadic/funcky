@@ -8,15 +8,15 @@ public static partial class EnumerableExtensions
     /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
     /// sequence's elements without causing multiple enumerations over the source.
     /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="sequence"/> sequence.</typeparam>
-    /// <param name="sequence">The source sequence.</param>
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    /// <param name="source">The source sequence.</param>
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
-    public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> sequence)
+    public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
         where TSource : notnull
-        => sequence is IBuffer<TSource> buffer
+        => source is IBuffer<TSource> buffer
             ? buffer
-            : MemoizedBuffer.Create(sequence);
+            : MemoizedBuffer.Create(source);
 
     private static class MemoizedBuffer
     {

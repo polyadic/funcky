@@ -6,11 +6,11 @@ public static partial class EnumerableExtensions
     /// An IEnumerable that calls a function on each element before yielding it. It can be used to encode side effects without enumerating.
     /// The side effect will be executed when enumerating the result.
     /// </summary>
-    /// <typeparam name="T">the inner type of the enumerable.</typeparam>
+    /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
     /// <returns>returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
-    public static IEnumerable<T> Inspect<T>(this IEnumerable<T> elements, Action<T> action)
-        => elements.Select(element
+    public static IEnumerable<TSource> Inspect<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        => source.Select(element
             =>
             {
                 action(element);
