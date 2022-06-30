@@ -61,7 +61,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
         => IsPartOfCatchFilterClause(node)
-           || (IsInLoopCondition(node) && node.IsWithinIterator())
+           || IsInLoopCondition(node)
            || (IsInIfConditionWithYield(node) && node.IsWithinIterator());
 
     private static bool IsPartOfCatchFilterClause(SyntaxNode node)

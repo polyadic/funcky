@@ -48,7 +48,7 @@ public static class C
     }
 
     [Fact]
-    public async Task UseOfTryGetValueIsDisallowedInWhileCondition()
+    public async Task UseOfTryGetValueIsAllowedInWhileCondition()
     {
         const string inputCode = @"
 using Funcky.Monads;
@@ -61,7 +61,7 @@ public static class C
         while (option.TryGetValue(out _)) { }
     }
 }";
-        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 16, 9, 41));
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public static class C
     }
 
     [Fact]
-    public async Task UseOfTryGetValueIsDisallowedInDoWhileCondition()
+    public async Task UseOfTryGetValueIsAllowedInDoWhileCondition()
     {
         const string inputCode = @"
 using Funcky.Monads;
@@ -95,7 +95,7 @@ public static class C
         do { } while (option.TryGetValue(out _));
     }
 }";
-        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 23, 9, 48));
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
 
     [Theory]
