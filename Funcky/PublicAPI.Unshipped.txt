@@ -26,6 +26,8 @@ Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyList<TValidResult>!
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> void
 Funcky.IBuffer<TSource>
+Funcky.Monads.Either<TLeft, TRight>.GetOrElse(System.Func<TLeft, TRight>! getDefaultValue) -> TRight
+Funcky.Monads.Either<TLeft, TRight>.GetOrElse(TRight defaultValue) -> TRight
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
 Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funcky.Monads.Option<TMaybe>>! selector, System.Func<TItem, TMaybe, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
