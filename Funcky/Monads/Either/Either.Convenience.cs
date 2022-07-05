@@ -10,4 +10,12 @@ public readonly partial struct Either<TLeft, TRight>
         Switch(left: NoOperation, right: action);
         return this;
     }
+
+    [Pure]
+    public TRight GetOrElse(TRight defaultValue)
+        => Match(left: _ => defaultValue, right: Identity);
+
+    [Pure]
+    public TRight GetOrElse(Func<TLeft, TRight> getDefaultValue)
+        => Match(left: getDefaultValue, right: Identity);
 }

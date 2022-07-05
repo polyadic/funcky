@@ -1,5 +1,6 @@
 using System.Globalization;
 using Funcky.FsCheck;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Monads;
 
@@ -193,6 +194,7 @@ public sealed partial class OptionTest
         Assert.Equal(some, none.OrElse(some));
         Assert.Equal(some, none.OrElse(none).OrElse(some));
         Assert.Equal(none, none.OrElse(none).OrElse(none));
+        Assert.Equal(42, some.GetOrElse(1337));
         Assert.Equal(1337, none.GetOrElse(1337));
         Assert.Equal(1337, none.OrElse(none).GetOrElse(1337));
     }
@@ -247,18 +249,11 @@ public sealed partial class OptionTest
     public void GivenASomeCaseTheOrElseFuncIsNotExecuted()
     {
         var some = Option.Some(42);
-        var global = 0;
+
+        _ = some.GetOrElse(SideEffect);
 
         int SideEffect()
-        {
-            global = 42;
-            return 11;
-        }
-
-        _ = some
-            .GetOrElse(SideEffect);
-
-        Assert.Equal(0, global);
+            => throw new XunitException("This side effect should not happen!");
     }
 
     [Theory]
