@@ -15,6 +15,7 @@
         <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
     </PropertyGroup>
     <PropertyGroup>
+        <RootNamespace>Funcky</RootNamespace>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
     </PropertyGroup>
     <PropertyGroup>

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Funcky.Internal;
 using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 
-namespace Funcky.Async.Extensions;
+namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {

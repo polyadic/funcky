@@ -1,7 +1,6 @@
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
 using FsCheck.Xunit;
-using Funcky.Async.Extensions;
 using Funcky.Test.Internal;
 using Funcky.Test.Internal.Data;
 
