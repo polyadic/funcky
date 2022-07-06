@@ -50,7 +50,7 @@ type FunckyGenerators =
     static member option<'a>() =
         { new Arbitrary<Funcky.Monads.Option<'a>>() with
             override _.Generator =
-                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate |> Gen.map Option.Some)]
+                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate |> Gen.filter FunckyGenerators.isNotNull |> Gen.map Option.Some)]
             override _.Shrinker o =
                 o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
         }
@@ -62,4 +62,7 @@ type FunckyGenerators =
         Arb.fromGen (Arb.generate<Func<'env, 'a>> |> Gen.map Reader<'env>.FromFunc)
 
     [<CompiledName("Register")>]
+
     static member register() = Arb.registerByType typeof<FunckyGenerators> |> ignore
+
+    static member private isNotNull x = not (Object.ReferenceEquals(x, null))

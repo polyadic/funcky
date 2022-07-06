@@ -1,39 +1,44 @@
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class ReaderTest
 {
     [Property]
-    public Property AssociativityHolds(int environment, Func<int, int> readerFunction)
-    {
-        var reader = Reader<int>.FromFunc(readerFunction);
-        static Reader<int, int> Combined(int number) => Add(number).SelectMany(Times);
-
-        return (reader.SelectMany(Add).SelectMany(Times).Invoke(environment)
-                == reader.SelectMany(Combined).Invoke(environment)).ToProperty();
-    }
+    public Property AssociativityHolds(
+        int environment,
+        Reader<int, int> input,
+        Func<int, Reader<int, int>> selectorOne,
+        Func<int, Reader<int, int>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)), environment);
 
     [Property]
-    public Property RightIdentityHolds(int environment, Func<int, int> readerFunction)
-    {
-        var reader = Reader<int>.FromFunc(readerFunction);
-
-        return (reader.SelectMany(Reader<int>.Return).Invoke(environment) == reader.Invoke(environment)).ToProperty();
-    }
+    public Property RightIdentityHolds(int environment, Reader<int, int> input)
+        => CheckAssert.Equal(input, input.SelectMany(Reader<int>.Return), environment);
 
     [Property]
-    public Property LeftIdentityHolds(int environment, int value)
-    {
-        var reader = Reader<int>.Return(value);
+    public Property LeftIdentityHoldsWithReferenceTypes(int environment, int input, Func<int, Reader<int, int>> selector)
+        => CheckAssert.Equal(Reader<int>.Return(input).SelectMany(selector), selector(input), environment);
 
-        return (reader.SelectMany(Add).Invoke(environment) == Add(value).Invoke(environment)).ToProperty();
-    }
+    [Property]
+    public Property AssociativityHoldsWithReferenceTypes(
+        string? environment,
+        Reader<string, string> input,
+        Func<string, Reader<string, string>> selectorOne,
+        Func<string, Reader<string, string>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)), environment ?? string.Empty);
 
-    private static Reader<int, int> Add(int number)
-        => Reader<int>.FromFunc(config => number + config);
+    [Property]
+    public Property RightIdentityHoldsWithReferenceTypes(string environment, Reader<string, string> input)
+        => CheckAssert.Equal(input, input.SelectMany(Reader<string>.Return), environment);
 
-    private static Reader<int, int> Times(int number)
-        => Reader<int>.FromFunc(config => number * config);
+    [Property]
+    public Property LeftIdentityHoldsWithReferenceTypesWithReferenceTypes(string environment, string input, Func<string, Reader<string, string>> selector)
+        => CheckAssert.Equal(Reader<string>.Return(input).SelectMany(selector), selector(input), environment);
+
+    private static Func<TItem, Reader<TItem, TItem>> Combine<TItem>(Func<TItem, Reader<TItem, TItem>> functionA, Func<TItem, Reader<TItem, TItem>> functionB)
+        => input
+            => functionA(input).SelectMany(functionB);
 }

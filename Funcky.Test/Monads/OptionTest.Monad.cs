@@ -1,42 +1,45 @@
+using FsCheck;
+using FsCheck.Xunit;
+using Funcky.Test.TestUtils;
+
 namespace Funcky.Test.Monads;
 
 public sealed partial class OptionTest
 {
-    [Theory]
-    [MemberData(nameof(OptionValues))]
-    public void AssociativityHolds(Option<int> input)
-    {
-        static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
-        static Option<int> AddTwo(int x) => Option.Some(x + 2);
-        static Option<int> MultiplyByTenAndAddTwo(int x) => MultiplyByTen(x).SelectMany(AddTwo);
+    [Property]
+    public Property AssociativityHolds(
+        Option<int> input,
+        Func<int, Option<int>> selectorOne,
+        Func<int, Option<int>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-        Assert.Equal(
-            input.SelectMany(MultiplyByTen).SelectMany(AddTwo),
-            input.SelectMany(MultiplyByTenAndAddTwo));
-    }
+    [Property]
+    public Property RightIdentityHolds(Option<int> input)
+        => CheckAssert.Equal(input.SelectMany(Option.Some), input);
 
-    [Theory]
-    [MemberData(nameof(OptionValues))]
-    public void RightIdentityHolds(Option<int> input)
-    {
-        Assert.Equal(input.SelectMany(Option.Some), input);
-    }
+    [Property]
+    public Property LeftIdentityHolds(int input, Func<int, Option<int>> function)
+        => CheckAssert.Equal(Option.Some(input).SelectMany(function), function(input));
 
-    [Fact]
-    public void LeftIdentityHolds()
-    {
-        static Option<int> MultiplyByTen(int x) => Option.Some(x * 10);
+    [Property]
+    public Property AssociativityHoldsWithReferenceTypes(
+        Option<string> input,
+        Func<string, Option<string>> selectorOne,
+        Func<string, Option<string>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-        const int input = 10;
-        Assert.Equal(
-            Option.Some(input).SelectMany(MultiplyByTen),
-            MultiplyByTen(input));
-    }
+    [Property]
+    public Property RightIdentityHoldsWithReferenceTypes(Option<string> option)
+        => CheckAssert.Equal(option.SelectMany(Option.Some), option);
 
-    private static TheoryData<Option<int>> OptionValues()
-        => new()
-        {
-            Option.Some(10),
-            Option<int>.None,
-        };
+    [Property]
+    public Property LeftIdentityHoldsWithReferenceTypes(string? input, Func<string, Option<string>> function)
+        => input is null
+            ? true.ToProperty()
+            : CheckAssert.Equal(Option.FromNullable(input).SelectMany(function), function(input));
+
+    private static Func<TItem, Option<TItem>> Combine<TItem>(Func<TItem, Option<TItem>> functionA, Func<TItem, Option<TItem>> functionB)
+        where TItem : notnull
+        => input
+            => functionA(input).SelectMany(functionB);
 }
