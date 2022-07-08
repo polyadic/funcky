@@ -312,12 +312,12 @@ Funcky has a lazy `Transpose` extension function for `IEnumerable<IEnumerable<T>
 
 ```cs
 private static string CreateCalendarString(int year)
-=> Sequence.Successors(JanuaryFirst(year), NextDay)
-  .TakeWhile(IsSameYear(year))
-  .AdjacentGroupBy(day => day.Month)
-  .Select(LayoutMonth)
-  .Chunk(MonthsPerRow)
-  .Select(chunk => chunk.Transpose())
+    => Sequence.Successors(JanuaryFirst(year), NextDay)
+        .TakeWhile(IsSameYear(year))
+        .AdjacentGroupBy(day => day.Month)
+        .Select(LayoutMonth)
+        .Chunk(MonthsPerRow)
+        .Select(chunk => chunk.Transpose())
 ```
 
 After this transforamtion our chunk of 3 months looks like this:
