@@ -53,7 +53,7 @@ There are obviously many ways to achieve this, you could write your own Implemen
 
 We want to avoid to write such a function and take advantage of the numerous generators availaible in Funcky.
 
-Sequence.Successors creates an infinite sequence of days, starting with January first of the given year. We take all the values in the same year, so this sequence should yield all the days of a year.
+`Sequence.Successors` creates an infinite sequence of days, starting with January first of the given year. We take all the values in the same year, so this sequence should yield all the days of a year.
 
 ```cs
 return Sequence.Successors(JanuaryFirst(year), NextDay)
