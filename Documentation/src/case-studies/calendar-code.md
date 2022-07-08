@@ -68,7 +68,7 @@ internal class Program
         => ImmutableList<string>.Empty
             .Add(CenteredMonthName(month))
             .AddRange(FormatWeeks(month))
-            .Add($"{string.Empty,WidthOfAWeek}");
+            .Add(new string(' ', WidthOfAWeek));
 
     private static IEnumerable<string> FormatWeeks(IEnumerable<DateOnly> month)
         => month

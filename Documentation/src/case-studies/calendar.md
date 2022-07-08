@@ -159,7 +159,7 @@ private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
     => ImmutableList<string>.Empty
         .Add(CenteredMonthName(month))
         .AddRange(FormatWeeks(month))
-        .Add($"{string.Empty,WidthOfAWeek}");
+        .Add(new string(' ', WidthOfAWeek));
 ```
 
 Let's dive into our helper functions. First we take a look at the name of the month. The only noteworthy detail is the very functional mindest seen in the solution to the centering problem. It uses a pattern match to fill in the missing spaces: it is not very efficent, but easy to understand. The recursion will be very short because our lines are only 21 characters wide.
