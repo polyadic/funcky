@@ -1,6 +1,7 @@
 using FsCheck;
 
 namespace Funcky.Test.TestUtils;
+
 internal static class CheckAssert
 {
     public static Property Equal<T>(T expected, T actual)
