@@ -42,7 +42,7 @@ internal class Program
 
     private static string CreateCalendarString(int year)
         => Sequence.Successors(JanuaryFirst(year), NextDay)
-            .TakeWhile(SameYear(year))
+            .TakeWhile(IsSameYear(year))
             .AdjacentGroupBy(day => day.Month)
             .Select(LayoutMonth)
             .Chunk(HorizontalMonths)
@@ -55,9 +55,9 @@ internal class Program
         => day.AddDays(1);
 
     private static DateOnly JanuaryFirst(int year)
-        => new(year, 1, 1);
+        => new(year: year, month: 1, day: 1);
 
-    private static Func<DateOnly, bool> SameYear(int year)
+    private static Func<DateOnly, bool> IsSameYear(int year)
         => day
             => day.Year == year;
 
