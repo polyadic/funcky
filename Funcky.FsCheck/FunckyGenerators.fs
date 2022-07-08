@@ -51,13 +51,9 @@ type FunckyGenerators =
 #endif
 
     static member nonNull<'a>() =
-        let notNull x = not (Object.ReferenceEquals(x, null))
-        { new Arbitrary<NonNull<'a>>() with
-            override _.Generator =
-                Arb.generate |> Gen.where notNull |> Gen.map NonNull
-            override _.Shrinker (NonNull o) =
-                Arb.shrink o |> Seq.where notNull |> Seq.map NonNull
-        }
+        Arb.from<'a>
+            |> Arb.filter (fun x -> not (Object.ReferenceEquals(x, null)))
+            |> Arb.convert NonNull (fun x -> x.Get)
 
     static member option<'a>() =
         { new Arbitrary<Funcky.Monads.Option<'a>>() with
