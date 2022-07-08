@@ -6,9 +6,9 @@ The complete calendar program:
 ```cs
 using System.Collections.Immutable;
 using Funcky.Extensions;
-using System.Globalization;
 using Funcky;
 using Funcky.Monads;
+using static System.Globalization.CultureInfo;
 using static Funcky.Functional;
 
 namespace Calendar;
@@ -27,7 +27,7 @@ internal static class StringExtensions
 internal class Program
 {
     private const int FirstDayOfTheWeek = 0;
-    private const int HorizontalMonths = 3;
+    private const int MonthsPerRow = 3;
     private const int DaysInAWeek = 7;
     private const int WidthOfDay = 3;
     private const int WidthOfAWeek = WidthOfDay * DaysInAWeek;
@@ -45,7 +45,7 @@ internal class Program
             .TakeWhile(IsSameYear(year))
             .AdjacentGroupBy(day => day.Month)
             .Select(LayoutMonth)
-            .Chunk(HorizontalMonths)
+            .Chunk(MonthsPerRow)
             .Select(EnumerableExtensions.Transpose)
             .Select(JoinLine)
             .SelectMany(Identity)
@@ -90,16 +90,15 @@ internal class Program
         => NthDayOfWeek(week.First().DayOfWeek) is FirstDayOfTheWeek;
 
     private static int NthDayOfWeek(DayOfWeek dayOfWeek)
-        => (dayOfWeek + DaysInAWeek - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) % DaysInAWeek;
+        => (dayOfWeek + DaysInAWeek - CurrentCulture.DateTimeFormat.FirstDayOfWeek) % DaysInAWeek;
 
     private static int GetWeekOfYear(DateOnly dateTime)
-        => CultureInfo
-            .CurrentCulture
+        => CurrentCulture
             .Calendar
             .GetWeekOfYear(
                 dateTime.ToDateTime(default),
-                CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
-                CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
+                CurrentCulture.DateTimeFormat.CalendarWeekRule,
+                CurrentCulture.DateTimeFormat.FirstDayOfWeek);
 
     private static string CenteredMonthName(IEnumerable<DateOnly> month)
         => month

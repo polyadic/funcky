@@ -57,12 +57,12 @@ Sequence.Successors creates an infinite sequence of days, starting with January 
 
 ```cs
 return Sequence.Successors(JanuaryFirst(year), NextDay)
-    .TakeWhile(SameYear(year));
+    .TakeWhile(IsSameYear(year));
 ```
 
-Most of these helper function are straight forward, but SameYear might be a bit special if you havent worked with curried functions before.
+Most of these helper function are straight forward, but `IsSameYear` might be a bit special if you havent worked with curried functions before.
 
-The function `SameYear` takes one parameter and returns a function which takes another parameter, this is also called the curried form of a function, there is also the `Functional.Curry` and `Functional.Uncurry` functions which can transform between both forms without the need to write them both. `SameYear(2000)` returns a function which always returns `true` if the Date is from the year 2000. That way of using functions might come in handy a lot more often than you think.
+The function `IsSameYear` takes one parameter and returns a function which takes another parameter, this is also called the curried form of a function, there is also the `Functional.Curry` and `Functional.Uncurry` functions which can transform between both forms without the need to write them both. `IsSameYear(2000)` returns a function which always returns `true` if the Date is from the year 2000. That way of using functions might come in handy a lot more often than you think.
 
 ```cs
 private static DateOnly NextDay(DateOnly day)
@@ -71,7 +71,7 @@ private static DateOnly NextDay(DateOnly day)
 private static DateOnly JanuaryFirst(int year)
     => new(year, 1, 1);
 
-private static Func<DateOnly, bool> SameYear(int year)
+private static Func<DateOnly, bool> IsSameYear(int year)
     => day
         => day.Year == year;
 ```
@@ -84,7 +84,7 @@ LINQ offers you the GroupBy function which we could use easily in this case.  Th
 
 ```cs
 return Sequence.Successors(JanuaryFirst(year), NextDay)
-    .TakeWhile(SameYear(year))
+    .TakeWhile(IsSameYear(year))
     .GroupBy(d => d.Month)
 ```
 
@@ -99,26 +99,26 @@ That is why Funcky offers the extension function `AdjacentGroupBy`. It is a full
 
 ```cs
 return Sequence.Successors(JanuaryFirst(year), NextDay)
-    .TakeWhile(SameYear(year))
+    .TakeWhile(IsSameYear(year))
     .AdjacentGroupBy(d => d.Month);
 ```
 
-Now we have an `IEnumerable<IEnumerable<DateOnly>>`, where the inner one is representing a single month.
+Now we have an `IEnumerable<IEnumerable<DateOnly>>`, where the inner `IEnumerable` is representing a single month.
 
 ## Layout a single month
 
 Since we have now all the days of the same month, we want to create a layout for a single month out of these days.
 
-Currently we have a sequence of months. To transform the inner element, from a sequence of days into something else, we need to make a projection which is done with Select in C#.
+Currently we have a sequence of months. To transform the inner element, from a sequence of days into something else, we need to make a projection which is done with `Select` in C#.
 
 ```cs
 return Sequence.Successors(JanuaryFirst(year), NextDay)
-    .TakeWhile(SameYear(year))
+    .TakeWhile(IsSameYear(year))
     .AdjacentGroupBy(d => d.Month);
     .Select(LayoutMonth)
 ```
 
-The LayoutMonth function therefore gets a sequence of all the day days in a single month, and should produce a Layout for that single Month.
+The `LayoutMonth` function therefore gets a sequence of all the day days in a single month, and should produce a Layout for that single Month.
 
 
 This is actually pretty straight forward. What do we want? We want to format a single month, and how would a single month look like? So the result will be a sequence of strings, each string representing one line of the layout.
@@ -162,7 +162,7 @@ private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
         .Add($"{string.Empty,WidthOfAWeek}");
 ```
 
-Now we dive into the helper functions. First we take a look at the name of the month. The only noteworthy detail is the very functional mindest seen in the solution to the centering problem. It uses a pattern match to fill in the missing spaces: it is not very efficent, but easy to understand. The recursion will be very short because our lines are only 21 characters wide.
+Let's dive into our helper functions. First we take a look at the name of the month. The only noteworthy detail is the very functional mindest seen in the solution to the centering problem. It uses a pattern match to fill in the missing spaces: it is not very efficent, but easy to understand. The recursion will be very short because our lines are only 21 characters wide.
 
 
 ```cs
@@ -170,7 +170,7 @@ private static string CenteredMonthName(IEnumerable<DateOnly> month)
     => month
         .First()
         .ToString(MonthNameFormat)
-        .Center(WidthOfAWeek );
+        .Center(WidthOfAWeek);
 
 
 internal static class StringExtensions
@@ -185,47 +185,47 @@ internal static class StringExtensions
 }
 ```
 
-We have already seen the heart of FormatWeeks in the yield solution, but now it is a separate function. FormatWeeks again needs 2 very simple helper functions, the first one Projects the Week of the year, the other one will format a sequence of days.
+We have already seen the heart of `FormatWeeks` in the yield solution, but now it is a separate function. `FormatWeeks` again needs 2 very simple helper functions, the first one projects the week of the year, the other one will format a sequence of days.
 
 The sequence of days can be either a complete week, or a partial week from the beginning or the end of the month. But because of the way we construct these sequences, there always is at least one element in it. 
 
 ```cs
 private static IEnumerable<string> FormatWeeks(IEnumerable<DateOnly> month)
-            => month
-                .AdjacentGroupBy(GetWeekOfYear)
-                .Select(FormatWeek);
+    => month
+        .AdjacentGroupBy(GetWeekOfYear)
+        .Select(FormatWeek);
 ```
 
 The GetWeekOfYear function is just calling the API with the correct parameters and always using the current culture and a little fiddling with DateTime (because DateOnly was introduced far too late in C# 10).
 
 ```cs
 private static int GetWeekOfYear(DateOnly dateTime)
-            => CultureInfo
-                .CurrentCulture
-                .Calendar
-                .GetWeekOfYear(dateTime.ToDateTime(default), CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
+    => CultureInfo
+        .CurrentCulture
+        .Calendar
+        .GetWeekOfYear(dateTime.ToDateTime(default), CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
 ```
 
-We are almost done with `FormatMonth`, now we really format the week, each day has a width of 3 characters, we see that in FormatDay. This means each line should have the same width of 21 characters. We simply pad the week correctly with the PadWeek function.
+We are almost done with `FormatMonth`, now we really format the week, each day has a width of 3 characters, we see that in `FormatDay`. This means each line should have the same width of 21 characters. We simply pad the week correctly with the `PadWeek` function.
 
 ```cs
 private static string FormatWeek(IGrouping<int, DateOnly> week)
-  => PadWeek(week.Select(FormatDay).ConcatToString(), week);
+    => PadWeek(week.Select(FormatDay).ConcatToString(), week);
   
 private static string FormatDay(DateOnly day)
-  => $"{day.Day,WidthOfDay}";
+    => $"{day.Day,WidthOfDay}";
 ```
 
-We can ignore the full weeks, because they are already 21 characters long. How do we distinguish the beginning of the month from the end? The week at the end of the month must start with the first day of the week. So wee pad accordingly from left or the right.
+We can ignore the full weeks, because they are already 21 characters long. How do we distinguish the beginning of the month from the end? The week at the end of the month must start with the first day of the week. So we pad accordingly from left or the right.
   
 ```cs
 private static string PadWeek(string formattedWeek, IGrouping<int, DateOnly> week)
-  => StartsOnFirstDayOfWeek(week)
-    ? $"{formattedWeek,-WidthOfAWeek}"
-    : $"{formattedWeek,WidthOfAWeek}";
+    => StartsOnFirstDayOfWeek(week)
+        ? $"{formattedWeek,-WidthOfAWeek}"
+        : $"{formattedWeek,WidthOfAWeek}";
 ```
 
-Now it just boils down to, what is the start of the week? It might be a surprise, that this is actually the most difficult part of this program, because the `DayOfWeek` enum defines Sunday as the first day of the week, which is not true for the largest part of the world, including all of europe. But `CultureInfo` has our back, because it tells us in the `DateTimeFormat`, which Day of the Week is the first Day. However even that needs some calculation with `% DaysInAWeek`.
+Now it just boils down to, what is the start of the week? It might be a surprise, that this is actually the most difficult part of this program, because the `DayOfWeek` enum defines Sunday as the first day of the week, which is not true for the largest part of the world, including all of europe. But `CultureInfo` has our back, because it tells us in the `DateTimeFormat`, which day of the week is the first day. However even that needs some calculation with `% DaysInAWeek`.
 
 The function `NthDayOfWeek` gives us a 0 based index beginning with the start of the week. So we can simply check with `is FirstDayOfTheWeek` that we are indeed on the first day of the week. And this works independent of the given culture. Sweet.
 
@@ -278,14 +278,14 @@ To do this lazily we use `Chunk`.
 Chunk is grouping a sequnce into multiple sequnces of the same length. In our case we want to make the sequence of 12 months in to 4 sequences of length 3.
 
 ```cs
-const HorizontalMonths = 3;
+const MonthsPerRow = 3;
 
 private static string CreateCalendarString(int year)
     => Sequence.Successors(JanuaryFirst(year), NextDay)
-        .TakeWhile(SameYear(year))
+        .TakeWhile(IsSameYear(year))
         .AdjacentGroupBy(day => day.Month)
         .Select(LayoutMonth)
-        .Chunk(HorizontalMonths);
+        .Chunk(MonthsPerRow);
 ```
 
 That means we have now an `IEnumerable<IEnumerable<IEnumerable<string>>>` where in the outermost `IEnumerable` we group 3 months together respectivly.
@@ -313,10 +313,10 @@ Funcky has a lazy `Transpose` extension function for `IEnumerable<IEnumerable<T>
 ```cs
 private static string CreateCalendarString(int year)
 => Sequence.Successors(JanuaryFirst(year), NextDay)
-  .TakeWhile(SameYear(year))
+  .TakeWhile(IsSameYear(year))
   .AdjacentGroupBy(day => day.Month)
   .Select(LayoutMonth)
-  .Chunk(HorizontalMonths)
+  .Chunk(MonthsPerRow)
   .Select(chunk => chunk.Transpose())
 ```
 
@@ -337,10 +337,10 @@ I think it is obvious that at this point, we are done. We just have to join the 
 ```cs
 private static string CreateCalendarString(int year)
     => Sequence.Successors(JanuaryFirst(year), NextDay)
-        .TakeWhile(SameYear(year))
+        .TakeWhile(IsSameYear(year))
         .AdjacentGroupBy(day => day.Month)
         .Select(LayoutMonth)
-        .Chunk(HorizontalMonths)
+        .Chunk(MonthsPerRow)
         .Select(EnumerableExtensions.Transpose)
         .Select(JoinLine)
         .SelectMany(Identity)
