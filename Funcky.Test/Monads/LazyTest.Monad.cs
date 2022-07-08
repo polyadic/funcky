@@ -1,36 +1,43 @@
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class LazyTest
 {
     [Property]
-    public Property LeftIdentityHolds(int input, Func<int, int> func)
-    {
-        Lazy<int> LazyFunc(int x) => new(() => func(x));
-
-        return (new Lazy<int>(() => input).SelectMany(LazyFunc).Value == LazyFunc(input).Value)
-            .ToProperty();
-    }
+    public Property AssociativityHolds(
+        Lazy<int> input,
+        Func<int, Lazy<int>> selectorOne,
+        Func<int, Lazy<int>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
     [Property]
-    public Property RightIdentityHolds(int input)
-    {
-        var lazyInput = new Lazy<int>(() => input);
-        return (lazyInput.SelectMany(v => new Lazy<int>(() => v)).Value == lazyInput.Value)
-            .ToProperty();
-    }
+    public Property RightIdentityHolds(Lazy<int> input)
+        => CheckAssert.Equal(input.SelectMany(Lazy.Return), input);
 
     [Property]
-    public Property AssociativityHolds(int input, Func<int, int> func1, Func<int, int> func2)
-    {
-        Lazy<int> LazyFunc1(int x) => new(() => func1(x));
-        Lazy<int> LazyFunc2(int x) => new(() => func2(x));
-        Lazy<int> Func1AndFunc2(int x) => LazyFunc1(x).SelectMany(LazyFunc2);
+    public Property LeftIdentityHolds(int input, Func<int, Lazy<int>> function)
+        => CheckAssert.Equal(Lazy.Return(input).SelectMany(function), function(input));
 
-        var lazyInput = new Lazy<int>(() => input);
-        return (lazyInput.SelectMany(LazyFunc1).SelectMany(LazyFunc2).Value == lazyInput.SelectMany(Func1AndFunc2).Value)
-            .ToProperty();
-    }
+    [Property]
+    public Property AssociativityHoldsWithReferenceTypes(
+        Lazy<string> input,
+        Func<string, Lazy<string>> selectorOne,
+        Func<string, Lazy<string>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
+
+    [Property]
+    public Property RightIdentityHoldsWithReferenceTypes(Lazy<string> input)
+        => CheckAssert.Equal(input.SelectMany(Lazy.Return), input);
+
+    [Property]
+    public Property LeftIdentityHoldsWithReferenceTypes(string input, Func<string, Lazy<string>> function)
+        => CheckAssert.Equal(Lazy.Return(input).SelectMany(function), function(input));
+
+    private static Func<TItem, Lazy<TItem>> Combine<TItem>(Func<TItem, Lazy<TItem>> functionA, Func<TItem, Lazy<TItem>> functionB)
+        where TItem : notnull
+        => input
+            => functionA(input).SelectMany(functionB);
 }
