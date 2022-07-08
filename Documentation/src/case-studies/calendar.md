@@ -216,7 +216,7 @@ private static string FormatDay(DateOnly day)
     => $"{day.Day,WidthOfDay}";
 ```
 
-We can ignore the full weeks, because they are already 21 characters long. How do we distinguish the beginning of the month from the end? The week at the end of the month must start with the first day of the week. So we pad accordingly from left or the right.
+We can ignore the full weeks, because they are already 21 characters long. How do we distinguish the beginning of the month from the end? The week at the end of the month must start with the first day of the week. So we pad accordingly from the left or the right.
   
 ```cs
 private static string PadWeek(string formattedWeek, IGrouping<int, DateOnly> week)
