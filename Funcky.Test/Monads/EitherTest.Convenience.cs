@@ -1,3 +1,5 @@
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit.Sdk;
 
 namespace Funcky.Test.Monads;
@@ -52,5 +54,24 @@ public sealed partial class EitherTest
         Assert.Equal("Value(42)", leftEither.GetOrElse(HandleLeft));
 
         string HandleLeft(int left) => $"Value({left})";
+    }
+
+    public sealed class SelectLeft
+    {
+        [Property]
+        public Property ReturnsTheOriginalRightValue(int value)
+        {
+            var source = Either<Unit>.Return(value);
+            var result = source.SelectLeft<Unit>(_ => throw new XunitException("This should never be called"));
+            return (result.Match(left: False, right: r => r == value)).ToProperty();
+        }
+
+        [Property]
+        public Property AppliesTheGivenSelectorToALeftValue(int value, Func<int, string> selector)
+        {
+            var source = Either<int, Unit>.Left(value);
+            var result = source.SelectLeft(selector);
+            return (result == Either<string, Unit>.Left(selector(value))).ToProperty();
+        }
     }
 }
