@@ -29,10 +29,25 @@ jobs:
         run: yarn build-marble-graphics
       - name: Build Documentation
         run: mdbook build
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: success() && github.ref == 'refs/heads/main'
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: ./Documentation/book
-          commit_message: ${{github.event.head_commit.message}}
+          path: ./Documentation/book
+
+  deploy_pages:
+    needs: build
+    if: github.ref_name == 'main'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
