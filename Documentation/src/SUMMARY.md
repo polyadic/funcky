@@ -1,9 +1,11 @@
 # Summary
 
 [Introduction](./introduction.md)
-
+* [Functional Programming](./fp/overview.md)
 * [Case Studies]()
   * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
+  * [Formatting a calendar page](./case-studies/calendar.md)
+    * [Program.cs](./case-studies/calendar-code.md)
 * [Option Monad](./option.md)
   * [The TryVerb-pattern](./try-pattern.md)
   * [The Linq-Extensions]()
