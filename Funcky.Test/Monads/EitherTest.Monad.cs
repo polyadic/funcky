@@ -1,31 +1,43 @@
 using FsCheck;
 using FsCheck.Xunit;
-using Funcky.FsCheck;
+using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class EitherTest
 {
-    public EitherTest()
-        => FunckyGenerators.Register();
-
     [Property]
     public Property AssociativityHolds(
         Either<int, int> input,
         Func<int, Either<int, int>> selectorOne,
         Func<int, Either<int, int>> selectorTwo)
-    {
-        Either<int, int> CombinedSelector(int x) => selectorOne(x).SelectMany(selectorTwo);
-
-        return (input.SelectMany(selectorOne).SelectMany(selectorTwo) == input.SelectMany(CombinedSelector))
-            .ToProperty();
-    }
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
     [Property]
     public Property RightIdentityHolds(Either<int, int> input)
-        => (input.SelectMany(Either<int>.Return) == input).ToProperty();
+        => CheckAssert.Equal(input, input.SelectMany(Either<int>.Return));
 
     [Property]
     public Property LeftIdentityHolds(int input, Func<int, Either<int, int>> selector)
-        => (Either<int>.Return(input).SelectMany(selector) == selector(input)).ToProperty();
+        => CheckAssert.Equal(Either<int>.Return(input).SelectMany(selector), selector(input));
+
+    [Property]
+    public Property AssociativityHoldsWithReferenceTypes(
+        Either<string, string> input,
+        Func<string, Either<string, string>> selectorOne,
+        Func<string, Either<string, string>> selectorTwo)
+        => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
+
+    [Property]
+    public Property RightIdentityHoldsWithReferenceTypes(Either<string, string> input)
+        => CheckAssert.Equal(input, input.SelectMany(Either<string>.Return));
+
+    [Property]
+    public Property LeftIdentityHoldsWithReferenceTypes(string input, Func<string, Either<string, string>> selector)
+        => CheckAssert.Equal(Either<string>.Return(input).SelectMany(selector), selector(input));
+
+    private static Func<TItem, Either<TItem, TItem>> Combine<TItem>(Func<TItem, Either<TItem, TItem>> functionA, Func<TItem, Either<TItem, TItem>> functionB)
+        where TItem : notnull
+        => input
+            => functionA(input).SelectMany(functionB);
 }

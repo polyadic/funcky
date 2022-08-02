@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <RootNamespace>Funcky.Analyzers</RootNamespace>
-        <LangVersion>10.0</LangVersion>
+        <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <AnalysisLevel>5</AnalysisLevel>

@@ -51,7 +51,7 @@ public static partial class OptionExtensions
         where TItem : notnull
          => option.Match(
              none: Lazy.Return(Option<TItem>.None),
-             some: SequenceLazy.Some);
+             some: SequenceLazy<TItem>.Some);
 
     [Pure]
     public static IEnumerable<Option<T>> Traverse<TItem, T>(
@@ -85,11 +85,12 @@ public static partial class OptionExtensions
             none: static () => Reader<TEnvironment>.Return(Option<TItem>.None),
             some: static item => item.Select(Option.Return));
 
-    private static class SequenceLazy
+    // Workaround for https://github.com/dotnet/linker/issues/1416
+    private static class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>
+        where TItem : notnull
     {
-        // Workaround for https://github.com/dotnet/linker/issues/1416
-        public static Lazy<Option<TItem>> Some<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>(Lazy<TItem> item)
-            where TItem : notnull
-            => item.Select(Option.Return);
+        private static Func<Lazy<TItem>, Lazy<Option<TItem>>>? _some;
+
+        public static Func<Lazy<TItem>, Lazy<Option<TItem>>> Some => _some ??= (some => some.Select(Option.Return));
     }
 }
