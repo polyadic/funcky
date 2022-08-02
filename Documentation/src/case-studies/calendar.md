@@ -69,7 +69,7 @@ private static DateOnly NextDay(DateOnly day)
     => day.AddDays(1);
 
 private static DateOnly JanuaryFirst(int year)
-    => new(year, 1, 1);
+    => new(year: year, month: 1, day: 1);
 
 private static Func<DateOnly, bool> IsSameYear(int year)
     => day
