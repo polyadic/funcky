@@ -44,7 +44,7 @@ public static partial class EitherExtensions
         this Either<TLeft, Lazy<TRight>> either)
         => either.Match(
             left: static left => Lazy.Return(Either<TLeft, TRight>.Left(left)),
-            right: SequenceLazy.Right<TLeft, TRight>);
+            right: SequenceLazy<TLeft, TRight>.Right);
 
     [Pure]
     public static IEnumerable<Either<TLeft, T>> Traverse<TLeft, TRight, T>(
@@ -72,10 +72,11 @@ public static partial class EitherExtensions
             left: static left => Reader<TEnvironment>.Return(Either<TLeft, TRight>.Left(left)),
             right: static right => right.Select(Either<TLeft>.Return));
 
-    private static class SequenceLazy
+    // Workaround for https://github.com/dotnet/linker/issues/1416
+    private static class SequenceLazy<TLeft, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TRight>
     {
-        // Workaround for https://github.com/dotnet/linker/issues/1416
-        public static Lazy<Either<TLeft, TRight>> Right<TLeft, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TRight>(Lazy<TRight> right)
-            => right.Select(Either<TLeft>.Return<TRight>);
+        private static Func<Lazy<TRight>, Lazy<Either<TLeft, TRight>>>? _right;
+
+        public static Func<Lazy<TRight>, Lazy<Either<TLeft, TRight>>> Right => _right ??= (right => right.Select(Either<TLeft>.Return<TRight>));
     }
 }

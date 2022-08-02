@@ -1,10 +1,14 @@
 using FsCheck;
 using FsCheck.Xunit;
+using Funcky.FsCheck;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class EitherTest
 {
+    public EitherTest()
+        => FunckyGenerators.Register();
+
     [Fact]
     public void CreateEitherLeftAndMatchCorrectly()
     {

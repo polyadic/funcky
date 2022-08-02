@@ -44,7 +44,7 @@ public static class ResultExtensions
         this Result<Lazy<TValidResult>> result)
         => result.Match(
             error: static error => Lazy.Return(Result<TValidResult>.Error(error)),
-            ok: SequenceLazy.Ok<TValidResult>);
+            ok: SequenceLazy<TValidResult>.Ok);
 
     [Pure]
     public static IEnumerable<Result<T>> Traverse<TValidResult, T>(
@@ -72,10 +72,11 @@ public static class ResultExtensions
             error: static error => Reader<TEnvironment>.Return(Result<TValidResult>.Error(error)),
             ok: static ok => ok.Select(Result.Return));
 
-    private static class SequenceLazy
+    // Workaround for https://github.com/dotnet/linker/issues/1416
+    private static class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TValidResult>
     {
-        // Workaround for https://github.com/dotnet/linker/issues/1416
-        public static Lazy<Result<TValidResult>> Ok<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TValidResult>(Lazy<TValidResult> ok)
-            => ok.Select(Result.Return);
+        private static Func<Lazy<TValidResult>, Lazy<Result<TValidResult>>>? _ok;
+
+        public static Func<Lazy<TValidResult>, Lazy<Result<TValidResult>>> Ok => _ok ??= (ok => ok.Select(Result.Return));
     }
 }

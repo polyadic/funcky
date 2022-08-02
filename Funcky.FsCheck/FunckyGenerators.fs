@@ -21,6 +21,9 @@ type EquatableException =
 
     override this.GetHashCode() = this.Message.GetHashCode()
 
+type NonNull<'a> = NonNull of 'a with
+    member x.Get = match x with NonNull r -> r
+
 [<Sealed>]
 [<AbstractClass>]
 type FunckyGenerators =
@@ -47,19 +50,24 @@ type FunckyGenerators =
                    return PriorityQueue(values) }
 #endif
 
+    static member nonNull<'a>() =
+        Arb.from<'a>
+            |> Arb.filter (fun x -> not (Object.ReferenceEquals(x, null)))
+            |> Arb.convert NonNull (fun x -> x.Get)
+
     static member option<'a>() =
         { new Arbitrary<Funcky.Monads.Option<'a>>() with
             override _.Generator =
-                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate |> Gen.map Option.Some)]
+                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get) |> Gen.map Option.Some)]
             override _.Shrinker o =
                 o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
         }
 
     static member generateLazy<'a>() =
-        Arb.fromGen (Arb.generate<'a> |> Gen.map Lazy.Return)
+        Arb.fromGen (Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get) |> Gen.map Lazy.Return)
 
     static member generateReader<'env, 'a>() =
-        Arb.fromGen (Arb.generate<Func<'env, 'a>> |> Gen.map Reader<'env>.FromFunc)
+        Arb.fromGen (Arb.generate<Func<'env, NonNull<'a>>> |> Gen.map (fun f -> fun env -> f.Invoke(env).Get) |> Gen.map Reader<'env>.FromFunc)
 
     [<CompiledName("Register")>]
     static member register() = Arb.registerByType typeof<FunckyGenerators> |> ignore

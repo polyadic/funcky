@@ -9,9 +9,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions;
 public sealed class SequenceTest
 {
     public SequenceTest()
-    {
-        FunckyGenerators.Register();
-    }
+        => FunckyGenerators.Register();
 
     [Property]
     public Property SequencingEitherReturnsLeftWhenOneOrMoreElementsAreLeft(IList<Either<int, int>> list)
