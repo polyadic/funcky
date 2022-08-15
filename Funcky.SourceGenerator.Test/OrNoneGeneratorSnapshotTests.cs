@@ -14,15 +14,55 @@ public class OrNoneGeneratorSnapshotTests
     [Fact]
     public Task GenerateSingleMethodWithTheSingleArgumentCandidate()
     {
-        const string source = @"using System.Diagnostics.Contracts;
+        const string source = @"
+#nullable enable
+
+using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
-    [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
     public static partial class ParseExtensions
     {
+    }
+
+    public sealed class Target
+    {
+        public static bool TryParse(string candidate, out Target result)
+        {
+            result = default!;
+            return false;
+        }
+    }
+}";
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
+    }
+
+    [Fact]
+    public Task GeneratesMethodWhenTargetIsNotNullableAnnotated()
+    {
+        const string source = @"
+using System.Diagnostics.Contracts;
+using Funcky.Internal;
+using Funcky.Monads;
+
+namespace Funcky.Extensions
+{
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+    public static partial class ParseExtensions
+    {
+    }
+
+    public sealed class Target
+    {
+        public static bool TryParse(string candidate, out Target result)
+        {
+            result = default!;
+            return false;
+        }
     }
 }";
 
@@ -32,16 +72,65 @@ namespace Funcky.Extensions
     [Fact]
     public Task GenerateSingleMethodWithMultipleArgumentsToForward()
     {
-        const string source = @"using System;
+        const string source = @"
+#nullable enable
+
+using System;
 using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
-    [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
     public static partial class ParseExtensions
     {
+    }
+
+    public sealed class Target
+    {
+        public static bool TryParse(string candidate, bool caseSensitive, IFormatProvider provider, out Target result)
+        {
+            result = default!;
+            return false;
+        }
+    }
+}";
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
+    }
+
+    [Fact]
+    public Task GeneratesAllOverloadsForAGivenMethod()
+    {
+        const string source = @"
+#nullable enable
+
+using System;
+using System.Diagnostics.Contracts;
+using Funcky.Internal;
+using Funcky.Monads;
+
+namespace Funcky.Extensions
+{
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+    public static partial class ParseExtensions
+    {
+    }
+
+    public sealed class Target
+    {
+        public static bool TryParse(string candidate, out Target result)
+        {
+            result = default!;
+            return false;
+        }
+
+        public static bool TryParse(string candidate, bool caseSensitive, out Target result)
+        {
+            result = default!;
+            return false;
+        }
     }
 }";
 
@@ -51,17 +140,35 @@ namespace Funcky.Extensions
     [Fact]
     public Task GenerateMultipleMethodsInASingleClass()
     {
-        const string source = @"using System;
+        const string source = @"
+#nullable enable
+
+using System;
 using System.Diagnostics.Contracts;
 using Funcky.Internal;
 using Funcky.Monads;
 
 namespace Funcky.Extensions
 {
-    [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
-    [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+    [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParseExact))]
     public static partial class ParseExtensions
     {
+    }
+
+    public sealed class Target
+    {
+        public static bool TryParse(string candidate, out Target result)
+        {
+            result = default!;
+            return false;
+        }
+
+        public static bool TryParseExact(string candidate, out Target result)
+        {
+            result = default!;
+            return false;
+        }
     }
 }";
 
