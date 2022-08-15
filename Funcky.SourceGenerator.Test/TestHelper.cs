@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -20,11 +21,12 @@ public static class TestHelper
     {
         var driver = CSharpGeneratorDriver
             .Create(new OrNoneFromTryPatternGenerator())
-            .RunGeneratorsAndUpdateCompilation(ToCompilation(source), out var outputCompilation, out _);
+            .RunGeneratorsAndUpdateCompilation(ToCompilation(source), out var outputCompilation, out var diagnostics);
 
-        if (outputCompilation.GetDiagnostics().Any(d => d.Severity >= DiagnosticSeverity.Warning))
+        var combinedDiagnostics = diagnostics.Concat(outputCompilation.GetDiagnostics()).ToImmutableArray();
+        if (combinedDiagnostics.Any(d => d.Severity >= DiagnosticSeverity.Warning))
         {
-            throw new InvalidOperationException($"Compilation has warnings or errors:{Environment.NewLine}{string.Join(Environment.NewLine, outputCompilation.GetDiagnostics())}");
+            throw new InvalidOperationException($"Compilation has warnings or errors:{Environment.NewLine}{string.Join(Environment.NewLine, combinedDiagnostics)}");
         }
 
         return driver;
