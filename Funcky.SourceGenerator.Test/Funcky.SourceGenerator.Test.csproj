@@ -27,7 +27,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" />
-        <ProjectReference Include="..\Funcky\Funcky.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,88 +3,184 @@ namespace Funcky.SourceGenerator.Test;
 [UsesVerify] // 👈 Adds hooks for Verify into XUnit
 public class OrNoneGeneratorSnapshotTests
 {
+    private const string OptionSource =
+        """
+        namespace Funcky.Monads
+        {
+            public struct Option<TItem> where TItem : notnull
+            {
+                public static implicit operator Option<TItem>(TItem item) => default;
+            }
+        }
+        """;
+
     [Fact]
     public Task GenerateSingleMethodWithTheSingleArgumentCandidate()
     {
-        const string source = @"using System.Diagnostics.Contracts;
-using Funcky.Internal;
-using Funcky.Monads;
+        const string source =
+            """
+            #nullable enable
 
-namespace Funcky.Extensions
-{
-    public static partial class ParseExtensions
-    {
-        [Pure]
-        [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
-        public static partial Option<bool> ParseBooleanOrNone(this string candidate);
+            using System.Diagnostics.Contracts;
+            using Funcky.Internal;
+            using Funcky.Monads;
+
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                public static partial class ParseExtensions
+                {
+                }
+
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
     }
-}";
 
-        return TestHelper.Verify(source);
+    [Fact]
+    public Task GeneratesMethodWhenTargetIsNotNullableAnnotated()
+    {
+        const string source = """
+            using System.Diagnostics.Contracts;
+            using Funcky.Internal;
+            using Funcky.Monads;
+
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                public static partial class ParseExtensions
+                {
+                }
+
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
     }
 
     [Fact]
     public Task GenerateSingleMethodWithMultipleArgumentsToForward()
     {
-        const string source = @"using System.Diagnostics.Contracts;
-using Funcky.Internal;
-using Funcky.Monads;
+        const string source = """
+            #nullable enable
 
-namespace Funcky.Extensions
-{
-    public static partial class ParseExtensions
-    {
-        [Pure]
-        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
-        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles);
-    }
-}";
+            using System;
+            using System.Diagnostics.Contracts;
+            using Funcky.Internal;
+            using Funcky.Monads;
 
-        return TestHelper.Verify(source);
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                public static partial class ParseExtensions
+                {
+                }
+
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, bool caseSensitive, IFormatProvider provider, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
     }
 
     [Fact]
-    public Task GenerateMethodWhichHasConstraints()
+    public Task GeneratesAllOverloadsForAGivenMethod()
     {
-        const string source = @"using System.Diagnostics.Contracts;
-using Funcky.Internal;
-using Funcky.Monads;
+        const string source = """
+            #nullable enable
 
-namespace Funcky.Extensions
-{
-    public static partial class ParseExtensions
-    {
-        [Pure]
-        [OrNoneFromTryPattern(typeof(Enum), nameof(Enum.TryParse))]
-        public static partial Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
-            where TEnum : struct;
-    }
-}";
+            using System;
+            using System.Diagnostics.Contracts;
+            using Funcky.Internal;
+            using Funcky.Monads;
 
-        return TestHelper.Verify(source);
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                public static partial class ParseExtensions
+                {
+                }
+
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+
+                    public static bool TryParse(string candidate, bool caseSensitive, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
     }
 
     [Fact]
     public Task GenerateMultipleMethodsInASingleClass()
     {
-        const string source = @"using System.Diagnostics.Contracts;
-using Funcky.Internal;
-using Funcky.Monads;
+        const string source = """
+            #nullable enable
 
-namespace Funcky.Extensions
-{
-    public static partial class ParseExtensions
-    {
-        [Pure]
-        [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
-        public static partial Option<bool> ParseBooleanOrNone(this string candidate);
+            using System;
+            using System.Diagnostics.Contracts;
+            using Funcky.Internal;
+            using Funcky.Monads;
 
-        [Pure]
-        [OrNoneFromTryPattern(typeof(DateTime), nameof(DateTime.TryParse))]
-        public static partial Option<DateTime> ParseDateTimeOrNone(this string candidate, IFormatProvider provider, DateTimeStyles styles);
-    }
-}";
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParseExact))]
+                public static partial class ParseExtensions
+                {
+                }
 
-        return TestHelper.Verify(source);
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+
+                    public static bool TryParseExact(string candidate, out Target result)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
     }
 }

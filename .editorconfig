@@ -19,3 +19,6 @@ indent_size = 2
 dotnet_diagnostic.IDE0005.severity = warning
 csharp_style_namespace_declarations=file_scoped:suggestion
 
+[*.verified.cs]
+trim_trailing_whitespace = false
+insert_final_newline = false
