@@ -58,11 +58,15 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         => attribute => attribute.ApplicationSyntaxReference?.GetSyntax().Ancestors().OfType<ClassDeclarationSyntax>().FirstOrDefault() == partialPart;
 
     private static ParsedAttribute ParseAttribute(AttributeData attribute)
-        => attribute.ConstructorArguments.Length >= 2
-           && attribute.ConstructorArguments[0].Value is INamedTypeSymbol type
-           && attribute.ConstructorArguments[1].Value is string methodName
+    {
+        const int typeNameIndex = 0;
+        const int methodNameIndex = 1;
+        return attribute.ConstructorArguments.Length >= 2
+               && attribute.ConstructorArguments[typeNameIndex].Value is INamedTypeSymbol type
+               && attribute.ConstructorArguments[methodNameIndex].Value is string methodName
             ? new ParsedAttribute(type, methodName)
             : throw new InvalidOperationException("Invalid attribute: expected a named type and a method name");
+    }
 
     private static MethodPartial ToMethodPartial(SemanticTarget semanticTarget, Compilation compilation)
         => new(
