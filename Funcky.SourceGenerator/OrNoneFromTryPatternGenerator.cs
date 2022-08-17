@@ -65,19 +65,17 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             : throw new InvalidOperationException("Invalid attribute: expected a named type and a method name");
 
     private static MethodPartial ToMethodPartial(SemanticTarget semanticTarget, Compilation compilation)
-    {
-        var methods =
-            from attribute in semanticTarget.Attributes
-            from method in attribute.Type.GetMembers().OfType<IMethodSymbol>()
-            where method.Name == attribute.MethodName
-            select GenerateOrNoneMethod(attribute.Type, method);
-
-        return new MethodPartial(
+        => new(
             NamespaceName: GetNamespaceName(semanticTarget.ClassDeclarationSyntax, compilation),
             ClassName: semanticTarget.ClassDeclarationSyntax.Identifier.ToString(),
-            Methods: methods.ToImmutableArray(),
+            Methods: GenerateMethods(semanticTarget).ToImmutableArray(),
             SourceTree: semanticTarget.ClassDeclarationSyntax.SyntaxTree);
-    }
+
+    private static IEnumerable<MethodDeclarationSyntax> GenerateMethods(SemanticTarget semanticTarget)
+        => (from attribute in semanticTarget.Attributes
+            from method in attribute.Type.GetMembers().OfType<IMethodSymbol>()
+            where method.Name == attribute.MethodName
+            select GenerateOrNoneMethod(attribute.Type, method));
 
     private static MethodDeclarationSyntax GenerateOrNoneMethod(ITypeSymbol type, IMethodSymbol method)
         => MethodDeclaration(
