@@ -82,7 +82,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>"),
             GetMethodName(type, method))
             .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
-            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(p => p.RefKind == RefKind.None).Select(GenerateParameter))))
+            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(p => p.RefKind is RefKind.None).Select(GenerateParameter))))
             .WithExpressionBody(ArrowExpressionClause(GenerateOrNoneImplementation(type, method)))
             .WithAttributeLists(SingletonList(AttributeList(SingletonSeparatedList(Attribute(IdentifierName("global::System.Diagnostics.Contracts.Pure"))))))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
@@ -95,16 +95,18 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
                     ParseTypeName(method.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
                     IdentifierName(method.Name)),
                 GenerateTryMethodArgumentList(method)),
-            whenTrue: IdentifierName(method.Parameters.Single(p => p.RefKind == RefKind.Out).Name),
+            whenTrue: IdentifierName(method.Parameters.Single(IsOutParameter).Name),
             whenFalse: DefaultExpression(ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>")));
 
     private static ArgumentListSyntax GenerateTryMethodArgumentList(IMethodSymbol method)
         => ArgumentList(SeparatedList(method.Parameters.Select(GenerateTryMethodArgument)));
 
     private static ArgumentSyntax GenerateTryMethodArgument(IParameterSymbol parameter, int index)
-        => parameter.RefKind == RefKind.Out
+        => IsOutParameter(parameter)
             ? GenerateOutVarArgument(Identifier(GetParameterName(parameter, index)))
             : Argument(IdentifierName(GetParameterName(parameter, index)));
+
+    private static bool IsOutParameter(IParameterSymbol parameter) => parameter.RefKind is RefKind.Out;
 
     private static ArgumentSyntax GenerateOutVarArgument(SyntaxToken identifier)
         => Argument(
@@ -149,8 +151,8 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             : $"{method.Name}{type.Name}{orNoneSuffix}";
     }
 
-    private static string GetParameterName(IParameterSymbol parameter, int index)
-        => index == 0
+    private static string GetParameterName(ISymbol parameter, int index)
+        => index is 0
             ? "candidate"
             : parameter.Name;
 
