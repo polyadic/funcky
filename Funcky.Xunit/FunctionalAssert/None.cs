@@ -14,7 +14,7 @@ public static partial class FunctionalAssert
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
-    public static void IsNone<TItem>(Option<TItem> option)
+    public static void None<TItem>(Option<TItem> option)
         where TItem : notnull
     {
         try
@@ -24,7 +24,7 @@ public static partial class FunctionalAssert
                 some: static value => throw new AssertActualExpectedException(
                     expected: "None",
                     actual: $"Some({value})",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsNone)}() Failure"));
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(None)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {

@@ -56,7 +56,7 @@ public sealed partial class OptionTest
             from m in maybe
             select m == 1337;
 
-        FunctionalAssert.IsNone(maybeBool);
+        FunctionalAssert.None(maybeBool);
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public sealed partial class OptionTest
                      from otherNumber in someOtherNumber
                      select Tuple.Create(number, date, otherNumber);
 
-        FunctionalAssert.IsNone(result);
+        FunctionalAssert.None(result);
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public sealed partial class OptionTest
 
         foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
         {
-            _ = FunctionalAssert.IsSome(number);
+            _ = FunctionalAssert.Some(number);
         }
     }
 
@@ -225,11 +225,11 @@ public sealed partial class OptionTest
         var none = Option<int>.None;
         var some = Option.Some(42);
 
-        FunctionalAssert.IsNone(none.AndThen(_ => 1337));
-        Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => 1337)));
+        FunctionalAssert.None(none.AndThen(_ => 1337));
+        Assert.Equal(1337, FunctionalAssert.Some(some.AndThen(_ => 1337)));
 
-        FunctionalAssert.IsNone(none.AndThen(_ => Option.Some(1337)));
-        Assert.Equal(1337, FunctionalAssert.IsSome(some.AndThen(_ => Option.Some(1337))));
+        FunctionalAssert.None(none.AndThen(_ => Option.Some(1337)));
+        Assert.Equal(1337, FunctionalAssert.Some(some.AndThen(_ => Option.Some(1337))));
     }
 
     [Fact]
@@ -371,8 +371,8 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenAFunctionWithADefaultOptionParameterGivesANoneWhenNoValueGiven()
     {
-        FunctionalAssert.IsNone(MethodWithDefaultOptionParameter());
-        FunctionalAssert.IsSome("value", MethodWithDefaultOptionParameter(Option.Some("value")));
+        FunctionalAssert.None(MethodWithDefaultOptionParameter());
+        FunctionalAssert.Some("value", MethodWithDefaultOptionParameter(Option.Some("value")));
     }
 
     [Fact]
@@ -382,7 +382,7 @@ public sealed partial class OptionTest
             .Select(_ => Option.Some(1337))
             .FirstOrDefault(False);
 
-        FunctionalAssert.IsNone(defaultValue);
+        FunctionalAssert.None(defaultValue);
     }
 
     private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;

@@ -21,7 +21,7 @@ public sealed partial class EitherTest
 
         var sideEffect = Option<int>.None;
         either.Inspect(v => sideEffect = v);
-        FunctionalAssert.IsSome(value, sideEffect);
+        FunctionalAssert.Some(value, sideEffect);
     }
 
     [Theory]

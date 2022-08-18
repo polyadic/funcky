@@ -22,7 +22,7 @@ public class GetNonEnumeratedCountOrNoneTest
 
         var range = Enumerable.Range(1, count);
 
-        Assert.Equal(count, FunctionalAssert.IsSome(range.GetNonEnumeratedCountOrNone()));
+        Assert.Equal(count, FunctionalAssert.Some(range.GetNonEnumeratedCountOrNone()));
     }
 
     [Property]
