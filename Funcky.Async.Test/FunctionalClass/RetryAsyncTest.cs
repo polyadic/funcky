@@ -10,7 +10,7 @@ public sealed class RetryAsyncTest
     public async Task ReturnsTheValueImmediatelyIfTheProducerIsPureAndReturnsSome()
     {
         const int value = 10;
-        FunctionalAssert.IsSome(value, await RetryAsync(() => ValueTask.FromResult(Option.Some(value)), new DoNotRetryPolicy()));
+        FunctionalAssert.Some(value, await RetryAsync(() => ValueTask.FromResult(Option.Some(value)), new DoNotRetryPolicy()));
     }
 
     [Theory]
@@ -24,7 +24,7 @@ public sealed class RetryAsyncTest
         const string produceString = "Hello world!";
         var producer = new MaybeProducer<string>(1000, produceString);
 
-        FunctionalAssert.IsNone(await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(numberOfRetries)));
+        FunctionalAssert.None(await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(numberOfRetries)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
     }
 
@@ -39,7 +39,7 @@ public sealed class RetryAsyncTest
         const string produceString = "Hello world!";
         var producer = new MaybeProducer<string>(numberOfRetries, produceString);
 
-        FunctionalAssert.IsSome(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
+        FunctionalAssert.Some(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
     }
 

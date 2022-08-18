@@ -13,7 +13,7 @@ public static partial class FunctionalAssert
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
-    public static Exception IsError<TResult>(Result<TResult> result)
+    public static Exception Error<TResult>(Result<TResult> result)
     {
         try
         {
@@ -22,7 +22,7 @@ public static partial class FunctionalAssert
                 ok: static value => throw new AssertActualExpectedException(
                     expected: "Error(...)",
                     actual: $"Ok({value})",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsError)}() Failure"));
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(Error)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {

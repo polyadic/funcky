@@ -13,7 +13,7 @@ public static partial class FunctionalAssert
     #else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
-    public static void IsSome<TItem>(TItem expectedValue, Option<TItem> option)
+    public static void Some<TItem>(TItem expectedValue, Option<TItem> option)
         where TItem : notnull
     {
         try
@@ -25,7 +25,7 @@ public static partial class FunctionalAssert
             throw new AssertActualExpectedException(
                 expected: exception.Expected,
                 actual: exception.Actual,
-                userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsSome)}() Failure");
+                userMessage: $"{nameof(FunctionalAssert)}.{nameof(Some)}() Failure");
         }
     }
 
@@ -40,7 +40,7 @@ public static partial class FunctionalAssert
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
-    public static TItem IsSome<TItem>(Option<TItem> option)
+    public static TItem Some<TItem>(Option<TItem> option)
         where TItem : notnull
     {
         try
@@ -50,7 +50,7 @@ public static partial class FunctionalAssert
                 none: static () => throw new AssertActualExpectedException(
                     expected: "Some(...)",
                     actual: "None",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsSome)}() Failure"));
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(Some)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {

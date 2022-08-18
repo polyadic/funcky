@@ -7,8 +7,8 @@ public sealed partial class OptionTest
     [Fact]
     public void FromBooleanReturnsAMatchingOptionUnit()
     {
-        FunctionalAssert.IsNone(Option.FromBoolean(false));
-        FunctionalAssert.IsSome(Unit.Value, Option.FromBoolean(true));
+        FunctionalAssert.None(Option.FromBoolean(false));
+        FunctionalAssert.Some(Unit.Value, Option.FromBoolean(true));
     }
 
     [Fact]
@@ -16,8 +16,8 @@ public sealed partial class OptionTest
     {
         const int expectedValue = 1337;
 
-        FunctionalAssert.IsNone(Option.FromBoolean(false, expectedValue));
-        FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, expectedValue));
+        FunctionalAssert.None(Option.FromBoolean(false, expectedValue));
+        FunctionalAssert.Some(expectedValue, Option.FromBoolean(true, expectedValue));
     }
 
     [Fact]
@@ -25,13 +25,13 @@ public sealed partial class OptionTest
     {
         var expectedValue = 1337;
 
-        FunctionalAssert.IsNone(Option.FromBoolean(false, () => expectedValue));
-        FunctionalAssert.IsSome(expectedValue, Option.FromBoolean(true, () => expectedValue));
+        FunctionalAssert.None(Option.FromBoolean(false, () => expectedValue));
+        FunctionalAssert.Some(expectedValue, Option.FromBoolean(true, () => expectedValue));
     }
 
     [Fact]
     public void TheBooleanSelectorIsLazyAndOnlyCalledWhenTheTrue()
     {
-        FunctionalAssert.IsNone(Option.FromBoolean(false, FailOnCall.Function<string>));
+        FunctionalAssert.None(Option.FromBoolean(false, FailOnCall.Function<string>));
     }
 }

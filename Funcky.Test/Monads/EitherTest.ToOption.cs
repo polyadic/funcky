@@ -7,13 +7,13 @@ public sealed partial class EitherTest
         [Fact]
         public void ReturnsValueWhenEitherIsLeft()
         {
-            FunctionalAssert.IsSome("test", Either<string, int>.Left("test").LeftOrNone());
+            FunctionalAssert.Some("test", Either<string, int>.Left("test").LeftOrNone());
         }
 
         [Fact]
         public void ReturnsNoneWhenEitherIsRight()
         {
-            FunctionalAssert.IsNone(Either<string>.Return(10).LeftOrNone());
+            FunctionalAssert.None(Either<string>.Return(10).LeftOrNone());
         }
     }
 
@@ -22,13 +22,13 @@ public sealed partial class EitherTest
         [Fact]
         public void ReturnsValueWhenEitherIsRight()
         {
-            FunctionalAssert.IsSome("test", Either<int>.Return("test").RightOrNone());
+            FunctionalAssert.Some("test", Either<int>.Return("test").RightOrNone());
         }
 
         [Fact]
         public void ReturnsNoneWhenEitherIsLeft()
         {
-            FunctionalAssert.IsNone(Either<int, string>.Left(10).RightOrNone());
+            FunctionalAssert.None(Either<int, string>.Left(10).RightOrNone());
         }
     }
 }

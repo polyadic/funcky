@@ -49,7 +49,7 @@ public sealed class JsonOptionConverterTest
     public void DeserializesNoneFromNull()
     {
         const string json = @"null";
-        FunctionalAssert.IsNone(JsonSerializer.Deserialize<Option<string>>(json));
+        FunctionalAssert.None(JsonSerializer.Deserialize<Option<string>>(json));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public sealed class JsonOptionConverterTest
     {
         const string json = @"{""FirstName"":""Peter"",""LastName"":""Pan""}";
         var expectedObject = new Person("Peter", "Pan");
-        FunctionalAssert.IsSome(expectedObject, JsonSerializer.Deserialize<Option<Person>>(json));
+        FunctionalAssert.Some(expectedObject, JsonSerializer.Deserialize<Option<Person>>(json));
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public sealed class JsonOptionConverterTest
     {
         const string json = @"42";
         const int expectedInteger = 42;
-        FunctionalAssert.IsSome(expectedInteger, JsonSerializer.Deserialize<Option<int>>(json));
+        FunctionalAssert.Some(expectedInteger, JsonSerializer.Deserialize<Option<int>>(json));
     }
 
     [Fact]
