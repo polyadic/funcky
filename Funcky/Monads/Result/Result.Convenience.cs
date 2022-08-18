@@ -14,9 +14,9 @@ public readonly partial struct Result<TValidResult>
     }
 
     public TValidResult GetOrThrow()
-    => Match(
-        ok: Identity,
-        error: ThrowWithOriginalStackTrace);
+        => Match(
+            ok: Identity,
+            error: ThrowWithOriginalStackTrace);
 
     private static TValidResult ThrowWithOriginalStackTrace(Exception exception)
     {
