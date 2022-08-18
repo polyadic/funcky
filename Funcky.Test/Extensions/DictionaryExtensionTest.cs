@@ -9,7 +9,7 @@ public sealed class DictionaryExtensionTest
 
         var maybe = dictionary.GetValueOrNone(key: "some");
 
-        FunctionalAssert.IsSome("value", maybe);
+        FunctionalAssert.Some("value", maybe);
     }
 
     [Fact]
@@ -19,6 +19,6 @@ public sealed class DictionaryExtensionTest
 
         var maybe = dictionary.GetValueOrNone(readOnlyKey: "none");
 
-        FunctionalAssert.IsNone(maybe);
+        FunctionalAssert.None(maybe);
     }
 }

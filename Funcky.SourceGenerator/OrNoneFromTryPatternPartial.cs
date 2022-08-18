@@ -7,9 +7,8 @@ namespace Funcky.SourceGenerator;
 
 internal class OrNoneFromTryPatternPartial
 {
-    public static CompilationUnitSyntax GetSyntaxTree(string namespaceName, string className, IEnumerable<UsingDirectiveSyntax> usings, IEnumerable<MemberDeclarationSyntax> methods)
+    public static CompilationUnitSyntax GetSyntaxTree(string namespaceName, string className, IEnumerable<MethodDeclarationSyntax> methods)
         => CompilationUnit()
-            .AddUsings(usings.ToArray())
             .AddMembers(BuildNamespace(namespaceName, className, methods));
 
     private static NamespaceDeclarationSyntax BuildNamespace(string namespaceName, string className, IEnumerable<MemberDeclarationSyntax> methods)

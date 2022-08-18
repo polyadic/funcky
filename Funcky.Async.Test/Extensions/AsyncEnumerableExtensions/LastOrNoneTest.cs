@@ -7,13 +7,13 @@ public sealed class LastOrNoneTest
     [Fact]
     public async Task LastOrNoneReturnsNoneWhenEnumerableIsEmpty()
     {
-        FunctionalAssert.IsNone(await EmptyEnumerable.LastOrNoneAsync());
+        FunctionalAssert.None(await EmptyEnumerable.LastOrNoneAsync());
     }
 
     [Fact]
     public async Task LastOrNoneReturnsItemWhenEnumerableHasOneItem()
     {
-        FunctionalAssert.IsSome(
+        FunctionalAssert.Some(
             FirstItem,
             await EnumerableWithOneItem.LastOrNoneAsync());
     }
@@ -21,14 +21,14 @@ public sealed class LastOrNoneTest
     [Fact]
     public async Task LastOrNoneReturnsNoneWhenEnumerableHasOneItemButItDoesNotMatchPredicate()
     {
-        FunctionalAssert.IsNone(
+        FunctionalAssert.None(
             await EnumerableWithOneItem.LastOrNoneAsync(False));
     }
 
     [Fact]
     public async Task LastOrNoneReturnsLastItemWhenEnumerableHasMoreThanOneItem()
     {
-        FunctionalAssert.IsSome(
+        FunctionalAssert.Some(
             LastItem,
             await EnumerableWithMoreThanOneItem.LastOrNoneAsync());
     }
@@ -36,6 +36,6 @@ public sealed class LastOrNoneTest
     [Fact]
     public async Task LastOrNoneReturnsNoneWhenEnumerableHasItemsButNoneMatchesPredicate()
     {
-        FunctionalAssert.IsNone(await EnumerableWithMoreThanOneItem.LastOrNoneAsync(False));
+        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.LastOrNoneAsync(False));
     }
 }

@@ -25,7 +25,7 @@ public sealed class IndexOfTest
     [MemberData(nameof(InvalidIndexes))]
     public void ReturnsNoneIfNeedleIsNotFound(Option<int> index)
     {
-        FunctionalAssert.IsNone(index);
+        FunctionalAssert.None(index);
     }
 
     public static TheoryData<Option<int>> InvalidIndexes()
@@ -65,7 +65,7 @@ public sealed class IndexOfTest
     [MemberData(nameof(ValidIndexes))]
     public void ReturnsIndexIfNeedleIsFound(Option<int> index)
     {
-        FunctionalAssert.IsSome(NeedlePosition, index);
+        FunctionalAssert.Some(NeedlePosition, index);
     }
 
     public static TheoryData<Option<int>> ValidIndexes()
@@ -110,7 +110,7 @@ public sealed class IndexOfTest
             .ForEach(matchingExtensionMethod =>
             {
                 matchingExtensionMethod.AndThen(WriteToTestOutput);
-                _ = FunctionalAssert.IsSome(matchingExtensionMethod);
+                _ = FunctionalAssert.Some(matchingExtensionMethod);
             });
     }
 

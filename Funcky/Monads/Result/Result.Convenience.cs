@@ -1,3 +1,5 @@
+using System.Runtime.ExceptionServices;
+
 namespace Funcky.Monads;
 
 public readonly partial struct Result<TValidResult>
@@ -9,5 +11,17 @@ public readonly partial struct Result<TValidResult>
     {
         Switch(ok: action, error: NoOperation);
         return this;
+    }
+
+    public TValidResult GetOrThrow()
+        => Match(
+            ok: Identity,
+            error: ThrowWithOriginalStackTrace);
+
+    private static TValidResult ThrowWithOriginalStackTrace(Exception exception)
+    {
+        ExceptionDispatchInfo.Capture(exception).Throw();
+
+        throw new Exception("unreachable", exception);
     }
 }

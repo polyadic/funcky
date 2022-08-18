@@ -13,7 +13,7 @@ public static partial class FunctionalAssert
     #else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
-    public static void IsOk<TResult>(TResult expectedResult, Result<TResult> result)
+    public static void Ok<TResult>(TResult expectedResult, Result<TResult> result)
     {
         try
         {
@@ -24,7 +24,7 @@ public static partial class FunctionalAssert
             throw new AssertActualExpectedException(
                 expected: exception.Expected,
                 actual: exception.Actual,
-                userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure");
+                userMessage: $"{nameof(FunctionalAssert)}.{nameof(Ok)}() Failure");
         }
     }
 
@@ -38,7 +38,7 @@ public static partial class FunctionalAssert
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
-    public static TResult IsOk<TResult>(Result<TResult> result)
+    public static TResult Ok<TResult>(Result<TResult> result)
     {
         try
         {
@@ -47,7 +47,7 @@ public static partial class FunctionalAssert
                 error: static exception => throw new AssertActualExpectedException(
                     expected: "Ok(...)",
                     actual: $"Error({FormatException(exception)})",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(IsOk)}() Failure"));
+                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(Ok)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {

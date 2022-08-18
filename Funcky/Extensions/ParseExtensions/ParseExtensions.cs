@@ -2,12 +2,9 @@ using Funcky.Internal;
 
 namespace Funcky.Extensions;
 
+[OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
 public static partial class ParseExtensions
 {
-    [Pure]
-    [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
-    public static partial Option<bool> ParseBooleanOrNone(this string candidate);
-
     [Pure]
     public static Option<TEnum> ParseEnumOrNone<TEnum>(this string candidate)
         where TEnum : struct
@@ -37,10 +34,6 @@ public static partial class ParseExtensions
 #endif
 
 #if READ_ONLY_SPAN_SUPPORTED
-    [Pure]
-    [OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
-    public static partial Option<bool> ParseBooleanOrNone(this ReadOnlySpan<char> candidate);
-
 #if NET6_0_OR_GREATER
     [Pure]
     public static Option<TEnum> ParseEnumOrNone<TEnum>(this ReadOnlySpan<char> candidate)

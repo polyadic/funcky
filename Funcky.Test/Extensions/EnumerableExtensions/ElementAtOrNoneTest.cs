@@ -9,7 +9,7 @@ public sealed class ElementAtOrNoneTest
 
         foreach (var index in Enumerable.Range(-5, 5))
         {
-            FunctionalAssert.IsNone(empty.ElementAtOrNone(index));
+            FunctionalAssert.None(empty.ElementAtOrNone(index));
         }
     }
 
@@ -18,15 +18,15 @@ public sealed class ElementAtOrNoneTest
     {
         var range = Enumerable.Range(1, 5);
 
-        FunctionalAssert.IsNone(range.ElementAtOrNone(-42));
-        FunctionalAssert.IsNone(range.ElementAtOrNone(-1));
-        Assert.Equal(1, FunctionalAssert.IsSome(range.ElementAtOrNone(0)));
-        Assert.Equal(2, FunctionalAssert.IsSome(range.ElementAtOrNone(1)));
-        Assert.Equal(3, FunctionalAssert.IsSome(range.ElementAtOrNone(2)));
-        Assert.Equal(4, FunctionalAssert.IsSome(range.ElementAtOrNone(3)));
-        Assert.Equal(5, FunctionalAssert.IsSome(range.ElementAtOrNone(4)));
-        FunctionalAssert.IsNone(range.ElementAtOrNone(5));
-        FunctionalAssert.IsNone(range.ElementAtOrNone(42));
-        FunctionalAssert.IsNone(range.ElementAtOrNone(1337));
+        FunctionalAssert.None(range.ElementAtOrNone(-42));
+        FunctionalAssert.None(range.ElementAtOrNone(-1));
+        Assert.Equal(1, FunctionalAssert.Some(range.ElementAtOrNone(0)));
+        Assert.Equal(2, FunctionalAssert.Some(range.ElementAtOrNone(1)));
+        Assert.Equal(3, FunctionalAssert.Some(range.ElementAtOrNone(2)));
+        Assert.Equal(4, FunctionalAssert.Some(range.ElementAtOrNone(3)));
+        Assert.Equal(5, FunctionalAssert.Some(range.ElementAtOrNone(4)));
+        FunctionalAssert.None(range.ElementAtOrNone(5));
+        FunctionalAssert.None(range.ElementAtOrNone(42));
+        FunctionalAssert.None(range.ElementAtOrNone(1337));
     }
 }

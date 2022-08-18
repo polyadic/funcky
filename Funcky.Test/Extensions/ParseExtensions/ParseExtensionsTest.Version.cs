@@ -12,7 +12,7 @@ public sealed class ParseExtensionsTest
     public void ParseVersionIsTheSameAsTryParseForValidVersions(string input)
     {
         Assert.True(Version.TryParse(input, out var expected));
-        FunctionalAssert.IsSome(expected!, input.ParseVersionOrNone());
+        FunctionalAssert.Some(expected!, input.ParseVersionOrNone());
     }
 
     #if PARSE_READ_ONLY_SPAN_SUPPORTED
@@ -24,7 +24,7 @@ public sealed class ParseExtensionsTest
     {
         var inputSpan = input.AsSpan();
         Assert.True(Version.TryParse(inputSpan, out var expected));
-        FunctionalAssert.IsSome(expected!, inputSpan.ParseVersionOrNone());
+        FunctionalAssert.Some(expected!, inputSpan.ParseVersionOrNone());
     }
     #endif
 
