@@ -22,13 +22,3 @@ static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2>(this System.
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.Tuple<T1>!>! enumerable) -> Xunit.TheoryData<T1>!
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.ValueTuple<T1>>! enumerable) -> Xunit.TheoryData<T1>!
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<T1>! enumerable) -> Xunit.TheoryData<T1>!
-static Funcky.FunctionalAssert.IsError<TResult>(Funcky.Monads.Result<TResult> result) -> System.Exception!
-static Funcky.FunctionalAssert.IsLeft<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TLeft
-static Funcky.FunctionalAssert.IsLeft<TLeft, TRight>(TLeft expectedLeft, Funcky.Monads.Either<TLeft, TRight> either) -> void
-static Funcky.FunctionalAssert.IsNone<TItem>(Funcky.Monads.Option<TItem> option) -> void
-static Funcky.FunctionalAssert.IsOk<TResult>(Funcky.Monads.Result<TResult> result) -> TResult
-static Funcky.FunctionalAssert.IsOk<TResult>(TResult expectedResult, Funcky.Monads.Result<TResult> result) -> void
-static Funcky.FunctionalAssert.IsRight<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TRight
-static Funcky.FunctionalAssert.IsRight<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
-static Funcky.FunctionalAssert.IsSome<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
-static Funcky.FunctionalAssert.IsSome<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void
