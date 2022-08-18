@@ -48,5 +48,5 @@ internal sealed class OptionEqualityComparerInternal<TItem> : EqualityComparer<O
     public override int GetHashCode(Option<TItem> option)
         => option.Match(
             none: 0,
-            some: item => item.GetHashCode());
+            some: _comparer.GetHashCode);
 }
