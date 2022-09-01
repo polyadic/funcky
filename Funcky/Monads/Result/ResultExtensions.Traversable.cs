@@ -67,11 +67,15 @@ public static class ResultExtensions
     public static Reader<TEnvironment, Result<TResult>> Traverse<TValidResult, TEnvironment, TResult>(
         this Result<TValidResult> result,
         Func<TValidResult, Reader<TEnvironment, TResult>> selector)
+        where TEnvironment : notnull
+        where TResult : notnull
         => result.Select(selector).Sequence();
 
     [Pure]
     public static Reader<TEnvironment, Result<TValidResult>> Sequence<TEnvironment, TValidResult>(
         this Result<Reader<TEnvironment, TValidResult>> result)
+        where TEnvironment : notnull
+        where TValidResult : notnull
         => result.Match(
             error: static error => Reader<TEnvironment>.Return(Result<TValidResult>.Error(error)),
             ok: static ok => ok.Select(Result.Return));

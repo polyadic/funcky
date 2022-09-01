@@ -24,6 +24,8 @@ public static partial class EnumerableExtensions
 
     [Pure]
     public static Reader<TEnvironment, IEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IEnumerable<Reader<TEnvironment, TSource>> sequence)
+        where TEnvironment : notnull
+        where TSource : notnull
         => environment
             => sequence.Select(reader => reader(environment));
 

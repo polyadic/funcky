@@ -83,6 +83,7 @@ public static partial class EitherExtensions
         Func<TRight, Reader<TEnvironment, TResult>> selector)
         where TLeft : notnull
         where TRight : notnull
+        where TEnvironment : notnull
         where TResult : notnull
         => either.Select(selector).Sequence();
 
@@ -90,6 +91,7 @@ public static partial class EitherExtensions
     public static Reader<TEnvironment, Either<TLeft, TRight>> Sequence<TLeft, TEnvironment, TRight>(
         this Either<TLeft, Reader<TEnvironment, TRight>> either)
         where TLeft : notnull
+        where TEnvironment : notnull
         where TRight : notnull
         => either.Match(
             left: static left => Reader<TEnvironment>.Return(Either<TLeft, TRight>.Left(left)),

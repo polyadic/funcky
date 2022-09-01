@@ -27,6 +27,8 @@ public static partial class AsyncEnumerableExtensions
 
     [Pure]
     public static Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IAsyncEnumerable<Reader<TEnvironment, TSource>> source)
+        where TEnvironment : notnull
+        where TSource : notnull
         => environment
             => source.Select(reader => reader(environment));
 

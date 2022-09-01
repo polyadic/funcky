@@ -39,6 +39,7 @@ public sealed partial class ReaderTest
         => CheckAssert.Equal(Reader<string>.Return(input).SelectMany(selector), selector(input), environment);
 
     private static Func<TItem, Reader<TItem, TItem>> Combine<TItem>(Func<TItem, Reader<TItem, TItem>> functionA, Func<TItem, Reader<TItem, TItem>> functionB)
+        where TItem : notnull
         => input
             => functionA(input).SelectMany(functionB);
 }

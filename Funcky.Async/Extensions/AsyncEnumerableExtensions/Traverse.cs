@@ -30,6 +30,8 @@ public static partial class AsyncEnumerableExtensions
     public static Reader<TEnvironment, IAsyncEnumerable<TResult>> Traverse<TSource, TEnvironment, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Reader<TEnvironment, TResult>> selector)
+        where TEnvironment : notnull
+        where TResult : notnull
         => source.Select(selector).Sequence();
 
     [Pure]

@@ -76,12 +76,14 @@ public static partial class OptionExtensions
         this Option<TItem> option,
         Func<TItem, Reader<TEnvironment, TResult>> selector)
         where TItem : notnull
+        where TEnvironment : notnull
         where TResult : notnull
         => option.Select(selector).Sequence();
 
     [Pure]
     public static Reader<TEnvironment, Option<TItem>> Sequence<TEnvironment, TItem>(
         this Option<Reader<TEnvironment, TItem>> option)
+        where TEnvironment : notnull
         where TItem : notnull
         => option.Match(
             none: static () => Reader<TEnvironment>.Return(Option<TItem>.None),

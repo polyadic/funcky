@@ -30,6 +30,8 @@ public static partial class EnumerableExtensions
     public static Reader<TEnvironment, IEnumerable<TResult>> Traverse<TSource, TEnvironment, TResult>(
         this IEnumerable<TSource> source,
         Func<TSource, Reader<TEnvironment, TResult>> selector)
+        where TEnvironment : notnull
+        where TResult : notnull
         => source.Select(selector).Sequence();
 
     public static Lazy<IEnumerable<T>> Traverse<TSource, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
