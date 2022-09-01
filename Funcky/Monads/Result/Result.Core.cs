@@ -13,6 +13,7 @@ using System.Diagnostics;
 namespace Funcky.Monads;
 
 public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
+    where TValidResult : notnull
 {
     #if !SET_CURRENT_STACK_TRACE_SUPPORTED
     private const int SkipLowestStackFrame = 1;
@@ -108,9 +109,11 @@ public static class Result
 {
     [Pure]
     public static Result<TValidResult> Ok<TValidResult>(TValidResult result)
+        where TValidResult : notnull
         => new(result);
 
     [Pure]
     public static Result<TValidResult> Return<TValidResult>(TValidResult result)
+        where TValidResult : notnull
         => new(result);
 }

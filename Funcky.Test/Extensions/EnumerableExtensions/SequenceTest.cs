@@ -92,8 +92,10 @@ public sealed class SequenceTest
         => option.Match(none: true, some: False);
 
     private static bool IsError<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
         => result.Match(ok: False, error: True);
 
     private static bool IsOk<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
         => result.Match(ok: True, error: False);
 }

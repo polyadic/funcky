@@ -34,5 +34,6 @@ internal static class PartitionBuilder
         => either.Match(left: builder.AddLeft, right: builder.AddRight);
 
     public static PartitionBuilder<Exception, TValidResult> Add<TValidResult>(PartitionBuilder<Exception, TValidResult> builder, Result<TValidResult> result)
+        where TValidResult : notnull
         => result.Match(error: builder.AddLeft, ok: builder.AddRight);
 }

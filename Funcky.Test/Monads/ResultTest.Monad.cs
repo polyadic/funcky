@@ -40,6 +40,7 @@ public sealed partial class ResultTest
             : CheckAssert.Equal(Result.Return(input).SelectMany(selector), selector(input));
 
     private static Func<TItem, Result<TItem>> Combine<TItem>(Func<TItem, Result<TItem>> functionA, Func<TItem, Result<TItem>> functionB)
+        where TItem : notnull
         => input
             => functionA(input).SelectMany(functionB);
 }

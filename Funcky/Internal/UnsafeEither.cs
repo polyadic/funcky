@@ -52,11 +52,13 @@ internal static class UnsafeEither
             : Either<TLeft, TRight>.Left(either.LeftValue);
 
     public static UnsafeEither<Exception, TValidResult> FromResult<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
         => result.Match(
             error: UnsafeEither<Exception, TValidResult>.Left,
             ok: UnsafeEither<Exception, TValidResult>.Right);
 
     public static Result<TValidResult> ToResult<TValidResult>(this UnsafeEither<Exception, TValidResult> either)
+        where TValidResult : notnull
         => either.IsRight
             ? Result.Ok(either.RightValue)
             : Result<TValidResult>.Error(either.LeftValue);

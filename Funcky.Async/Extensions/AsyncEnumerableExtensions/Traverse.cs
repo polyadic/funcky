@@ -24,6 +24,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Result<TValidResult>> selector,
         CancellationToken cancellationToken = default)
+        where TValidResult : notnull
         => source.Select(selector).SequenceAsync(cancellationToken);
 
     [Pure]

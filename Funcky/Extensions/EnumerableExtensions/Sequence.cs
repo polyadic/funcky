@@ -20,6 +20,7 @@ public static partial class EnumerableExtensions
 
     [Pure]
     public static Result<IReadOnlyList<TSource>> Sequence<TSource>(this IEnumerable<Result<TSource>> source)
+        where TSource : notnull
         => source.Traverse(UnsafeEither.FromResult).ToResult();
 
     [Pure]

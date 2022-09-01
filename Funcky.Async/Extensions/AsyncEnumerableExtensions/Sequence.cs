@@ -23,6 +23,7 @@ public static partial class AsyncEnumerableExtensions
     public static async ValueTask<Result<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
         this IAsyncEnumerable<Result<TSource>> source,
         CancellationToken cancellationToken = default)
+        where TSource : notnull
         => (await source.TraverseAsync(UnsafeEither.FromResult, cancellationToken).ConfigureAwait(false)).ToResult();
 
     [Pure]

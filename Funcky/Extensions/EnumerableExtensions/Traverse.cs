@@ -24,6 +24,7 @@ public static partial class EnumerableExtensions
     public static Result<IReadOnlyList<TValidResult>> Traverse<TSource, TValidResult>(
         this IEnumerable<TSource> source,
         Func<TSource, Result<TValidResult>> selector)
+        where TValidResult : notnull
         => source.Select(selector).Sequence();
 
     [Pure]

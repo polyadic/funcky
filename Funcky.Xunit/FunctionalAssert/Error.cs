@@ -14,6 +14,7 @@ public static partial class FunctionalAssert
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     public static Exception Error<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
     {
         try
         {

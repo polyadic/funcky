@@ -14,6 +14,7 @@ public static partial class FunctionalAssert
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
     public static void Ok<TValidResult>(TValidResult expectedResult, Result<TValidResult> result)
+        where TValidResult : notnull
     {
         try
         {
@@ -39,6 +40,7 @@ public static partial class FunctionalAssert
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
     public static TValidResult Ok<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
     {
         try
         {
