@@ -9,11 +9,15 @@ public static class ResultExtensions
     public static Either<TLeft, Result<TRight>> Traverse<TValidResult, TLeft, TRight>(
         this Result<TValidResult> result,
         Func<TValidResult, Either<TLeft, TRight>> selector)
+        where TLeft : notnull
+        where TRight : notnull
         => result.Select(selector).Sequence();
 
     [Pure]
     public static Either<TLeft, Result<TValidResult>> Sequence<TLeft, TValidResult>(
         this Result<Either<TLeft, TValidResult>> result)
+        where TLeft : notnull
+        where TValidResult : notnull
         => result.Match(
             error: static error => Either<TLeft>.Return(Result<TValidResult>.Error(error)),
             ok: static ok => ok.Select(Result.Return));

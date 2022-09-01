@@ -70,6 +70,10 @@ public sealed partial class EitherTest
         Func<TLeft1, TLeft2, TResult> left,
         Func<TRight1, TRight2, TResult> right,
         Func<TResult> heterogeneous)
+        where TLeft1 : notnull
+        where TRight1 : notnull
+        where TLeft2 : notnull
+        where TRight2 : notnull
         => input.X.Match(
             left: leftX => input.Y.Match(left: leftY => left(leftX, leftY), right: _ => heterogeneous()),
             right: rightX => input.Y.Match(left: _ => heterogeneous(), right: rightY => right(rightX, rightY)));

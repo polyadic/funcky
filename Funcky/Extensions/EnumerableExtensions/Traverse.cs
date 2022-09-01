@@ -9,6 +9,8 @@ public static partial class EnumerableExtensions
     public static Either<TLeft, IReadOnlyList<TRight>> Traverse<TSource, TLeft, TRight>(
         this IEnumerable<TSource> source,
         Func<TSource, Either<TLeft, TRight>> selector)
+        where TLeft : notnull
+        where TRight : notnull
         => source.Select(selector).Sequence();
 
     [Pure]

@@ -10,6 +10,8 @@ public static partial class AsyncEnumerableExtensions
     public static async ValueTask<Either<TLeft, IReadOnlyList<TSource>>> SequenceAsync<TLeft, TSource>(
         this IAsyncEnumerable<Either<TLeft, TSource>> source,
         CancellationToken cancellationToken = default)
+        where TLeft : notnull
+        where TSource : notnull
         => (await source.TraverseAsync(UnsafeEither.FromEither, cancellationToken).ConfigureAwait(false)).ToEither();
 
     public static async ValueTask<Option<IReadOnlyList<TSource>>> SequenceAsync<TSource>(

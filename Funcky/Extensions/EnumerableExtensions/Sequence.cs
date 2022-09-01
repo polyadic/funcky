@@ -9,6 +9,8 @@ public static partial class EnumerableExtensions
 {
     [Pure]
     public static Either<TLeft, IReadOnlyList<TSource>> Sequence<TLeft, TSource>(this IEnumerable<Either<TLeft, TSource>> source)
+        where TLeft : notnull
+        where TSource : notnull
         => source.Traverse(UnsafeEither.FromEither).ToEither();
 
     [Pure]

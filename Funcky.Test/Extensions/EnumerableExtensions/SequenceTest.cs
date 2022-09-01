@@ -74,9 +74,13 @@ public sealed class SequenceTest
             .ToProperty();
 
     private static bool IsLeft<TLeft, TRight>(Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
         => either.Match(left: True, right: False);
 
     private static bool IsRight<TLeft, TRight>(Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
         => either.Match(left: False, right: True);
 
     private static bool IsSome<TItem>(Option<TItem> option)

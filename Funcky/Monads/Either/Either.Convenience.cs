@@ -6,6 +6,7 @@ public readonly partial struct Either<TLeft, TRight>
 
     /// <summary>Transforms the left value. Returns the original value when it's right.</summary>
     public Either<TResult, TRight> SelectLeft<TResult>(Func<TLeft, TResult> selector)
+        where TResult : notnull
         => Match(right: Either<TResult>.Return, left: left => Either<TResult, TRight>.Left(selector(left)));
 
     /// <summary>Performs a side effect when the either is right and returns the either value again.</summary>

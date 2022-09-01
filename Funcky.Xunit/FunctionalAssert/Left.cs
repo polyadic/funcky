@@ -14,6 +14,8 @@ public static partial class FunctionalAssert
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
     public static void Left<TLeft, TRight>(TLeft expectedLeft, Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
     {
         try
         {
@@ -39,6 +41,8 @@ public static partial class FunctionalAssert
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
     public static TLeft Left<TLeft, TRight>(Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
     {
         try
         {

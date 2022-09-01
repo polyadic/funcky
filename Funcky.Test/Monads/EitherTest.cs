@@ -70,24 +70,6 @@ public sealed partial class EitherTest
         };
 
     [Fact]
-    public void NullableReferenceTypesAreSupported()
-    {
-        _ = Either<string?, int>.Left("foo");
-        _ = Either<int, string?>.Right("foo");
-        _ = Either<string?, int>.Left(null);
-        _ = Either<int, string?>.Right(null);
-    }
-
-    [Fact]
-    public void NullableValueTypesAreSupported()
-    {
-        _ = Either<int?, string>.Left(42);
-        _ = Either<string, int?>.Right(42);
-        _ = Either<int?, string>.Left(null);
-        _ = Either<string, int?>.Right(null);
-    }
-
-    [Fact]
     public void MatchLeftOnEitherSupportsActions()
     {
         var value = Either<string, int>.Left("Error: not cool!");

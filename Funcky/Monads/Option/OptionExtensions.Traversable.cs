@@ -9,6 +9,7 @@ public static partial class OptionExtensions
     public static Either<TLeft, Option<TRight>> Traverse<TItem, TLeft, TRight>(
         this Option<TItem> option,
         Func<TItem, Either<TLeft, TRight>> selector)
+        where TLeft : notnull
         where TItem : notnull
         where TRight : notnull
         => option.Select(selector).Sequence();
@@ -16,6 +17,7 @@ public static partial class OptionExtensions
     [Pure]
     public static Either<TLeft, Option<TItem>> Sequence<TLeft, TItem>(
         this Option<Either<TLeft, TItem>> option)
+        where TLeft : notnull
         where TItem : notnull
         => option.Match(
             none: Either<TLeft>.Return(Option<TItem>.None),

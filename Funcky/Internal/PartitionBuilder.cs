@@ -29,6 +29,8 @@ internal static class PartitionBuilder
         => (builder, item) => predicate(item) ? builder.AddLeft(item) : builder.AddRight(item);
 
     public static PartitionBuilder<TLeft, TRight> Add<TLeft, TRight>(PartitionBuilder<TLeft, TRight> builder, Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
         => either.Match(left: builder.AddLeft, right: builder.AddRight);
 
     public static PartitionBuilder<Exception, TValidResult> Add<TValidResult>(PartitionBuilder<Exception, TValidResult> builder, Result<TValidResult> result)
