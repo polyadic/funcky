@@ -57,7 +57,8 @@ public sealed class OptionNoneInvocationCodeFix : CodeFixProvider
             =>
             {
                 var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-                editor.ReplaceNode(syntax, syntax.Expression);
+                var trailingTrivia = syntax.Expression.GetTrailingTrivia().AddRange(syntax.GetTrailingTrivia());
+                editor.ReplaceNode(syntax, syntax.Expression.WithLeadingTrivia(syntax.GetLeadingTrivia()).WithTrailingTrivia(trailingTrivia));
                 return editor.GetChangedDocument();
             };
 }
