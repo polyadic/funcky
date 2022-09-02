@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Funcky.Extensions;
 
@@ -15,13 +16,45 @@ public static partial class EnumerableExtensions
     public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
         where TSource : notnull
         => source is IBuffer<TSource> buffer
-            ? buffer
+            ? Borrow(buffer)
             : MemoizedBuffer.Create(source);
+
+    [SuppressMessage("IDisposableAnalyzers", "IDISP015: Member should not return created and cached instance.", Justification = "False positive.")]
+    private static IBuffer<TSource> Borrow<TSource>(IBuffer<TSource> buffer)
+        => buffer is BorrowedBuffer<TSource> borrowed
+            ? borrowed
+            : new BorrowedBuffer<TSource>(buffer);
 
     private static class MemoizedBuffer
     {
         public static MemoizedBuffer<TSource> Create<TSource>(IEnumerable<TSource> source)
             => new(source);
+    }
+
+    private sealed class BorrowedBuffer<T> : IBuffer<T>
+    {
+        private readonly IBuffer<T> _inner;
+        private bool _disposed;
+
+        public BorrowedBuffer(IBuffer<T> inner) => _inner = inner;
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            ThrowIfDisposed();
+            return _inner.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public void Dispose() => _disposed = true;
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(MemoizedBuffer));
+            }
+        }
     }
 
     private sealed class MemoizedBuffer<T> : IBuffer<T>
