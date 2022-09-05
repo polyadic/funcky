@@ -54,6 +54,49 @@ public sealed class OptionNoneInvocationCodeFixTest
     }
 
     [Fact]
+    public async Task PreservesTrivia()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = /* trivia 1*/Option<int>.None/* trivia 2*/()/* trivia 3*/;
+                    var option2 = GetBool() ? Option<int>.None() : throw null!;
+                }
+
+                public static bool GetBool() => true;
+            }
+            """;
+
+        const string fixedCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = /* trivia 1*/Option<int>.None/* trivia 2*//* trivia 3*/;
+                    var option2 = GetBool() ? Option<int>.None : throw null!;
+                }
+
+                public static bool GetBool() => true;
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(
+            inputCode + Environment.NewLine + OptionCode,
+            new[]
+            {
+                DiagnosticResult.CompilerError("CS1955").WithSpan(7, 47, 7, 51).WithArguments("Funcky.Monads.Option<int>.None"),
+                DiagnosticResult.CompilerError("CS1955").WithSpan(8, 47, 8, 51).WithArguments("Funcky.Monads.Option<int>.None"),
+            },
+            fixedCode + Environment.NewLine + OptionCode);
+    }
+
+    [Fact]
     public async Task DoesNotFixInvocationOfOtherProperties()
     {
         const string inputCode = """
