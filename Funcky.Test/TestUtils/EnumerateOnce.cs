@@ -23,18 +23,9 @@ public class EnumerateOnce<T> : IEnumerable<T>
     {
         ValidateFirst();
 
-        while (true)
+        while (_once.DequeueOrNone().TryGetValue(out var value))
         {
-            var maybeValue = _once.DequeueOrNone();
-
-            if (maybeValue.Match(none: false, some: True))
-            {
-                yield return maybeValue.GetOrElse(() => throw new Exception("cannot happen!"));
-            }
-            else
-            {
-                break;
-            }
+            yield return value;
         }
     }
 
