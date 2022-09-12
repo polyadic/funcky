@@ -1,6 +1,6 @@
 using Funcky.Async.Test.TestUtilities;
 
-namespace Funcky.Test;
+namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public sealed class MemoizeTest
 {
