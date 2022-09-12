@@ -11,7 +11,6 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
     public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> sequence)
-        where TSource : notnull
         => sequence is IAsyncBuffer<TSource> buffer
             ? Borrow(buffer)
             : MemoizedAsyncBuffer.Create(sequence);
