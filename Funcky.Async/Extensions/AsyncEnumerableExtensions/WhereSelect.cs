@@ -3,7 +3,7 @@ namespace Funcky.Extensions;
 public static partial class AsyncEnumerableExtensions
 {
     /// <summary>
-    /// Filters out all the empty values from an <c>IEnumerable&lt;Option&lt;T&gt;&gt;</c> and therefore returns an <see cref="IEnumerable{TItem}"/>.
+    /// Filters out all the empty values from an <c>IEnumerable&lt;Option&lt;T&gt;&gt;</c> and therefore returns an <see cref="IEnumerable{T}"/>.
     /// </summary>
     [Pure]
     public static IAsyncEnumerable<TSource> WhereSelect<TSource>(this IAsyncEnumerable<Option<TSource>> source)

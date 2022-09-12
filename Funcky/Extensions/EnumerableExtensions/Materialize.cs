@@ -6,36 +6,36 @@ namespace Funcky.Extensions;
 public static partial class EnumerableExtensions
 {
     /// <summary>
-    /// Materializes all the items of a lazy <see cref="IEnumerable{TItem}" />. If the underlying sequence is a collection type we do not actively enumerate them.
+    /// Materializes all the items of a lazy <see cref="IEnumerable{T}" />. If the underlying sequence is a collection type we do not actively enumerate them.
     /// </summary>
-    /// <typeparam name="TItem">Type of the items in the source sequence.</typeparam>
-    /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
+    /// <typeparam name="TSource">Type of the items in the source sequence.</typeparam>
+    /// <param name="source">The source sequence can be any <see cref="IEnumerable{T}" />.</param>
     /// <returns>A collection of the enumerated items.</returns>
-    public static IReadOnlyCollection<TItem> Materialize<TItem>(this IEnumerable<TItem> source)
+    public static IReadOnlyCollection<TSource> Materialize<TSource>(this IEnumerable<TSource> source)
         => source.Materialize(DefaultMaterialization);
 
     /// <summary>
-    /// Materializes all the items of a lazy <see cref="IEnumerable{TItem}" />. If the underlying sequence is a collection type we do not actively enumerate them.
+    /// Materializes all the items of a lazy <see cref="IEnumerable{T}" />. If the underlying sequence is a collection type we do not actively enumerate them.
     /// Via the materialize function you can chose how the enumeration is done when it is needed.
     /// </summary>
-    /// <typeparam name="TItem">Type of the items in the source sequence.</typeparam>
+    /// <typeparam name="TSource">Type of the items in the source sequence.</typeparam>
     /// <typeparam name="TMaterialization">The type of the materialization target.</typeparam>
-    /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
+    /// <param name="source">The source sequence can be any <see cref="IEnumerable{T}" />.</param>
     /// <param name="materializer">A function which materializes a given sequence into a collection.</param>
     /// <returns>A collection of the enumerated items.</returns>
-    public static IReadOnlyCollection<TItem> Materialize<TItem, TMaterialization>(
-        this IEnumerable<TItem> source,
-        Func<IEnumerable<TItem>, TMaterialization> materializer)
-        where TMaterialization : IReadOnlyCollection<TItem>
+    public static IReadOnlyCollection<TSource> Materialize<TSource, TMaterialization>(
+        this IEnumerable<TSource> source,
+        Func<IEnumerable<TSource>, TMaterialization> materializer)
+        where TMaterialization : IReadOnlyCollection<TSource>
         => source switch
         {
-            IReadOnlyCollection<TItem> readOnlyCollection => readOnlyCollection,
-            IList<TItem> list => new ListAsReadOnlyCollectionProxy<TItem>(list),
-            ICollection<TItem> collection => new CollectionAsReadOnlyCollectionProxy<TItem>(collection),
+            IReadOnlyCollection<TSource> readOnlyCollection => readOnlyCollection,
+            IList<TSource> list => new ListAsReadOnlyCollectionProxy<TSource>(list),
+            ICollection<TSource> collection => new CollectionAsReadOnlyCollectionProxy<TSource>(collection),
             _ => materializer(source),
         };
 
-    private static IReadOnlyCollection<TItem> DefaultMaterialization<TItem>(IEnumerable<TItem> source)
+    private static IReadOnlyCollection<TSource> DefaultMaterialization<TSource>(IEnumerable<TSource> source)
         => source.ToImmutableList();
 
     private class CollectionAsReadOnlyCollectionProxy<T> : ICollection<T>, IReadOnlyCollection<T>

@@ -2,17 +2,17 @@ namespace Funcky.Extensions;
 
 public static class Partitions
 {
-    public static Partitions<TItem> Create<TItem>(IReadOnlyList<TItem> @true, IReadOnlyList<TItem> @false)
+    public static Partitions<TSource> Create<TSource>(IReadOnlyList<TSource> @true, IReadOnlyList<TSource> @false)
         => new(@true, @false);
 }
 
-public readonly struct Partitions<TItem>
+public readonly struct Partitions<TSource>
 {
-    public Partitions(IReadOnlyList<TItem> @true, IReadOnlyList<TItem> @false) => (True, False) = (@true, @false);
+    public Partitions(IReadOnlyList<TSource> @true, IReadOnlyList<TSource> @false) => (True, False) = (@true, @false);
 
-    public IReadOnlyList<TItem> True { get; }
+    public IReadOnlyList<TSource> True { get; }
 
-    public IReadOnlyList<TItem> False { get; }
+    public IReadOnlyList<TSource> False { get; }
 
-    public void Deconstruct(out IReadOnlyList<TItem> @true, out IReadOnlyList<TItem> @false) => (@true, @false) = (True, False);
+    public void Deconstruct(out IReadOnlyList<TSource> @true, out IReadOnlyList<TSource> @false) => (@true, @false) = (True, False);
 }

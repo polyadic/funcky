@@ -17,9 +17,9 @@ public static partial class EnumerableExtensions
     /// </summary>
     /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
     /// <returns>A tuple with the items for which the predicate holds, and for those for which it doesn't.</returns>
-    public static Partitions<TItem> Partition<TItem>(
-        this IEnumerable<TItem> source,
-        Func<TItem, bool> predicate)
+    public static Partitions<TSource> Partition<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, bool> predicate)
         => source.Partition(predicate, Partitions.Create);
 
     /// <summary>
@@ -28,11 +28,11 @@ public static partial class EnumerableExtensions
     /// for which it doesn't as separate parameters.
     /// </summary>
     /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
-    public static TResult Partition<TItem, TResult>(
-        this IEnumerable<TItem> source,
-        Func<TItem, bool> predicate,
-        Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> resultSelector)
+    public static TResult Partition<TSource, TResult>(
+        this IEnumerable<TSource> source,
+        Func<TSource, bool> predicate,
+        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, TResult> resultSelector)
         => source
-            .Aggregate(new PartitionBuilder<TItem, TItem>(), PartitionBuilder.Add(predicate))
+            .Aggregate(new PartitionBuilder<TSource, TSource>(), PartitionBuilder.Add(predicate))
             .Build(resultSelector);
 }

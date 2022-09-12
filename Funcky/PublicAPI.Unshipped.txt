@@ -13,12 +13,12 @@ Funcky.Extensions.EitherPartitions<TLeft, TRight>.Left.get -> System.Collections
 Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collections.Generic.IReadOnlyList<TRight>!
 Funcky.Extensions.HttpHeadersNonValidatedExtensions
 Funcky.Extensions.Partitions
-Funcky.Extensions.Partitions<TItem>
-Funcky.Extensions.Partitions<TItem>.Deconstruct(out System.Collections.Generic.IReadOnlyList<TItem>! true, out System.Collections.Generic.IReadOnlyList<TItem>! false) -> void
-Funcky.Extensions.Partitions<TItem>.False.get -> System.Collections.Generic.IReadOnlyList<TItem>!
-Funcky.Extensions.Partitions<TItem>.Partitions() -> void
-Funcky.Extensions.Partitions<TItem>.Partitions(System.Collections.Generic.IReadOnlyList<TItem>! true, System.Collections.Generic.IReadOnlyList<TItem>! false) -> void
-Funcky.Extensions.Partitions<TItem>.True.get -> System.Collections.Generic.IReadOnlyList<TItem>!
+Funcky.Extensions.Partitions<TSource>
+Funcky.Extensions.Partitions<TSource>.Deconstruct(out System.Collections.Generic.IReadOnlyList<TSource>! true, out System.Collections.Generic.IReadOnlyList<TSource>! false) -> void
+Funcky.Extensions.Partitions<TSource>.False.get -> System.Collections.Generic.IReadOnlyList<TSource>!
+Funcky.Extensions.Partitions<TSource>.Partitions() -> void
+Funcky.Extensions.Partitions<TSource>.Partitions(System.Collections.Generic.IReadOnlyList<TSource>! true, System.Collections.Generic.IReadOnlyList<TSource>! false) -> void
+Funcky.Extensions.Partitions<TSource>.True.get -> System.Collections.Generic.IReadOnlyList<TSource>!
 Funcky.Extensions.PriorityQueueExtensions
 Funcky.Extensions.ResultPartitions
 Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collections.Generic.IReadOnlyList<System.Exception!>! error, out System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> void
@@ -103,14 +103,14 @@ static Funcky.Extensions.EnumerableExtensions.Inspect<TSource>(this System.Colle
 static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.JoinToString<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, char separator) -> string!
 static Funcky.Extensions.EnumerableExtensions.JoinToString<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, string! separator) -> string!
-static Funcky.Extensions.EnumerableExtensions.Materialize<TItem, TMaterialization>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<System.Collections.Generic.IEnumerable<TItem>!, TMaterialization>! materializer) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
-static Funcky.Extensions.EnumerableExtensions.Materialize<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
+static Funcky.Extensions.EnumerableExtensions.Materialize<TSource, TMaterialization>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<System.Collections.Generic.IEnumerable<TSource>!, TMaterialization>! materializer) -> System.Collections.Generic.IReadOnlyCollection<TSource>!
+static Funcky.Extensions.EnumerableExtensions.Materialize<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IReadOnlyCollection<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Memoize<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!
-static Funcky.Extensions.EnumerableExtensions.Partition<TItem, TResult>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate, System.Func<System.Collections.Generic.IReadOnlyList<TItem>!, System.Collections.Generic.IReadOnlyList<TItem>!, TResult>! resultSelector) -> TResult
-static Funcky.Extensions.EnumerableExtensions.Partition<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, bool>! predicate) -> Funcky.Extensions.Partitions<TItem>
 static Funcky.Extensions.EnumerableExtensions.Partition<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TRight>>! source, System.Func<System.Collections.Generic.IReadOnlyList<TLeft>!, System.Collections.Generic.IReadOnlyList<TRight>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TSource, TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Either<TLeft, TRight>>! selector, System.Func<System.Collections.Generic.IReadOnlyList<TLeft>!, System.Collections.Generic.IReadOnlyList<TRight>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Partition<TSource, TLeft, TRight>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Either<TLeft, TRight>>! selector) -> Funcky.Extensions.EitherPartitions<TLeft, TRight>
+static Funcky.Extensions.EnumerableExtensions.Partition<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, System.Collections.Generic.IReadOnlyList<TSource>!, TResult>! resultSelector) -> TResult
+static Funcky.Extensions.EnumerableExtensions.Partition<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Extensions.Partitions<TSource>
 static Funcky.Extensions.EnumerableExtensions.Partition<TValidResult, TResult>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TValidResult>>! source, System.Func<System.Collections.Generic.IReadOnlyList<System.Exception!>!, System.Collections.Generic.IReadOnlyList<TValidResult>!, TResult>! resultSelector) -> TResult
 static Funcky.Extensions.EnumerableExtensions.Sequence<TEnvironment, TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Reader<TEnvironment, TSource>!>! sequence) -> Funcky.Monads.Reader<TEnvironment, System.Collections.Generic.IEnumerable<TSource>!>!
 static Funcky.Extensions.EnumerableExtensions.Sequence<TLeft, TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Either<TLeft, TSource>>! source) -> Funcky.Monads.Either<TLeft, System.Collections.Generic.IReadOnlyList<TSource>!>
@@ -134,7 +134,7 @@ static Funcky.Extensions.EnumerableExtensions.WhereSelect<TSource>(this System.C
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
 static Funcky.Extensions.HttpHeadersNonValidatedExtensions.GetValuesOrNone(this System.Net.Http.Headers.HttpHeadersNonValidated headers, string! headerName) -> Funcky.Monads.Option<System.Net.Http.Headers.HeaderStringValues>
-static Funcky.Extensions.Partitions.Create<TItem>(System.Collections.Generic.IReadOnlyList<TItem>! true, System.Collections.Generic.IReadOnlyList<TItem>! false) -> Funcky.Extensions.Partitions<TItem>
+static Funcky.Extensions.Partitions.Create<TSource>(System.Collections.Generic.IReadOnlyList<TSource>! true, System.Collections.Generic.IReadOnlyList<TSource>! false) -> Funcky.Extensions.Partitions<TSource>
 static Funcky.Extensions.PriorityQueueExtensions.DequeueOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Extensions.PriorityQueueExtensions.PeekOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Extensions.ResultPartitions.Create<TValidResult>(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> Funcky.Extensions.ResultPartitions<TValidResult>
