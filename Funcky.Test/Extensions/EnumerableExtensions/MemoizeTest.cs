@@ -65,4 +65,27 @@ public sealed class MemoizeTest
         Assert.True(enumerator2.MoveNext());
         Assert.Equal(5, enumerator2.Current);
     }
+
+    [Fact]
+    public void DisposingAMemoizedBufferDoesNotDisposeOriginalBuffer()
+    {
+        var source = EnumerateOnce.Create(Enumerable.Empty<int>());
+        using var firstMemoization = source.Memoize();
+
+        using (firstMemoization.Memoize())
+        {
+        }
+
+        firstMemoization.ForEach(NoOperation);
+    }
+
+    [Fact]
+    public void MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
+    {
+        var source = EnumerateOnce.Create(Enumerable.Empty<int>());
+        using var memoized = source.Memoize();
+        using var memoizedBuffer = memoized.Memoize();
+        using var memoizedBuffer2 = memoizedBuffer.Memoize();
+        Assert.Same(memoizedBuffer, memoizedBuffer2);
+    }
 }
