@@ -65,4 +65,27 @@ public sealed class MemoizeTest
         Assert.True(await enumerator2.MoveNextAsync());
         Assert.Equal(5, enumerator2.Current);
     }
+
+    [Fact]
+    public async Task DisposingAMemoizedBufferDoesNotDisposeOriginalBuffer()
+    {
+        var source = AsyncEnumerateOnce.Create(Enumerable.Empty<int>());
+        await using var firstMemoization = source.Memoize();
+
+        await using (firstMemoization.Memoize())
+        {
+        }
+
+        await firstMemoization.ForEachAsync(NoOperation<int>);
+    }
+
+    [Fact]
+    public async Task MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
+    {
+        var source = AsyncEnumerateOnce.Create(Enumerable.Empty<int>());
+        await using var memoized = source.Memoize();
+        await using var memoizedBuffer = memoized.Memoize();
+        await using var memoizedBuffer2 = memoizedBuffer.Memoize();
+        Assert.Same(memoizedBuffer, memoizedBuffer2);
+    }
 }

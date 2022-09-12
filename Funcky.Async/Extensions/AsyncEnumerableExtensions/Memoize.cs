@@ -13,13 +13,46 @@ public static partial class AsyncEnumerableExtensions
     public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> sequence)
         where TSource : notnull
         => sequence is IAsyncBuffer<TSource> buffer
-            ? buffer
+            ? Borrow(buffer)
             : MemoizedAsyncBuffer.Create(sequence);
+
+    private static IAsyncBuffer<TSource> Borrow<TSource>(IAsyncBuffer<TSource> buffer)
+        => buffer is BorrowedAsyncBuffer<TSource> borrowed
+            ? borrowed
+            : new BorrowedAsyncBuffer<TSource>(buffer);
 
     private static class MemoizedAsyncBuffer
     {
         public static MemoizedAsyncBuffer<TSource> Create<TSource>(IAsyncEnumerable<TSource> source)
             => new(source);
+    }
+
+    private sealed class BorrowedAsyncBuffer<T> : IAsyncBuffer<T>
+    {
+        private readonly IAsyncBuffer<T> _inner;
+        private bool _disposed;
+
+        public BorrowedAsyncBuffer(IAsyncBuffer<T> inner) => _inner = inner;
+
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        {
+            ThrowIfDisposed();
+            return _inner.GetAsyncEnumerator(cancellationToken);
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            _disposed = true;
+            return default;
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(BorrowedAsyncBuffer<T>));
+            }
+        }
     }
 
     private sealed class MemoizedAsyncBuffer<T> : IAsyncBuffer<T>
