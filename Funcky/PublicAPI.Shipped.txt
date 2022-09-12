@@ -228,10 +228,6 @@ static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this string? candidat
 static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.ParseExtensions.ParseDoubleOrNone(this System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<double>
 static Funcky.Extensions.ParseExtensions.ParseEntityTagHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.EntityTagHeaderValue!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! type) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! type, bool ignoreCase) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this System.ReadOnlySpan<char> candidate, System.Type! type) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this System.ReadOnlySpan<char> candidate, System.Type! type, bool ignoreCase) -> Funcky.Monads.Option<object!>
 static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
 static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
 static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TEnum>
