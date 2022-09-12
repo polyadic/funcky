@@ -9,9 +9,9 @@ public readonly partial struct Either<TLeft, TRight>
         => Match(right: Either<TResult>.Return, left: left => Either<TResult, TRight>.Left(selector(left)));
 
     /// <summary>Performs a side effect when the either is right and returns the either value again.</summary>
-    public Either<TLeft, TRight> Inspect(Action<TRight> action)
+    public Either<TLeft, TRight> Inspect(Action<TRight> inspector)
     {
-        Switch(left: NoOperation, right: action);
+        Switch(left: NoOperation, right: inspector);
         return this;
     }
 

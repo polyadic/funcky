@@ -45,9 +45,9 @@ public readonly partial struct Option<TItem>
     /// Performs a side effect when the option has a value and returns the option again.
     /// This is the <see cref="Option{T}"/> equivalent of <see cref="EnumerableExtensions.Inspect{T}(IEnumerable{T}, Action{T})"/>.
     /// </summary>
-    public Option<TItem> Inspect(Action<TItem> action)
+    public Option<TItem> Inspect(Action<TItem> inspector)
     {
-        AndThen(action);
+        AndThen(inspector);
         return this;
     }
 

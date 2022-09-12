@@ -42,7 +42,6 @@ Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Either() -> void
 Funcky.Monads.Either<TLeft, TRight>.Equals(Funcky.Monads.Either<TLeft, TRight> other) -> bool
 Funcky.Monads.Either<TLeft, TRight>.Flip() -> Funcky.Monads.Either<TRight, TLeft>
-Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! action) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.Match<TMatchResult>(System.Func<TLeft, TMatchResult>! left, System.Func<TRight, TMatchResult>! right) -> TMatchResult
 Funcky.Monads.Either<TLeft, TRight>.Select<TResult>(System.Func<TRight, TResult>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
@@ -62,7 +61,6 @@ Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
 Funcky.Monads.Option<TItem>.Equals(Funcky.Monads.Option<TItem> other) -> bool
 Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! elseOption) -> TItem
 Funcky.Monads.Option<TItem>.GetOrElse(TItem elseOption) -> TItem
-Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! action) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.Match<TResult>(System.Func<TResult>! none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Match<TResult>(TResult none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Option() -> void
@@ -84,7 +82,6 @@ Funcky.Monads.ReaderExtensions
 Funcky.Monads.Result
 Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Equals(Funcky.Monads.Result<TValidResult> other) -> bool
-Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! action) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
 Funcky.Monads.Result<TValidResult>.Result() -> void
 Funcky.Monads.Result<TValidResult>.Select<TResult>(System.Func<TValidResult, TResult>! selector) -> Funcky.Monads.Result<TResult>

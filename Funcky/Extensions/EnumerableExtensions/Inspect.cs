@@ -9,11 +9,11 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TSource">the inner type of the enumerable.</typeparam>
     /// <returns>returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
-    public static IEnumerable<TSource> Inspect<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+    public static IEnumerable<TSource> Inspect<TSource>(this IEnumerable<TSource> source, Action<TSource> inspector)
         => source.Select(element
             =>
             {
-                action(element);
+                inspector(element);
                 return element;
             });
 }
