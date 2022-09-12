@@ -19,17 +19,17 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TItem">Type of the items in the source sequence.</typeparam>
     /// <typeparam name="TMaterialization">The type of the materialization target.</typeparam>
     /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
-    /// <param name="materialize">A function which materializes a given sequence into a collection.</param>
+    /// <param name="materializer">A function which materializes a given sequence into a collection.</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of the enumerated items.</returns>
     public static async ValueTask<IReadOnlyCollection<TItem>> MaterializeAsync<TItem, TMaterialization>(
         this IAsyncEnumerable<TItem> source,
-        Func<IAsyncEnumerable<TItem>, CancellationToken, ValueTask<TMaterialization>> materialize,
+        Func<IAsyncEnumerable<TItem>, CancellationToken, ValueTask<TMaterialization>> materializer,
         CancellationToken cancellationToken = default)
         where TMaterialization : IReadOnlyCollection<TItem>
         => source switch
         {
-            _ => await materialize(source, cancellationToken).ConfigureAwait(false),
+            _ => await materializer(source, cancellationToken).ConfigureAwait(false),
         };
 
     private static async ValueTask<IReadOnlyCollection<TItem>> DefaultMaterializationAsync<TItem>(IAsyncEnumerable<TItem> source, CancellationToken cancellationToken = default)

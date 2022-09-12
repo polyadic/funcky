@@ -21,18 +21,18 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TItem">Type of the items in the source sequence.</typeparam>
     /// <typeparam name="TMaterialization">The type of the materialization target.</typeparam>
     /// <param name="source">The source sequence can be any <see cref="IEnumerable{TItem}" />.</param>
-    /// <param name="materialize">A function which materializes a given sequence into a collection.</param>
+    /// <param name="materializer">A function which materializes a given sequence into a collection.</param>
     /// <returns>A collection of the enumerated items.</returns>
     public static IReadOnlyCollection<TItem> Materialize<TItem, TMaterialization>(
         this IEnumerable<TItem> source,
-        Func<IEnumerable<TItem>, TMaterialization> materialize)
+        Func<IEnumerable<TItem>, TMaterialization> materializer)
         where TMaterialization : IReadOnlyCollection<TItem>
         => source switch
         {
             IReadOnlyCollection<TItem> readOnlyCollection => readOnlyCollection,
             IList<TItem> list => new ListAsReadOnlyCollectionProxy<TItem>(list),
             ICollection<TItem> collection => new CollectionAsReadOnlyCollectionProxy<TItem>(collection),
-            _ => materialize(source),
+            _ => materializer(source),
         };
 
     private static IReadOnlyCollection<TItem> DefaultMaterialization<TItem>(IEnumerable<TItem> source)
