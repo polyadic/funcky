@@ -100,6 +100,7 @@ static Funcky.Extensions.EnumerableExtensions.ForEach<TSource>(this System.Colle
 static Funcky.Extensions.EnumerableExtensions.ForEach<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Unit>! action) -> Funcky.Unit
 static Funcky.Extensions.EnumerableExtensions.GetNonEnumeratedCountOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.EnumerableExtensions.Inspect<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! inspector) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Materialize<TItem, TMaterialization>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<System.Collections.Generic.IEnumerable<TItem>!, TMaterialization>! materialize) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
 static Funcky.Extensions.EnumerableExtensions.Materialize<TItem>(this System.Collections.Generic.IEnumerable<TItem>! source) -> System.Collections.Generic.IReadOnlyCollection<TItem>!
 static Funcky.Extensions.EnumerableExtensions.Memoize<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!
