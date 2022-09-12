@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using static System.ComponentModel.EditorBrowsableState;
+
 namespace Funcky.Monads;
 
 public static partial class Option
@@ -7,6 +10,7 @@ public static partial class Option
     /// </summary>
     /// <param name="boolean">A boolean value.</param>
     /// <returns> boolean:true returns Some, boolean:false returns None.</returns>
+    [EditorBrowsable(Advanced)]
     public static Option<Unit> FromBoolean(bool boolean)
         => FromBoolean(boolean, Unit.Value);
 
@@ -17,6 +21,7 @@ public static partial class Option
     /// <param name="boolean">A boolean value.</param>
     /// <param name="item">A value which is returned when boolean is true.</param>
     /// <returns> boolean:true returns Some(item), boolean:false returns None.</returns>
+    [EditorBrowsable(Advanced)]
     public static Option<TItem> FromBoolean<TItem>(bool boolean, TItem item)
         where TItem : notnull
         => FromBoolean(boolean, () => item);
@@ -28,6 +33,7 @@ public static partial class Option
     /// <param name="boolean">A boolean value.</param>
     /// <param name="selector">A function which returns a value of type TItem.</param>
     /// <returns> boolean:true returns Some(selector()), boolean:false returns None.</returns>
+    [EditorBrowsable(Advanced)]
     public static Option<TItem> FromBoolean<TItem>(bool boolean, Func<TItem> selector)
         where TItem : notnull
         => boolean
