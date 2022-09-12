@@ -17,9 +17,7 @@ public static partial class AsyncEnumerableExtensions
             : MemoizedAsyncBuffer.Create(sequence);
 
     private static IAsyncBuffer<TSource> Borrow<TSource>(IAsyncBuffer<TSource> buffer)
-        => buffer is BorrowedAsyncBuffer<TSource> borrowed
-            ? borrowed
-            : new BorrowedAsyncBuffer<TSource>(buffer);
+        => buffer as BorrowedAsyncBuffer<TSource> ?? new BorrowedAsyncBuffer<TSource>(buffer);
 
     private static class MemoizedAsyncBuffer
     {

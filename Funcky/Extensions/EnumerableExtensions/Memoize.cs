@@ -21,9 +21,7 @@ public static partial class EnumerableExtensions
 
     [SuppressMessage("IDisposableAnalyzers", "IDISP015: Member should not return created and cached instance.", Justification = "False positive.")]
     private static IBuffer<TSource> Borrow<TSource>(IBuffer<TSource> buffer)
-        => buffer is BorrowedBuffer<TSource> borrowed
-            ? borrowed
-            : new BorrowedBuffer<TSource>(buffer);
+        => buffer as BorrowedBuffer<TSource> ?? new BorrowedBuffer<TSource>(buffer);
 
     private static class MemoizedBuffer
     {
