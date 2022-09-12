@@ -10,7 +10,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A collection of the enumerated items.</returns>
     public static async ValueTask<IReadOnlyCollection<TSource>> MaterializeAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
-        => await source.MaterializeAsync(DefaultMaterializationAsync, cancellationToken).ConfigureAwait(false);
+        => await source.MaterializeAsync(DefaultMaterializerAsync, cancellationToken).ConfigureAwait(false);
 
     /// <summary>
     /// Materializes all the items of a lazy <see cref="IEnumerable{T}" />. If the underlying sequence is a collection type we do not actively enumerate them.
@@ -32,6 +32,6 @@ public static partial class AsyncEnumerableExtensions
             _ => await materializer(source, cancellationToken).ConfigureAwait(false),
         };
 
-    private static async ValueTask<IReadOnlyCollection<TSource>> DefaultMaterializationAsync<TSource>(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+    private static async ValueTask<IReadOnlyCollection<TSource>> DefaultMaterializerAsync<TSource>(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
         => await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 }

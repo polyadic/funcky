@@ -12,7 +12,7 @@ public static partial class EnumerableExtensions
     /// <param name="source">The source sequence can be any <see cref="IEnumerable{T}" />.</param>
     /// <returns>A collection of the enumerated items.</returns>
     public static IReadOnlyCollection<TSource> Materialize<TSource>(this IEnumerable<TSource> source)
-        => source.Materialize(DefaultMaterialization);
+        => source.Materialize(DefaultMaterializer);
 
     /// <summary>
     /// Materializes all the items of a lazy <see cref="IEnumerable{T}" />. If the underlying sequence is a collection type we do not actively enumerate them.
@@ -35,7 +35,7 @@ public static partial class EnumerableExtensions
             _ => materializer(source),
         };
 
-    private static IReadOnlyCollection<TSource> DefaultMaterialization<TSource>(IEnumerable<TSource> source)
+    private static IReadOnlyCollection<TSource> DefaultMaterializer<TSource>(IEnumerable<TSource> source)
         => source.ToImmutableList();
 
     private class CollectionAsReadOnlyCollectionProxy<T> : ICollection<T>, IReadOnlyCollection<T>
