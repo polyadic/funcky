@@ -13,7 +13,6 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IEnumerable<TSource> source, TSource separator)
-        where TSource : notnull
         => source.Split(separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
@@ -29,7 +28,6 @@ public static partial class EnumerableExtensions
         this IEnumerable<TSource> source,
         TSource separator,
         IEqualityComparer<TSource> comparer)
-        where TSource : notnull
         => source.Split(separator, comparer, Identity);
 
     /// <summary>
@@ -49,7 +47,6 @@ public static partial class EnumerableExtensions
         TSource separator,
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        where TSource : notnull
     {
         using var sourceEnumerator = source.GetEnumerator();
 
@@ -60,7 +57,6 @@ public static partial class EnumerableExtensions
     }
 
     private static Func<TSource, bool> TakeSkipPredicate<TSource>(TSource separator, IEqualityComparer<TSource> equalityComparer)
-        where TSource : notnull
         => element
             => !equalityComparer.Equals(element, separator);
 
