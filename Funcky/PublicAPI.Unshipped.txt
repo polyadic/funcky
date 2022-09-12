@@ -33,7 +33,7 @@ Funcky.Monads.Either<TLeft, TRight>.SelectLeft<TResult>(System.Func<TLeft, TResu
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
 Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! inspector) -> Funcky.Monads.Option<TItem>
-Funcky.Monads.Option<TItem>.SelectMany<TMaybe, TResult>(System.Func<TItem, Funcky.Monads.Option<TMaybe>>! selector, System.Func<TItem, TMaybe, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
+Funcky.Monads.Option<TItem>.SelectMany<TOption, TResult>(System.Func<TItem, Funcky.Monads.Option<TOption>>! selector, System.Func<TItem, TOption, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.Switch(System.Action! none, System.Action<TItem>! some) -> void
 Funcky.Monads.Result<TValidResult>.GetOrThrow() -> TValidResult
 Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! inspector) -> Funcky.Monads.Result<TValidResult>

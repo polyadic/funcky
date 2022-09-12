@@ -6,19 +6,13 @@ public sealed class DictionaryExtensionTest
     public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
     {
         var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-        var maybe = dictionary.GetValueOrNone(key: "some");
-
-        FunctionalAssert.Some("value", maybe);
+        FunctionalAssert.Some("value", dictionary.GetValueOrNone(key: "some"));
     }
 
     [Fact]
     public void GivenADictionaryWhenWeLookForAnInexistentValueWithGetValueOrNoneThenTheResultShouldBeANoneOfTheGivenType()
     {
         var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-
-        var maybe = dictionary.GetValueOrNone(readOnlyKey: "none");
-
-        FunctionalAssert.None(maybe);
+        FunctionalAssert.None(dictionary.GetValueOrNone(readOnlyKey: "none"));
     }
 }

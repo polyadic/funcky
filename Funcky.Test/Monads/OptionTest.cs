@@ -25,11 +25,11 @@ public sealed partial class OptionTest
     }
 
     [Fact]
-    public void GivenAValueThenCreateMaybeWithTypeInference()
+    public void GivenAValueThenCreateOptionWithTypeInference()
     {
-        var maybe = Option.Some(1337);
+        var some = Option.Some(1337);
 
-        Assert.Equal(typeof(int), maybe.GetType().GetGenericArguments().First());
+        Assert.Equal(typeof(int), some.GetType().GetGenericArguments().First());
     }
 
     [Fact]
@@ -51,12 +51,11 @@ public sealed partial class OptionTest
     [Fact]
     public void GiveAValueNoneWithLinqSyntaxSelectThenTheResultShouldBeNone()
     {
-        var maybe = Option<int>.None;
-        var maybeBool =
-            from m in maybe
+        var option =
+            from m in Option<int>.None
             select m == 1337;
 
-        FunctionalAssert.None(maybeBool);
+        FunctionalAssert.None(option);
     }
 
     [Fact]
@@ -105,7 +104,7 @@ public sealed partial class OptionTest
     {
         const string input = "123,some,x,1337,42,1,1000";
 
-        foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
+        foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(option => option.Match(none: false, some: True)))
         {
             _ = FunctionalAssert.Some(number);
         }
@@ -162,7 +161,7 @@ public sealed partial class OptionTest
     {
         const string input = "123,some,x,1337,42,1,1000";
 
-        foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(maybeInt => maybeInt.Match(none: false, some: True)))
+        foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(option => option.Match(none: false, some: True)))
         {
             var value = number.Match(
                 none: () => 0,
@@ -238,11 +237,11 @@ public sealed partial class OptionTest
         var none = Option<int>.None;
         var some = Option.Some(42);
 
-        var maybe = none
+        var option = none
             .OrElse(() => none)
             .OrElse(() => some);
 
-        Assert.Equal(some, maybe);
+        Assert.Equal(some, option);
     }
 
     [Fact]
@@ -266,9 +265,9 @@ public sealed partial class OptionTest
     [InlineData("")]
     public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
     {
-        var maybe = stringToParse.ParseInt32OrNone();
+        var option = stringToParse.ParseInt32OrNone();
 
-        maybe.Switch(
+        option.Switch(
             none: Statement,
             some: Statement);
     }

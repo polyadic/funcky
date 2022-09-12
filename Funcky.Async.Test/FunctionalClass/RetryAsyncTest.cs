@@ -22,7 +22,7 @@ public sealed class RetryAsyncTest
     public async Task RetriesWithDoNotRetryPolicyAlwaysTriesNumberOfRetriesTimes(int numberOfRetries)
     {
         const string produceString = "Hello world!";
-        var producer = new MaybeProducer<string>(1000, produceString);
+        var producer = new OptionProducer<string>(1000, produceString);
 
         FunctionalAssert.None(await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(numberOfRetries)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
@@ -37,7 +37,7 @@ public sealed class RetryAsyncTest
     public async Task RetriesWithDoNotRetryRetriesUntilValueProduced(int numberOfRetries)
     {
         const string produceString = "Hello world!";
-        var producer = new MaybeProducer<string>(numberOfRetries, produceString);
+        var producer = new OptionProducer<string>(numberOfRetries, produceString);
 
         FunctionalAssert.Some(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
@@ -52,7 +52,7 @@ public sealed class RetryAsyncTest
     public async Task RetryAsyncWithoutAnArgumentReturnsAlwaysAValueOrDoesNotReturn(int numberOfRetries)
     {
         const string produceString = "Hello world!";
-        var producer = new MaybeProducer<string>(numberOfRetries, produceString);
+        var producer = new OptionProducer<string>(numberOfRetries, produceString);
 
         Assert.Equal(produceString, await RetryAsync(producer.ProduceAsync));
     }

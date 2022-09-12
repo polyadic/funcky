@@ -19,5 +19,5 @@ public readonly partial struct Result<TValidResult>
         => Match(
             error: error => new Result<TResult>(error),
             ok: result => selector(result).Select(
-                maybe => resultSelector(result, maybe)));
+                option => resultSelector(result, option)));
 }
