@@ -340,8 +340,6 @@ static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collectio
 static Funcky.Extensions.QueueExtensions.PeekOrNone<TItem>(this System.Collections.Generic.Queue<TItem>! queue) -> Funcky.Monads.Option<TItem>
 static Funcky.Extensions.RangeExtensions.GetEnumerator(this System.Range range) -> System.Collections.Generic.IEnumerator<int>!
 static Funcky.Extensions.RangeExtensions.Select<TResult>(this System.Range source, System.Func<int, TResult>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
-static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.Collections.Generic.IEnumerable<TItem>! source, System.Func<TItem, System.Range>! selector, System.Func<TItem, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
-static Funcky.Extensions.RangeExtensions.SelectMany<TItem, TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TItem>!>! selector, System.Func<int, TItem, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.RangeExtensions.SelectMany<TResult>(this System.Range source, System.Func<int, System.Range>! selector, System.Func<int, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.StreamExtensions.GetLengthOrNone(this System.IO.Stream! stream) -> Funcky.Monads.Option<long>

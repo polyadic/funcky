@@ -145,6 +145,8 @@ static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this System.ReadOnlySpa
 static Funcky.Extensions.Partitions.Create<TSource>(System.Collections.Generic.IReadOnlyList<TSource>! true, System.Collections.Generic.IReadOnlyList<TSource>! false) -> Funcky.Extensions.Partitions<TSource>
 static Funcky.Extensions.PriorityQueueExtensions.DequeueOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Extensions.PriorityQueueExtensions.PeekOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
+static Funcky.Extensions.RangeExtensions.SelectMany<TCollection, TResult>(this System.Range source, System.Func<int, System.Collections.Generic.IEnumerable<TCollection>!>! selector, System.Func<int, TCollection, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Extensions.RangeExtensions.SelectMany<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, System.Range>! selector, System.Func<TSource, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.ResultPartitions.Create<TValidResult>(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> Funcky.Extensions.ResultPartitions<TValidResult>
 static Funcky.Functional.False() -> bool
 static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
