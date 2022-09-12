@@ -14,10 +14,10 @@ Funcky.Extensions.EitherPartitions<TLeft, TRight>.Right.get -> System.Collection
 Funcky.Extensions.HttpHeadersNonValidatedExtensions
 Funcky.Extensions.Partitions
 Funcky.Extensions.Partitions<TItem>
-Funcky.Extensions.Partitions<TItem>.Deconstruct(out System.Collections.Generic.IReadOnlyList<TItem>! trues, out System.Collections.Generic.IReadOnlyList<TItem>! falses) -> void
+Funcky.Extensions.Partitions<TItem>.Deconstruct(out System.Collections.Generic.IReadOnlyList<TItem>! true, out System.Collections.Generic.IReadOnlyList<TItem>! false) -> void
 Funcky.Extensions.Partitions<TItem>.False.get -> System.Collections.Generic.IReadOnlyList<TItem>!
 Funcky.Extensions.Partitions<TItem>.Partitions() -> void
-Funcky.Extensions.Partitions<TItem>.Partitions(System.Collections.Generic.IReadOnlyList<TItem>! trues, System.Collections.Generic.IReadOnlyList<TItem>! falses) -> void
+Funcky.Extensions.Partitions<TItem>.Partitions(System.Collections.Generic.IReadOnlyList<TItem>! true, System.Collections.Generic.IReadOnlyList<TItem>! false) -> void
 Funcky.Extensions.Partitions<TItem>.True.get -> System.Collections.Generic.IReadOnlyList<TItem>!
 Funcky.Extensions.PriorityQueueExtensions
 Funcky.Extensions.ResultPartitions
@@ -131,7 +131,7 @@ static Funcky.Extensions.EnumerableExtensions.WhereSelect<TSource>(this System.C
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight, TResult>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right, System.Func<Funcky.EitherOrBoth<TLeft, TRight>, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.ZipLongest<TLeft, TRight>(this System.Collections.Generic.IEnumerable<TLeft>! left, System.Collections.Generic.IEnumerable<TRight>! right) -> System.Collections.Generic.IEnumerable<Funcky.EitherOrBoth<TLeft, TRight>>!
 static Funcky.Extensions.HttpHeadersNonValidatedExtensions.GetValuesOrNone(this System.Net.Http.Headers.HttpHeadersNonValidated headers, string! headerName) -> Funcky.Monads.Option<System.Net.Http.Headers.HeaderStringValues>
-static Funcky.Extensions.Partitions.Create<TItem>(System.Collections.Generic.IReadOnlyList<TItem>! trues, System.Collections.Generic.IReadOnlyList<TItem>! falses) -> Funcky.Extensions.Partitions<TItem>
+static Funcky.Extensions.Partitions.Create<TItem>(System.Collections.Generic.IReadOnlyList<TItem>! true, System.Collections.Generic.IReadOnlyList<TItem>! false) -> Funcky.Extensions.Partitions<TItem>
 static Funcky.Extensions.PriorityQueueExtensions.DequeueOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Extensions.PriorityQueueExtensions.PeekOrNone<TElement, TPriority>(this System.Collections.Generic.PriorityQueue<TElement, TPriority>! priorityQueue) -> Funcky.Monads.Option<(TElement Element, TPriority Priority)>
 static Funcky.Extensions.ResultPartitions.Create<TValidResult>(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> Funcky.Extensions.ResultPartitions<TValidResult>
