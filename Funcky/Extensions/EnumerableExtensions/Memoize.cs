@@ -50,7 +50,7 @@ public static partial class EnumerableExtensions
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(nameof(MemoizedBuffer));
+                throw new ObjectDisposedException(nameof(BorrowedBuffer<T>));
             }
         }
     }
