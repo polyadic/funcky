@@ -27,7 +27,7 @@ public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
     public bool Equals(Unit other) => true;
 
     [Pure]
-    public override bool Equals(object? obj) => obj is Unit other && Equals(other);
+    public override bool Equals(object? obj) => obj is Unit;
 
     [Pure]
     public override int GetHashCode() => 0;
