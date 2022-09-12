@@ -4,7 +4,21 @@ using System.Text.Json.Serialization;
 
 namespace Funcky.Monads;
 
-internal sealed class JsonOptionConverter<TItem> : JsonConverter<Option<TItem>>
+/// <remarks>A JSON converter that serializes <see cref="Option{TItem}.None"/> as <c>null</c>.</remarks>
+public sealed class OptionJsonConverter : JsonConverterFactory
+{
+    public override bool CanConvert(Type typeToConvert)
+        => typeToConvert.IsGenericType &&
+           typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
+
+    public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+    {
+        var converterType = typeof(OptionJsonConverter<>).MakeGenericType(typeToConvert.GetGenericArguments().Single());
+        return (JsonConverter)Activator.CreateInstance(converterType, options)!;
+    }
+}
+
+internal sealed class OptionJsonConverter<TItem> : JsonConverter<Option<TItem>>
     where TItem : notnull
 {
     private const string UnreferencedCodeMessage = "JSON serialization and deserialization might require types that cannot be statically analyzed.";
@@ -12,7 +26,7 @@ internal sealed class JsonOptionConverter<TItem> : JsonConverter<Option<TItem>>
     private readonly JsonConverter<TItem> _itemConverter;
 
     [RequiresUnreferencedCode(UnreferencedCodeMessage)]
-    public JsonOptionConverter(JsonSerializerOptions options)
+    public OptionJsonConverter(JsonSerializerOptions options)
     {
         _itemConverter = (JsonConverter<TItem>)options.GetConverter(typeof(TItem));
     }
