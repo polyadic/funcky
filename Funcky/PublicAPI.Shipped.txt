@@ -143,8 +143,6 @@ static Funcky.Extensions.EnumerableExtensions.FirstOrNone<TSource>(this System.C
 static Funcky.Extensions.EnumerableExtensions.InclusiveScan<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate>! accumulator) -> System.Collections.Generic.IEnumerable<TAccumulate>!
 static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Intersperse<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource element) -> System.Collections.Generic.IEnumerable<TSource>!
-static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collections.Generic.IEnumerable<T>! source, char separator) -> string!
-static Funcky.Extensions.EnumerableExtensions.JoinToString<T>(this System.Collections.Generic.IEnumerable<T>! source, string! separator) -> string!
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.LastOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.MaxOrNone<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
