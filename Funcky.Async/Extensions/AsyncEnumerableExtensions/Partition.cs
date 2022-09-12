@@ -24,14 +24,14 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken = default)
         => source.PartitionAsync(predicate, Partitions.Create, cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Func{TSource,bool},System.Threading.CancellationToken)" />
+    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
     public static ValueTask<Partitions<TSource>> PartitionAwaitAsync<TSource>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<bool>> predicate,
         CancellationToken cancellationToken = default)
         => source.PartitionAwaitAsync(predicate, static (left, right) => ValueTaskFromResult(Partitions.Create(left, right)), cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Func{TSource,bool},System.Threading.CancellationToken)" />
+    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
     public static ValueTask<Partitions<TSource>> PartitionAwaitWithCancellationAsync<TSource>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<bool>> predicate,
@@ -54,7 +54,7 @@ public static partial class AsyncEnumerableExtensions
             .ConfigureAwait(false))
             .Build(resultSelector);
 
-    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},System.Threading.CancellationToken)" />
+    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
     public static async ValueTask<TResult> PartitionAwaitAsync<TSource, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<bool>> predicate,
@@ -69,7 +69,7 @@ public static partial class AsyncEnumerableExtensions
         return await resultSelector(left, right).ConfigureAwait(false);
     }
 
-    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},System.Threading.CancellationToken)" />
+    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
     public static async ValueTask<TResult> PartitionAwaitWithCancellationAsync<TSource, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<bool>> predicate,
