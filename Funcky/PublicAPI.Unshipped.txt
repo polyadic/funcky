@@ -32,6 +32,9 @@ Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! inspector) ->
 Funcky.Monads.Either<TLeft, TRight>.SelectLeft<TResult>(System.Func<TLeft, TResult>! selector) -> Funcky.Monads.Either<TResult, TRight>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
+Funcky.Monads.Option<TItem>.AndThen(System.Action<TItem>! action) -> void
+Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
+Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, TResult>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! fallback) -> TItem
 Funcky.Monads.Option<TItem>.GetOrElse(TItem fallback) -> TItem
 Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! inspector) -> Funcky.Monads.Option<TItem>

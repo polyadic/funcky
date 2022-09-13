@@ -53,9 +53,6 @@ Funcky.Monads.Lazy
 Funcky.Monads.LazyExtensions
 Funcky.Monads.Option
 Funcky.Monads.Option<TItem>
-Funcky.Monads.Option<TItem>.AndThen(System.Action<TItem>! andThenFunction) -> void
-Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! andThenFunction) -> Funcky.Monads.Option<TResult>
-Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, TResult>! andThenFunction) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
 Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
 Funcky.Monads.Option<TItem>.Equals(Funcky.Monads.Option<TItem> other) -> bool

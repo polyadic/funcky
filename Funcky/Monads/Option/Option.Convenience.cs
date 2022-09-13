@@ -26,20 +26,20 @@ public readonly partial struct Option<TItem>
         => Match(none: fallback, some: Identity);
 
     [Pure]
-    public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)
+    public Option<TResult> AndThen<TResult>(Func<TItem, TResult> selector)
         where TResult : notnull
-        => Select(andThenFunction);
+        => Select(selector);
 
     [Pure]
-    public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> andThenFunction)
+    public Option<TResult> AndThen<TResult>(Func<TItem, Option<TResult>> selector)
         where TResult : notnull
-        => SelectMany(andThenFunction);
+        => SelectMany(selector);
 
     /// <summary>
     /// Performs a side effect when the option has a value.
     /// </summary>
-    public void AndThen(Action<TItem> andThenFunction)
-        => Switch(none: NoOperation, some: andThenFunction);
+    public void AndThen(Action<TItem> action)
+        => Switch(none: NoOperation, some: action);
 
     /// <summary>
     /// Performs a side effect when the option has a value and returns the option again.
