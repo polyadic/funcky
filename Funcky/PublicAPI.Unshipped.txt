@@ -218,7 +218,14 @@ static Funcky.Monads.ResultExtensions.Traverse<TValidResult, T>(this Funcky.Mona
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TEnvironment, TResult>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Result<TResult>>!
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TItem>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<Funcky.Monads.Result<TItem>>
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TLeft, TRight>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Either<TLeft, TRight>>! selector) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Result<TRight>>
-static Funcky.Sequence.CycleRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence) -> Funcky.IBuffer<TItem>!
-static Funcky.Sequence.RepeatRange<TItem>(System.Collections.Generic.IEnumerable<TItem>! sequence, int count) -> Funcky.IBuffer<TItem>!
-static Funcky.Sequence.Return<TItem>(TItem item) -> System.Collections.Generic.IReadOnlyList<TItem>!
-static Funcky.Sequence.Return<TItem>(params TItem[]! items) -> System.Collections.Generic.IReadOnlyList<TItem>!
+static Funcky.Sequence.Cycle<TResult>(TResult element) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.CycleRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!
+static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult!>!
+static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.RepeatRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int count) -> Funcky.IBuffer<TSource>!
+static Funcky.Sequence.Return<TResult>(params TResult[]! elements) -> System.Collections.Generic.IReadOnlyList<TResult>!
+static Funcky.Sequence.Return<TResult>(TResult element) -> System.Collections.Generic.IReadOnlyList<TResult>!
+static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, System.Func<TResult, Funcky.Monads.Option<TResult>>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, Funcky.Monads.Option<TResult>>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
