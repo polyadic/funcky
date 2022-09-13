@@ -20,12 +20,12 @@ static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1, T2>(this System.
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.Tuple<T1>!>! source) -> Xunit.TheoryData<T1>!
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<System.ValueTuple<T1>>! source) -> Xunit.TheoryData<T1>!
 static Funcky.Extensions.ToTheoryDataExtension.ToTheoryData<T1>(this System.Collections.Generic.IEnumerable<T1>! source) -> Xunit.TheoryData<T1>!
-static Funcky.FunctionalAssert.Error<TResult>(Funcky.Monads.Result<TResult> result) -> System.Exception!
+static Funcky.FunctionalAssert.Error<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> System.Exception!
 static Funcky.FunctionalAssert.Left<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TLeft
 static Funcky.FunctionalAssert.Left<TLeft, TRight>(TLeft expectedLeft, Funcky.Monads.Either<TLeft, TRight> either) -> void
 static Funcky.FunctionalAssert.None<TItem>(Funcky.Monads.Option<TItem> option) -> void
-static Funcky.FunctionalAssert.Ok<TResult>(Funcky.Monads.Result<TResult> result) -> TResult
-static Funcky.FunctionalAssert.Ok<TResult>(TResult expectedResult, Funcky.Monads.Result<TResult> result) -> void
+static Funcky.FunctionalAssert.Ok<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> TValidResult
+static Funcky.FunctionalAssert.Ok<TValidResult>(TValidResult expectedResult, Funcky.Monads.Result<TValidResult> result) -> void
 static Funcky.FunctionalAssert.Right<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TRight
 static Funcky.FunctionalAssert.Right<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
 static Funcky.FunctionalAssert.Some<TItem>(Funcky.Monads.Option<TItem> option) -> TItem

@@ -13,7 +13,7 @@ public static partial class FunctionalAssert
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
-    public static Exception Error<TResult>(Result<TResult> result)
+    public static Exception Error<TValidResult>(Result<TValidResult> result)
     {
         try
         {
