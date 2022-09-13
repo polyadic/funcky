@@ -5,6 +5,16 @@ Funcky.AsyncSequence
 Funcky.IAsyncBuffer<T>
 Funcky.Monads.EitherAsyncExtensions
 Funcky.Monads.OptionAsyncExtensions
+Funcky.Monads.OptionTaskAwaiter<TItem>
+Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
+Funcky.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionTaskAwaiter<TItem>.OptionTaskAwaiter() -> void
+Funcky.Monads.OptionValueTaskAwaiter<TItem>
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.OptionValueTaskAwaiter() -> void
 Funcky.Monads.ResultAsyncExtensions
 static Funcky.AsyncSequence.Cycle<TResult>(TResult element) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.AsyncSequence.CycleRange<TSource>(System.Collections.Generic.IAsyncEnumerable<TSource>! sequence) -> Funcky.IAsyncBuffer<TSource>!
@@ -199,6 +209,10 @@ static Funcky.Monads.EitherAsyncExtensions.Sequence<TLeft, TRight>(this Funcky.M
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Collections.Generic.IAsyncEnumerable<T>!>! selector) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Either<TLeft, T>>!
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Threading.Tasks.Task<T>!>! selector) -> System.Threading.Tasks.Task<Funcky.Monads.Either<TLeft, T>>!
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Threading.Tasks.ValueTask<T>>! selector) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Either<TLeft, T>>
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Monads.OptionTaskAwaiter<TItem>
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Monads.OptionValueTaskAwaiter<TItem>
 static Funcky.Monads.OptionAsyncExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Collections.Generic.IAsyncEnumerable<TItem>!> option) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionAsyncExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> System.Threading.Tasks.Task<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionAsyncExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TItem>>
