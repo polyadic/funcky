@@ -47,8 +47,6 @@ Funcky.Monads.Either<TLeft, TRight>.Select<TResult>(System.Func<TRight, TResult>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TResult>>! selector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft>
 Funcky.Monads.EitherExtensions
-Funcky.Monads.JsonOptionConverterFactory
-Funcky.Monads.JsonOptionConverterFactory.JsonOptionConverterFactory() -> void
 Funcky.Monads.Lazy
 Funcky.Monads.LazyExtensions
 Funcky.Monads.Option
@@ -86,8 +84,6 @@ Funcky.Unit.Unit() -> void
 override Funcky.Monads.Either<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.Monads.Either<TLeft, TRight>.GetHashCode() -> int
 override Funcky.Monads.Either<TLeft, TRight>.ToString() -> string!
-override Funcky.Monads.JsonOptionConverterFactory.CanConvert(System.Type! typeToConvert) -> bool
-override Funcky.Monads.JsonOptionConverterFactory.CreateConverter(System.Type! optionType, System.Text.Json.JsonSerializerOptions! options) -> System.Text.Json.Serialization.JsonConverter!
 override Funcky.Monads.Option<TItem>.Equals(object? obj) -> bool
 override Funcky.Monads.Option<TItem>.GetHashCode() -> int
 override Funcky.Monads.Option<TItem>.ToString() -> string!

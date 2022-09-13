@@ -24,7 +24,9 @@
         <PackageReference Include="Nullable" PrivateAssets="all" />
         <PackageReference Include="IsExternalInit" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
-        <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
+
+        <!-- .NET Core 3.1 ships with System.Text.Json, but we reference the NuGet version instead, so we always get System.Text.Json >= 5.0.0. It is the first version to never return null converter from CreateConverter(...). -->
+        <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'netcoreapp3.1'" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />

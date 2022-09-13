@@ -42,6 +42,8 @@ Funcky.Monads.Option<TItem>.OrElse(Funcky.Monads.Option<TItem> fallback) -> Func
 Funcky.Monads.Option<TItem>.OrElse(System.Func<Funcky.Monads.Option<TItem>>! fallback) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.SelectMany<TOption, TResult>(System.Func<TItem, Funcky.Monads.Option<TOption>>! selector, System.Func<TItem, TOption, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.Switch(System.Action! none, System.Action<TItem>! some) -> void
+Funcky.Monads.OptionJsonConverter
+Funcky.Monads.OptionJsonConverter.OptionJsonConverter() -> void
 Funcky.Monads.Result<TValidResult>.GetOrThrow() -> TValidResult
 Funcky.Monads.Result<TValidResult>.Inspect(System.Action<TValidResult>! inspector) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.SelectMany<TResult>(System.Func<TValidResult, Funcky.Monads.Result<TResult>>! selector) -> Funcky.Monads.Result<TResult>
@@ -71,6 +73,8 @@ Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetries) -> void
 override Funcky.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
+override Funcky.Monads.OptionJsonConverter.CanConvert(System.Type! typeToConvert) -> bool
+override Funcky.Monads.OptionJsonConverter.CreateConverter(System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Text.Json.Serialization.JsonConverter!
 static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> left, Funcky.Monads.Option<TRight> right) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>
 static Funcky.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBoth<TLeft, TRight>
