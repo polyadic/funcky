@@ -2,7 +2,7 @@ using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
 
-public static class OptionAsyncExtensions
+public static partial class OptionAsyncExtensions
 {
     [Pure]
     public static IAsyncEnumerable<Option<T>> Traverse<TItem, T>(
