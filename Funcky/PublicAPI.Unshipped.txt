@@ -196,6 +196,7 @@ static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<
 static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Collections.Generic.IEnumerable<TItem>!> option) -> System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Lazy<TItem>!> option) -> System.Lazy<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionExtensions.Sequence<TLeft, TItem>(this Funcky.Monads.Option<Funcky.Monads.Either<TLeft, TItem>> option) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Option<TItem>>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.OptionExtensions.Traverse<TItem, T>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, System.Collections.Generic.IEnumerable<T>!>! selector) -> System.Collections.Generic.IEnumerable<Funcky.Monads.Option<T>>!
 static Funcky.Monads.OptionExtensions.Traverse<TItem, T>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, System.Lazy<T>!>! selector) -> System.Lazy<Funcky.Monads.Option<T>>!
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TEnvironment, TResult>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Option<TResult>>!

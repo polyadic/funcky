@@ -461,7 +461,6 @@ static Funcky.Monads.OptionComparer<TItem>.Create(System.Comparison<TItem>! comp
 static Funcky.Monads.OptionComparer<TItem>.Default.get -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionEqualityComparer.Create<TItem>(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionEqualityComparer<TItem>.Default.get -> System.Collections.Generic.EqualityComparer<Funcky.Monads.Option<TItem>>!
-static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! getLeft) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
 static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
