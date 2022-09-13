@@ -6,8 +6,8 @@ namespace Funcky.Monads;
 public static partial class OptionAsyncExtensions
 {
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public static TaskAwaiter GetAwaiter(this Option<Task> option)
-        => option.GetOrElse(Task.CompletedTask).GetAwaiter();
+    public static OptionTaskAwaiter GetAwaiter(this Option<Task> option)
+        => new(option.GetOrElse(Task.CompletedTask).GetAwaiter());
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static OptionTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<Task<TItem>> option)
@@ -15,13 +15,27 @@ public static partial class OptionAsyncExtensions
         => new(option.Select(t => t.GetAwaiter()));
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "False positive.")]
-    public static ValueTaskAwaiter GetAwaiter(this Option<ValueTask> option)
-        => option.GetOrElse(default(ValueTask)).GetAwaiter();
+    public static OptionValueTaskAwaiter GetAwaiter(this Option<ValueTask> option)
+        => new(option.GetOrElse(default(ValueTask)).GetAwaiter());
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static OptionValueTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<ValueTask<TItem>> option)
         where TItem : notnull
         => new(option.Select(t => t.GetAwaiter()));
+}
+
+[EditorBrowsable(EditorBrowsableState.Advanced)]
+public readonly struct OptionTaskAwaiter : INotifyCompletion
+{
+    private readonly TaskAwaiter _awaiter;
+
+    internal OptionTaskAwaiter(TaskAwaiter awaiter) => _awaiter = awaiter;
+
+    public bool IsCompleted => _awaiter.IsCompleted;
+
+    public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+
+    public void GetResult() => _awaiter.GetResult();
 }
 
 [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -41,6 +55,20 @@ public readonly struct OptionTaskAwaiter<TItem> : INotifyCompletion
 
     public Option<TItem> GetResult()
         => _awaiter.Select(a => a.GetResult());
+}
+
+[EditorBrowsable(EditorBrowsableState.Advanced)]
+public readonly struct OptionValueTaskAwaiter : INotifyCompletion
+{
+    private readonly ValueTaskAwaiter _awaiter;
+
+    internal OptionValueTaskAwaiter(ValueTaskAwaiter awaiter) => _awaiter = awaiter;
+
+    public bool IsCompleted => _awaiter.IsCompleted;
+
+    public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+
+    public void GetResult() => _awaiter.GetResult();
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]
