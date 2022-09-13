@@ -1,6 +1,7 @@
 # Summary
 
 [Introduction](./introduction.md)
+* [Migrating from 2.x to 3.0](./migration-guide.md)
 * [Functional Programming](./fp/overview.md)
 * [Case Studies]()
   * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
