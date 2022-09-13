@@ -1,3 +1,5 @@
+using static Funcky.Async.ValueTaskFactory;
+
 namespace Funcky;
 
 public static partial class AsyncSequence
@@ -10,6 +12,5 @@ public static partial class AsyncSequence
     /// <returns>Returns an infinite IEnumerable cycling through the same elements.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> Cycle<TResult>(TResult element)
-        => Sequence.Cycle(element)
-            .ToAsyncEnumerable();
+        => Successors(element, ValueTaskFromResult);
 }
