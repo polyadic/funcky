@@ -10,11 +10,11 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <returns>Concatenated string.</returns>
     [Pure]
-    public static async Task<string> ConcatToStringAsync<TSource>(this IAsyncEnumerable<TSource> source)
+    public static async Task<string> ConcatToStringAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
     {
         var result = new StringBuilder();
 
-        await source.AggregateAsync(result, (builder, value) => builder.Append(value)).ConfigureAwait(false);
+        await source.AggregateAsync(result, (builder, value) => builder.Append(value), cancellationToken).ConfigureAwait(false);
 
         return result.ToString();
     }
