@@ -27,6 +27,6 @@ public static partial class ParseExtensions
     [Pure]
     public static Option<CacheControlHeaderValue> ParseCacheControlHeaderValueOrNone(this string? candidate)
         => CacheControlHeaderValue.TryParse(candidate, out var result)
-            ? result!
+            ? result ?? new CacheControlHeaderValue()
             : Option<CacheControlHeaderValue>.None;
 }

@@ -3,7 +3,7 @@ using FsCheck.Xunit;
 
 namespace Funcky.Test.Extensions.ParseExtensions;
 
-public sealed class ParseExtensionsTest
+public sealed partial class ParseExtensionsTest
 {
     [Theory]
     [InlineData("1.0")]

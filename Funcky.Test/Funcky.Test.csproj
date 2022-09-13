@@ -19,6 +19,9 @@
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' == 'net4.8'" />
+    </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\GlobalUsings.Test.props" />
