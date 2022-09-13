@@ -2,7 +2,7 @@
 Funcky.Extensions.AsyncEnumerableExtensions
 Funcky.AsyncFunctional
 Funcky.AsyncSequence
-Funcky.IAsyncBuffer<TSource>
+Funcky.IAsyncBuffer<T>
 Funcky.Monads.EitherAsyncExtensions
 Funcky.Monads.OptionAsyncExtensions
 Funcky.Monads.ResultAsyncExtensions

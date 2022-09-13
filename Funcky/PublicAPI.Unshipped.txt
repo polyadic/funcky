@@ -25,7 +25,7 @@ Funcky.Extensions.ResultPartitions<TValidResult>.Deconstruct(out System.Collecti
 Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections.Generic.IReadOnlyList<System.Exception!>!
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyList<TValidResult>!
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> void
-Funcky.IBuffer<TSource>
+Funcky.IBuffer<T>
 Funcky.Monads.Either<TLeft, TRight>.GetOrElse(System.Func<TLeft, TRight>! fallback) -> TRight
 Funcky.Monads.Either<TLeft, TRight>.GetOrElse(TRight fallback) -> TRight
 Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! inspector) -> Funcky.Monads.Either<TLeft, TRight>
