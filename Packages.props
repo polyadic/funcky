@@ -3,7 +3,7 @@
 	<ItemGroup Label="Runtime Dependencies">
 		<PackageReference Update="Microsoft.Bcl.HashCode" Version="1.1.1" />
 		<PackageReference Update="System.Collections.Immutable" Version="1.7.1" />
-		<PackageReference Update="System.Text.Json" Version="4.7.2" />
+		<PackageReference Update="System.Text.Json" Version="5.0.0" />
 		<PackageReference Update="xunit.assert" Version="[2.4.0, 3)" />
 		<PackageReference Update="xunit.extensibility.core" Version="[2.4.0, 3)" />
 		<PackageReference Update="System.Linq.Async" Version="[5.0.0, 7)" />
