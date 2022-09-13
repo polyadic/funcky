@@ -6,16 +6,16 @@ namespace Funcky.Monads;
 public static class Lazy
 {
     [Pure]
-    public static Lazy<TItem> FromFunc<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>(Func<TItem> valueFactory)
+    public static Lazy<T> FromFunc<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(Func<T> valueFactory)
         => new(valueFactory);
 
 #if LAZY_RETURN_CONSTRUCTOR
     [Pure]
-    public static Lazy<TItem> Return<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TItem>(TItem value)
+    public static Lazy<T> Return<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(T value)
         => new(value);
 #else
     [Pure]
-    public static Lazy<TItem> Return<TItem>(TItem value)
+    public static Lazy<T> Return<T>(T value)
         => new(() => value);
 #endif
 }
