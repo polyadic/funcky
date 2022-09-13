@@ -171,6 +171,7 @@ static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) ->
 static Funcky.Functional.True<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T1>(T1 ω1) -> bool
+static Funcky.Monads.Either<TLeft>.Return<TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.EitherExtensions.Sequence<TLeft, TEnvironment, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Reader<TEnvironment, TRight>!> either) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Either<TLeft, TRight>>!
 static Funcky.Monads.EitherExtensions.Sequence<TLeft, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Option<TRight>> either) -> Funcky.Monads.Option<Funcky.Monads.Either<TLeft, TRight>>
 static Funcky.Monads.EitherExtensions.Sequence<TLeft, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Result<TRight>> either) -> Funcky.Monads.Result<Funcky.Monads.Either<TLeft, TRight>>

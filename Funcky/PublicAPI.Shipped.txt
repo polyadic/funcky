@@ -443,7 +443,6 @@ static Funcky.Monads.Either<TLeft, TRight>.Left(TLeft left) -> Funcky.Monads.Eit
 static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.Right(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
-static Funcky.Monads.Either<TLeft>.Return<TRight>(TRight item) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
 static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
 static Funcky.Monads.Lazy.FromFunc<TItem>(System.Func<TItem>! valueFactory) -> System.Lazy<TItem>!

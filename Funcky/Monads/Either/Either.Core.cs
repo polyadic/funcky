@@ -111,6 +111,6 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
 public static class Either<TLeft>
 {
     [Pure]
-    public static Either<TLeft, TRight> Return<TRight>(TRight item)
-        => Either<TLeft, TRight>.Right(item);
+    public static Either<TLeft, TRight> Return<TRight>(TRight right)
+        => Either<TLeft, TRight>.Right(right);
 }
