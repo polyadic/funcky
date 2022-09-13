@@ -417,14 +417,6 @@ static Funcky.Functional.Flip<T1, T2, TResult>(System.Func<T1, T2, TResult>! fun
 static Funcky.Functional.Flip<T1, T2>(System.Action<T1, T2>! function) -> System.Action<T2, T1>!
 static Funcky.Functional.Identity<T>(T value) -> T
 static Funcky.Functional.NoOperation() -> void
-static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6, T7, T8>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8) -> void
-static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6, T7>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7) -> void
-static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6) -> void
-static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5>(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5) -> void
-static Funcky.Functional.NoOperation<T1, T2, T3, T4>(T1 p1, T2 p2, T3 p3, T4 p4) -> void
-static Funcky.Functional.NoOperation<T1, T2, T3>(T1 p1, T2 p2, T3 p3) -> void
-static Funcky.Functional.NoOperation<T1, T2>(T1 p1, T2 p2) -> void
-static Funcky.Functional.NoOperation<T1>(T1 p1) -> void
 static Funcky.Functional.Not<T>(System.Func<T, bool>! predicate) -> System.Func<T, bool>!
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer) -> TResult
 static Funcky.Functional.Uncurry<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(System.Func<T1, System.Func<T2, System.Func<T3, System.Func<T4, System.Func<T5, System.Func<T6, System.Func<T7, System.Func<T8, TResult>!>!>!>!>!>!>!>! function) -> System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>!

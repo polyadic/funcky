@@ -153,6 +153,14 @@ static Funcky.Functional.False<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -
 static Funcky.Functional.False<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.False<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.False<T1>(T1 ω1) -> bool
+static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6, T7, T8>(T1 ω1, T2 ω2, T3 ω3, T4 ω4, T5 ω5, T6 ω6, T7 ω7, T8 ω8) -> void
+static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6, T7>(T1 ω1, T2 ω2, T3 ω3, T4 ω4, T5 ω5, T6 ω6, T7 ω7) -> void
+static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5, T6>(T1 ω1, T2 ω2, T3 ω3, T4 ω4, T5 ω5, T6 ω6) -> void
+static Funcky.Functional.NoOperation<T1, T2, T3, T4, T5>(T1 ω1, T2 ω2, T3 ω3, T4 ω4, T5 ω5) -> void
+static Funcky.Functional.NoOperation<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> void
+static Funcky.Functional.NoOperation<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> void
+static Funcky.Functional.NoOperation<T1, T2>(T1 ω1, T2 ω2) -> void
+static Funcky.Functional.NoOperation<T1>(T1 ω1) -> void
 static Funcky.Functional.Retry<TResult>(System.Func<Funcky.Monads.Option<TResult>>! producer, Funcky.RetryPolicies.IRetryPolicy! retryPolicy) -> Funcky.Monads.Option<TResult>
 static Funcky.Functional.True() -> bool
 static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) -> bool
