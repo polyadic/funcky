@@ -71,7 +71,7 @@ Funcky.RetryPolicies.NoDelayRetryPolicy
 Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetries) -> void
 override Funcky.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
-static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>
+static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> left, Funcky.Monads.Option<TRight> right) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>
 static Funcky.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
