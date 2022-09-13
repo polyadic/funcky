@@ -12,6 +12,7 @@ public readonly partial struct Result<TValidResult>
 }
 
 internal sealed class ResultDebugView<TValidResult>
+    where TValidResult : notnull
 {
     private readonly Result<TValidResult> _option;
 

@@ -38,21 +38,27 @@ internal static class UnsafeEither
             : Option<TItem>.None;
 
     public static UnsafeEither<TLeft, TRight> FromEither<TLeft, TRight>(Either<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
         => either.Match(
             left: UnsafeEither<TLeft, TRight>.Left,
             right: UnsafeEither<TLeft, TRight>.Right);
 
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this UnsafeEither<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
         => either.IsRight
             ? Either<TLeft, TRight>.Right(either.RightValue)
             : Either<TLeft, TRight>.Left(either.LeftValue);
 
     public static UnsafeEither<Exception, TValidResult> FromResult<TValidResult>(Result<TValidResult> result)
+        where TValidResult : notnull
         => result.Match(
             error: UnsafeEither<Exception, TValidResult>.Left,
             ok: UnsafeEither<Exception, TValidResult>.Right);
 
     public static Result<TValidResult> ToResult<TValidResult>(this UnsafeEither<Exception, TValidResult> either)
+        where TValidResult : notnull
         => either.IsRight
             ? Result.Ok(either.RightValue)
             : Result<TValidResult>.Error(either.LeftValue);

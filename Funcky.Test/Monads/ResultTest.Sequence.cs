@@ -71,6 +71,8 @@ public sealed partial class ResultTest
         Func<TValidResult1, TValidResult2, TResult> ok,
         Func<Exception, Exception, TResult> error,
         Func<TResult> heterogeneous)
+        where TValidResult1 : notnull
+        where TValidResult2 : notnull
         => input.X.Match(
             ok: x => input.Y.Match(ok: y => ok(x, y), error: _ => heterogeneous()),
             error: x => input.Y.Match(ok: _ => heterogeneous(), error: y => error(x, y)));

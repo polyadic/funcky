@@ -9,6 +9,8 @@ public static partial class EnumerableExtensions
 {
     [Pure]
     public static Either<TLeft, IReadOnlyList<TSource>> Sequence<TLeft, TSource>(this IEnumerable<Either<TLeft, TSource>> source)
+        where TLeft : notnull
+        where TSource : notnull
         => source.Traverse(UnsafeEither.FromEither).ToEither();
 
     [Pure]
@@ -18,10 +20,13 @@ public static partial class EnumerableExtensions
 
     [Pure]
     public static Result<IReadOnlyList<TSource>> Sequence<TSource>(this IEnumerable<Result<TSource>> source)
+        where TSource : notnull
         => source.Traverse(UnsafeEither.FromResult).ToResult();
 
     [Pure]
     public static Reader<TEnvironment, IEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IEnumerable<Reader<TEnvironment, TSource>> sequence)
+        where TEnvironment : notnull
+        where TSource : notnull
         => environment
             => sequence.Select(reader => reader(environment));
 

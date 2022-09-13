@@ -9,6 +9,8 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Either<TLeft, TRight>> selector,
         CancellationToken cancellationToken = default)
+        where TLeft : notnull
+        where TRight : notnull
         => source.Select(selector).SequenceAsync(cancellationToken);
 
     public static ValueTask<Option<IReadOnlyList<TItem>>> TraverseAsync<TSource, TItem>(
@@ -22,12 +24,15 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Result<TValidResult>> selector,
         CancellationToken cancellationToken = default)
+        where TValidResult : notnull
         => source.Select(selector).SequenceAsync(cancellationToken);
 
     [Pure]
     public static Reader<TEnvironment, IAsyncEnumerable<TResult>> Traverse<TSource, TEnvironment, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Reader<TEnvironment, TResult>> selector)
+        where TEnvironment : notnull
+        where TResult : notnull
         => source.Select(selector).Sequence();
 
     [Pure]

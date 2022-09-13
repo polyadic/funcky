@@ -24,17 +24,22 @@ type EquatableException =
 type NonNull<'a> = NonNull of 'a with
     member x.Get = match x with NonNull r -> r
 
+module FunckyArb =
+    let generateNonNull<'a> = Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get)
+
 [<Sealed>]
 [<AbstractClass>]
 type FunckyGenerators =
+    static member generateNonNull<'a>() = Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get)
+
     static member either<'a, 'b>() =
         (Arb.fromGen << Gen.oneof) [
-            Arb.generate<'a> |> Gen.map Either<'a, 'b>.Left
-            Arb.generate<'b> |> Gen.map Either<'a, 'b>.Right]
+            FunckyArb.generateNonNull<'a> |> Gen.map Either<'a, 'b>.Left
+            FunckyArb.generateNonNull<'b> |> Gen.map Either<'a, 'b>.Right]
 
     static member result<'a>() =
         (Arb.fromGen << Gen.oneof) [
-            Arb.generate<'a> |> Gen.map Result.Ok
+            FunckyGenerators.generateNonNull<'a>() |> Gen.map Result.Ok
             Arb.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
 
     static member tuple2<'a, 'b>() =
@@ -58,7 +63,7 @@ type FunckyGenerators =
     static member option<'a>() =
         { new Arbitrary<Funcky.Monads.Option<'a>>() with
             override _.Generator =
-                Gen.frequency [(1, gen { return Option<'a>.None }); (7, Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get) |> Gen.map Option.Some)]
+                Gen.frequency [(1, gen { return Option<'a>.None }); (7, FunckyArb.generateNonNull<'a> |> Gen.map Option.Some)]
             override _.Shrinker o =
                 o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
         }

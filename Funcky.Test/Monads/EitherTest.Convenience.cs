@@ -67,11 +67,11 @@ public sealed partial class EitherTest
         }
 
         [Property]
-        public Property AppliesTheGivenSelectorToALeftValue(int value, Func<int, string> selector)
+        public Property AppliesTheGivenSelectorToALeftValue(int value, Func<int, NonNull<string>> selector)
         {
             var source = Either<int, Unit>.Left(value);
             var result = source.SelectLeft(selector);
-            return (result == Either<string, Unit>.Left(selector(value))).ToProperty();
+            return (result == Either<NonNull<string>, Unit>.Left(selector(value))).ToProperty();
         }
     }
 }

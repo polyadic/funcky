@@ -33,8 +33,8 @@ public sealed partial class EitherTest
         => CheckAssert.Equal(input, input.SelectMany(Either<string>.Return));
 
     [Property]
-    public Property LeftIdentityHoldsWithReferenceTypes(string input, Func<string, Either<string, string>> selector)
-        => CheckAssert.Equal(Either<string>.Return(input).SelectMany(selector), selector(input));
+    public Property LeftIdentityHoldsWithReferenceTypes(NonNull<string> input, Func<string, Either<string, string>> selector)
+        => CheckAssert.Equal(Either<string>.Return(input.Get).SelectMany(selector), selector(input.Get));
 
     private static Func<TItem, Either<TItem, TItem>> Combine<TItem>(Func<TItem, Either<TItem, TItem>> functionA, Func<TItem, Either<TItem, TItem>> functionB)
         where TItem : notnull

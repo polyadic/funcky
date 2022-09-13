@@ -10,6 +10,8 @@ public static partial class AsyncEnumerableExtensions
     public static async ValueTask<Either<TLeft, IReadOnlyList<TSource>>> SequenceAsync<TLeft, TSource>(
         this IAsyncEnumerable<Either<TLeft, TSource>> source,
         CancellationToken cancellationToken = default)
+        where TLeft : notnull
+        where TSource : notnull
         => (await source.TraverseAsync(UnsafeEither.FromEither, cancellationToken).ConfigureAwait(false)).ToEither();
 
     public static async ValueTask<Option<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
@@ -21,10 +23,13 @@ public static partial class AsyncEnumerableExtensions
     public static async ValueTask<Result<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
         this IAsyncEnumerable<Result<TSource>> source,
         CancellationToken cancellationToken = default)
+        where TSource : notnull
         => (await source.TraverseAsync(UnsafeEither.FromResult, cancellationToken).ConfigureAwait(false)).ToResult();
 
     [Pure]
     public static Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IAsyncEnumerable<Reader<TEnvironment, TSource>> source)
+        where TEnvironment : notnull
+        where TSource : notnull
         => environment
             => source.Select(reader => reader(environment));
 

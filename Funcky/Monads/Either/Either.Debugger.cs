@@ -12,6 +12,8 @@ public readonly partial struct Either<TLeft, TRight>
 }
 
 internal sealed class EitherDebugView<TLeft, TRight>
+    where TLeft : notnull
+    where TRight : notnull
 {
     private readonly Either<TLeft, TRight> _either;
 

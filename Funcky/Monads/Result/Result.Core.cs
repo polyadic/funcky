@@ -13,6 +13,7 @@ using System.Diagnostics;
 namespace Funcky.Monads;
 
 public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
+    where TValidResult : notnull
 {
     #if !SET_CURRENT_STACK_TRACE_SUPPORTED
     private const int SkipLowestStackFrame = 1;
@@ -22,10 +23,20 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     private readonly Exception? _error;
 
     internal Result(TValidResult result)
-        => (_result, _error) = (result, null);
+    {
+        if (result is null)
+        {
+            throw new ArgumentNullException(nameof(result));
+        }
+
+        _result = result;
+    }
 
     private Result(Exception error)
-        => (_result, _error) = (default!, error);
+    {
+        _result = default!;
+        _error = error;
+    }
 
     [Pure]
     public static bool operator ==(Result<TValidResult> left, Result<TValidResult> right)
@@ -50,6 +61,11 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     #endif
     public static Result<TValidResult> Error(Exception exception)
     {
+        if (exception is null)
+        {
+            throw new ArgumentNullException(nameof(exception));
+        }
+
         if (exception.StackTrace is null)
         {
             #if SET_CURRENT_STACK_TRACE_SUPPORTED
@@ -108,9 +124,11 @@ public static class Result
 {
     [Pure]
     public static Result<TValidResult> Ok<TValidResult>(TValidResult result)
+        where TValidResult : notnull
         => new(result);
 
     [Pure]
     public static Result<TValidResult> Return<TValidResult>(TValidResult result)
+        where TValidResult : notnull
         => new(result);
 }

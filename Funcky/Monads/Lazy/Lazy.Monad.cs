@@ -11,7 +11,7 @@ public static partial class LazyExtensions
 
     [Pure]
     public static Lazy<TResult> SelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(this Lazy<T> lazy, Func<T, Lazy<TResult>> selector)
-        => SelectMany(lazy, selector, static (a, b) => b);
+        => SelectMany(lazy, selector, static (_, b) => b);
 
     [Pure]
     public static Lazy<TResult> SelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TLazy, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(this Lazy<T> lazy, Func<T, Lazy<TLazy>> selector, Func<T, TLazy, TResult> resultSelector)

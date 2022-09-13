@@ -9,6 +9,7 @@ public static partial class OptionExtensions
     public static Either<TLeft, Option<TRight>> Traverse<TItem, TLeft, TRight>(
         this Option<TItem> option,
         Func<TItem, Either<TLeft, TRight>> selector)
+        where TLeft : notnull
         where TItem : notnull
         where TRight : notnull
         => option.Select(selector).Sequence();
@@ -16,6 +17,7 @@ public static partial class OptionExtensions
     [Pure]
     public static Either<TLeft, Option<TItem>> Sequence<TLeft, TItem>(
         this Option<Either<TLeft, TItem>> option)
+        where TLeft : notnull
         where TItem : notnull
         => option.Match(
             none: Either<TLeft>.Return(Option<TItem>.None),
@@ -74,12 +76,14 @@ public static partial class OptionExtensions
         this Option<TItem> option,
         Func<TItem, Reader<TEnvironment, TResult>> selector)
         where TItem : notnull
+        where TEnvironment : notnull
         where TResult : notnull
         => option.Select(selector).Sequence();
 
     [Pure]
     public static Reader<TEnvironment, Option<TItem>> Sequence<TEnvironment, TItem>(
         this Option<Reader<TEnvironment, TItem>> option)
+        where TEnvironment : notnull
         where TItem : notnull
         => option.Match(
             none: static () => Reader<TEnvironment>.Return(Option<TItem>.None),
