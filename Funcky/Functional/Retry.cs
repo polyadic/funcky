@@ -28,14 +28,15 @@ public static partial class Functional
         => Retries(retryPolicy)
             .Select(ProduceDelayed(producer, retryPolicy));
 
-    private static IEnumerable<int> Retries(IRetryPolicy retryPolicy) => Enumerable.Range(0, retryPolicy.MaxRetries);
+    private static IEnumerable<int> Retries(IRetryPolicy retryPolicy)
+        => Enumerable.Range(0, retryPolicy.MaxRetries);
 
     private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
         where TResult : notnull
-        => retryCount =>
-        {
-            Sleep(retryPolicy.Duration(retryCount));
-
-            return producer();
-        };
+        => retryCount
+            =>
+            {
+                Sleep(retryPolicy.Duration(retryCount));
+                return producer();
+            };
 }
