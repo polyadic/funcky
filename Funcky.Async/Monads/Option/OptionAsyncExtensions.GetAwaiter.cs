@@ -15,12 +15,12 @@ public static partial class OptionAsyncExtensions
     /// <see langword="true" /> to attempt to marshal the continuation back to the original context captured; otherwise, <see langword="false" />.</param>
     /// <returns>An object used to await this task.</returns>
     public static ConfiguredOptionTaskAwaitable ConfigureAwait(this Option<Task> option, bool continueOnCapturedContext)
-        => new(option.Select(t => t.ConfigureAwait(continueOnCapturedContext)));
+        => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static OptionTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<Task<TItem>> option)
         where TItem : notnull
-        => new(option.Select(t => t.GetAwaiter()));
+        => new(option.Select(task => task.GetAwaiter()));
 
     /// <summary>Configures an awaiter used to await this <see cref="Option{TItem}"/>.</summary>
     /// <param name="option">The option to await.</param>
@@ -29,7 +29,7 @@ public static partial class OptionAsyncExtensions
     /// <returns>An object used to await this task.</returns>
     public static ConfiguredOptionTaskAwaitable<TItem> ConfigureAwait<TItem>(this Option<Task<TItem>> option, bool continueOnCapturedContext)
         where TItem : notnull
-        => new(option.Select(t => t.ConfigureAwait(continueOnCapturedContext)));
+        => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "False positive.")]
     public static OptionValueTaskAwaiter GetAwaiter(this Option<ValueTask> option)
@@ -41,12 +41,12 @@ public static partial class OptionAsyncExtensions
     /// <see langword="true" /> to attempt to marshal the continuation back to the original context captured; otherwise, <see langword="false" />.</param>
     /// <returns>An object used to await this task.</returns>
     public static ConfiguredOptionValueTaskAwaitable ConfigureAwait(this Option<ValueTask> option, bool continueOnCapturedContext)
-        => new(option.Select(t => t.ConfigureAwait(continueOnCapturedContext)));
+        => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static OptionValueTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<ValueTask<TItem>> option)
         where TItem : notnull
-        => new(option.Select(t => t.GetAwaiter()));
+        => new(option.Select(task => task.GetAwaiter()));
 
     /// <summary>Configures an awaiter used to await this <see cref="Option{TItem}"/>.</summary>
     /// <param name="option">The option to await.</param>
@@ -55,7 +55,7 @@ public static partial class OptionAsyncExtensions
     /// <returns>An object used to await this ValueTask.</returns>
     public static ConfiguredOptionValueTaskAwaitable<TItem> ConfigureAwait<TItem>(this Option<ValueTask<TItem>> option, bool continueOnCapturedContext)
         where TItem : notnull
-        => new(option.Select(t => t.ConfigureAwait(continueOnCapturedContext)));
+        => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 }
 
 [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -78,7 +78,7 @@ public readonly struct ConfiguredOptionTaskAwaitable
 
     internal ConfiguredOptionTaskAwaitable(Option<ConfiguredTaskAwaitable> awaitable) => _awaitable = awaitable;
 
-    public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(x => x.GetAwaiter()));
+    public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
     public readonly struct ConfiguredOptionTaskAwaiter : INotifyCompletion
     {
@@ -86,11 +86,11 @@ public readonly struct ConfiguredOptionTaskAwaitable
 
         internal ConfiguredOptionTaskAwaiter(Option<ConfiguredTaskAwaitable.ConfiguredTaskAwaiter> awaiter) => _awaiter = awaiter;
 
-        public bool IsCompleted => _awaiter.Select(a => a.IsCompleted).GetOrElse(true);
+        public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
-        public void GetResult() => _awaiter.AndThen(a => a.GetResult());
+        public void GetResult() => _awaiter.AndThen(awaiter => awaiter.GetResult());
     }
 }
 
@@ -103,14 +103,14 @@ public readonly struct OptionTaskAwaiter<TItem> : INotifyCompletion
     internal OptionTaskAwaiter(Option<TaskAwaiter<TItem>> awaiter) => _awaiter = awaiter;
 
     public bool IsCompleted => _awaiter
-        .Select(a => a.IsCompleted)
+        .Select(awaiter => awaiter.IsCompleted)
         .GetOrElse(true);
 
     public void OnCompleted(Action continuation)
-        => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
     public Option<TItem> GetResult()
-        => _awaiter.Select(a => a.GetResult());
+        => _awaiter.Select(awaiter => awaiter.GetResult());
 }
 
 public readonly struct ConfiguredOptionTaskAwaitable<TItem>
@@ -120,7 +120,7 @@ public readonly struct ConfiguredOptionTaskAwaitable<TItem>
 
     internal ConfiguredOptionTaskAwaitable(Option<ConfiguredTaskAwaitable<TItem>> awaitable) => _awaitable = awaitable;
 
-    public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(x => x.GetAwaiter()));
+    public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
     public readonly struct ConfiguredOptionTaskAwaiter : INotifyCompletion
     {
@@ -128,11 +128,11 @@ public readonly struct ConfiguredOptionTaskAwaitable<TItem>
 
         internal ConfiguredOptionTaskAwaiter(Option<ConfiguredTaskAwaitable<TItem>.ConfiguredTaskAwaiter> awaiter) => _awaiter = awaiter;
 
-        public bool IsCompleted => _awaiter.Select(a => a.IsCompleted).GetOrElse(true);
+        public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
-        public Option<TItem> GetResult() => _awaiter.Select(a => a.GetResult());
+        public Option<TItem> GetResult() => _awaiter.Select(awaiter => awaiter.GetResult());
     }
 }
 
@@ -156,7 +156,7 @@ public readonly struct ConfiguredOptionValueTaskAwaitable
 
     internal ConfiguredOptionValueTaskAwaitable(Option<ConfiguredValueTaskAwaitable> awaitable) => _awaitable = awaitable;
 
-    public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(x => x.GetAwaiter()));
+    public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
     public readonly struct ConfiguredOptionValueTaskAwaiter : INotifyCompletion
     {
@@ -164,11 +164,11 @@ public readonly struct ConfiguredOptionValueTaskAwaitable
 
         internal ConfiguredOptionValueTaskAwaiter(Option<ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter> awaiter) => _awaiter = awaiter;
 
-        public bool IsCompleted => _awaiter.Select(a => a.IsCompleted).GetOrElse(true);
+        public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
-        public void GetResult() => _awaiter.AndThen(a => a.GetResult());
+        public void GetResult() => _awaiter.AndThen(awaiter => awaiter.GetResult());
     }
 }
 
@@ -181,14 +181,14 @@ public readonly struct OptionValueTaskAwaiter<TItem> : INotifyCompletion
     internal OptionValueTaskAwaiter(Option<ValueTaskAwaiter<TItem>> awaiter) => _awaiter = awaiter;
 
     public bool IsCompleted => _awaiter
-        .Select(a => a.IsCompleted)
+        .Select(awaiter => awaiter.IsCompleted)
         .GetOrElse(true);
 
     public void OnCompleted(Action continuation)
-        => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
     public Option<TItem> GetResult()
-        => _awaiter.Select(a => a.GetResult());
+        => _awaiter.Select(awaiter => awaiter.GetResult());
 }
 
 public readonly struct ConfiguredOptionValueTaskAwaitable<TItem>
@@ -198,7 +198,7 @@ public readonly struct ConfiguredOptionValueTaskAwaitable<TItem>
 
     internal ConfiguredOptionValueTaskAwaitable(Option<ConfiguredValueTaskAwaitable<TItem>> awaitable) => _awaitable = awaitable;
 
-    public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(x => x.GetAwaiter()));
+    public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
     public readonly struct ConfiguredOptionValueTaskAwaiter : INotifyCompletion
     {
@@ -206,10 +206,10 @@ public readonly struct ConfiguredOptionValueTaskAwaitable<TItem>
 
         internal ConfiguredOptionValueTaskAwaiter(Option<ConfiguredValueTaskAwaitable<TItem>.ConfiguredValueTaskAwaiter> awaiter) => _awaiter = awaiter;
 
-        public bool IsCompleted => _awaiter.Select(a => a.IsCompleted).GetOrElse(true);
+        public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(a => a.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
 
-        public Option<TItem> GetResult() => _awaiter.Select(a => a.GetResult());
+        public Option<TItem> GetResult() => _awaiter.Select(task => task.GetResult());
     }
 }
