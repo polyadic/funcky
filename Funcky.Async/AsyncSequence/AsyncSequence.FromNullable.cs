@@ -4,17 +4,17 @@ public static partial class AsyncSequence
 {
     /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
     [Pure]
-    public static IAsyncEnumerable<T> FromNullable<T>(T? item)
-        where T : class
-        => item is null
-            ? AsyncEnumerable.Empty<T>()
-            : Return(item);
+    public static IAsyncEnumerable<TResult> FromNullable<TResult>(TResult? element)
+        where TResult : class
+        => element is null
+            ? AsyncEnumerable.Empty<TResult>()
+            : Return(element);
 
     /// <inheritdoc cref="FromNullable{T}(T)"/>
     [Pure]
-    public static IAsyncEnumerable<T> FromNullable<T>(T? item)
-        where T : struct
-        => item.HasValue
-            ? Return(item.Value)
-            : AsyncEnumerable.Empty<T>();
+    public static IAsyncEnumerable<TResult> FromNullable<TResult>(TResult? element)
+        where TResult : struct
+        => element.HasValue
+            ? Return(element.Value)
+            : AsyncEnumerable.Empty<TResult>();
 }

@@ -3,10 +3,10 @@ namespace Funcky;
 public static partial class AsyncSequence
 {
     [Pure]
-    public static IAsyncEnumerable<TItem> Return<TItem>(TItem item)
-        => Return(items: item);
+    public static IAsyncEnumerable<TResult> Return<TResult>(TResult element)
+        => Return(elements: element);
 
     [Pure]
-    public static IAsyncEnumerable<TItem> Return<TItem>(params TItem[] items)
-        => items.ToAsyncEnumerable();
+    public static IAsyncEnumerable<TResult> Return<TResult>(params TResult[] elements)
+        => elements.ToAsyncEnumerable();
 }
