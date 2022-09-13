@@ -10,6 +10,18 @@ public sealed partial class ResultTest
         => FunckyGenerators.Register();
 
     [Fact]
+    public void OkConstructorThrowsWhenNullIsPassed()
+    {
+        Assert.Throws<ArgumentNullException>(() => Result.Ok<string>(null!));
+    }
+
+    [Fact]
+    public void ErrorConstructorThrowsWhenNullIsPassed()
+    {
+        Assert.Throws<ArgumentNullException>(() => Result<string>.Error(null!));
+    }
+
+    [Fact]
     public void CreateResultOkAndMatchCorrectly()
     {
         var value = Result.Ok(1000);

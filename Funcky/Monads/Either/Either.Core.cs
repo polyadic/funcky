@@ -17,6 +17,11 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
 
     private Either(TLeft left)
     {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
+        }
+
         _left = left;
         _right = default!;
         _side = Side.Left;
@@ -24,6 +29,11 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
 
     private Either(TRight right)
     {
+        if (right is null)
+        {
+            throw new ArgumentNullException(nameof(right));
+        }
+
         _left = default!;
         _right = right;
         _side = Side.Right;

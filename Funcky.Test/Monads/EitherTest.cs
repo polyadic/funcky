@@ -10,6 +10,18 @@ public sealed partial class EitherTest
         => FunckyGenerators.Register();
 
     [Fact]
+    public void LeftConstructorThrowsWhenNullIsPassed()
+    {
+        Assert.Throws<ArgumentNullException>(() => Either<string, string>.Left(null!));
+    }
+
+    [Fact]
+    public void RightConstructorThrowsWhenNullIsPassed()
+    {
+        Assert.Throws<ArgumentNullException>(() => Either<string, string>.Right(null!));
+    }
+
+    [Fact]
     public void CreateEitherLeftAndMatchCorrectly()
     {
         var value = Either<string, int>.Left("Error: not cool!");
