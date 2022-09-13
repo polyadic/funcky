@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
@@ -38,7 +37,6 @@ public static class ResultAsyncExtensions
         => result.Select(selector).Sequence();
 
     [Pure]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1114:Parameter list should follow declaration", Justification = "False positive.")]
     public static ValueTask<Result<TValidResult>> Sequence<TValidResult>(
         this Result<ValueTask<TValidResult>> result)
         => result.Match<ValueTask<Result<TValidResult>>>(

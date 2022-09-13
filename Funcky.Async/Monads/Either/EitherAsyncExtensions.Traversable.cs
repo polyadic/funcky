@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
@@ -38,7 +37,6 @@ public static class EitherAsyncExtensions
         => either.Select(selector).Sequence();
 
     [Pure]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1114:Parameter list should follow declaration", Justification = "False positive.")]
     public static ValueTask<Either<TLeft, TRight>> Sequence<TLeft, TRight>(
         this Either<TLeft, ValueTask<TRight>> either)
         => either.Match<ValueTask<Either<TLeft, TRight>>>(

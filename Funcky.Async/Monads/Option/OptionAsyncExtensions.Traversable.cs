@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using static Funcky.Async.ValueTaskFactory;
 
 namespace Funcky.Monads;
@@ -46,7 +45,6 @@ public static class OptionAsyncExtensions
         => option.Select(selector).Sequence();
 
     [Pure]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1114:Parameter list should follow declaration", Justification = "False positive.")]
     public static ValueTask<Option<TItem>> Sequence<TItem>(
         this Option<ValueTask<TItem>> option)
         where TItem : notnull
