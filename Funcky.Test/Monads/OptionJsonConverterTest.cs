@@ -82,6 +82,14 @@ public sealed class OptionJsonConverterTest
     }
 
     [Fact]
+    public void DeserializesNoneForMissingProperty()
+    {
+        const string json = """{"BloodType":"B-"}""";
+        var expectedObject = new MedicalId(bloodType: "B-", emergencyContact: Option<Person>.None);
+        Assert.Equal(expectedObject, JsonSerializer.Deserialize<MedicalId>(json, Options));
+    }
+
+    [Fact]
     public void DeserializesInnerObjectWhenNested()
     {
         const string json = """{"BloodType":"B-","EmergencyContact":{"FirstName":"Peter","LastName":"Pan"}}""";
