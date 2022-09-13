@@ -18,13 +18,13 @@ public static partial class AsyncEnumerableExtensions
         where TSource : notnull
         => await source.Where(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-    /// <inheritdoc cref="LastOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="LastOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
     [Pure]
     public static async ValueTask<Option<TSource>> LastOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.WhereAwait(predicate).Select(Option.Some).LastOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-    /// <inheritdoc cref="LastOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="LastOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
     [Pure]
     public static async ValueTask<Option<TSource>> LastOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull

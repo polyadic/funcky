@@ -10,7 +10,7 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken = default)
         => source.PartitionAsync(EitherPartitions.Create, cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TLeft,TRight}(System.Collections.Generic.IAsyncEnumerable{Funcky.Monads.Either{TLeft,TRight}},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="PartitionAsync{TLeft,TRight}(IAsyncEnumerable{Either{TLeft,TRight}},CancellationToken)"/>
     public static async ValueTask<TResult> PartitionAsync<TLeft, TRight, TResult>(
         this IAsyncEnumerable<Either<TLeft, TRight>> source,
         Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector,
@@ -27,7 +27,7 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken = default)
         => source.Select(selector).PartitionAsync(EitherPartitions.Create, cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TSource,TLeft,TRight}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Func{TSource,Funcky.Monads.Either{TLeft,TRight}},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="PartitionAsync{TSource,TLeft,TRight}(IAsyncEnumerable{TSource},Func{TSource,Either{TLeft,TRight}},CancellationToken)"/>
     public static ValueTask<TResult> PartitionAsync<TSource, TLeft, TRight, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Either<TLeft, TRight>> selector,

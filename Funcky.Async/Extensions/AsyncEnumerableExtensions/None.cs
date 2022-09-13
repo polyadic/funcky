@@ -12,12 +12,12 @@ public static partial class AsyncEnumerableExtensions
     public static async ValueTask<bool> NoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate)
         => !await source.AnyAsync(predicate).ConfigureAwait(false);
 
-    /// <inheritdoc cref="NoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource}, Func{TSource,bool})"/>
+    /// <inheritdoc cref="NoneAsync{TSource}(IAsyncEnumerable{TSource}, Func{TSource,bool})"/>
     [Pure]
     public static async ValueTask<bool> NoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate)
         => !await source.AnyAwaitAsync(predicate).ConfigureAwait(false);
 
-    /// <inheritdoc cref="NoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource}, Func{TSource,bool})"/>
+    /// <inheritdoc cref="NoneAsync{TSource}(IAsyncEnumerable{TSource}, Func{TSource,bool})"/>
     [Pure]
     public static async ValueTask<bool> NoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate)
         => !await source.AnyAwaitWithCancellationAsync(predicate).ConfigureAwait(false);
