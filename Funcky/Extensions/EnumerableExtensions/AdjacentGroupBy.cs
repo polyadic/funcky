@@ -8,7 +8,7 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence with same key specified by the key selector function.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
@@ -22,10 +22,10 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and compares the keys by using a specified comparer.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
+    /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IEnumerable<IGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
@@ -38,7 +38,7 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
@@ -55,12 +55,12 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and projects the elements for each group by using a specified function.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
-    /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
+    /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IEnumerable<IGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
@@ -74,12 +74,12 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-    /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the result value returned by <paramref name="resultSelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="resultSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
-    /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
+    /// <returns>A collection of elements of type <typeparamref name="TResult"/> where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TResult>(
         this IEnumerable<TSource> source,
@@ -91,14 +91,14 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
-    /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
+    /// <typeparam name="TResult">The type of the result value returned by <paramref name="resultSelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
-    /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
+    /// <returns>A collection of elements of type <typeparamref name="TResult"/> where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TElement, TResult>(
         this IEnumerable<TSource> source,
@@ -111,12 +111,12 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-    /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the result value returned by <paramref name="resultSelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
-    /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
+    /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TResult>(
@@ -130,14 +130,14 @@ public static partial class EnumerableExtensions
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
+    /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <typeparam name="TElement">The type of the elements in each <see cref ="IGrouping{TKey,TElement}" />.</typeparam>
-    /// <typeparam name="TResult">The type of the result value returned by resultSelector.</typeparam>
+    /// <typeparam name="TResult">The type of the result value returned by <paramref name="resultSelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="resultSelector">A function to create a result value from each group.</param>
-    /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
+    /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
     public static IEnumerable<TResult> AdjacentGroupBy<TSource, TKey, TElement, TResult>(

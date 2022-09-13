@@ -10,8 +10,8 @@ public static partial class AsyncSequence
     /// <param name="successor">Generates the next element of the sequence or <see cref="Option{TItem}.None"/> based on the previous item.</param>
     /// <remarks>Use <see cref="AsyncEnumerable.Skip{TSource}(IAsyncEnumerable{TSource}, int)"/> on the result if you don't want the first item to be included.</remarks>
     [Pure]
-    public static async IAsyncEnumerable<TItem> Successors<TItem>(Option<TItem> first, Func<TItem, ValueTask<Option<TItem>>> successor)
-        where TItem : notnull
+    public static async IAsyncEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, ValueTask<Option<TResult>>> successor)
+        where TResult : notnull
     {
         var item = first;
         while (item.TryGetValue(out var itemValue))
@@ -21,21 +21,27 @@ public static partial class AsyncSequence
         }
     }
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, ValueTask{Option{TItem}}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
     [Pure]
-    public static IAsyncEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, ValueTask<Option<TItem>>> successor)
-        where TItem : notnull
+    public static IAsyncEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, ValueTask<Option<TResult>>> successor)
+        where TResult : notnull
         => Successors(Option.Some(first), successor);
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, ValueTask{Option{TItem}}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
     [Pure]
-    public static IAsyncEnumerable<TItem> Successors<TItem>(Option<TItem> first, Func<TItem, ValueTask<TItem>> successor)
-        where TItem : notnull
+    public static IAsyncEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, ValueTask<TResult>> successor)
+        where TResult : notnull
         => Successors(first, async previous => Option.Some(await successor(previous).ConfigureAwait(false)));
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, ValueTask{Option{TItem}}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
     [Pure]
-    public static IAsyncEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, ValueTask<TItem>> successor)
-        where TItem : notnull
-        => Successors(Option.Some(first), async previous => Option.Some(await successor(previous).ConfigureAwait(false)));
+    public static async IAsyncEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, ValueTask<TResult>> successor)
+    {
+        var item = first;
+        while (true)
+        {
+            yield return item;
+            item = await successor(item).ConfigureAwait(false);
+        }
+    }
 }

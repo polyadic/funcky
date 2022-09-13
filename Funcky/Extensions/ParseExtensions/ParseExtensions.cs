@@ -21,14 +21,14 @@ public static partial class ParseExtensions
 
 #if !NETSTANDARD2_0
     [Pure]
-    public static Option<object> ParseEnumOrNone(this string candidate, Type type)
-        => Enum.TryParse(type, candidate, out var result)
+    public static Option<object> ParseEnumOrNone(this string candidate, Type enumType)
+        => Enum.TryParse(enumType, candidate, out var result)
             ? result!
             : Option<object>.None;
 
     [Pure]
-    public static Option<object> ParseEnumOrNone(this string candidate, Type type, bool ignoreCase)
-        => Enum.TryParse(type, candidate, ignoreCase, out var result)
+    public static Option<object> ParseEnumOrNone(this string candidate, Type enumType, bool ignoreCase)
+        => Enum.TryParse(enumType, candidate, ignoreCase, out var result)
             ? result!
             : Option<object>.None;
 #endif
@@ -50,14 +50,14 @@ public static partial class ParseExtensions
             : Option<TEnum>.None;
 
     [Pure]
-    public static Option<object> ParseEnumOrNone(this ReadOnlySpan<char> candidate, Type type)
-        => Enum.TryParse(type, candidate, out var result)
+    public static Option<object> ParseEnumOrNone(this ReadOnlySpan<char> candidate, Type enumType)
+        => Enum.TryParse(enumType, candidate, out var result)
             ? result!
             : Option<object>.None;
 
     [Pure]
-    public static Option<object> ParseEnumOrNone(this ReadOnlySpan<char> candidate, Type type, bool ignoreCase)
-        => Enum.TryParse(type, candidate, ignoreCase, out var result)
+    public static Option<object> ParseEnumOrNone(this ReadOnlySpan<char> candidate, Type enumType, bool ignoreCase)
+        => Enum.TryParse(enumType, candidate, ignoreCase, out var result)
             ? result!
             : Option<object>.None;
 #endif

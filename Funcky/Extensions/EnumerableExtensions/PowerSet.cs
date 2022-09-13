@@ -13,9 +13,6 @@ public static partial class EnumerableExtensions
     /// <remarks>The PowerSet function returns a sequence with 2^n elements where n is the number of elements int the source sequence.
     /// This means it is only viable for small source sequences.</remarks>
     public static IEnumerable<IEnumerable<TSource>> PowerSet<TSource>(this IEnumerable<TSource> source)
-        => source.PowerSetInternal();
-
-    private static IEnumerable<IEnumerable<TSource>> PowerSetInternal<TSource>(this IEnumerable<TSource> source)
     {
         using var sourceEnumerator = source.GetEnumerator();
 

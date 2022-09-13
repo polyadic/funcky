@@ -6,22 +6,22 @@ public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
     public static Unit Value => default;
 
     [Pure]
-    public static bool operator ==(Unit lhs, Unit rhs) => true;
+    public static bool operator ==(Unit left, Unit right) => true;
 
     [Pure]
-    public static bool operator !=(Unit lhs, Unit rhs) => false;
+    public static bool operator !=(Unit left, Unit right) => false;
 
     [Pure]
-    public static bool operator <(Unit lhs, Unit rhs) => false;
+    public static bool operator <(Unit left, Unit right) => false;
 
     [Pure]
-    public static bool operator <=(Unit lhs, Unit rhs) => true;
+    public static bool operator <=(Unit left, Unit right) => true;
 
     [Pure]
-    public static bool operator >(Unit lhs, Unit rhs) => false;
+    public static bool operator >(Unit left, Unit right) => false;
 
     [Pure]
-    public static bool operator >=(Unit lhs, Unit rhs) => true;
+    public static bool operator >=(Unit left, Unit right) => true;
 
     [Pure]
     public bool Equals(Unit other) => true;

@@ -10,7 +10,7 @@ public static partial class EnumerableExtensions
     /// The nth sequence will start with the nth element of the source sequence.
     /// </summary>
     /// <remarks>
-    /// The returned windows always have  'width' many elements.
+    /// The returned windows always have <paramref name="width"/> many elements.
     /// i.e. if your source Sequence is smaller than the window, there will be an empty result.
     /// </remarks>
     /// <param name="source">The source sequence.</param>

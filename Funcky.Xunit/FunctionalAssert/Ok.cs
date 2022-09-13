@@ -13,7 +13,7 @@ public static partial class FunctionalAssert
     #else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     #endif
-    public static void Ok<TResult>(TResult expectedResult, Result<TResult> result)
+    public static void Ok<TValidResult>(TValidResult expectedResult, Result<TValidResult> result)
     {
         try
         {
@@ -38,7 +38,7 @@ public static partial class FunctionalAssert
     #endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
-    public static TResult Ok<TResult>(Result<TResult> result)
+    public static TValidResult Ok<TValidResult>(Result<TValidResult> result)
     {
         try
         {

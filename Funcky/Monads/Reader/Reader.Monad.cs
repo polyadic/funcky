@@ -15,10 +15,10 @@ public static partial class ReaderExtensions
         => source.SelectMany(selector, (_, result) => result);
 
     [Pure]
-    public static Reader<TEnvironment, TResult> SelectMany<TEnvironment, TSource, TSelector, TResult>(
+    public static Reader<TEnvironment, TResult> SelectMany<TEnvironment, TSource, TReader, TResult>(
         this Reader<TEnvironment, TSource> source,
-        Func<TSource, Reader<TEnvironment, TSelector>> selector,
-        Func<TSource, TSelector, TResult> resultSelector)
+        Func<TSource, Reader<TEnvironment, TReader>> selector,
+        Func<TSource, TReader, TResult> resultSelector)
             => environment
                 =>
                 {

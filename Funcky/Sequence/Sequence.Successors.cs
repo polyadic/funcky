@@ -10,8 +10,8 @@ public static partial class Sequence
     /// <param name="successor">Generates the next element of the sequence or <see cref="Option{TItem}.None"/> based on the previous item.</param>
     /// <remarks>Use <see cref="Enumerable.Skip{TSource}(IEnumerable{TSource}, int)"/> on the result if you don't want the first item to be included.</remarks>
     [Pure]
-    public static IEnumerable<TItem> Successors<TItem>(Option<TItem> first, Func<TItem, Option<TItem>> successor)
-        where TItem : notnull
+    public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, Option<TResult>> successor)
+        where TResult : notnull
     {
         var item = first;
         while (item.TryGetValue(out var itemValue))
@@ -21,21 +21,27 @@ public static partial class Sequence
         }
     }
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
     [Pure]
-    public static IEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, Option<TItem>> successor)
-        where TItem : notnull
+    public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, Option<TResult>> successor)
+        where TResult : notnull
         => Successors(Option.Some(first), successor);
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
     [Pure]
-    public static IEnumerable<TItem> Successors<TItem>(Option<TItem> first, Func<TItem, TItem> successor)
-        where TItem : notnull
+    public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, TResult> successor)
+        where TResult : notnull
         => Successors(first, previous => Option.Some(successor(previous)));
 
-    /// <inheritdoc cref="Successors{TItem}(Option{TItem}, Func{TItem, Option{TItem}})" />
+    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
     [Pure]
-    public static IEnumerable<TItem> Successors<TItem>(TItem first, Func<TItem, TItem> successor)
-        where TItem : notnull
-        => Successors(Option.Some(first), previous => Option.Some(successor(previous)));
+    public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, TResult> successor)
+    {
+        var item = first;
+        while (true)
+        {
+            yield return item;
+            item = successor(item);
+        }
+    }
 }

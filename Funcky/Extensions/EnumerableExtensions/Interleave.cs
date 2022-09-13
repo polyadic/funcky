@@ -8,12 +8,12 @@ public static partial class EnumerableExtensions
     /// Interleaves the elements of multiple sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completley consumed.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
-    /// <param name="sequence">first sequence.</param>
-    /// <param name="otherSequences">other sequences.</param>
+    /// <param name="source">first sequence.</param>
+    /// <param name="otherSources">other sequences.</param>
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
-    public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> sequence, params IEnumerable<TSource>[] otherSequences)
-        => ImmutableList.Create(sequence).AddRange(otherSequences).Interleave();
+    public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSources)
+        => ImmutableList.Create(source).AddRange(otherSources).Interleave();
 
     /// <summary>
     /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completley consumed.

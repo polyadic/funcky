@@ -17,10 +17,10 @@ public readonly partial struct Option<TItem>
              some: selector);
 
     [Pure]
-    public Option<TResult> SelectMany<TMaybe, TResult>(Func<TItem, Option<TMaybe>> selector, Func<TItem, TMaybe, TResult> resultSelector)
+    public Option<TResult> SelectMany<TOption, TResult>(Func<TItem, Option<TOption>> selector, Func<TItem, TOption, TResult> resultSelector)
         where TResult : notnull
-        where TMaybe : notnull
+        where TOption : notnull
         => SelectMany(
              item => selector(item).Select(
-                 maybe => resultSelector(item, maybe)));
+                 option => resultSelector(item, option)));
 }

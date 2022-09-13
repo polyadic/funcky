@@ -4,5 +4,5 @@ public interface IRetryPolicy
 {
     int MaxRetries { get; }
 
-    TimeSpan Duration(int onRetryCount);
+    TimeSpan Delay(int retryCount);
 }

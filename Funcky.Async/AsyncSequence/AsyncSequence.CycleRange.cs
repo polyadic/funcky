@@ -5,12 +5,11 @@ public static partial class AsyncSequence
     /// <summary>
     /// Generates a sequence that contains the same sequence of elements over and over again as an endless generator.
     /// </summary>
-    /// <typeparam name="TItem">Type of the elements to be cycled.</typeparam>
+    /// <typeparam name="TSource">Type of the elements to be cycled.</typeparam>
     /// <param name="sequence">The sequence of elements which are cycled. Throws an exception if the sequence is empty.</param>
     /// <returns>Returns an infinite IEnumerable repeating the same sequence of elements.</returns>
     [Pure]
-    public static IAsyncBuffer<TItem> CycleRange<TItem>(IAsyncEnumerable<TItem> sequence)
-        where TItem : notnull
+    public static IAsyncBuffer<TSource> CycleRange<TSource>(IAsyncEnumerable<TSource> sequence)
         => CycleBuffer.Create(sequence);
 
     private static class CycleBuffer

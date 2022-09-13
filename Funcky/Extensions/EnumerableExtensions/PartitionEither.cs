@@ -8,7 +8,7 @@ public static partial class EnumerableExtensions
     public static EitherPartitions<TLeft, TRight> Partition<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
         => source.Partition(EitherPartitions.Create);
 
-    /// <inheritdoc cref="Partition{TLeft,TRight}(System.Collections.Generic.IEnumerable{Funcky.Monads.Either{TLeft,TRight}})"/>
+    /// <inheritdoc cref="Partition{TLeft,TRight}(IEnumerable{Either{TLeft,TRight}})"/>
     public static TResult Partition<TLeft, TRight, TResult>(this IEnumerable<Either<TLeft, TRight>> source, Func<IReadOnlyList<TLeft>, IReadOnlyList<TRight>, TResult> resultSelector)
         => source
             .Aggregate(new PartitionBuilder<TLeft, TRight>(), PartitionBuilder.Add)
@@ -20,7 +20,7 @@ public static partial class EnumerableExtensions
         Func<TSource, Either<TLeft, TRight>> selector)
         => source.Select(selector).Partition();
 
-    /// <inheritdoc cref="Partition{TSource,TLeft,TRight}(System.Collections.Generic.IEnumerable{TSource}, System.Func{TSource, Funcky.Monads.Either{TLeft,TRight}})"/>
+    /// <inheritdoc cref="Partition{TSource,TLeft,TRight}(IEnumerable{TSource}, Func{TSource, Either{TLeft,TRight}})"/>
     public static TResult Partition<TSource, TLeft, TRight, TResult>(
         this IEnumerable<TSource> source,
         Func<TSource, Either<TLeft, TRight>> selector,

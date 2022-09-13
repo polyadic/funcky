@@ -18,7 +18,7 @@ public static partial class EnumerableExtensions
             _ => source.Select(ValueWithIndex<TSource>),
         };
 
-    private static Func<TSource, int, ValueWithIndex<TSource>> ValueWithIndex<TSource>(IList<TSource> dummy)
+    private static Func<TSource, int, ValueWithIndex<TSource>> ValueWithIndex<TSource>(IList<TSource> unused)
         => ValueWithIndex<TSource>;
 
     private static ValueWithIndex<TValue> ValueWithIndex<TValue>(TValue value, int index)

@@ -5,7 +5,7 @@ public delegate TResult Reader<in TEnvironment, out TResult>(TEnvironment enviro
 public static class Reader<TEnvironment>
 {
     [Pure]
-    public static Reader<TEnvironment, TSource> Return<TSource>(TSource value)
+    public static Reader<TEnvironment, TResult> Return<TResult>(TResult value)
         => _
             => value;
 

@@ -28,12 +28,12 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
         => (_result, _error) = (default!, error);
 
     [Pure]
-    public static bool operator ==(Result<TValidResult> lhs, Result<TValidResult> rhs)
-        => lhs.Equals(rhs);
+    public static bool operator ==(Result<TValidResult> left, Result<TValidResult> right)
+        => left.Equals(right);
 
     [Pure]
-    public static bool operator !=(Result<TValidResult> lhs, Result<TValidResult> rhs)
-        => !lhs.Equals(rhs);
+    public static bool operator !=(Result<TValidResult> left, Result<TValidResult> right)
+        => !left.Equals(right);
 
     /// <summary>Creates a new <see cref="Result{TValidResult}"/> from an <see cref="Exception"/> and sets
     /// the stack trace if not already set.</summary>
@@ -107,10 +107,10 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 public static class Result
 {
     [Pure]
-    public static Result<TValidResult> Ok<TValidResult>(TValidResult item)
-        => new(item);
+    public static Result<TValidResult> Ok<TValidResult>(TValidResult result)
+        => new(result);
 
     [Pure]
-    public static Result<TValidResult> Return<TValidResult>(TValidResult item)
-        => new(item);
+    public static Result<TValidResult> Return<TValidResult>(TValidResult result)
+        => new(result);
 }

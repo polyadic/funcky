@@ -4,12 +4,12 @@ namespace Funcky.Monads;
 
 public readonly partial struct Result<TValidResult>
 {
-    public static implicit operator Result<TValidResult>(TValidResult item) => Result.Ok(item);
+    public static implicit operator Result<TValidResult>(TValidResult result) => Result.Ok(result);
 
     /// <summary>Performs a side effect when the result is ok and returns the result again.</summary>
-    public Result<TValidResult> Inspect(Action<TValidResult> action)
+    public Result<TValidResult> Inspect(Action<TValidResult> inspector)
     {
-        Switch(ok: action, error: NoOperation);
+        Switch(ok: inspector, error: NoOperation);
         return this;
     }
 

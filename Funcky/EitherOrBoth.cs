@@ -48,10 +48,10 @@ public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLe
     private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
 
     [Pure]
-    public static bool operator ==(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => lhs.Equals(rhs);
+    public static bool operator ==(EitherOrBoth<TLeft, TRight> left, EitherOrBoth<TLeft, TRight> right) => left.Equals(right);
 
     [Pure]
-    public static bool operator !=(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => !lhs.Equals(rhs);
+    public static bool operator !=(EitherOrBoth<TLeft, TRight> left, EitherOrBoth<TLeft, TRight> right) => !left.Equals(right);
 
     [Pure]
     public static EitherOrBoth<TLeft, TRight> Both(TLeft left, TRight right) => new(left, right);
@@ -125,12 +125,12 @@ public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLe
 public static class EitherOrBoth
 {
     /// <summary>Creates an <see cref="EitherOrBoth{TLeft,TRight}"/> from two <see cref="Option{TItem}"/>s.</summary>
-    /// <returns><see cref="Option{TItem}.None"/> if both <paramref name="leftElement"/> and <paramref name="rightElement"/> are <see cref="Option{TItem}.None"/>.</returns>
+    /// <returns><see cref="Option{TItem}.None"/> if both <paramref name="left"/> and <paramref name="right"/> are <see cref="Option{TItem}.None"/>.</returns>
     [Pure]
-    public static Option<EitherOrBoth<TLeft, TRight>> FromOptions<TLeft, TRight>(Option<TLeft> leftElement, Option<TRight> rightElement)
+    public static Option<EitherOrBoth<TLeft, TRight>> FromOptions<TLeft, TRight>(Option<TLeft> left, Option<TRight> right)
         where TLeft : notnull
         where TRight : notnull
-        => (leftElement, rightElement).Match(
+        => (left, right).Match(
             left: Left<TLeft, TRight>,
             right: Right<TLeft, TRight>,
             leftAndRight: Both,

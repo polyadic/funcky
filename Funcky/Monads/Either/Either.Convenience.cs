@@ -9,17 +9,17 @@ public readonly partial struct Either<TLeft, TRight>
         => Match(right: Either<TResult>.Return, left: left => Either<TResult, TRight>.Left(selector(left)));
 
     /// <summary>Performs a side effect when the either is right and returns the either value again.</summary>
-    public Either<TLeft, TRight> Inspect(Action<TRight> action)
+    public Either<TLeft, TRight> Inspect(Action<TRight> inspector)
     {
-        Switch(left: NoOperation, right: action);
+        Switch(left: NoOperation, right: inspector);
         return this;
     }
 
     [Pure]
-    public TRight GetOrElse(TRight defaultValue)
-        => Match(left: _ => defaultValue, right: Identity);
+    public TRight GetOrElse(TRight fallback)
+        => Match(left: _ => fallback, right: Identity);
 
     [Pure]
-    public TRight GetOrElse(Func<TLeft, TRight> getDefaultValue)
-        => Match(left: getDefaultValue, right: Identity);
+    public TRight GetOrElse(Func<TLeft, TRight> fallback)
+        => Match(left: fallback, right: Identity);
 }

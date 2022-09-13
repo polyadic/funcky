@@ -20,13 +20,13 @@ public static partial class AsyncEnumerableExtensions
         where TSource : notnull
         => await source.Where(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-    /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="SingleOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
     [Pure]
     public static async ValueTask<Option<TSource>> SingleOrNoneAwaitAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull
         => await source.WhereAwait(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
-    /// <inheritdoc cref="SingleOrNoneAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource},System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="SingleOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
     [Pure]
     public static async ValueTask<Option<TSource>> SingleOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         where TSource : notnull

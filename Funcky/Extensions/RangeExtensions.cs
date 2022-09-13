@@ -17,7 +17,7 @@ public static class RangeExtensions
         => source.ToRangeEnumerable().SelectMany(selector);
 
     [Pure]
-    public static IEnumerable<TResult> SelectMany<TItem, TResult>(this Range source, Func<int, IEnumerable<TItem>> selector, Func<int, TItem, TResult> resultSelector)
+    public static IEnumerable<TResult> SelectMany<TCollection, TResult>(this Range source, Func<int, IEnumerable<TCollection>> selector, Func<int, TCollection, TResult> resultSelector)
         => source.ToRangeEnumerable().SelectMany(selector, resultSelector);
 
     [Pure]
@@ -25,7 +25,7 @@ public static class RangeExtensions
         => source.ToRangeEnumerable().SelectMany(TransformSelector(selector), resultSelector);
 
     [Pure]
-    public static IEnumerable<TResult> SelectMany<TItem, TResult>(this IEnumerable<TItem> source, Func<TItem, Range> selector, Func<TItem, int, TResult> resultSelector)
+    public static IEnumerable<TResult> SelectMany<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Range> selector, Func<TSource, int, TResult> resultSelector)
         => source.SelectMany(TransformSelector(selector), resultSelector);
 
     private static IEnumerator<int> IterateRange(int start, int end)

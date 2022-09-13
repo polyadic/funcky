@@ -3,10 +3,10 @@ namespace Funcky;
 public static partial class Sequence
 {
     [Pure]
-    public static IReadOnlyList<TItem> Return<TItem>(TItem item)
-        => Return(items: item);
+    public static IReadOnlyList<TResult> Return<TResult>(TResult element)
+        => Return(elements: element);
 
     [Pure]
-    public static IReadOnlyList<TItem> Return<TItem>(params TItem[] items)
-        => items;
+    public static IReadOnlyList<TResult> Return<TResult>(params TResult[] elements)
+        => elements;
 }

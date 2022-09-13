@@ -13,7 +13,6 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IEnumerable<TSource> source, TSource separator)
-        where TSource : notnull
         => source.Split(separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
@@ -22,15 +21,14 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="separator">A single element of type <typeparamref name="TSource"/> separating the parts.</param>
-    /// <param name="equalityComparer">Override the default equality comparer.</param>
+    /// <param name="comparer">Override the default equality comparer.</param>
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
         this IEnumerable<TSource> source,
         TSource separator,
-        IEqualityComparer<TSource> equalityComparer)
-        where TSource : notnull
-        => source.Split(separator, equalityComparer, Identity);
+        IEqualityComparer<TSource> comparer)
+        => source.Split(separator, comparer, Identity);
 
     /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
@@ -40,27 +38,25 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TResult">Type of the elements produced by the <paramref name="resultSelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="separator">A single element of type <typeparamref name="TSource"/> separating the parts.</param>
-    /// <param name="equalityComparer">Override the default equality comparer.</param>
+    /// <param name="comparer">Override the default equality comparer.</param>
     /// <param name="resultSelector">The result selector produces a result from each partial sequence.</param>
     /// <returns>A sequence of results.</returns>
     [Pure]
     public static IEnumerable<TResult> Split<TSource, TResult>(
         this IEnumerable<TSource> source,
         TSource separator,
-        IEqualityComparer<TSource> equalityComparer,
+        IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        where TSource : notnull
     {
         using var sourceEnumerator = source.GetEnumerator();
 
         while (sourceEnumerator.MoveNext())
         {
-            yield return resultSelector(TakeSkipWhile(sourceEnumerator, TakeSkipPredicate(separator, equalityComparer)).ToImmutableList());
+            yield return resultSelector(TakeSkipWhile(sourceEnumerator, TakeSkipPredicate(separator, comparer)).ToImmutableList());
         }
     }
 
     private static Func<TSource, bool> TakeSkipPredicate<TSource>(TSource separator, IEqualityComparer<TSource> equalityComparer)
-        where TSource : notnull
         => element
             => !equalityComparer.Equals(element, separator);
 

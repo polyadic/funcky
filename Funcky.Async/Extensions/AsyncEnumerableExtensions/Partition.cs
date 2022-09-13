@@ -18,23 +18,23 @@ public static partial class AsyncEnumerableExtensions
     /// </summary>
     /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
     /// <returns>A tuple with the items for which the predicate holds, and for those for which it doesn't.</returns>
-    public static ValueTask<Partitions<TItem>> PartitionAsync<TItem>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, bool> predicate,
+    public static ValueTask<Partitions<TSource>> PartitionAsync<TSource>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, bool> predicate,
         CancellationToken cancellationToken = default)
         => source.PartitionAsync(predicate, Partitions.Create, cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TItem}(System.Collections.Generic.IAsyncEnumerable{TItem},System.Func{TItem,bool},System.Threading.CancellationToken)" />
-    public static ValueTask<Partitions<TItem>> PartitionAwaitAsync<TItem>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, ValueTask<bool>> predicate,
+    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
+    public static ValueTask<Partitions<TSource>> PartitionAwaitAsync<TSource>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, ValueTask<bool>> predicate,
         CancellationToken cancellationToken = default)
         => source.PartitionAwaitAsync(predicate, static (left, right) => ValueTaskFromResult(Partitions.Create(left, right)), cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TItem}(System.Collections.Generic.IAsyncEnumerable{TItem},System.Func{TItem,bool},System.Threading.CancellationToken)" />
-    public static ValueTask<Partitions<TItem>> PartitionAwaitWithCancellationAsync<TItem>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, CancellationToken, ValueTask<bool>> predicate,
+    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
+    public static ValueTask<Partitions<TSource>> PartitionAwaitWithCancellationAsync<TSource>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, CancellationToken, ValueTask<bool>> predicate,
         CancellationToken cancellationToken = default)
         => source.PartitionAwaitWithCancellationAsync(predicate, static (left, right, _) => ValueTaskFromResult(Partitions.Create(left, right)), cancellationToken);
 
@@ -44,41 +44,41 @@ public static partial class AsyncEnumerableExtensions
     /// for which it doesn't as separate parameters.
     /// </summary>
     /// <remarks>This method causes the items in <paramref name="source"/> to be materialized.</remarks>
-    public static async ValueTask<TResult> PartitionAsync<TItem, TResult>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, bool> predicate,
-        Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, TResult> resultSelector,
+    public static async ValueTask<TResult> PartitionAsync<TSource, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, bool> predicate,
+        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, TResult> resultSelector,
         CancellationToken cancellationToken = default)
         => (await source
-            .AggregateAsync(new PartitionBuilder<TItem, TItem>(), PartitionBuilder.Add(predicate), cancellationToken)
+            .AggregateAsync(new PartitionBuilder<TSource, TSource>(), PartitionBuilder.Add(predicate), cancellationToken)
             .ConfigureAwait(false))
             .Build(resultSelector);
 
-    /// <inheritdoc cref="PartitionAsync{TItem,TResult}(IAsyncEnumerable{TItem},Func{TItem,bool},Func{IReadOnlyList{TItem},IReadOnlyList{TItem},TResult},System.Threading.CancellationToken)" />
-    public static async ValueTask<TResult> PartitionAwaitAsync<TItem, TResult>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, ValueTask<bool>> predicate,
-        Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, ValueTask<TResult>> resultSelector,
+    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
+    public static async ValueTask<TResult> PartitionAwaitAsync<TSource, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, ValueTask<bool>> predicate,
+        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector,
         CancellationToken cancellationToken = default)
     {
         var (left, right) =
             (await source
-                .AggregateAwaitAsync(new PartitionBuilder<TItem, TItem>(), AddAwaitAsync(predicate), cancellationToken)
+                .AggregateAwaitAsync(new PartitionBuilder<TSource, TSource>(), AddAwaitAsync(predicate), cancellationToken)
                 .ConfigureAwait(false))
                 .Build(ValueTuple.Create);
         return await resultSelector(left, right).ConfigureAwait(false);
     }
 
-    /// <inheritdoc cref="PartitionAsync{TItem,TResult}(IAsyncEnumerable{TItem},Func{TItem,bool},Func{IReadOnlyList{TItem},IReadOnlyList{TItem},TResult},System.Threading.CancellationToken)" />
-    public static async ValueTask<TResult> PartitionAwaitWithCancellationAsync<TItem, TResult>(
-        this IAsyncEnumerable<TItem> source,
-        Func<TItem, CancellationToken, ValueTask<bool>> predicate,
-        Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>, CancellationToken, ValueTask<TResult>> resultSelector,
+    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
+    public static async ValueTask<TResult> PartitionAwaitWithCancellationAsync<TSource, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, CancellationToken, ValueTask<bool>> predicate,
+        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector,
         CancellationToken cancellationToken = default)
     {
         var (left, right) =
             (await source
-                .AggregateAwaitWithCancellationAsync(new PartitionBuilder<TItem, TItem>(), AddAwaitWithCancellationAsync(predicate), cancellationToken)
+                .AggregateAwaitWithCancellationAsync(new PartitionBuilder<TSource, TSource>(), AddAwaitWithCancellationAsync(predicate), cancellationToken)
                 .ConfigureAwait(false))
                 .Build(ValueTuple.Create);
         return await resultSelector(left, right, cancellationToken).ConfigureAwait(false);

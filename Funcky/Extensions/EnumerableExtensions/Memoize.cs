@@ -14,7 +14,6 @@ public static partial class EnumerableExtensions
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
     public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
-        where TSource : notnull
         => source is IBuffer<TSource> buffer
             ? Borrow(buffer)
             : MemoizedBuffer.Create(source);

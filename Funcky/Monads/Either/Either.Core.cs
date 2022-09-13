@@ -35,10 +35,10 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     }
 
     [Pure]
-    public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
+    public static bool operator ==(Either<TLeft, TRight> left, Either<TLeft, TRight> right) => left.Equals(right);
 
     [Pure]
-    public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
+    public static bool operator !=(Either<TLeft, TRight> left, Either<TLeft, TRight> right) => !left.Equals(right);
 
     [Pure]
     public static Either<TLeft, TRight> Left(TLeft left) => new(left);
@@ -49,20 +49,20 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     [UseWithArgumentNames]
     public TMatchResult Match<TMatchResult>(Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
-        => TryGetValue(out var r, out var l)
-            ? right(r)
-            : left(l);
+        => TryGetValue(out var rightValue, out var leftValue)
+            ? right(rightValue)
+            : left(leftValue);
 
     [UseWithArgumentNames]
     public void Switch(Action<TLeft> left, Action<TRight> right)
     {
-        if (TryGetValue(out var r, out var l))
+        if (TryGetValue(out var rightValue, out var leftValue))
         {
-            right(r);
+            right(rightValue);
         }
         else
         {
-            left(l);
+            left(leftValue);
         }
     }
 
@@ -111,6 +111,6 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
 public static class Either<TLeft>
 {
     [Pure]
-    public static Either<TLeft, TRight> Return<TRight>(TRight item)
-        => Either<TLeft, TRight>.Right(item);
+    public static Either<TLeft, TRight> Return<TRight>(TRight right)
+        => Either<TLeft, TRight>.Right(right);
 }

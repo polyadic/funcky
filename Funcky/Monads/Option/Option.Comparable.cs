@@ -9,13 +9,13 @@ namespace Funcky.Monads;
 /// </summary>
 public readonly partial struct Option<TItem> : IComparable<Option<TItem>>, IComparable
 {
-    public static bool operator <(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) < 0;
+    public static bool operator <(Option<TItem> left, Option<TItem> right) => left.CompareTo(right) < 0;
 
-    public static bool operator >(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) > 0;
+    public static bool operator >(Option<TItem> left, Option<TItem> right) => left.CompareTo(right) > 0;
 
-    public static bool operator <=(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) <= 0;
+    public static bool operator <=(Option<TItem> left, Option<TItem> right) => left.CompareTo(right) <= 0;
 
-    public static bool operator >=(Option<TItem> lhs, Option<TItem> rhs) => lhs.CompareTo(rhs) >= 0;
+    public static bool operator >=(Option<TItem> left, Option<TItem> right) => left.CompareTo(right) >= 0;
 
     public int CompareTo(object? obj)
         => (OptionComparer<TItem>.Default as IComparer).Compare(this, obj);
