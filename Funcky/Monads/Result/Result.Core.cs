@@ -107,10 +107,10 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 public static class Result
 {
     [Pure]
-    public static Result<TValidResult> Ok<TValidResult>(TValidResult item)
-        => new(item);
+    public static Result<TValidResult> Ok<TValidResult>(TValidResult result)
+        => new(result);
 
     [Pure]
-    public static Result<TValidResult> Return<TValidResult>(TValidResult item)
-        => new(item);
+    public static Result<TValidResult> Return<TValidResult>(TValidResult result)
+        => new(result);
 }

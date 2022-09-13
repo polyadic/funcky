@@ -204,7 +204,10 @@ static Funcky.Monads.OptionExtensions.Traverse<TItem, TLeft, TRight>(this Funcky
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TValidResult>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Result<TValidResult>>! selector) -> Funcky.Monads.Result<Funcky.Monads.Option<TValidResult>>
 static Funcky.Monads.Reader<TEnvironment>.Return<TResult>(TResult value) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TReader, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TReader>!>! selector, System.Func<TSource, TReader, TResult>! resultSelector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.Result.Ok<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.Return<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! exception) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.ResultExtensions.Sequence<TEnvironment, TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Reader<TEnvironment, TValidResult>!> result) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Result<TValidResult>>!
 static Funcky.Monads.ResultExtensions.Sequence<TLeft, TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Either<TLeft, TValidResult>> result) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Result<TValidResult>>
 static Funcky.Monads.ResultExtensions.Sequence<TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Option<TValidResult>> result) -> Funcky.Monads.Option<Funcky.Monads.Result<TValidResult>>
