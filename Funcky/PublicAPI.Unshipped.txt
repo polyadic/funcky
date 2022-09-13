@@ -188,6 +188,8 @@ static Funcky.Monads.EitherExtensions.Traverse<TLeft, TRight, TValidResult>(this
 static Funcky.Monads.Lazy.FromFunc<T>(System.Func<T>! valueFactory) -> System.Lazy<T>!
 static Funcky.Monads.Lazy.Return<T>(T value) -> System.Lazy<T>!
 static Funcky.Monads.LazyExtensions.SelectMany<T, TLazy, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
+static Funcky.Monads.Option.FromNullable<TItem>(TItem? item) -> Funcky.Monads.Option<TItem!>
+static Funcky.Monads.Option.FromNullable<TItem>(TItem? item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.OptionExtensions.Sequence<TEnvironment, TItem>(this Funcky.Monads.Option<Funcky.Monads.Reader<TEnvironment, TItem>!> option) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<Funcky.Monads.Result<TItem>> option) -> Funcky.Monads.Result<Funcky.Monads.Option<TItem>>
