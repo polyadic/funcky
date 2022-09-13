@@ -48,10 +48,10 @@ public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLe
     private string UnknownSide => $"Internal error: Enum variant {_side} is not handled";
 
     [Pure]
-    public static bool operator ==(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => lhs.Equals(rhs);
+    public static bool operator ==(EitherOrBoth<TLeft, TRight> left, EitherOrBoth<TLeft, TRight> right) => left.Equals(right);
 
     [Pure]
-    public static bool operator !=(EitherOrBoth<TLeft, TRight> lhs, EitherOrBoth<TLeft, TRight> rhs) => !lhs.Equals(rhs);
+    public static bool operator !=(EitherOrBoth<TLeft, TRight> left, EitherOrBoth<TLeft, TRight> right) => !left.Equals(right);
 
     [Pure]
     public static EitherOrBoth<TLeft, TRight> Both(TLeft left, TRight right) => new(left, right);

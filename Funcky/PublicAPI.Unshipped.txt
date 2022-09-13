@@ -74,8 +74,8 @@ override Funcky.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
 static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> left, Funcky.Monads.Option<TRight> right) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>
 static Funcky.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBoth<TLeft, TRight>
-static Funcky.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
-static Funcky.EitherOrBoth<TLeft, TRight>.operator ==(Funcky.EitherOrBoth<TLeft, TRight> lhs, Funcky.EitherOrBoth<TLeft, TRight> rhs) -> bool
+static Funcky.EitherOrBoth<TLeft, TRight>.operator !=(Funcky.EitherOrBoth<TLeft, TRight> left, Funcky.EitherOrBoth<TLeft, TRight> right) -> bool
+static Funcky.EitherOrBoth<TLeft, TRight>.operator ==(Funcky.EitherOrBoth<TLeft, TRight> left, Funcky.EitherOrBoth<TLeft, TRight> right) -> bool
 static Funcky.EitherOrBoth<TLeft, TRight>.Right(TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.Extensions.ActionExtensions.Compose<TInput, TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
 static Funcky.Extensions.ActionExtensions.Compose<TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TIntermediate>! g) -> System.Action!
@@ -174,6 +174,8 @@ static Funcky.Functional.True<T1, T2, T3, T4>(T1 ω1, T2 ω2, T3 ω3, T4 ω4) ->
 static Funcky.Functional.True<T1, T2, T3>(T1 ω1, T2 ω2, T3 ω3) -> bool
 static Funcky.Functional.True<T1, T2>(T1 ω1, T2 ω2) -> bool
 static Funcky.Functional.True<T1>(T1 ω1) -> bool
+static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> left, Funcky.Monads.Either<TLeft, TRight> right) -> bool
+static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> left, Funcky.Monads.Either<TLeft, TRight> right) -> bool
 static Funcky.Monads.Either<TLeft>.Return<TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.EitherExtensions.Sequence<TLeft, TEnvironment, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Reader<TEnvironment, TRight>!> either) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Either<TLeft, TRight>>!
 static Funcky.Monads.EitherExtensions.Sequence<TLeft, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Option<TRight>> either) -> Funcky.Monads.Option<Funcky.Monads.Either<TLeft, TRight>>
@@ -191,6 +193,12 @@ static Funcky.Monads.LazyExtensions.SelectMany<T, TLazy, TResult>(this System.La
 static Funcky.Monads.Option.FromNullable<TItem>(TItem? item) -> Funcky.Monads.Option<TItem!>
 static Funcky.Monads.Option.FromNullable<TItem>(TItem? item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.None.get -> Funcky.Monads.Option<TItem>
+static Funcky.Monads.Option<TItem>.operator !=(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
+static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
+static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
+static Funcky.Monads.Option<TItem>.operator ==(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
+static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
+static Funcky.Monads.Option<TItem>.operator >=(Funcky.Monads.Option<TItem> left, Funcky.Monads.Option<TItem> right) -> bool
 static Funcky.Monads.OptionExtensions.Sequence<TEnvironment, TItem>(this Funcky.Monads.Option<Funcky.Monads.Reader<TEnvironment, TItem>!> option) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<Funcky.Monads.Result<TItem>> option) -> Funcky.Monads.Result<Funcky.Monads.Option<TItem>>
 static Funcky.Monads.OptionExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Collections.Generic.IEnumerable<TItem>!> option) -> System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TItem>>!
@@ -208,6 +216,8 @@ static Funcky.Monads.Result.Ok<TValidResult>(TValidResult result) -> Funcky.Mona
 static Funcky.Monads.Result.Return<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! exception) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.implicit operator Funcky.Monads.Result<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> left, Funcky.Monads.Result<TValidResult> right) -> bool
+static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> left, Funcky.Monads.Result<TValidResult> right) -> bool
 static Funcky.Monads.ResultExtensions.Sequence<TEnvironment, TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Reader<TEnvironment, TValidResult>!> result) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Result<TValidResult>>!
 static Funcky.Monads.ResultExtensions.Sequence<TLeft, TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Either<TLeft, TValidResult>> result) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Result<TValidResult>>
 static Funcky.Monads.ResultExtensions.Sequence<TValidResult>(this Funcky.Monads.Result<Funcky.Monads.Option<TValidResult>> result) -> Funcky.Monads.Option<Funcky.Monads.Result<TValidResult>>
@@ -229,3 +239,9 @@ static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, 
 static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, Funcky.Monads.Option<TResult>>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Unit.operator !=(Funcky.Unit left, Funcky.Unit right) -> bool
+static Funcky.Unit.operator <(Funcky.Unit left, Funcky.Unit right) -> bool
+static Funcky.Unit.operator <=(Funcky.Unit left, Funcky.Unit right) -> bool
+static Funcky.Unit.operator ==(Funcky.Unit left, Funcky.Unit right) -> bool
+static Funcky.Unit.operator >(Funcky.Unit left, Funcky.Unit right) -> bool
+static Funcky.Unit.operator >=(Funcky.Unit left, Funcky.Unit right) -> bool

@@ -437,8 +437,6 @@ static Funcky.Functional.UnitToAction<T1, T2>(System.Func<T1, T2, Funcky.Unit>! 
 static Funcky.Functional.UnitToAction<T1>(System.Func<T1, Funcky.Unit>! action) -> System.Action<T1>!
 static Funcky.Monads.Either<TLeft, TRight>.implicit operator Funcky.Monads.Either<TLeft, TRight>(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Either<TLeft, TRight>.Left(TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
-static Funcky.Monads.Either<TLeft, TRight>.operator !=(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
-static Funcky.Monads.Either<TLeft, TRight>.operator ==(Funcky.Monads.Either<TLeft, TRight> lhs, Funcky.Monads.Either<TLeft, TRight> rhs) -> bool
 static Funcky.Monads.Either<TLeft, TRight>.Right(TRight right) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.EitherExtensions.LeftOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TLeft>
 static Funcky.Monads.EitherExtensions.RightOrNone<TLeft, TRight>(this Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Option<TRight>
@@ -450,12 +448,6 @@ static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Func
 static Funcky.Monads.Option.Return<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.Some<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option<TItem>.implicit operator Funcky.Monads.Option<TItem>(TItem item) -> Funcky.Monads.Option<TItem>
-static Funcky.Monads.Option<TItem>.operator !=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
-static Funcky.Monads.Option<TItem>.operator <(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
-static Funcky.Monads.Option<TItem>.operator <=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
-static Funcky.Monads.Option<TItem>.operator ==(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
-static Funcky.Monads.Option<TItem>.operator >(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
-static Funcky.Monads.Option<TItem>.operator >=(Funcky.Monads.Option<TItem> lhs, Funcky.Monads.Option<TItem> rhs) -> bool
 static Funcky.Monads.OptionComparer.Create<TItem>(System.Collections.Generic.IComparer<TItem>! comparer) -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionComparer<TItem>.Create(System.Comparison<TItem>! comparison) -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
 static Funcky.Monads.OptionComparer<TItem>.Default.get -> System.Collections.Generic.Comparer<Funcky.Monads.Option<TItem>>!
@@ -466,14 +458,6 @@ static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>
 static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.Select<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
-static Funcky.Monads.Result<TValidResult>.operator !=(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
-static Funcky.Monads.Result<TValidResult>.operator ==(Funcky.Monads.Result<TValidResult> lhs, Funcky.Monads.Result<TValidResult> rhs) -> bool
 static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
-static Funcky.Unit.operator !=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-static Funcky.Unit.operator <(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-static Funcky.Unit.operator <=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-static Funcky.Unit.operator ==(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-static Funcky.Unit.operator >(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
-static Funcky.Unit.operator >=(Funcky.Unit lhs, Funcky.Unit rhs) -> bool
 static Funcky.Unit.Value.get -> Funcky.Unit

@@ -2,9 +2,9 @@ namespace Funcky.Monads;
 
 public readonly partial struct Option<TItem> : IEquatable<Option<TItem>>
 {
-    public static bool operator ==(Option<TItem> lhs, Option<TItem> rhs) => lhs.Equals(rhs);
+    public static bool operator ==(Option<TItem> left, Option<TItem> right) => left.Equals(right);
 
-    public static bool operator !=(Option<TItem> lhs, Option<TItem> rhs) => !lhs.Equals(rhs);
+    public static bool operator !=(Option<TItem> left, Option<TItem> right) => !left.Equals(right);
 
     [Pure]
     public override bool Equals(object? obj)

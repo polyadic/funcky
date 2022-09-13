@@ -35,10 +35,10 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     }
 
     [Pure]
-    public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => lhs.Equals(rhs);
+    public static bool operator ==(Either<TLeft, TRight> left, Either<TLeft, TRight> right) => left.Equals(right);
 
     [Pure]
-    public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !lhs.Equals(rhs);
+    public static bool operator !=(Either<TLeft, TRight> left, Either<TLeft, TRight> right) => !left.Equals(right);
 
     [Pure]
     public static Either<TLeft, TRight> Left(TLeft left) => new(left);
