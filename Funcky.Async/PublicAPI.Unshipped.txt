@@ -3,13 +3,55 @@ Funcky.Extensions.AsyncEnumerableExtensions
 Funcky.AsyncFunctional
 Funcky.AsyncSequence
 Funcky.IAsyncBuffer<T>
+Funcky.Monads.ConfiguredOptionTaskAwaitable
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaitable() -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter.ConfiguredOptionTaskAwaiter() -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter.GetResult() -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable.GetAwaiter() -> Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaitable() -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter.ConfiguredOptionTaskAwaiter() -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.GetAwaiter() -> Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaitable() -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter.ConfiguredOptionValueTaskAwaiter() -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter.GetResult() -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.GetAwaiter() -> Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaitable() -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter.ConfiguredOptionValueTaskAwaiter() -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter.GetResult() -> Funcky.Monads.Option<TItem>
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.GetAwaiter() -> Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter
 Funcky.Monads.EitherAsyncExtensions
 Funcky.Monads.OptionAsyncExtensions
+Funcky.Monads.OptionTaskAwaiter
+Funcky.Monads.OptionTaskAwaiter.GetResult() -> void
+Funcky.Monads.OptionTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.OptionTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionTaskAwaiter.OptionTaskAwaiter() -> void
 Funcky.Monads.OptionTaskAwaiter<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Monads.OptionTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
 Funcky.Monads.OptionTaskAwaiter<TItem>.OptionTaskAwaiter() -> void
+Funcky.Monads.OptionValueTaskAwaiter
+Funcky.Monads.OptionValueTaskAwaiter.GetResult() -> void
+Funcky.Monads.OptionValueTaskAwaiter.IsCompleted.get -> bool
+Funcky.Monads.OptionValueTaskAwaiter.OnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionValueTaskAwaiter.OptionValueTaskAwaiter() -> void
 Funcky.Monads.OptionValueTaskAwaiter<TItem>
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.GetResult() -> Funcky.Monads.Option<TItem>
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
@@ -209,8 +251,12 @@ static Funcky.Monads.EitherAsyncExtensions.Sequence<TLeft, TRight>(this Funcky.M
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Collections.Generic.IAsyncEnumerable<T>!>! selector) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Either<TLeft, T>>!
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Threading.Tasks.Task<T>!>! selector) -> System.Threading.Tasks.Task<Funcky.Monads.Either<TLeft, T>>!
 static Funcky.Monads.EitherAsyncExtensions.Traverse<TLeft, TRight, T>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, System.Threading.Tasks.ValueTask<T>>! selector) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Either<TLeft, T>>
-static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> System.Runtime.CompilerServices.TaskAwaiter
-static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> System.Runtime.CompilerServices.ValueTaskAwaiter
+static Funcky.Monads.OptionAsyncExtensions.ConfigureAwait(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option, bool continueOnCapturedContext) -> Funcky.Monads.ConfiguredOptionTaskAwaitable
+static Funcky.Monads.OptionAsyncExtensions.ConfigureAwait(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option, bool continueOnCapturedContext) -> Funcky.Monads.ConfiguredOptionValueTaskAwaitable
+static Funcky.Monads.OptionAsyncExtensions.ConfigureAwait<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option, bool continueOnCapturedContext) -> Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>
+static Funcky.Monads.OptionAsyncExtensions.ConfigureAwait<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option, bool continueOnCapturedContext) -> Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.Task!> option) -> Funcky.Monads.OptionTaskAwaiter
+static Funcky.Monads.OptionAsyncExtensions.GetAwaiter(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask> option) -> Funcky.Monads.OptionValueTaskAwaiter
 static Funcky.Monads.OptionAsyncExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.Task<TItem>!> option) -> Funcky.Monads.OptionTaskAwaiter<TItem>
 static Funcky.Monads.OptionAsyncExtensions.GetAwaiter<TItem>(this Funcky.Monads.Option<System.Threading.Tasks.ValueTask<TItem>> option) -> Funcky.Monads.OptionValueTaskAwaiter<TItem>
 static Funcky.Monads.OptionAsyncExtensions.Sequence<TItem>(this Funcky.Monads.Option<System.Collections.Generic.IAsyncEnumerable<TItem>!> option) -> System.Collections.Generic.IAsyncEnumerable<Funcky.Monads.Option<TItem>>!
