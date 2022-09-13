@@ -16,10 +16,10 @@ public readonly partial struct Either<TLeft, TRight>
     }
 
     [Pure]
-    public TRight GetOrElse(TRight defaultValue)
-        => Match(left: _ => defaultValue, right: Identity);
+    public TRight GetOrElse(TRight fallback)
+        => Match(left: _ => fallback, right: Identity);
 
     [Pure]
-    public TRight GetOrElse(Func<TLeft, TRight> getDefaultValue)
-        => Match(left: getDefaultValue, right: Identity);
+    public TRight GetOrElse(Func<TLeft, TRight> fallback)
+        => Match(left: fallback, right: Identity);
 }

@@ -26,13 +26,17 @@ Funcky.Extensions.ResultPartitions<TValidResult>.Error.get -> System.Collections
 Funcky.Extensions.ResultPartitions<TValidResult>.Ok.get -> System.Collections.Generic.IReadOnlyList<TValidResult>!
 Funcky.Extensions.ResultPartitions<TValidResult>.ResultPartitions(System.Collections.Generic.IReadOnlyList<System.Exception!>! error, System.Collections.Generic.IReadOnlyList<TValidResult>! ok) -> void
 Funcky.IBuffer<TSource>
-Funcky.Monads.Either<TLeft, TRight>.GetOrElse(System.Func<TLeft, TRight>! getDefaultValue) -> TRight
-Funcky.Monads.Either<TLeft, TRight>.GetOrElse(TRight defaultValue) -> TRight
+Funcky.Monads.Either<TLeft, TRight>.GetOrElse(System.Func<TLeft, TRight>! fallback) -> TRight
+Funcky.Monads.Either<TLeft, TRight>.GetOrElse(TRight fallback) -> TRight
 Funcky.Monads.Either<TLeft, TRight>.Inspect(System.Action<TRight>! inspector) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.SelectLeft<TResult>(System.Func<TLeft, TResult>! selector) -> Funcky.Monads.Either<TResult, TRight>
 Funcky.Monads.Either<TLeft, TRight>.SelectMany<TEither, TResult>(System.Func<TRight, Funcky.Monads.Either<TLeft, TEither>>! selector, System.Func<TRight, TEither, TResult>! resultSelector) -> Funcky.Monads.Either<TLeft, TResult>
 Funcky.Monads.Either<TLeft, TRight>.Switch(System.Action<TLeft>! left, System.Action<TRight>! right) -> void
+Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! fallback) -> TItem
+Funcky.Monads.Option<TItem>.GetOrElse(TItem fallback) -> TItem
 Funcky.Monads.Option<TItem>.Inspect(System.Action<TItem>! inspector) -> Funcky.Monads.Option<TItem>
+Funcky.Monads.Option<TItem>.OrElse(Funcky.Monads.Option<TItem> fallback) -> Funcky.Monads.Option<TItem>
+Funcky.Monads.Option<TItem>.OrElse(System.Func<Funcky.Monads.Option<TItem>>! fallback) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.SelectMany<TOption, TResult>(System.Func<TItem, Funcky.Monads.Option<TOption>>! selector, System.Func<TItem, TOption, TResult>! resultSelector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.Switch(System.Action! none, System.Action<TItem>! some) -> void
 Funcky.Monads.Result<TValidResult>.GetOrThrow() -> TValidResult

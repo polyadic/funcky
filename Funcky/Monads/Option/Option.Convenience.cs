@@ -10,20 +10,20 @@ public readonly partial struct Option<TItem>
         => SelectMany(item => Option.FromBoolean(predicate(item), item));
 
     [Pure]
-    public Option<TItem> OrElse(Option<TItem> elseOption)
-        => Match(none: elseOption, some: Option.Some);
+    public Option<TItem> OrElse(Option<TItem> fallback)
+        => Match(none: fallback, some: Option.Some);
 
     [Pure]
-    public Option<TItem> OrElse(Func<Option<TItem>> elseOption)
-        => Match(none: elseOption, some: Option.Some);
+    public Option<TItem> OrElse(Func<Option<TItem>> fallback)
+        => Match(none: fallback, some: Option.Some);
 
     [Pure]
-    public TItem GetOrElse(TItem elseOption)
-        => Match(none: elseOption, some: Identity);
+    public TItem GetOrElse(TItem fallback)
+        => Match(none: fallback, some: Identity);
 
     [Pure]
-    public TItem GetOrElse(Func<TItem> elseOption)
-        => Match(none: elseOption, some: Identity);
+    public TItem GetOrElse(Func<TItem> fallback)
+        => Match(none: fallback, some: Identity);
 
     [Pure]
     public Option<TResult> AndThen<TResult>(Func<TItem, TResult> andThenFunction)

@@ -59,13 +59,9 @@ Funcky.Monads.Option<TItem>.AndThen<TResult>(System.Func<TItem, TResult>! andThe
 Funcky.Monads.Option<TItem>.CompareTo(Funcky.Monads.Option<TItem> other) -> int
 Funcky.Monads.Option<TItem>.CompareTo(object? obj) -> int
 Funcky.Monads.Option<TItem>.Equals(Funcky.Monads.Option<TItem> other) -> bool
-Funcky.Monads.Option<TItem>.GetOrElse(System.Func<TItem>! elseOption) -> TItem
-Funcky.Monads.Option<TItem>.GetOrElse(TItem elseOption) -> TItem
 Funcky.Monads.Option<TItem>.Match<TResult>(System.Func<TResult>! none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Match<TResult>(TResult none, System.Func<TItem, TResult>! some) -> TResult
 Funcky.Monads.Option<TItem>.Option() -> void
-Funcky.Monads.Option<TItem>.OrElse(Funcky.Monads.Option<TItem> elseOption) -> Funcky.Monads.Option<TItem>
-Funcky.Monads.Option<TItem>.OrElse(System.Func<Funcky.Monads.Option<TItem>>! elseOption) -> Funcky.Monads.Option<TItem>
 Funcky.Monads.Option<TItem>.Select<TResult>(System.Func<TItem, TResult>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.SelectMany<TResult>(System.Func<TItem, Funcky.Monads.Option<TResult>>! selector) -> Funcky.Monads.Option<TResult>
 Funcky.Monads.Option<TItem>.ToEnumerable() -> System.Collections.Generic.IEnumerable<TItem>!
