@@ -6,14 +6,14 @@ public static partial class AsyncEnumerableExtensions
     /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
     /// sequence's elements without causing multiple enumerations over the source.
     /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="sequence"/> sequence.</typeparam>
-    /// <param name="sequence">The source sequence.</param>
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    /// <param name="source">The source sequence.</param>
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
-    public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> sequence)
-        => sequence is IAsyncBuffer<TSource> buffer
+    public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> source)
+        => source is IAsyncBuffer<TSource> buffer
             ? Borrow(buffer)
-            : MemoizedAsyncBuffer.Create(sequence);
+            : MemoizedAsyncBuffer.Create(source);
 
     private static IAsyncBuffer<TSource> Borrow<TSource>(IAsyncBuffer<TSource> buffer)
         => buffer as BorrowedAsyncBuffer<TSource> ?? new BorrowedAsyncBuffer<TSource>(buffer);
