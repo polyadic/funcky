@@ -49,26 +49,26 @@ Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.F
 Funcky.Monads.Result<TValidResult>.Switch(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.ResultExtensions
 Funcky.RetryPolicies.ConstantDelayPolicy
-Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetry, System.TimeSpan delay) -> void
-Funcky.RetryPolicies.ConstantDelayPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetries, System.TimeSpan delay) -> void
+Funcky.RetryPolicies.ConstantDelayPolicy.Delay(int retryCount) -> System.TimeSpan
 Funcky.RetryPolicies.ConstantDelayPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.DoNotRetryPolicy
+Funcky.RetryPolicies.DoNotRetryPolicy.Delay(int retryCount) -> System.TimeSpan
 Funcky.RetryPolicies.DoNotRetryPolicy.DoNotRetryPolicy() -> void
-Funcky.RetryPolicies.DoNotRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
 Funcky.RetryPolicies.DoNotRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.ExponentialBackOffRetryPolicy
-Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.ExponentialBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.Delay(int retryCount) -> System.TimeSpan
+Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.ExponentialBackOffRetryPolicy(int maxRetries, System.TimeSpan firstDelay) -> void
 Funcky.RetryPolicies.ExponentialBackOffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.IRetryPolicy
-Funcky.RetryPolicies.IRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
+Funcky.RetryPolicies.IRetryPolicy.Delay(int retryCount) -> System.TimeSpan
 Funcky.RetryPolicies.IRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.LinearBackOffRetryPolicy
-Funcky.RetryPolicies.LinearBackOffRetryPolicy.Duration(int onRetryCount) -> System.TimeSpan
-Funcky.RetryPolicies.LinearBackOffRetryPolicy.LinearBackOffRetryPolicy(int maxRetry, System.TimeSpan firstDelay) -> void
+Funcky.RetryPolicies.LinearBackOffRetryPolicy.Delay(int retryCount) -> System.TimeSpan
+Funcky.RetryPolicies.LinearBackOffRetryPolicy.LinearBackOffRetryPolicy(int maxRetries, System.TimeSpan firstDelay) -> void
 Funcky.RetryPolicies.LinearBackOffRetryPolicy.MaxRetries.get -> int
 Funcky.RetryPolicies.NoDelayRetryPolicy
-Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetry) -> void
+Funcky.RetryPolicies.NoDelayRetryPolicy.NoDelayRetryPolicy(int maxRetries) -> void
 override Funcky.EitherOrBoth<TLeft, TRight>.Equals(object? obj) -> bool
 override Funcky.EitherOrBoth<TLeft, TRight>.GetHashCode() -> int
 static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> leftElement, Funcky.Monads.Option<TRight> rightElement) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>

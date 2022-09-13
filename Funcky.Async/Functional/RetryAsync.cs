@@ -40,7 +40,7 @@ public static partial class AsyncFunctional
         where TResult : notnull
         => async retryCount =>
         {
-            await Task.Delay(retryPolicy.Duration(retryCount), cancellationToken).ConfigureAwait(false);
+            await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
             return await producer().ConfigureAwait(false);
         };
 }

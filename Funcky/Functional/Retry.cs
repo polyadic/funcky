@@ -36,7 +36,7 @@ public static partial class Functional
         => retryCount
             =>
             {
-                Sleep(retryPolicy.Duration(retryCount));
+                Sleep(retryPolicy.Delay(retryCount));
                 return producer();
             };
 }

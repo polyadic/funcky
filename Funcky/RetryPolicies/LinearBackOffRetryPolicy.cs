@@ -5,10 +5,10 @@ public sealed class LinearBackOffRetryPolicy
 {
     private readonly TimeSpan _firstDelay;
 
-    public LinearBackOffRetryPolicy(int maxRetry, TimeSpan firstDelay)
-        => (MaxRetries, _firstDelay) = (maxRetry, firstDelay);
+    public LinearBackOffRetryPolicy(int maxRetries, TimeSpan firstDelay)
+        => (MaxRetries, _firstDelay) = (maxRetries, firstDelay);
 
     public int MaxRetries { get; }
 
-    public TimeSpan Duration(int onRetryCount) => _firstDelay.Multiply(onRetryCount);
+    public TimeSpan Delay(int retryCount) => _firstDelay.Multiply(retryCount);
 }

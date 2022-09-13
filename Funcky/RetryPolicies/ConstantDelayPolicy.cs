@@ -4,10 +4,10 @@ public class ConstantDelayPolicy : IRetryPolicy
 {
     private readonly TimeSpan _delay;
 
-    public ConstantDelayPolicy(int maxRetry, TimeSpan delay)
-        => (MaxRetries, _delay) = (maxRetry, delay);
+    public ConstantDelayPolicy(int maxRetries, TimeSpan delay)
+        => (MaxRetries, _delay) = (maxRetries, delay);
 
     public int MaxRetries { get; }
 
-    public TimeSpan Duration(int onRetryCount) => _delay;
+    public TimeSpan Delay(int retryCount) => _delay;
 }
