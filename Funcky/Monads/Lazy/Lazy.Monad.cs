@@ -14,8 +14,8 @@ public static partial class LazyExtensions
         => SelectMany(lazy, selector, static (a, b) => b);
 
     [Pure]
-    public static Lazy<TResult> SelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TA, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(this Lazy<T> lazy, Func<T, Lazy<TA>> selector, Func<T, TA, TResult> resultSelector)
-        => new(new LazySelectMany<T, TA, TResult>(lazy, selector, resultSelector).Apply);
+    public static Lazy<TResult> SelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TLazy, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(this Lazy<T> lazy, Func<T, Lazy<TLazy>> selector, Func<T, TLazy, TResult> resultSelector)
+        => new(new LazySelectMany<T, TLazy, TResult>(lazy, selector, resultSelector).Apply);
 
     // This class is needed because the implicitly generated class that would be generated for a lambda
     // wouldn't have generic types annotated with DynamicallyAccessedMembers, which would result in a warning.
