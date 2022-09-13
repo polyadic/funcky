@@ -8,43 +8,43 @@ public static partial class AsyncEnumerableExtensions
     /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
     /// </summary>
     /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="sequence1">First ordered sequence.</param>
-    /// <param name="sequence2">Second ordered sequence.</param>
+    /// <param name="source1">First ordered sequence.</param>
+    /// <param name="source2">Second ordered sequence.</param>
     /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> sequence1, IAsyncEnumerable<TSource> sequence2, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(sequence1, sequence2).Merge(comparer);
+    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
+        => ImmutableList.Create(source1, source2).Merge(comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
     /// </summary>
     /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="sequence1">First ordered sequence.</param>
-    /// <param name="sequence2">Second ordered sequence.</param>
-    /// <param name="sequence3">Third ordered sequence.</param>
+    /// <param name="source1">First ordered sequence.</param>
+    /// <param name="source2">Second ordered sequence.</param>
+    /// <param name="source3">Third ordered sequence.</param>
     /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> sequence1, IAsyncEnumerable<TSource> sequence2, IAsyncEnumerable<TSource> sequence3, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(sequence1, sequence2, sequence3).Merge(comparer);
+    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
+        => ImmutableList.Create(source1, source2, source3).Merge(comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
     /// </summary>
     /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="sequence1">First ordered sequence.</param>
-    /// <param name="sequence2">Second ordered sequence.</param>
-    /// <param name="sequence3">Third ordered sequence.</param>
-    /// <param name="sequence4">Forth ordered sequence.</param>
+    /// <param name="source1">First ordered sequence.</param>
+    /// <param name="source2">Second ordered sequence.</param>
+    /// <param name="source3">Third ordered sequence.</param>
+    /// <param name="source4">Forth ordered sequence.</param>
     /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> sequence1, IAsyncEnumerable<TSource> sequence2, IAsyncEnumerable<TSource> sequence3, IAsyncEnumerable<TSource> sequence4, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(sequence1, sequence2, sequence3, sequence4).Merge(comparer);
+    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, IAsyncEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
+        => ImmutableList.Create(source1, source2, source3, source4).Merge(comparer);
 
     /// <summary>
     /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
