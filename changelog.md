@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 3.0.0 | Funcky.Async 1.0.0 | Funcky.XUnit 2.0.0
+There's a handy [Migration Guide](https://polyadic.github.io/funcky/migration-guide.html) available.
+
 ### New APIs
 * `Result.GetOrThrow`
 * `EnumerableExtensions.GetNonEnumeratedCountOrNone`
