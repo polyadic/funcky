@@ -2,12 +2,126 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased Major
-* Removed in 2.x deprecated APIs 
-* Moved retry policies to a better namespace
-* Moved all Async Code to funcky-async
-* Use Switch instead of Match for Actions to improve type inference
-* Removed all CartesianProduct overloads
+## Funcky 3.0.0 | Funcky.Async 1.0.0 | Funcky.XUnit 2.0.0
+### New APIs
+* `Result.GetOrThrow`
+* `EnumerableExtensions.GetNonEnumeratedCountOrNone`
+
+#### `PriorityQueue`
+* `PriorityQueueExtensions.DequeueOrNone`
+* `PeekOrNone`
+
+#### Traversable
+The new `Traverse` and `Sequence` extension methods allow you to
+«swap» the inner and outer monad (e.g. `Result<Option<T>>` -> `Option<Result<T>>`)
+
+#### `Memoize`
+The new `Memoize` extension function returns an `IBuffer` / `IAsyncBuffer`. \
+This new type represents ownership over the underlying enumerator (and is therefore `IDisposable`).
+
+`CycleRange` and `RepeatRange` have also been changed to return an `IBuffer`.
+
+### `ParseExtensions`
+The parse extensions have been improved with the goal of aligning more with the BCL.
+Many of the changes are breaking.
+
+* The functions now use BCL type names instead of C# type names
+  (e.g. `ParseIntOrNone` has been renamed to `Parse`)
+* The parameter names and nullability have been changed to align with the BCL.
+* Added `HttpHeadersNonValidatedExtensions`
+
+### `IReadOnlyList` / `IReadOnlyCollection`
+Funcky now communicates materialization in the `IEnumerable<T>` extensions by returning
+`IReadOnlyList` or `IReadOnlyCollection`. This reduces «multiple enumeration» warnings.
+
+* `Materialize`
+* `Chunk`
+* `Partition`
+* `Shuffle`
+* `SlidingWindow`
+* `Split`
+* `Transpose`
+* `Sequence.Return`
+
+### Disallowing `null` Values
+Our `Option<T>` type has always disallowed `null` values.
+This has been extended to our other monads: `Result<T>`, `Either<L, R>` and `Reader<E, R>`.
+
+### Breaking Changes
+* `Option.None()` has been changed to a property. There's an automatic fix available for this.
+* Our `Match` functions now differentiate between `Func` and `Action`.
+  The `Action` overloads have been renamed to `Switch`.
+* The return type of `EnumerableExtensions.ForEach` has been changed to `Unit`.
+* Many parameter names and generic type names have been renamed in an attempt to unify naming across Funcky.
+* All `Action` extensions have been moved to a new class `ActionExtensions`.
+* `EitherOrBoth` has been moved to the `Funcky` namespace.
+* The retry policies have been moved to the `Funcky.RetryPolicies` namespace.
+* `Partition` returns a custom `Partitions` struct instead of a tuple.
+
+#### Obsoleted APIs Removed
+APIs that have been obsoleted during 2.x have been removed:
+
+* `ObjectExtensions.ToEnumerable`
+* `Funcky.GenericConstraints.RequireClass` and `RequireStruct`
+* All `Try*` APIs (`TryGetValue`, `TryParse*`, etc.). These APIs use the `OrNone` suffix instead.
+* `Sequence.Generate` has been superceded by `Sequence.Successors`
+* `CartesianProduct`
+
+#### JSON Converter
+We have removed the implicit `System.Text.Json` converter for `Option<T>`.
+This means that you'll have to register the `OptionJsonConverter` yourself. \
+⚠️ Test this change carefully as you won't get an error during compilation, but rather at runtime.
+
+#### Moved to Funcky.Async
+All APIs related to `IAsyncEnumerable` and `Task` have been moved to the new `Funcky.Async` package:
+
+* `AsyncEnumerableExtensions`
+* `Functional.RetryAsync` -> `AsyncFunctional.RetryAsync`
+* `Option<Task>` and `Option<ValueTask>` awaiters
+
+### Funcky.Async
+#### `AsyncSequence`
+This class exposes all of the same factory functions as `Sequence`, but for `IAsyncEnumerable`:
+* `Return`
+* `Successors`
+* `Concat`
+* `Cycle`
+* `CycleRange`
+* `FromNullable`
+* `RepeatRange`
+
+#### New `IAsyncEnumerable` extensions
+We've worked hard towards the goal of parity between our extensions for `IEnumerable` and `IAsyncEnumerable`:
+
+* `AdjacentGroupBy`
+* `AnyOrElse`
+* `AverageOrNoneAsync` / `MaxOrNoneAsync` / `MinOrNoneAsync`
+* `Chunk`
+* `ConcatToStringAsync`
+* `ExclusiveScan`
+* `InclusiveScan`
+* `Inspect`
+* `Interleave`
+* `Intersperse`
+* `JoinToStringAsync`
+* `MaterializeAsync`
+* `Memoize`
+* `Merge`
+* `NoneAsync`
+* `PartitionAsync`
+* `PowerSet`
+* `Sequence` / `SequenceAsync` / `Traverse` / `TraverseAsync`
+* `ShuffleAsync`
+* `SlidingWindow`
+* `Split`
+* `Transpose`
+* `WhereNotNull`
+* `WithIndex` / `WithLast` / `WithPrevious` / `WithFirst`
+* `ZipLongest`
+
+### Funcky.Xunit
+* Breaking: The `Is` prefix has been dropped from assertion methods for consistency with
+XUnit's naming scheme for assertion methods.
 
 ## Funcky 2.7.1
 ### Deprecations
