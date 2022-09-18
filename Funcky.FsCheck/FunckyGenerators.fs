@@ -43,10 +43,7 @@ type FunckyGenerators =
             Arb.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
 
     static member tuple2<'a, 'b>() =
-       Arb.fromGen <|
-           gen { let! value1 = Arb.generate<'a>
-                 let! value2 = Arb.generate<'b>
-                 return ValueTuple.Create(value1, value2) }
+       Arb.from<Tuple<'a, 'b>> |> Arb.convert TupleExtensions.ToValueTuple TupleExtensions.ToTuple
 
 #if PRIORITY_QUEUE
     static member priorityQueue<'a, 'priority>() =
