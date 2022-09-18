@@ -106,6 +106,17 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
 
+    [Pure]
+    [UseWithArgumentNames]
+    internal TMatchResult Match<TMatchResult>(Func<TMatchResult> uninitialized, Func<TLeft, TMatchResult> left, Func<TRight, TMatchResult> right)
+        => _side switch
+        {
+            Side.Right => right(_right),
+            Side.Left => left(_left),
+            Side.Uninitialized => uninitialized(),
+            _ => throw new NotSupportedException($"Unreachable: Enum variant {_side} is not handled"),
+        };
+
     private bool TryGetValue([NotNullWhen(true)] out TRight? right, [NotNullWhen(false)] out TLeft? left)
     {
         right = _right;
@@ -115,7 +126,7 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
             Side.Right => true,
             Side.Left => false,
             Side.Uninitialized => throw new NotSupportedException($"Either constructed via default instead of a factory function ({nameof(Either<TLeft, TRight>)}.{nameof(Left)} or {nameof(Either<TLeft, TRight>)}.{nameof(Right)})"),
-            _ => throw new NotSupportedException($"Internal error: Enum variant {_side} is not handled"),
+            _ => throw new NotSupportedException($"Unreachable: Enum variant {_side} is not handled"),
         };
     }
 }
