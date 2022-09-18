@@ -1,6 +1,8 @@
 using FsCheck;
 using FsCheck.Xunit;
+#if ELEMENT_AT_INDEX
 using Funcky.FsCheck;
+#endif
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.QueryableExtensions;
