@@ -1,1 +1,2 @@
 #nullable enable
+static Funcky.Extensions.AsyncEnumerableExtensions.ElementAtOrNoneAsync<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Index index, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TSource>>

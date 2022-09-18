@@ -14,6 +14,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Async\Funcky.Async.csproj" />
+        <ProjectReference Include="..\Funcky.FsCheck\Funcky.FsCheck.fsproj" />
         <ProjectReference Include="..\Funcky.Test.Internal\Funcky.Test.Internal.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
     </ItemGroup>
