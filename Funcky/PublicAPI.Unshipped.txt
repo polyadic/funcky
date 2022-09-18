@@ -1,1 +1,3 @@
 #nullable enable
+static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, int index) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
