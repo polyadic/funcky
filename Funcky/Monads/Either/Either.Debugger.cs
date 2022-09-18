@@ -6,6 +6,7 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(EitherDebugView<,>))]
 public readonly partial struct Either<TLeft, TRight>
 {
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Match(
         uninitialized: static () => "default",
         left: static _ => "Left",

@@ -6,6 +6,7 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(ResultDebugView<>))]
 public readonly partial struct Result<TValidResult>
 {
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Match(
         ok: _ => "Ok",
         error: _ => "Error");
