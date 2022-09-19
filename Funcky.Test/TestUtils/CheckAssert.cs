@@ -4,6 +4,16 @@ namespace Funcky.Test.TestUtils;
 
 internal static class CheckAssert
 {
+    public static Property Some<TItem>(TItem expectedValue, Option<TItem> option)
+        where TItem : notnull
+        => option.Match(none: false, some: value => value.Equals(expectedValue))
+            .ToProperty();
+
+    public static Property None<TItem>(Option<TItem> option)
+        where TItem : notnull
+        => option.Match(none: true, some: False)
+            .ToProperty();
+
     public static Property Equal<T>(T expected, T actual)
         where T : IEquatable<T>
         => expected

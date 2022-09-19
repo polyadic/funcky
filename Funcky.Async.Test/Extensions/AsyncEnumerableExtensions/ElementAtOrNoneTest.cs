@@ -1,3 +1,6 @@
+using FsCheck;
+using FsCheck.Xunit;
+using Funcky.FsCheck;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
@@ -26,5 +29,15 @@ public sealed class ElementAtOrNoneTest
         FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(3));
         FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(5));
         FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(10));
+    }
+
+    public sealed class IndexIndex
+    {
+        public IndexIndex() => FunckyGenerators.Register();
+
+        [Property(Verbose = true)]
+        public Property BehavesIdenticalToSynchronousCounterpart(List<int> source, Index index)
+            => (source.ElementAtOrNone(index) == source.ToAsyncEnumerable().ElementAtOrNoneAsync(index).Result)
+                .ToProperty();
     }
 }

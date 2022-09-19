@@ -43,10 +43,7 @@ type FunckyGenerators =
             Arb.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
 
     static member tuple2<'a, 'b>() =
-       Arb.fromGen <|
-           gen { let! value1 = Arb.generate<'a>
-                 let! value2 = Arb.generate<'b>
-                 return ValueTuple.Create(value1, value2) }
+       Arb.from<Tuple<'a, 'b>> |> Arb.convert TupleExtensions.ToValueTuple TupleExtensions.ToTuple
 
 #if PRIORITY_QUEUE
     static member priorityQueue<'a, 'priority>() =
@@ -67,6 +64,12 @@ type FunckyGenerators =
             override _.Shrinker o =
                 o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
         }
+
+#if INDEX_TYPE
+    static member index() =
+        Arb.from<Tuple<PositiveInt, bool>>
+            |> Arb.convert (fun (value, fromEnd) -> Index(value.Get, fromEnd)) (fun x -> (PositiveInt(x.Value), x.IsFromEnd))
+#endif
 
     static member generateLazy<'a>() =
         Arb.fromGen (Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get) |> Gen.map Lazy.Return)
