@@ -6,6 +6,7 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(OptionDebugView<>))]
 public readonly partial struct Option<TItem>
 {
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Match(
         none: "None",
         some: _ => "Some");

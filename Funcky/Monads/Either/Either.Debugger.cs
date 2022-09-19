@@ -6,9 +6,11 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(EitherDebugView<,>))]
 public readonly partial struct Either<TLeft, TRight>
 {
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Match(
-        left: _ => "Left",
-        right: _ => "Right");
+        uninitialized: static () => "default",
+        left: static _ => "Left",
+        right: static _ => "Right");
 }
 
 internal sealed class EitherDebugView<TLeft, TRight>
@@ -19,8 +21,9 @@ internal sealed class EitherDebugView<TLeft, TRight>
 
     public EitherDebugView(Either<TLeft, TRight> either) => _either = either;
 
-    [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
-    public object? Value => _either.Match<object?>(
-        left: left => left,
-        right: right => right);
+    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    public object Value => _either.Match<object>(
+        uninitialized: static () => new { },
+        left: left => new { Value = left },
+        right: right => new { Value = right });
 }
