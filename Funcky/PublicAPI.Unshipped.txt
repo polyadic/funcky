@@ -1,4 +1,9 @@
-#nullable enable
+﻿#nullable enable
+Funcky.RequireClass<T>
+Funcky.RequireClass<T>.RequireClass() -> void
+Funcky.RequireStruct<T>
 static Funcky.Extensions.EnumerableExtensions.ElementAtOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, int index) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
+static Funcky.Monads.OptionExtensions.ToNullable<TItem>(this Funcky.Monads.Option<TItem!> option, Funcky.RequireClass<TItem!>? ω = null) -> TItem?
+static Funcky.Monads.OptionExtensions.ToNullable<TItem>(this Funcky.Monads.Option<TItem> option, Funcky.RequireStruct<TItem>? ω = null) -> TItem?
