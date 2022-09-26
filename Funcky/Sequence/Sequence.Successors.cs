@@ -18,6 +18,13 @@ public static partial class Sequence
     /// Sequence.Successors((0, 1), n => (n.Item2, n.Item1 + n.Item2)).Select(n => n.Item1); // [0, 1, 1, 2, 3, 5, 8, ...]
     /// </code>
     /// </example>
+    /// <example>
+    /// The sequence of all inner exceptions.
+    /// <code>
+    /// Exception exception = ...;
+    /// Sequence.Successors(exception, e => Option.FromNullable(e.InnerException)); // [exception, exception.InnerException, exception.InnerException.InnerException, ...]
+    /// </code>
+    /// </example>
     /// <param name="first">The first element of the sequence.</param>
     /// <param name="successor">Generates the next element of the sequence or <see cref="Option{TItem}.None"/> based on the previous item.</param>
     /// <remarks>Use <see cref="Enumerable.Skip{TSource}(IEnumerable{TSource}, int)"/> on the result if you don't want the first item to be included.</remarks>
