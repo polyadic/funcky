@@ -37,4 +37,11 @@ public sealed class SuccessorsTest
             Enumerable.Range(0, 11),
             Sequence.Successors(0, i => Option.FromBoolean(i < 10, i + 1)));
     }
+
+    [Fact]
+    public void CanGenerateFibonacciSequence()
+    {
+        var fibonacci = Sequence.Successors((0, 1), n => (n.Item2, n.Item1 + n.Item2)).Select(n => n.Item1);
+        Assert.Equal(Sequence.Return(0, 1, 1, 2, 3, 5, 8, 13, 21, 34), fibonacci.Take(10));
+    }
 }
