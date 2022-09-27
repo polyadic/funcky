@@ -1,3 +1,4 @@
+#pragma warning disable RS0026
 namespace Funcky.Monads;
 
 public static partial class OptionExtensions
@@ -19,4 +20,16 @@ public static partial class OptionExtensions
             none: toLeft.Compose(left),
             some: Either<TLeft, TRight>.Right);
     }
+
+    public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireStruct<TItem>? ω = null)
+        where TItem : struct
+        => option.Match(
+            none: null as TItem?,
+            some: item => item);
+
+    public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireClass<TItem>? ω = null)
+        where TItem : class
+        => option.Match(
+            none: null as TItem,
+            some: item => item);
 }

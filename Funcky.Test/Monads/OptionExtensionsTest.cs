@@ -1,7 +1,14 @@
+using FsCheck;
+using FsCheck.Xunit;
+using Funcky.FsCheck;
+
 namespace Funcky.Test.Monads;
 
 public class OptionExtensionsTest
 {
+    public OptionExtensionsTest()
+        => FunckyGenerators.Register();
+
     public enum Reason
     {
         UserNotFound,
@@ -18,6 +25,28 @@ public class OptionExtensionsTest
         noUser.Switch(left: reason => Assert.Equal(Reason.UserNotFound, reason), right: _ => Assert.Fail("failed"));
         emptyUser.Switch(left: reason => Assert.Equal(Reason.NoFirstName, reason), right: _ => Assert.Fail("failed"));
         fullUser.Switch(left: _ => Assert.Fail("failed"), right: firstName => Assert.Equal("Name", firstName));
+    }
+
+    [Property]
+    public Property AnOptionWithAValueTypeCanBeConvertedToANullable(Option<int> input)
+    {
+        var nullable = input.ToNullable();
+
+        return input.Match(
+            none: () => nullable is null,
+            some: value => nullable == value)
+            .ToProperty();
+    }
+
+    [Property]
+    public Property AnOptionWithAReferenceTypeCanBeConvertedToNullableReferences(Option<string> input)
+    {
+        var nullable = input.ToNullable();
+
+        return input.Match(
+                none: () => nullable is null,
+                some: value => nullable == value)
+            .ToProperty();
     }
 
     private static Either<Reason, string> GetFirstNameFromUser(Func<Option<User>> getUser)
