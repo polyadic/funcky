@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -40,25 +41,29 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
             {
                 var operation = (IInvocationOperation)context.Operation;
 
-                if (operation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
-                    && SymbolEqualityComparer.Default.Equals(receiverType.ConstructedFrom, optionOfTType)
-                    && SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), operation.Type)
-                    && operation.TargetMethod.Name == "Match"
-                    && operation.Arguments.Length == 2
-                    && IsIdentityFunction(operation.GetArgumentForParameterAtIndex(1).Value))
-                {
-                    var diagnostic = AnalyzeMatchInvocation(
+                if (IsMatchInvocation(operation, optionOfTType, out var receiverType)
+                    && AnalyzeMatchInvocation(
                         operation,
                         receiverType,
                         noneArgument: operation.GetArgumentForParameterAtIndex(0),
-                        someArgument: operation.GetArgumentForParameterAtIndex(1));
-
-                    if (diagnostic is not null)
-                    {
-                        context.ReportDiagnostic(diagnostic);
-                    }
+                        someArgument: operation.GetArgumentForParameterAtIndex(1)) is { } diagnostic)
+                {
+                    context.ReportDiagnostic(diagnostic);
                 }
             };
+
+    private static bool IsMatchInvocation(
+        IInvocationOperation invocation,
+        INamedTypeSymbol optionOfTType,
+        [NotNullWhen(true)] out INamedTypeSymbol? receiverType)
+    {
+        receiverType = null;
+        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverTypeTemp
+           && SymbolEqualityComparer.Default.Equals(receiverTypeTemp.ConstructedFrom, optionOfTType)
+           && invocation.TargetMethod.Name == "Match"
+           && invocation.Arguments.Length == 2
+           && (receiverType = receiverTypeTemp) is var _;
+    }
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation matchInvocation,
