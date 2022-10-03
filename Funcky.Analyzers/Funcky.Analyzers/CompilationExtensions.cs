@@ -15,4 +15,6 @@ public static class CompilationExtensions
     public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");
 
     public static INamedTypeSymbol? GetSequenceType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Sequence");
+
+    public static INamedTypeSymbol? GetFunctionalType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Functional");
 }

@@ -45,12 +45,10 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return option.Match(
-                some: Identity,
-                none: static () => throw new AssertActualExpectedException(
-                    expected: "Some(...)",
-                    actual: "None",
-                    userMessage: $"{nameof(FunctionalAssert)}.{nameof(Some)}() Failure"));
+            return option.GetOrElse(static () => throw new AssertActualExpectedException(
+                expected: "Some(...)",
+                actual: "None",
+                userMessage: $"{nameof(FunctionalAssert)}.{nameof(Some)}() Failure"));
         }
         catch (AssertActualExpectedException exception)
         {
