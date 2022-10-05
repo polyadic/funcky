@@ -20,10 +20,19 @@ public static class StreamExtensions
     /// <summary>Gets a value, in milliseconds, that determines how long the stream will attempt to read before timing out.</summary>
     /// <returns>A value, in milliseconds, that determines how long the stream will attempt to read before timing out or None if the stream does not support timing out.</returns>
     public static Option<int> GetReadTimeoutOrNone(this Stream stream)
-        => FailToOption<int>.FromException<NotSupportedException>(() => stream.ReadTimeout);
+        => FailToOption<int>.FromException<InvalidOperationException>(() => stream.ReadTimeout);
 
     /// <summary>Gets a value, in milliseconds, that determines how long the stream will attempt to write before timing out.</summary>
     /// <returns>A value, in milliseconds, that determines how long the stream will attempt to write before timing out or None if the stream does not support timing out.</returns>
     public static Option<int> GetWriteTimeoutOrNone(this Stream stream)
-        => FailToOption<int>.FromException<NotSupportedException>(() => stream.WriteTimeout);
+        => FailToOption<int>.FromException<InvalidOperationException>(() => stream.WriteTimeout);
+
+    /// <summary>
+    /// Reads a byte from the stream and advances the position within the stream by one byte, or <see cref="Option{TItem}.None"/> if at the end of the stream.
+    /// </summary>
+    /// <returns>The byte read, or <see cref="Option{TItem}.None"/> if at the end of the stream.</returns>
+    public static Option<byte> ReadByteOrNone(this Stream stream)
+        => stream.ReadByte() is var readByte && readByte is -1
+            ? Option<byte>.None
+            : (byte)readByte;
 }
