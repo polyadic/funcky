@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using static Funcky.Analyzers.OptionMatchAnalyzer;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzers;
@@ -13,7 +14,7 @@ namespace Funcky.Analyzers;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToGetOrElseCodeFix))]
 public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(OptionMatchAnalyzer.PreferGetOrElse.Id);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id);
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -25,13 +26,21 @@ public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
         {
             if (syntaxRoot?.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invocation
                 && invocation.Expression is MemberAccessExpressionSyntax memberAccessExpression
-                && diagnostic.Properties.TryGetValue(OptionMatchAnalyzer.NoneArgumentIndexProperty, out var noneArgumentIndexString)
+                && diagnostic.Properties.TryGetValue(NoneArgumentIndexProperty, out var noneArgumentIndexString)
                 && int.TryParse(noneArgumentIndexString, out var noneArgumentIndex))
             {
-                context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex), diagnostic);
+                context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex, DiagnosticIdToMethodName(diagnostic.Id)), diagnostic);
             }
         }
     }
+
+    private static IdentifierNameSyntax DiagnosticIdToMethodName(string diagnosticId)
+        => diagnosticId switch
+        {
+            _ when diagnosticId == PreferGetOrElse.Id => IdentifierName("GetOrElse"),
+            _ when diagnosticId == PreferOrElse.Id => IdentifierName("OrElse"),
+            _ => throw new NotSupportedException("Internal error: This branch should be unreachable"),
+        };
 
     private sealed class GetOrElseCodeFixAction : CodeAction
     {
@@ -39,20 +48,23 @@ public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
         private readonly InvocationExpressionSyntax _invocationExpression;
         private readonly MemberAccessExpressionSyntax _memberAccessExpression;
         private readonly int _noneArgumentIndex;
+        private readonly IdentifierNameSyntax _methodName;
 
         public GetOrElseCodeFixAction(
             Document document,
             InvocationExpressionSyntax invocationExpression,
             MemberAccessExpressionSyntax memberAccessExpression,
-            int noneArgumentIndex)
+            int noneArgumentIndex,
+            IdentifierNameSyntax methodName)
         {
             _document = document;
             _invocationExpression = invocationExpression;
             _memberAccessExpression = memberAccessExpression;
             _noneArgumentIndex = noneArgumentIndex;
+            _methodName = methodName;
         }
 
-        public override string Title => "Replace Match with GetOrElse";
+        public override string Title => $"Replace Match with {_methodName.Identifier}";
 
         public override string? EquivalenceKey => nameof(OptionMatchToGetOrElseCodeFix);
 
@@ -63,7 +75,7 @@ public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
             editor.ReplaceNode(
                 _invocationExpression,
                 _invocationExpression.WithExpression(_memberAccessExpression
-                    .WithName(IdentifierName("GetOrElse")))
+                    .WithName(_methodName))
                     .WithArgumentList(ArgumentList(SingletonSeparatedList(
                         Argument(_invocationExpression.ArgumentList.Arguments[_noneArgumentIndex].Expression)))));
 

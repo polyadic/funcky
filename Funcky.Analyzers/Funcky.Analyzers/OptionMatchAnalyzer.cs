@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.IdentityFunctionMatching;
+using static Funcky.Analyzers.OptionReturnMatching;
 
 namespace Funcky.Analyzers;
 
@@ -21,7 +22,16 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         description: string.Empty);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse);
+    public static readonly DiagnosticDescriptor PreferOrElse = new DiagnosticDescriptor(
+        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}06",
+        title: "Prefer OrElse over Match",
+        messageFormat: "Prefer OrElse over Match",
+        category: nameof(Funcky),
+        DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: string.Empty);
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -73,8 +83,7 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
-        if (SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
-            && IsIdentityFunction(someArgument.Value))
+        if (IsGetOrElseEquivalent(matchInvocation, receiverType, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
             return Diagnostic.Create(
@@ -83,6 +92,25 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
                 properties: ImmutableDictionary<string, string?>.Empty.Add(NoneArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
+        if (IsOrElseEquivalent(matchInvocation, receiverType, someArgument))
+        {
+            var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
+            return Diagnostic.Create(
+                PreferOrElse,
+                matchInvocation.Syntax.GetLocation(),
+                properties: ImmutableDictionary<string, string?>.Empty.Add(NoneArgumentIndexProperty, noneArgumentIndex.ToString()));
+        }
+
         return null;
     }
+
+    /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
+    private static bool IsGetOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
+            && IsIdentityFunction(someArgument.Value);
+
+    /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Option.Return)</c>.</summary>
+    private static bool IsOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
+            && IsOptionReturnFunction(someArgument.Value);
 }
