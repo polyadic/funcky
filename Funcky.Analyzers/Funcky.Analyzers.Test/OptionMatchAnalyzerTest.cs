@@ -1,6 +1,6 @@
 using Xunit;
 using static Funcky.Analyzers.OptionMatchAnalyzer;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OptionMatchAnalyzer, Funcky.Analyzers.OptionMatchToGetOrElseCodeFix>;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OptionMatchAnalyzer, Funcky.Analyzers.OptionMatchToOrElseCodeFix>;
 
 namespace Funcky.Analyzers.Test;
 

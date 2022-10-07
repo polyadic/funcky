@@ -11,8 +11,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Funcky.Analyzers;
 
 [Shared]
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToGetOrElseCodeFix))]
-public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToOrElseCodeFix))]
+public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id);
 
@@ -66,7 +66,7 @@ public sealed class OptionMatchToGetOrElseCodeFix : CodeFixProvider
 
         public override string Title => $"Replace Match with {_methodName.Identifier}";
 
-        public override string? EquivalenceKey => nameof(OptionMatchToGetOrElseCodeFix);
+        public override string? EquivalenceKey => nameof(OptionMatchToOrElseCodeFix);
 
         protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
         {
