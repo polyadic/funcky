@@ -1,11 +1,12 @@
 using Xunit;
-using VerifyCS = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.Analyzers.OptionMatchAnalyzer>;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OptionMatchAnalyzer, Funcky.Analyzers.OptionMatchToGetOrElseCodeFix>;
 
 namespace Funcky.Analyzers.Test;
 
 public sealed class OptionMatchAnalyzerTest
 {
-    private const string OptionCode = """
+    private const string OptionCode =
+        """
         namespace Funcky.Monads
         {
             public readonly struct Option<TItem>
@@ -14,6 +15,15 @@ public sealed class OptionMatchAnalyzerTest
                 public TResult Match<TResult>(TResult none, System.Func<TItem, TResult> some) => default!;
 
                 public TResult Match<TResult>(System.Func<TResult> none, System.Func<TItem, TResult> some) => default!;
+
+                public TItem GetOrElse(TItem fallback) => default!;
+        
+                public TItem GetOrElse(System.Func<TItem> fallback) => default!;
+            }
+
+            public static class Option
+            {
+                public static Option<TItem> Some<TItem>(TItem value) where TItem : notnull => default;
             }
         }
 
@@ -27,7 +37,7 @@ public sealed class OptionMatchAnalyzerTest
         """;
 
     [Fact]
-    public async Task IssuesWarningForReimplementationOfTryGetValue()
+    public async Task IssuesWarningForReimplementationOfGetOrElse()
     {
         const string inputCode =
             """
@@ -44,6 +54,7 @@ public sealed class OptionMatchAnalyzerTest
                     optionOfInt.Match(some: x => x, none: 42);
                     optionOfInt.Match(none: 42, some: Identity);
                     optionOfInt.Match(none: () => 42, some: x => x);
+                    Option.Some(10).Match(none: 42, some: x => x);
                 }
 
                 public static void Generic<TItem>(Option<TItem> option, TItem fallback)
@@ -53,13 +64,43 @@ public sealed class OptionMatchAnalyzerTest
                 }
             }
             """;
-        await VerifyCS.VerifyAnalyzerAsync(
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+            using static Funcky.Functional;
+
+            public static class C
+            {
+                public static void M(Option<int> optionOfInt, Option<string> optionOfString)
+                {
+                    optionOfInt.GetOrElse(42);
+                    optionOfInt.GetOrElse(42);
+                    optionOfInt.GetOrElse(42);
+                    optionOfInt.GetOrElse(() => 42);
+                    Option.Some(10).GetOrElse(42);
+                }
+
+                public static void Generic<TItem>(Option<TItem> option, TItem fallback)
+                    where TItem : notnull
+                {
+                    option.GetOrElse(fallback);
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionCode,
-            VerifyCS.Diagnostic().WithSpan(10, 9, 10, 50),
-            VerifyCS.Diagnostic().WithSpan(11, 9, 11, 50),
-            VerifyCS.Diagnostic().WithSpan(12, 9, 12, 52),
-            VerifyCS.Diagnostic().WithSpan(13, 9, 13, 56),
-            VerifyCS.Diagnostic().WithSpan(19, 9, 19, 51));
+            new[]
+            {
+                VerifyCS.Diagnostic().WithSpan(10, 9, 10, 50),
+                VerifyCS.Diagnostic().WithSpan(11, 9, 11, 50),
+                VerifyCS.Diagnostic().WithSpan(12, 9, 12, 52),
+                VerifyCS.Diagnostic().WithSpan(13, 9, 13, 56),
+                VerifyCS.Diagnostic().WithSpan(14, 9, 14, 54),
+                VerifyCS.Diagnostic().WithSpan(20, 9, 20, 51),
+            },
+            fixedCode + Environment.NewLine + OptionCode);
     }
 
     [Fact]

@@ -10,7 +10,9 @@ namespace Funcky.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
 {
-    private static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
+    public const string NoneArgumentIndexProperty = nameof(NoneArgumentIndexProperty);
+
+    public static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
         title: "Prefer GetOrElse over Match",
         messageFormat: "Prefer GetOrElse over Match",
@@ -74,7 +76,11 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         if (SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
             && IsIdentityFunction(someArgument.Value))
         {
-            return Diagnostic.Create(PreferGetOrElse, matchInvocation.Syntax.GetLocation());
+            var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
+            return Diagnostic.Create(
+                PreferGetOrElse,
+                matchInvocation.Syntax.GetLocation(),
+                properties: ImmutableDictionary<string, string?>.Empty.Add(NoneArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
         return null;
