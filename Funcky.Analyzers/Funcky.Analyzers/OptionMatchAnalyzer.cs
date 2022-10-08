@@ -83,7 +83,7 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
-        if (IsGetOrElseEquivalent(matchInvocation, receiverType, someArgument))
+        if (IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
             return Diagnostic.Create(
@@ -105,12 +105,22 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
     }
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
-    private static bool IsGetOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
-        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
-            && IsIdentityFunction(someArgument.Value);
+    private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation noneArgument, IArgumentOperation someArgument)
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(noneArgument.Value))
+           && SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(someArgument.Value))
+           && IsIdentityFunction(someArgument.Value);
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Option.Return)</c>.</summary>
     private static bool IsOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
             && IsOptionReturnFunction(someArgument.Value);
+
+    private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
+        => operation switch
+        {
+            IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Body.Operations: { Length: 1 } operations } } when operations[0] is IReturnOperation returnOperation => returnOperation.ReturnedValue?.Type,
+            IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Symbol.ReturnType: var returnType } } => returnType,
+            IDelegateCreationOperation { Target: IMethodReferenceOperation { Method.ReturnType: var returnType } } => returnType,
+            _ => operation.Type,
+        };
 }

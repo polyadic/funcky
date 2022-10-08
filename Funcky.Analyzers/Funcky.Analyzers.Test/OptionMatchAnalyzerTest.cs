@@ -18,11 +18,11 @@ public sealed class OptionMatchAnalyzerTest
                 public TResult Match<TResult>(System.Func<TResult> none, System.Func<TItem, TResult> some) => default!;
 
                 public TItem GetOrElse(TItem fallback) => default!;
-        
+
                 public TItem GetOrElse(System.Func<TItem> fallback) => default!;
-        
+
                 public Option<TItem> OrElse(Option<TItem> fallback) => default!;
-        
+
                 public Option<TItem> OrElse(System.Func<Option<TItem>> fallback) => default!;
             }
 
@@ -157,7 +157,7 @@ public sealed class OptionMatchAnalyzerTest
                     optionOfInt.OrElse(fallback);
                     optionOfInt.OrElse(() => fallback);
                 }
-            
+
                 public static void Generic<TItem>(Option<TItem> option, Option<TItem> fallback)
                     where TItem : notnull
                 {
@@ -200,6 +200,13 @@ public sealed class OptionMatchAnalyzerTest
                     optionOfString.Match((string?)null, some: Identity);
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
+                    _ = optionOfString.Match((string?)null, some: x => x)!;
+                }
+
+                public static void Generic<TItem>(Option<TItem> option, TItem? fallback)
+                    where TItem : class
+                {
+                    option.Match(none: fallback, some: x => x);
                 }
             }
             """;
