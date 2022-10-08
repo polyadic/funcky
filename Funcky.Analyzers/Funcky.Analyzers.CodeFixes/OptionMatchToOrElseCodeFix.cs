@@ -14,7 +14,7 @@ namespace Funcky.Analyzers;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToOrElseCodeFix))]
 public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id, PreferSelectMany.Id);
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -26,7 +26,7 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
         {
             if (syntaxRoot?.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invocation
                 && invocation.Expression is MemberAccessExpressionSyntax memberAccessExpression
-                && diagnostic.Properties.TryGetValue(NoneArgumentIndexProperty, out var noneArgumentIndexString)
+                && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var noneArgumentIndexString)
                 && int.TryParse(noneArgumentIndexString, out var noneArgumentIndex))
             {
                 context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex, DiagnosticIdToMethodName(diagnostic.Id)), diagnostic);
@@ -39,6 +39,7 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
         {
             _ when diagnosticId == PreferGetOrElse.Id => IdentifierName("GetOrElse"),
             _ when diagnosticId == PreferOrElse.Id => IdentifierName("OrElse"),
+            _ when diagnosticId == PreferSelectMany.Id => IdentifierName("SelectMany"),
             _ => throw new NotSupportedException("Internal error: This branch should be unreachable"),
         };
 

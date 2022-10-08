@@ -11,7 +11,7 @@ namespace Funcky.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
 {
-    public const string NoneArgumentIndexProperty = nameof(NoneArgumentIndexProperty);
+    public const string PreservedArgumentIndexProperty = nameof(PreservedArgumentIndexProperty);
 
     public static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
@@ -31,7 +31,16 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         description: string.Empty);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse);
+    public static readonly DiagnosticDescriptor PreferSelectMany = new DiagnosticDescriptor(
+        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",
+        title: "Prefer SelectMany over Match",
+        messageFormat: "Prefer SelectMany over Match",
+        category: nameof(Funcky),
+        DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: string.Empty);
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -89,7 +98,7 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
             return Diagnostic.Create(
                 PreferGetOrElse,
                 matchInvocation.Syntax.GetLocation(),
-                properties: ImmutableDictionary<string, string?>.Empty.Add(NoneArgumentIndexProperty, noneArgumentIndex.ToString()));
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
         if (IsOrElseEquivalent(matchInvocation, receiverType, someArgument))
@@ -98,7 +107,16 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
             return Diagnostic.Create(
                 PreferOrElse,
                 matchInvocation.Syntax.GetLocation(),
-                properties: ImmutableDictionary<string, string?>.Empty.Add(NoneArgumentIndexProperty, noneArgumentIndex.ToString()));
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
+        }
+
+        if (IsSelectManyEquivalent(matchInvocation, receiverType, noneArgument))
+        {
+            var someArgumentIndex = matchInvocation.Arguments.IndexOf(someArgument);
+            return Diagnostic.Create(
+                PreferSelectMany,
+                matchInvocation.Syntax.GetLocation(),
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, someArgumentIndex.ToString()));
         }
 
         return null;
@@ -114,6 +132,15 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
     private static bool IsOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
             && IsOptionReturnFunction(someArgument.Value);
+
+    /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: Option&lt;T&gt;>.None, some: A)</c>.</summary>
+    private static bool IsSelectManyEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation noneArgument)
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
+           && IsOptionNoneExpression(noneArgument.Value);
+
+    private static bool IsOptionNoneExpression(IOperation operation)
+        => operation is IPropertyReferenceOperation { Property: { Name: "None", IsStatic: true, ContainingType: var type } }
+            && SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, operation.SemanticModel?.Compilation.GetOptionOfTType());
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
         => operation switch

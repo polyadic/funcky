@@ -9,7 +9,7 @@ internal static class OptionReturnMatching
         => operation switch
         {
             IDelegateCreationOperation delegateCreation => IsOptionReturnFunction(delegateCreation.Target),
-            IAnonymousFunctionOperation anonymousFunction => IsOptionReturnFunction(anonymousFunction),
+            IAnonymousFunctionOperation anonymousFunction => IsOptionReturnFunction(anonymousFunction) || IsImplicitOptionReturn(anonymousFunction),
             IMethodReferenceOperation methodReference => IsOptionReturn(methodReference.Method, methodReference.SemanticModel),
             _ => false,
         };
@@ -26,4 +26,11 @@ internal static class OptionReturnMatching
             && IsOptionReturn(returnedValue.TargetMethod, returnedValue.SemanticModel)
             && returnedValue.Arguments.Length == 1
             && returnedValue.Arguments[0].Value is IParameterReferenceOperation;
+
+    private static bool IsImplicitOptionReturn(IAnonymousFunctionOperation anonymousFunction)
+        => anonymousFunction.Body.Operations.Length == 1
+           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
+           && anonymousFunction.Symbol.Parameters.Length == 1
+           && returnOperation.ReturnedValue is IConversionOperation { IsImplicit: true, Operand: IParameterReferenceOperation, Type: var conversionType }
+           && SymbolEqualityComparer.Default.Equals(conversionType?.OriginalDefinition, anonymousFunction.SemanticModel?.Compilation.GetOptionOfTType());
 }
