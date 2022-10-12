@@ -2,45 +2,50 @@
 # yarn lockfile v1
 
 
-"@swirly/parser-rxjs@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/parser-rxjs/-/parser-rxjs-0.17.6.tgz#842b920d7778b7a50d6187b646485d697f72eee2"
-  integrity sha512-cmJdSFokjNQHrdJjvs1oXwsNQfMbDeYdkq8WmHFq5AbK1kM5MT/RrDnyoRm6CLqrcqO6b/CBlJqjDIaPXL7KIg==
+"@swirly/parser-rxjs@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/parser-rxjs/-/parser-rxjs-0.21.0.tgz#d2f930bea5a9f9804225dc266d5f27f835eaf846"
+  integrity sha512-3TPtjQMXFPtc8l1/irAqhAkak7orng4YmRIdyzLpTq6zOKIygAjISh3iKBBTQoGPD8o6uEIvGTd9AJb06gI/NQ==
 
-"@swirly/parser@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/parser/-/parser-0.17.6.tgz#4f2bc2692957b65f2ab1c60560c8a6f547d2e4b8"
-  integrity sha512-Z6OrvKwmKsbxPbOc4fmSLowuho9Tt7m7SGsG4tkEIls61zvOb0P+XEvcTX3fEtUtuDL5CLMDRqfy4fV/J73SSQ==
+"@swirly/parser@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/parser/-/parser-0.21.0.tgz#81592d0b2da040ecbac91a37faf8cb6e9e0399a6"
+  integrity sha512-258BPrxF9MycuRIimQuK2x7GTnZmsZdZHKG5OxmQZex0t2V6Fo7wBFfygDWhJOUAnEBrWj1dJivA+z8lsosO0g==
   dependencies:
-    "@swirly/parser-rxjs" "^0.17.6"
+    "@swirly/parser-rxjs" "^0.21.0"
 
-"@swirly/renderer-node@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/renderer-node/-/renderer-node-0.17.6.tgz#b56598af8154ce098d0ac8b88dc7679ed72f62e9"
-  integrity sha512-eUkgp/zB5k7HaUO1T2KLyfihZpCTgJ3h9clnNGNUqL/lewqe2v1q/oqLXDJKhfSsefH9C+x/J2+hNFKo2kmYMg==
+"@swirly/renderer-node@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/renderer-node/-/renderer-node-0.21.0.tgz#c2124d7302c71f6d21a015f40d76cc22dd39870d"
+  integrity sha512-hvV/2l7JEbc46jKjRbMaZ2U0nh7obYNIefyGJSJvUeTMI8xNFvB+m+vfSPmWYD0+KmoZ9S6Hy9bWLUpusESCgA==
   dependencies:
-    "@swirly/renderer" "^0.17.6"
-    xmldom "^0.5.0"
+    "@swirly/renderer" "^0.21.0"
+    "@xmldom/xmldom" "^0.8.2"
 
-"@swirly/renderer@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/renderer/-/renderer-0.17.6.tgz#526424bd99c6c3d6043738b74d1c9f8a4ea86ccc"
-  integrity sha512-pp4g9VevkYUPh+wwuOSPPblVHLtw3UcoF/OfAG0BbaC6DcHLsDEOk2CCZuidUb3ozvwo1fdHZKeWbs+ceXckOg==
+"@swirly/renderer@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/renderer/-/renderer-0.21.0.tgz#8d3d4b5a017ee377cebb0cedcd8eff0d17d11acb"
+  integrity sha512-piWK3nqik8uRrBF3OOFsK7FBQr8+pxMU7GOfNyXj98/MMogqHM8bl1hccR258UtVFhlmSRK+M0AUdZCbeiXemg==
   dependencies:
-    "@swirly/theme-default-light" "^0.17.6"
+    "@swirly/theme-default-light" "^0.21.0"
     simple-sha1 "^3.1.0"
 
-"@swirly/theme-default-base@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/theme-default-base/-/theme-default-base-0.17.6.tgz#093c6f1c6d2a7cf819e0fbcb4cc6939eb3b42bf0"
-  integrity sha512-HbFMyL9xZjIzDhWzhAHoU7slfkET2euyLCB7lzOlRprPzfjatMTmCL30ji+Z6wRdQEITsrERCwiy5hfyo+rQEQ==
+"@swirly/theme-default-base@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/theme-default-base/-/theme-default-base-0.21.0.tgz#35ff01e240e712db4015576202ca81bb838ebce6"
+  integrity sha512-jW6wkwnUZMaU1PuhWEzvHkX9rezpe33xUvVqen9dvLM9FJimaZljfHdjYFhiTJJZ/V6a0inCDBJbWS3OfHHV+g==
 
-"@swirly/theme-default-light@^0.17.6":
-  version "0.17.6"
-  resolved "https://registry.yarnpkg.com/@swirly/theme-default-light/-/theme-default-light-0.17.6.tgz#057ba808c6ccae84f7b52141e54eb9803c4972f5"
-  integrity sha512-KS6CmOcBqAVkJpx+K0rsNSSKGONrWsz7o7xT6Z4gOw0IFGwc/6/xjxvXGrMttbqutkGVv1vZEbl+wrAGDQ84WA==
+"@swirly/theme-default-light@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/theme-default-light/-/theme-default-light-0.21.0.tgz#f85f24383165e920ee41d70a53e73a998f9585d4"
+  integrity sha512-vWnoQzT6A+xOnXBT+12FzeGuh92uT5DmdAwpG1QROsEwxndOYjl+JN10SCrutG+ncBT9Hl6LnuYO4koj975IVg==
   dependencies:
-    "@swirly/theme-default-base" "^0.17.6"
+    "@swirly/theme-default-base" "^0.21.0"
+
+"@xmldom/xmldom@^0.8.2":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.3.tgz#beaf980612532aa9a3004aff7e428943aeaa0711"
+  integrity sha512-Lv2vySXypg4nfa51LY1nU8yDAGo/5YwF+EY/rUZgIbfvwVARcd67ttCM8SMsTeJy51YhHYavEq+FS6R0hW9PFQ==
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -58,29 +63,29 @@ brace-expansion@^1.1.7:
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
-  integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
+  integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
-  integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
+  integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
 glob@^7.1.7:
-  version "7.1.7"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.7.tgz#3b193e9233f01d42d0b3f78294bbeeb418f94a90"
-  integrity sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.3.tgz#b8df0fb802bbfa8e89bd1d938b4e16578ed44f2b"
+  integrity sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
     inherits "2"
-    minimatch "^3.0.4"
+    minimatch "^3.1.1"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
-  integrity sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk=
+  integrity sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==
   dependencies:
     once "^1.3.0"
     wrappy "1"
@@ -90,24 +95,24 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-minimatch@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
-  integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
+minimatch@^3.1.1:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
+  integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
 
 once@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
-  integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
+  integrity sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==
   dependencies:
     wrappy "1"
 
 path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
-  integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
+  integrity sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==
 
 queue-microtask@^1.2.2:
   version "1.2.3"
@@ -130,9 +135,4 @@ simple-sha1@^3.1.0:
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
-  integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
-
-xmldom@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.5.0.tgz#193cb96b84aa3486127ea6272c4596354cb4962e"
-  integrity sha512-Foaj5FXVzgn7xFzsKeNIde9g6aFBxTPi37iwsno8QvApmtg7KYrr+OPyRHcJF7dud2a5nGRBXK3n0dL62Gf7PA==
+  integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
