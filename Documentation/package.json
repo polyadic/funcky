@@ -5,9 +5,9 @@
     "build-marble-graphics": "node scripts/build-marble-graphics.mjs"
   },
   "devDependencies": {
-    "@swirly/parser": "^0.17.6",
-    "@swirly/renderer-node": "^0.17.6",
-    "@swirly/theme-default-light": "^0.17.6",
+    "@swirly/parser": "^0.21.0",
+    "@swirly/renderer-node": "^0.21.0",
+    "@swirly/theme-default-light": "^0.21.0",
     "glob": "^7.1.7"
   }
 }
