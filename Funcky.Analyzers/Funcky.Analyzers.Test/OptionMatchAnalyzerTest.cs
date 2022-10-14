@@ -4,7 +4,7 @@ using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.Op
 
 namespace Funcky.Analyzers.Test;
 
-public sealed class OptionMatchAnalyzerTest
+public sealed partial class OptionMatchAnalyzerTest
 {
     private const string OptionCode =
         """
@@ -32,12 +32,23 @@ public sealed class OptionMatchAnalyzerTest
                 public Option<TResult> SelectMany<TResult>(System.Func<TItem, Option<TResult>> selector) where TResult : notnull => default;
             }
 
+            public static class OptionExtensions
+            {
+                public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireStruct<TItem>? ω = null) where TItem : struct => default;
+
+                public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireClass<TItem>? ω = null) where TItem : class => default;
+            }
+
             public static class Option
             {
                 public static Option<TItem> Some<TItem>(TItem value) where TItem : notnull => default;
 
                 public static Option<TItem> Return<TItem>(TItem value) where TItem : notnull => default;
             }
+
+            public sealed class RequireStruct<T> where T : struct { }
+
+            public sealed class RequireClass<T> where T : class { }
         }
 
         namespace Funcky
@@ -262,14 +273,12 @@ public sealed class OptionMatchAnalyzerTest
                 public static void M(Option<int> optionOfInt, Option<string> optionOfString)
                 {
                     optionOfInt.Match(none: 42, some: x => x + 1);
-                    optionOfInt.Match((int?)null, some: x => x);
-                    optionOfString.Match((string?)null, some: x => x);
-                    optionOfString.Match((string?)null, some: Identity);
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
                     optionOfInt.Match(none: optionOfInt, some: x => x + 1);
-                    _ = optionOfString.Match((string?)null, some: x => x)!;
                     optionOfInt.Match(none: Option<string>.None, some: x => x.ToString());
+                    optionOfString.Match(none: (string?)null, some: x => x + "foo");
+                    optionOfInt.Match(none: (int?)null, some: x => x + 1);
                 }
 
                 public static void Generic<TItem>(Option<TItem> option, TItem? fallback)

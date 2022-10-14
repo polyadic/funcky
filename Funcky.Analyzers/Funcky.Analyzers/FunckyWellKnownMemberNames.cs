@@ -10,6 +10,8 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionNonePropertyName = "None";
 
+    public const string OptionToNullableMethodName = "ToNullable";
+
     /// <summary>The name of the identity function.</summary>
     public const string IdentityMethodName = "Identity";
 

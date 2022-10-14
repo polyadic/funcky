@@ -25,8 +25,7 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
 
         foreach (var diagnostic in context.Diagnostics)
         {
-            if (syntaxRoot?.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invocation
-                && invocation.Expression is MemberAccessExpressionSyntax memberAccessExpression
+            if (syntaxRoot?.FindInvocationExpression(context.Span) is { Expression: MemberAccessExpressionSyntax memberAccessExpression } invocation
                 && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var noneArgumentIndexString)
                 && int.TryParse(noneArgumentIndexString, out var noneArgumentIndex))
             {

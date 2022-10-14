@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.AnonymousFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.IdentityFunctionMatching;
 using static Funcky.Analyzers.OptionReturnMatching;
@@ -41,7 +42,16 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         description: string.Empty);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany);
+    public static readonly DiagnosticDescriptor PreferToNullable = new DiagnosticDescriptor(
+        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08",
+        title: $"Prefer {OptionToNullableMethodName} over {MatchMethodName}",
+        messageFormat: $"Prefer {OptionToNullableMethodName} over {MatchMethodName}",
+        category: nameof(Funcky),
+        DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: string.Empty);
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany, PreferToNullable);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -93,6 +103,11 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
+        if (IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
+        {
+            return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
+        }
+
         if (IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
@@ -138,6 +153,38 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
     private static bool IsSelectManyEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation noneArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
            && IsOptionNoneExpression(noneArgument.Value);
+
+    /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: null, some: Identity)</c>.</summary>
+    private static bool IsToNullableEquivalent(
+        IInvocationOperation matchInvocation,
+        INamedTypeSymbol receiverType,
+        IArgumentOperation noneArgument,
+        IArgumentOperation someArgument)
+    {
+        return IsToNullableReferenceType() || IsToNullableValueType();
+
+        bool IsToNullableReferenceType()
+            => SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
+               && IsNullOrAnonymousFunctionReturningNull(noneArgument.Value)
+               && IsIdentityFunction(someArgument.Value);
+
+        bool IsToNullableValueType()
+        {
+            var itemType = receiverType.TypeArguments.Single();
+            var nullableItemType = matchInvocation.SemanticModel?.Compilation.GetSpecialType(SpecialType.System_Nullable_T).Construct(itemType);
+            return SymbolEqualityComparer.Default.Equals(nullableItemType, matchInvocation.Type)
+                && IsNullOrAnonymousFunctionReturningNull(noneArgument.Value)
+                && someArgument.Value is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
+                && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+                && returnOperation.ReturnedValue is IConversionOperation { Operand: IParameterReferenceOperation, Conversion.IsNullable: true };
+        }
+
+        static bool IsNullOrAnonymousFunctionReturningNull(IOperation operation)
+            => operation is { ConstantValue: { HasValue: true, Value: null } }
+               || (operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
+                   && MatchAnonymousNullaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+                   && returnOperation.ReturnedValue is { ConstantValue: { HasValue: true, Value: null } });
+    }
 
     private static bool IsOptionNoneExpression(IOperation operation)
         => operation is IPropertyReferenceOperation { Property: { Name: OptionNonePropertyName, IsStatic: true, ContainingType: var type } }

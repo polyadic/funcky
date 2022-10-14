@@ -30,7 +30,7 @@ internal sealed class ReplaceParameterReferenceRewriter : CSharpSyntaxRewriter
     }
 }
 
-internal static class SyntaxNodeExtensions
+internal static partial class SyntaxNodeExtensions
 {
     public static TNode ReplaceParameterReferences<TNode>(this TNode node, SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
         where TNode : SyntaxNode
