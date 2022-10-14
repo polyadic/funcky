@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.AnonymousFunctionMatching;
 
 namespace Funcky.Analyzers;
 
@@ -15,10 +16,8 @@ internal static class IdentityFunctionMatching
         };
 
     private static bool IsAnonymousIdentityFunction(IAnonymousFunctionOperation anonymousFunction)
-        => anonymousFunction.Body.Operations.Length == 1
-           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
-           && anonymousFunction.Symbol.Parameters.Length == 1
-           && returnOperation.ReturnedValue is IParameterReferenceOperation;
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+            && returnOperation.ReturnedValue is IParameterReferenceOperation;
 
     private static bool IsFunckyIdentityFunction(IMethodReferenceOperation methodReference)
         => methodReference.Method.Name == "Identity"

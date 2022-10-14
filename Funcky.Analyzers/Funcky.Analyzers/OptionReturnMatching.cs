@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.AnonymousFunctionMatching;
 
 namespace Funcky.Analyzers;
 
@@ -19,18 +20,14 @@ internal static class OptionReturnMatching
             && SymbolEqualityComparer.Default.Equals(methodType, semanticModel?.Compilation.GetOptionType());
 
     private static bool IsOptionReturnFunction(IAnonymousFunctionOperation anonymousFunction)
-        => anonymousFunction.Body.Operations.Length == 1
-            && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
-            && anonymousFunction.Symbol.Parameters.Length == 1
-            && returnOperation.ReturnedValue is IInvocationOperation returnedValue
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+            && returnOperation is { ReturnedValue: IInvocationOperation returnedValue }
             && IsOptionReturn(returnedValue.TargetMethod, returnedValue.SemanticModel)
             && returnedValue.Arguments.Length == 1
             && returnedValue.Arguments[0].Value is IParameterReferenceOperation;
 
     private static bool IsImplicitOptionReturn(IAnonymousFunctionOperation anonymousFunction)
-        => anonymousFunction.Body.Operations.Length == 1
-           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
-           && anonymousFunction.Symbol.Parameters.Length == 1
-           && returnOperation.ReturnedValue is IConversionOperation { IsImplicit: true, Operand: IParameterReferenceOperation, Type: var conversionType }
-           && SymbolEqualityComparer.Default.Equals(conversionType?.OriginalDefinition, anonymousFunction.SemanticModel?.Compilation.GetOptionOfTType());
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+            && returnOperation is { ReturnedValue: IConversionOperation { IsImplicit: true, Operand: IParameterReferenceOperation, Type: var conversionType } }
+            && SymbolEqualityComparer.Default.Equals(conversionType?.OriginalDefinition, anonymousFunction.SemanticModel?.Compilation.GetOptionOfTType());
 }
