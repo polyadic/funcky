@@ -1,6 +1,8 @@
 #nullable enable
 Funcky.RequireClass<T>
+Funcky.RequireClass<T>.RequireClass() -> void
 Funcky.RequireStruct<T>
+Funcky.RequireStruct<T>.RequireStruct() -> void
 static Funcky.Extensions.EnumerableExtensions.ElementAtOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, int index) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.QueryableExtensions.ElementAtOrNone<TSource>(this System.Linq.IQueryable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
