@@ -56,7 +56,7 @@ public sealed partial class OptionMatchAnalyzerTest
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
-            inputCode + Environment.NewLine + OptionCode,
+            inputCode + Environment.NewLine + OptionStubCode,
             new[]
             {
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(10, 9, 10, 71),
@@ -69,7 +69,7 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(17, 13, 17, 69),
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(18, 13, 18, 69),
             },
-            fixedCode + Environment.NewLine + OptionCode);
+            fixedCode + Environment.NewLine + OptionStubCode);
     }
 
     [Fact]
@@ -108,11 +108,11 @@ public sealed partial class OptionMatchAnalyzerTest
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
-            inputCode + Environment.NewLine + OptionCode,
+            inputCode + Environment.NewLine + OptionStubCode,
             new[]
             {
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(11, 14, 11, 63),
             },
-            fixedCode + Environment.NewLine + OptionCode);
+            fixedCode + Environment.NewLine + OptionStubCode);
     }
 }
