@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.AnonymousFunctionMatching;
+using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
 namespace Funcky.Analyzers;
 
@@ -16,7 +17,7 @@ internal static class OptionReturnMatching
         };
 
     private static bool IsOptionReturn(IMethodSymbol method, SemanticModel? semanticModel)
-        => method is { Name: "Return" or "Some", IsStatic: true, ContainingType: var methodType }
+        => method is { Name: MonadReturnMethodName or OptionSomeMethodName, IsStatic: true, ContainingType: var methodType }
             && SymbolEqualityComparer.Default.Equals(methodType, semanticModel?.Compilation.GetOptionType());
 
     private static bool IsOptionReturnFunction(IAnonymousFunctionOperation anonymousFunction)

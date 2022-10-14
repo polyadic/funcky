@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.OptionMatchAnalyzer;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -37,9 +38,9 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
     private static IdentifierNameSyntax DiagnosticIdToMethodName(string diagnosticId)
         => diagnosticId switch
         {
-            _ when diagnosticId == PreferGetOrElse.Id => IdentifierName("GetOrElse"),
-            _ when diagnosticId == PreferOrElse.Id => IdentifierName("OrElse"),
-            _ when diagnosticId == PreferSelectMany.Id => IdentifierName("SelectMany"),
+            _ when diagnosticId == PreferGetOrElse.Id => IdentifierName(GetOrElseMethodName),
+            _ when diagnosticId == PreferOrElse.Id => IdentifierName(OrElseMethodName),
+            _ when diagnosticId == PreferSelectMany.Id => IdentifierName(SelectManyMethodName),
             _ => throw new NotSupportedException("Internal error: This branch should be unreachable"),
         };
 
@@ -65,7 +66,7 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
             _methodName = methodName;
         }
 
-        public override string Title => $"Replace Match with {_methodName.Identifier}";
+        public override string Title => $"Replace {MatchMethodName} with {_methodName.Identifier}";
 
         public override string? EquivalenceKey => nameof(OptionMatchToOrElseCodeFix);
 

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.IdentityFunctionMatching;
 using static Funcky.Analyzers.OptionReturnMatching;
 
@@ -15,8 +16,8 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     public static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
-        title: "Prefer GetOrElse over Match",
-        messageFormat: "Prefer GetOrElse over Match",
+        title: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
+        messageFormat: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
@@ -24,8 +25,8 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     public static readonly DiagnosticDescriptor PreferOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}06",
-        title: "Prefer OrElse over Match",
-        messageFormat: "Prefer OrElse over Match",
+        title: $"Prefer {OrElseMethodName} over {MatchMethodName}",
+        messageFormat: $"Prefer {OrElseMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
@@ -33,8 +34,8 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     public static readonly DiagnosticDescriptor PreferSelectMany = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",
-        title: "Prefer SelectMany over Match",
-        messageFormat: "Prefer SelectMany over Match",
+        title: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
+        messageFormat: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
@@ -81,7 +82,7 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         receiverType = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverTypeTemp
            && SymbolEqualityComparer.Default.Equals(receiverTypeTemp.ConstructedFrom, optionOfTType)
-           && invocation.TargetMethod.Name == "Match"
+           && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
            && (receiverType = receiverTypeTemp) is var _;
     }
@@ -139,7 +140,7 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
            && IsOptionNoneExpression(noneArgument.Value);
 
     private static bool IsOptionNoneExpression(IOperation operation)
-        => operation is IPropertyReferenceOperation { Property: { Name: "None", IsStatic: true, ContainingType: var type } }
+        => operation is IPropertyReferenceOperation { Property: { Name: OptionNonePropertyName, IsStatic: true, ContainingType: var type } }
             && SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, operation.SemanticModel?.Compilation.GetOptionOfTType());
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
