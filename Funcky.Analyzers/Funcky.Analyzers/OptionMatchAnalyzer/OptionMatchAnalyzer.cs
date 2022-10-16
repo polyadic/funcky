@@ -23,18 +23,21 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
         {
             if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
             {
-                context.RegisterOperationAction(context => AnalyzeInvocation(context, optionOfTType), OperationKind.Invocation);
+                var toNullableExists = ToNullableExtensionIsAvailable(context.Compilation);
+                var symbols = new CompilationSymbols(optionOfTType, toNullableExists);
+                context.RegisterOperationAction(context => AnalyzeInvocation(context, symbols), OperationKind.Invocation);
             }
         });
     }
 
-    private static void AnalyzeInvocation(OperationAnalysisContext context, INamedTypeSymbol optionOfTType)
+    private static void AnalyzeInvocation(OperationAnalysisContext context, CompilationSymbols symbols)
     {
         var operation = (IInvocationOperation)context.Operation;
 
-        if (IsMatchInvocation(operation, optionOfTType, out var receiverType)
+        if (IsMatchInvocation(operation, symbols, out var receiverType)
             && AnalyzeMatchInvocation(
                 operation,
+                symbols,
                 receiverType,
                 noneArgument: operation.GetArgumentForParameterAtIndex(0),
                 someArgument: operation.GetArgumentForParameterAtIndex(1)) is { } diagnostic)
@@ -45,12 +48,12 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     private static bool IsMatchInvocation(
         IInvocationOperation invocation,
-        INamedTypeSymbol optionOfTType,
+        CompilationSymbols symbols,
         [NotNullWhen(true)] out INamedTypeSymbol? receiverType)
     {
         receiverType = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType_
-           && SymbolEqualityComparer.Default.Equals(receiverType_.ConstructedFrom, optionOfTType)
+           && SymbolEqualityComparer.Default.Equals(receiverType_.ConstructedFrom, symbols.OptionOfTType)
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
            && (receiverType = receiverType_) is var _;
@@ -58,11 +61,12 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation matchInvocation,
+        CompilationSymbols symbols,
         INamedTypeSymbol receiverType,
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
-        if (IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
+        if (symbols.ToNullableExtensionIsAvailable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
         {
             return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
         }
@@ -96,4 +100,10 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
 
         return null;
     }
+
+    private static bool ToNullableExtensionIsAvailable(Compilation compilation)
+        => compilation.GetOptionExtensionsType() is { } optionExtensionsType
+            && optionExtensionsType.GetMembers().Any(static member => member is IMethodSymbol { Name: OptionToNullableMethodName });
+
+    private sealed record CompilationSymbols(INamedTypeSymbol OptionOfTType, bool ToNullableExtensionIsAvailable);
 }
