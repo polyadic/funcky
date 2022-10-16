@@ -16,6 +16,12 @@ internal static class IdentityFunctionMatching
             _ => false,
         };
 
+    public static bool IsIdentityFunctionWithNullConversion(IOperation operation)
+        => operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
+           && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+           && returnOperation.ReturnedValue is IConversionOperation { Conversion.IsNullable: true, Operand: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }
+           && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+
     private static bool IsAnonymousIdentityFunction(IAnonymousFunctionOperation anonymousFunction)
         => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
             && returnOperation.ReturnedValue is IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }

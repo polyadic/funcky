@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
+using static Funcky.Analyzers.ConstantFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.IdentityFunctionMatching;
 using static Funcky.Analyzers.OptionReturnMatching;
@@ -62,27 +62,25 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         {
             if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
             {
-                context.RegisterOperationAction(AnalyzeInvocation(optionOfTType), OperationKind.Invocation);
+                context.RegisterOperationAction(context => AnalyzeInvocation(context, optionOfTType), OperationKind.Invocation);
             }
         });
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol optionOfTType)
-        => context
-            =>
-            {
-                var operation = (IInvocationOperation)context.Operation;
+    private static void AnalyzeInvocation(OperationAnalysisContext context, INamedTypeSymbol optionOfTType)
+    {
+        var operation = (IInvocationOperation)context.Operation;
 
-                if (IsMatchInvocation(operation, optionOfTType, out var receiverType)
-                    && AnalyzeMatchInvocation(
-                        operation,
-                        receiverType,
-                        noneArgument: operation.GetArgumentForParameterAtIndex(0),
-                        someArgument: operation.GetArgumentForParameterAtIndex(1)) is { } diagnostic)
-                {
-                    context.ReportDiagnostic(diagnostic);
-                }
-            };
+        if (IsMatchInvocation(operation, optionOfTType, out var receiverType)
+            && AnalyzeMatchInvocation(
+                operation,
+                receiverType,
+                noneArgument: operation.GetArgumentForParameterAtIndex(0),
+                someArgument: operation.GetArgumentForParameterAtIndex(1)) is { } diagnostic)
+        {
+            context.ReportDiagnostic(diagnostic);
+        }
+    }
 
     private static bool IsMatchInvocation(
         IInvocationOperation invocation,
@@ -161,30 +159,23 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
+        var itemType = receiverType.TypeArguments.Single();
         return IsToNullableReferenceType() || IsToNullableValueType();
 
         bool IsToNullableReferenceType()
-            => SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
-               && IsNullOrAnonymousFunctionReturningNull(noneArgument.Value)
-               && IsIdentityFunction(someArgument.Value);
+            => itemType.IsReferenceType
+                && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
+                && IsNullOrNullFunction(noneArgument.Value)
+                && IsIdentityFunction(someArgument.Value);
 
         bool IsToNullableValueType()
-        {
-            var itemType = receiverType.TypeArguments.Single();
-            var nullableItemType = matchInvocation.SemanticModel?.Compilation.GetSpecialType(SpecialType.System_Nullable_T).Construct(itemType);
-            return SymbolEqualityComparer.Default.Equals(nullableItemType, matchInvocation.Type)
-                && IsNullOrAnonymousFunctionReturningNull(noneArgument.Value)
-                && someArgument.Value is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
-                && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
-                && returnOperation.ReturnedValue is IConversionOperation { Operand: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }, Conversion.IsNullable: true }
-                && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
-        }
+            => itemType.IsValueType
+                && SymbolEqualityComparer.Default.Equals(matchInvocation.SemanticModel?.NullableOfT(itemType), matchInvocation.Type)
+                && IsNullOrNullFunction(noneArgument.Value)
+                && IsIdentityFunctionWithNullConversion(someArgument.Value);
 
-        static bool IsNullOrAnonymousFunctionReturningNull(IOperation operation)
-            => operation is { ConstantValue: { HasValue: true, Value: null } }
-               || (operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
-                   && MatchAnonymousNullaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
-                   && returnOperation.ReturnedValue is { ConstantValue: { HasValue: true, Value: null } });
+        static bool IsNullOrNullFunction(IOperation operation)
+            => operation is { ConstantValue: { HasValue: true, Value: null } } || IsConstantFunction(operation, expectedValue: null);
     }
 
     private static bool IsOptionNoneExpression(IOperation operation)
