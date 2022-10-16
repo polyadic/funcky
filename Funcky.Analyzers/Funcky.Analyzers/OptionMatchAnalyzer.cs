@@ -90,11 +90,11 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
         [NotNullWhen(true)] out INamedTypeSymbol? receiverType)
     {
         receiverType = null;
-        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverTypeTemp
-           && SymbolEqualityComparer.Default.Equals(receiverTypeTemp.ConstructedFrom, optionOfTType)
+        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType_
+           && SymbolEqualityComparer.Default.Equals(receiverType_.ConstructedFrom, optionOfTType)
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
-           && (receiverType = receiverTypeTemp) is var _;
+           && (receiverType = receiverType_) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(
