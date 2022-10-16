@@ -18,16 +18,17 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();
+        context.RegisterCompilationStartAction(OnCompilationStart);
+    }
 
-        context.RegisterCompilationStartAction(static context =>
+    private static void OnCompilationStart(CompilationStartAnalysisContext context)
+    {
+        if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
         {
-            if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
-            {
-                var toNullableExists = ToNullableExtensionIsAvailable(context.Compilation);
-                var symbols = new CompilationSymbols(optionOfTType, toNullableExists);
-                context.RegisterOperationAction(context => AnalyzeInvocation(context, symbols), OperationKind.Invocation);
-            }
-        });
+            var toNullableExists = ToNullableExtensionIsAvailable(context.Compilation);
+            var symbols = new CompilationSymbols(optionOfTType, toNullableExists);
+            context.RegisterOperationAction(context => AnalyzeInvocation(context, symbols), OperationKind.Invocation);
+        }
     }
 
     private static void AnalyzeInvocation(OperationAnalysisContext context, CompilationSymbols symbols)
