@@ -18,7 +18,8 @@ internal static class IdentityFunctionMatching
 
     private static bool IsAnonymousIdentityFunction(IAnonymousFunctionOperation anonymousFunction)
         => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
-            && returnOperation.ReturnedValue is IParameterReferenceOperation;
+            && returnOperation.ReturnedValue is IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }
+            && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsFunckyIdentityFunction(IMethodReferenceOperation methodReference)
         => methodReference.Method.Name == IdentityMethodName

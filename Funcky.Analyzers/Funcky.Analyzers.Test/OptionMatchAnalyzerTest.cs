@@ -236,4 +236,27 @@ public sealed partial class OptionMatchAnalyzerTest
             """;
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + OptionStubCode);
     }
+
+    [Fact]
+    public async Task DoesNotMistakeReturnOfOuterParameterWithParameterOfAnonymousFunction()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+            using static Funcky.Functional;
+
+            public static class C
+            {
+                public static void M(Option<int> optionOfInt, int y)
+                {
+                    optionOfInt.Match(none: 42, some: x => y);
+                    optionOfInt.Match(none: optionOfInt, some: x => Option.Return(y));
+                    optionOfInt.Match(none: (int?)null, some: x => y);
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + OptionStubCode);
+    }
 }

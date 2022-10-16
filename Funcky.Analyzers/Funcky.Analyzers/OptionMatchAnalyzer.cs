@@ -176,7 +176,8 @@ public sealed class OptionMatchAnalyzer : DiagnosticAnalyzer
                 && IsNullOrAnonymousFunctionReturningNull(noneArgument.Value)
                 && someArgument.Value is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
                 && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
-                && returnOperation.ReturnedValue is IConversionOperation { Operand: IParameterReferenceOperation, Conversion.IsNullable: true };
+                && returnOperation.ReturnedValue is IConversionOperation { Operand: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }, Conversion.IsNullable: true }
+                && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
         }
 
         static bool IsNullOrAnonymousFunctionReturningNull(IOperation operation)
