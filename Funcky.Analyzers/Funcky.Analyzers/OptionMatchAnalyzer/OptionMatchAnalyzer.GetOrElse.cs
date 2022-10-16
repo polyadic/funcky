@@ -19,7 +19,7 @@ public partial class OptionMatchAnalyzer
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
     private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation noneArgument, IArgumentOperation someArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(noneArgument.Value))
-            && SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(someArgument.Value))
+            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(someArgument.Value))
             && IsIdentityFunction(someArgument.Value);
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)

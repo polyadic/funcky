@@ -25,6 +25,7 @@ public sealed partial class OptionMatchAnalyzerTest
                     optionOfInt.Match(none: 42, some: Identity);
                     optionOfInt.Match(none: () => 42, some: x => x);
                     Option.Some(10).Match(none: 42, some: x => x);
+                    Option.Some("foo").Match(none: "bar", some: Identity);
                 }
 
                 public static void Generic<TItem>(Option<TItem> option, TItem fallback)
@@ -50,6 +51,7 @@ public sealed partial class OptionMatchAnalyzerTest
                     optionOfInt.GetOrElse(42);
                     optionOfInt.GetOrElse(() => 42);
                     Option.Some(10).GetOrElse(42);
+                    Option.Some("foo").GetOrElse("bar");
                 }
 
                 public static void Generic<TItem>(Option<TItem> option, TItem fallback)
@@ -68,7 +70,8 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(12, 9, 12, 52),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(13, 9, 13, 56),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(14, 9, 14, 54),
-                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(20, 9, 20, 51),
+                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(15, 9, 15, 62),
+                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(21, 9, 21, 51),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }
