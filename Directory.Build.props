@@ -6,6 +6,9 @@
 		<PackageProjectUrl>https://github.com/polyadic/funcky</PackageProjectUrl>
 		<Copyright>© Polyadic. All rights reserved.</Copyright>
 	</PropertyGroup>
+	<PropertyGroup>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
+	</PropertyGroup>
 	<ItemGroup Label="Code Style">
 		<PackageReference Include="Messerli.CodeStyle" PrivateAssets="all" />
 	</ItemGroup>
