@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Funcky.Analyzers;
 
-public static class CompilationExtensions
+public static class FunckyWellKnownTypeNames
 {
     public static INamedTypeSymbol? GetEnumerableType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Enumerable");
 
