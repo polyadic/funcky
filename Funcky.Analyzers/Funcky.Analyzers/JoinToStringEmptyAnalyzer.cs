@@ -35,7 +35,7 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
 
         context.RegisterCompilationStartAction(static context =>
         {
-            if (context.Compilation.GetEnumerableExtensionType() is { } enumerableType && context.Compilation.GetStringType() is { } stringType)
+            if (context.Compilation.GetEnumerableExtensionType() is { } enumerableType && context.Compilation.GetSpecialType(SpecialType.System_String) is { } stringType)
             {
                 context.RegisterOperationAction(FindJoinToStringEmpty(new Symbols(enumerableType, stringType)), OperationKind.Invocation);
             }
