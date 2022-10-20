@@ -50,14 +50,14 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
     private static bool IsMatchInvocation(
         IInvocationOperation invocation,
         CompilationSymbols symbols,
-        [NotNullWhen(true)] out INamedTypeSymbol? receiverType)
+        [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType)
     {
-        receiverType = null;
-        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType_
-           && SymbolEqualityComparer.Default.Equals(receiverType_.ConstructedFrom, symbols.OptionOfTType)
+        matchReceiverType = null;
+        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
+           && SymbolEqualityComparer.Default.Equals(receiverType.ConstructedFrom, symbols.OptionOfTType)
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
-           && (receiverType = receiverType_) is var _;
+           && (matchReceiverType = receiverType) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(

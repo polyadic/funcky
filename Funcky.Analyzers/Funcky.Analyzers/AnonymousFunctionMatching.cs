@@ -15,11 +15,11 @@ internal static class AnonymousFunctionMatching
     /// <summary>Matches an anonymous function of the shape <c>(...) => y</c>.</summary>
     public static bool MatchAnonymousFunctionWithSingleReturn(
         IAnonymousFunctionOperation anonymousFunction,
-        [NotNullWhen(true)] out IReturnOperation? returnOperation)
+        [NotNullWhen(true)] out IReturnOperation? functionReturnOperation)
     {
-        returnOperation = null;
+        functionReturnOperation = null;
         return anonymousFunction.Body.Operations.Length == 1
-           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation_
-           && (returnOperation = returnOperation_) is var _;
+           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
+           && (functionReturnOperation = returnOperation) is var _;
     }
 }
