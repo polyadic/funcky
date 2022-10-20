@@ -8,17 +8,17 @@ public class SelectorTransformation
     public static Func<Option<T>, Option<T>> TransformNullableSelector<T>(Func<T?, T?> selector)
         where T : struct
         => option
-            => Option.FromNullable(selector(option.Match(none: (T?)null, some: value => value)));
+            => Option.FromNullable(selector(option.ToNullable()));
 
     public static Func<Option<T>, ValueTask<Option<T>>> TransformNullableSelector<T>(Func<T?, ValueTask<T?>> selector)
         where T : struct
         => async option
-            => Option.FromNullable(await selector(option.Match(none: (T?)null, some: value => value)));
+            => Option.FromNullable(await selector(option.ToNullable()));
 
     public static Func<Option<T>, CancellationToken, ValueTask<Option<T>>> TransformNullableSelector<T>(Func<T?, CancellationToken, ValueTask<T?>> selector)
         where T : struct
         => async (option, cancellationToken)
-            => Option.FromNullable(await selector(option.Match(none: (T?)null, some: value => value), cancellationToken));
+            => Option.FromNullable(await selector(option.ToNullable(), cancellationToken));
 
     public static Func<Person?, Person?> TransformPersonSelector(Func<int?, int?> selector)
         => nullablePerson

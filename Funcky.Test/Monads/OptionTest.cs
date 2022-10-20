@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Funcky.FsCheck;
 using Xunit.Sdk;
@@ -157,6 +158,7 @@ public sealed partial class OptionTest
     }
 
     [Fact]
+    [SuppressMessage("Funcky", "λ1005:Prefer GetOrElse over Match")]
     public void MatchOverloadWithTwoFuncObjectsWorksCorrectly()
     {
         const string input = "123,some,x,1337,42,1,1000";
@@ -172,6 +174,7 @@ public sealed partial class OptionTest
     }
 
     [Fact]
+    [SuppressMessage("Funcky", "λ1005:Prefer GetOrElse over Match")]
     public void GivenAMatchingStatementWhichThrowsAnExceptionThrowsTheSameException()
     {
         var none = Option<int>.None;

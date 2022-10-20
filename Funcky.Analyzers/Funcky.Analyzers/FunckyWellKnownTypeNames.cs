@@ -2,11 +2,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Funcky.Analyzers;
 
-public static class CompilationExtensions
+public static class FunckyWellKnownTypeNames
 {
     public static INamedTypeSymbol? GetEnumerableType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Enumerable");
-
-    public static INamedTypeSymbol? GetStringType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.String");
 
     public static INamedTypeSymbol? GetEnumerableExtensionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.EnumerableExtensions");
 
@@ -14,5 +12,9 @@ public static class CompilationExtensions
 
     public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");
 
+    public static INamedTypeSymbol? GetOptionExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.OptionExtensions");
+
     public static INamedTypeSymbol? GetSequenceType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Sequence");
+
+    public static INamedTypeSymbol? GetFunctionalType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Functional");
 }
