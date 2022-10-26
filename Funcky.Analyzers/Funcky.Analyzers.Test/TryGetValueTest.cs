@@ -385,4 +385,45 @@ public sealed class TryGetValueTest
             """;
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(12, 37, 12, 55));
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInRazorComponents()
+    {
+        const string inputCode = """
+            #nullable enable
+
+            using Funcky.Monads;
+            using System.Collections.Generic;
+
+            public class C : Microsoft.AspNetCore.Components.ComponentBase
+            {
+                public static void M(Option<int> option)
+                {
+                    #line 10 "Example.razor"
+                    if (option.TryGetValue(out _))
+                    {
+                    }
+                }
+            }
+
+            public class D : OtherComponentBase
+            {
+                public static void M(Option<int> option)
+                {
+                    #line 10 "Example.razor"
+                    if (option.TryGetValue(out _))
+                    {
+                    }
+                }
+            }
+
+            public class OtherComponentBase : Microsoft.AspNetCore.Components.ComponentBase { }
+
+            namespace Microsoft.AspNetCore.Components
+            {
+                public class ComponentBase { }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
 }

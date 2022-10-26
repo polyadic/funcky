@@ -41,7 +41,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         => context
             =>
             {
-                if (ShouldReportDiagnostic(context.Operation, optionOfTType))
+                if (ShouldReportDiagnostic(context.Operation, optionOfTType) && !OriginatesInRazorComponent(context))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, context.Operation.Syntax.GetLocation()));
                 }
@@ -80,4 +80,27 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static bool IsConditionOfDoStatement(SyntaxNode node)
         => node.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
+
+    private static bool OriginatesInRazorComponent(OperationAnalysisContext context)
+        => OriginatesInRazorFile(context.Operation) && IsContainedInRazorComponentType(context);
+
+    private static bool IsContainedInRazorComponentType(OperationAnalysisContext context)
+    {
+        var componentBaseType = context.Compilation.GetTypeByMetadataName("Microsoft.AspNetCore.Components.ComponentBase");
+        return GetBaseTypes(context.ContainingSymbol.ContainingType).Contains(componentBaseType, SymbolEqualityComparer.Default);
+    }
+
+    private static bool OriginatesInRazorFile(IOperation operation)
+    {
+        var mappedLineSpan = operation.Syntax.SyntaxTree.GetMappedLineSpan(operation.Syntax.Span);
+        return mappedLineSpan.HasMappedPath && Path.GetExtension(mappedLineSpan.Path) is ".razor" or ".cshtml";
+    }
+
+    private static IEnumerable<INamedTypeSymbol> GetBaseTypes(INamedTypeSymbol type)
+    {
+        for (INamedTypeSymbol? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+        {
+            yield return baseType;
+        }
+    }
 }
