@@ -33,37 +33,48 @@ public sealed class EnumerableRepeatNeverCodeFix : CodeFixProvider
             && diagnostic.Properties.TryGetValue(ValueParameterIndexProperty, out var valueParameterIndexProperty)
             && int.TryParse(valueParameterIndexProperty, out var valueParameterIndex))
         {
-            context.RegisterCodeFix(CreateFix(context, declaration, valueParameterIndex), diagnostic);
+            context.RegisterCodeFix(new ToEnumerableEmptyCodeAction(context.Document, declaration, valueParameterIndex), diagnostic);
         }
     }
 
     private static Diagnostic GetDiagnostic(CodeFixContext context)
         => context.Diagnostics.First();
 
-    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration, int valueParameterIndex)
-        => CodeAction.Create(
-            EnumerableRepeatNeverCodeFixTitle,
-            CreateSequenceReturnAsync(context.Document, declaration, valueParameterIndex),
-            nameof(EnumerableRepeatNeverCodeFixTitle));
+    private sealed class ToEnumerableEmptyCodeAction : CodeAction
+    {
+        private readonly Document _document;
+        private readonly InvocationExpressionSyntax _invocationExpression;
+        private readonly int _valueParameterIndex;
 
-    private static Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration, int valueParameterIndex)
-        => async cancellationToken
-            =>
-            {
-                var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-                editor.ReplaceNode(declaration, CreateEnumerableReturnRoot(declaration.ArgumentList.Arguments[valueParameterIndex], editor.SemanticModel, editor.Generator));
-                return editor.GetChangedDocument();
-            };
+        public ToEnumerableEmptyCodeAction(Document document, InvocationExpressionSyntax invocationExpression, int valueParameterIndex)
+        {
+            _document = document;
+            _invocationExpression = invocationExpression;
+            _valueParameterIndex = valueParameterIndex;
+        }
 
-    private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
-        => InvocationExpression(
-            MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetEnumerableType()!),
-                GenericName(nameof(Enumerable.Empty))
-                    .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model)))))
-                .WithAdditionalAnnotations(Simplifier.Annotation));
+        public override string Title => EnumerableRepeatNeverCodeFixTitle;
 
-    private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
-        => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty);
+        public override string EquivalenceKey => nameof(ToEnumerableEmptyCodeAction);
+
+        protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
+        {
+            var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
+            var valueParameter = _invocationExpression.ArgumentList.Arguments[_valueParameterIndex];
+            editor.ReplaceNode(_invocationExpression, CreateEnumerableReturnRoot(valueParameter, editor.SemanticModel, editor.Generator));
+            return editor.GetChangedDocument();
+        }
+
+        private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
+            => InvocationExpression(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetEnumerableType()!),
+                    GenericName(nameof(Enumerable.Empty))
+                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(CreateTypeFromArgumentType(firstArgument, model)))))
+                    .WithAdditionalAnnotations(Simplifier.Annotation));
+
+        private static TypeSyntax CreateTypeFromArgumentType(ArgumentSyntax firstArgument, SemanticModel model)
+            => ParseTypeName(model.GetTypeInfo(firstArgument.Expression).Type?.ToMinimalDisplayString(model, firstArgument.SpanStart) ?? string.Empty);
+    }
 }

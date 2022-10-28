@@ -35,39 +35,50 @@ public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
             && diagnostic.Properties.TryGetValue(ValueParameterIndexProperty, out var valueParameterIndexProperty)
             && int.TryParse(valueParameterIndexProperty, out var valueParameterIndex))
         {
-            context.RegisterCodeFix(CreateFix(context, declaration, valueParameterIndex), diagnostic);
+            context.RegisterCodeFix(new ToSequenceReturnCodeAction(context.Document, declaration, valueParameterIndex), diagnostic);
         }
     }
 
     private static Diagnostic GetDiagnostic(CodeFixContext context)
         => context.Diagnostics.First();
 
-    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration, int valueParameterIndex)
-        => CodeAction.Create(
-            EnumerableRepeatOnceCodeFixTitle,
-            CreateSequenceReturnAsync(context.Document, declaration, valueParameterIndex),
-            nameof(EnumerableRepeatOnceCodeFixTitle));
+    private sealed class ToSequenceReturnCodeAction : CodeAction
+    {
+        private readonly Document _document;
+        private readonly InvocationExpressionSyntax _invocationExpression;
+        private readonly int _valueParameterIndex;
 
-    private static Func<CancellationToken, Task<Document>> CreateSequenceReturnAsync(Document document, InvocationExpressionSyntax declaration, int valueParameterIndex)
-        => async cancellationToken
-            =>
-            {
-                var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-                editor.ReplaceNode(declaration, CreateSequenceReturnRoot(declaration.ArgumentList.Arguments[valueParameterIndex], editor.SemanticModel, editor.Generator));
-                return editor.GetChangedDocument();
-            };
+        public ToSequenceReturnCodeAction(Document document, InvocationExpressionSyntax invocationExpression, int valueParameterIndex)
+        {
+            _document = document;
+            _invocationExpression = invocationExpression;
+            _valueParameterIndex = valueParameterIndex;
+        }
 
-    private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
-        => SyntaxSequenceReturn(model, generator)
-            .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument.WithNameColon(null)))
-            .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
-            .NormalizeWhitespace();
+        public override string Title => EnumerableRepeatNeverCodeFixTitle;
 
-    private static InvocationExpressionSyntax SyntaxSequenceReturn(SemanticModel model, SyntaxGenerator generator)
-        => InvocationExpression(
-            MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetSequenceType()!),
-                IdentifierName(Return))
-                .WithAdditionalAnnotations(Simplifier.Annotation));
+        public override string EquivalenceKey => nameof(ToSequenceReturnCodeAction);
+
+        protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
+        {
+            var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
+            var valueArgument = _invocationExpression.ArgumentList.Arguments[_valueParameterIndex];
+            editor.ReplaceNode(_invocationExpression, CreateSequenceReturnRoot(valueArgument, editor.SemanticModel, editor.Generator));
+            return editor.GetChangedDocument();
+        }
+
+        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
+            => SyntaxSequenceReturn(model, generator)
+                .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument.WithNameColon(null)))
+                    .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
+                .NormalizeWhitespace();
+
+        private static InvocationExpressionSyntax SyntaxSequenceReturn(SemanticModel model, SyntaxGenerator generator)
+            => InvocationExpression(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetSequenceType()!),
+                    IdentifierName(Return))
+                    .WithAdditionalAnnotations(Simplifier.Annotation));
+    }
 }
