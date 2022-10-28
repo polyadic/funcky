@@ -25,6 +25,17 @@ public sealed class EnumerableRepeatNeverTest
     }
 
     [Fact]
+    public async Task UsingEnumerableRepeatNeverShowsTheSequenceReturnDiagnosticWhenArgumentsAreFlipped()
+    {
+        var expectedDiagnostic = VerifyCS
+            .Diagnostic(EnumerableRepeatNeverAnalyzer.DiagnosticId)
+            .WithSpan(10, 26, 10, 78)
+            .WithArguments("\"Hello world!\"", "string");
+
+        await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatNeverAnalyzer, EnumerableRepeatNeverCodeFix>(expectedDiagnostic, "RepeatNeverFlipped");
+    }
+
+    [Fact]
     public async Task UsingEnumerableRepeatNeverViaConstantShowsTheSequenceReturnDiagnostic()
     {
         var expectedDiagnostic = VerifyCS
