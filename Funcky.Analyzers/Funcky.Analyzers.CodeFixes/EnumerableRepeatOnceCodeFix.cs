@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Simplification;
 using static Funcky.Analyzers.CodeFixResources;
 using static Funcky.Analyzers.EnumerableRepeatOnceAnalyzer;
+using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Funcky.Analyzers;
@@ -17,8 +18,6 @@ namespace Funcky.Analyzers;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumerableRepeatOnceCodeFix))]
 public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
 {
-    private const string Return = "Return";
-
     public override ImmutableArray<string> FixableDiagnosticIds
         => ImmutableArray.Create(DiagnosticId);
 
@@ -78,7 +77,7 @@ public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
                     (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetSequenceType()!),
-                    IdentifierName(Return))
+                    IdentifierName(MonadReturnMethodName))
                     .WithAdditionalAnnotations(Simplifier.Annotation));
     }
 }
