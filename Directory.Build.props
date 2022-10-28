@@ -13,7 +13,6 @@
 		<PackageReference Include="Messerli.CodeStyle" PrivateAssets="all" />
 	</ItemGroup>
 	<PropertyGroup Label="Code Style">
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<AnalysisLevel>5.0</AnalysisLevel>
 	</PropertyGroup>
 	<PropertyGroup Label="C# Settings">
