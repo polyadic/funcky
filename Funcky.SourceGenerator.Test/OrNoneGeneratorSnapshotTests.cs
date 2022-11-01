@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Funcky.SourceGenerator.Test;
 
 [UsesVerify] // 👈 Adds hooks for Verify into XUnit
@@ -15,13 +13,6 @@ public class OrNoneGeneratorSnapshotTests
             }
         }
         """;
-
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public OrNoneGeneratorSnapshotTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
 
     [Fact]
     public Task GenerateSingleMethodWithTheSingleArgumentCandidate()
