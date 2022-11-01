@@ -129,14 +129,15 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             .WithModifiers(index == 0 ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList())
             .WithType(GenerateTypeSyntax(parameter.Type))
             .WithDefault(GetParameterDefaultValue(parameter))
-            .WithAttributeLists(GenerateParameterAttributes(parameter));
+            .WithAttributeLists(GenerateParameterAttributeLists(parameter));
 
-    private static SyntaxList<AttributeListSyntax> GenerateParameterAttributes(IParameterSymbol parameter)
-        => parameter.GetAttributes().Where(ShouldCopyParameterAttribute).Select(GenerateParameterAttribute).ToImmutableArray() switch
-        {
-            { Length: 0 } => List<AttributeListSyntax>(),
-            { Length: >0 } attributes => SingletonList(AttributeList(SeparatedList(attributes))),
-        };
+    private static SyntaxList<AttributeListSyntax> GenerateParameterAttributeLists(IParameterSymbol parameter)
+        => GenerateParameterAttributes(parameter).ToImmutableArray() is { Length: >0 } attributes
+            ? SingletonList(AttributeList(SeparatedList(attributes)))
+            : List<AttributeListSyntax>();
+
+    private static IEnumerable<AttributeSyntax> GenerateParameterAttributes(IParameterSymbol parameter)
+        => parameter.GetAttributes().Where(ShouldCopyParameterAttribute).Select(GenerateParameterAttribute);
 
     private static AttributeSyntax GenerateParameterAttribute(AttributeData originalAttribute)
         => Attribute(
