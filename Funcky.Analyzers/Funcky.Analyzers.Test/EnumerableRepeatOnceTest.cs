@@ -25,6 +25,17 @@ public sealed class EnumerableRepeatOnceTest
     }
 
     [Fact]
+    public async Task UsingEnumerableRepeatOnceShowsTheSequenceReturnDiagnosticWhenArgumentsAreFlipped()
+    {
+        var expectedDiagnostic = VerifyCS
+            .Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId)
+            .WithSpan(19, 26, 19, 78)
+            .WithArguments("\"Hello world!\"");
+
+        await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostic, "RepeatOnceFlipped");
+    }
+
+    [Fact]
     public async Task UsingEnumerableRepeatOnceShowsNoDiagnosticWhenSequenceTypeIsNotAvailable()
     {
         var inputCode = File.ReadAllText("TestCode/RepeatOnceMissingSequenceType.input");

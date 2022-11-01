@@ -12,6 +12,8 @@ namespace Funcky.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
 {
+    public const string ValueParameterIndexProperty = nameof(ValueParameterIndexProperty);
+
     public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}02";
     private const string Category = nameof(Funcky);
 
@@ -62,6 +64,7 @@ public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
         => Diagnostic.Create(
             Rule,
             operation.Syntax.GetLocation(),
+            ImmutableDictionary<string, string?>.Empty.Add(ValueParameterIndexProperty, operation.Arguments.IndexOf(valueArgument).ToString()),
             valueArgument.Value.Syntax.ToString(),
             valueArgument.Value.Type?.ToDisplayString());
 }

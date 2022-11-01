@@ -23,10 +23,10 @@ internal static class OperationMatching
         firstArgument = null;
         secondArgument = null;
         return operation.Arguments.Length is 2
-            && matchFirstArgument(operation.Arguments[0])
-            && matchSecondArgument(operation.Arguments[1])
-            && (firstArgument = operation.Arguments[0]) is var _
-            && (secondArgument = operation.Arguments[1]) is var _;
+            && (firstArgument = operation.GetArgumentForParameterAtIndex(0)) is var _
+            && (secondArgument = operation.GetArgumentForParameterAtIndex(1)) is var _
+            && matchFirstArgument(firstArgument)
+            && matchSecondArgument(secondArgument);
     }
 
     public static bool MatchField(
