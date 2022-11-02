@@ -14,6 +14,7 @@
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
+        <EnablePackageValidation>true</EnablePackageValidation>
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
