@@ -11,6 +11,7 @@
         <RootNamespace>Funcky</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
+        <EnablePackageValidation>true</EnablePackageValidation>
         <NoWarn>$(NoWarn);NU5104</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
