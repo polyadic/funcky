@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>

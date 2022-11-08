@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <AssemblyName>Funcky.SourceGenerator.Test</AssemblyName>
