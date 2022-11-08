@@ -88,7 +88,7 @@ public sealed class ParseExtensionsTest
         Assert.Equal(expected, input.ParseEnumOrNone<MyEnum>());
     }
 
-    private static TheoryData<Option<bool>, string> BooleanStrings()
+    public static TheoryData<Option<bool>, string> BooleanStrings()
         => new()
         {
             { Option<bool>.None, string.Empty },
@@ -105,7 +105,7 @@ public sealed class ParseExtensionsTest
             { Option<bool>.None, "none" },
         };
 
-    private static TheoryData<Option<byte>, string> ByteStrings()
+    public static TheoryData<Option<byte>, string> ByteStrings()
         => new()
         {
             { Option<byte>.None, string.Empty },
@@ -119,7 +119,7 @@ public sealed class ParseExtensionsTest
             { Option<byte>.None, "1337E+02" },
         };
 
-    private static TheoryData<Option<short>, string> ShortStrings()
+    public static TheoryData<Option<short>, string> ShortStrings()
         => new()
         {
             { Option<short>.None, string.Empty },
@@ -134,7 +134,7 @@ public sealed class ParseExtensionsTest
             { Option<short>.None, "1337E+02" },
         };
 
-    private static TheoryData<Option<int>, string> IntStrings()
+    public static TheoryData<Option<int>, string> IntStrings()
         => new()
         {
             { Option<int>.None, string.Empty },
@@ -149,7 +149,7 @@ public sealed class ParseExtensionsTest
             { Option<int>.None, "1337E+02" },
         };
 
-    private static TheoryData<Option<long>, string> LongStrings()
+    public static TheoryData<Option<long>, string> LongStrings()
         => new()
         {
             { Option<long>.None, string.Empty },
@@ -164,7 +164,7 @@ public sealed class ParseExtensionsTest
             { Option<long>.None, "1337E+02" },
         };
 
-    private static TheoryData<Option<float>, string> FloatStrings()
+    public static TheoryData<Option<float>, string> FloatStrings()
         => new()
         {
             { Option<float>.None, string.Empty },
@@ -180,7 +180,7 @@ public sealed class ParseExtensionsTest
             { Option<float>.None, "1337F" },
         };
 
-    private static TheoryData<Option<double>, string> DoubleStrings()
+    public static TheoryData<Option<double>, string> DoubleStrings()
         => new()
         {
             { Option<double>.None, string.Empty },
@@ -196,8 +196,8 @@ public sealed class ParseExtensionsTest
             { Option<double>.None, "1337D" },
         };
 
-    private static TheoryData<Option<decimal>, string> DecimalStrings()
-    => new()
+    public static TheoryData<Option<decimal>, string> DecimalStrings()
+        => new()
         {
             { Option<decimal>.None, string.Empty },
             { Option<decimal>.None, "no number" },
@@ -212,7 +212,7 @@ public sealed class ParseExtensionsTest
             { Option<decimal>.None, "1337M" },
         };
 
-    private static TheoryData<Option<DateTime>, string> DateTimeStrings()
+    public static TheoryData<Option<DateTime>, string> DateTimeStrings()
         => new()
         {
             { Option<DateTime>.None, string.Empty },
@@ -224,7 +224,7 @@ public sealed class ParseExtensionsTest
             { Option<DateTime>.None, "MCMI" },
         };
 
-    private static TheoryData<Option<MyEnum>, string> EnumStrings()
+    public static TheoryData<Option<MyEnum>, string> EnumStrings()
         => new()
         {
             { Option<MyEnum>.None, string.Empty },
