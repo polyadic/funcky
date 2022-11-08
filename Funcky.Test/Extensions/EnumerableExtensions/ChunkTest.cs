@@ -86,15 +86,15 @@ public sealed class ChunkTest
             chunked,
             a =>
             {
-                Assert.Equal(a.Count, chunkSize);
+                Assert.Equal(chunkSize, a.Count);
             },
             b =>
             {
-                Assert.Equal(b.Count, chunkSize);
+                Assert.Equal(chunkSize, b.Count);
             },
             c =>
             {
-                Assert.Equal(c.Count, numbers.Count() % chunkSize);
+                Assert.Equal(numbers.Count % chunkSize, c.Count);
             });
     }
 
