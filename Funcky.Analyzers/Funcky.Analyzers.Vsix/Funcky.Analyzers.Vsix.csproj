@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
-    <Import Sdk="Microsoft.Build.CentralPackageVersions" Project="Sdk.props" />
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -47,6 +46,4 @@
         <!-- https://github.com/Microsoft/extendvs/issues/57 -->
         <ProjectReference Update="@(ProjectReference)" Name="%(Filename)" />
     </ItemGroup>
-    
-    <Import Sdk="Microsoft.Build.CentralPackageVersions" Project="Sdk.targets" />
 </Project>

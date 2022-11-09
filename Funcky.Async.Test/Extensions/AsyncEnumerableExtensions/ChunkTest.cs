@@ -75,20 +75,21 @@ public sealed class ChunkTest
 
         const int chunkSize = 4;
         var chunked = numbers.Chunk(chunkSize);
+        var count = await numbers.CountAsync();
 
         await AsyncAssert.Collection(
             chunked,
             a =>
             {
-                Assert.Equal(a.Count, chunkSize);
+                Assert.Equal(chunkSize, a.Count);
             },
             b =>
             {
-                Assert.Equal(b.Count, chunkSize);
+                Assert.Equal(chunkSize, b.Count);
             },
-            async c =>
+            c =>
             {
-                Assert.Equal(c.Count, await numbers.CountAsync() % chunkSize);
+                Assert.Equal(count % chunkSize, c.Count);
             });
     }
 
