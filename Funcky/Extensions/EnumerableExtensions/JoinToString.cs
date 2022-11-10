@@ -27,4 +27,14 @@ public static partial class EnumerableExtensions
     [Pure]
     public static string JoinToString<TSource>(this IEnumerable<TSource> source, string separator)
         => string.Join(separator, source);
+
+    /// <summary>
+    /// Concatenates the elements of the given sequence, using the specified separator between each element or member.
+    /// </summary>
+    /// <param name="source">A sequence of items to be joined in a string.</param>
+    /// <param name="separator">A string to separate the individual elements.</param>
+    /// <returns>Joined string with separators between the elements.</returns>
+    [Pure]
+    public static string JoinToString(this IEnumerable<string?> source, string separator)
+        => string.Join(separator, source);
 }

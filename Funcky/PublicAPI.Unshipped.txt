@@ -4,6 +4,7 @@ Funcky.RequireClass<T>.RequireClass() -> void
 Funcky.RequireStruct<T>
 Funcky.RequireStruct<T>.RequireStruct() -> void
 static Funcky.Extensions.EnumerableExtensions.ElementAtOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Index index) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.JoinToString(this System.Collections.Generic.IEnumerable<string?>! source, string! separator) -> string!
 static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this string? candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
 static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this string? candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
