@@ -11,7 +11,11 @@ public static partial class EnumerableExtensions
     /// <returns>Joined string with separators between the elements.</returns>
     [Pure]
     public static string JoinToString<TSource>(this IEnumerable<TSource> source, char separator)
+#if JOIN_TO_STRING_CHAR_SEPARATOR
+        => string.Join(separator, source);
+#else
         => string.Join(separator.ToString(), source);
+#endif
 
     /// <summary>
     /// Concatenates the elements of the given sequence, using the specified separator between each element or member.
