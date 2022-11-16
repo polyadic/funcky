@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.1.0 | Funcky.Async 1.1.0 | Funcky.Analyzers 1.2.0
+### New APIs
+* ✨ `OptionExtensions.ToNullable` ✨
+* `StreamExtenions.ReadByteOrNone`
+* New overloads for `ElementAtOrNone` that take an `Index`.
+* New overload for `JoinToString` that takes an `IEnumerable<string>`.
+
+### .NET 7
+* .NET 7 added new overloads to their `TryParse` APIs. These changes
+   are reflected in Funcky's `ParseOrNone` APIs.
+* The `ParseOrNone` methods include the new `[StringSyntax]` attribute from .NET 7.
+
+### Analyzers
+The new `Option.Match` analyzer suggests simpler alternatives over custom `Match`es including
+the all-new `ToNullable` extension.
+
 ## Funcky 3.0.0 | Funcky.Async 1.0.0 | Funcky.XUnit 2.0.0
 There's a handy [Migration Guide](https://polyadic.github.io/funcky/migration-guide.html) available.
 

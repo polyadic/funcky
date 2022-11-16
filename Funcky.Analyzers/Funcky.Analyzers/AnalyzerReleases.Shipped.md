@@ -14,3 +14,13 @@ Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ1003 | Funcky | Warning | UseWithArgumentNamesAnalyzer
 λ1004 | Funcky | Warning | JoinToStringEmptyAnalyzer
+
+## Release 1.2
+### New Rules
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
+λ1005 | Funcky | Warning | OptionMatchAnalyzer
+λ1006 | Funcky | Warning | OptionMatchAnalyzer
+λ1007 | Funcky | Warning | OptionMatchAnalyzer
+λ1008 | Funcky | Warning | OptionMatchAnalyzer
+
