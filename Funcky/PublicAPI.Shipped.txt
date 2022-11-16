@@ -128,12 +128,8 @@ Funcky.Monads.Result<TValidResult>.SelectMany<TSelectedResult, TResult>(System.F
 Funcky.Monads.Result<TValidResult>.Switch(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.ResultExtensions
 Funcky.RequireClass<T>
-Funcky.RequireClass<T>
-Funcky.RequireClass<T>.RequireClass() -> void
 Funcky.RequireClass<T>.RequireClass() -> void
 Funcky.RequireStruct<T>
-Funcky.RequireStruct<T>
-Funcky.RequireStruct<T>.RequireStruct() -> void
 Funcky.RequireStruct<T>.RequireStruct() -> void
 Funcky.RetryPolicies.ConstantDelayPolicy
 Funcky.RetryPolicies.ConstantDelayPolicy.ConstantDelayPolicy(int maxRetries, System.TimeSpan delay) -> void
