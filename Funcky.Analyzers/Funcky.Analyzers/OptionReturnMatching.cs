@@ -24,8 +24,7 @@ internal static class OptionReturnMatching
         => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
             && returnOperation is { ReturnedValue: IInvocationOperation returnedValue }
             && IsOptionReturn(returnedValue.TargetMethod, returnedValue.SemanticModel)
-            && returnedValue.Arguments.Length == 1
-            && returnedValue.Arguments[0].Value is IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }
+            && returnedValue.Arguments is /*🎨*/[/*🎨*/ { Value: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }]
             && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsImplicitOptionReturn(IAnonymousFunctionOperation anonymousFunction)

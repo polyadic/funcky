@@ -35,13 +35,8 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
     {
         var operation = (IInvocationOperation)context.Operation;
 
-        if (IsMatchInvocation(operation, symbols, out var receiverType)
-            && AnalyzeMatchInvocation(
-                operation,
-                symbols,
-                receiverType,
-                noneArgument: operation.GetArgumentForParameterAtIndex(0),
-                someArgument: operation.GetArgumentForParameterAtIndex(1)) is { } diagnostic)
+        if (IsMatchInvocation(operation, symbols, out var receiverType, out var noneArgument, out var someArgument)
+            && AnalyzeMatchInvocation(operation, symbols, receiverType, noneArgument, someArgument) is { } diagnostic)
         {
             context.ReportDiagnostic(diagnostic);
         }
@@ -50,14 +45,20 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
     private static bool IsMatchInvocation(
         IInvocationOperation invocation,
         CompilationSymbols symbols,
-        [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType)
+        [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType,
+        [NotNullWhen(true)] out IArgumentOperation? noneArgument,
+        [NotNullWhen(true)] out IArgumentOperation? someArgument)
     {
         matchReceiverType = null;
+        noneArgument = null;
+        someArgument = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
            && SymbolEqualityComparer.Default.Equals(receiverType.ConstructedFrom, symbols.OptionOfTType)
            && invocation.TargetMethod.Name == MatchMethodName
-           && invocation.Arguments.Length == 2
-           && (matchReceiverType = receiverType) is var _;
+           && invocation.Arguments.InDeclarationOrder() is /*🎨*/[var none, var some]
+           && (matchReceiverType = receiverType) is var _
+           && (noneArgument = none) is var _
+           && (someArgument = some) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(
