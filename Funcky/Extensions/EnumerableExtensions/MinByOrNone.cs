@@ -1,4 +1,3 @@
-#if MIN_MAX_BY
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -46,4 +45,3 @@ public static partial class EnumerableExtensions
         return minimum;
     }
 }
-#endif

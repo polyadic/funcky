@@ -1,11 +1,13 @@
-#if MIN_MAX_BY
+#if NET6_0_OR_GREATER
 using FsCheck;
 using FsCheck.Xunit;
+#endif
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public sealed class MinByOrNoneTest
 {
+#if NET6_0_OR_GREATER
     [Property]
     public Property MinByOrNoneReturnsTheSameAsMinBy(List<MyRecord> list)
     {
@@ -30,6 +32,15 @@ public sealed class MinByOrNoneTest
                 some: min => min == minOrNull)
             .ToProperty();
     }
+#endif
+
+    [Fact]
+    public void MinByOrNoneReturnsNoneOnAnEmptyList()
+    {
+        var emptyList = new List<MyRecord>();
+
+        FunctionalAssert.None(emptyList.MinByOrNone(element => element.Number));
+    }
 
     [Fact]
     public void MinByOrNoneDoesNotThrowOnAnEmptyListOfValueType()
@@ -49,4 +60,3 @@ public sealed class MinByOrNoneTest
             => Math.Abs(x) - Math.Abs(y);
     }
 }
-#endif
