@@ -1,1 +1,5 @@
 #nullable enable
+static Funcky.Extensions.EnumerableExtensions.MaxByOrNone<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MaxByOrNone<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IComparer<TKey>! comparer) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MinByOrNone<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.EnumerableExtensions.MinByOrNone<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IComparer<TKey>! comparer) -> Funcky.Monads.Option<TSource>
