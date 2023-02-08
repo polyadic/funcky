@@ -10,7 +10,6 @@ public static partial class EnumerableExtensions
     /// <returns>The value with the minimum key in the sequence or None.</returns>
     public static Option<TSource> MinByOrNone<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         where TSource : notnull
-        where TKey : notnull
         => MinByOrNone(source, keySelector, Comparer<TKey>.Default);
 
     /// <summary>Returns the minimum value in a generic sequence according to a specified key selector function.</summary>
@@ -23,7 +22,6 @@ public static partial class EnumerableExtensions
     [Pure]
     public static Option<TSource> MinByOrNone<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         where TSource : notnull
-        where TKey : notnull
     {
         using var enumerator = source.GetEnumerator();
 
