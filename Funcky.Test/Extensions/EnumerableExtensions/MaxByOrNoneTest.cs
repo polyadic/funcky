@@ -54,9 +54,11 @@ public sealed class MaxByOrNoneTest
 
     public sealed record MyRecord(int Number, string Text);
 
+#if NET6_0_OR_GREATER
     private sealed class CustomIntComparer : IComparer<int>
     {
         public int Compare(int x, int y)
             => Math.Abs(x) - Math.Abs(y);
     }
+#endif
 }
