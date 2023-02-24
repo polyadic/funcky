@@ -1,1 +1,3 @@
 #nullable enable
+static Funcky.AsyncFunctional.RetryAsync<TResult>(System.Func<TResult>! producer, System.Func<System.Exception!, bool>! shouldRetry, Funcky.RetryPolicies.IRetryPolicy! retryPolicy, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResult>
+static Funcky.AsyncFunctional.RetryAwaitAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>>! producer, System.Func<System.Exception!, bool>! shouldRetry, Funcky.RetryPolicies.IRetryPolicy! retryPolicy, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResult>
