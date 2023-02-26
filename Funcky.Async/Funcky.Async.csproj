@@ -20,7 +20,9 @@
         <RootNamespace>Funcky</RootNamespace>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup>
+    <!-- The condition is a workaround for a weird error that we get in the .NET 8 SDK:
+         Unable to optimize assemblies for size: a valid runtime package was not found. -->
+    <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.1'">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     </PropertyGroup>
