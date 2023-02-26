@@ -1,3 +1,4 @@
+#if !RANDOM_SHUFFLE
 using System.Collections.Immutable;
 
 namespace Funcky.Internal;
@@ -22,3 +23,4 @@ internal static class Mixer
         return result;
     }
 }
+#endif
