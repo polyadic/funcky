@@ -18,7 +18,7 @@ public static partial class Functional
             {
                 return producer();
             }
-            catch (Exception exception) when (shouldRetry(exception) && retryCount < retryPolicy.MaxRetries)
+            catch (Exception exception) when (shouldRetry(exception) && retryCount <= retryPolicy.MaxRetries)
             {
                 Thread.Sleep(retryPolicy.Delay(retryCount));
                 retryCount++;

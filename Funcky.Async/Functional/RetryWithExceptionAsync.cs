@@ -29,7 +29,7 @@ public static partial class AsyncFunctional
             {
                 return await producer().ConfigureAwait(false);
             }
-            catch (Exception exception) when (shouldRetry(exception) && retryCount < retryPolicy.MaxRetries)
+            catch (Exception exception) when (shouldRetry(exception) && retryCount <= retryPolicy.MaxRetries)
             {
                 await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
                 retryCount++;
