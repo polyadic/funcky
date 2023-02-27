@@ -21,17 +21,17 @@ public static partial class AsyncFunctional
         IRetryPolicy retryPolicy,
         CancellationToken cancellationToken = default)
     {
-        var retryCount = 1;
+        var retryCount = 0;
         while (true)
         {
             try
             {
                 return await producer().ConfigureAwait(false);
             }
-            catch (Exception exception) when (shouldRetry(exception) && retryCount <= retryPolicy.MaxRetries)
+            catch (Exception exception) when (shouldRetry(exception) && retryCount < retryPolicy.MaxRetries)
             {
-                await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
                 retryCount++;
+                await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
             }
         }
     }

@@ -10,17 +10,17 @@ public static partial class Functional
     /// Consider using <c>RetryAsync</c> from the <c>Funcky.Async</c> package instead.</remarks>
     public static TResult Retry<TResult>(Func<TResult> producer, Func<Exception, bool> shouldRetry, IRetryPolicy retryPolicy)
     {
-        var retryCount = 1;
+        var retryCount = 0;
         while (true)
         {
             try
             {
                 return producer();
             }
-            catch (Exception exception) when (shouldRetry(exception) && retryCount <= retryPolicy.MaxRetries)
+            catch (Exception exception) when (shouldRetry(exception) && retryCount < retryPolicy.MaxRetries)
             {
-                Thread.Sleep(retryPolicy.Delay(retryCount));
                 retryCount++;
+                Thread.Sleep(retryPolicy.Delay(retryCount));
             }
         }
     }
