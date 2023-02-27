@@ -30,7 +30,7 @@ public sealed class RetryWithExceptionTest
                 ? value
                 : throw new ExceptionStub();
 
-        return (value == Retry(Producer, True, new NoDelayRetryPolicy(int.MaxValue))).ToProperty();
+        return (Retry(Producer, True, new NoDelayRetryPolicy(int.MaxValue)) == value).ToProperty();
     }
 
     [Property]
@@ -46,7 +46,7 @@ public sealed class RetryWithExceptionTest
         Assert.Throws<ExceptionStub>(() => Retry(Producer, True, new NoDelayRetryPolicy(retries.Get)));
 
         const int firstCall = 1;
-        return (firstCall + retries.Get == called).ToProperty();
+        return (called == firstCall + retries.Get).ToProperty();
     }
 
     private static TResult Throw<TResult>() => throw new ExceptionStub();
