@@ -5,8 +5,7 @@ namespace Funcky;
 
 public static partial class AsyncFunctional
 {
-    /// <summary>Retries a producer according as long as an exception matching the
-    /// <paramref name="shouldRetry"/> predicate is thrown.
+    /// <summary>Retries a producer as long as an exception matching the <paramref name="shouldRetry"/> predicate is thrown.
     /// When all retries are exhausted, the exception is propagated to the caller.</summary>
     public static ValueTask<TResult> RetryAsync<TResult>(
         Func<TResult> producer,
