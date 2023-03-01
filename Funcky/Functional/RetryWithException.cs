@@ -24,4 +24,8 @@ public static partial class Functional
             }
         }
     }
+
+    /// <inheritdoc cref="Retry{TResult}(System.Func{TResult},System.Func{System.Exception,bool},Funcky.RetryPolicies.IRetryPolicy)"/>
+    public static void Retry(Action action, Func<Exception, bool> shouldRetry, IRetryPolicy retryPolicy)
+        => Retry(ActionToUnit(action), shouldRetry, retryPolicy);
 }
