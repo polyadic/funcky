@@ -15,6 +15,14 @@ public static partial class AsyncFunctional
         => RetryAwaitAsync(() => ValueTaskFromResult(producer()), shouldRetry, retryPolicy, cancellationToken);
 
     /// <inheritdoc cref="RetryAsync{TResult}(System.Func{TResult},System.Func{System.Exception,bool},Funcky.RetryPolicies.IRetryPolicy,System.Threading.CancellationToken)"/>
+    public static async ValueTask RetryAsync(
+        Action action,
+        Func<Exception, bool> shouldRetry,
+        IRetryPolicy retryPolicy,
+        CancellationToken cancellationToken = default)
+        => await RetryAsync(ActionToUnit(action), shouldRetry, retryPolicy, cancellationToken).ConfigureAwait(false);
+
+    /// <inheritdoc cref="RetryAsync{TResult}(System.Func{TResult},System.Func{System.Exception,bool},Funcky.RetryPolicies.IRetryPolicy,System.Threading.CancellationToken)"/>
     public static async ValueTask<TResult> RetryAwaitAsync<TResult>(
         Func<ValueTask<TResult>> producer,
         Func<Exception, bool> shouldRetry,
@@ -33,6 +41,22 @@ public static partial class AsyncFunctional
                 retryCount++;
                 await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
             }
+        }
+    }
+
+    /// <inheritdoc cref="RetryAsync{TResult}(System.Func{TResult},System.Func{System.Exception,bool},Funcky.RetryPolicies.IRetryPolicy,System.Threading.CancellationToken)"/>
+    public static async ValueTask RetryAwaitAsync(
+        Func<ValueTask> action,
+        Func<Exception, bool> shouldRetry,
+        IRetryPolicy retryPolicy,
+        CancellationToken cancellationToken = default)
+    {
+        await RetryAwaitAsync(Producer, shouldRetry, retryPolicy, cancellationToken).ConfigureAwait(false);
+
+        async ValueTask<Unit> Producer()
+        {
+            await action().ConfigureAwait(false);
+            return Unit.Value;
         }
     }
 }
