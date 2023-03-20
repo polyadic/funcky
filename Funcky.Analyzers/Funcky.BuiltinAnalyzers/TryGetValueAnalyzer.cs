@@ -17,7 +17,6 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "TryGetValue should be used carefully.",
-        customTags: WellKnownDiagnosticTags.NotConfigurable,
         helpLinkUri: "https://polyadic.github.io/funcky/analyzer-rules/λ0001.html");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);

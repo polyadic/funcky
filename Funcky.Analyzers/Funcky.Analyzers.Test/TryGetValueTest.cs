@@ -251,7 +251,7 @@ public sealed class TryGetValueTest
     }
 
     [Fact]
-    public async Task ErrorIsNotSuppressableWithPragma()
+    public async Task ErrorIsSuppressableWithPragma()
     {
         const string inputCode = """
             using Funcky.Monads;
@@ -266,7 +266,7 @@ public sealed class TryGetValueTest
                 }
             }
             """;
-        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 9, 9, 34));
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
 
     [Fact]
