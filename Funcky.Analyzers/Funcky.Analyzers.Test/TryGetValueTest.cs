@@ -105,6 +105,45 @@ public sealed class TryGetValueTest
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
 
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInForLoopBlock()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    for (var option = new Option<int>();;)
+                    {
+                        option.TryGetValue(out _);
+                    }
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 13, 9, 38));
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInForLoopCondition()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    for (var option = new Option<int>(); option.TryGetValue(out var v);)
+                    {
+                    }
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
     [Theory]
     [InlineData("IEnumerable<int>")]
     [InlineData("IEnumerator<int>")]
@@ -171,6 +210,27 @@ public sealed class TryGetValueTest
     }
 
     [Fact]
+    public async Task UseOfTryGetValueIsAllowedInForLoopConditionOfIterator()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+            using System.Collections.Generic;
+
+            public static class C
+            {
+                public static IEnumerable<int> M()
+                {
+                    for (var option = new Option<int>(); option.TryGetValue(out var v);)
+                    {
+                        yield break;
+                    }
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
     public async Task UseOfTryGetValueIsAllowedInCatchFilterClause()
     {
         const string inputCode = """
@@ -191,7 +251,7 @@ public sealed class TryGetValueTest
     }
 
     [Fact]
-    public async Task ErrorIsNotSuppressableWithPragma()
+    public async Task ErrorIsSuppressableWithPragma()
     {
         const string inputCode = """
             using Funcky.Monads;
@@ -206,7 +266,7 @@ public sealed class TryGetValueTest
                 }
             }
             """;
-        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 9, 9, 34));
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
 
     [Fact]
