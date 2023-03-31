@@ -1,16 +1,18 @@
+using static Funcky.Internal.ValueMapper;
+
 namespace Funcky.Extensions;
 
 public static partial class StringExtensions
 {
     [Pure]
     public static Option<int> LastIndexOfAnyOrNone(this string haystack, char[] anyOf)
-        => MapIndexToOption(haystack.LastIndexOfAny(anyOf));
+        => MapNotFoundToNone(haystack.LastIndexOfAny(anyOf));
 
     [Pure]
     public static Option<int> LastIndexOfAnyOrNone(this string haystack, char[] anyOf, int startIndex)
-        => MapIndexToOption(haystack.LastIndexOfAny(anyOf, startIndex));
+        => MapNotFoundToNone(haystack.LastIndexOfAny(anyOf, startIndex));
 
     [Pure]
     public static Option<int> LastIndexOfAnyOrNone(this string haystack, char[] anyOf, int startIndex, int count)
-        => MapIndexToOption(haystack.LastIndexOfAny(anyOf, startIndex, count));
+        => MapNotFoundToNone(haystack.LastIndexOfAny(anyOf, startIndex, count));
 }
