@@ -17,7 +17,6 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "TryGetValue should be used carefully.",
-        customTags: WellKnownDiagnosticTags.NotConfigurable,
         helpLinkUri: "https://polyadic.github.io/funcky/analyzer-rules/λ0001.html");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
@@ -68,7 +67,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         => node.Parent is CatchFilterClauseSyntax;
 
     private static bool IsInLoopCondition(SyntaxNode node)
-        => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n));
+        => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n) || IsConditionOfForStatement(n));
 
     private static bool IsInIfConditionWithYield(SyntaxNode node)
         => node.AncestorsAndSelf().Any(n => n.Parent is IfStatementSyntax ifStatement
@@ -80,6 +79,9 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static bool IsConditionOfDoStatement(SyntaxNode node)
         => node.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
+
+    private static bool IsConditionOfForStatement(SyntaxNode node)
+        => node.Parent is ForStatementSyntax forStatementSyntax && forStatementSyntax.Condition == node;
 
     private static bool OriginatesInRazorComponent(OperationAnalysisContext context)
         => OriginatesInRazorFile(context.Operation) && IsContainedInRazorComponentType(context);
