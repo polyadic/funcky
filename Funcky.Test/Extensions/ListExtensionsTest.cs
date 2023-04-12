@@ -17,5 +17,4 @@ public sealed class ListExtensionsTest
 
         FunctionalAssert.Some(2, list.IndexOfOrNone("Epsilon"));
     }
-
 }
