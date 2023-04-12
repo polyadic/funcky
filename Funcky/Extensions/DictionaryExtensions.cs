@@ -1,6 +1,6 @@
 namespace Funcky.Extensions;
 
-public static partial class DictionaryExtensions
+public static class DictionaryExtensions
 {
     [Pure]
     public static Option<TValue> GetValueOrNone<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
