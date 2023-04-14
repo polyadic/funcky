@@ -1,0 +1,31 @@
+@font-face{
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('./fonts/open-sans/OpenSans-Regular.woff2') format('woff2');
+}
+
+@font-face{
+    font-family: 'Open Sans';
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('./fonts/open-sans/OpenSans-Bold.woff2') format('woff2');
+}
+
+@font-face{
+    font-family: 'Source Code Pro';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('./fonts/source-code-pro/SourceCodePro-Regular.ttf.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Vollkorn';
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('./fonts/vollkorn/Vollkorn-Bold.woff2') format('woff2');
+}
