@@ -5,9 +5,9 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
-  # The website displays the latest version and needs
-  # to be rebuilt when a new version is published.
-  tags:
+    # The website displays the latest version and needs
+    # to be rebuilt when a new version is published.
+    tags:
 
 jobs:
   build:
