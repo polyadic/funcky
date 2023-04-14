@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
+  # The website displays the latest version and needs
+  # to be rebuilt when a new version is published.
+  tags:
 
 jobs:
   build:
@@ -31,7 +34,7 @@ jobs:
 
   deploy_pages:
     needs: build
-    if: github.ref_name == 'main'
+    if: github.ref_type == 'tag' || github.ref_name == 'main'
 
     permissions:
       pages: write
