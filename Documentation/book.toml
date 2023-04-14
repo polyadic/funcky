@@ -6,7 +6,7 @@ src = "src"
 title = "Funcky User Guide"
 
 [output.html]
-site-url = "/funcky/"
+site-url = "/funcky/book"
 additional-css = ["custom.css"]
 git-repository-url = "https://github.com/polyadic/funcky"
 git-repository-icon = "fa-github"
