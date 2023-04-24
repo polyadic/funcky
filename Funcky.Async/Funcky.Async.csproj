@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks Condition="'$(FunckyBuildWithPreviewTargetFramework)' == 'true'">net8.0;$(TargetFrameworks)</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
@@ -19,7 +20,9 @@
         <RootNamespace>Funcky</RootNamespace>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup>
+    <!-- The condition is a workaround for a weird error that we get in the .NET 8 SDK:
+         Unable to optimize assemblies for size: a valid runtime package was not found. -->
+    <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.1'">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     </PropertyGroup>

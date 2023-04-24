@@ -26,4 +26,7 @@
 	<ItemGroup Label="Deterministic Builds and Source Link">
 		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
 	</ItemGroup>
+	<PropertyGroup>
+		<FunckyBuildWithPreviewTargetFramework Condition="'$(FunckyBuildWithPreviewTargetFramework)' == ''">true</FunckyBuildWithPreviewTargetFramework>
+	</PropertyGroup>
 </Project>
