@@ -4,6 +4,8 @@ namespace Funcky.Extensions;
 
 public static class StreamExtensions
 {
+    private const int EndOfStream = -1;
+
     /// <summary>Gets the length in bytes of the stream.</summary>
     /// <returns>A long value representing the length of the stream in bytes or None if the stream does not support seeking.</returns>
     /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
@@ -32,7 +34,7 @@ public static class StreamExtensions
     /// </summary>
     /// <returns>The byte read, or <see cref="Option{TItem}.None"/> if at the end of the stream.</returns>
     public static Option<byte> ReadByteOrNone(this Stream stream)
-        => stream.ReadByte() is var readByte && readByte is -1
+        => stream.ReadByte() is var readByte && readByte is EndOfStream
             ? Option<byte>.None
             : (byte)readByte;
 }

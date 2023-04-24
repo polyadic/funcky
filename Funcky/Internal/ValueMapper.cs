@@ -2,7 +2,7 @@ namespace Funcky.Internal;
 
 internal static class ValueMapper
 {
-    public const int NotFoundValue = -1;
+    private const int NotFoundValue = -1;
 
     [Pure]
     public static Option<int> MapNotFoundToNone(int index)
