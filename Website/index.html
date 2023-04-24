@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcky</title>
+    <link href="./fonts.css" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navigation-block" role="navigation">
+        <ul role="presentation" class="_container">
+            <li role="presentation">
+                <a href="./book">Documentation</a>
+            </li>
+            <li role="presentation">
+                <a href="https://github.com/polyadic/funcky">GitHub</a>
+            </li>
+            <li role="presentation">
+                <a href="https://www.nuget.org/profiles/polyadic">NuGet</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <header>
+            <div class="_container">
+                <h1>Funcky</h1>
+                <p class="subtitle">
+                    Funcky is a library that empowers C# developers
+                    to write code using <strong>functional programming</strong> paradigms.
+                </p>
+            </div>
+        </header>
+        <section class="section-block">
+            <div class="_container">
+                <h2>Why Funcky?</h2>
+                <p>
+                    Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage.
+                    Even in languages like C++, Java or C# we want to use a functional style of programming.
+                </p>
+                <p>
+                    LINQ is the first monad which got wide spread use in C#, and most C# programmers were not even aware of it beeing a monad, which probably helped.
+                </p>
+                <p>
+                    Funcky builds on the success of LINQ and introduces tools for functional programming to C# in a way that feels consistent with the .NET BCL.
+                </p>
+            </div>
+        </section>
+        <section class="section-block">
+            <div class="_container">
+                <h2>Features</h2>
+                <ul class="feature-list">
+                    <li class="feature">
+                        <svg class="icon"><use href="./icons/package.svg#icon"></use></svg>
+                        <h3>Option&lt;T&gt;</h3>
+                        <p>The <code>Option&lt;T&gt;</code> monad is a safe and composable tool
+                           for working with optional values.</p>
+                        <a href="./book/option.html">Read more</a>
+                    </li>
+                    <li class="feature">
+                        <svg class="icon"><use href="./icons/diamond.svg#icon"></use></svg>
+                        <h3>Either&lt;L, R&gt;</h3>
+                        <p>The <code>Either</code> monad is a composable tool for functional error handling.</p>
+                    </li>
+                    <li class="feature">
+                        <svg class="icon"><use href="./icons/puzzle.svg#icon"></use></svg>
+                        <h3>Extensions</h3>
+                        <p>Funcky extends the BCL with a wide range of additional extension methods for
+                           <code>IEnumerable&lt;T&gt;</code>, <code>string</code>, <code>IAsyncEnumerable&lt;T&gt;</code> and more.</p>
+                        <a href="./book/enumerable-extensions/enumerable-extensions.html">Read more</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="section-block">
+            <div class="_container">
+                <h2>Getting started</h2>
+                <p>
+                    Get the latest version from NuGet:
+                </p>
+                <div class="nuget-box">
+                    <ul role="tablist" class="tabs">
+                        <li role="presentation">
+                            <button id="tab-package-manager" aria-expanded="false" aria-selected="true" aria-controls="panel-package-manager" role="tab" class="tab">Package Manager</button>
+                        </li>
+                        <li role="presentation">
+                            <button id="tab-dotnet-cli" aria-expanded="false" aria-selected="true" aria-controls="panel-dotnet-cli" role="tab" class="tab" data-default-tab>.NET CLI</button>
+                        </li>
+                        <li role="presentation">
+                            <button id="tab-package-refererence" aria-expanded="false" aria-selected="false" aria-controls="panel-package-refererence" role="tab" class="tab">PackageReference</button>
+                        </li>
+                        <li role="presentation">
+                            <button id="tab-script-interactive" aria-expanded="false" aria-selected="false" aria-controls="panel-script-interactive" role="tab" class="tab">Script &amp; Interactive</button>
+                        </li>
+                    </ul>
+
+                    <div id="panel-package-manager" role="tabpanel" aria-labelledby="tab-package-manager" class="panel">
+                        <code>Install-Package Funcky -Version {{PackageVersion}}</code>
+                    </div>
+
+                    <div id="panel-dotnet-cli" role="tabpanel" aria-labelledby="tab-dotnet-cli" class="panel">
+                        <code>dotnet add package Funcky --version {{PackageVersion}}</code>
+                    </div>
+
+                    <div id="panel-package-refererence" role="tabpanel" aria-labelledby="tab-package-refererence" class="panel">
+                        <code>&lt;PackageReference Include="Funcky" Version="{{PackageVersion}}" /&gt;</code>
+                    </div>
+
+                    <div id="panel-script-interactive" role="tabpanel" aria-labelledby="tab-script-interactive" class="panel">
+                        <code>#r "nuget: Funcky, {{PackageVersion}}"</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="_container">© {{Year}} Polyadic.</div>
+    </footer>
+    <script type="module" src="tabs.js"></script>
+</body>
+</html>

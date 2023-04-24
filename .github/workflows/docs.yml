@@ -1,19 +1,17 @@
-name: Build Documentation
+name: Build and Deploy Website
 
 on:
   pull_request:
     branches: [ main ]
   push:
     branches: [ main ]
+    # The website displays the latest version and needs
+    # to be rebuilt when a new version is published.
+    tags:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./Documentation
 
     steps:
       - uses: actions/checkout@v1
@@ -25,18 +23,18 @@ jobs:
         with:
           node-version: '16'
       - run: yarn install
+        working-directory: ./Documentation
       - name: Build Marble Graphics
         run: yarn build-marble-graphics
-      - name: Build Documentation
-        run: mdbook build
+        working-directory: ./Documentation
+      - name: Build Website and Documentation
+        run: dotnet fsi Website/build.fsx
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./Documentation/book
 
   deploy_pages:
     needs: build
-    if: github.ref_name == 'main'
+    if: github.ref_type == 'tag' || github.ref_name == 'main'
 
     permissions:
       pages: write

@@ -7,6 +7,9 @@
 /Documentation/book/
 /Documentation/**/*.svg
 
+## Website
+/_site/
+
 # User-specific files
 *.suo
 *.user
