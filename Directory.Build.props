@@ -7,7 +7,6 @@
 		<Copyright>© Polyadic. All rights reserved.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
-		<UseArtifactsOutput>true</UseArtifactsOutput>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	</PropertyGroup>
 	<ItemGroup Label="Code Style">
