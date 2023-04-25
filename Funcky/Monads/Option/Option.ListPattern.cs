@@ -11,7 +11,7 @@ public readonly partial struct Option<TItem>
 
     [Pure]
     [DebuggerBrowsable(Never)]
-    public int Length
+    public int Count
         => _hasItem
             ? SomeLength
             : NoneLength;
