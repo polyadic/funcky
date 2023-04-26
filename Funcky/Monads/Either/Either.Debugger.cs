@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using static System.Diagnostics.DebuggerBrowsableState;
 
 namespace Funcky.Monads;
 
@@ -6,7 +7,7 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(EitherDebugView<,>))]
 public readonly partial struct Either<TLeft, TRight>
 {
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    [DebuggerBrowsable(Never)]
     private string DebuggerDisplay => Match(
         uninitialized: static () => "default",
         left: static _ => "Left",
@@ -21,7 +22,7 @@ internal sealed class EitherDebugView<TLeft, TRight>
 
     public EitherDebugView(Either<TLeft, TRight> either) => _either = either;
 
-    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    [DebuggerBrowsable(RootHidden)]
     public object Value => _either.Match<object>(
         uninitialized: static () => new { },
         left: left => new { Value = left },
