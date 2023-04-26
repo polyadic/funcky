@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using static System.Diagnostics.DebuggerBrowsableState;
 
 namespace Funcky.Monads;
 
@@ -6,7 +7,7 @@ namespace Funcky.Monads;
 [DebuggerTypeProxy(typeof(OptionDebugView<>))]
 public readonly partial struct Option<TItem>
 {
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    [DebuggerBrowsable(Never)]
     private string DebuggerDisplay => Match(
         none: "None",
         some: _ => "Some");
@@ -19,7 +20,7 @@ internal sealed class OptionDebugView<T>
 
     public OptionDebugView(Option<T> option) => _option = option;
 
-    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    [DebuggerBrowsable(RootHidden)]
     public object Value => _option.Match(
         none: () => (object)new { },
         some: value => new { Value = value });
