@@ -1,4 +1,5 @@
 #nullable enable
+Funcky.Discard
 Funcky.EitherOrBoth
 Funcky.EitherOrBoth<TLeft, TRight>
 Funcky.EitherOrBoth<TLeft, TRight>.EitherOrBoth() -> void
@@ -773,3 +774,4 @@ static Funcky.Unit.operator ==(Funcky.Unit left, Funcky.Unit right) -> bool
 static Funcky.Unit.operator >(Funcky.Unit left, Funcky.Unit right) -> bool
 static Funcky.Unit.operator >=(Funcky.Unit left, Funcky.Unit right) -> bool
 static Funcky.Unit.Value.get -> Funcky.Unit
+static readonly Funcky.Discard.__ -> Funcky.Unit

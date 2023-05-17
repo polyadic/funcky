@@ -17,6 +17,20 @@ var greeting = person switch
 record Person(string FirstName, Option<string> LastName);
 ```
 
+### Discard
+The new `Discard.__` field provides a short-hand for `Unit.Value` to be used with `switch` expressions.
+
+```cs
+using static Funcky.Discard;
+
+return __ switch
+{
+    _ when user.IsFrenchAdmin() => "le sécret",
+    _ when user.IsAdmin() => "secret",
+    _ => "(redacted)",
+};
+```
+
 ### Retry with Exception
 We've added overloads to the `Retry` and `RetryAsync` functions that allow retrying a function
 as long as an exception is thrown.
