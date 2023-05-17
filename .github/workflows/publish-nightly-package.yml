@@ -9,8 +9,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
       name: Install Current .NET SDK
     - name: Pack Packages
       run: dotnet pack Funcky/Funcky.csproj --configuration Release --output nupkg --version-suffix "nightly.$(git rev-parse --short "${{github.sha}}")" /p:GeneratePackageOnBuild=false
