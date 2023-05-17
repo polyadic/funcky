@@ -7,7 +7,7 @@ on:
     branches: [ main ]
     # The website displays the latest version and needs
     # to be rebuilt when a new version is published.
-    tags:
+    tags: '*'
 
 jobs:
   build:
