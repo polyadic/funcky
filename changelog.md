@@ -2,6 +2,39 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.2.0 | Funcky.Async 1.2.0
+### List Pattern for Option
+We've added support for C# 11's List Patterns to `Option<T>`.
+This means that you can use regular `switch` expressions / statements to match on options:
+
+```cs
+var greeting = person switch
+{
+    { FirstName: var firstName, LastName: [var lastName] } => $"Hello {firstName} {lastName}",
+    { FirstName: var firstName } => $"Hi {firstName}",
+};
+
+record Person(string FirstName, Option<string> LastName);
+```
+
+### Retry with Exception
+We've added overloads to the `Retry` and `RetryAsync` functions that allow retrying a function
+as long as an exception is thrown.
+
+Example from [`IoRetrier`](https://github.com/messerli-informatik-ag/io/blob/main/IO/Retrier.cs):
+```cs
+// Retries an action until the file is no longer in use.
+Task RetryWhileFileIsInUseAsync(IRetryPolicy policy, Action action)
+    => RetryAsync(ActionToUnit(action), exception => exception is IOException && exception.HResult == FileInUseHResult, policy);
+```
+
+### New Extensions
+* `EnumerableExtensions.MinByOrNone`
+* `EnumerableExtensions.MaxByOrNone`
+* `ImmutableListExtensions.IndexOfOrNone`
+* `ImmutableListExtensions.LastIndexOfOrNone`
+* `ListExtensions.IndexOfOrNone`
+
 ## Funcky 3.1.0 | Funcky.Async 1.1.0 | Funcky.Analyzers 1.2.0
 ### New APIs
 * ✨ `OptionExtensions.ToNullable` ✨
