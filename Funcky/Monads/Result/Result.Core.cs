@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace Funcky.Monads;
 
+[AlternativeMonad(ReturnAlias = "Ok", MatchHasSuccessStateFirst = true)]
 public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
     where TValidResult : notnull
 {

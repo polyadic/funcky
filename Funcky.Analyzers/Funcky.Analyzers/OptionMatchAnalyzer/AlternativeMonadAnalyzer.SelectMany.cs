@@ -4,7 +4,7 @@ using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
 namespace Funcky.Analyzers;
 
-public partial class OptionMatchAnalyzer
+public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferSelectMany = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",

@@ -6,7 +6,7 @@ using static Funcky.Analyzers.IdentityFunctionMatching;
 
 namespace Funcky.Analyzers;
 
-public partial class OptionMatchAnalyzer
+public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferToNullable = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08",

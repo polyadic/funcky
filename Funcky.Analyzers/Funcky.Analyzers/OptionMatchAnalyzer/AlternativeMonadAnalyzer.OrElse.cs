@@ -5,7 +5,7 @@ using static Funcky.Analyzers.OptionReturnMatching;
 
 namespace Funcky.Analyzers;
 
-public partial class OptionMatchAnalyzer
+public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}06",

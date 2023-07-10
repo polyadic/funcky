@@ -8,9 +8,10 @@ using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 namespace Funcky.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
+public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 {
     public const string PreservedArgumentIndexProperty = nameof(PreservedArgumentIndexProperty);
+    private const string AttributeFullName = "Funcky.CodeAnalysis.AlternativeMonadAttribute";
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany, PreferToNullable);
 
@@ -23,10 +24,10 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
-        if (context.Compilation.GetOptionOfTType() is { } optionOfTType)
+        if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } alternativeMonadAttributeType)
         {
             var toNullableExists = ToNullableExtensionIsAvailable(context.Compilation);
-            var symbols = new CompilationSymbols(optionOfTType, toNullableExists);
+            var symbols = new CompilationSymbols(alternativeMonadAttributeType, toNullableExists);
             context.RegisterOperationAction(context => AnalyzeInvocation(context, symbols), OperationKind.Invocation);
         }
     }
@@ -54,9 +55,9 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
     {
         matchReceiverType = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
-           && SymbolEqualityComparer.Default.Equals(receiverType.ConstructedFrom, symbols.OptionOfTType)
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
+           && receiverType.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, symbols.AlternativeMonadAttributeType))
            && (matchReceiverType = receiverType) is var _;
     }
 
@@ -67,10 +68,10 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
-        if (symbols.ToNullableExtensionIsAvailable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
-        {
-            return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
-        }
+        // if (symbols.ToNullableExtensionIsAvailable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
+        // {
+        //     return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
+        // }
 
         if (IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
         {
@@ -106,5 +107,5 @@ public sealed partial class OptionMatchAnalyzer : DiagnosticAnalyzer
         => compilation.GetOptionExtensionsType() is { } optionExtensionsType
             && optionExtensionsType.GetMembers().Any(static member => member is IMethodSymbol { Name: OptionToNullableMethodName });
 
-    private sealed record CompilationSymbols(INamedTypeSymbol OptionOfTType, bool ToNullableExtensionIsAvailable);
+    private sealed record CompilationSymbols(INamedTypeSymbol AlternativeMonadAttributeType, bool ToNullableExtensionIsAvailable);
 }

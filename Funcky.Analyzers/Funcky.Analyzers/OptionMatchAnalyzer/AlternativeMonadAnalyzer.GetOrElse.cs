@@ -5,7 +5,7 @@ using static Funcky.Analyzers.IdentityFunctionMatching;
 
 namespace Funcky.Analyzers;
 
-public partial class OptionMatchAnalyzer
+public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
@@ -18,8 +18,8 @@ public partial class OptionMatchAnalyzer
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
     private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation noneArgument, IArgumentOperation someArgument)
-        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(noneArgument.Value))
-            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), GetTypeOrDelegateReturnType(someArgument.Value))
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(noneArgument.Value))
+            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(someArgument.Value))
             && IsIdentityFunction(someArgument.Value);
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
