@@ -31,6 +31,13 @@ public readonly partial struct Result<TValidResult>
     public TValidResult GetOrElse(Func<Exception, TValidResult> fallback)
         => Match(error: fallback, ok: Identity);
 
+    /// <summary>Performs a side effect when the result is error and returns the result again.</summary>
+    public Result<TValidResult> InspectError(Action<Exception> inspector)
+    {
+        Switch(ok: NoOperation, error: inspector);
+        return this;
+    }
+
     public TValidResult GetOrThrow()
         => GetOrElse(ThrowWithOriginalStackTrace);
 
