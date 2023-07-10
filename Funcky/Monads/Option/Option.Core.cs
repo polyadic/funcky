@@ -4,7 +4,7 @@ using Funcky.CodeAnalysis;
 
 namespace Funcky.Monads;
 
-[AlternativeMonad(ReturnAlias = "Some")]
+[AlternativeMonad(ReturnAlias = nameof(Option.Some))]
 public readonly partial struct Option<TItem>
     where TItem : notnull
 {
