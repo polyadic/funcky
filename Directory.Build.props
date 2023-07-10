@@ -29,4 +29,7 @@
 	<PropertyGroup>
 		<FunckyBuildWithPreviewTargetFramework Condition="'$(FunckyBuildWithPreviewTargetFramework)' == ''">true</FunckyBuildWithPreviewTargetFramework>
 	</PropertyGroup>
+	<PropertyGroup>
+		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+	</PropertyGroup>
 </Project>

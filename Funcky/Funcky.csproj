@@ -47,8 +47,8 @@
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\bin\$(Configuration)\netstandard2.0\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-        <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Visible="false" />
+        <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
+        <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
