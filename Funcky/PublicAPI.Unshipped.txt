@@ -1,1 +1,7 @@
 #nullable enable
+Funcky.Monads.Either<TLeft, TRight>.OrElse(Funcky.Monads.Either<TLeft, TRight> fallback) -> Funcky.Monads.Either<TLeft, TRight>
+Funcky.Monads.Either<TLeft, TRight>.OrElse(System.Func<TLeft, Funcky.Monads.Either<TLeft, TRight>>! fallback) -> Funcky.Monads.Either<TLeft, TRight>
+Funcky.Monads.Result<TValidResult>.GetOrElse(System.Func<System.Exception!, TValidResult>! fallback) -> TValidResult
+Funcky.Monads.Result<TValidResult>.GetOrElse(TValidResult fallback) -> TValidResult
+Funcky.Monads.Result<TValidResult>.OrElse(Funcky.Monads.Result<TValidResult> fallback) -> Funcky.Monads.Result<TValidResult>
+Funcky.Monads.Result<TValidResult>.OrElse(System.Func<System.Exception!, Funcky.Monads.Result<TValidResult>>! fallback) -> Funcky.Monads.Result<TValidResult>
