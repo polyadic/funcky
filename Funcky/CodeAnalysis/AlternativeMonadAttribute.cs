@@ -6,5 +6,5 @@ internal sealed class AlternativeMonadAttribute : Attribute
 {
     public bool MatchHasSuccessStateFirst { get; init; }
 
-    public string? ReturnAlias { get; init; }
+    required public string ReturnAlias { get; init; }
 }

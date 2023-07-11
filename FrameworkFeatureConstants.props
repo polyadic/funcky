@@ -12,6 +12,9 @@
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0'">
 		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED;PRIORITY_QUEUE;TRY_GET_NON_ENUMERATED_COUNT;HTTP_HEADERS_NON_VALIDATED;ELEMENT_AT_INDEX</DefineConstants>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<DefineConstants>$(DefineConstants);REQUIRED_MEMBER_ATTRIBUTE;COMPILER_FEATURE_REQUIRED_ATTRIBUTE</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
 		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE</DefineConstants>
 	</PropertyGroup>
