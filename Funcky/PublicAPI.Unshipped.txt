@@ -1,1 +1,9 @@
 #nullable enable
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, Funcky.Unit arg1, Funcky.Unit arg2, T3 arg3) -> System.Func<T1, T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, Funcky.Unit arg1, T2 arg2, Funcky.Unit arg3) -> System.Func<T1, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, Funcky.Unit arg1, T2 arg2, T3 arg3) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, T1 arg1, Funcky.Unit arg2, Funcky.Unit arg3) -> System.Func<T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, T1 arg1, Funcky.Unit arg2, T3 arg3) -> System.Func<T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! function, T1 arg1, T2 arg2, Funcky.Unit arg3) -> System.Func<T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! function, Funcky.Unit arg1, T2 arg2) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! function, T1 arg1, Funcky.Unit arg2) -> System.Func<T2, TResult>!
