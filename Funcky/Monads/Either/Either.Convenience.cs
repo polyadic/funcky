@@ -16,6 +16,16 @@ public readonly partial struct Either<TLeft, TRight>
         return this;
     }
 
+    /// <remarks>Careful! This overload discards the left value.</remarks>
+    [Pure]
+    public Either<TLeft, TRight> OrElse(Either<TLeft, TRight> fallback)
+        => Match(left: _ => fallback, right: Either<TLeft>.Return);
+
+    [Pure]
+    public Either<TLeft, TRight> OrElse(Func<TLeft, Either<TLeft, TRight>> fallback)
+        => Match(left: fallback, right: Either<TLeft>.Return);
+
+    /// <remarks>Careful! This overload discards the left value.</remarks>
     [Pure]
     public TRight GetOrElse(TRight fallback)
         => Match(left: _ => fallback, right: Identity);
