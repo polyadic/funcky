@@ -11,7 +11,6 @@ namespace Funcky.Analyzers;
 public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 {
     public const string PreservedArgumentIndexProperty = nameof(PreservedArgumentIndexProperty);
-    private const string AttributeFullName = "Funcky.CodeAnalysis.AlternativeMonadAttribute";
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany, PreferToNullable);
 
@@ -24,23 +23,21 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
-        if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } alternativeMonadAttributeType)
+        var alternativeMonadTypes = AlternativeMonadTypeCollection.FromCompilation(context.Compilation);
+        if (alternativeMonadTypes.Any())
         {
-            var toNullableExists = ToNullableExtensionIsAvailable(context.Compilation);
-            var symbols = new CompilationSymbols(alternativeMonadAttributeType, toNullableExists);
-            context.RegisterOperationAction(context => AnalyzeInvocation(context, symbols), OperationKind.Invocation);
+            context.RegisterOperationAction(context => AnalyzeInvocation(context, alternativeMonadTypes), OperationKind.Invocation);
         }
     }
 
-    private static void AnalyzeInvocation(OperationAnalysisContext context, CompilationSymbols symbols)
+    private static void AnalyzeInvocation(OperationAnalysisContext context, AlternativeMonadTypeCollection alternativeMonadTypes)
     {
         var operation = (IInvocationOperation)context.Operation;
 
-        if (IsMatchInvocation(operation, symbols, out var receiverType, out var alternativeMonad)
+        if (IsMatchInvocation(operation, alternativeMonadTypes, out var receiverType, out var alternativeMonad)
             && AnalyzeMatchInvocation(
                 operation,
                 alternativeMonad,
-                symbols,
                 receiverType,
                 noneArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.ErrorStateArgumentIndex),
                 someArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.SuccessStateArgumentIndex)) is { } diagnostic)
@@ -51,24 +48,22 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 
     private static bool IsMatchInvocation(
         IInvocationOperation invocation,
-        CompilationSymbols symbols,
+        AlternativeMonadTypeCollection alternativeMonadTypes,
         [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType,
-        [NotNullWhen(true)] out AlternativeMonadType? matchAlternativeMonadType)
+        [NotNullWhen(true)] out AlternativeMonadType? alternativeMonadType)
     {
         matchReceiverType = null;
-        matchAlternativeMonadType = null;
+        alternativeMonadType = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
-           && AlternativeMonadType.Create(receiverType, symbols.AlternativeMonadAttributeType) is { } alternativeMonad
-           && (matchReceiverType = receiverType) is var _
-           && (matchAlternativeMonadType = alternativeMonad) is var _;
+           && alternativeMonadTypes.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
+           && (matchReceiverType = receiverType) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation matchInvocation,
         AlternativeMonadType alternativeMonadType,
-        CompilationSymbols symbols,
         INamedTypeSymbol receiverType,
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
@@ -111,6 +106,4 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     private static bool ToNullableExtensionIsAvailable(Compilation compilation)
         => compilation.GetOptionExtensionsType() is { } optionExtensionsType
             && optionExtensionsType.GetMembers().Any(static member => member is IMethodSymbol { Name: OptionToNullableMethodName });
-
-    private sealed record CompilationSymbols(INamedTypeSymbol AlternativeMonadAttributeType, bool ToNullableExtensionIsAvailable);
 }

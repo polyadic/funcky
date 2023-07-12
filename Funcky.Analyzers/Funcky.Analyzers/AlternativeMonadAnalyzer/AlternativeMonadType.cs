@@ -9,12 +9,15 @@ internal sealed class AlternativeMonadType
     private readonly string _returnAlias;
     private readonly Lazy<bool> _hasGetOrElse;
 
-    private AlternativeMonadType(INamedTypeSymbol type, bool matchHasSuccessStateFirst, string returnAlias)
+    public AlternativeMonadType(INamedTypeSymbol type, bool matchHasSuccessStateFirst, string returnAlias)
     {
+        Type = type;
         _matchHasSuccessStateFirst = matchHasSuccessStateFirst;
         _returnAlias = returnAlias;
         _hasGetOrElse = new(() => type.GetMembers().Any(static member => member is IMethodSymbol { Name: GetOrElseMethodName }));
     }
+
+    public INamedTypeSymbol Type { get; }
 
     public int ErrorStateArgumentIndex => _matchHasSuccessStateFirst ? 1 : 0;
 

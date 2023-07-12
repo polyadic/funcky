@@ -7,7 +7,6 @@ public sealed partial class OptionMatchAnalyzerTest
         """
         namespace Funcky.Monads
         {
-            [Funcky.CodeAnalysis.AlternativeMonad(ReturnAlias = "Some")]
             public readonly struct Option<TItem>
                 where TItem : notnull
             {
@@ -54,18 +53,6 @@ public sealed partial class OptionMatchAnalyzerTest
             public static class Functional
             {
                 public static T Identity<T>(T x) => x;
-            }
-        }
-
-        namespace Funcky.CodeAnalysis
-        {
-            /// <summary>Types annotated with this attribute are alternative monads (e.g. <c>Option</c> or <c>Either</c>).</summary>
-            [System.AttributeUsage(System.AttributeTargets.Struct | System.AttributeTargets.Class)]
-            internal sealed class AlternativeMonadAttribute : System.Attribute
-            {
-                public bool MatchHasSuccessStateFirst { get; set; }
-
-                public string ReturnAlias { get; set; } = null!;
             }
         }
         """;

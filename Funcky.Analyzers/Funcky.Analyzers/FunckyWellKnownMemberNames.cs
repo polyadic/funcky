@@ -12,6 +12,10 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionToNullableMethodName = "ToNullable";
 
+    public const string EitherRightMethodName = "Right";
+
+    public const string ResultOkMethodName = "Ok";
+
     /// <summary>The name of the identity function.</summary>
     public const string IdentityMethodName = "Identity";
 
