@@ -53,21 +53,21 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         IInvocationOperation invocation,
         CompilationSymbols symbols,
         [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType,
-        [NotNullWhen(true)] out AlternativeMonad? matchAlternativeMonad)
+        [NotNullWhen(true)] out AlternativeMonadType? matchAlternativeMonadType)
     {
         matchReceiverType = null;
-        matchAlternativeMonad = null;
+        matchAlternativeMonadType = null;
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
-           && AlternativeMonad.Create(receiverType, symbols.AlternativeMonadAttributeType) is { } alternativeMonad
+           && AlternativeMonadType.Create(receiverType, symbols.AlternativeMonadAttributeType) is { } alternativeMonad
            && (matchReceiverType = receiverType) is var _
-           && (matchAlternativeMonad = alternativeMonad) is var _;
+           && (matchAlternativeMonadType = alternativeMonad) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation matchInvocation,
-        AlternativeMonad alternativeMonad,
+        AlternativeMonadType alternativeMonadType,
         CompilationSymbols symbols,
         INamedTypeSymbol receiverType,
         IArgumentOperation noneArgument,
@@ -78,7 +78,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         //     return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
         // }
 
-        if (alternativeMonad.HasGetOrElse && IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
+        if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
             return Diagnostic.Create(

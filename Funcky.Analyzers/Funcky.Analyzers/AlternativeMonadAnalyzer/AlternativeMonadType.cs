@@ -3,13 +3,13 @@ using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
 namespace Funcky.Analyzers;
 
-internal sealed class AlternativeMonad
+internal sealed class AlternativeMonadType
 {
     private readonly bool _matchHasSuccessStateFirst;
     private readonly string _returnAlias;
     private readonly Lazy<bool> _hasGetOrElse;
 
-    private AlternativeMonad(INamedTypeSymbol type, bool matchHasSuccessStateFirst, string returnAlias)
+    private AlternativeMonadType(INamedTypeSymbol type, bool matchHasSuccessStateFirst, string returnAlias)
     {
         _matchHasSuccessStateFirst = matchHasSuccessStateFirst;
         _returnAlias = returnAlias;
@@ -22,13 +22,13 @@ internal sealed class AlternativeMonad
 
     public bool HasGetOrElse => _hasGetOrElse.Value;
 
-    public static AlternativeMonad? Create(INamedTypeSymbol type, INamedTypeSymbol alternativeMonadAttributeType)
+    public static AlternativeMonadType? Create(INamedTypeSymbol type, INamedTypeSymbol alternativeMonadAttributeType)
         => type.GetAttributes()
             .Where(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, alternativeMonadAttributeType))
             .Select(Create(type.ConstructedFrom))
             .SingleOrDefault();
 
-    private static Func<AttributeData, AlternativeMonad> Create(INamedTypeSymbol type)
+    private static Func<AttributeData, AlternativeMonadType> Create(INamedTypeSymbol type)
         => attribute => new(
             type: type,
             matchHasSuccessStateFirst: (bool)(attribute.NamedArguments.SingleOrDefault(arg => arg.Key == "MatchHasSuccessStateFirst").Value.Value ?? false),
