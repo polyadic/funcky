@@ -43,6 +43,29 @@ public sealed partial class OptionMatchAnalyzerTest
                 public static Option<TItem> Return<TItem>(TItem value) where TItem : notnull => default;
             }
 
+            public readonly struct Either<TLeft, TRight>
+                where TLeft : notnull
+                where TRight : notnull
+            {
+                public static Either<TLeft, TRight> Left(TLeft left) => default;
+
+                public static Either<TLeft, TRight> Right(TRight right) => default;
+
+                public TRight GetOrElse(TRight fallback) => default!;
+
+                public TRight GetOrElse(System.Func<TLeft, TRight> fallback) => default!;
+
+                public TMatchResult Match<TMatchResult>(System.Func<TLeft, TMatchResult> left, System.Func<TRight, TMatchResult> right) => default!;
+            }
+
+            public static class Either<TLeft>
+                where TLeft : notnull
+            {
+                public static Either<TLeft, TRight> Return<TRight>(TRight right)
+                    where TRight : notnull
+                    => default;
+            }
+
             public sealed class RequireStruct<T> where T : struct { }
 
             public sealed class RequireClass<T> where T : class { }

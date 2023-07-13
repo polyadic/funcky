@@ -18,7 +18,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt)
+                public static void M1(Option<int> optionOfInt)
                 {
                     optionOfInt.Match(none: 42, some: x => x);
                     optionOfInt.Match(some: x => x, none: 42);
@@ -33,6 +33,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: fallback, some: x => x);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.Match(left: _ => 42, right: x => x);
+                }
             }
             """;
         const string fixedCode =
@@ -44,7 +49,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt)
+                public static void M1(Option<int> optionOfInt)
                 {
                     optionOfInt.GetOrElse(42);
                     optionOfInt.GetOrElse(42);
@@ -59,6 +64,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.GetOrElse(fallback);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.GetOrElse(_ => 42);
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -72,6 +82,7 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(14, 9, 14, 54),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(15, 9, 15, 62),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(21, 9, 21, 51),
+                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(26, 9, 26, 56),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }
