@@ -68,10 +68,10 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         IArgumentOperation noneArgument,
         IArgumentOperation someArgument)
     {
-        // if (symbols.ToNullableExtensionIsAvailable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
-        // {
-        //     return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
-        // }
+        if (alternativeMonadType.HasToNullable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
+        {
+            return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
+        }
 
         if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
         {
@@ -82,7 +82,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
-        if (IsOrElseEquivalent(matchInvocation, receiverType, someArgument))
+        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(matchInvocation, receiverType, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
             return Diagnostic.Create(
@@ -102,8 +102,4 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 
         return null;
     }
-
-    private static bool ToNullableExtensionIsAvailable(Compilation compilation)
-        => compilation.GetOptionExtensionsType() is { } optionExtensionsType
-            && optionExtensionsType.GetMembers().Any(static member => member is IMethodSymbol { Name: OptionToNullableMethodName });
 }

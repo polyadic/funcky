@@ -51,7 +51,8 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
             ? new AlternativeMonadType(
                 optionType,
                 matchHasSuccessStateFirst: false,
-                returnAlias: OptionSomeMethodName)
+                returnAlias: OptionSomeMethodName,
+                extensionsType: compilation.GetOptionExtensionsType())
             : null;
 
     private static AlternativeMonadType? Either(Compilation compilation)
