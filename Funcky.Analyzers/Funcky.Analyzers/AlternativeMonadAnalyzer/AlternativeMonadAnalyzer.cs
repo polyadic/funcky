@@ -39,8 +39,8 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                 operation,
                 alternativeMonad,
                 receiverType,
-                noneArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.ErrorStateArgumentIndex),
-                someArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.SuccessStateArgumentIndex)) is { } diagnostic)
+                errorStateArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.ErrorStateArgumentIndex),
+                successStateArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.SuccessStateArgumentIndex)) is { } diagnostic)
         {
             context.ReportDiagnostic(diagnostic);
         }
@@ -65,39 +65,39 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         IInvocationOperation matchInvocation,
         AlternativeMonadType alternativeMonadType,
         INamedTypeSymbol receiverType,
-        IArgumentOperation noneArgument,
-        IArgumentOperation someArgument)
+        IArgumentOperation errorStateArgument,
+        IArgumentOperation successStateArgument)
     {
-        if (alternativeMonadType.HasToNullable && IsToNullableEquivalent(matchInvocation, receiverType, noneArgument, someArgument))
+        if (alternativeMonadType.HasToNullable && IsToNullableEquivalent(matchInvocation, receiverType, errorStateArgument, successStateArgument))
         {
             return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
         }
 
-        if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(receiverType, noneArgument, someArgument))
+        if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(receiverType, errorStateArgument, successStateArgument))
         {
-            var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
+            var errorStateArgumentIndex = matchInvocation.Arguments.IndexOf(errorStateArgument);
             return Diagnostic.Create(
                 PreferGetOrElse,
                 matchInvocation.Syntax.GetLocation(),
-                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, errorStateArgumentIndex.ToString()));
         }
 
-        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(alternativeMonadType, matchInvocation, receiverType, someArgument))
+        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(alternativeMonadType, matchInvocation, receiverType, successStateArgument))
         {
-            var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
+            var errorStateArgumentIndex = matchInvocation.Arguments.IndexOf(errorStateArgument);
             return Diagnostic.Create(
                 PreferOrElse,
                 matchInvocation.Syntax.GetLocation(),
-                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, errorStateArgumentIndex.ToString()));
         }
 
-        if (IsSelectManyEquivalent(alternativeMonadType, matchInvocation, receiverType, noneArgument))
+        if (IsSelectManyEquivalent(alternativeMonadType, matchInvocation, receiverType, errorStateArgument))
         {
-            var someArgumentIndex = matchInvocation.Arguments.IndexOf(someArgument);
+            var successStateArgumentIndex = matchInvocation.Arguments.IndexOf(successStateArgument);
             return Diagnostic.Create(
                 PreferSelectMany,
                 matchInvocation.Syntax.GetLocation(),
-                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, someArgumentIndex.ToString()));
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, successStateArgumentIndex.ToString()));
         }
 
         return null;

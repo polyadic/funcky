@@ -10,8 +10,8 @@ public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferToNullable = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08",
-        title: $"Prefer {OptionToNullableMethodName} over {MatchMethodName}",
-        messageFormat: $"Prefer {OptionToNullableMethodName} over {MatchMethodName}",
+        title: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
+        messageFormat: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,

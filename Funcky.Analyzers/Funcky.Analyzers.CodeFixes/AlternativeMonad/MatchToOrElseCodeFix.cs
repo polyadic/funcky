@@ -9,11 +9,11 @@ using static Funcky.Analyzers.AlternativeMonadAnalyzer;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 [Shared]
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToOrElseCodeFix))]
-public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MatchToOrElseCodeFix))]
+public sealed class MatchToOrElseCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id, PreferSelectMany.Id);
 
@@ -26,8 +26,8 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
         foreach (var diagnostic in context.Diagnostics)
         {
             if (syntaxRoot?.FindInvocationExpression(context.Span) is { Expression: MemberAccessExpressionSyntax memberAccessExpression } invocation
-                && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var noneArgumentIndexString)
-                && int.TryParse(noneArgumentIndexString, out var noneArgumentIndex))
+                && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var errorStateArgumentIndexString)
+                && int.TryParse(errorStateArgumentIndexString, out var noneArgumentIndex))
             {
                 context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex, DiagnosticIdToMethodName(diagnostic.Id)), diagnostic);
             }
@@ -48,26 +48,26 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
         private readonly Document _document;
         private readonly InvocationExpressionSyntax _invocationExpression;
         private readonly MemberAccessExpressionSyntax _memberAccessExpression;
-        private readonly int _noneArgumentIndex;
+        private readonly int _errorStateArgumentIndex;
         private readonly IdentifierNameSyntax _methodName;
 
         public GetOrElseCodeFixAction(
             Document document,
             InvocationExpressionSyntax invocationExpression,
             MemberAccessExpressionSyntax memberAccessExpression,
-            int noneArgumentIndex,
+            int errorStateArgumentIndex,
             IdentifierNameSyntax methodName)
         {
             _document = document;
             _invocationExpression = invocationExpression;
             _memberAccessExpression = memberAccessExpression;
-            _noneArgumentIndex = noneArgumentIndex;
+            _errorStateArgumentIndex = errorStateArgumentIndex;
             _methodName = methodName;
         }
 
         public override string Title => $"Replace {MatchMethodName} with {_methodName.Identifier}";
 
-        public override string? EquivalenceKey => nameof(OptionMatchToOrElseCodeFix);
+        public override string? EquivalenceKey => nameof(MatchToOrElseCodeFix);
 
         protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
         {
@@ -78,7 +78,7 @@ public sealed class OptionMatchToOrElseCodeFix : CodeFixProvider
                 _invocationExpression.WithExpression(_memberAccessExpression
                     .WithName(_methodName))
                     .WithArgumentList(ArgumentList(SingletonSeparatedList(
-                        Argument(_invocationExpression.ArgumentList.Arguments[_noneArgumentIndex].Expression)))));
+                        Argument(_invocationExpression.ArgumentList.Arguments[_errorStateArgumentIndex].Expression)))));
 
             return editor.GetChangedDocument();
         }

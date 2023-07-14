@@ -1,10 +1,10 @@
 using Xunit;
 using static Funcky.Analyzers.AlternativeMonadAnalyzer;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.OptionMatchToOrElseCodeFix>;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToOrElseCodeFix>;
 
 namespace Funcky.Analyzers.Test;
 
-public sealed partial class OptionMatchAnalyzerTest
+public sealed partial class AlternativeMonadAnalyzerTest
 {
     [Fact]
     public async Task IssuesWarningForReimplementationOfGetOrElse()

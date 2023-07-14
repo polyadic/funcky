@@ -9,11 +9,11 @@ using static Funcky.Analyzers.AlternativeMonadAnalyzer;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 [Shared]
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionMatchToToNullableCodeFix))]
-public sealed class OptionMatchToToNullableCodeFix : CodeFixProvider
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MatchToNullableCodeFix))]
+public sealed class MatchToNullableCodeFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferToNullable.Id);
 
@@ -48,7 +48,7 @@ public sealed class OptionMatchToToNullableCodeFix : CodeFixProvider
             _memberAccessExpression = memberAccessExpression;
         }
 
-        public override string Title => $"Replace {MatchMethodName} with {OptionToNullableMethodName}";
+        public override string Title => $"Replace {MatchMethodName} with {ToNullableMethodName}";
 
         public override string EquivalenceKey => nameof(ToNullableCodeFixAction);
 
@@ -59,7 +59,7 @@ public sealed class OptionMatchToToNullableCodeFix : CodeFixProvider
             editor.ReplaceNode(
                 _invocationExpression,
                 _invocationExpression.WithExpression(_memberAccessExpression
-                    .WithName(IdentifierName(OptionToNullableMethodName)))
+                    .WithName(IdentifierName(ToNullableMethodName)))
                     .WithArgumentList(ArgumentList()));
 
             return editor.GetChangedDocument();

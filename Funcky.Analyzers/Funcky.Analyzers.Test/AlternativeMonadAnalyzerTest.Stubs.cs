@@ -1,6 +1,6 @@
 namespace Funcky.Analyzers.Test;
 
-public sealed partial class OptionMatchAnalyzerTest
+public sealed partial class AlternativeMonadAnalyzerTest
 {
     // language=csharp
     private const string OptionStubCode =

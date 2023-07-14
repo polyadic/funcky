@@ -17,7 +17,7 @@ public partial class AlternativeMonadAnalyzer
         description: string.Empty);
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Option.Return)</c>.</summary>
-    private static bool IsOrElseEquivalent(AlternativeMonadType alternativeMonadType, IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
+    private static bool IsOrElseEquivalent(AlternativeMonadType alternativeMonadType, IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation successStateArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
-            && IsReturnFunction(alternativeMonadType, someArgument.Value);
+            && IsReturnFunction(alternativeMonadType, successStateArgument.Value);
 }

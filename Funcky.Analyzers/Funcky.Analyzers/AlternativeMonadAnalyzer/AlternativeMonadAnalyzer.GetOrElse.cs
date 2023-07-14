@@ -17,10 +17,10 @@ public partial class AlternativeMonadAnalyzer
         description: string.Empty);
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
-    private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation noneArgument, IArgumentOperation someArgument)
-        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(noneArgument.Value))
-            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(someArgument.Value))
-            && IsIdentityFunction(someArgument.Value);
+    private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation errorStateArgument, IArgumentOperation successStateArgument)
+        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(errorStateArgument.Value))
+            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(successStateArgument.Value))
+            && IsIdentityFunction(successStateArgument.Value);
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
         => operation switch

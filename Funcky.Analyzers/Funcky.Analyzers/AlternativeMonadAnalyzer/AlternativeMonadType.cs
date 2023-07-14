@@ -13,7 +13,7 @@ internal sealed class AlternativeMonadType(
 {
     private readonly Lazy<bool> _hasGetOrElse = HasMethodLazy(type, GetOrElseMethodName);
     private readonly Lazy<bool> _hasOrElse = HasMethodLazy(type, OrElseMethodName);
-    private readonly Lazy<bool> _hasToNullable = new(() => extensionsType is not null && HasMethod(extensionsType, OptionToNullableMethodName));
+    private readonly Lazy<bool> _hasToNullable = new(() => extensionsType is not null && HasMethod(extensionsType, ToNullableMethodName));
 
     public INamedTypeSymbol Type { get; } = type;
 
