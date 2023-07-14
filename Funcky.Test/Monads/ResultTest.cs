@@ -176,25 +176,25 @@ public sealed partial class ResultTest
     {
         var result = InterestingStackTrace(1);
         var expectedStackTraceString = FunctionalAssert.Error(result).StackTrace;
-        _ = result.Match(ok: Result.Ok, error: Result<int>.Error);
+        _ = result.InspectError(error => Result<int>.Error(error));
         var stackTraceString = FunctionalAssert.Error(result).StackTrace;
         Assert.Equal(expectedStackTraceString, stackTraceString);
     }
 
     [Fact]
-    public void SelectManyWithOkResultMatchesTherightValue()
+    public void SelectManyWithOkResultMatchesTheRightValue()
         => FunctionalAssert.Ok(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
-    public void SelectManyWithErrorResultMatchesTherightValue()
+    public void SelectManyWithErrorResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
-    public void SelectManyReturnErrorResultWithOkResultMatchesTherightValue()
+    public void SelectManyReturnErrorResultWithOkResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result.Ok(1).SelectMany(_ => Result<int>.Error(new Exception("Any"))));
 
     [Fact]
-    public void SelectManyReturnErrorResultWithErrorResultMatchesTherightValue()
+    public void SelectManyReturnErrorResultWithErrorResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(_ => Result<int>.Error(new Exception("Other"))));
 
     [Fact]

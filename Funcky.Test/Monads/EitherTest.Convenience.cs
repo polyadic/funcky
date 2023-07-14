@@ -32,6 +32,31 @@ public sealed partial class EitherTest
     }
 
     [Fact]
+    public void InspectLeftDoesNothingWhenEitherIsRight()
+    {
+        var either = Either<string, int>.Right(10);
+        either.InspectLeft(_ => throw new XunitException("Side effect was unexpectedly called"));
+    }
+
+    [Fact]
+    public void InspectLeftCallsSideEffectWhenEitherIsLeft()
+    {
+        const string value = "foo";
+        var either = Either<string, int>.Left(value);
+
+        var sideEffect = Option<string>.None;
+        either.InspectLeft(v => sideEffect = v);
+        FunctionalAssert.Some(value, sideEffect);
+    }
+
+    [Theory]
+    [MemberData(nameof(LeftAndRight))]
+    public void InspectLeftReturnsOriginalValue(Either<string, int> either)
+    {
+        Assert.Equal(either, either.InspectLeft(NoOperation));
+    }
+
+    [Fact]
     public void GivenARightCaseTheGetOrElseFuncIsNotExecuted()
     {
         var some = Either<int, string>.Right("Hello world!");
