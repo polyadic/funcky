@@ -176,7 +176,7 @@ public sealed partial class ResultTest
     {
         var result = InterestingStackTrace(1);
         var expectedStackTraceString = FunctionalAssert.Error(result).StackTrace;
-        _ = result.Match(ok: Result.Ok, error: Result<int>.Error);
+        _ = result.InspectError(error => Result<int>.Error(error));
         var stackTraceString = FunctionalAssert.Error(result).StackTrace;
         Assert.Equal(expectedStackTraceString, stackTraceString);
     }
