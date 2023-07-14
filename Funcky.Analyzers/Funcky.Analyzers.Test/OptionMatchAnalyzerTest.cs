@@ -194,6 +194,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: Option<TItem>.None, some: selector);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.Match(left: Either<string, int>.Left, right: x => Either<string>.Return(x * 2));
+                }
             }
             """;
         const string fixedCode =
@@ -216,6 +221,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.SelectMany(selector);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.SelectMany(x => Either<string>.Return(x * 2));
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -225,6 +235,7 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(10, 9, 10, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(11, 9, 11, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(17, 9, 17, 63),
+                VerifyCS.Diagnostic(PreferSelectMany).WithSpan(22, 9, 22, 100),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }

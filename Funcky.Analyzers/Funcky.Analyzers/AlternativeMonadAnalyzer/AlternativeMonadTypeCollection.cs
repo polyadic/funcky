@@ -52,7 +52,7 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
             ? new AlternativeMonadType(
                 optionOfTType,
                 constructorsType: optionType,
-                matchHasSuccessStateFirst: false,
+                errorStateConstructorName: OptionNonePropertyName,
                 returnAlias: OptionSomeMethodName,
                 extensionsType: compilation.GetOptionExtensionsType())
             : null;
@@ -63,7 +63,7 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
             ? new AlternativeMonadType(
                 eitherOfTType,
                 constructorsType: eitherType,
-                matchHasSuccessStateFirst: false,
+                errorStateConstructorName: EitherLeftMethodName,
                 returnAlias: EitherRightMethodName)
             : null;
 
@@ -73,6 +73,7 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
             ? new AlternativeMonadType(
                 resultOfTType,
                 constructorsType: resultType,
+                errorStateConstructorName: ResultErrorMethodName,
                 matchHasSuccessStateFirst: true,
                 returnAlias: ResultOkMethodName)
             : null;

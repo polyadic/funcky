@@ -14,7 +14,11 @@ public static class FunckyWellKnownMemberNames
 
     public const string EitherRightMethodName = "Right";
 
+    public const string EitherLeftMethodName = "Left";
+
     public const string ResultOkMethodName = "Ok";
+
+    public const string ResultErrorMethodName = "Error";
 
     /// <summary>The name of the identity function.</summary>
     public const string IdentityMethodName = "Identity";

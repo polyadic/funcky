@@ -6,8 +6,9 @@ namespace Funcky.Analyzers;
 internal sealed class AlternativeMonadType(
     INamedTypeSymbol type,
     INamedTypeSymbol constructorsType,
-    bool matchHasSuccessStateFirst,
     string returnAlias,
+    string errorStateConstructorName,
+    bool matchHasSuccessStateFirst = false,
     INamedTypeSymbol? extensionsType = null)
 {
     private readonly Lazy<bool> _hasGetOrElse = HasMethodLazy(type, GetOrElseMethodName);
@@ -19,6 +20,8 @@ internal sealed class AlternativeMonadType(
     public INamedTypeSymbol ConstructorsType { get; } = constructorsType;
 
     public string ReturnAlias { get; } = returnAlias;
+
+    public string ErrorStateConstructorName { get; } = errorStateConstructorName;
 
     public int ErrorStateArgumentIndex => matchHasSuccessStateFirst ? 1 : 0;
 

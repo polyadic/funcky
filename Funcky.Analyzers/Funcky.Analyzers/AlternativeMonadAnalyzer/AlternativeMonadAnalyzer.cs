@@ -91,7 +91,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
-        if (IsSelectManyEquivalent(matchInvocation, receiverType, noneArgument))
+        if (IsSelectManyEquivalent(alternativeMonadType, matchInvocation, receiverType, noneArgument))
         {
             var someArgumentIndex = matchInvocation.Arguments.IndexOf(someArgument);
             return Diagnostic.Create(
