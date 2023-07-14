@@ -44,9 +44,8 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return result.Match(
-                ok: Identity,
-                error: static exception => throw new AssertActualExpectedException(
+            return result.GetOrElse(
+                static exception => throw new AssertActualExpectedException(
                     expected: "Ok(...)",
                     actual: $"Error({FormatException(exception)})",
                     userMessage: $"{nameof(FunctionalAssert)}.{nameof(Ok)}() Failure"));
