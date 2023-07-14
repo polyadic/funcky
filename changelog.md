@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.3.0 | Funcky.Analyzers 1.3.0 | Funcky.Xunit 2.0.1
+This is a relatively minor release focuses on convenience for our monads `Option`, `Either` and `Result`.
+
+### `GetOrElse` and `OrElse` for all
+We've added `GetOrElse` and `OrElse` to `Either` and `Result` bringing them on par with `Option`. \
+The corresponding analyzer now also correctly suggests using these methods instead of `Match` for `Result` and `Either`.
+
+### `Inspect` for the error case
+All three alternative monads `Option`, `Either` and `Result` now support inspecting the «error» case:
+* `Option.InspectNone` - executes a side effect only when the option is `None`.
+* `Either.InspectLeft` - executes a side effect only when the either is on the `Left` side.
+* `Result.InspectError` - executes a side effect only when the result is an `Error`.
+
+These methods are particularly useful for logging warnings/errors.
+
 ## Funcky 3.2.0 | Funcky.Async 1.2.0
 ### List Pattern for Option
 We've added support for C# 11's List Patterns to `Option<T>`.
