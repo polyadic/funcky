@@ -182,19 +182,19 @@ public sealed partial class ResultTest
     }
 
     [Fact]
-    public void SelectManyWithOkResultMatchesTherightValue()
+    public void SelectManyWithOkResultMatchesTheRightValue()
         => FunctionalAssert.Ok(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
-    public void SelectManyWithErrorResultMatchesTherightValue()
+    public void SelectManyWithErrorResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
-    public void SelectManyReturnErrorResultWithOkResultMatchesTherightValue()
+    public void SelectManyReturnErrorResultWithOkResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result.Ok(1).SelectMany(_ => Result<int>.Error(new Exception("Any"))));
 
     [Fact]
-    public void SelectManyReturnErrorResultWithErrorResultMatchesTherightValue()
+    public void SelectManyReturnErrorResultWithErrorResultMatchesTheRightValue()
         => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(_ => Result<int>.Error(new Exception("Other"))));
 
     [Fact]
