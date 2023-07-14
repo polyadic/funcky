@@ -52,6 +52,15 @@ public readonly partial struct Option<TItem>
     }
 
     /// <summary>
+    /// Performs a side effect when the option has no value (i.e. when the option is <see cref="None"/>) and returns the option again.
+    /// </summary>
+    public Option<TItem> InspectNone(Action inspector)
+    {
+        Switch(none: inspector, some: NoOperation);
+        return this;
+    }
+
+    /// <summary>
     /// Returns an <see cref="IEnumerable{T}"/> that yields exactly one value when the option
     /// has an item and nothing when the option is empty.
     /// </summary>

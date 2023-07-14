@@ -25,6 +25,13 @@ public readonly partial struct Either<TLeft, TRight>
     public Either<TLeft, TRight> OrElse(Func<TLeft, Either<TLeft, TRight>> fallback)
         => Match(left: fallback, right: Either<TLeft>.Return);
 
+    /// <summary>Performs a side effect when the either is left and returns the either value again.</summary>
+    public Either<TLeft, TRight> InspectLeft(Action<TLeft> inspector)
+    {
+        Switch(left: inspector, right: NoOperation);
+        return this;
+    }
+
     /// <remarks>Careful! This overload discards the left value.</remarks>
     [Pure]
     public TRight GetOrElse(TRight fallback)
