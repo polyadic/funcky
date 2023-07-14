@@ -51,9 +51,11 @@ public sealed partial class ResultTest
     {
         var doubleResult = value.Select(i => i * 0.25);
 
+#pragma warning disable λ1005
         var result = doubleResult.Match(
             ok: Identity,
             error: _ => -1.0);
+#pragma warning restore λ1005
 
         Assert.Equal(reference, result);
     }
@@ -176,7 +178,9 @@ public sealed partial class ResultTest
     {
         var result = InterestingStackTrace(1);
         var expectedStackTraceString = FunctionalAssert.Error(result).StackTrace;
+#pragma warning disable λ1006
         _ = result.Match(ok: Result.Ok, error: Result<int>.Error);
+#pragma warning restore λ1006
         var stackTraceString = FunctionalAssert.Error(result).StackTrace;
         Assert.Equal(expectedStackTraceString, stackTraceString);
     }
