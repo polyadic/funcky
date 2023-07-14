@@ -99,7 +99,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt, Option<int> fallback)
+                public static void M1(Option<int> optionOfInt, Option<int> fallback)
                 {
                     optionOfInt.Match(none: fallback, some: x => Option.Return(x));
                     optionOfInt.Match(none: fallback, some: x => Option.Some(x));
@@ -115,6 +115,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: fallback, some: Option.Return);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt, Either<string, int> fallback)
+                {
+                    eitherOfInt.Match(right: Either<string>.Return, left: _ => fallback);
+                }
             }
             """;
         const string fixedCode =
@@ -126,7 +131,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt, Option<int> fallback)
+                public static void M1(Option<int> optionOfInt, Option<int> fallback)
                 {
                     optionOfInt.OrElse(fallback);
                     optionOfInt.OrElse(fallback);
@@ -142,6 +147,11 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.OrElse(fallback);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt, Either<string, int> fallback)
+                {
+                    eitherOfInt.OrElse(_ => fallback);
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -156,6 +166,7 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(15, 9, 15, 61),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(16, 9, 16, 69),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(22, 9, 22, 58),
+                VerifyCS.Diagnostic(PreferOrElse).WithSpan(27, 9, 27, 77),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }

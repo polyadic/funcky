@@ -82,7 +82,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, noneArgumentIndex.ToString()));
         }
 
-        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(matchInvocation, receiverType, someArgument))
+        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(alternativeMonadType, matchInvocation, receiverType, someArgument))
         {
             var noneArgumentIndex = matchInvocation.Arguments.IndexOf(noneArgument);
             return Diagnostic.Create(

@@ -47,26 +47,32 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
     }
 
     private static AlternativeMonadType? Option(Compilation compilation)
-        => compilation.GetOptionOfTType() is { } optionType
+        => compilation.GetOptionOfTType() is { } optionOfTType
+            && compilation.GetOptionType() is { } optionType
             ? new AlternativeMonadType(
-                optionType,
+                optionOfTType,
+                constructorsType: optionType,
                 matchHasSuccessStateFirst: false,
                 returnAlias: OptionSomeMethodName,
                 extensionsType: compilation.GetOptionExtensionsType())
             : null;
 
     private static AlternativeMonadType? Either(Compilation compilation)
-        => compilation.GetEitherOfTType() is { } optionType
+        => compilation.GetEitherOfTType() is { } eitherOfTType
+            && compilation.GetEitherType() is { } eitherType
             ? new AlternativeMonadType(
-                optionType,
+                eitherOfTType,
+                constructorsType: eitherType,
                 matchHasSuccessStateFirst: false,
                 returnAlias: EitherRightMethodName)
             : null;
 
     private static AlternativeMonadType? Result(Compilation compilation)
-        => compilation.GetResultOfTType() is { } optionType
+        => compilation.GetResultOfTType() is { } resultOfTType
+            && compilation.GetResultType() is { } resultType
             ? new AlternativeMonadType(
-                optionType,
+                resultOfTType,
+                constructorsType: resultType,
                 matchHasSuccessStateFirst: true,
                 returnAlias: ResultOkMethodName)
             : null;

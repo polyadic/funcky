@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
-using static Funcky.Analyzers.OptionReturnMatching;
+using static Funcky.Analyzers.MonadReturnMatching;
 
 namespace Funcky.Analyzers;
 
@@ -17,7 +17,7 @@ public partial class AlternativeMonadAnalyzer
         description: string.Empty);
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Option.Return)</c>.</summary>
-    private static bool IsOrElseEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
+    private static bool IsOrElseEquivalent(AlternativeMonadType alternativeMonadType, IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation someArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
-            && IsOptionReturnFunction(someArgument.Value);
+            && IsReturnFunction(alternativeMonadType, someArgument.Value);
 }

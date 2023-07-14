@@ -55,6 +55,10 @@ public sealed partial class OptionMatchAnalyzerTest
 
                 public TRight GetOrElse(System.Func<TLeft, TRight> fallback) => default!;
 
+                public Either<TLeft, TRight> OrElse(Either<TLeft, TRight> fallback) => default;
+
+                public Either<TLeft, TRight> OrElse(System.Func<TLeft, Either<TLeft, TRight>> fallback) => default;
+
                 public TMatchResult Match<TMatchResult>(System.Func<TLeft, TMatchResult> left, System.Func<TRight, TMatchResult> right) => default!;
             }
 
