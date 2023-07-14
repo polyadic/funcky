@@ -72,6 +72,31 @@ public sealed partial class OptionMatchAnalyzerTest
                     => default;
             }
 
+            public readonly struct Result<TValidResult>
+                where TValidResult : notnull
+            {
+                public static Result<TValidResult> Error(System.Exception exception) => default;
+
+                public Result<TValidResult> OrElse(Result<TValidResult> fallback) => default;
+
+                public Result<TValidResult> OrElse(System.Func<System.Exception, Result<TValidResult>> fallback) => default;
+
+                public TValidResult GetOrElse(TValidResult fallback) => default!;
+
+                public TValidResult GetOrElse(System.Func<System.Exception, TValidResult> fallback) => default!;
+
+                public Result<TResult> SelectMany<TResult>(System.Func<TValidResult, Result<TResult>> selector) where TResult : notnull => default;
+
+                public TMatchResult Match<TMatchResult>(System.Func<TValidResult, TMatchResult> ok, System.Func<System.Exception, TMatchResult> error) => default!;
+            }
+
+            public static class Result
+            {
+                public static Result<TValidResult> Ok<TValidResult>(TValidResult result) where TValidResult : notnull => default;
+
+                public static Result<TValidResult> Return<TValidResult>(TValidResult result) where TValidResult : notnull => default;
+            }
+
             public sealed class RequireStruct<T> where T : struct { }
 
             public sealed class RequireClass<T> where T : class { }
