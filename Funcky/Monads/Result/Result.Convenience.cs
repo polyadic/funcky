@@ -13,10 +13,26 @@ public readonly partial struct Result<TValidResult>
         return this;
     }
 
+    /// <remarks>Careful! This overload discards the exception.</remarks>
+    [Pure]
+    public Result<TValidResult> OrElse(Result<TValidResult> fallback)
+        => Match(error: _ => fallback, ok: Result.Return);
+
+    [Pure]
+    public Result<TValidResult> OrElse(Func<Exception, Result<TValidResult>> fallback)
+        => Match(error: fallback, ok: Result.Return);
+
+    /// <remarks>Careful! This overload discards the exception.</remarks>
+    [Pure]
+    public TValidResult GetOrElse(TValidResult fallback)
+        => Match(error: _ => fallback, ok: Identity);
+
+    [Pure]
+    public TValidResult GetOrElse(Func<Exception, TValidResult> fallback)
+        => Match(error: fallback, ok: Identity);
+
     public TValidResult GetOrThrow()
-        => Match(
-            ok: Identity,
-            error: ThrowWithOriginalStackTrace);
+        => GetOrElse(ThrowWithOriginalStackTrace);
 
     private static TValidResult ThrowWithOriginalStackTrace(Exception exception)
     {
