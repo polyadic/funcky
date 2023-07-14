@@ -1,10 +1,10 @@
 using Xunit;
-using static Funcky.Analyzers.OptionMatchAnalyzer;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OptionMatchAnalyzer, Funcky.Analyzers.OptionMatchToOrElseCodeFix>;
+using static Funcky.Analyzers.AlternativeMonadAnalyzer;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToOrElseCodeFix>;
 
 namespace Funcky.Analyzers.Test;
 
-public sealed partial class OptionMatchAnalyzerTest
+public sealed partial class AlternativeMonadAnalyzerTest
 {
     [Fact]
     public async Task IssuesWarningForReimplementationOfGetOrElse()
@@ -18,7 +18,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt)
+                public static void M1(Option<int> optionOfInt)
                 {
                     optionOfInt.Match(none: 42, some: x => x);
                     optionOfInt.Match(some: x => x, none: 42);
@@ -33,6 +33,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: fallback, some: x => x);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.Match(left: _ => 42, right: x => x);
+                }
+
+                public static void M3(Result<int> resultOfInt)
+                {
+                    resultOfInt.Match(error: _ => 42, ok: x => x);
+                }
             }
             """;
         const string fixedCode =
@@ -44,7 +54,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt)
+                public static void M1(Option<int> optionOfInt)
                 {
                     optionOfInt.GetOrElse(42);
                     optionOfInt.GetOrElse(42);
@@ -59,6 +69,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.GetOrElse(fallback);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.GetOrElse(_ => 42);
+                }
+
+                public static void M3(Result<int> resultOfInt)
+                {
+                    resultOfInt.GetOrElse(_ => 42);
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -72,6 +92,8 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(14, 9, 14, 54),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(15, 9, 15, 62),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(21, 9, 21, 51),
+                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(26, 9, 26, 56),
+                VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(31, 9, 31, 54),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }
@@ -88,7 +110,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt, Option<int> fallback)
+                public static void M1(Option<int> optionOfInt, Option<int> fallback)
                 {
                     optionOfInt.Match(none: fallback, some: x => Option.Return(x));
                     optionOfInt.Match(none: fallback, some: x => Option.Some(x));
@@ -104,6 +126,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: fallback, some: Option.Return);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt, Either<string, int> fallback)
+                {
+                    eitherOfInt.Match(right: Either<string>.Return, left: _ => fallback);
+                }
+
+                public static void M3(Result<int> resultOfInt, Result<int> fallback)
+                {
+                    resultOfInt.Match(ok: Result.Return, error: _ => fallback);
+                }
             }
             """;
         const string fixedCode =
@@ -115,7 +147,7 @@ public sealed partial class OptionMatchAnalyzerTest
 
             public static class C
             {
-                public static void M(Option<int> optionOfInt, Option<int> fallback)
+                public static void M1(Option<int> optionOfInt, Option<int> fallback)
                 {
                     optionOfInt.OrElse(fallback);
                     optionOfInt.OrElse(fallback);
@@ -131,6 +163,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.OrElse(fallback);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt, Either<string, int> fallback)
+                {
+                    eitherOfInt.OrElse(_ => fallback);
+                }
+
+                public static void M3(Result<int> resultOfInt, Result<int> fallback)
+                {
+                    resultOfInt.OrElse(_ => fallback);
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -145,6 +187,8 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(15, 9, 15, 61),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(16, 9, 16, 69),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(22, 9, 22, 58),
+                VerifyCS.Diagnostic(PreferOrElse).WithSpan(27, 9, 27, 77),
+                VerifyCS.Diagnostic(PreferOrElse).WithSpan(32, 9, 32, 67),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }
@@ -172,6 +216,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.Match(none: Option<TItem>.None, some: selector);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.Match(left: Either<string, int>.Left, right: x => Either<string>.Return(x * 2));
+                }
+
+                public static void M3(Result<int> resultOfInt)
+                {
+                    resultOfInt.Match(error: Result<int>.Error, ok: x => Result.Return(x * 2));
+                }
             }
             """;
         const string fixedCode =
@@ -194,6 +248,16 @@ public sealed partial class OptionMatchAnalyzerTest
                 {
                     option.SelectMany(selector);
                 }
+
+                public static void M2(Either<string, int> eitherOfInt)
+                {
+                    eitherOfInt.SelectMany(x => Either<string>.Return(x * 2));
+                }
+
+                public static void M3(Result<int> resultOfInt)
+                {
+                    resultOfInt.SelectMany(x => Result.Return(x * 2));
+                }
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(
@@ -203,6 +267,8 @@ public sealed partial class OptionMatchAnalyzerTest
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(10, 9, 10, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(11, 9, 11, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(17, 9, 17, 63),
+                VerifyCS.Diagnostic(PreferSelectMany).WithSpan(22, 9, 22, 100),
+                VerifyCS.Diagnostic(PreferSelectMany).WithSpan(27, 9, 27, 83),
             },
             fixedCode + Environment.NewLine + OptionStubCode);
     }

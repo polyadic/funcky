@@ -1,10 +1,11 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.AlternativeMonadErrorStateConstructorMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
 namespace Funcky.Analyzers;
 
-public partial class OptionMatchAnalyzer
+public partial class AlternativeMonadAnalyzer
 {
     public static readonly DiagnosticDescriptor PreferSelectMany = new DiagnosticDescriptor(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",
@@ -16,11 +17,7 @@ public partial class OptionMatchAnalyzer
         description: string.Empty);
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: Option&lt;T&gt;>.None, some: A)</c>.</summary>
-    private static bool IsSelectManyEquivalent(IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation noneArgument)
+    private static bool IsSelectManyEquivalent(AlternativeMonadType alternativeMonadType, IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation errorStateArgument)
         => SymbolEqualityComparer.IncludeNullability.Equals(receiverType, matchInvocation.Type)
-            && IsOptionNoneExpression(noneArgument.Value);
-
-    private static bool IsOptionNoneExpression(IOperation operation)
-        => operation is IPropertyReferenceOperation { Property: { Name: OptionNonePropertyName, IsStatic: true, ContainingType: var type } }
-            && SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, operation.SemanticModel?.Compilation.GetOptionOfTType());
+            && IsErrorStateConstructorReference(alternativeMonadType, errorStateArgument.Value);
 }

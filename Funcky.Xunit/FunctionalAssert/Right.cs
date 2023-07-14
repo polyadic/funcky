@@ -46,9 +46,8 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return either.Match(
-                right: Identity,
-                left: static left => throw new AssertActualExpectedException(
+            return either.GetOrElse(
+                static left => throw new AssertActualExpectedException(
                     expected: "Right(...)",
                     actual: $"Left({left})",
                     userMessage: $"{nameof(FunctionalAssert)}.{nameof(Right)}() Failure"));

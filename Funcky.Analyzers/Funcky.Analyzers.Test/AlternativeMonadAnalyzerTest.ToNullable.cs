@@ -1,10 +1,10 @@
 using Xunit;
-using static Funcky.Analyzers.OptionMatchAnalyzer;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OptionMatchAnalyzer, Funcky.Analyzers.OptionMatchToToNullableCodeFix>;
+using static Funcky.Analyzers.AlternativeMonadAnalyzer;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToNullableCodeFix>;
 
 namespace Funcky.Analyzers.Test;
 
-public sealed partial class OptionMatchAnalyzerTest
+public sealed partial class AlternativeMonadAnalyzerTest
 {
     [Fact]
     public async Task WarnsAndFixesToNullableEquivalents()

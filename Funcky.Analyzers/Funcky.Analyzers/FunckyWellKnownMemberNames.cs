@@ -10,7 +10,13 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionNonePropertyName = "None";
 
-    public const string OptionToNullableMethodName = "ToNullable";
+    public const string EitherRightMethodName = "Right";
+
+    public const string EitherLeftMethodName = "Left";
+
+    public const string ResultOkMethodName = "Ok";
+
+    public const string ResultErrorMethodName = "Error";
 
     /// <summary>The name of the identity function.</summary>
     public const string IdentityMethodName = "Identity";
@@ -29,4 +35,7 @@ public static class FunckyWellKnownMemberNames
 
     /// <summary>The <c>Where</c> method on monad-like types.</summary>
     public const string WhereMethodName = "Where";
+
+    /// <summary>The <c>ToNullable</c> method on alternative monad types.</summary>
+    public const string ToNullableMethodName = "ToNullable";
 }

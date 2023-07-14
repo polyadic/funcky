@@ -51,9 +51,11 @@ public sealed partial class ResultTest
     {
         var doubleResult = value.Select(i => i * 0.25);
 
+#pragma warning disable λ1005
         var result = doubleResult.Match(
             ok: Identity,
             error: _ => -1.0);
+#pragma warning restore λ1005
 
         Assert.Equal(reference, result);
     }
