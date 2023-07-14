@@ -1,25 +1,16 @@
-using System.Collections;
 using Microsoft.CodeAnalysis;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
 namespace Funcky.Analyzers;
 
-internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymbol, AlternativeMonadType>
+internal sealed class AlternativeMonadTypeCollection
 {
-    private readonly IReadOnlyDictionary<ISymbol, AlternativeMonadType> _types;
-
-    private AlternativeMonadTypeCollection(IReadOnlyDictionary<ISymbol, AlternativeMonadType> types)
+    private AlternativeMonadTypeCollection(IReadOnlyDictionary<ISymbol, AlternativeMonadType> value)
     {
-        _types = types;
+        Value = value;
     }
 
-    public int Count => _types.Count;
-
-    public IEnumerable<ISymbol> Keys => _types.Keys;
-
-    public IEnumerable<AlternativeMonadType> Values => _types.Values;
-
-    public AlternativeMonadType this[ISymbol key] => _types[key];
+    public IReadOnlyDictionary<ISymbol, AlternativeMonadType> Value { get; }
 
     public static AlternativeMonadTypeCollection FromCompilation(Compilation compilation)
     {
@@ -29,14 +20,6 @@ internal sealed class AlternativeMonadTypeCollection : IReadOnlyDictionary<ISymb
         AddAlternativeMonadType(alternativeMonadTypes, Result(compilation));
         return new(alternativeMonadTypes);
     }
-
-    public IEnumerator<KeyValuePair<ISymbol, AlternativeMonadType>> GetEnumerator() => _types.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    public bool ContainsKey(ISymbol key) => _types.ContainsKey(key);
-
-    public bool TryGetValue(ISymbol key, out AlternativeMonadType value) => _types.TryGetValue(key, out value);
 
     private static void AddAlternativeMonadType(IDictionary<ISymbol, AlternativeMonadType> dictionary, AlternativeMonadType? alternativeMonadType)
     {

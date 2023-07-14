@@ -24,7 +24,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
         var alternativeMonadTypes = AlternativeMonadTypeCollection.FromCompilation(context.Compilation);
-        if (alternativeMonadTypes.Any())
+        if (alternativeMonadTypes.Value.Any())
         {
             context.RegisterOperationAction(context => AnalyzeInvocation(context, alternativeMonadTypes), OperationKind.Invocation);
         }
@@ -57,7 +57,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
            && invocation.TargetMethod.Name == MatchMethodName
            && invocation.Arguments.Length == 2
-           && alternativeMonadTypes.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
+           && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
            && (matchReceiverType = receiverType) is var _;
     }
 
