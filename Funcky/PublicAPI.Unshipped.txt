@@ -1,4 +1,5 @@
 #nullable enable
+Funcky.Extensions.EnumeratorExtensions
 Funcky.Monads.Either<TLeft, TRight>.InspectLeft(System.Action<TLeft>! inspector) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.OrElse(Funcky.Monads.Either<TLeft, TRight> fallback) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.Either<TLeft, TRight>.OrElse(System.Func<TLeft, Funcky.Monads.Either<TLeft, TRight>>! fallback) -> Funcky.Monads.Either<TLeft, TRight>
@@ -8,3 +9,4 @@ Funcky.Monads.Result<TValidResult>.GetOrElse(TValidResult fallback) -> TValidRes
 Funcky.Monads.Result<TValidResult>.InspectError(System.Action<System.Exception!>! inspector) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.OrElse(Funcky.Monads.Result<TValidResult> fallback) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.OrElse(System.Func<System.Exception!, Funcky.Monads.Result<TValidResult>>! fallback) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Extensions.EnumeratorExtensions.MoveNextOrNone<T>(this System.Collections.Generic.IEnumerator<T>! enumerator) -> Funcky.Monads.Option<T>
