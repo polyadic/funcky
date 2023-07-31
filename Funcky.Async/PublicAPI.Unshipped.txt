@@ -1,1 +1,2 @@
 #nullable enable
+static Funcky.Monads.OptionAsyncExtensions.ToAsyncEnumerable<TItem>(this Funcky.Monads.Option<TItem> option) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
