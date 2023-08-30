@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -13,7 +14,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IAsyncEnumerable<TSource> source, int size)
-        => ChunkEnumerable(source, ValidateChunkSize(size));
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size));
 
     /// <summary>
     /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
@@ -26,7 +27,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of results based on equally sized chunks.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> Chunk<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        => ChunkEnumerable(source, ValidateChunkSize(size))
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size))
             .Select(resultSelector);
 
     /// <summary>
@@ -40,7 +41,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of results based on equally sized chunks.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> ChunkAwait<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
-        => ChunkEnumerable(source, ValidateChunkSize(size))
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size))
             .SelectAwait(resultSelector);
 
     /// <summary>
@@ -54,13 +55,8 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of results based on equally sized chunks.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> ChunkAwaitWithCancellation<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
-        => ChunkEnumerable(source, ValidateChunkSize(size))
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size))
             .SelectAwaitWithCancellation(resultSelector);
-
-    private static int ValidateChunkSize(int size)
-        => size > 0
-            ? size
-            : throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
 
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IAsyncEnumerable<TSource> source, int size, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

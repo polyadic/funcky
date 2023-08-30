@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Funcky.Internal;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -19,7 +20,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>Returns a sequence of equally sized window sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IAsyncEnumerable<TSource> source, int width)
-        => SlidingWindowEnumerable(source, ValidateWindowWidth(width));
+        => SlidingWindowEnumerable(source, WindowWidthValidator.Validate(width));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(
@@ -36,10 +37,4 @@ public static partial class AsyncEnumerableExtensions
             }
         }
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int ValidateWindowWidth(int width)
-        => width > 0
-            ? width
-            : throw new ArgumentOutOfRangeException(nameof(width), width, "The width of the window must be bigger than 0");
 }

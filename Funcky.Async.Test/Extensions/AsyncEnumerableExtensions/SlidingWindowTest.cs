@@ -41,7 +41,7 @@ public sealed class SlidingWindowTest
     }
 
     [Fact]
-    public async Task SlidingWindowReturnsTheCorrectAmountOfWindowsAllOfEvenSizeAsync()
+    public async Task SlidingWindowReturnsTheCorrectAmountOfWindowsAllOfTheSameSizeAsync()
     {
         const int width = 5;
         var source = AsyncEnumerable.Range(0, 10);
@@ -74,9 +74,9 @@ public sealed class SlidingWindowTest
 
         await AsyncAssert.Collection(
             source.SlidingWindow(width),
-            window1 => { Assert.Equal(Enumerable.Range(0, width), window1); },
-            window2 => { Assert.Equal(Enumerable.Range(1, width), window2); },
-            window3 => { Assert.Equal(Enumerable.Range(2, width), window3); });
+            window => { Assert.Equal(Enumerable.Range(0, width), window); },
+            window => { Assert.Equal(Enumerable.Range(1, width), window); },
+            window => { Assert.Equal(Enumerable.Range(2, width), window); });
     }
 
     [Fact]
