@@ -10,3 +10,5 @@ Funcky.Monads.Result<TValidResult>.InspectError(System.Action<System.Exception!>
 Funcky.Monads.Result<TValidResult>.OrElse(Funcky.Monads.Result<TValidResult> fallback) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.OrElse(System.Func<System.Exception!, Funcky.Monads.Result<TValidResult>>! fallback) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Extensions.EnumeratorExtensions.MoveNextOrNone<T>(this System.Collections.Generic.IEnumerator<T>! enumerator) -> Funcky.Monads.Option<T>
+static Funcky.Extensions.StringExtensions.Chunk(this string! source, int size) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SlidingWindow(this string! source, int width) -> System.Collections.Generic.IEnumerable<string!>!
