@@ -14,8 +14,7 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
         <EnablePackageValidation>true</EnablePackageValidation>
-        <NoWarn>$(NoWarn);RS0026</NoWarn>
-        <!-- RS0026: Do not add multiple overloads with optional parameters -->
+        <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
     </PropertyGroup>
     <PropertyGroup>
         <RootNamespace>Funcky</RootNamespace>

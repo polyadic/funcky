@@ -74,9 +74,9 @@ public sealed class SlidingWindowTest
 
         await AsyncAssert.Collection(
             source.SlidingWindow(width),
-            window => { Assert.Equal(Enumerable.Range(0, width), window); },
-            window => { Assert.Equal(Enumerable.Range(1, width), window); },
-            window => { Assert.Equal(Enumerable.Range(2, width), window); });
+            window => Assert.Equal(Enumerable.Range(0, width), window),
+            window => Assert.Equal(Enumerable.Range(1, width), window),
+            window => Assert.Equal(Enumerable.Range(2, width), window));
     }
 
     [Fact]

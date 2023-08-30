@@ -20,10 +20,10 @@ public class SlidingWindowOnStringTest
 
         Assert.Collection(
             source.SlidingWindow(width),
-            window => { Assert.Equal("epsi", window); },
-            window => { Assert.Equal("psil", window); },
-            window => { Assert.Equal("silo", window); },
-            window => { Assert.Equal("ilon", window); });
+            window => Assert.Equal("epsi", window),
+            window => Assert.Equal("psil", window),
+            window => Assert.Equal("silo", window),
+            window => Assert.Equal("ilon", window));
     }
 
     [Fact]

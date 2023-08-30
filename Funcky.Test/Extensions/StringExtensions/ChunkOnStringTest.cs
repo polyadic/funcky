@@ -7,10 +7,10 @@ public class ChunkOnStringTest
 {
     [Property]
     public Property ChunkingAnEmptyStringWillAlwaysYieldAndEmptySequence(PositiveInt width)
-            => string.Empty
-                .Chunk(width.Get)
-                .None()
-                .ToProperty();
+        => string.Empty
+            .Chunk(width.Get)
+            .None()
+            .ToProperty();
 
     [Fact]
     public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
