@@ -40,7 +40,7 @@ public sealed class SlidingWindowTest
     }
 
     [Fact]
-    public void SlidingWindowReturnsTheCorrectAmountOfWindowsAllOfEvenSize()
+    public void SlidingWindowReturnsTheCorrectAmountOfWindowsAllOfTheSameSize()
     {
         const int width = 5;
         var source = Enumerable.Range(0, 10);
@@ -70,8 +70,8 @@ public sealed class SlidingWindowTest
 
         Assert.Collection(
             source.SlidingWindow(width),
-            window1 => { Assert.Equal(Enumerable.Range(0, width), window1); },
-            window2 => { Assert.Equal(Enumerable.Range(1, width), window2); },
-            window3 => { Assert.Equal(Enumerable.Range(2, width), window3); });
+            window => Assert.Equal(Enumerable.Range(0, width), window),
+            window => Assert.Equal(Enumerable.Range(1, width), window),
+            window => Assert.Equal(Enumerable.Range(2, width), window));
     }
 }

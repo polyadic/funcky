@@ -31,11 +31,11 @@ public sealed class ChunkTest
 
         Assert.Collection(
             chunked,
-            a =>
+            chunk =>
             {
                 Assert.Collection(
-                    a,
-                    aa => Assert.Equal(1, aa));
+                    chunk,
+                    value => Assert.Equal(1, value));
             });
     }
 
@@ -48,29 +48,29 @@ public sealed class ChunkTest
 
         Assert.Collection(
             chunked,
-            a =>
+            chunk =>
             {
                 Assert.Collection(
-                    a,
-                    aa => Assert.Equal(1, aa),
-                    ab => Assert.Equal(2, ab),
-                    ac => Assert.Equal(3, ac));
+                    chunk,
+                    value => Assert.Equal(1, value),
+                    value => Assert.Equal(2, value),
+                    value => Assert.Equal(3, value));
             },
-            b =>
+            chunk =>
             {
                 Assert.Collection(
-                    b,
-                    ba => Assert.Equal(4, ba),
-                    bb => Assert.Equal(5, bb),
-                    bc => Assert.Equal(6, bc));
+                    chunk,
+                    value => Assert.Equal(4, value),
+                    value => Assert.Equal(5, value),
+                    value => Assert.Equal(6, value));
             },
-            c =>
+            chunk =>
             {
                 Assert.Collection(
-                    c,
-                    ca => Assert.Equal(7, ca),
-                    cb => Assert.Equal(8, cb),
-                    cc => Assert.Equal(9, cc));
+                    chunk,
+                    value => Assert.Equal(7, value),
+                    value => Assert.Equal(8, value),
+                    value => Assert.Equal(9, value));
             });
     }
 
@@ -84,18 +84,9 @@ public sealed class ChunkTest
 
         Assert.Collection(
             chunked,
-            a =>
-            {
-                Assert.Equal(chunkSize, a.Count);
-            },
-            b =>
-            {
-                Assert.Equal(chunkSize, b.Count);
-            },
-            c =>
-            {
-                Assert.Equal(numbers.Count % chunkSize, c.Count);
-            });
+            chunk => Assert.Equal(chunkSize, chunk.Count),
+            chunk => Assert.Equal(chunkSize, chunk.Count),
+            chunk => Assert.Equal(numbers.Count % chunkSize, chunk.Count));
     }
 
     [Theory]

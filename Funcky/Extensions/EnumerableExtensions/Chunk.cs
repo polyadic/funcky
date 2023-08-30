@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -18,7 +19,7 @@ public static partial class EnumerableExtensions
 #else
     public static IEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
 #endif
-        => ChunkEnumerable(source, ValidateChunkSize(size));
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size));
 
     /// <summary>
     /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
@@ -31,13 +32,8 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence of results based on equally sized chunks.</returns>
     [Pure]
     public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        => ChunkEnumerable(source, ValidateChunkSize(size))
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size))
             .Select(resultSelector);
-
-    private static int ValidateChunkSize(int size)
-        => size > 0
-            ? size
-            : throw new ArgumentOutOfRangeException(nameof(size), size, "Size must be bigger than 0");
 
     private static IEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IEnumerable<TSource> source, int size)
     {

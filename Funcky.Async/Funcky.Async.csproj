@@ -35,6 +35,8 @@
         <Compile Include="..\Funcky\Internal\Mixer.cs" Link="Internal\Mixer.cs" />
         <Compile Include="..\Funcky\Internal\SlidingWindowQueue.cs" Link="Internal\SlidingWindowQueue.cs" />
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
+        <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
+        <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
         <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMemberTypes.cs" Link="Compatibility\DynamicallyAccessedMemberTypes.cs" />
         <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMembersAttribute.cs" Link="Compatibility\DynamicallyAccessedMembersAttribute.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
