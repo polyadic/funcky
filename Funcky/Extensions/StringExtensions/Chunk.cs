@@ -35,6 +35,7 @@ public static partial class StringExtensions
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int DivisionWithCeiling(int dividend, int divisior)
         => (dividend + divisior - 1) / divisior;
 }

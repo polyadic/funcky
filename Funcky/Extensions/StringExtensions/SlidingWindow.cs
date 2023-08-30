@@ -19,6 +19,7 @@ public static partial class StringExtensions
     private static IEnumerable<string> StringSlidingWindow(string source, int width)
     {
         var numberOfWindows = source.Length - width + 1;
+
         for (var index = 0; index < numberOfWindows; ++index)
         {
             yield return source.Substring(index, width);
