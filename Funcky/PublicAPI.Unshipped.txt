@@ -14,3 +14,5 @@ static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string!
 static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this System.ReadOnlySpan<char> value, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
 static Funcky.Extensions.ParseExtensions.ParseOrNone<TParseable>(this string? value, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParseable>
 static Funcky.Extensions.ParseExtensions.ParseOrNone<TParseable>(this System.ReadOnlySpan<char> value, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParseable>
+static Funcky.Extensions.StringExtensions.Chunk(this string! source, int size) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SlidingWindow(this string! source, int width) -> System.Collections.Generic.IEnumerable<string!>!
