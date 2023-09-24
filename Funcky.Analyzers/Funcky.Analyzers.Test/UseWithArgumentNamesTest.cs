@@ -5,6 +5,15 @@ namespace Funcky.Analyzers.Test;
 
 public sealed class UseWithArgumentNamesTest
 {
+    private const string AttributeSource =
+        """
+        namespace Funcky.CodeAnalysis
+        {
+            [System.AttributeUsage(System.AttributeTargets.Method)]
+            internal sealed class UseWithArgumentNamesAttribute : System.Attribute { }
+        }
+        """;
+
     [Fact]
     public async Task ArgumentsThatAlreadyUseArgumentNamesGetNoDiagnostic()
     {
@@ -35,5 +44,30 @@ public sealed class UseWithArgumentNamesTest
         };
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<UseWithArgumentNamesAnalyzer, AddArgumentNameCodeFix>(expectedDiagnostics, "UseWithArgumentNames");
+    }
+
+    [Fact]
+    public async Task IgnoresCallsToMethodsInsideExpressionTrees()
+    {
+        var inputCode =
+            $$"""
+            using System;
+            using System.Linq.Expressions;
+            using Funcky.CodeAnalysis;
+
+            class Test
+            {
+                private void Syntax()
+                {
+                    Expression<Action> expr = () => Method(10, 20);
+                }
+
+                [UseWithArgumentNames]
+                private void Method(int x, int y) { }
+            }
+
+            {{AttributeSource}}
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode);
     }
 }

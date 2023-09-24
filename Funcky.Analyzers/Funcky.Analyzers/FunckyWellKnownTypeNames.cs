@@ -25,4 +25,6 @@ public static class FunckyWellKnownTypeNames
     public static INamedTypeSymbol? GetSequenceType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Sequence");
 
     public static INamedTypeSymbol? GetFunctionalType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Functional");
+
+    public static INamedTypeSymbol? GetExpressionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
 }
