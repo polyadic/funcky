@@ -8,7 +8,7 @@ namespace Funcky.Analyzers;
 
 internal static class SyntaxNodeExtensions
 {
-    // Copied from Roslyn's source code as this API is not public:
+    // Adapted from Roslyn's source code as this API is not public:
     // https://github.com/dotnet/roslyn/blob/232f7afa4966411958759c880de3a1765bdb28a0/src/Workspaces/SharedUtilitiesAndExtensions/Compiler/CSharp/Extensions/SyntaxNodeExtensions.cs#L925
     public static bool IsInExpressionTree(
         [NotNullWhen(returnValue: true)] this SyntaxNode? node,
@@ -26,33 +26,31 @@ internal static class SyntaxNodeExtensions
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (current.IsAnyLambda())
+            return current switch {
+                _ when current.IsAnyLambda() => LambdaIsExpressionTree(),
+                SelectOrGroupClauseSyntax or OrderingSyntax => QueryExpressionIsExpressionTree(),
+                QueryClauseSyntax queryClause => QueryClauseIsExpressionTree(queryClause),
+                _ => false,
+            };
+
+            bool LambdaIsExpressionTree()
             {
                 var typeInfo = semanticModel.GetTypeInfo(current, cancellationToken);
-                if (SymbolEqualityComparer.Default.Equals(expressionType, typeInfo.ConvertedType?.OriginalDefinition))
-                {
-                    return true;
-                }
-            }
-            else if (current is SelectOrGroupClauseSyntax or OrderingSyntax)
-            {
-                var info = semanticModel.GetSymbolInfo(current, cancellationToken);
-                if (TakesExpressionTree(info, expressionType))
-                {
-                    return true;
-                }
-            }
-            else if (current is QueryClauseSyntax queryClause)
-            {
-                var info = semanticModel.GetQueryClauseInfo(queryClause, cancellationToken);
-                if (TakesExpressionTree(info.CastInfo, expressionType) ||
-                    TakesExpressionTree(info.OperationInfo, expressionType))
-                {
-                    return true;
-                }
+                return SymbolEqualityComparer.Default.Equals(expressionType, typeInfo.ConvertedType?.OriginalDefinition);
             }
 
-            return false;
+            bool QueryExpressionIsExpressionTree()
+            {
+                var info = semanticModel.GetSymbolInfo(current, cancellationToken);
+                return TakesExpressionTree(info, expressionType);
+            }
+
+            bool QueryClauseIsExpressionTree(QueryClauseSyntax queryClause)
+            {
+                var info = semanticModel.GetQueryClauseInfo(queryClause, cancellationToken);
+                return TakesExpressionTree(info.CastInfo, expressionType)
+                    || TakesExpressionTree(info.OperationInfo, expressionType);
+            }
         }
 
         static bool TakesExpressionTree(SymbolInfo info, INamedTypeSymbol expressionType)
