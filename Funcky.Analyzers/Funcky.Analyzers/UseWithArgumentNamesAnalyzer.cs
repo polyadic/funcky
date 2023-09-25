@@ -33,17 +33,20 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
         {
             if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol)
             {
-                context.RegisterOperationAction(AnalyzeInvocation(attributeSymbol), OperationKind.Invocation);
+                var expressionOfTType = context.Compilation.GetExpressionOfTType();
+                context.RegisterOperationAction(AnalyzeInvocation(attributeSymbol, expressionOfTType), OperationKind.Invocation);
             }
         });
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol)
+    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol, INamedTypeSymbol? expressionOfTType)
         => context =>
         {
             var invocation = (IInvocationOperation)context.Operation;
+            var semanticModel = invocation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never be null for operations passed to an analyzer (according to docs)");
 
-            if (invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol)))
+            if (invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol))
+                && !invocation.Syntax.IsInExpressionTree(semanticModel, expressionOfTType, context.CancellationToken))
             {
                 foreach (var argument in invocation.Arguments)
                 {
