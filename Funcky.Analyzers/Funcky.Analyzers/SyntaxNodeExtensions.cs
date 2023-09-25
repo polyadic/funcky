@@ -16,47 +16,37 @@ internal static class SyntaxNodeExtensions
         [NotNullWhen(returnValue: true)] INamedTypeSymbol? expressionTypeOpt,
         CancellationToken cancellationToken)
     {
-        if (expressionTypeOpt != null)
+        return expressionTypeOpt is not null
+            && node is not null
+            && node.AncestorsAndSelf().Any(current => IsExpressionTree(current, expressionTypeOpt, semanticModel, cancellationToken));
+
+        static bool IsExpressionTree(
+            SyntaxNode current,
+            INamedTypeSymbol expressionType,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            for (var current = node; current != null; current = current.Parent)
+            if (current.IsAnyLambda())
             {
-                if (current.IsAnyLambda())
+                var typeInfo = semanticModel.GetTypeInfo(current, cancellationToken);
+                if (SymbolEqualityComparer.Default.Equals(expressionType, typeInfo.ConvertedType?.OriginalDefinition))
                 {
-                    var typeInfo = semanticModel.GetTypeInfo(current, cancellationToken);
-                    if (SymbolEqualityComparer.Default.Equals(expressionTypeOpt, typeInfo.ConvertedType?.OriginalDefinition))
-                    {
-                        return true;
-                    }
-                }
-                else if (current is SelectOrGroupClauseSyntax or OrderingSyntax)
-                {
-                    var info = semanticModel.GetSymbolInfo(current, cancellationToken);
-                    if (TakesExpressionTree(info, expressionTypeOpt))
-                    {
-                        return true;
-                    }
-                }
-                else if (current is QueryClauseSyntax queryClause)
-                {
-                    var info = semanticModel.GetQueryClauseInfo(queryClause, cancellationToken);
-                    if (TakesExpressionTree(info.CastInfo, expressionTypeOpt) ||
-                        TakesExpressionTree(info.OperationInfo, expressionTypeOpt))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-        }
-
-        return false;
-
-        static bool TakesExpressionTree(SymbolInfo info, INamedTypeSymbol expressionType)
-        {
-            foreach (var symbol in GetAllSymbols(info))
+            else if (current is SelectOrGroupClauseSyntax or OrderingSyntax)
             {
-                if (symbol is IMethodSymbol method &&
-                    method.Parameters.Length > 0 &&
-                    SymbolEqualityComparer.Default.Equals(expressionType, method.Parameters[0].Type?.OriginalDefinition))
+                var info = semanticModel.GetSymbolInfo(current, cancellationToken);
+                if (TakesExpressionTree(info, expressionType))
+                {
+                    return true;
+                }
+            }
+            else if (current is QueryClauseSyntax queryClause)
+            {
+                var info = semanticModel.GetQueryClauseInfo(queryClause, cancellationToken);
+                if (TakesExpressionTree(info.CastInfo, expressionType) ||
+                    TakesExpressionTree(info.OperationInfo, expressionType))
                 {
                     return true;
                 }
@@ -64,6 +54,14 @@ internal static class SyntaxNodeExtensions
 
             return false;
         }
+
+        static bool TakesExpressionTree(SymbolInfo info, INamedTypeSymbol expressionType)
+            => GetAllSymbols(info).Any(symbol => TakesExpressionTreeAsFirstArgument(symbol, expressionType));
+
+        static bool TakesExpressionTreeAsFirstArgument(ISymbol symbol, INamedTypeSymbol expressionType)
+            => symbol is IMethodSymbol method
+                && method.Parameters.Length > 0
+                && SymbolEqualityComparer.Default.Equals(expressionType, method.Parameters[0].Type?.OriginalDefinition);
     }
 
     internal static ImmutableArray<ISymbol> GetAllSymbols(SymbolInfo info)
