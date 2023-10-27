@@ -18,22 +18,29 @@ public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLe
 
     private EitherOrBoth(TLeft left, TRight right)
     {
-        _left = left ?? throw new ArgumentNullException(nameof(left));
-        _right = right ?? throw new ArgumentNullException(nameof(right));
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        _left = left;
+        _right = right;
         _side = Side.Both;
     }
 
     private EitherOrBoth(TLeft left)
     {
-        _left = left ?? throw new ArgumentNullException(nameof(left));
+        ArgumentNullException.ThrowIfNull(left);
+
+        _left = left;
         _right = default!;
         _side = Side.Left;
     }
 
     private EitherOrBoth(TRight right)
     {
+        ArgumentNullException.ThrowIfNull(right);
+
         _left = default!;
-        _right = right ?? throw new ArgumentNullException(nameof(right));
+        _right = right;
         _side = Side.Right;
     }
 

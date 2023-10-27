@@ -12,10 +12,7 @@ public readonly partial struct Option<TItem>
 
     internal Option(TItem item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         _item = item;
         _hasItem = true;

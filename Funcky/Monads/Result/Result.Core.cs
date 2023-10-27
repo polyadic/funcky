@@ -24,10 +24,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 
     internal Result(TValidResult result)
     {
-        if (result is null)
-        {
-            throw new ArgumentNullException(nameof(result));
-        }
+        ArgumentNullException.ThrowIfNull(result);
 
         _result = result;
     }
@@ -61,10 +58,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     #endif
     public static Result<TValidResult> Error(Exception exception)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         if (exception.StackTrace is null)
         {
