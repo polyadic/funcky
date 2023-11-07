@@ -43,7 +43,7 @@ public static class UpCast<TResult>
     /// <code><![CDATA[
     /// Lazy<object> result = UpCast<object>.From(Lazy.Return("hello world"));
     /// ]]></code></example>
-    [SuppressMessage("", "IL2091: DynamicallyAccessedMembersMismatchTypeArgumentTargetsGenericParameter", Justification = "Public parameterless constructor is only used when a Lazy is created without providing a value or func.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2091", Justification = "Public parameterless constructor is only used when a Lazy is created without providing a value or func.")]
     public static Lazy<TResult> From<T>(Lazy<T> lazy)
         where T : TResult
         => lazy.Select(From);
