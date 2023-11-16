@@ -19,9 +19,10 @@
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
+        <TargetFrameworkForPublicApiAnalyzers>net7.0</TargetFrameworkForPublicApiAnalyzers>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net7.0'" />
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == '$(TargetFrameworkForPublicApiAnalyzers)'" />
         <PackageReference Include="Microsoft.Bcl.HashCode" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="Nullable" PrivateAssets="all" />
         <PackageReference Include="IsExternalInit" PrivateAssets="all" />
@@ -33,7 +34,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
     </ItemGroup>
-    <ItemGroup>
+    <!-- These files are included by Microsoft.CodeAnalysis.PublicApiAnalyzers is included. -->
+    <ItemGroup Condition="'$(TargetFramework)' != '$(TargetFrameworkForPublicApiAnalyzers)'">
         <AdditionalFiles Include="PublicAPI.Shipped.txt" />
         <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
