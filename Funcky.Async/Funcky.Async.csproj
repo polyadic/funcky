@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
-        <TargetFrameworks Condition="'$(FunckyBuildWithPreviewTargetFramework)' == 'true'">net8.0;$(TargetFrameworks)</TargetFrameworks>
+        <TargetFrameworks>net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
