@@ -28,7 +28,7 @@ public class GetNonEnumeratedCountOrNoneTest
     [Property]
     public Property GetNonEnumeratedCountOrNoneReturnsNoneForInstancesWithoutCount(List<int> list)
     {
-        return list.EraseNonEnumeratedCount().GetNonEnumeratedCountOrNone()
+        return list.PreventLinqOptimizations().GetNonEnumeratedCountOrNone()
             .Match(none: true, some: False)
             .ToProperty();
     }
