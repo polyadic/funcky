@@ -65,7 +65,7 @@ jobs:
     - uses: actions/setup-dotnet@v3
       name: Install Current .NET SDK
     - name: Generate NuGet Packages
-      run: dotnet pack --configuration Release --output nupkg
+      run: dotnet pack --output nupkg
     - uses: actions/upload-artifact@v3
       if: success() && github.ref == 'refs/heads/main'
       with:
