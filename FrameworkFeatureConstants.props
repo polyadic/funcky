@@ -16,6 +16,6 @@
 		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSEABLE</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE</DefineConstants>
+		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSEABLE</DefineConstants>
 	</PropertyGroup>
 </Project>

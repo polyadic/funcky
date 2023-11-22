@@ -26,7 +26,7 @@ public sealed class MaterializeTest
     [Fact]
     public void MaterializeReturnsImmutableCollectionWhenEnumerated()
     {
-        var sequence = Enumerable.Repeat("Hello world!", 3);
+        var sequence = Enumerable.Repeat("Hello world!", 3).PreventLinqOptimizations();
 
         Assert.IsType<ImmutableList<string>>(sequence.Materialize());
     }
@@ -34,10 +34,21 @@ public sealed class MaterializeTest
     [Fact]
     public void MaterializeWithMaterializationReturnsCorrectCollectionWhenEnumerate()
     {
-        var sequence = Enumerable.Repeat("Hello world!", 3);
+        var sequence = Enumerable.Repeat("Hello world!", 3).PreventLinqOptimizations();
 
         Assert.IsType<HashSet<string>>(sequence.Materialize(ToHashSet));
     }
+
+#if NET8_0_OR_GREATER
+    // This is an optimization added in .NET 8
+    [Fact]
+    public void MaterializeDoesNotEnumerableEnumerableReturnedByRepeat()
+    {
+        var sequence = Enumerable.Repeat("Hello world!", 3);
+        var materialized = sequence.Materialize<string, IReadOnlyCollection<string>>(_ => throw new FailException("Materialization should never be called"));
+        Assert.Same(sequence, materialized);
+    }
+#endif
 
     [Fact]
     public void MaterializeDoesNotEnumerateCollectionWhichImplementsICollectionOnly()
