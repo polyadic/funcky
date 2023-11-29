@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>Funcky.SourceGenerator.Test</AssemblyName>
         <RootNamespace>Funcky.SourceGenerator.Test</RootNamespace>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
