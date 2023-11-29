@@ -1,4 +1,4 @@
-#if GENERIC_PARSEABLE
+#if GENERIC_PARSABLE
 using System.Globalization;
 
 namespace Funcky.Test.Extensions.ParseExtensions;
@@ -6,7 +6,7 @@ namespace Funcky.Test.Extensions.ParseExtensions;
 public sealed partial class ParseExtensionsTest
 {
     [Theory]
-    [MemberData(nameof(ParseableDoubleNumbers))]
+    [MemberData(nameof(ParsableDoubleNumbers))]
     public void ParseGenericStringReturnsTheExpectedDouble(Option<double> expected, string input)
     {
         Assert.Equal(expected, input.ParseNumberOrNone<double>(NumberStyles.Number, null));
@@ -14,14 +14,14 @@ public sealed partial class ParseExtensionsTest
     }
 
     [Theory]
-    [MemberData(nameof(ParseableDoubleNumbers))]
+    [MemberData(nameof(ParsableDoubleNumbers))]
     public void ParseGenericSpanReturnsTheExpectedDouble(Option<double> expected, string input)
     {
         Assert.Equal(expected, input.AsSpan().ParseNumberOrNone<double>(NumberStyles.Number, null));
         Assert.Equal(expected, input.AsSpan().ParseOrNone<double>(null));
     }
 
-    public static TheoryData<Option<double>, string> ParseableDoubleNumbers()
+    public static TheoryData<Option<double>, string> ParsableDoubleNumbers()
         => new()
         {
             { Option.Some(1.0), "1.0" },
