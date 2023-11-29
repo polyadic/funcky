@@ -15,11 +15,11 @@ internal static class TestData
         = AsyncSequence.Return(FirstItem);
 
     public static readonly IAsyncEnumerable<int> EnumerableTwoItems
-        = new[] { 42, 1337 }.ToAsyncEnumerable();
+        = AsyncSequence.Return(42, 1337);
 
     public static readonly IAsyncEnumerable<string> EnumerableWithMoreThanOneItem
-        = new[] { FirstItem, MiddleItem, LastItem }.ToAsyncEnumerable();
+        = AsyncSequence.Return(FirstItem, MiddleItem, LastItem);
 
     public static readonly IAsyncEnumerable<int> OneToFive
-        = new[] { 1, 2, 3, 4, 5 }.ToAsyncEnumerable();
+        = AsyncSequence.Return(1, 2, 3, 4, 5);
 }

@@ -20,16 +20,22 @@ public sealed class IntersperseTest
     [Fact]
     public async Task InterspersingASequenceWithOneElementReturnsOriginalSequence()
     {
-        var source = Sequence.Return(10).ToAsyncEnumerable();
+        var source = AsyncSequence.Return(10);
         Assert.True(await source.SequenceEqualAsync(source.Intersperse(42)));
     }
 
     [Theory]
-    [InlineData(new[] { 1, 0, 2 }, new[] { 1, 2 })]
-    [InlineData(new[] { 1, 0, 2, 0, 3 }, new[] { 1, 2, 3 })]
-    [InlineData(new[] { 1, 0, 2, 0, 3, 0, 4 }, new[] { 1, 2, 3, 4 })]
-    public async Task InterspersingASequenceWithMoreThanOneElementReturnsExpectedSequence(IEnumerable<int> expected, IEnumerable<int> source)
+    [MemberData(nameof(ValueReferenceEnumerables))]
+    public async Task InterspersingASequenceWithMoreThanOneElementReturnsExpectedSequence(IAsyncEnumerable<int> expected, IAsyncEnumerable<int> source)
     {
-        Assert.True(await expected.ToAsyncEnumerable().SequenceEqualAsync(source.ToAsyncEnumerable().Intersperse(0)));
+        Assert.True(await expected.SequenceEqualAsync(source.Intersperse(0)));
     }
+
+    public static TheoryData<IAsyncEnumerable<int>, IAsyncEnumerable<int>> ValueReferenceEnumerables()
+        => new()
+        {
+            { AsyncSequence.Return(1, 0, 2), AsyncSequence.Return(1, 2) },
+            { AsyncSequence.Return(1, 0, 2, 0, 3), AsyncSequence.Return(1, 2, 3) },
+            { AsyncSequence.Return(1, 0, 2, 0, 3, 0, 4), AsyncSequence.Return(1, 2, 3, 4) },
+        };
 }
