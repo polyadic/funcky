@@ -27,7 +27,7 @@ public sealed class ZipLongestTest
     public async Task GivenTwoSequencesOfTheSameLengthWeGetNoNoneValue()
     {
         var numbers = AsyncEnumerable.Range(0, 3);
-        var strings = new[] { "Alpha", "Beta", "Gamma" }.ToAsyncEnumerable();
+        var strings = AsyncSequence.Return("Alpha", "Beta", "Gamma");
 
         var zipped = numbers
             .ZipLongest(strings);
@@ -43,7 +43,7 @@ public sealed class ZipLongestTest
     public async Task GivenTwoSequencesWeOfDifferentLengthWeGetTheLongerAndFillWithNone()
     {
         var numbers = AsyncEnumerable.Range(0, 10);
-        var strings = new[] { "Alpha", "Beta", "Gamma" }.ToAsyncEnumerable();
+        var strings = AsyncSequence.Return("Alpha", "Beta", "Gamma");
 
         var zipped = numbers
             .ZipLongest(strings);

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Funcky.Async.Test.TestUtilities;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
@@ -36,12 +35,12 @@ public sealed class WithPreviousTest
     [Fact]
     public async Task ASequenceWithMoreThanOneElementWithPreviousHasPreviousSetExceptOnFirstElement()
     {
-        var sequence = ImmutableArray.Create("foo", "bar", "baz", "qux").ToAsyncEnumerable();
-        var expectedSequenceWithPrevious = ImmutableArray.Create(
+        var sequence = AsyncSequence.Return("foo", "bar", "baz", "qux");
+        var expectedSequenceWithPrevious = AsyncSequence.Return(
             new ValueWithPrevious<string>("foo", Option<string>.None),
             new ValueWithPrevious<string>("bar", "foo"),
             new ValueWithPrevious<string>("baz", "bar"),
-            new ValueWithPrevious<string>("qux", "baz")).ToAsyncEnumerable();
+            new ValueWithPrevious<string>("qux", "baz"));
 
         Assert.Equal(await expectedSequenceWithPrevious.ToListAsync(), await sequence.WithPrevious().ToListAsync());
     }

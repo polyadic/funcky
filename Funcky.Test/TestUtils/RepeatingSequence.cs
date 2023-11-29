@@ -1,5 +1,3 @@
-using FsCheck;
-
 namespace Funcky.Test.TestUtils;
 
 public static class RepeatingSequence

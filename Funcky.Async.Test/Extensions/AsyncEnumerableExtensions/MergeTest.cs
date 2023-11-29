@@ -18,17 +18,17 @@ public sealed class MergeTest
     }
 
     [Fact]
-    public async Task MergeEmptySequencesResultsInAnEmptySequence()
+    public Task MergeEmptySequencesResultsInAnEmptySequence()
     {
         var emptySequence = AsyncEnumerable.Empty<int>();
 
-        await AsyncAssert.Empty(emptySequence.Merge(emptySequence, emptySequence, emptySequence));
+        return AsyncAssert.Empty(emptySequence.Merge(emptySequence, emptySequence, emptySequence));
     }
 
     [Fact]
     public async Task MergeAnEmptySequenceWithANonEmptySequenceResultsInTheNonEmptySequenceAsync()
     {
-        var nonEmptySequence = new List<int> { 1, 2, 4, 7 }.ToAsyncEnumerable();
+        var nonEmptySequence = AsyncSequence.Return(1, 2, 4, 7);
         var emptySequence = AsyncEnumerable.Empty<int>();
 
         await AsyncAssert.Equal(nonEmptySequence, nonEmptySequence.Merge(emptySequence));
@@ -38,41 +38,41 @@ public sealed class MergeTest
     [Property]
     public void TwoSingleSequencesAreMergedCorrectlyAsync(int first, int second)
     {
-        var sequence1 = Sequence.Return(first).ToAsyncEnumerable();
-        var sequence2 = Sequence.Return(second).ToAsyncEnumerable();
+        var sequence1 = AsyncSequence.Return(first);
+        var sequence2 = AsyncSequence.Return(second);
 
         var merged = sequence1.Merge(sequence2);
         Assert.True(merged.FirstAsync().Result <= merged.LastAsync().Result);
     }
 
     [Fact]
-    public async Task MergeTwoSequencesToOneAsync()
+    public Task MergeTwoSequencesToOneAsync()
     {
-        var sequence1 = new List<int> { 1, 2, 4, 7 }.ToAsyncEnumerable();
-        var sequence2 = new List<int> { 3, 5, 6, 8 }.ToAsyncEnumerable();
+        var sequence1 = AsyncSequence.Return(1, 2, 4, 7);
+        var sequence2 = AsyncSequence.Return(3, 5, 6, 8);
         var expected = AsyncEnumerable.Range(1, 8);
 
-        await AsyncAssert.Equal(expected, sequence1.Merge(sequence2));
+        return AsyncAssert.Equal(expected, sequence1.Merge(sequence2));
     }
 
     [Fact]
-    public async Task MergeASequenceOfSequences()
+    public Task MergeASequenceOfSequences()
     {
-        var sequence1 = new List<int> { 1, 2, 4, 7 }.ToAsyncEnumerable();
-        var sequence2 = new List<int> { 3, 5, 6, 8 }.ToAsyncEnumerable();
+        var sequence1 = AsyncSequence.Return(1, 2, 4, 7);
+        var sequence2 = AsyncSequence.Return(3, 5, 6, 8);
         var mergable = ImmutableList<IAsyncEnumerable<int>>.Empty.Add(sequence1).Add(sequence2);
         var expected = AsyncEnumerable.Range(1, 8);
 
-        await AsyncAssert.Equal(expected, mergable.Merge());
+        return AsyncAssert.Equal(expected, mergable.Merge());
     }
 
     [Fact]
-    public async Task MergeASequenceWithADifferentComparer()
+    public Task MergeASequenceWithADifferentComparer()
     {
-        var sequence1 = new List<int> { 7, 4, 2, 1 }.ToAsyncEnumerable();
-        var sequence2 = new List<int> { 8, 6, 5, 3 }.ToAsyncEnumerable();
+        var sequence1 = AsyncSequence.Return(7, 4, 2, 1);
+        var sequence2 = AsyncSequence.Return(8, 6, 5, 3);
         var expected = AsyncEnumerable.Range(1, 8).Reverse();
 
-        await AsyncAssert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
+        return AsyncAssert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
     }
 }

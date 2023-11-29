@@ -13,42 +13,20 @@ public sealed class WhereNotNullTest
     }
 
     [Fact]
-    public async Task WhereNotNullRemovesNullReferenceValues()
+    public Task WhereNotNullRemovesNullReferenceValues()
     {
-        var input = new[]
-        {
-            null,
-            "foo",
-            null,
-            "bar",
-            null,
-        }.ToAsyncEnumerable();
-        var expectedResult = new[]
-        {
-            "foo",
-            "bar",
-        }.ToAsyncEnumerable();
+        var input = AsyncSequence.Return(null, "foo", null, "bar", null);
+        var expectedResult = AsyncSequence.Return("foo", "bar");
 
-        await AsyncAssert.Equal(expectedResult, input.WhereNotNull());
+        return AsyncAssert.Equal(expectedResult, input.WhereNotNull());
     }
 
     [Fact]
-    public async Task WhereNotNullRemovesNullValueTypeValues()
+    public Task WhereNotNullRemovesNullValueTypeValues()
     {
-        var input = new int?[]
-        {
-            null,
-            10,
-            null,
-            20,
-            null,
-        }.ToAsyncEnumerable();
-        var expectedResult = new[]
-        {
-            10,
-            20,
-        }.ToAsyncEnumerable();
+        var input = AsyncSequence.Return<int?>(null, 10, null, 20, null);
+        var expectedResult = AsyncSequence.Return(10, 20);
 
-        await AsyncAssert.Equal(expectedResult, input.WhereNotNull());
+        return AsyncAssert.Equal(expectedResult, input.WhereNotNull());
     }
 }
