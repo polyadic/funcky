@@ -2,25 +2,25 @@ namespace Funcky.Extensions;
 
 public static partial class ParseExtensions
 {
-#if GENERIC_PARSEABLE
-    public static Option<TParseable> ParseOrNone<TParseable>(this ReadOnlySpan<char> value, IFormatProvider? provider)
-        where TParseable : ISpanParsable<TParseable>
-        => TParseable.TryParse(value, provider, out var result)
+#if GENERIC_PARSABLE
+    public static Option<TParsable> ParseOrNone<TParsable>(this ReadOnlySpan<char> value, IFormatProvider? provider)
+        where TParsable : ISpanParsable<TParsable>
+        => TParsable.TryParse(value, provider, out var result)
             ? result
-            : Option<TParseable>.None;
+            : Option<TParsable>.None;
 
-    public static Option<TParseable> ParseOrNone<TParseable>(this string? value, IFormatProvider? provider)
-        where TParseable : IParsable<TParseable>
-        => TParseable.TryParse(value, provider, out var result)
+    public static Option<TParsable> ParseOrNone<TParsable>(this string? value, IFormatProvider? provider)
+        where TParsable : IParsable<TParsable>
+        => TParsable.TryParse(value, provider, out var result)
             ? result
-            : Option<TParseable>.None;
+            : Option<TParsable>.None;
 #endif
 
-#if UTF8_SPAN_PARSEABLE
-    public static Option<TParseable> ParseOrNone<TParseable>(this ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
-        where TParseable : IUtf8SpanParsable<TParseable>
-        => TParseable.TryParse(utf8Text, provider, out var result)
+#if UTF8_SPAN_PARSABLE
+    public static Option<TParsable> ParseOrNone<TParsable>(this ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+        where TParsable : IUtf8SpanParsable<TParsable>
+        => TParsable.TryParse(utf8Text, provider, out var result)
             ? result
-            : Option<TParseable>.None;
+            : Option<TParsable>.None;
 #endif
 }

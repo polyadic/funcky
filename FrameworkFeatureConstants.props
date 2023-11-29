@@ -13,9 +13,9 @@
 		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED;PRIORITY_QUEUE;TRY_GET_NON_ENUMERATED_COUNT;HTTP_HEADERS_NON_VALIDATED;ELEMENT_AT_INDEX</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
-		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSEABLE</DefineConstants>
+		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSABLE</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSEABLE</DefineConstants>
+		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSABLE</DefineConstants>
 	</PropertyGroup>
 </Project>
