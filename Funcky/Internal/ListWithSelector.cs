@@ -8,23 +8,19 @@ internal class ListWithSelector
         => new(source, selector);
 }
 
-internal class ListWithSelector<TSource, TResult> : IList<TResult>
+internal class ListWithSelector<TSource, TResult>(IList<TSource> source, Func<IList<TSource>, Func<TSource, int, TResult>> selector) : IList<TResult>
 {
-    private readonly IList<TSource> _source;
-    private readonly Func<TSource, int, TResult> _selector;
-
-    public ListWithSelector(IList<TSource> source, Func<IList<TSource>, Func<TSource, int, TResult>> selector)
-        => (_source, _selector) = (source, selector(source));
+    private readonly Func<TSource, int, TResult> _selector = selector(source);
 
     public int Count
-        => _source.Count;
+        => source.Count;
 
     public bool IsReadOnly
         => true;
 
     public TResult this[int index]
     {
-        get => _selector(_source[index], index);
+        get => _selector(source[index], index);
         set => throw new NotSupportedException();
     }
 
@@ -35,19 +31,19 @@ internal class ListWithSelector<TSource, TResult> : IList<TResult>
         => throw new NotSupportedException();
 
     public bool Contains(TResult item)
-        => _source.Select(_selector).Contains(item);
+        => source.Select(_selector).Contains(item);
 
     public void CopyTo(TResult[] array, int arrayIndex)
     {
         var index = arrayIndex;
-        foreach (var element in _source.Skip(arrayIndex).Select(_selector))
+        foreach (var element in source.Skip(arrayIndex).Select(_selector))
         {
             array[index++] = element;
         }
     }
 
     public IEnumerator<TResult> GetEnumerator()
-        => _source
+        => source
             .Select(_selector)
             .GetEnumerator();
 

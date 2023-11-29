@@ -59,13 +59,10 @@ public static partial class AsyncEnumerableExtensions
         return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
     }
 
-    private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>
+    private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(
+        IAsyncEnumerable<Lazy<TSource>> source)
     {
-        private readonly IAsyncEnumerable<Lazy<TSource>> _source;
-
-        public SequenceLazyInternal(IAsyncEnumerable<Lazy<TSource>> source) => _source = source;
-
         // Workaround for https://github.com/dotnet/linker/issues/1416
-        public IAsyncEnumerable<TSource> Invoke() => _source.Select(lazy => lazy.Value);
+        public IAsyncEnumerable<TSource> Invoke() => source.Select(lazy => lazy.Value);
     }
 }

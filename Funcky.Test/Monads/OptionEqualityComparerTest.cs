@@ -52,13 +52,9 @@ public sealed class OptionEqualityComparerTest
         public override int GetHashCode(T obj) => throw new NotSupportedException();
     }
 
-    private sealed class ConstantEqualityComparer<T> : EqualityComparer<T>
+    private sealed class ConstantEqualityComparer<T>(bool areEqual) : EqualityComparer<T>
     {
-        private readonly bool _areEqual;
-
-        public ConstantEqualityComparer(bool areEqual) => _areEqual = areEqual;
-
-        public override bool Equals(T? x, T? y) => _areEqual;
+        public override bool Equals(T? x, T? y) => areEqual;
 
         public override int GetHashCode(T obj) => throw new NotSupportedException();
     }

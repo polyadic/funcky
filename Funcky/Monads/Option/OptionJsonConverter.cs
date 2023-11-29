@@ -22,21 +22,16 @@ public sealed class OptionJsonConverter : JsonConverterFactory
     }
 }
 
-internal sealed class OptionJsonConverter<TItem> : JsonConverter<Option<TItem>>
+internal sealed class OptionJsonConverter<TItem>(JsonConverter<TItem> itemConverter) : JsonConverter<Option<TItem>>
     where TItem : notnull
 {
-    private readonly JsonConverter<TItem> _itemConverter;
-
-    public OptionJsonConverter(JsonConverter<TItem> itemConverter)
-        => _itemConverter = itemConverter;
-
     public override Option<TItem> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         => reader.TokenType == JsonTokenType.Null
             ? Option<TItem>.None
-            : _itemConverter.Read(ref reader, typeof(TItem), options)!;
+            : itemConverter.Read(ref reader, typeof(TItem), options)!;
 
     public override void Write(Utf8JsonWriter writer, Option<TItem> value, JsonSerializerOptions options)
         => value.Switch(
             none: writer.WriteNullValue,
-            some: item => _itemConverter.Write(writer, item, options));
+            some: item => itemConverter.Write(writer, item, options));
 }

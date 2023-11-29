@@ -37,17 +37,13 @@ public static class OptionComparer
         => new OptionComparerInternal<TItem>(comparer);
 }
 
-internal sealed class OptionComparerInternal<TItem> : Comparer<Option<TItem>>
+internal sealed class OptionComparerInternal<TItem>(IComparer<TItem> comparer) : Comparer<Option<TItem>>
     where TItem : notnull
 {
-    private readonly IComparer<TItem> _comparer;
-
-    internal OptionComparerInternal(IComparer<TItem> comparer) => _comparer = comparer;
-
     public override int Compare(Option<TItem> x, Option<TItem> y)
         => (x, y).Match(
             right: _ => ComparisonResult.LessThan,
             none: () => ComparisonResult.Equal,
             left: _ => ComparisonResult.GreaterThan,
-            leftAndRight: _comparer.Compare);
+            leftAndRight: comparer.Compare);
 }

@@ -40,28 +40,20 @@ public sealed class EnumerableRepeatNeverCodeFix : CodeFixProvider
     private static Diagnostic GetDiagnostic(CodeFixContext context)
         => context.Diagnostics.First();
 
-    private sealed class ToEnumerableEmptyCodeAction : CodeAction
+    private sealed class ToEnumerableEmptyCodeAction(
+        Document document,
+        InvocationExpressionSyntax invocationExpression,
+        int valueParameterIndex) : CodeAction
     {
-        private readonly Document _document;
-        private readonly InvocationExpressionSyntax _invocationExpression;
-        private readonly int _valueParameterIndex;
-
-        public ToEnumerableEmptyCodeAction(Document document, InvocationExpressionSyntax invocationExpression, int valueParameterIndex)
-        {
-            _document = document;
-            _invocationExpression = invocationExpression;
-            _valueParameterIndex = valueParameterIndex;
-        }
-
         public override string Title => EnumerableRepeatNeverCodeFixTitle;
 
         public override string EquivalenceKey => nameof(ToEnumerableEmptyCodeAction);
 
         protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
         {
-            var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
-            var valueParameter = _invocationExpression.ArgumentList.Arguments[_valueParameterIndex];
-            editor.ReplaceNode(_invocationExpression, CreateEnumerableReturnRoot(valueParameter, editor.SemanticModel, editor.Generator));
+            var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
+            var valueParameter = invocationExpression.ArgumentList.Arguments[valueParameterIndex];
+            editor.ReplaceNode(invocationExpression, CreateEnumerableReturnRoot(valueParameter, editor.SemanticModel, editor.Generator));
             return editor.GetChangedDocument();
         }
 

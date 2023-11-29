@@ -13,15 +13,11 @@ public readonly partial struct Option<TItem>
         some: _ => "Some");
 }
 
-internal sealed class OptionDebugView<T>
+internal sealed class OptionDebugView<T>(Option<T> option)
     where T : notnull
 {
-    private readonly Option<T> _option;
-
-    public OptionDebugView(Option<T> option) => _option = option;
-
     [DebuggerBrowsable(RootHidden)]
-    public object Value => _option.Match(
+    public object Value => option.Match(
         none: () => (object)new { },
         some: value => new { Value = value });
 }

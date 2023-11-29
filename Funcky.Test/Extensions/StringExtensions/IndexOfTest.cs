@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 
 namespace Funcky.Test.Extensions.StringExtensions;
 
-public sealed class IndexOfTest
+public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
 {
     private const int NumberOfThisParametersInExtensionMethods = 1;
 
@@ -13,13 +13,6 @@ public sealed class IndexOfTest
     private const string ExistingNeedle = "ystack";
     private const char ExistingNeedleChar = 'y';
     private const int NeedlePosition = 2;
-
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public IndexOfTest(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
 
     [Theory]
     [MemberData(nameof(InvalidIndexes))]
@@ -117,7 +110,7 @@ public sealed class IndexOfTest
     private static IEnumerable<MethodInfo> GetIndexOfMethods()
         => typeof(string).GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(IsIndexOfMethod);
 
-    private void WriteToTestOutput(object value) => _testOutputHelper.WriteLine(value.ToString());
+    private void WriteToTestOutput(object value) => testOutputHelper.WriteLine(value.ToString());
 
     private static Option<MethodInfo> GetMatchingExtensionMethod(MethodInfo originalMethod)
     {

@@ -18,16 +18,12 @@ public static partial class AsyncSequence
             => new(source, maxCycles);
     }
 
-    private sealed class AsyncCycleBuffer<T> : IAsyncBuffer<T>
+    private sealed class AsyncCycleBuffer<T>(IAsyncEnumerable<T> source, Option<int> maxCycles = default) : IAsyncBuffer<T>
     {
         private readonly List<T> _buffer = new();
-        private readonly IAsyncEnumerator<T> _source;
-        private readonly Option<int> _maxCycles;
+        private readonly IAsyncEnumerator<T> _source = source.GetAsyncEnumerator();
 
         private bool _disposed;
-
-        public AsyncCycleBuffer(IAsyncEnumerable<T> source, Option<int> maxCycles = default)
-            => (_source, _maxCycles) = (source.GetAsyncEnumerator(), maxCycles);
 
         public async ValueTask DisposeAsync()
         {
@@ -74,7 +70,7 @@ public static partial class AsyncSequence
 
             if (_buffer.Count is 0)
             {
-                if (_maxCycles.Match(none: true, some: False))
+                if (maxCycles.Match(none: true, some: False))
                 {
                     throw new InvalidOperationException("you cannot cycle an empty enumerable");
                 }
@@ -99,10 +95,10 @@ public static partial class AsyncSequence
         }
 
         private bool HasNoCycles()
-            => _maxCycles.Match(none: false, some: maxCycles => maxCycles is 0);
+            => maxCycles.Match(none: false, some: maxCycles => maxCycles is 0);
 
         private bool IsCycling(int cycle)
-            => _maxCycles.Match(
+            => maxCycles.Match(
                 none: true,
                 some: maxCycles => cycle < maxCycles);
 

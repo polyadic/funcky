@@ -1,11 +1,8 @@
 namespace Funcky.Test.Internal.Data;
 
-public sealed class Person : IComparable<Person>, IEquatable<Person>
+public sealed class Person(int age) : IComparable<Person>, IEquatable<Person>
 {
-    public Person(int age)
-        => Age = age;
-
-    public int Age { get; }
+    public int Age { get; } = age;
 
     public int CompareTo(Person? other)
         => other != null

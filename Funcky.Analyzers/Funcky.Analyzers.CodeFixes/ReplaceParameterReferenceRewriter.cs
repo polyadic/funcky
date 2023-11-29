@@ -5,25 +5,17 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Funcky.Analyzers;
 
-internal sealed class ReplaceParameterReferenceRewriter : CSharpSyntaxRewriter
+internal sealed class ReplaceParameterReferenceRewriter(
+    SemanticModel semanticModel,
+    string parameterName,
+    ExpressionSyntax replacement)
+    : CSharpSyntaxRewriter(visitIntoStructuredTrivia: false)
 {
-    private readonly SemanticModel _semanticModel;
-    private readonly string _parameterName;
-    private readonly ExpressionSyntax _replacement;
-
-    public ReplaceParameterReferenceRewriter(SemanticModel semanticModel, string parameterName, ExpressionSyntax replacement)
-        : base(visitIntoStructuredTrivia: false)
-    {
-        _semanticModel = semanticModel;
-        _parameterName = parameterName;
-        _replacement = replacement;
-    }
-
     public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
     {
-        if (_semanticModel.GetOperation(node) is IParameterReferenceOperation { Parameter.Name: var name } && name == _parameterName)
+        if (semanticModel.GetOperation(node) is IParameterReferenceOperation { Parameter.Name: var name } && name == parameterName)
         {
-            return _replacement.WithTriviaFrom(node);
+            return replacement.WithTriviaFrom(node);
         }
 
         return node;

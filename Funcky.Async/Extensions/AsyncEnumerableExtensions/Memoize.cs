@@ -24,17 +24,14 @@ public static partial class AsyncEnumerableExtensions
             => new(source);
     }
 
-    private sealed class BorrowedAsyncBuffer<T> : IAsyncBuffer<T>
+    private sealed class BorrowedAsyncBuffer<T>(IAsyncBuffer<T> inner) : IAsyncBuffer<T>
     {
-        private readonly IAsyncBuffer<T> _inner;
         private bool _disposed;
-
-        public BorrowedAsyncBuffer(IAsyncBuffer<T> inner) => _inner = inner;
 
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             ThrowIfDisposed();
-            return _inner.GetAsyncEnumerator(cancellationToken);
+            return inner.GetAsyncEnumerator(cancellationToken);
         }
 
         public ValueTask DisposeAsync()
@@ -52,15 +49,12 @@ public static partial class AsyncEnumerableExtensions
         }
     }
 
-    private sealed class MemoizedAsyncBuffer<T> : IAsyncBuffer<T>
+    private sealed class MemoizedAsyncBuffer<T>(IAsyncEnumerable<T> source) : IAsyncBuffer<T>
     {
         private readonly List<T> _buffer = new();
-        private readonly IAsyncEnumerator<T> _source;
+        private readonly IAsyncEnumerator<T> _source = source.GetAsyncEnumerator();
 
         private bool _disposed;
-
-        public MemoizedAsyncBuffer(IAsyncEnumerable<T> source)
-            => _source = source.GetAsyncEnumerator();
 
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
