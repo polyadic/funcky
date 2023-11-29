@@ -20,30 +20,21 @@ public static partial class LazyExtensions
     // This class is needed because the implicitly generated class that would be generated for a lambda
     // wouldn't have generic types annotated with DynamicallyAccessedMembers, which would result in a warning.
     private sealed class LazySelect<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>
+        (Lazy<T> source, Func<T, TResult> selector)
     {
-        private readonly Lazy<T> _lazy;
-        private readonly Func<T, TResult> _selector;
-
-        public LazySelect(Lazy<T> source, Func<T, TResult> selector) => (_lazy, _selector) = (source, selector);
-
-        public TResult Apply() => _selector(_lazy.Value);
+        public TResult Apply() => selector(source.Value);
     }
 
     // This class is needed because the implicitly generated class that would be generated for a lambda
     // wouldn't have generic types annotated with DynamicallyAccessedMembers, which would result in a warning.
     private sealed class LazySelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TA, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>
+        (Lazy<T> lazy, Func<T, Lazy<TA>> selector, Func<T, TA, TResult> resultSelector)
     {
-        private readonly Lazy<T> _lazy;
-        private readonly Func<T, Lazy<TA>> _selector;
-        private readonly Func<T, TA, TResult> _resultSelector;
-
-        public LazySelectMany(Lazy<T> lazy, Func<T, Lazy<TA>> selector, Func<T, TA, TResult> resultSelector) => (_lazy, _selector, _resultSelector) = (lazy, selector, resultSelector);
-
         public TResult Apply()
         {
-            var first = _lazy.Value;
-            var second = _selector(first).Value;
-            return _resultSelector(first, second);
+            var first = lazy.Value;
+            var second = selector(first).Value;
+            return resultSelector(first, second);
         }
     }
 }

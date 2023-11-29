@@ -31,22 +31,18 @@ public static class OptionEqualityComparer
         => new OptionEqualityComparerInternal<TItem>(comparer);
 }
 
-internal sealed class OptionEqualityComparerInternal<TItem> : EqualityComparer<Option<TItem>>
+internal sealed class OptionEqualityComparerInternal<TItem>(IEqualityComparer<TItem> comparer) : EqualityComparer<Option<TItem>>
     where TItem : notnull
 {
-    private readonly IEqualityComparer<TItem> _comparer;
-
-    internal OptionEqualityComparerInternal(IEqualityComparer<TItem> comparer) => _comparer = comparer;
-
     public override bool Equals(Option<TItem> x, Option<TItem> y)
         => (x, y).Match(
             right: False,
             none: True,
             left: False,
-            leftAndRight: _comparer.Equals);
+            leftAndRight: comparer.Equals);
 
     public override int GetHashCode(Option<TItem> option)
         => option.Match(
             none: 0,
-            some: _comparer.GetHashCode);
+            some: comparer.GetHashCode);
 }

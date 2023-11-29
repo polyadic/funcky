@@ -20,16 +20,11 @@ public static partial class Sequence
             => new(source, maxCycles);
     }
 
-    private sealed class CycleBuffer<T> : IBuffer<T>
+    private sealed class CycleBuffer<T>(IEnumerable<T> source, Option<int> maxCycles = default) : IBuffer<T>
     {
         private readonly List<T> _buffer = new();
-        private readonly IEnumerator<T> _source;
-        private readonly Option<int> _maxCycles;
-
+        private readonly IEnumerator<T> _source = source.GetEnumerator();
         private bool _disposed;
-
-        public CycleBuffer(IEnumerable<T> source, Option<int> maxCycles = default)
-            => (_source, _maxCycles) = (source.GetEnumerator(), maxCycles);
 
         public void Dispose()
         {
@@ -83,7 +78,7 @@ public static partial class Sequence
 
             if (_buffer.Count is 0)
             {
-                if (_maxCycles.Match(none: true, some: False))
+                if (maxCycles.Match(none: true, some: False))
                 {
                     throw new InvalidOperationException("you cannot cycle an empty enumerable");
                 }
@@ -108,10 +103,10 @@ public static partial class Sequence
         }
 
         private bool HasNoCycles()
-            => _maxCycles.Match(none: false, some: maxCycles => maxCycles is 0);
+            => maxCycles.Match(none: false, some: maxCycles => maxCycles is 0);
 
         private bool IsCycling(int cycle)
-            => _maxCycles.Match(
+            => maxCycles.Match(
                 none: true,
                 some: maxCycles => cycle < maxCycles);
 

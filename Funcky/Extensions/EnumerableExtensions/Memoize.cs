@@ -28,17 +28,14 @@ public static partial class EnumerableExtensions
             => new(source);
     }
 
-    private sealed class BorrowedBuffer<T> : IBuffer<T>
+    private sealed class BorrowedBuffer<T>(IBuffer<T> inner) : IBuffer<T>
     {
-        private readonly IBuffer<T> _inner;
         private bool _disposed;
-
-        public BorrowedBuffer(IBuffer<T> inner) => _inner = inner;
 
         public IEnumerator<T> GetEnumerator()
         {
             ThrowIfDisposed();
-            return _inner.GetEnumerator();
+            return inner.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -54,15 +51,12 @@ public static partial class EnumerableExtensions
         }
     }
 
-    private sealed class MemoizedBuffer<T> : IBuffer<T>
+    private sealed class MemoizedBuffer<T>(IEnumerable<T> source) : IBuffer<T>
     {
         private readonly List<T> _buffer = new();
-        private readonly IEnumerator<T> _source;
+        private readonly IEnumerator<T> _source = source.GetEnumerator();
 
         private bool _disposed;
-
-        public MemoizedBuffer(IEnumerable<T> source)
-            => _source = source.GetEnumerator();
 
         public IEnumerator<T> GetEnumerator()
         {

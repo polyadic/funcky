@@ -38,48 +38,40 @@ public static partial class EnumerableExtensions
     private static IReadOnlyCollection<TSource> DefaultMaterializer<TSource>(IEnumerable<TSource> source)
         => source.ToImmutableList();
 
-    private class CollectionAsReadOnlyCollectionProxy<T> : ICollection<T>, IReadOnlyCollection<T>
+    private class CollectionAsReadOnlyCollectionProxy<T>(ICollection<T> collection) : ICollection<T>, IReadOnlyCollection<T>
     {
-        private readonly ICollection<T> _collection;
+        public int Count => collection.Count;
 
-        public CollectionAsReadOnlyCollectionProxy(ICollection<T> collection) => _collection = collection;
+        public bool IsReadOnly => collection.IsReadOnly;
 
-        public int Count => _collection.Count;
-
-        public bool IsReadOnly => _collection.IsReadOnly;
-
-        public IEnumerator<T> GetEnumerator() => _collection.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => collection.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public void Add(T item) => _collection.Add(item);
+        public void Add(T item) => collection.Add(item);
 
-        public void Clear() => _collection.Clear();
+        public void Clear() => collection.Clear();
 
-        public bool Contains(T item) => _collection.Contains(item);
+        public bool Contains(T item) => collection.Contains(item);
 
-        public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
+        public void CopyTo(T[] array, int arrayIndex) => collection.CopyTo(array, arrayIndex);
 
-        public bool Remove(T item) => _collection.Remove(item);
+        public bool Remove(T item) => collection.Remove(item);
     }
 
-    private sealed class ListAsReadOnlyCollectionProxy<T> : CollectionAsReadOnlyCollectionProxy<T>, IList<T>, IReadOnlyList<T>
+    private sealed class ListAsReadOnlyCollectionProxy<T>(IList<T> list)
+        : CollectionAsReadOnlyCollectionProxy<T>(list), IList<T>, IReadOnlyList<T>
     {
-        private readonly IList<T> _list;
-
-        public ListAsReadOnlyCollectionProxy(IList<T> list)
-            : base(list) => _list = list;
-
         public T this[int index]
         {
-            get => _list[index];
-            set => _list[index] = value;
+            get => list[index];
+            set => list[index] = value;
         }
 
-        public int IndexOf(T item) => _list.IndexOf(item);
+        public int IndexOf(T item) => list.IndexOf(item);
 
-        public void Insert(int index, T item) => _list.Insert(index, item);
+        public void Insert(int index, T item) => list.Insert(index, item);
 
-        public void RemoveAt(int index) => _list.RemoveAt(index);
+        public void RemoveAt(int index) => list.RemoveAt(index);
     }
 }

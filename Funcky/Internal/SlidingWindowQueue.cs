@@ -2,20 +2,16 @@ using System.Collections.Immutable;
 
 namespace Funcky.Internal;
 
-internal sealed class SlidingWindowQueue<TSource>
+internal sealed class SlidingWindowQueue<TSource>(int width)
 {
-    private readonly int _width;
     private int _currentWidth;
     private ImmutableQueue<TSource> _window = ImmutableQueue<TSource>.Empty;
-
-    public SlidingWindowQueue(int width)
-        => _width = width;
 
     public IReadOnlyList<TSource> Window
         => _window.ToImmutableList();
 
     public bool IsFull
-        => _width == _currentWidth;
+        => width == _currentWidth;
 
     public SlidingWindowQueue<TSource> Enqueue(TSource element)
     {
@@ -39,7 +35,7 @@ internal sealed class SlidingWindowQueue<TSource>
 
     private void KeepWindowWidth()
     {
-        if (_currentWidth > _width)
+        if (_currentWidth > width)
         {
             DequeueWithWidth();
         }

@@ -57,10 +57,9 @@ public static partial class EnumerableExtensions
 
     // Workaround for https://github.com/dotnet/linker/issues/1416
     private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>
+        (IEnumerable<Lazy<TSource>> source)
     {
-        private readonly IEnumerable<Lazy<TSource>> _source;
-
-        public SequenceLazy(IEnumerable<Lazy<TSource>> source) => _source = source;
+        private readonly IEnumerable<Lazy<TSource>> _source = source;
 
         public IEnumerable<TSource> Invoke() => _source.Select(static lazy => lazy.Value);
     }

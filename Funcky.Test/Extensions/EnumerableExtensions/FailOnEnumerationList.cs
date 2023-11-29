@@ -2,22 +2,17 @@ using System.Collections;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
-internal sealed class FailOnEnumerationList : IList<int>
+internal sealed class FailOnEnumerationList(int length) : IList<int>
 {
-    private readonly int _length;
-
-    public FailOnEnumerationList(int length)
-        => _length = length;
-
     public int Count
-        => _length;
+        => length;
 
     public bool IsReadOnly
         => true;
 
     public int this[int index]
     {
-        get => index >= 0 && index < _length ? index : throw new IndexOutOfRangeException();
+        get => index >= 0 && index < length ? index : throw new IndexOutOfRangeException();
         set => throw new NotSupportedException();
     }
 

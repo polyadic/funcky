@@ -1,13 +1,8 @@
 namespace Funcky.RetryPolicies;
 
-public class ConstantDelayPolicy : IRetryPolicy
+public class ConstantDelayPolicy(int maxRetries, TimeSpan delay) : IRetryPolicy
 {
-    private readonly TimeSpan _delay;
+    public int MaxRetries { get; } = maxRetries;
 
-    public ConstantDelayPolicy(int maxRetries, TimeSpan delay)
-        => (MaxRetries, _delay) = (maxRetries, delay);
-
-    public int MaxRetries { get; }
-
-    public TimeSpan Delay(int retryCount) => _delay;
+    public TimeSpan Delay(int retryCount) => delay;
 }

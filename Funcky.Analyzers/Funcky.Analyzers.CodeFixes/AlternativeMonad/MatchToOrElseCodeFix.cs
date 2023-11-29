@@ -43,42 +43,27 @@ public sealed class MatchToOrElseCodeFix : CodeFixProvider
             _ => throw new NotSupportedException("Internal error: This branch should be unreachable"),
         };
 
-    private sealed class GetOrElseCodeFixAction : CodeAction
+    private sealed class GetOrElseCodeFixAction(
+        Document document,
+        InvocationExpressionSyntax invocationExpression,
+        MemberAccessExpressionSyntax memberAccessExpression,
+        int errorStateArgumentIndex,
+        IdentifierNameSyntax methodName) : CodeAction
     {
-        private readonly Document _document;
-        private readonly InvocationExpressionSyntax _invocationExpression;
-        private readonly MemberAccessExpressionSyntax _memberAccessExpression;
-        private readonly int _errorStateArgumentIndex;
-        private readonly IdentifierNameSyntax _methodName;
-
-        public GetOrElseCodeFixAction(
-            Document document,
-            InvocationExpressionSyntax invocationExpression,
-            MemberAccessExpressionSyntax memberAccessExpression,
-            int errorStateArgumentIndex,
-            IdentifierNameSyntax methodName)
-        {
-            _document = document;
-            _invocationExpression = invocationExpression;
-            _memberAccessExpression = memberAccessExpression;
-            _errorStateArgumentIndex = errorStateArgumentIndex;
-            _methodName = methodName;
-        }
-
-        public override string Title => $"Replace {MatchMethodName} with {_methodName.Identifier}";
+        public override string Title => $"Replace {MatchMethodName} with {methodName.Identifier}";
 
         public override string? EquivalenceKey => nameof(MatchToOrElseCodeFix);
 
         protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
         {
-            var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
+            var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
             editor.ReplaceNode(
-                _invocationExpression,
-                _invocationExpression.WithExpression(_memberAccessExpression
-                    .WithName(_methodName))
+                invocationExpression,
+                invocationExpression.WithExpression(memberAccessExpression
+                    .WithName(methodName))
                     .WithArgumentList(ArgumentList(SingletonSeparatedList(
-                        Argument(_invocationExpression.ArgumentList.Arguments[_errorStateArgumentIndex].Expression)))));
+                        Argument(invocationExpression.ArgumentList.Arguments[errorStateArgumentIndex].Expression)))));
 
             return editor.GetChangedDocument();
         }

@@ -5,25 +5,17 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IReadOnlyList<TElement>, IList<TElement>
+    internal class Grouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements) : IGrouping<TKey, TElement>, IReadOnlyList<TElement>, IList<TElement>
     {
-        private readonly IImmutableList<TElement> _elements;
+        public TKey Key => key;
 
-        internal Grouping(TKey key, IImmutableList<TElement> elements)
-        {
-            Key = key;
-            _elements = elements;
-        }
-
-        public TKey Key { get; }
-
-        public int Count => _elements.Count;
+        public int Count => elements.Count;
 
         public bool IsReadOnly => true;
 
         public TElement this[int index]
         {
-            get => _elements[index];
+            get => elements[index];
             set => throw new NotSupportedException();
         }
 
@@ -34,16 +26,16 @@ public static partial class EnumerableExtensions
             => throw new NotSupportedException();
 
         public bool Contains(TElement element)
-            => _elements.Contains(element);
+            => elements.Contains(element);
 
         public void CopyTo(TElement[] array, int arrayIndex)
             => throw new NotSupportedException();
 
         public IEnumerator<TElement> GetEnumerator()
-            => _elements.GetEnumerator();
+            => elements.GetEnumerator();
 
         public int IndexOf(TElement element)
-            => _elements.IndexOf(element);
+            => elements.IndexOf(element);
 
         public void Insert(int index, TElement element)
             => throw new NotSupportedException();

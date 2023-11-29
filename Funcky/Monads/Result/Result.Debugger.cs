@@ -13,15 +13,11 @@ public readonly partial struct Result<TValidResult>
         error: _ => "Error");
 }
 
-internal sealed class ResultDebugView<TValidResult>
+internal sealed class ResultDebugView<TValidResult>(Result<TValidResult> result)
     where TValidResult : notnull
 {
-    private readonly Result<TValidResult> _option;
-
-    public ResultDebugView(Result<TValidResult> option) => _option = option;
-
     [DebuggerBrowsable(RootHidden)]
-    public object Value => _option.Match(
+    public object Value => result.Match(
         ok: value => (object)new { Value = value },
         error: exception => new { Exception = exception });
 }
