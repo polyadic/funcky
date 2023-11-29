@@ -38,7 +38,7 @@ public sealed class CycleRangeTest
         await using var cycleRange = AsyncSequence.CycleRange(enumerateOnce);
 
         await cycleRange
-            .Take(sequence.Count() * 3)
+            .Take(sequence.Count * 3)
             .ForEachAsync(NoOperation<string>);
     }
 

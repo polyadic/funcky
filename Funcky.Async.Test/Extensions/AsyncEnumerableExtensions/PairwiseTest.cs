@@ -32,7 +32,7 @@ public sealed class PairwiseTest
         var asyncSequence = Enumerable.Range(0, numberOfElements).ToAsyncEnumerable();
 
         var pairs = await asyncSequence.Pairwise().ToListAsync();
-        Assert.Equal(numberOfElements - 1, pairs.Count());
+        Assert.Equal(numberOfElements - 1, pairs.Count);
 
         foreach (var (pair, index) in pairs.Select((pair, index) => (pair, index)))
         {
