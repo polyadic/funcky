@@ -14,6 +14,11 @@ public static partial class Sequence
     public static IBuffer<TSource> CycleRange<TSource>(IEnumerable<TSource> source)
         => CycleBuffer.Create(source);
 
+    /// <inheritdoc cref="CycleRange{TSource}(IEnumerable{TSource})"/>
+    [Pure]
+    public static IEnumerable<TSource> CycleRange<TSource>(IReadOnlyCollection<TSource> source)
+        => Cycle(source).SelectMany(Identity);
+
     private static class CycleBuffer
     {
         public static CycleBuffer<TSource> Create<TSource>(IEnumerable<TSource> source, Option<int> maxCycles = default)

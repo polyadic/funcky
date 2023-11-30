@@ -12,4 +12,9 @@ public static partial class Sequence
     [Pure]
     public static IBuffer<TSource> RepeatRange<TSource>(IEnumerable<TSource> source, int count)
         => CycleBuffer.Create(source, count);
+
+    /// <inheritdoc cref="RepeatRange{TSource}(IEnumerable{TSource},int)"/>
+    [Pure]
+    public static IEnumerable<TSource> RepeatRange<TSource>(IReadOnlyCollection<TSource> source, int count)
+        => Enumerable.Repeat(source, count).SelectMany(Identity);
 }
