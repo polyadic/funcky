@@ -51,19 +51,17 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? whereInvocation)
     {
         whereInvocation = null;
-        return semanticModel.GetOperation(syntax) is IInvocationOperation operation
-           && operation.TargetMethod.Name == WhereMethodName
-           && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
-           && (whereInvocation = operation) is var _;
+        return semanticModel.GetOperation(syntax) is IInvocationOperation { TargetMethod.Name: WhereMethodName } operation
+               && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
+               && (whereInvocation = operation) is var _;
     }
 
     private static bool IsOptionReturnInvocation(IOperation? candidate, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? returnInvocationOperation)
     {
         returnInvocationOperation = null;
-        return candidate is IInvocationOperation operation
-            && operation.TargetMethod.Name is MonadReturnMethodName or OptionSomeMethodName
-            && SymbolEqualityComparer.Default.Equals(symbols.OptionType, operation.TargetMethod.ContainingType)
-            && (returnInvocationOperation = operation) is var _;
+        return candidate is IInvocationOperation { TargetMethod.Name: MonadReturnMethodName or OptionSomeMethodName } operation
+               && SymbolEqualityComparer.Default.Equals(symbols.OptionType, operation.TargetMethod.ContainingType)
+               && (returnInvocationOperation = operation) is var _;
     }
 
     private static ApplyPredicate? TryGetPredicateApplier(InvocationExpressionSyntax whereInvocation, SemanticModel semanticModel)
@@ -82,7 +80,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         => lambda switch
         {
             SimpleLambdaExpressionSyntax { Parameter: var parameter } => parameter,
-            ParenthesizedLambdaExpressionSyntax { ParameterList.Parameters: { Count: 1 } parameters } => parameters.Single(),
+            ParenthesizedLambdaExpressionSyntax { ParameterList.Parameters: [var parameter] } => parameter,
             _ => null,
         };
 
@@ -90,11 +88,11 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
         => lambda switch
         {
             { ExpressionBody: { } expressionBody } => expressionBody,
-            { Block.Statements: { Count: 1 } statements } when statements.Single() is ReturnStatementSyntax { Expression: var returnExpression } => returnExpression,
+            { Block.Statements: [ReturnStatementSyntax { Expression: var returnExpression }] } => returnExpression,
             _ => null,
         };
 
-    private Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, ApplyPredicate applyPredicate, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
+    private static Func<CancellationToken, Task<Document>> ReplaceWithOptionFromBoolean(Document document, Symbols symbols, ApplyPredicate applyPredicate, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
         => async cancellationToken =>
         {
             var editor = await DocumentEditor.CreateAsync(document, cancellationToken);
@@ -112,7 +110,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
             return editor.GetChangedDocument();
         };
 
-    private InvocationExpressionSyntax CreateFromBooleanInvocation(
+    private static InvocationExpressionSyntax CreateFromBooleanInvocation(
         InvocationExpressionSyntax returnInvocation,
         Symbols symbols,
         SyntaxGenerator generator,
@@ -127,12 +125,12 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
                 ArgumentList(SeparatedList(new[] { Argument(condition), Argument(returnValue) })))
             .WithLeadingTrivia(returnInvocation.GetLeadingTrivia());
 
-    private SimpleNameSyntax GetFromBooleanName(InvocationExpressionSyntax returnInvocation)
+    private static SimpleNameSyntax GetFromBooleanName(InvocationExpressionSyntax returnInvocation)
         => GetMethodName(returnInvocation) is GenericNameSyntax genericNameSyntax
             ? genericNameSyntax.WithIdentifier(Identifier(OptionFromBooleanMethodName))
             : IdentifierName(OptionFromBooleanMethodName);
 
-    private SimpleNameSyntax GetMethodName(InvocationExpressionSyntax invocationExpressionSyntax)
+    private static SimpleNameSyntax GetMethodName(InvocationExpressionSyntax invocationExpressionSyntax)
         => invocationExpressionSyntax.Expression switch
         {
             SimpleNameSyntax simpleNameSyntax => simpleNameSyntax,

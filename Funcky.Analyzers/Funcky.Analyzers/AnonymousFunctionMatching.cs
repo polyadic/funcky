@@ -18,8 +18,7 @@ internal static class AnonymousFunctionMatching
         [NotNullWhen(true)] out IReturnOperation? functionReturnOperation)
     {
         functionReturnOperation = null;
-        return anonymousFunction.Body.Operations.Length == 1
-           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
-           && (functionReturnOperation = returnOperation) is var _;
+        return anonymousFunction.Body.Operations is [IReturnOperation returnOperation]
+               && (functionReturnOperation = returnOperation) is var _;
     }
 }

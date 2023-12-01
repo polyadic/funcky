@@ -25,7 +25,7 @@ public partial class AlternativeMonadAnalyzer
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)
         => operation switch
         {
-            IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Body.Operations: { Length: 1 } operations } } when operations[0] is IReturnOperation returnOperation => returnOperation.ReturnedValue?.Type,
+            IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Body.Operations: [IReturnOperation returnOperation] } } => returnOperation.ReturnedValue?.Type,
             IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Symbol.ReturnType: var returnType } } => returnType,
             IDelegateCreationOperation { Target: IMethodReferenceOperation { Method.ReturnType: var returnType } } => returnType,
             _ => operation.Type,

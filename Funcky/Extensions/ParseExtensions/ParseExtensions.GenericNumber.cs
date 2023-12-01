@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Numerics;
 
 namespace Funcky.Extensions;
+
 public static partial class ParseExtensions
 {
     public static Option<TNumber> ParseNumberOrNone<TNumber>(this string value, NumberStyles style, IFormatProvider? provider)
