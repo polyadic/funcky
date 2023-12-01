@@ -11,9 +11,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
-        <PackageReference Include="Nullable" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>

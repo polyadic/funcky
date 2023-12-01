@@ -8,7 +8,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FsCheck.Xunit" />
-        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
