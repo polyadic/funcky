@@ -42,7 +42,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             .Collect();
 
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node, CancellationToken cancellationToken)
-        => node is ClassDeclarationSyntax { AttributeLists.Count: > 0 };
+        => node is ClassDeclarationSyntax { AttributeLists: [_, ..] };
 
     private static SemanticTarget? GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellationToken)
         => context.Node is ClassDeclarationSyntax classDeclarationSyntax
@@ -51,7 +51,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
                .Where(a => a.AttributeClass?.ToDisplayString() == AttributeFullName)
                .Where(AttributeBelongsToPartialPart(classDeclarationSyntax))
                .Select(ParseAttribute)
-               .ToImmutableArray() is { Length: >=1 } attributes
+               .ToImmutableArray() is [_, ..] attributes
             ? new SemanticTarget(classDeclarationSyntax, attributes)
             : null;
 
@@ -59,15 +59,9 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         => attribute => attribute.ApplicationSyntaxReference?.GetSyntax().Ancestors().OfType<ClassDeclarationSyntax>().FirstOrDefault() == partialPart;
 
     private static ParsedAttribute ParseAttribute(AttributeData attribute)
-    {
-        const int typeNameIndex = 0;
-        const int methodNameIndex = 1;
-        return attribute.ConstructorArguments.Length >= 2
-               && attribute.ConstructorArguments[typeNameIndex].Value is INamedTypeSymbol type
-               && attribute.ConstructorArguments[methodNameIndex].Value is string methodName
+        => attribute.ConstructorArguments is [{ Value: INamedTypeSymbol type }, { Value: string methodName }, ..]
             ? new ParsedAttribute(type, methodName)
             : throw new InvalidOperationException("Invalid attribute: expected a named type and a method name");
-    }
 
     private static MethodPartial ToMethodPartial(SemanticTarget semanticTarget, Compilation compilation)
         => new(
@@ -132,7 +126,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             .WithAttributeLists(GenerateParameterAttributeLists(parameter));
 
     private static SyntaxList<AttributeListSyntax> GenerateParameterAttributeLists(IParameterSymbol parameter)
-        => GenerateParameterAttributes(parameter).ToImmutableArray() is { Length: >0 } attributes
+        => GenerateParameterAttributes(parameter).ToImmutableArray() is [_, ..] attributes
             ? SingletonList(AttributeList(SeparatedList(attributes)))
             : List<AttributeListSyntax>();
 

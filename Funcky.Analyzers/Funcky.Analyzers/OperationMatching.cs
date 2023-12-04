@@ -22,7 +22,7 @@ internal static class OperationMatching
     {
         firstArgument = null;
         secondArgument = null;
-        return operation.Arguments.Length is 2
+        return operation.Arguments is [_, _]
             && (firstArgument = operation.GetArgumentForParameterAtIndex(0)) is var _
             && (secondArgument = operation.GetArgumentForParameterAtIndex(1)) is var _
             && matchFirstArgument(firstArgument)

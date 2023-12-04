@@ -8,8 +8,8 @@ namespace Funcky.Monads;
 public sealed class OptionJsonConverter : JsonConverterFactory
 {
     public override bool CanConvert(Type typeToConvert)
-        => typeToConvert.IsGenericType &&
-           typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
+        => typeToConvert.IsGenericType
+            && typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
 
     [RequiresUnreferencedCode("JSON serialization and deserialization might require types that cannot be statically analyzed.")]
     [UnconditionalSuppressMessage("Trimming", "IL2046:\'RequiresUnreferencedCodeAttribute\' annotations must match across all interface implementations or overrides.")]
@@ -26,7 +26,7 @@ internal sealed class OptionJsonConverter<TItem>(JsonConverter<TItem> itemConver
     where TItem : notnull
 {
     public override Option<TItem> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => reader.TokenType == JsonTokenType.Null
+        => reader.TokenType is JsonTokenType.Null
             ? Option<TItem>.None
             : itemConverter.Read(ref reader, typeof(TItem), options)!;
 

@@ -29,7 +29,7 @@ public static partial class StringExtensions
         }
 
         // If there is anything left to emit, we will emit the last chunk.
-        if (source.Length > 0)
+        if (source is not "")
         {
             yield return source.Substring(index * size);
         }

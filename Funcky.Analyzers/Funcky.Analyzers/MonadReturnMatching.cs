@@ -24,9 +24,8 @@ internal static class MonadReturnMatching
 
     private static bool IsReturnFunction(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)
         => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
-           && returnOperation is { ReturnedValue: IInvocationOperation returnedValue }
+           && returnOperation is { ReturnedValue: IInvocationOperation { Arguments: [{ Value: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }] } returnedValue }
            && IsReturn(alternativeMonadType, returnedValue.TargetMethod)
-           && returnedValue.Arguments is [{ Value: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }]
            && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsImplicitReturn(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)

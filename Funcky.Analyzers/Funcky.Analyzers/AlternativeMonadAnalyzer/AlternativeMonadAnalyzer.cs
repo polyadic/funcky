@@ -54,11 +54,9 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     {
         matchReceiverType = null;
         alternativeMonadType = null;
-        return invocation.TargetMethod.ReceiverType is INamedTypeSymbol receiverType
-           && invocation.TargetMethod.Name == MatchMethodName
-           && invocation.Arguments.Length == 2
-           && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
-           && (matchReceiverType = receiverType) is var _;
+        return invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName }, Arguments: [_, _] }
+               && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
+               && (matchReceiverType = receiverType) is var _;
     }
 
     private static Diagnostic? AnalyzeMatchInvocation(
