@@ -8,9 +8,7 @@
         <LangVersion>preview</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
-    <ItemGroup>
-        <InternalsVisibleTo Include="$(AssemblyName).Test" />
-    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
