@@ -23,8 +23,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == '$(TargetFrameworkForPublicApiAnalyzers)'" />
         <PackageReference Include="Microsoft.Bcl.HashCode" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-        <PackageReference Include="Nullable" PrivateAssets="all" />
-        <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
 
         <!-- .NET Core 3.1 ships with System.Text.Json, but we reference the NuGet version instead, so we always get System.Text.Json >= 5.0.0. It is the first version to never return null converter from CreateConverter(...). -->

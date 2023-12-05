@@ -61,7 +61,7 @@ public static partial class StringExtensions
 
     private static FindNextIndex IndexOfStringSeparator(string separator)
         => (text, startIndex)
-            => separator.Length == 0
+            => separator is ""
                 ? Option<(int Index, int SeparatorLength)>.None
                 : text
                     .IndexOfOrNone(separator, startIndex, StringComparison.Ordinal)
@@ -91,7 +91,7 @@ public static partial class StringExtensions
 
     private static Func<string, Option<(int Index, int SeparatorLength)>> IndexOfAnyOrNone(string text, int startIndex)
         => separator
-            => separator.Length == 0
+            => separator is ""
                 ? Option<(int Index, int SeparatorLength)>.None
                 : text.IndexOfOrNone(separator, startIndex, StringComparison.Ordinal).AndThen(index => (index, separator.Length));
 

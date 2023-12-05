@@ -10,7 +10,7 @@ internal static class AnonymousFunctionMatching
         IAnonymousFunctionOperation anonymousFunction,
         [NotNullWhen(true)] out IReturnOperation? returnOperation)
         => MatchAnonymousFunctionWithSingleReturn(anonymousFunction, out returnOperation)
-            && anonymousFunction.Symbol.Parameters.Length == 1;
+            && anonymousFunction.Symbol.Parameters is [_];
 
     /// <summary>Matches an anonymous function of the shape <c>(...) => y</c>.</summary>
     public static bool MatchAnonymousFunctionWithSingleReturn(
@@ -18,8 +18,7 @@ internal static class AnonymousFunctionMatching
         [NotNullWhen(true)] out IReturnOperation? functionReturnOperation)
     {
         functionReturnOperation = null;
-        return anonymousFunction.Body.Operations.Length == 1
-           && anonymousFunction.Body.Operations[0] is IReturnOperation returnOperation
-           && (functionReturnOperation = returnOperation) is var _;
+        return anonymousFunction.Body.Operations is [IReturnOperation returnOperation]
+               && (functionReturnOperation = returnOperation) is var _;
     }
 }

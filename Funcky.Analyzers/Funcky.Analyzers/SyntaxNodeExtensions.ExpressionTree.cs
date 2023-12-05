@@ -52,9 +52,8 @@ internal static partial class SyntaxNodeExtensions
         => GetAllSymbols(info).Any(symbol => TakesExpressionTreeAsFirstArgument(symbol, expressionType));
 
     private static bool TakesExpressionTreeAsFirstArgument(ISymbol symbol, INamedTypeSymbol expressionType)
-        => symbol is IMethodSymbol method
-            && method.Parameters.Length > 0
-            && SymbolEqualityComparer.Default.Equals(expressionType, method.Parameters[0].Type?.OriginalDefinition);
+        => symbol is IMethodSymbol { Parameters: [var firstParameter, ..] }
+           && SymbolEqualityComparer.Default.Equals(expressionType, firstParameter.Type.OriginalDefinition);
 
     private sealed record IsExpressionTreeContext(
         SyntaxNode Syntax,

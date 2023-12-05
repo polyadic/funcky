@@ -11,15 +11,10 @@ internal sealed class ReplaceParameterReferenceRewriter(
     ExpressionSyntax replacement)
     : CSharpSyntaxRewriter(visitIntoStructuredTrivia: false)
 {
-    public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
-    {
-        if (semanticModel.GetOperation(node) is IParameterReferenceOperation { Parameter.Name: var name } && name == parameterName)
-        {
-            return replacement.WithTriviaFrom(node);
-        }
-
-        return node;
-    }
+    public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+        => semanticModel.GetOperation(node) is IParameterReferenceOperation { Parameter.Name: var name } && name == parameterName
+            ? replacement.WithTriviaFrom(node)
+            : node;
 }
 
 internal static partial class SyntaxNodeExtensions
