@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.EnumerableRepeatOnceAnalyzer, Funcky.Analyzers.EnumerableRepeatOnceCodeFix>;
 
@@ -56,12 +57,12 @@ public sealed class EnumerableRepeatOnceTest
     [Fact]
     public async Task CodeFixWorksWithDifferentUsingStyles()
     {
-        var expectedDiagnostics = new[]
-        {
+        DiagnosticResult[] expectedDiagnostics =
+        [
             VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(17, 17, 17, 53).WithArguments("10"),
             VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(28, 17, 28, 53).WithArguments("10"),
             VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(41, 17, 41, 53).WithArguments("10"),
-        };
+        ];
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostics, "RepeatOnceQualification");
     }

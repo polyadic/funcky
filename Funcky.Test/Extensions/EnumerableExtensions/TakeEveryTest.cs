@@ -56,6 +56,6 @@ public sealed class TakeEveryTest
     {
         var numbers = new List<int> { 1, 2, 3, 4, 5 };
 
-        Assert.Equal(new[] { 1, 5 }, numbers.TakeEvery(4));
+        Assert.Equal([1, 5], numbers.TakeEvery(4));
     }
 }

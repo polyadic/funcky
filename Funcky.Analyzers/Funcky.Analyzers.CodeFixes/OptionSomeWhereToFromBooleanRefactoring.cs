@@ -122,7 +122,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
                     (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(symbols.OptionType),
                     GetFromBooleanName(returnInvocation))
                     .WithAdditionalAnnotations(Simplifier.Annotation),
-                ArgumentList(SeparatedList(new[] { Argument(condition), Argument(returnValue) })))
+                ArgumentList(SeparatedList([Argument(condition), Argument(returnValue)])))
             .WithLeadingTrivia(returnInvocation.GetLeadingTrivia());
 
     private static SimpleNameSyntax GetFromBooleanName(InvocationExpressionSyntax returnInvocation)

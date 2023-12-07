@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
@@ -15,38 +16,18 @@ public sealed class WhereNotNullTest
     [Fact]
     public void WhereNotNullRemovesNullReferenceValues()
     {
-        var input = new[]
-        {
-            null,
-            "foo",
-            null,
-            "bar",
-            null,
-        };
-        var expectedResult = new[]
-        {
-            "foo",
-            "bar",
-        };
+        IEnumerable<string?> input = [null, "foo", null, "bar", null];
+        IEnumerable<string> expectedResult = ["foo", "bar"];
+
         Assert.Equal(expectedResult, input.WhereNotNull());
     }
 
     [Fact]
     public void WhereNotNullRemovesNullValueTypeValues()
     {
-        var input = new int?[]
-        {
-            null,
-            10,
-            null,
-            20,
-            null,
-        };
-        var expectedResult = new[]
-        {
-            10,
-            20,
-        };
+        IEnumerable<int?> input = [null, 10, null, 20, null];
+        IEnumerable<int> expectedResult = [10, 20];
+
         Assert.Equal(expectedResult, input.WhereNotNull());
     }
 }

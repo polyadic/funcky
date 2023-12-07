@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
@@ -112,7 +113,7 @@ public sealed class AdjacentGroupByTest
     }
 
     private static IEnumerable<int> DaysInMonthsOfAYear()
-        => Sequence.Return(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        => [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     private static IEnumerable<int> DaysInMonthsOfALeapYear()
         => DaysInMonthsOfAYear()

@@ -1,3 +1,5 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
+#pragma warning disable SA1118 // StyleCop support for collection expressions is missing
 using Xunit;
 
 namespace Funcky.Analyzers.Test;
@@ -42,7 +44,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
             "Option<IEnumerable<char>> x = Option.Return<IEnumerable<char>>(\"foo\").[||]Where(_ => true);",
             "Option<IEnumerable<char>> x = Option.FromBoolean<IEnumerable<char>>(true, \"foo\");",
             OptionCode,
-            usings: Sequence.Return("using Funcky.Monads;", "using System.Collections.Generic;"));
+            usings: ["using Funcky.Monads;", "using System.Collections.Generic;"]);
     }
 
     [Fact]
@@ -88,7 +90,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
             "var x = Return(10).[||]Where(_ => true);",
             "var x = FromBoolean(true, 10);",
             OptionCode,
-            usings: Sequence.Return("using static Funcky.Monads.Option;"));
+            usings: ["using static Funcky.Monads.Option;"]);
     }
 
     [Fact]
@@ -98,7 +100,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
             "var x = Funcky.Monads.Option.Return(10).[||]Where(_ => true);",
             "var x = Funcky.Monads.Option.FromBoolean(true, 10);",
             OptionCode,
-            usings: Enumerable.Empty<string>());
+            usings: []);
     }
 
     [Fact]

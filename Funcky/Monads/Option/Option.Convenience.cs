@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 namespace Funcky.Monads;
 
 public readonly partial struct Option<TItem>
@@ -67,6 +68,6 @@ public readonly partial struct Option<TItem>
     [Pure]
     public IEnumerable<TItem> ToEnumerable()
         => Match(
-            none: Enumerable.Empty<TItem>,
+            none: [],
             some: Sequence.Return);
 }

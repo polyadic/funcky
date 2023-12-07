@@ -1,3 +1,4 @@
+#pragma warning disable SA1118 // StyleCop support for collection expressions is missing
 using Xunit;
 using static Funcky.Analyzers.AlternativeMonadAnalyzer;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToNullableCodeFix>;
@@ -57,8 +58,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
             """;
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionStubCode,
-            new[]
-            {
+            [
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(10, 9, 10, 71),
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(11, 9, 11, 77),
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(12, 9, 12, 77),
@@ -68,7 +68,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(16, 9, 16, 70),
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(17, 13, 17, 69),
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(18, 13, 18, 69),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionStubCode);
     }
 
@@ -109,10 +109,9 @@ public sealed partial class AlternativeMonadAnalyzerTest
             """;
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionStubCode,
-            new[]
-            {
+            [
                 VerifyCS.Diagnostic(PreferToNullable).WithSpan(11, 14, 11, 63),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionStubCode);
     }
 }

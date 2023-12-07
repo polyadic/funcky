@@ -41,6 +41,6 @@ public sealed class TakeEveryTest
     [Fact]
     public async Task TakeEveryWithASourceWith5ElementsAndInterval4Returns2Elements()
     {
-        Assert.Equal(new[] { 1, 5 }, await OneToFive.TakeEvery(4).ToListAsync());
+        Assert.Equal([1, 5], await OneToFive.TakeEvery(4).ToListAsync());
     }
 }

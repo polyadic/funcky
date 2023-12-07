@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
@@ -15,7 +16,7 @@ public sealed class InterleaveTest
     [Fact]
     public void GivenAnEmptySequenceOfSequencesInterleaveReturnsAnEmptySequence()
     {
-        IEnumerable<IEnumerable<int>> emptySequence = Enumerable.Empty<IEnumerable<int>>();
+        IEnumerable<IEnumerable<int>> emptySequence = [];
 
         IEnumerable<int> interleaved = emptySequence.Interleave();
 
@@ -25,11 +26,11 @@ public sealed class InterleaveTest
     [Fact]
     public void GivenTwoSequencesOfEqualLengthIGetAnInterleavedResult()
     {
-        IEnumerable<int> odds = new List<int> { 1, 3, 5, 7, 9, 11 };
-        IEnumerable<int> evens = new List<int> { 2, 4, 6, 8, 10, 12 };
-        IEnumerable<int> expected = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        IEnumerable<int> odds = [1, 3, 5, 7, 9, 11];
+        IEnumerable<int> evens = [2, 4, 6, 8, 10, 12];
+        IEnumerable<int> expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-        IEnumerable<int> interleaved = odds.Interleave(evens);
+        var interleaved = odds.Interleave(evens);
 
         Assert.Equal(expected, interleaved);
     }
@@ -37,9 +38,9 @@ public sealed class InterleaveTest
     [Fact]
     public void GivenTwoSequencesOfUnequalLengthIGetAnInterleavedResult()
     {
-        IEnumerable<int> odds = new List<int> { 1, 3, 5, 7, 9, 11 };
-        IEnumerable<int> evens = new List<int> { 2, 4, 6 };
-        IEnumerable<int> expected = new List<int> { 1, 2, 3, 4, 5, 6, 7, 9, 11 };
+        IEnumerable<int> odds = [1, 3, 5, 7, 9, 11];
+        IEnumerable<int> evens = [2, 4, 6];
+        IEnumerable<int> expected = [1, 2, 3, 4, 5, 6, 7, 9, 11];
 
         IEnumerable<int> interleaved = odds.Interleave(evens);
 
@@ -55,13 +56,13 @@ public sealed class InterleaveTest
     [InlineData("c", "b", "a")]
     public void GivenMultipleSequencesTheOrderIsPreserved(string first, string second, string third)
     {
-        IEnumerable<string> one = Sequence.Return(first);
-        IEnumerable<string> two = Sequence.Return(second);
-        IEnumerable<string> three = Sequence.Return(third);
+        IEnumerable<string> one = [first];
+        IEnumerable<string> two = [second];
+        IEnumerable<string> three = [third];
 
         var interleaved = one.Interleave(two, three);
 
-        Assert.Equal(new List<string> { first, second, third }, interleaved);
+        Assert.Equal([first, second, third], interleaved);
     }
 
     [Fact]
@@ -73,14 +74,14 @@ public sealed class InterleaveTest
             Enumerable.Repeat(42, 2),
         };
 
-        Assert.Equal(new List<int> { 1, 42, 1, 42 }, sequences.Interleave());
+        Assert.Equal([1, 42, 1, 42], sequences.Interleave());
     }
 
     [Fact]
     public void GivenOneSequenceWithElementsAndAllTheOtherSequencesEmptyWeGetTheFirstSequence()
     {
-        IEnumerable<int> sequence = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-        IEnumerable<int> emptySequence = Enumerable.Empty<int>();
+        IEnumerable<int> sequence = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        IEnumerable<int> emptySequence = [];
 
         Assert.Equal(sequence, emptySequence.Interleave(emptySequence, sequence, emptySequence));
     }

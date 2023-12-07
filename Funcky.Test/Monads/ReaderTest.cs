@@ -20,7 +20,7 @@ public sealed partial class ReaderTest
     [Fact]
     public void ReaderMonadImplementsSelect()
     {
-        var quoteReader = QuotedList(new[] { "Alpha", "Beta" });
+        var quoteReader = QuotedList(["Alpha", "Beta"]);
 
         Assert.Equal("`Alpha`, `Beta`", quoteReader(new Configuration('`')));
     }

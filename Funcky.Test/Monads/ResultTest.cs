@@ -238,7 +238,7 @@ public sealed partial class ResultTest
     {
         Assert.NotNull(exception.StackTrace);
 
-        var lines = exception.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        var lines = exception.StackTrace.Split([Environment.NewLine], StringSplitOptions.None);
         Assert.Matches(@"^\s+(\w+) Funcky\.Test\.Monads\.ResultTest\.InterestingStackTrace\s*\((System\.)?Int32 n\)", lines.First());
     }
 

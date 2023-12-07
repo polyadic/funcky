@@ -19,8 +19,8 @@ public sealed class PartitionEitherTest
             Either<int, string>.Right("b"),
             Either<int, string>.Left(20));
         var (left, right) = input.Partition();
-        Assert.Equal(new[] { 10, 20 }, left);
-        Assert.Equal(new[] { "a", "b" }, right);
+        Assert.Equal([10, 20], left);
+        Assert.Equal(["a", "b"], right);
     }
 
     [Fact]

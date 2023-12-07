@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.UseWithArgumentNamesAnalyzer, Funcky.Analyzers.AddArgumentNameCodeFix>;
 
@@ -110,8 +111,8 @@ public sealed class UseWithArgumentNamesTest
             }
             """;
 
-        var expectedDiagnostics = new[]
-        {
+        DiagnosticResult[] expectedDiagnostics =
+        [
             VerifyCS.Diagnostic().WithSpan(7, 23, 7, 25).WithArguments("y"),
             VerifyCS.Diagnostic().WithSpan(8, 16, 8, 18).WithArguments("x"),
             VerifyCS.Diagnostic().WithSpan(8, 20, 8, 22).WithArguments("y"),
@@ -120,7 +121,7 @@ public sealed class UseWithArgumentNamesTest
             VerifyCS.Diagnostic().WithSpan(12, 13, 12, 15).WithArguments("x"),
             VerifyCS.Diagnostic().WithSpan(13, 13, 13, 15).WithArguments("y"),
             VerifyCS.Diagnostic().WithSpan(14, 37, 14, 39).WithArguments("int"),
-        };
+        ];
 
         await VerifyCS.VerifyAnalyzerAsync(inputCode + AttributeSource, expectedDiagnostics);
         await VerifyCS.VerifyCodeFixAsync(inputCode + AttributeSource, expectedDiagnostics, fixedCode + AttributeSource);

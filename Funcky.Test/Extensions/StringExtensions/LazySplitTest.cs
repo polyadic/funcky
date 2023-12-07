@@ -23,7 +23,7 @@ public sealed class LazySplitTest
                 .SequenceEqual(text.Get.SplitLazy(separator, separator2, separator3)))
             .ToProperty();
 
-    #if SPLIT_ACCEPTS_STRING_SEPARATOR
+#if SPLIT_ACCEPTS_STRING_SEPARATOR
     [Property]
     public Property SplitLazyWithSingleStringWorksTheSameAsSplit(StringNoNulls text, StringNoNulls separator)
         => (text.Get is null
@@ -33,14 +33,14 @@ public sealed class LazySplitTest
                 .Split(separator.Get)
                 .SequenceEqual(text.Get.SplitLazy(separator.Get)))
             .ToProperty();
-    #endif
+#endif
 
     [Fact]
     public void SplitLazyWithSingleStringSplitsWithAMultiCharacterSeparator()
     {
         var text = "Picard and Kirk and Janeway and Archer";
 
-        Assert.Equal(new[] { "Picard", "Kirk", "Janeway", "Archer" }, text.SplitLazy("and").Select(Trim));
+        Assert.Equal(["Picard", "Kirk", "Janeway", "Archer"], text.SplitLazy("and").Select(Trim));
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public sealed class LazySplitTest
         // there is no equivalent Split on string which supports multiple strings as separators...
         var text = "Alpha and Beta or Gamma";
 
-        Assert.Equal(new[] { "Alpha", "Beta", "Gamma" }, text.SplitLazy("and", "or").Select(Trim));
+        Assert.Equal(["Alpha", "Beta", "Gamma"], text.SplitLazy("and", "or").Select(Trim));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public sealed class LazySplitTest
     {
         var text = "Something";
 
-        Assert.Equal(new[] { "Something" }, text.SplitLazy("and", "or", string.Empty).Select(Trim));
+        Assert.Equal(["Something"], text.SplitLazy("and", "or", string.Empty).Select(Trim));
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public sealed class LazySplitTest
     {
         var text = "Something";
 
-        Assert.Equal(new[] { "Something" }, text.SplitLazy("and", "\u0003"));
+        Assert.Equal(["Something"], text.SplitLazy("and", "\u0003"));
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public sealed class LazySplitTest
     {
         var text = string.Empty;
 
-        Assert.Equal(new[] { string.Empty }, text.SplitLazy("and", "or"));
+        Assert.Equal([string.Empty], text.SplitLazy("and", "or"));
     }
 
     private static string Trim(string s)

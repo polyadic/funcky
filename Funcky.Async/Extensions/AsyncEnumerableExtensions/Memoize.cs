@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
@@ -51,7 +52,7 @@ public static partial class AsyncEnumerableExtensions
 
     private sealed class MemoizedAsyncBuffer<T>(IAsyncEnumerable<T> source) : IAsyncBuffer<T>
     {
-        private readonly List<T> _buffer = new();
+        private readonly List<T> _buffer = [];
         private readonly IAsyncEnumerator<T> _source = source.GetAsyncEnumerator();
 
         private bool _disposed;

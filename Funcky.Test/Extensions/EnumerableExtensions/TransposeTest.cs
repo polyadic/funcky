@@ -37,10 +37,10 @@ public sealed class TransposeTest
 
         Assert.Collection(
             transposed,
-            row => { Assert.Equal(new[] { 1, 5, 9 }, row); },
-            row => { Assert.Equal(new[] { 2, 6, 10 }, row); },
-            row => { Assert.Equal(new[] { 3, 7, 11 }, row); },
-            row => { Assert.Equal(new[] { 4, 8, 12 }, row); });
+            row => { Assert.Equal([1, 5, 9], row); },
+            row => { Assert.Equal([2, 6, 10], row); },
+            row => { Assert.Equal([3, 7, 11], row); },
+            row => { Assert.Equal([4, 8, 12], row); });
     }
 
     [Fact]
@@ -65,9 +65,9 @@ public sealed class TransposeTest
 
         Assert.Collection(
             transposed,
-            row => { Assert.Equal(new[] { 1, 6, 5, 10 }, row); },
-            row => { Assert.Equal(new[] { 2, 9, 3, 42 }, row); },
-            row => { Assert.Equal(new[] { 4 }, row); });
+            row => { Assert.Equal([1, 6, 5, 10], row); },
+            row => { Assert.Equal([2, 9, 3, 42], row); },
+            row => { Assert.Equal([4], row); });
     }
 
     private static IEnumerable<IEnumerable<int>> MagicSquare()
