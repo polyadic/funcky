@@ -7,11 +7,11 @@ public static partial class Sequence
     [Pure]
     public static IEnumerable<TResult> FromNullable<TResult>(TResult? element)
         where TResult : class
-        => element is null ? [] : Return(element);
+        => element is null ? [] : [element];
 
     /// <inheritdoc cref="FromNullable{T}(T)"/>
     [Pure]
     public static IEnumerable<TResult> FromNullable<TResult>(TResult? element)
         where TResult : struct
-        => element.HasValue ? Return(element.Value) : [];
+        => element.HasValue ? [element.Value] : [];
 }
