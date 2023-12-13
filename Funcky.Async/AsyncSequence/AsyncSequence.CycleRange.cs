@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 namespace Funcky;
 
 public static partial class AsyncSequence
@@ -20,7 +21,7 @@ public static partial class AsyncSequence
 
     private sealed class AsyncCycleBuffer<T>(IAsyncEnumerable<T> source, Option<int> maxCycles = default) : IAsyncBuffer<T>
     {
-        private readonly List<T> _buffer = new();
+        private readonly List<T> _buffer = [];
         private readonly IAsyncEnumerator<T> _source = source.GetAsyncEnumerator();
 
         private bool _disposed;

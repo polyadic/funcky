@@ -1,3 +1,4 @@
+#pragma warning disable SA1118 // StyleCop support for collection expressions is missing
 using Xunit;
 using static Funcky.Analyzers.AlternativeMonadAnalyzer;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToOrElseCodeFix>;
@@ -83,8 +84,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
             """;
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionStubCode,
-            new[]
-            {
+            [
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(10, 9, 10, 50),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(11, 9, 11, 50),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(12, 9, 12, 52),
@@ -94,7 +94,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(21, 9, 21, 51),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(26, 9, 26, 56),
                 VerifyCS.Diagnostic(PreferGetOrElse).WithSpan(31, 9, 31, 54),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionStubCode);
     }
 
@@ -177,8 +177,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
             """;
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionStubCode,
-            new[]
-            {
+            [
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(10, 9, 10, 71),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(11, 9, 11, 69),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(12, 9, 12, 56),
@@ -189,7 +188,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(22, 9, 22, 58),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(27, 9, 27, 77),
                 VerifyCS.Diagnostic(PreferOrElse).WithSpan(32, 9, 32, 67),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionStubCode);
     }
 
@@ -262,14 +261,13 @@ public sealed partial class AlternativeMonadAnalyzerTest
             """;
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionStubCode,
-            new[]
-            {
+            [
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(10, 9, 10, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(11, 9, 11, 84),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(17, 9, 17, 63),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(22, 9, 22, 100),
                 VerifyCS.Diagnostic(PreferSelectMany).WithSpan(27, 9, 27, 83),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionStubCode);
     }
 

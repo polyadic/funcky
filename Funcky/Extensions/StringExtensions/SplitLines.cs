@@ -16,7 +16,7 @@ public static partial class StringExtensions
 
     private static Option<SplitResult> GetNextLine(string text, int startIndex)
         => text
-            .IndexOfAnyOrNone(new[] { CarriageReturn, LineFeed }, startIndex)
+            .IndexOfAnyOrNone([CarriageReturn, LineFeed], startIndex)
             .Match(
                 none: EndOfString(startIndex, text),
                 some: NewLine(text, startIndex));

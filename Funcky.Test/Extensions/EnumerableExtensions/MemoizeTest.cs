@@ -69,7 +69,7 @@ public sealed class MemoizeTest
     [Fact]
     public void DisposingAMemoizedBufferDoesNotDisposeOriginalBuffer()
     {
-        var source = EnumerateOnce.Create(Enumerable.Empty<int>());
+        var source = EnumerateOnce.Create<int>([]);
         using var firstMemoization = source.Memoize();
 
         using (firstMemoization.Memoize())
@@ -82,7 +82,7 @@ public sealed class MemoizeTest
     [Fact]
     public void MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
     {
-        var source = EnumerateOnce.Create(Enumerable.Empty<int>());
+        var source = EnumerateOnce.Create<int>([]);
         using var memoized = source.Memoize();
         using var memoizedBuffer = memoized.Memoize();
         using var memoizedBuffer2 = memoizedBuffer.Memoize();

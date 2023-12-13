@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
@@ -53,7 +54,7 @@ public static partial class EnumerableExtensions
 
     private sealed class MemoizedBuffer<T>(IEnumerable<T> source) : IBuffer<T>
     {
-        private readonly List<T> _buffer = new();
+        private readonly List<T> _buffer = [];
         private readonly IEnumerator<T> _source = source.GetEnumerator();
 
         private bool _disposed;

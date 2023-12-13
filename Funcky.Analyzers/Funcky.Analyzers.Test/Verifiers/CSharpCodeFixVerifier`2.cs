@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -41,7 +42,7 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
 
     /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, DiagnosticResult, string)"/>
     public static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource)
-        => await VerifyCodeFixAsync(source, new[] { expected }, fixedSource);
+        => await VerifyCodeFixAsync(source, [expected], fixedSource);
 
     /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, DiagnosticResult[], string)"/>
     public static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource)

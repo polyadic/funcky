@@ -19,8 +19,8 @@ public sealed class PartitionEitherTest
             Either<int, string>.Right("b"),
             Either<int, string>.Left(20));
         var (left, right) = await input.PartitionAsync();
-        Assert.Equal(new[] { 10, 20 }, left);
-        Assert.Equal(new[] { "a", "b" }, right);
+        Assert.Equal([10, 20], left);
+        Assert.Equal(["a", "b"], right);
     }
 
     [Fact]
@@ -32,5 +32,6 @@ public sealed class PartitionEitherTest
         Assert.Equal(input.Where(IsEven), right);
     }
 
-    private static bool IsEven(int n) => n % 2 == 0;
+    private static bool IsEven(int n)
+        => n % 2 is 0;
 }

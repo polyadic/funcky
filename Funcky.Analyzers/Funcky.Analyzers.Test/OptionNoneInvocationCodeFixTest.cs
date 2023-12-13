@@ -1,3 +1,5 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
+#pragma warning disable SA1118 // StyleCop support for collection expressions is missing
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
@@ -88,11 +90,10 @@ public sealed class OptionNoneInvocationCodeFixTest
 
         await VerifyCS.VerifyCodeFixAsync(
             inputCode + Environment.NewLine + OptionCode,
-            new[]
-            {
+            [
                 DiagnosticResult.CompilerError("CS1955").WithSpan(7, 47, 7, 51).WithArguments("Funcky.Monads.Option<int>.None"),
                 DiagnosticResult.CompilerError("CS1955").WithSpan(8, 47, 8, 51).WithArguments("Funcky.Monads.Option<int>.None"),
-            },
+            ],
             fixedCode + Environment.NewLine + OptionCode);
     }
 
@@ -129,7 +130,7 @@ public sealed class OptionNoneInvocationCodeFixTest
     [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute")]
     internal sealed class NullDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray<DiagnosticDescriptor>.Empty;
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [];
 
         [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1025:Configure generated code analysis")]
         [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1026:Enable concurrent execution")]

@@ -14,31 +14,31 @@ public sealed class PartitionTest
     public async Task PartitionsItemsIntoTruesAndFalses()
     {
         var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAsync(IsEven);
-        Assert.Equal(new[] { 0, 2, 4 }, evens);
-        Assert.Equal(new[] { 1, 3, 5 }, odds);
+        Assert.Equal([0, 2, 4], evens);
+        Assert.Equal([1, 3, 5], odds);
     }
 
     [Fact]
     public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncPredicate()
     {
         var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitAsync(x => ValueTask.FromResult(IsEven(x)));
-        Assert.Equal(new[] { 0, 2, 4 }, evens);
-        Assert.Equal(new[] { 1, 3, 5 }, odds);
+        Assert.Equal([0, 2, 4], evens);
+        Assert.Equal([1, 3, 5], odds);
     }
 
     [Fact]
     public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncCancellablePredicate()
     {
         var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitWithCancellationAsync((x, _) => ValueTask.FromResult(IsEven(x)));
-        Assert.Equal(new[] { 0, 2, 4 }, evens);
-        Assert.Equal(new[] { 1, 3, 5 }, odds);
+        Assert.Equal([0, 2, 4], evens);
+        Assert.Equal([1, 3, 5], odds);
     }
 
     [Fact]
     public async Task RightItemsAreEmptyWhenPredicateMatchesAllItems()
     {
         var (left, right) = await AsyncEnumerable.Range(0, 6).PartitionAsync(True);
-        Assert.Equal(new[] { 0, 1, 2, 3, 4, 5 }, left);
+        Assert.Equal([0, 1, 2, 3, 4, 5], left);
         Assert.Empty(right);
     }
 
@@ -47,7 +47,7 @@ public sealed class PartitionTest
     {
         var (left, right) = await AsyncEnumerable.Range(0, 6).PartitionAsync(False);
         Assert.Empty(left);
-        Assert.Equal(new[] { 0, 1, 2, 3, 4, 5 }, right);
+        Assert.Equal([0, 1, 2, 3, 4, 5], right);
     }
 
     private static bool IsEven(int n) => n % 2 == 0;

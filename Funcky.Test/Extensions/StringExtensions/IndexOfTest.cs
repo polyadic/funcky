@@ -37,9 +37,9 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.IndexOfOrNone(NonExistingNeedle, StringComparison.InvariantCulture),
             Haystack.IndexOfOrNone(NonExistingNeedle, startIndex: 0, StringComparison.InvariantCulture),
             Haystack.IndexOfOrNone(NonExistingNeedle, startIndex: 0, count: 1, StringComparison.InvariantCulture),
-            Haystack.IndexOfAnyOrNone(new[] { NonExistingNeedleChar }),
-            Haystack.IndexOfAnyOrNone(new[] { NonExistingNeedleChar }, startIndex: 0),
-            Haystack.IndexOfAnyOrNone(new[] { NonExistingNeedleChar }, startIndex: 0, count: 1),
+            Haystack.IndexOfAnyOrNone([NonExistingNeedleChar]),
+            Haystack.IndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0),
+            Haystack.IndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0, count: 1),
             Haystack.LastIndexOfOrNone(NonExistingNeedleChar),
             Haystack.LastIndexOfOrNone(NonExistingNeedleChar, startIndex: 0),
             Haystack.LastIndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1),
@@ -49,9 +49,9 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.LastIndexOfOrNone(NonExistingNeedle, StringComparison.InvariantCulture),
             Haystack.LastIndexOfOrNone(NonExistingNeedle, startIndex: 0, StringComparison.InvariantCulture),
             Haystack.LastIndexOfOrNone(NonExistingNeedle, startIndex: 0, count: 1, StringComparison.InvariantCulture),
-            Haystack.LastIndexOfAnyOrNone(new[] { NonExistingNeedleChar }),
-            Haystack.LastIndexOfAnyOrNone(new[] { NonExistingNeedleChar }, startIndex: 0),
-            Haystack.LastIndexOfAnyOrNone(new[] { NonExistingNeedleChar }, startIndex: 0, count: 1),
+            Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar]),
+            Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0),
+            Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0, count: 1),
         };
 
     [Theory]
@@ -77,9 +77,9 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.IndexOfOrNone(ExistingNeedle, StringComparison.InvariantCulture),
             Haystack.IndexOfOrNone(ExistingNeedle, startIndex: 0, StringComparison.InvariantCulture),
             Haystack.IndexOfOrNone(ExistingNeedle, startIndex: 0, count: Haystack.Length, StringComparison.InvariantCulture),
-            Haystack.IndexOfAnyOrNone(new[] { ExistingNeedleChar }),
-            Haystack.IndexOfAnyOrNone(new[] { ExistingNeedleChar }, startIndex: 0),
-            Haystack.IndexOfAnyOrNone(new[] { ExistingNeedleChar }, startIndex: 0, count: Haystack.Length),
+            Haystack.IndexOfAnyOrNone([ExistingNeedleChar]),
+            Haystack.IndexOfAnyOrNone([ExistingNeedleChar], startIndex: 0),
+            Haystack.IndexOfAnyOrNone([ExistingNeedleChar], startIndex: 0, count: Haystack.Length),
             Haystack.LastIndexOfOrNone(ExistingNeedleChar),
             Haystack.LastIndexOfOrNone(ExistingNeedleChar, startIndex: Haystack.Length - 1),
             Haystack.LastIndexOfOrNone(ExistingNeedleChar, startIndex: Haystack.Length - 1, count: Haystack.Length),
@@ -89,9 +89,9 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.LastIndexOfOrNone(ExistingNeedle, StringComparison.InvariantCulture),
             Haystack.LastIndexOfOrNone(ExistingNeedle, startIndex: Haystack.Length - 1, StringComparison.InvariantCulture),
             Haystack.LastIndexOfOrNone(ExistingNeedle, startIndex: Haystack.Length - 1, count: Haystack.Length, StringComparison.InvariantCulture),
-            Haystack.LastIndexOfAnyOrNone(new[] { ExistingNeedleChar }),
-            Haystack.LastIndexOfAnyOrNone(new[] { ExistingNeedleChar }, startIndex: Haystack.Length - 1),
-            Haystack.LastIndexOfAnyOrNone(new[] { ExistingNeedleChar }, startIndex: Haystack.Length - 1, count: Haystack.Length),
+            Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar]),
+            Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar], startIndex: Haystack.Length - 1),
+            Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar], startIndex: Haystack.Length - 1, count: Haystack.Length),
         };
 
     [SkipOnMonoFact]

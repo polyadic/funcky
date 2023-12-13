@@ -13,7 +13,7 @@ public static partial class EnumerableExtensions
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
     public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSources)
-        => ImmutableList.Create(source).AddRange(otherSources).Interleave();
+        => Interleave([source, .. otherSources]);
 
     /// <summary>
     /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completley consumed.

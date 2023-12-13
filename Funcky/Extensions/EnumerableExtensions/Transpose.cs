@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Diagnostics.CodeAnalysis;
 
 namespace Funcky.Extensions;
@@ -17,5 +18,5 @@ public static partial class EnumerableExtensions
     public static IEnumerable<IReadOnlyList<TSource>> Transpose<TSource>(this IEnumerable<IEnumerable<TSource>> source)
         => source.Any()
             ? source.Interleave().Chunk(source.Count())
-            : Enumerable.Empty<IReadOnlyList<TSource>>();
+            : [];
 }

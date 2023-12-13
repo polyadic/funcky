@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Collections;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
@@ -26,9 +27,9 @@ public sealed class FirstSingleLastOrNoneTest
     public static TheoryData<List<int>, List<string>> ValueReferenceEnumerables()
         => new()
         {
-            { new List<int>(), new List<string>() },
-            { new List<int> { 1 }, new List<string> { "a" } },
-            { new List<int> { 1, 2, 3 }, new List<string> { "a", "b", "c" } },
+            { [], [] },
+            { [1], ["a"] },
+            { [1, 2, 3], ["a", "b", "c"] },
         };
 
     private static bool ExpectedOptionValue(ICollection valueEnumerable) =>

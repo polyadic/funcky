@@ -17,7 +17,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2).Merge(comparer);
+        => Merge([source1, source2], comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -31,7 +31,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2, source3).Merge(comparer);
+        => Merge([source1, source2, source3], comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -46,7 +46,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, IEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2, source3, source4).Merge(comparer);
+        => Merge([source1, source2, source3, source4], comparer);
 
     /// <summary>
     /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -75,7 +75,7 @@ public static partial class EnumerableExtensions
     }
 
     private static ImmutableList<IEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> sources)
-        => ImmutableList.Create<IEnumerator<TSource>>().AddRange(sources.Select(s => s.GetEnumerator()));
+        => sources.Select(s => s.GetEnumerator()).ToImmutableList();
 
     private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
         => comparer.GetOrElse(Comparer<TSource>.Default);

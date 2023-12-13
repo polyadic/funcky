@@ -1,3 +1,4 @@
+#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Extensions;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeRefactoringVerifier<Funcky.Analyzers.OptionSomeWhereToFromBooleanRefactoring>;
 
@@ -45,7 +46,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
         }
         """;
 
-    private static readonly IEnumerable<string> DefaultUsings = Sequence.Return("using Funcky.Monads;");
+    private static readonly IEnumerable<string> DefaultUsings = ["using Funcky.Monads;"];
 
     private static async Task VerifyRefactoring(string source, string fixedSource, string supportSource, IEnumerable<string>? usings = null)
     {
