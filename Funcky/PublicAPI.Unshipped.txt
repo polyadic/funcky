@@ -10,6 +10,7 @@ Funcky.Monads.Result<TValidResult>.InspectError(System.Action<System.Exception!>
 Funcky.Monads.Result<TValidResult>.OrElse(Funcky.Monads.Result<TValidResult> fallback) -> Funcky.Monads.Result<TValidResult>
 Funcky.Monads.Result<TValidResult>.OrElse(System.Func<System.Exception!, Funcky.Monads.Result<TValidResult>>! fallback) -> Funcky.Monads.Result<TValidResult>
 Funcky.UpCast<TResult>
+static Funcky.Extensions.EnumerableExtensions.InspectEmpty<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action! inspector) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumeratorExtensions.MoveNextOrNone<T>(this System.Collections.Generic.IEnumerator<T>! enumerator) -> Funcky.Monads.Option<T>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
