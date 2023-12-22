@@ -1,5 +1,3 @@
-#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
-
 using Funcky.Async.Test.TestUtilities;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
