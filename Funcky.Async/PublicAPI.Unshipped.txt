@@ -1,2 +1,3 @@
 #nullable enable
+static Funcky.Extensions.AsyncEnumerableExtensions.InspectEmpty<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Action! inspector) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.Monads.OptionAsyncExtensions.ToAsyncEnumerable<TItem>(this Funcky.Monads.Option<TItem> option) -> System.Collections.Generic.IAsyncEnumerable<TItem>!
