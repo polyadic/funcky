@@ -13,10 +13,11 @@ public sealed partial class ParseExtensionsTest
     }
 
     [Theory]
+    [InlineData(null)]
     [InlineData("longer")]
     [InlineData("")]
     [InlineData("\ud83d\udd25")] // single fire emoji (outside BMP)
-    public void ParseCharOrNoneReturnsNoneIfItCanParseItToACharcter(string input)
+    public void ParseCharOrNoneReturnsNoneIfItCanParseItToACharcter(string? input)
     {
         FunctionalAssert.None(input.ParseCharOrNone());
     }
