@@ -7,6 +7,4 @@ namespace Funcky.Extensions;
 #if IP_END_POINT_TRY_PARSE_SUPPORTED
 [OrNoneFromTryPattern(typeof(IPEndPoint), nameof(IPEndPoint.TryParse))]
 #endif
-public static partial class ParseExtensions
-{
-}
+public static partial class ParseExtensions;

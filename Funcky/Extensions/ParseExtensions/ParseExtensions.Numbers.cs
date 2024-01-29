@@ -13,6 +13,4 @@ namespace Funcky.Extensions;
 [OrNoneFromTryPattern(typeof(float), nameof(float.TryParse))]
 [OrNoneFromTryPattern(typeof(double), nameof(double.TryParse))]
 [OrNoneFromTryPattern(typeof(decimal), nameof(decimal.TryParse))]
-public static partial class ParseExtensions
-{
-}
+public static partial class ParseExtensions;
