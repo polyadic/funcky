@@ -15,6 +15,7 @@ static Funcky.Extensions.EnumeratorExtensions.MoveNextOrNone<T>(this System.Coll
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<byte>
+static Funcky.Extensions.ParseExtensions.ParseCharOrNone(this string? candidate) -> Funcky.Monads.Option<char>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<decimal>
 static Funcky.Extensions.ParseExtensions.ParseDecimalOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<decimal>

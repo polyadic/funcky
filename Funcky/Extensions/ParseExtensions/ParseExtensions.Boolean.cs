@@ -2,5 +2,5 @@ using Funcky.Internal;
 
 namespace Funcky.Extensions;
 
-[OrNoneFromTryPattern(typeof(Version), nameof(Version.TryParse))]
+[OrNoneFromTryPattern(typeof(bool), nameof(bool.TryParse))]
 public static partial class ParseExtensions;
