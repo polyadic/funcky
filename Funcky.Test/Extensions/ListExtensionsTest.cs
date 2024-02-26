@@ -18,4 +18,24 @@ public sealed class ListExtensionsTest
 
         FunctionalAssert.Some(2, list.IndexOfOrNone("Epsilon"));
     }
+
+    [Fact]
+    public void GivenAListAndAPredicateFindIndexOrNoneReturnsTheFirstElementMatchingThePredicateInTheGivenInterval()
+    {
+        List<string> list = ["Alpha", "Gamma", "Alien", "Epsilon"];
+
+        FunctionalAssert.Some(0, list.FindIndexOrNone(item => item.StartsWith("Al")));
+        FunctionalAssert.Some(2, list.FindIndexOrNone(2, item => item.StartsWith("Al")));
+        FunctionalAssert.None(list.FindIndexOrNone(3, 1, item => item.StartsWith("Al")));
+    }
+
+    [Fact]
+    public void GivenAListAndAPredicateFindLastIndexOrNoneReturnsTheLastElementMatchingThePredicateInTheGivenInterval()
+    {
+        List<string> list = ["Alpha", "Gamma", "Alien", "Epsilon"];
+
+        FunctionalAssert.Some(2, list.FindLastIndexOrNone(item => item.StartsWith("Al")));
+        FunctionalAssert.Some(0, list.FindLastIndexOrNone(1, item => item.StartsWith("Al")));
+        FunctionalAssert.None(list.FindLastIndexOrNone(3, 1, item => item.StartsWith("Al")));
+    }
 }
