@@ -12,6 +12,12 @@ Funcky.Monads.Result<TValidResult>.OrElse(System.Func<System.Exception!, Funcky.
 Funcky.UpCast<TResult>
 static Funcky.Extensions.EnumerableExtensions.InspectEmpty<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action! inspector) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumeratorExtensions.MoveNextOrNone<T>(this System.Collections.Generic.IEnumerator<T>! enumerator) -> Funcky.Monads.Option<T>
+static Funcky.Extensions.ListExtensions.FindIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, int startIndex, int count, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.FindIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, int startIndex, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.FindIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, int startIndex, int count, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, int startIndex, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<byte>
 static Funcky.Extensions.ParseExtensions.ParseByteOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<byte>
