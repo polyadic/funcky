@@ -59,6 +59,8 @@ static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlyS
 static Funcky.Extensions.ParseExtensions.ParseUInt64OrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<ulong>
 static Funcky.Extensions.StringExtensions.Chunk(this string! source, int size) -> System.Collections.Generic.IEnumerable<string!>!
 static Funcky.Extensions.StringExtensions.SlidingWindow(this string! source, int width) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Sequence.CycleRange<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Sequence.RepeatRange<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.UpCast<TResult>.From<T>(System.Lazy<T>! lazy) -> System.Lazy<TResult>!
 static Funcky.UpCast<TResult>.From<TItem>(Funcky.Monads.Option<TItem> option) -> Funcky.Monads.Option<TResult>
 static Funcky.UpCast<TResult>.From<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Either<TLeft, TResult>
