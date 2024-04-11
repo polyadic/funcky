@@ -3,6 +3,8 @@ namespace Funcky.Extensions;
 public static partial class QueryableExtensions
 {
 #if NET7_0
+    // Starting with .NET 8.0 the Select, Filter, ... methods are no longer marked with [RequiresDynamicCode]
+    // so we only need this attribute for .NET 7.0.
     private const string InMemoryQueryableExtensionMethodsRequiresDynamicCode = "Enumerating collections as IQueryable can require creating new generic types or methods, which requires creating code at runtime. This may not work when AOT compiling.";
 #endif
 
