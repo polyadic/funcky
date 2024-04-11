@@ -47,6 +47,24 @@ jobs:
     - name: Run Tests
       run: dotnet test --configuration Release --no-build
 
+  style:
+    name: Check Formatting and Style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
+      name: Install Current .NET SDK
+    - name: Restore dependencies
+      run: dotnet restore
+    # We need to run a build first so that the attribute from our source generator is available.
+    # Otherwise we get warnings about unused usings.
+    - name: Build
+      run: dotnet build Funcky.SourceGenerator --no-restore && dotnet build Funcky.FsCheck --no-restore
+    - run: dotnet format style --verify-no-changes --no-restore
+      name: Check Style
+    - run: dotnet format whitespace --verify-no-changes --no-restore
+      name: Check Whitespace
+
   trimming-test:
     name: Trimming Test
     runs-on: ubuntu-latest

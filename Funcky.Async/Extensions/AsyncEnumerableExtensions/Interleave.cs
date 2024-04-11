@@ -45,9 +45,9 @@ public static partial class AsyncEnumerableExtensions
         }
     }
 
-    #pragma warning disable IDISP007 // The entire point of this method is to dispose.
+#pragma warning disable IDISP007 // The entire point of this method is to dispose.
     private static async Task DisposeEnumerator<T>(IAsyncEnumerator<T> enumerator) => await enumerator.DisposeAsync().ConfigureAwait(false);
-    #pragma warning restore IDISP007
+#pragma warning restore IDISP007
 
     private static ImmutableList<IAsyncEnumerator<TSource>> GetInterleaveEnumerators<TSource>(
         IEnumerable<IAsyncEnumerable<TSource>> source,

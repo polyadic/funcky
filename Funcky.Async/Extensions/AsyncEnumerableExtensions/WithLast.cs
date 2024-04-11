@@ -11,9 +11,9 @@ public static partial class AsyncEnumerableExtensions
     [Pure]
     public static async IAsyncEnumerable<ValueWithLast<TSource>> WithLast<TSource>(this IAsyncEnumerable<TSource> source)
     {
-        #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
         await using var enumerator = source.ConfigureAwait(false).GetAsyncEnumerator();
-        #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
         if (!await enumerator.MoveNextAsync())
         {

@@ -15,9 +15,9 @@ namespace Funcky.Monads;
 public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
     where TValidResult : notnull
 {
-    #if !SET_CURRENT_STACK_TRACE_SUPPORTED
+#if !SET_CURRENT_STACK_TRACE_SUPPORTED
     private const int SkipLowestStackFrame = 1;
-    #endif
+#endif
 
     private readonly TValidResult _result;
     private readonly Exception? _error;
@@ -49,16 +49,16 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     /// <summary>Creates a new <see cref="Result{TValidResult}"/> from an <see cref="Exception"/> and sets
     /// the stack trace if not already set.</summary>
     /// <remarks>This method has side effects: It sets the stack trace on <paramref name="exception"/> if not already set.</remarks>
-    #if SET_CURRENT_STACK_TRACE_SUPPORTED
+#if SET_CURRENT_STACK_TRACE_SUPPORTED
     // Methods with AggressiveInlining are always excluded from the stack trace.
     // This is required for <c>SetCurrentStackTrace</c> to work properly.
     // See: https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L347
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [StackTraceHidden]
-    #else
+#else
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    #endif
-    #endif
+#endif
+#endif
     public static Result<TValidResult> Error(Exception exception)
     {
         if (exception is null)
@@ -68,11 +68,11 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 
         if (exception.StackTrace is null)
         {
-            #if SET_CURRENT_STACK_TRACE_SUPPORTED
-                ExceptionDispatchInfo.SetCurrentStackTrace(exception);
-            #else
+#if SET_CURRENT_STACK_TRACE_SUPPORTED
+            ExceptionDispatchInfo.SetCurrentStackTrace(exception);
+#else
                 exception.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
-            #endif
+#endif
         }
 
         return new Result<TValidResult>(exception);
