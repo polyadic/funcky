@@ -54,6 +54,8 @@ dotnet_diagnostic.IDE0011.severity = warning # Add braces
 csharp_style_inlined_variable_declaration = true # Prefer `out` variables to be declared inline in the argument list of a method call when possible
 dotnet_diagnostic.IDE0018.severity = warning
 
+# TODO: Go through all language rules: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules
+
 # Formatting
 # See: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/csharp-formatting-options
 dotnet_diagnostic.IDE0055.severity = warning
@@ -102,3 +104,6 @@ csharp_space_between_square_brackets = false
 
 ## Wrap Options
 csharp_preserve_single_line_statements = false
+
+# Naming
+# TODO: Define naming (see https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/naming-rules)
