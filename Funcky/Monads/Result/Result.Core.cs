@@ -71,7 +71,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 #if SET_CURRENT_STACK_TRACE_SUPPORTED
             ExceptionDispatchInfo.SetCurrentStackTrace(exception);
 #else
-                exception.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
+            exception.SetStackTrace(new StackTrace(SkipLowestStackFrame, true));
 #endif
         }
 
