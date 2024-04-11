@@ -4,9 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PublishTrimmed>true</PublishTrimmed>
-        <!-- Prevent warnings from unused code in dependencies -->
-        <TrimmerDefaultAction>link</TrimmerDefaultAction>
+        <PublishTrimmed Condition="'$(FunckyTestAot)' != 'true'">true</PublishTrimmed>
+        <PublishAot Condition="'$(FunckyTestAot)' == 'true'">true</PublishAot>
     </PropertyGroup>
     <ItemGroup>
         <!-- Analyze the whole library, even if attributed with "IsTrimmable" -->

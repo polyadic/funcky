@@ -48,7 +48,7 @@ jobs:
       run: dotnet test --configuration Release --no-build
 
   trimming-test:
-    name: Trimming Test
+    name: Trimming and AOT Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -56,6 +56,8 @@ jobs:
       name: Install Current .NET SDK
     - name: Run trimming test
       run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
+    - name: Run AOT test
+      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyTestAot=true
 
   nupkg:
     name: Generate NuGet Packages

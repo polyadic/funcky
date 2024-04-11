@@ -9,6 +9,9 @@ public static partial class QueryableExtensions
     /// </summary>
     /// <typeparam name="TSource">the inner type of the queryable.</typeparam>
     [Pure]
+#if NET7_0
+    [System.Diagnostics.CodeAnalysis.RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
+#endif
     public static Option<TSource> LastOrNone<TSource>(this IQueryable<TSource> source)
         where TSource : notnull
         => source
@@ -20,6 +23,9 @@ public static partial class QueryableExtensions
     /// </summary>
     /// <typeparam name="TSource">the inner type of the queryable.</typeparam>
     [Pure]
+#if NET7_0
+    [System.Diagnostics.CodeAnalysis.RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
+#endif
     public static Option<TSource> LastOrNone<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         where TSource : notnull
         => source
