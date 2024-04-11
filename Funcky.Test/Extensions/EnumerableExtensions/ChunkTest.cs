@@ -80,7 +80,9 @@ public sealed class ChunkTest
         var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
 
         const int chunkSize = 4;
+        #pragma warning disable IDE0007 // False positive
         IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
+        #pragma warning restore IDE0007
 
         Assert.Collection(
             chunked,

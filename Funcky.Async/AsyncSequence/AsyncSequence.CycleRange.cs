@@ -84,7 +84,7 @@ public static partial class AsyncSequence
             // this can change on Dispose!
             var bufferCount = _buffer.Count;
 
-            for (int cycle = 1; IsCycling(cycle); ++cycle)
+            for (var cycle = 1; IsCycling(cycle); ++cycle)
             {
                 for (var index = 0; index < bufferCount; ++index)
                 {
