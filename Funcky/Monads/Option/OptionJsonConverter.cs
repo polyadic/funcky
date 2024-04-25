@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 namespace Funcky.Monads;
 
 /// <summary>A JSON converter for <see cref="Option{TItem}"/> that serializes <see cref="Option.Some{TItem}"/> transparently and <see cref="Option{TItem}.None"/> as <c>null</c>.</summary>
+#if AOT
+[RequiresDynamicCode("The converter needs to be able to instantiate generics at runtime.")]
+#endif
 public sealed class OptionJsonConverter : JsonConverterFactory
 {
     public override bool CanConvert(Type typeToConvert)

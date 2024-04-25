@@ -41,6 +41,9 @@
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     </PropertyGroup>
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
+        <IsAotCompatible>true</IsAotCompatible>
+    </PropertyGroup>
     <ItemGroup>
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
