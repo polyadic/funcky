@@ -40,7 +40,7 @@ We implemented a few of the IEnumerable extensions which are very useful on stri
 * Implemented `InspectLeft` on `Either`
 * Implemented `InspectNone` on `Option`
 * Implemented `InspectError` on `Result`
-* Implemented `InspectEmpty` on `IEnumerable` and `IAEnumerable`
+* Implemented `InspectEmpty` on `IEnumerable` and `IAsyncEnumerable`
 * Implemented `ToAsyncEnumerable` extension on `Option`
 
 ### IEnumerator 
