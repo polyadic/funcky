@@ -6,6 +6,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 This update is mainly to update to .NET 8 but also has several smaller improvements.
 
+### Native AOT
+
+Both Funcky and Funcky.Async have been annotated to be compatible with [Native AOT](https://learn.microsoft.com/en-gb/dotnet/core/deploying/native-aot).
+The only exception is `OptionJsonSerializer` which is not compatible with Native AOT.
+
 ### .NET 8
 
 We use the new C#12 and .NET features in the code, and expose new features through our API.
