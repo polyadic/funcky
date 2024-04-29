@@ -40,11 +40,6 @@ We implemented a few of the IEnumerable extensions which are very useful on stri
 ### Monads
 
 * Implemented `UpCast` for the monds `Option`, `Either`, `Result` and `System.Lazy`.
-* Implemented `OrElse` on `Either`
-* Implemented `OrElse` and `GetOrElse` on `Result`
-* Implemented `InspectLeft` on `Either`
-* Implemented `InspectNone` on `Option`
-* Implemented `InspectError` on `Result`
 * Implemented `InspectEmpty` on `IEnumerable` and `IAsyncEnumerable`
 * Implemented `ToAsyncEnumerable` extension on `Option`
 
