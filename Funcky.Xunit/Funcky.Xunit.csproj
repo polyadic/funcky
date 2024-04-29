@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <Description>Package to use Funcky with xUnit</Description>
         <PackageTags>Functional Monad xUnit</PackageTags>
-        <Version>2.0.1</Version>
+        <Version>2.0.2</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <RootNamespace>Funcky</RootNamespace>

@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Funcky 3.4.0 | Funcky.Async 1.3.0 
+## Funcky 3.4.0 | Funcky.Async 1.3.0 | Funcky.XUnit 2.0.2
+
+This update is mainly to update to .NET 8 but also has several smaller improvements.
 
 ### .NET 8
 
@@ -64,6 +66,10 @@ All three alternative monads `Option`, `Either` and `Result` now support inspect
 * `Result.InspectError` - executes a side effect only when the result is an `Error`.
 
 These methods are particularly useful for logging warnings/errors.
+
+### Funcky.XUnit
+
+* Funcky.XUnit is only compatible with XUnit 2.4, this is now correctly declared.
 
 ## Funcky 3.2.0 | Funcky.Async 1.2.0
 ### List Pattern for Option
