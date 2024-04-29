@@ -45,7 +45,7 @@ We implemented a few of the IEnumerable extensions which are very useful on stri
 
 ### IEnumerator 
 
-* `MoveNextOrNone` extention on `IEnumerator<T>`
+* `MoveNextOrNone` extension on `IEnumerator<T>`
 
 ### Consistency
 
