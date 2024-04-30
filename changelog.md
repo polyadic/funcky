@@ -2,6 +2,56 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.4.0 | Funcky.Async 1.3.0 | Funcky.XUnit 2.0.2
+
+This update is mainly to update to .NET 8 but also has several smaller improvements.
+
+### Native AOT
+
+Both Funcky and Funcky.Async have been annotated to be compatible with [Native AOT](https://learn.microsoft.com/en-gb/dotnet/core/deploying/native-aot).
+The only exception is `OptionJsonSerializer` which is not compatible with Native AOT.
+
+### .NET 8
+
+We use the new C#12 and .NET features in the code, and expose new features through our API.
+
+* .NET 8 added new overloads to their `TryParse` APIs. These changes  are reflected in Funcky's `ParseOrNone` APIs.
+  * `ParseByteOrNone` overloads with `ReadOnlySpan<byte>` and `string?`
+  * `ParseSByteOrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseSingleOrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseDoubleOrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseDecimalOrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseInt16OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseInt32OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseInt64OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseUInt16OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseUInt32OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseUInt64OrNone` overloads with `ReadOnlySpan<byte>`
+  * `ParseNumberOrNone<TNumber>` overloads
+  * `ParseOrNone<TParsable>` overloads
+
+### String Extensions
+
+We implemented a few of the IEnumerable extensions which are very useful on strings.
+
+* `Chunk` on `string`.
+* `SlidingWindow` on `string`.
+
+### Monads
+
+* Implemented `UpCast` for the monds `Option`, `Either`, `Result` and `System.Lazy`.
+* Implemented `InspectEmpty` on `IEnumerable` and `IAsyncEnumerable`
+* Implemented `ToAsyncEnumerable` extension on `Option`
+
+### IEnumerator 
+
+* `MoveNextOrNone` extension on `IEnumerator<T>`
+
+### Consistency
+
+* `FindIndexOrNone` and `FindLastIndexOrNone` extensions on `List`
+
+
 ## Funcky 3.3.0 | Funcky.Analyzers 1.3.0 | Funcky.Xunit 2.0.1
 This is a relatively minor release focuses on convenience for our monads `Option`, `Either` and `Result`.
 
@@ -16,6 +66,10 @@ All three alternative monads `Option`, `Either` and `Result` now support inspect
 * `Result.InspectError` - executes a side effect only when the result is an `Error`.
 
 These methods are particularly useful for logging warnings/errors.
+
+### Funcky.XUnit
+
+* Funcky.XUnit is only compatible with XUnit 2.4, this is now correctly declared.
 
 ## Funcky 3.2.0 | Funcky.Async 1.2.0
 ### List Pattern for Option
