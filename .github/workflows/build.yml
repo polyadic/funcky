@@ -20,22 +20,22 @@ jobs:
       SystemLinqAsyncVersion: ${{matrix.systemLinqAsync}}
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 3.1'
       with:
         dotnet-version: '3.1.x'
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 5.0'
       with:
         dotnet-version: '5.0.x'
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 7.0'
       with:
         dotnet-version: '7.0.x'
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 6.0'
       with:
         dotnet-version: '6.0.x'
@@ -51,8 +51,8 @@ jobs:
     name: Trimming and AOT Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - name: Run trimming test
       run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
@@ -63,12 +63,12 @@ jobs:
     name: Generate NuGet Packages
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - name: Generate NuGet Packages
       run: dotnet pack --output nupkg
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: success() && github.ref == 'refs/heads/main'
       with:
         name: nupkg
