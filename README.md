@@ -10,6 +10,8 @@ Funcky is a functional library for C# which encourages correct usage of the func
 
 * **Funcky** \
   [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
+* **Funcky.Async** \
+  [![NuGet package](https://buildstats.info/nuget/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
 * **Funcky.XUnit** \
   [![NuGet package](https://buildstats.info/nuget/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
 * **Funcky.Analyzers**: Analyzers to guide to the correct usage of Funcky. \
