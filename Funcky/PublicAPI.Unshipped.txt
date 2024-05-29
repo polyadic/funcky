@@ -1,2 +1,5 @@
 #nullable enable
-
+Funcky.DownCast<TResult>
+static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Option<TItem!> option) -> Funcky.Monads.Option<TResult!>
+static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Result<TItem!> result) -> Funcky.Monads.Result<TResult!>
+static Funcky.DownCast<TResult>.From<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight!> either, System.Func<TLeft>! failedCast) -> Funcky.Monads.Either<TLeft, TResult!>
