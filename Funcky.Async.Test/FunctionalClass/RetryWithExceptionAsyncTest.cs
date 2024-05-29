@@ -52,9 +52,7 @@ public sealed class RetryWithExceptionAsyncTest
 
     private static TResult Throw<TResult>() => throw new ExceptionStub();
 
-    private sealed class ExceptionStub : Exception
-    {
-    }
+    private sealed class ExceptionStub : Exception;
 
     private sealed class ThrowOnRetryPolicy : IRetryPolicy
     {
