@@ -14,7 +14,7 @@ public static class DownCast<TResult>
     public static Either<TLeft, TResult> From<TLeft, TRight>(Either<TLeft, TRight> either, Func<TLeft> failedCast)
         where TRight : class
         where TLeft : notnull
-        => either.SelectMany(right => EitherDownCast(failedCast, right));
+        => either.SelectMany(EitherDownCast<TLeft, TRight>(failedCast));
 
     private static Option<TResult> OptionDownCast<TItem>(TItem item)
         where TItem : class
@@ -26,10 +26,11 @@ public static class DownCast<TResult>
             ? Result.Ok(validResult)
             : Result<TResult>.Error(new InvalidCastException());
 
-    private static Either<TLeft, TResult> EitherDownCast<TLeft, TRight>(Func<TLeft> failedCast, TRight right)
+    private static Func<TRight, Either<TLeft, TResult>> EitherDownCast<TLeft, TRight>(Func<TLeft> failedCast)
         where TRight : class
         where TLeft : notnull
-        => right as TResult is { } result
-            ? Either<TLeft, TResult>.Right(result)
-            : Either<TLeft, TResult>.Left(failedCast());
+        => right
+            => right as TResult is { } result
+                ? Either<TLeft, TResult>.Right(result)
+                : Either<TLeft, TResult>.Left(failedCast());
 }
