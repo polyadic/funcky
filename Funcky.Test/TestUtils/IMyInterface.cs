@@ -1,5 +1,3 @@
 namespace Funcky.Test.TestUtils;
 
-internal interface IMyInterface
-{
-}
+internal interface IMyInterface;

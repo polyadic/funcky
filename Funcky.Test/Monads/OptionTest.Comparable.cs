@@ -109,7 +109,5 @@ public sealed partial class OptionTest
         _ = optionTwo.CompareTo(optionOne);
     }
 
-    private sealed class Person
-    {
-    }
+    private sealed class Person;
 }

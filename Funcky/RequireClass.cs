@@ -5,6 +5,4 @@ namespace Funcky;
 
 [EditorBrowsable(Never)]
 public sealed class RequireClass<T>
-    where T : class
-{
-}
+    where T : class;
