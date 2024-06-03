@@ -22,15 +22,13 @@ public static class DownCast<TResult>
 
     private static Result<TResult> ResultDownCast<TValidResult>(TValidResult result)
         where TValidResult : class
-        => result as TResult is { } validResult
-            ? Result.Ok(validResult)
-            : Result<TResult>.Error(new InvalidCastException());
+        => result as TResult
+           ?? Result<TResult>.Error(new InvalidCastException());
 
     private static Func<TRight, Either<TLeft, TResult>> EitherDownCast<TLeft, TRight>(Func<TLeft> failedCast)
         where TRight : class
         where TLeft : notnull
         => right
-            => right as TResult is { } result
-                ? Either<TLeft, TResult>.Right(result)
-                : Either<TLeft, TResult>.Left(failedCast());
+            => right as TResult
+               ?? Either<TLeft, TResult>.Left(failedCast());
 }
