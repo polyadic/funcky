@@ -100,7 +100,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 
     private static IEnumerable<INamedTypeSymbol> GetBaseTypes(INamedTypeSymbol type)
     {
-        for (INamedTypeSymbol? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+        for (var baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
         {
             yield return baseType;
         }

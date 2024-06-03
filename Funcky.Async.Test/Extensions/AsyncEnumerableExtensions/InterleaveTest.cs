@@ -89,7 +89,7 @@ public sealed class InterleaveTest
         var innerSum = sequences.Select(async element => await element.CountAsync()).Aggregate(0, (total, part) => total + part.Result);
         Assert.Equal(innerSum, await sequences.Interleave().CountAsync());
 
-        int expected = 1;
+        var expected = 1;
         await foreach (var element in sequences.Interleave())
         {
             Assert.Equal(expected, element);

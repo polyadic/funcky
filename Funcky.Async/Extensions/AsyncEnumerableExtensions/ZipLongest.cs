@@ -33,10 +33,10 @@ public static partial class AsyncEnumerableExtensions
         where TLeft : notnull
         where TRight : notnull
     {
-        #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
         await using var leftEnumerator = left.ConfigureAwait(false).GetAsyncEnumerator();
         await using var rightEnumerator = right.ConfigureAwait(false).GetAsyncEnumerator();
-        #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
         while ((await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false)).TryGetValue(out var next))
         {

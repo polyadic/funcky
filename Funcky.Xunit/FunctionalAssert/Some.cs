@@ -8,11 +8,11 @@ public static partial class FunctionalAssert
 {
     /// <summary>Asserts that the given <paramref name="option"/> is <c>Some</c> and contains the given <paramref name="expectedValue"/>.</summary>
     /// <exception cref="AssertActualExpectedException">Thrown when the option is <c>None</c>.</exception>
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     public static void Some<TItem>(TItem expectedValue, Option<TItem> option)
         where TItem : notnull
     {
@@ -33,11 +33,11 @@ public static partial class FunctionalAssert
     /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="option"/> is <c>None</c>.</exception>
     /// <returns>Returns the value in <paramref name="option"/> if it was <c>Some</c>.</returns>
     [Pure]
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
     public static TItem Some<TItem>(Option<TItem> option)

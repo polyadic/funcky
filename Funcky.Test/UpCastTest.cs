@@ -1,3 +1,5 @@
+#pragma warning disable IDE0007 // Use implicit type
+
 using System.Collections.Immutable;
 
 namespace Funcky.Test;

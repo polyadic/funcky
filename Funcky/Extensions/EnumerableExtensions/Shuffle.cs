@@ -32,5 +32,5 @@ public static partial class EnumerableExtensions
         => source
             .ToList()
             .ToRandomList(random);
-    #endif
+#endif
 }

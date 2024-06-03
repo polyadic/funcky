@@ -18,7 +18,7 @@ public sealed class InterleaveTest
     {
         IEnumerable<IEnumerable<int>> emptySequence = [];
 
-        IEnumerable<int> interleaved = emptySequence.Interleave();
+        var interleaved = emptySequence.Interleave();
 
         Assert.Empty(interleaved);
     }
@@ -42,7 +42,7 @@ public sealed class InterleaveTest
         IEnumerable<int> evens = [2, 4, 6];
         IEnumerable<int> expected = [1, 2, 3, 4, 5, 6, 7, 9, 11];
 
-        IEnumerable<int> interleaved = odds.Interleave(evens);
+        var interleaved = odds.Interleave(evens);
 
         Assert.Equal(expected, interleaved);
     }
@@ -99,7 +99,7 @@ public sealed class InterleaveTest
 
         Assert.Equal(sequences.Select(s => s.Count()).Sum(), sequences.Interleave().Count());
 
-        int expected = 1;
+        var expected = 1;
         foreach (var element in sequences.Interleave())
         {
             Assert.Equal(expected, element);

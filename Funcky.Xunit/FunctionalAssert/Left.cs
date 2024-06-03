@@ -8,11 +8,11 @@ public static partial class FunctionalAssert
 {
     /// <summary>Asserts that the given <paramref name="either"/> is <c>Left</c> and contains the given <paramref name="expectedLeft"/>.</summary>
     /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="either"/> is <c>Right</c>.</exception>
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     public static void Left<TLeft, TRight>(TLeft expectedLeft, Either<TLeft, TRight> either)
         where TLeft : notnull
         where TRight : notnull
@@ -33,11 +33,11 @@ public static partial class FunctionalAssert
     /// <summary>Asserts that the given <paramref name="either"/> is <c>Left</c>.</summary>
     /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="either"/> is <c>Right</c>.</exception>
     /// <returns>Returns the value in <paramref name="either"/> if it was <c>Left</c>.</returns>
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
     public static TLeft Left<TLeft, TRight>(Either<TLeft, TRight> either)

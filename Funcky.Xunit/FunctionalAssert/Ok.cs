@@ -8,11 +8,11 @@ public static partial class FunctionalAssert
 {
     /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c> and contains the given <paramref name="expectedResult"/>.</summary>
     /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     public static void Ok<TValidResult>(TValidResult expectedResult, Result<TValidResult> result)
         where TValidResult : notnull
     {
@@ -32,11 +32,11 @@ public static partial class FunctionalAssert
     /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c>.</summary>
     /// <exception cref="AssertActualExpectedException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
     /// <returns>Returns the value in <paramref name="result"/> if it was <c>Ok</c>.</returns>
-    #if STACK_TRACE_HIDDEN_SUPPORTED
+#if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
-    #else
+#else
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    #endif
+#endif
     [SuppressMessage("Microsoft.Usage", "CA2200", Justification = "Stack trace erasure intentional.")]
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow", Justification = "Stack trace erasure intentional.")]
     public static TValidResult Ok<TValidResult>(Result<TValidResult> result)

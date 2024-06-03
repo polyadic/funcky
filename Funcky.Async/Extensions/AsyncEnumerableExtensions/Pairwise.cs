@@ -33,9 +33,9 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TSource, TResult> resultSelector,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
         await using var enumerator = source.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
-        #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
         if (await enumerator.MoveNextAsync() == false)
         {

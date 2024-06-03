@@ -57,7 +57,7 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
     {
         valueArgument = null;
         return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
-            && MatchArguments(operation, out valueArgument, AnyArgument,  out _, ConstantArgument(1));
+            && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(1));
     }
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
