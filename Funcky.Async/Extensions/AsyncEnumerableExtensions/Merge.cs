@@ -61,7 +61,7 @@ public static partial class AsyncEnumerableExtensions
 
         try
         {
-            await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false)), GetMergeComparer(comparer)))
+            await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false)), GetMergeComparer(comparer)).ConfigureAwait(false))
             {
                 yield return element;
             }
