@@ -11,8 +11,7 @@ internal static class AsyncAssert
         {
             if (await asyncEnumerator.MoveNextAsync())
             {
-                var actual = await asyncSequence.ToListAsync();
-                throw EmptyException.ForNonEmptyCollection(collection: "TODO");
+                throw EmptyException.ForNonEmptyCollection(collection: await FormatCollectionStart(asyncSequence));
             }
         }
         finally
@@ -49,15 +48,15 @@ internal static class AsyncAssert
 
         if (await asyncEnumerator.MoveNextAsync() is false)
         {
-            throw SingleException.Empty(expected: null, collection: "TODO");
+            throw SingleException.Empty(expected: null, collection: string.Empty);
         }
 
         var result = asyncEnumerator.Current;
 
         if (await asyncEnumerator.MoveNextAsync())
         {
-            var actual = await asyncSequence.ToListAsync();
-            throw SingleException.MoreThanOne(expected: null, collection: "TODO", count: actual.Count, matchIndices: Array.Empty<int>());
+            var actual = await MaterializeCollectionStart(asyncSequence);
+            throw SingleException.MoreThanOne(expected: null, collection: FormatCollectionStart(actual), count: actual.Count, matchIndices: Array.Empty<int>());
         }
 
         return result;
@@ -65,4 +64,20 @@ internal static class AsyncAssert
 
     public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
         => Assert.Equal(await expectedResult.ToListAsync(), await actual.ToListAsync());
+
+    private static async Task<IReadOnlyCollection<TElement>> MaterializeCollectionStart<TElement>(IAsyncEnumerable<TElement> asyncSequence)
+    {
+        // This should *ideally* be kept in sync with XUnit's `ArgumentFormatter.MAX_ENUMERABLE_LENGTH + 1` (which is private).
+        const int maxEnumerableLength = 6;
+        return await asyncSequence.Take(maxEnumerableLength).ToListAsync();
+    }
+
+    private static async Task<string> FormatCollectionStart<TElement>(IAsyncEnumerable<TElement> asyncSequence)
+        => FormatCollectionStart(await MaterializeCollectionStart(asyncSequence));
+
+    private static string FormatCollectionStart<TElement>(IEnumerable<TElement> sequence)
+    {
+        using var tracker = sequence.AsTracker();
+        return tracker.FormatStart();
+    }
 }
