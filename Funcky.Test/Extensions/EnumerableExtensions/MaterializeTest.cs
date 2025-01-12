@@ -45,7 +45,7 @@ public sealed class MaterializeTest
     public void MaterializeDoesNotEnumerableEnumerableReturnedByRepeat()
     {
         var sequence = Enumerable.Repeat("Hello world!", 3);
-        var materialized = sequence.Materialize<string, IReadOnlyCollection<string>>(_ => throw new FailException("Materialization should never be called"));
+        var materialized = sequence.Materialize<string, IReadOnlyCollection<string>>(_ => throw FailException.ForFailure("Materialization should never be called"));
         Assert.Same(sequence, materialized);
     }
 #endif

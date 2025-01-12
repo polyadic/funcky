@@ -11,7 +11,8 @@ internal static class AsyncAssert
         {
             if (await asyncEnumerator.MoveNextAsync())
             {
-                throw new EmptyException(await asyncSequence.ToListAsync());
+                var actual = await asyncSequence.ToListAsync();
+                throw EmptyException.ForNonEmptyCollection(collection: "TODO");
             }
         }
         finally
@@ -27,7 +28,7 @@ internal static class AsyncAssert
         {
             if (!await asyncEnumerator.MoveNextAsync())
             {
-                throw new NotEmptyException();
+                throw NotEmptyException.ForNonEmptyCollection();
             }
         }
         finally
@@ -39,25 +40,7 @@ internal static class AsyncAssert
     public static async Task Collection<TElement>(IAsyncEnumerable<TElement> asyncSequence, params Action<TElement>[] elementInspectors)
     {
         var elements = await asyncSequence.ToListAsync();
-        var elementInspectorsLength = elementInspectors.Length;
-        var elementsLength = elements.Count;
-
-        if (elementInspectorsLength != elementsLength)
-        {
-            throw new CollectionException(asyncSequence.ToListAsync(), elementInspectorsLength, elementsLength);
-        }
-
-        foreach (var ((elementInspector, element), indexFailurePoint) in elementInspectors.Zip(elements).WithIndex())
-        {
-            try
-            {
-                elementInspector(element);
-            }
-            catch (Exception ex)
-            {
-                throw new CollectionException(asyncSequence.ToListAsync(), elementInspectorsLength, elementsLength, indexFailurePoint, ex);
-            }
-        }
+        Assert.Collection(elements, elementInspectors);
     }
 
     public static async Task<T> Single<T>(IAsyncEnumerable<T> asyncSequence)
@@ -66,14 +49,15 @@ internal static class AsyncAssert
 
         if (await asyncEnumerator.MoveNextAsync() is false)
         {
-            SingleException.Empty(null);
+            throw SingleException.Empty(expected: null, collection: "TODO");
         }
 
         var result = asyncEnumerator.Current;
 
         if (await asyncEnumerator.MoveNextAsync())
         {
-            SingleException.MoreThanOne(await asyncSequence.CountAsync(), null);
+            var actual = await asyncSequence.ToListAsync();
+            throw SingleException.MoreThanOne(expected: null, collection: "TODO", count: actual.Count, matchIndices: Array.Empty<int>());
         }
 
         return result;
