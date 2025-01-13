@@ -17,7 +17,7 @@ public static class DictionaryExtensions
             : Option<TValue>.None;
 
     [Pure]
-    [OverloadResolutionPriority(10)]
+    [OverloadResolutionPriority(1)]
     public static Option<TValue> GetValueOrNone<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey readOnlyKey)
 #if NETCOREAPP3_1
         // TKey was constraint to notnull when nullability annotations were originally added. It was later dropped again.
