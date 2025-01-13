@@ -32,42 +32,68 @@ public sealed class SimpleLambdaExpressionsAnalyzer : DiagnosticAnalyzer
 
     private static void OnCompilationStarted(CompilationStartAnalysisContext context)
     {
-        if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeType)
+        context.RegisterOperationAction(AnalyzeArgument, OperationKind.Argument);
+    }
+
+    private static void AnalyzeArgument(OperationAnalysisContext context)
+    {
+        var operation = (IArgumentOperation)context.Operation;
+        if (operation.Parameter is { } parameter
+            && operation.Value is IDelegateCreationOperation { Target: IAnonymousFunctionOperation lambda }
+            && parameter.ContainingSymbol is IMethodSymbol { ContainingType: var containingType } method
+            && MatchBlockOperationWithSingleReturn(lambda.Body) is { } returnedValue
+            && containingType.GetMembers().OfType<IMethodSymbol>().Any(m => m.Name == method.Name
+                && SymbolEqualityComparer.IncludeNullability.Equals(m.ReturnType, method.ReturnType)
+                && m.Parameters.Length == 1
+                && SymbolEqualityComparer.IncludeNullability.Equals(m.Parameters[0].Type, returnedValue.Type)))
         {
-            context.RegisterOperationAction(AnalyzeArgument(attributeType), OperationKind.Argument);
+            context.ReportDiagnostic(Diagnostic.Create(Descriptor, lambda.Syntax.GetLocation()));
+
+            // var kind = DetectSimpleOperation(returnedValue, lambda);
+            //
+            // switch (kind)
+            // {
+            //     case SimpleOperationKind.Certain:
+            //         context.ReportDiagnostic(Diagnostic.Create(Descriptor, lambda.Syntax.GetLocation()));
+            //         break;
+            //     case SimpleOperationKind.Maybe:
+            //         context.ReportDiagnostic(Diagnostic.Create(Descriptor, lambda.Syntax.GetLocation(), DiagnosticSeverity.Info, null, null));
+            //         break;
+            // }
         }
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeArgument(INamedTypeSymbol attributeType)
-        => context
-            =>
-            {
-                var operation = (IArgumentOperation)context.Operation;
-                if (operation.Parameter is { } parameter
-                    && operation.Value is IDelegateCreationOperation { Target: IAnonymousFunctionOperation lambda }
-                    && parameter.GetAttributes().Any(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, attributeType))
-                    && MatchBlockOperationWithSingleReturn(lambda.Body) is { } returnedValue
-                    && IsCheapOperation(returnedValue))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, lambda.Syntax.GetLocation()));
-                }
-            };
-
     private static IOperation? MatchBlockOperationWithSingleReturn(IOperation operation)
-        => operation is IBlockOperation block
-            && block.Operations.Length == 1
-            && block.Operations[0] is IReturnOperation @return
-                ? @return.ReturnedValue
-                : null;
+        => operation is IBlockOperation blockOperation
+            && blockOperation.Operations.Length == 1
+            && blockOperation.Operations[0] is IReturnOperation @return
+            ? @return.ReturnedValue
+            : null;
 
-    private static bool IsCheapOperation(IOperation operation)
+    private static SimpleOperationKind DetectSimpleOperation(IOperation operation, IAnonymousFunctionOperation lambda)
         => operation switch
         {
-            IParameterReferenceOperation or ILocalReferenceOperation or ILiteralOperation => true,
-            IConversionOperation conversion => IsCheapOperation(conversion.Operand),
-            IObjectCreationOperation objectCreation => objectCreation.Children.All(IsCheapOperation),
-            IFieldReferenceOperation fieldReference => fieldReference.Field.IsStatic,
-            IPropertyReferenceOperation propertyReference => propertyReference.Property.IsStatic,
-            _ => operation.ConstantValue.HasValue,
+            _ when operation.ConstantValue.HasValue => SimpleOperationKind.Certain,
+            IParameterReferenceOperation parameterReference when !SymbolEqualityComparer.Default.Equals(parameterReference.Parameter.ContainingSymbol, lambda.Symbol) => SimpleOperationKind.Certain,
+            ILocalReferenceOperation or ILiteralOperation => SimpleOperationKind.Certain,
+            IConversionOperation conversion => DetectSimpleOperation(conversion.Operand, lambda),
+            IObjectCreationOperation objectCreation when objectCreation.Children.Any() => Min(objectCreation.Children.Min(c => DetectSimpleOperation(c, lambda)), SimpleOperationKind.Maybe),
+            IObjectCreationOperation => SimpleOperationKind.Maybe,
+            IAnonymousObjectCreationOperation creation when creation.Initializers.Any() => creation.Initializers.Cast<ISimpleAssignmentOperation>().Select(x => x.Value).Min(c => DetectSimpleOperation(c, lambda)),
+            IAnonymousObjectCreationOperation => SimpleOperationKind.Certain,
+            IFieldReferenceOperation fieldReference when fieldReference.Field.IsStatic => SimpleOperationKind.Certain,
+            IPropertyReferenceOperation propertyReference when propertyReference.Property.IsStatic => SimpleOperationKind.Maybe,
+            _ => SimpleOperationKind.None,
         };
+
+    private static SimpleOperationKind Min(SimpleOperationKind lhs, SimpleOperationKind rhs) => lhs < rhs ? lhs : rhs;
+
+#pragma warning disable SA1201
+    private enum SimpleOperationKind
+#pragma warning restore SA1201
+    {
+        None,
+        Maybe,
+        Certain,
+    }
 }
