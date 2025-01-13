@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Funcky.SourceGenerator.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -29,14 +28,13 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     {
         var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, methodByClass.SelectMany(m => m.Methods));
 
-        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + syntaxTree.NormalizeWhitespace().ToFullString());
+        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString());
 
         return context;
     }
 
     private static IncrementalValueProvider<ImmutableArray<MethodPartial>> GetOrNonePartialMethods(IncrementalGeneratorInitializationContext context)
-        => context.SyntaxProvider.CreateSyntaxProvider(predicate: IsSyntaxTargetForGeneration, transform: GetSemanticTargetForGeneration)
-            .WhereNotNull()
+        => context.SyntaxProvider.ForAttributeWithMetadataName(AttributeFullName, IsSyntaxTargetForGeneration, GetSemanticTargetForGeneration)
             .Combine(context.CompilationProvider)
             .Select((state, _) => ToMethodPartial(state.Left, state.Right))
             .Collect();
@@ -44,19 +42,11 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node, CancellationToken cancellationToken)
         => node is ClassDeclarationSyntax { AttributeLists: [_, ..] };
 
-    private static SemanticTarget? GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellationToken)
-        => context.Node is ClassDeclarationSyntax classDeclarationSyntax
-           && context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax, cancellationToken) is { } classSymbol
-           && classSymbol.GetAttributes()
-               .Where(a => a.AttributeClass?.ToDisplayString() == AttributeFullName)
-               .Where(AttributeBelongsToPartialPart(classDeclarationSyntax))
-               .Select(ParseAttribute)
-               .ToImmutableArray() is [_, ..] attributes
-            ? new SemanticTarget(classDeclarationSyntax, attributes)
-            : null;
-
-    private static Func<AttributeData, bool> AttributeBelongsToPartialPart(ClassDeclarationSyntax partialPart)
-        => attribute => attribute.ApplicationSyntaxReference?.GetSyntax().Ancestors().OfType<ClassDeclarationSyntax>().FirstOrDefault() == partialPart;
+    private static SemanticTarget GetSemanticTargetForGeneration(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    {
+        var node = (ClassDeclarationSyntax)context.TargetNode;
+        return new SemanticTarget(node, context.Attributes.Select(ParseAttribute).ToImmutableArray());
+    }
 
     private static ParsedAttribute ParseAttribute(AttributeData attribute)
         => attribute.ConstructorArguments is [{ Value: INamedTypeSymbol type }, { Value: string methodName }, ..]
@@ -177,8 +167,15 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
 
     private static EqualsValueClauseSyntax? GetParameterDefaultValue(IParameterSymbol parameter)
         => parameter.HasExplicitDefaultValue
-            ? throw new InvalidOperationException("Default values are not supported")
+            ? EqualsValueClause(GetLiteralForConstantValue(parameter.ExplicitDefaultValue, parameter.Type))
             : null;
+
+    private static ExpressionSyntax GetLiteralForConstantValue(object? value, ITypeSymbol type)
+        => value switch
+        {
+            null => LiteralExpression(SyntaxKind.NullLiteralExpression),
+            _ => throw new NotSupportedException($"unsupported constant: {value} ({type})"),
+        };
 
     private static void RegisterOrNoneAttribute(IncrementalGeneratorPostInitializationContext context)
         => context.AddSource("OrNoneFromTryPatternAttribute.g.cs", CodeSnippets.OrNoneFromTryPatternAttribute);
