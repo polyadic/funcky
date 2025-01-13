@@ -9,18 +9,18 @@ Funcky is a functional library for C# which encourages correct usage of the func
 ## Packages
 
 * **Funcky** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky)
 * **Funcky.Async** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
 * **Funcky.XUnit** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
 * **Funcky.Analyzers**: Analyzers to guide to the correct usage of Funcky. \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers)
 * **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)**: Provides interoperability between Funcky and EF Core \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
   [![git: polyadic/funcky-efcore](https://img.shields.io/badge/git-polyadic%2Ffuncky--efcore-blue)](https://github.com/polyadic/funcky-efcore)
 * **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)**: Provides source generator for discriminated union support in C# \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
   [![git: polyadic/funcky-discriminated-union](https://img.shields.io/badge/git-polyadic%2Ffuncky--discriminated--union-blue)](https://github.com/polyadic/funcky-discriminated-union)
 
 ## Features
