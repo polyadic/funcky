@@ -8,6 +8,9 @@ on:
 
 env:
   DOTNET_NOLOGO: 1
+  # This is for some reason set to 'all' on CI which means
+  # we get warnings for transitive dependencies (e.g. from Messerli.CodeStyle -> StyleCop)
+  NuGetAuditMode: direct
 
 jobs:
   build:
@@ -24,13 +27,9 @@ jobs:
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - uses: actions/setup-dotnet@v4
-      name: 'Install .NET SDK 3.1'
+      name: 'Install .NET SDK 8.0'
       with:
-        dotnet-version: '3.1.x'
-    - uses: actions/setup-dotnet@v4
-      name: 'Install .NET SDK 5.0'
-      with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '8.0.x'
     - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 7.0'
       with:

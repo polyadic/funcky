@@ -15,4 +15,11 @@ public sealed class DictionaryExtensionTest
         var dictionary = new Dictionary<string, string> { ["some"] = "value" };
         FunctionalAssert.None(dictionary.GetValueOrNone(readOnlyKey: "none"));
     }
+
+    [Fact]
+    public void CallingGetValueOrNoneOnADictionaryThatImplementsBothReadonlyAndNonReadonlyInterfacesIsNotACompileError()
+    {
+        var dictionary = new Dictionary<string, string> { ["some"] = "value" };
+        _ = dictionary.GetValueOrNone("some");
+    }
 }
