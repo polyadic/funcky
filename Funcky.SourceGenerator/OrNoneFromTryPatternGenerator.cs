@@ -29,7 +29,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     {
         var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, methodByClass.SelectMany(m => m.Methods));
 
-        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join(Environment.NewLine, GeneratedFileHeadersSource) + Environment.NewLine + syntaxTree.NormalizeWhitespace().ToFullString());
+        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString());
 
         return context;
     }
