@@ -24,6 +24,10 @@ jobs:
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - uses: actions/setup-dotnet@v4
+      name: 'Install .NET SDK 8.0'
+      with:
+        dotnet-version: '8.0.x'
+    - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 7.0'
       with:
         dotnet-version: '7.0.x'
