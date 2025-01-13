@@ -15,7 +15,6 @@
 		<PackageVersion Include="PolySharp" Version="1.15.0" />
 		<PackageVersion Include="Messerli.CodeStyle" Version="2.3.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
-		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
