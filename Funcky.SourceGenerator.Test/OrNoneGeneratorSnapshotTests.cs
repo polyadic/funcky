@@ -47,6 +47,36 @@ public class OrNoneGeneratorSnapshotTests
     }
 
     [Fact]
+    public Task GenerateMethodWithDefaultValuedArgument()
+    {
+        const string source =
+            """
+            #nullable enable
+
+            using Funcky.Internal;
+
+            namespace Funcky.Extensions
+            {
+                [OrNoneFromTryPattern(typeof(Target), nameof(Target.TryParse))]
+                public static partial class ParseExtensions
+                {
+                }
+
+                public sealed class Target
+                {
+                    public static bool TryParse(string candidate, out Target result, string? hasDefault = null)
+                    {
+                        result = default!;
+                        return false;
+                    }
+                }
+            }
+            """;
+
+        return TestHelper.Verify(source + Environment.NewLine + OptionSource);
+    }
+
+    [Fact]
     public Task GeneratesMethodWhenTargetIsNotNullableAnnotated()
     {
         const string source = """

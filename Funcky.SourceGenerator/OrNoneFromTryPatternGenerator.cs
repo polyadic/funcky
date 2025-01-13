@@ -167,8 +167,15 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
 
     private static EqualsValueClauseSyntax? GetParameterDefaultValue(IParameterSymbol parameter)
         => parameter.HasExplicitDefaultValue
-            ? throw new InvalidOperationException("Default values are not supported")
+            ? EqualsValueClause(GetLiteralForConstantValue(parameter.ExplicitDefaultValue, parameter.Type))
             : null;
+
+    private static ExpressionSyntax GetLiteralForConstantValue(object? value, ITypeSymbol type)
+        => value switch
+        {
+            null => LiteralExpression(SyntaxKind.NullLiteralExpression),
+            _ => throw new NotSupportedException($"unsupported constant: {value} ({type})"),
+        };
 
     private static void RegisterOrNoneAttribute(IncrementalGeneratorPostInitializationContext context)
         => context.AddSource("OrNoneFromTryPatternAttribute.g.cs", CodeSnippets.OrNoneFromTryPatternAttribute);
