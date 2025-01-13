@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Funcky.SourceGenerator.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -35,8 +34,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     }
 
     private static IncrementalValueProvider<ImmutableArray<MethodPartial>> GetOrNonePartialMethods(IncrementalGeneratorInitializationContext context)
-        => context.SyntaxProvider.CreateSyntaxProvider(predicate: IsSyntaxTargetForGeneration, transform: GetSemanticTargetForGeneration)
-            .WhereNotNull()
+        => context.SyntaxProvider.ForAttributeWithMetadataName(AttributeFullName, IsSyntaxTargetForGeneration, GetSemanticTargetForGeneration)
             .Combine(context.CompilationProvider)
             .Select((state, _) => ToMethodPartial(state.Left, state.Right))
             .Collect();
@@ -44,19 +42,11 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node, CancellationToken cancellationToken)
         => node is ClassDeclarationSyntax { AttributeLists: [_, ..] };
 
-    private static SemanticTarget? GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellationToken)
-        => context.Node is ClassDeclarationSyntax classDeclarationSyntax
-           && context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax, cancellationToken) is { } classSymbol
-           && classSymbol.GetAttributes()
-               .Where(a => a.AttributeClass?.ToDisplayString() == AttributeFullName)
-               .Where(AttributeBelongsToPartialPart(classDeclarationSyntax))
-               .Select(ParseAttribute)
-               .ToImmutableArray() is [_, ..] attributes
-            ? new SemanticTarget(classDeclarationSyntax, attributes)
-            : null;
-
-    private static Func<AttributeData, bool> AttributeBelongsToPartialPart(ClassDeclarationSyntax partialPart)
-        => attribute => attribute.ApplicationSyntaxReference?.GetSyntax().Ancestors().OfType<ClassDeclarationSyntax>().FirstOrDefault() == partialPart;
+    private static SemanticTarget GetSemanticTargetForGeneration(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    {
+        var node = (ClassDeclarationSyntax)context.TargetNode;
+        return new SemanticTarget(node, context.Attributes.Select(ParseAttribute).ToImmutableArray());
+    }
 
     private static ParsedAttribute ParseAttribute(AttributeData attribute)
         => attribute.ConstructorArguments is [{ Value: INamedTypeSymbol type }, { Value: string methodName }, ..]
