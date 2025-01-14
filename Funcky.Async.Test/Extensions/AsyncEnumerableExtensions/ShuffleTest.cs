@@ -8,13 +8,13 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 public sealed class ShuffleTest
 {
     [Fact]
-    public void AShuffleIsEnumeratedLazilyAsync()
+    public async Task AShuffleIsEnumeratedLazilyAsync()
     {
         var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
         var shuffled = doNotEnumerate.ShuffleAsync();
 
-        Assert.ThrowsAsync<XunitException>(async () => await shuffled);
+        await Assert.ThrowsAsync<XunitException>(async () => await shuffled);
     }
 
     [Fact]
