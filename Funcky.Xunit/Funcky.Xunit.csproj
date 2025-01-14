@@ -18,9 +18,7 @@
         <DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <InternalsVisibleTo Include="Funcky.Test" />
-    </ItemGroup>
-    <ItemGroup>
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="xunit.assert" />
         <PackageReference Include="xunit.extensibility.core" />
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
