@@ -11,6 +11,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">Type of the elements to be cycled.</typeparam>
     /// <param name="source">The sequence of elements which are cycled. Throws an exception if the sequence is empty.</param>
     /// <returns>Returns an infinite IEnumerable repeating the same sequence of elements.</returns>
+    /// <remarks>Use <see cref="CycleMaterialized{TSource}"/> if you need to cycle an already materialized sequence.</remarks>
     [Pure]
     public static IBuffer<TSource> CycleRange<TSource>(IEnumerable<TSource> source)
         => CycleBuffer.Create(source);
