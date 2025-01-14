@@ -3,7 +3,7 @@ using Xunit.Sdk;
 
 namespace Funcky.Test.TestUtils;
 
-internal record FailOnEnumerateCollection<T>(int Count) : ICollection<T>, IReadOnlyCollection<T>
+internal record FailOnEnumerateCollection<T>(int Count) : ICollection<T>
 {
     public bool IsReadOnly => true;
 

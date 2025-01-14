@@ -9,7 +9,7 @@ public sealed class CycleMaterializedTest
     [Fact]
     public void IsEnumeratedLazily()
     {
-        var doNotEnumerate = new FailOnEnumerateCollection<object>(Count: 1);
+        var doNotEnumerate = new FailOnEnumerateReadOnlyCollection<object>(Count: 1);
         _ = Sequence.CycleMaterialized(doNotEnumerate);
     }
 

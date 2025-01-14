@@ -9,7 +9,7 @@ public sealed class RepeatMaterializedTest
     [Fact]
     public void IsEnumeratedLazily()
     {
-        var doNotEnumerate = new FailOnEnumerateCollection<object>(Count: 0);
+        var doNotEnumerate = new FailOnEnumerateReadOnlyCollection<object>(Count: 0);
         _ = Sequence.RepeatMaterialized(doNotEnumerate, 2);
     }
 
