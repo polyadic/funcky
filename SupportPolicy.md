@@ -19,4 +19,4 @@ Funcky 4 will remove the following Targetframeworks.
 * net7.0
 * net6.0
 * net5.0
-* netcoreapp3.1;
+* netcoreapp3.1
