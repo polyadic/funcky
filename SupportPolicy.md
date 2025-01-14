@@ -14,7 +14,7 @@ Testing with old framworks which are not supported anymore is getting painful, w
 
 ## Next removal
 
-Funcky 4 will remove the following Targetframeworks.
+Funcky 4 will remove the following target frameworks:
 
 * net7.0
 * net6.0
