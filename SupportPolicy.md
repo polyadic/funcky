@@ -6,7 +6,7 @@ Funcky is a stable base-library which tries to support many scenario's in the .N
 
 We support the all the activly supported modern Framworks, .NET Standard 2.1, 2.0 And.NET 4.8+
 
-* We only remove support for tagrgetframeworks on major version changes, to avoid breaking changes for the consumers.
+* We only remove support for target frameworks on major version changes, to avoid breaking changes for the consumers.
 
 ## Testing
 
