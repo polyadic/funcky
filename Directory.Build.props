@@ -23,9 +23,6 @@
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	</PropertyGroup>
-	<ItemGroup Label="Deterministic Builds and Source Link">
-		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
-	</ItemGroup>
 	<PropertyGroup>
 		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
 	</PropertyGroup>

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using FsCheck;
 using FsCheck.Xunit;
 using Funcky.FsCheck;
@@ -46,6 +47,7 @@ public sealed partial class EitherTest
     }
 
     [Fact]
+    [SuppressMessage("Funcky", "λ1009:Do not use default to instantiate this type", Justification = "Intentionally creating an invalid instance.")]
     public void MatchThrowsWhenEitherIsCreatedWithDefault()
     {
         var value = default(Either<string, int>);

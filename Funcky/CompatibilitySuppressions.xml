@@ -1,10 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Funcky.Extensions.EnumerableExtensions.Chunk``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
     <Left>lib/net5.0/Funcky.dll</Left>
     <Right>lib/net6.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0021</DiagnosticId>
+    <Target>M:Funcky.Extensions.DictionaryExtensions.GetValueOrNone``2(System.Collections.Generic.IDictionary{``0,``1},``0)``0:notnull</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/netcoreapp3.1/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0021</DiagnosticId>
+    <Target>M:Funcky.Extensions.DictionaryExtensions.GetValueOrNone``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},``0)``0:notnull</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/netcoreapp3.1/Funcky.dll</Right>
   </Suppression>
 </Suppressions>
