@@ -15,8 +15,8 @@ public sealed class CycleRangeTest
     }
 
     [Fact]
-    public void CyclingAnEmptySetThrowsAnArgumentException()
-            => Assert.Throws<InvalidOperationException>(CycleEmptySequence);
+    public void CyclingAnEmptySetThrowsAnException()
+        => Assert.Throws<InvalidOperationException>(CycleEmptySequence);
 
     [Property]
     public Property CycleRangeCanProduceArbitraryManyItems(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
