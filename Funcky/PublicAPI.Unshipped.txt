@@ -1,9 +1,1 @@
 #nullable enable
-Funcky.DownCast<TResult>
-static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Option<TItem!> option) -> Funcky.Monads.Option<TResult!>
-static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Result<TItem!> result) -> Funcky.Monads.Result<TResult!>
-static Funcky.DownCast<TResult>.From<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight!> either, System.Func<TLeft>! failedCast) -> Funcky.Monads.Either<TLeft, TResult!>
-static Funcky.Extensions.ParseExtensions.ParseTypeNameOrNone(this System.ReadOnlySpan<char> candidate, System.Reflection.Metadata.TypeNameParseOptions? options = null) -> Funcky.Monads.Option<System.Reflection.Metadata.TypeName!>
-static Funcky.Extensions.ParseExtensions.ParseAssemblyNameInfoOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Reflection.Metadata.AssemblyNameInfo!>
-static Funcky.Sequence.CycleMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
-static Funcky.Sequence.RepeatMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!

@@ -4,4 +4,3 @@
 ### New Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-λ1009 | Funcky | Error | NonDefaultableAnalyzer

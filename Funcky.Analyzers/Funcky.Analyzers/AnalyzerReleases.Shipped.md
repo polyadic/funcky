@@ -24,4 +24,8 @@ Rule ID | Category | Severity | Notes
 λ1007 | Funcky | Warning | OptionMatchAnalyzer
 λ1008 | Funcky | Warning | OptionMatchAnalyzer
 
-## Release 1.3
+## Release 1.4
+### New Rules
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
+λ1009 | Funcky | Error | NonDefaultableAnalyzer

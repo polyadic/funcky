@@ -1,5 +1,6 @@
 #nullable enable
 Funcky.Discard
+Funcky.DownCast<TResult>
 Funcky.EitherOrBoth
 Funcky.EitherOrBoth<TLeft, TRight>
 Funcky.EitherOrBoth<TLeft, TRight>.EitherOrBoth() -> void
@@ -188,6 +189,9 @@ override Funcky.Monads.Result<TValidResult>.GetHashCode() -> int
 override Funcky.Monads.Result<TValidResult>.ToString() -> string!
 override Funcky.Unit.Equals(object? obj) -> bool
 override Funcky.Unit.GetHashCode() -> int
+static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Option<TItem!> option) -> Funcky.Monads.Option<TResult!>
+static Funcky.DownCast<TResult>.From<TItem>(Funcky.Monads.Result<TItem!> result) -> Funcky.Monads.Result<TResult!>
+static Funcky.DownCast<TResult>.From<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight!> either, System.Func<TLeft>! failedCast) -> Funcky.Monads.Either<TLeft, TResult!>
 static Funcky.EitherOrBoth.FromOptions<TLeft, TRight>(Funcky.Monads.Option<TLeft> left, Funcky.Monads.Option<TRight> right) -> Funcky.Monads.Option<Funcky.EitherOrBoth<TLeft, TRight>>
 static Funcky.EitherOrBoth<TLeft, TRight>.Both(TLeft left, TRight right) -> Funcky.EitherOrBoth<TLeft, TRight>
 static Funcky.EitherOrBoth<TLeft, TRight>.Left(TLeft left) -> Funcky.EitherOrBoth<TLeft, TRight>
@@ -377,6 +381,7 @@ static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.
 static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, int startIndex, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ListExtensions.FindLastIndexOrNone<TValue>(this System.Collections.Generic.List<TValue>! list, System.Predicate<TValue>! match) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ListExtensions.IndexOfOrNone<TValue>(this System.Collections.Generic.IList<TValue>! list, TValue value) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseAssemblyNameInfoOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Reflection.Metadata.AssemblyNameInfo!>
 static Funcky.Extensions.ParseExtensions.ParseAuthenticationHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.AuthenticationHeaderValue!>
 static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this string? candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
 static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this string? candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
@@ -558,6 +563,7 @@ static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnl
 static Funcky.Extensions.ParseExtensions.ParseTimeSpanOrNone(this System.ReadOnlySpan<char> candidate, System.IFormatProvider? formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
 static Funcky.Extensions.ParseExtensions.ParseTransferCodingHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingHeaderValue!>
 static Funcky.Extensions.ParseExtensions.ParseTransferCodingWithQualityHeaderValueOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!>
+static Funcky.Extensions.ParseExtensions.ParseTypeNameOrNone(this System.ReadOnlySpan<char> candidate, System.Reflection.Metadata.TypeNameParseOptions? options = null) -> Funcky.Monads.Option<System.Reflection.Metadata.TypeName!>
 static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string? candidate) -> Funcky.Monads.Option<ushort>
 static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string? candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<ushort>
 static Funcky.Extensions.ParseExtensions.ParseUInt16OrNone(this string? candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<ushort>
@@ -817,9 +823,11 @@ static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TLeft, TRight>(this
 static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.Cycle<TResult>(TResult element) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.CycleMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.CycleRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!
 static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult!>!
 static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult>!
+static Funcky.Sequence.RepeatMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.RepeatRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int count) -> Funcky.IBuffer<TSource>!
 static Funcky.Sequence.Return<TResult>(params TResult[]! elements) -> System.Collections.Generic.IReadOnlyList<TResult>!
 static Funcky.Sequence.Return<TResult>(TResult element) -> System.Collections.Generic.IReadOnlyList<TResult>!
