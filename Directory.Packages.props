@@ -13,7 +13,7 @@
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
 		<PackageVersion Include="PolySharp" Version="1.15.0" />
-		<PackageVersion Include="Messerli.CodeStyle" Version="2.3.0" />
+		<PackageVersion Include="Polyadic.CodeStyle" Version="1.0.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
