@@ -61,10 +61,10 @@ public sealed class MergeTest
     {
         var sequence1 = new List<int> { 1, 2, 4, 7 };
         var sequence2 = new List<int> { 3, 5, 6, 8 };
-        var mergable = ImmutableList<List<int>>.Empty.Add(sequence1).Add(sequence2);
+        var mergeable = ImmutableList<List<int>>.Empty.Add(sequence1).Add(sequence2);
         var expected = Enumerable.Range(1, 8);
 
-        Assert.Equal(expected, mergable.Merge());
+        Assert.Equal(expected, mergeable.Merge());
     }
 
     [Fact]

@@ -60,10 +60,10 @@ public sealed class MergeTest
     {
         var sequence1 = AsyncSequence.Return(1, 2, 4, 7);
         var sequence2 = AsyncSequence.Return(3, 5, 6, 8);
-        var mergable = ImmutableList<IAsyncEnumerable<int>>.Empty.Add(sequence1).Add(sequence2);
+        var mergeable = ImmutableList<IAsyncEnumerable<int>>.Empty.Add(sequence1).Add(sequence2);
         var expected = AsyncEnumerable.Range(1, 8);
 
-        return AsyncAssert.Equal(expected, mergable.Merge());
+        return AsyncAssert.Equal(expected, mergeable.Merge());
     }
 
     [Fact]

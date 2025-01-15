@@ -71,7 +71,7 @@ Sequence.Return(1, 2, 3, 4)
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
 
-Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it beeing a monad, which probably helped.
+Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it being a monad, which probably helped.
 
 Mark Seemann points out that "Unfortunately, Maybe implementations often come with an API that enables you to ask a Maybe object if it's populated or empty, and a way to extract the value from the Maybe container. This misleads many programmers [...]"
 
@@ -101,7 +101,7 @@ This library is probably the most complete attempt to functional programming in 
 
 Eff is inspired by the Eff programming language and the implementation of Algebraic Effects. It's only purpose is the handling of side effects and using the await syntax in a very elegant way.
 
-We think the approach is very nice but cumbersome in usage, however we really love the appraoch with the await syntax. The library is very specialised an can be used in combination with any other functional style library.
+We think the approach is very nice but cumbersome in usage, however we really love the approach with the await syntax. The library is very specialised an can be used in combination with any other functional style library.
 
 ### [MoreLinq](https://github.com/morelinq/MoreLINQ/)
 
