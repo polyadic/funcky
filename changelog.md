@@ -2,6 +2,62 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.5.0 | Funcky.Async 1.4.0 | Funcky.Xunit 2.1.0 | Funcky.Analyzers 1.4.0
+This update is mainly to update to .NET 9 but also has several smaller improvements.
+
+### .NET 9
+Thanks to the new `[OverloadResolutionPriority]` attribute, we've been able finally fix
+the ambiguous call errors when using `DictionaryExtensions.GetValueOrNone`:
+
+```csharp
+Dictionary<string, string> favouriteFoods = new();
+Option<int> tausFavouriteFood = favouriteFoods.GetValueOrNone("Tau");
+//                                             ^^^^^^^^^^^^^^
+// This used to produce a `error CS0121: The call is ambiguous between ...` error
+// and now simply works 🎉
+```
+
+In good old fashion, we've also added new parse extensions:
+* `ParseExtensions.ParseAssemblyNameInfoOrNone`
+* `ParseExtensions.ParseTypeNameOrNone`
+
+### Policy for EOL Target Frameworks
+We've [explicitly written down](SupportPolicy.md) our policy for how we deal
+with older / EOL target frameworks.
+
+In short: EOL target frameworks are supported by Funcky until the next major version.
+However, we may no longer test Funcky against those target frameworks, so we
+can't guarantee that everything works smoothly.
+
+## New APIs
+In Funcky 3.0 we've changed `CycleRange` and `RepeatRange` to return an `IBuffer`
+to enable us to memoize the collection, preventing unnecessary enumeration. This however
+is unpractical for uses where you want to cycle an already materialized collection.
+This release adds two new methods to accommodate that use case:
+`CycleMaterialized` and `RepeatMaterialized`.
+
+For convenient downcasting of `Option<T>`, `Result<T>` and `Either<TLeft, T>` values, we've added a new
+`DownCast` class:
+
+```csharp
+Option<object> option = Option.Some("hello world");
+Option<string> downcasted = DownCast<string>.From(option);
+```
+
+### Funcky.XUnit
+`Funcky.XUnit` has been updated to the latest version (2.9.3) of xUnit.net.
+
+Due to changes in xUnit we've had to change the exception type thrown by our `FunctionalAssert` methods
+from `AssertActualExpectedException` to `XunitException`.
+
+### Funcky.Analyzers
+The new analyzer rule `λ1009` prevents you from accidentally `default`-instantiating
+`Either`, `Result` and `EitherOrBoth`.
+
+### Funcky.Async
+The `PowerSet` and `WithPrevious` extensions now correctly pass along the cancellation token.
+
+
 ## Funcky 3.4.0 | Funcky.Async 1.3.0 | Funcky.XUnit 2.0.2
 
 This update is mainly to update to .NET 8 but also has several smaller improvements.
@@ -43,7 +99,7 @@ We implemented a few of the IEnumerable extensions which are very useful on stri
 * Implemented `InspectEmpty` on `IEnumerable` and `IAsyncEnumerable`
 * Implemented `ToAsyncEnumerable` extension on `Option`
 
-### IEnumerator 
+### IEnumerator
 
 * `MoveNextOrNone` extension on `IEnumerator<T>`
 
