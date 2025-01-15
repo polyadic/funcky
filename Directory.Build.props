@@ -10,7 +10,7 @@
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	</PropertyGroup>
 	<ItemGroup Label="Code Style">
-		<PackageReference Include="Messerli.CodeStyle" PrivateAssets="all" />
+		<PackageReference Include="Polyadic.CodeStyle" PrivateAssets="all" />
 	</ItemGroup>
 	<PropertyGroup Label="Code Style">
 		<AnalysisLevel>5.0</AnalysisLevel>
