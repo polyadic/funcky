@@ -294,11 +294,15 @@ Why does that help us with the layout? To create the first line of our final lay
 
 One of these chunks now looks like this:
 
+<!-- spellchecker:off -->
+
 ```
         Januar        |         1  2  3  4  5 |   6  7  8  9 10 11 12 |  13 14 15 16 17 18 19 |  20 21 22 23 24 25 26 |  27 28 29 30 31       |
        Februar        |                  1  2 |   3  4  5  6  7  8  9 |  10 11 12 13 14 15 16 |  17 18 19 20 21 22 23 |  24 25 26 27 28 29    |
          März         |                     1 |   2  3  4  5  6  7  8 |   9 10 11 12 13 14 15 |  16 17 18 19 20 21 22 |  23 24 25 26 27 28 29 |  30 31                |
 ```
+
+<!-- spellchecker:on -->
 
 That actually already looks a lot like what we want, but we want the months on the top not on the left.
 
@@ -322,6 +326,8 @@ private static string CreateCalendarString(int year)
 
 After this transforamtion our chunk of 3 months looks like this:
 
+<!-- spellchecker:off -->
+
 ```
         Januar        |        Februar        |          März
         1  2  3  4  5 |                  1  2 |                     1
@@ -331,6 +337,8 @@ After this transforamtion our chunk of 3 months looks like this:
  27 28 29 30 31       |  24 25 26 27 28 29    |  23 24 25 26 27 28 29
                       |                       |  30 31
 ```
+
+<!-- spellchecker:on -->
 
 I think it is obvious that at this point, we are done. We just have to join the chunks together to have our final output.
 

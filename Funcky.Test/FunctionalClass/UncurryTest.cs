@@ -6,7 +6,7 @@ namespace Funcky.Test.FunctionalClass;
 public sealed class UncurryTest
 {
     [Property]
-    public Property GivenA2NdLevelCurriedFunctionWeGetAFunctionWith2Parameters(int number, string text)
+    public Property GivenASecondLevelCurriedFunctionWeGetAFunctionWith2Parameters(int number, string text)
     {
         Func<int, Func<string, string>> f = number => text => $"number:{number}, text:{text}";
 
