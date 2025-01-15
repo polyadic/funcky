@@ -1,0 +1,12 @@
+[files]
+extend-exclude = ["*.DotSettings"]
+
+[default]
+extend-ignore-re = [
+    # Ignore the signature block in the `install.ps1` script
+    "(?s)(#|//)\\s*SIG # Begin signature block.*?\\n\\s*(#|//)\\s*SIG # End signature block",
+    # Line ignore with trailing `# spellchecker:disable-line`
+    "(?Rm)^.*(#|//)\\s*spellchecker:disable-line$",
+    # Line block with `# spellchecker:<on|off>`
+    "(?s)(<!--|#|//)\\s*spellchecker:off.*?\\n\\s*(<!--|#|//)\\s*spellchecker:on",
+]

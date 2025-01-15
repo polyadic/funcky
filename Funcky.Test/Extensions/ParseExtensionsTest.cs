@@ -94,8 +94,8 @@ public sealed class ParseExtensionsTest
             { Option<bool>.None, string.Empty },
             { Option.Some(true), "true" },
             { Option.Some(false), "false" },
-            { Option.Some(true), "TrUe" },
-            { Option.Some(false), "FalsE" },
+            { Option.Some(true), "TrUe" }, // spellchecker:disable-line
+            { Option.Some(false), "FalsE" }, // spellchecker:disable-line
             { Option<bool>.None, "0" },
             { Option<bool>.None, "1" },
             { Option<bool>.None, "T" },

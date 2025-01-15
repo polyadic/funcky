@@ -21,7 +21,7 @@ public sealed class MaxByOrNoneTest
     }
 
     [Property]
-    public Property MaxByOrNoneWithCustomComparererReturnsTheSameAsMaxByWithTheSameCustomeComparer(List<MyRecord> list)
+    public Property MaxByOrNoneWithCustomComparerReturnsTheSameAsMaxByWithTheSameCustomComparer(List<MyRecord> list)
     {
         IComparer<int> customComparer = new CustomIntComparer();
         var maxOrNull = list.MaxBy(element => element.Number, customComparer);

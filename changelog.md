@@ -121,7 +121,7 @@ Task RetryWhileFileIsInUseAsync(IRetryPolicy policy, Action action)
 ## Funcky 3.1.0 | Funcky.Async 1.1.0 | Funcky.Analyzers 1.2.0
 ### New APIs
 * ✨ `OptionExtensions.ToNullable` ✨
-* `StreamExtenions.ReadByteOrNone`
+* `StreamExtensions.ReadByteOrNone`
 * New overloads for `ElementAtOrNone` that take an `Index`.
 * New overload for `JoinToString` that takes an `IEnumerable<string>`.
 
@@ -198,7 +198,7 @@ APIs that have been obsoleted during 2.x have been removed:
 * `ObjectExtensions.ToEnumerable`
 * `Funcky.GenericConstraints.RequireClass` and `RequireStruct`
 * All `Try*` APIs (`TryGetValue`, `TryParse*`, etc.). These APIs use the `OrNone` suffix instead.
-* `Sequence.Generate` has been superceded by `Sequence.Successors`
+* `Sequence.Generate` has been superseded by `Sequence.Successors`
 * `CartesianProduct`
 
 #### JSON Converter
@@ -359,7 +359,7 @@ This release includes the `Reader` monad including a bunch of factory methods
 and convenience extensions.
 
 ```cs
-public static Reader<Enviroment, IEnumerable<string>> DefaultLayout(IEnumerable<DateTime> month)
+public static Reader<Environment, IEnumerable<string>> DefaultLayout(IEnumerable<DateTime> month)
     => from colorizedMonthName in ColorizedMonthName(month)
        from weekDayLine in WeekDayLine()
        from weeksInMonth in month

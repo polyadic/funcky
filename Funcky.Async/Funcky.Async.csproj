@@ -14,6 +14,7 @@
         <AnalysisModeReliability>All</AnalysisModeReliability>
         <EnablePackageValidation>true</EnablePackageValidation>
         <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     </PropertyGroup>
     <PropertyGroup>
         <RootNamespace>Funcky</RootNamespace>
@@ -37,8 +38,6 @@
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
-        <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMemberTypes.cs" Link="Compatibility\DynamicallyAccessedMemberTypes.cs" />
-        <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMembersAttribute.cs" Link="Compatibility\DynamicallyAccessedMembersAttribute.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
     </ItemGroup>
     <ItemGroup>

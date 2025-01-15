@@ -21,7 +21,7 @@ public sealed class MinByOrNoneTest
     }
 
     [Property]
-    public Property MinByOrNoneWithCustomComparererReturnsTheSameAsMinByWithTheSameCustomeComparer(List<MyRecord> list)
+    public Property MinByOrNoneWithCustomComparererReturnsTheSameAsMinByWithTheSameCustomComparer(List<MyRecord> list)
     {
         IComparer<int> customComparer = new CustomIntComparer();
         var minOrNull = list.MinBy(element => element.Number, customComparer);
