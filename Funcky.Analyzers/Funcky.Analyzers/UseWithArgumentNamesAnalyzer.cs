@@ -14,7 +14,7 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
 
     private const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
 
-    private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+    private static readonly DiagnosticDescriptor Descriptor = new(
         id: DiagnosticId,
         title: Resources.UseWithArgumentNamesAnalyzerAnalyzerTitle,
         messageFormat: Resources.UseWithArgumentNamesAnalyzerMessageFormat,

@@ -7,7 +7,7 @@ namespace Funcky.Analyzers;
 
 public partial class AlternativeMonadAnalyzer
 {
-    public static readonly DiagnosticDescriptor PreferGetOrElse = new DiagnosticDescriptor(
+    public static readonly DiagnosticDescriptor PreferGetOrElse = new(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
         title: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",

@@ -9,7 +9,7 @@ namespace Funcky.BuiltinAnalyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 {
-    private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+    private static readonly DiagnosticDescriptor Descriptor = new(
         id: "λ0001",
         title: "Disallowed use of TryGetValue",
         messageFormat: "Disallowed use of TryGetValue",
