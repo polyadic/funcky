@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.FsCheck;
 using Result = Funcky.Monads.Result;
@@ -8,10 +9,7 @@ namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public sealed class SequenceTest
 {
-    public SequenceTest()
-        => FunckyGenerators.Register();
-
-    [Property]
+    [FunckyProperty]
     public Property SequencingEitherReturnsLeftWhenOneOrMoreElementsAreLeft(IList<Either<int, int>> list)
         => IsLeft(list.Sequence())
             .ToProperty()
@@ -33,7 +31,7 @@ public sealed class SequenceTest
             .Match(left: False, right: result => result.SequenceEqual(list))
             .ToProperty();
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingOptionReturnsNoneWhenOneOrMoreElementsAreNone(IList<Option<int>> list)
         => IsNone(list.Sequence())
             .When(list.Any(IsNone));
@@ -48,7 +46,7 @@ public sealed class SequenceTest
             .Match(none: false, some: result => result.SequenceEqual(list))
             .ToProperty();
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingResultReturnsErrorWhenOneOrMoreElementsAreError(IList<Result<int>> list)
         => IsError(list.Sequence())
             .ToProperty()

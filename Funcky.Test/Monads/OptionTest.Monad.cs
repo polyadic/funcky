@@ -1,38 +1,39 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
+using Funcky.FsCheck;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class OptionTest
 {
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHolds(
         Option<int> input,
         Func<int, Option<int>> selectorOne,
         Func<int, Option<int>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHolds(Option<int> input)
         => CheckAssert.Equal(input.SelectMany(Option.Some), input);
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHolds(int input, Func<int, Option<int>> function)
         => CheckAssert.Equal(Option.Some(input).SelectMany(function), function(input));
 
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHoldsWithReferenceTypes(
         Option<string> input,
         Func<string, Option<string>> selectorOne,
         Func<string, Option<string>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHoldsWithReferenceTypes(Option<string> option)
         => CheckAssert.Equal(option.SelectMany(Option.Some), option);
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHoldsWithReferenceTypes(string? input, Func<string, Option<string>> function)
         => input is null
             ? true.ToProperty()

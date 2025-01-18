@@ -1,13 +1,8 @@
-using Funcky.FsCheck;
-
 namespace Funcky.Test.Monads;
 
 public sealed partial class ReaderTest
 {
     private string _sideEffect = string.Empty;
-
-    public ReaderTest()
-        => FunckyGenerators.Register();
 
     [Fact]
     public void YouCanApplyEnvironmentToReaderMonad()

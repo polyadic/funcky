@@ -1,14 +1,10 @@
 using System.Runtime.CompilerServices;
-using Funcky.FsCheck;
 using Xunit.Sdk;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class ResultTest
 {
-    public ResultTest()
-        => FunckyGenerators.Register();
-
     [Fact]
     public void OkConstructorThrowsWhenNullIsPassed()
     {

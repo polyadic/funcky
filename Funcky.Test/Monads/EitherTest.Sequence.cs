@@ -1,18 +1,19 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
+using Funcky.FsCheck;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class EitherTest
 {
-    [Property]
+    [FunckyProperty]
     public Property SequencingOptionIsReversible(Either<int, Option<int>> either)
     {
         return (either == either.Sequence().Sequence()).ToProperty();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingResultIsReversible(Either<int, Result<int>> either)
     {
         return (either == either.Sequence().Sequence()).ToProperty();
@@ -24,7 +25,7 @@ public sealed partial class EitherTest
         _ = Either<Unit>.Return(new FailOnEnumerationSequence<Unit>().AsEnumerable()).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingEnumerableIsReversible(Either<int, IList<int>> either)
     {
         var eitherOfIEnumerable = either.Select(x => x.AsEnumerable());
@@ -43,7 +44,7 @@ public sealed partial class EitherTest
         _ = Either<Unit>.Return(Lazy.FromFunc<Unit>(() => throw new InvalidOperationException())).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingLazyPreservesSide(Either<int, Lazy<int>> either)
         => Match(
             (either, either.Sequence().Value),
@@ -57,7 +58,7 @@ public sealed partial class EitherTest
         _ = Either<Unit>.Return(Reader<Unit>.FromFunc<Unit>(_ => throw new InvalidOperationException())).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingReaderPreservesSide(Either<int, Reader<int, int>> either, int environment)
         => Match(
             (either, either.Sequence()(environment)),

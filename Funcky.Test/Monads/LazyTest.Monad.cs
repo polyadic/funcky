@@ -1,38 +1,38 @@
 using FsCheck;
-using FsCheck.Xunit;
+using Funcky.FsCheck;
 using Funcky.Test.TestUtils;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class LazyTest
 {
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHolds(
         Lazy<int> input,
         Func<int, Lazy<int>> selectorOne,
         Func<int, Lazy<int>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHolds(Lazy<int> input)
         => CheckAssert.Equal(input.SelectMany(Lazy.Return), input);
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHolds(int input, Func<int, Lazy<int>> function)
         => CheckAssert.Equal(Lazy.Return(input).SelectMany(function), function(input));
 
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHoldsWithReferenceTypes(
         Lazy<string> input,
         Func<string, Lazy<string>> selectorOne,
         Func<string, Lazy<string>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHoldsWithReferenceTypes(Lazy<string> input)
         => CheckAssert.Equal(input.SelectMany(Lazy.Return), input);
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHoldsWithReferenceTypes(string input, Func<string, Lazy<string>> function)
         => CheckAssert.Equal(Lazy.Return(input).SelectMany(function), function(input));
 

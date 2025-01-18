@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 
 namespace Funcky.Test;

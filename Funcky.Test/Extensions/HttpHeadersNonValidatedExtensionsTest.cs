@@ -1,6 +1,7 @@
 #if HTTP_HEADERS_NON_VALIDATED
 using System.Net.Http.Headers;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 
 namespace Funcky.Test.Extensions;

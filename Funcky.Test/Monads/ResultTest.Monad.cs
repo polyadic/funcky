@@ -1,5 +1,6 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
+using Funcky.FsCheck;
 using Funcky.Test.TestUtils;
 using Result = Funcky.Monads.Result;
 
@@ -7,33 +8,33 @@ namespace Funcky.Test.Monads;
 
 public sealed partial class ResultTest
 {
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHolds(
         Result<int> input,
         Func<int, Result<int>> selectorOne,
         Func<int, Result<int>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHolds(Result<int> input)
         => CheckAssert.Equal(input, input.SelectMany(Result.Return));
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHolds(int input, Func<int, Result<int>> selector)
         => CheckAssert.Equal(Result.Return(input).SelectMany(selector), selector(input));
 
-    [Property]
+    [FunckyProperty]
     public Property AssociativityHoldsWithReferenceTypes(
         Result<string> input,
         Func<string, Result<string>> selectorOne,
         Func<string, Result<string>> selectorTwo)
         => CheckAssert.Equal(input.SelectMany(selectorOne).SelectMany(selectorTwo), input.SelectMany(Combine(selectorOne, selectorTwo)));
 
-    [Property]
+    [FunckyProperty]
     public Property RightIdentityHoldsWithReferenceTypes(Result<string> input)
         => CheckAssert.Equal(input, input.SelectMany(Result.Return));
 
-    [Property]
+    [FunckyProperty]
     public Property LeftIdentityHoldsWithReferenceTypes(string? input, Func<string, Result<string>> selector)
         => input is null
             ? true.ToProperty()

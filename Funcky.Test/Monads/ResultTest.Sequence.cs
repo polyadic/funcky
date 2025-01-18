@@ -1,5 +1,6 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
+using Funcky.FsCheck;
 using Funcky.Test.TestUtils;
 using Result = Funcky.Monads.Result;
 
@@ -7,13 +8,13 @@ namespace Funcky.Test.Monads;
 
 public sealed partial class ResultTest
 {
-    [Property]
+    [FunckyProperty]
     public Property SequencingOptionIsReversible(Result<Option<int>> result)
     {
         return (result == result.Sequence().Sequence()).ToProperty();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingEitherIsReversible(Result<Either<int, int>> result)
     {
         return (result == result.Sequence().Sequence()).ToProperty();
@@ -25,7 +26,7 @@ public sealed partial class ResultTest
         _ = Result.Return(new FailOnEnumerationSequence<Unit>().AsEnumerable()).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingEnumerableIsReversible(Result<IList<int>> result)
     {
         var resultOfIEnumerable = result.Select(x => x.AsEnumerable());
@@ -44,7 +45,7 @@ public sealed partial class ResultTest
         _ = Result.Return(Lazy.FromFunc<Unit>(() => throw new InvalidOperationException())).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingLazyPreservesSide(Result<Lazy<int>> result)
         => Match(
             (result, result.Sequence().Value),
@@ -58,7 +59,7 @@ public sealed partial class ResultTest
         _ = Result.Return(Reader<Unit>.FromFunc<Unit>(_ => throw new InvalidOperationException())).Sequence();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property SequencingReaderPreservesSide(Result<Reader<int, int>> result, int environment)
         => Match(
             (result, result.Sequence()(environment)),

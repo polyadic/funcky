@@ -38,17 +38,14 @@ public sealed class ElementAtOrNoneTest
 #if ELEMENT_AT_INDEX
     public sealed class IndexIndex
     {
-        public IndexIndex()
-            => FunckyGenerators.Register();
-
-        [Property]
+        [FunckyProperty]
         public void IsEvaluatedUsingExpressions(List<int> source, Index index)
             => _ = source
                 .AsQueryable()
                 .PreventAccidentalUseAsEnumerable()
                 .ElementAtOrNone(index);
 
-        [Property]
+        [FunckyProperty]
         public Property BehavesTheSameAsElementAt(List<int> source, Index index)
         {
             var queryable = source.AsQueryable();
