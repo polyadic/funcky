@@ -8,7 +8,7 @@ namespace Funcky.Analyzers;
 
 public partial class AlternativeMonadAnalyzer
 {
-    public static readonly DiagnosticDescriptor PreferToNullable = new DiagnosticDescriptor(
+    public static readonly DiagnosticDescriptor PreferToNullable = new(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08",
         title: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {ToNullableMethodName} over {MatchMethodName}",

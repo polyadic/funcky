@@ -8,7 +8,7 @@ namespace Funcky.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
 {
-    public static readonly DiagnosticDescriptor DoNotUseDefault = new DiagnosticDescriptor(
+    public static readonly DiagnosticDescriptor DoNotUseDefault = new(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}09",
         title: "Do not use default to instantiate this type",
         messageFormat: "Do not use default(...) to instantiate '{0}'",

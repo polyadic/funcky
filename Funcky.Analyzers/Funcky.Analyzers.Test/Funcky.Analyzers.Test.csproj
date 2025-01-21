@@ -16,9 +16,9 @@
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
         <PackageReference Include="Microsoft.CodeAnalysis" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +26,7 @@
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" />
         <ProjectReference Include="..\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" />
+        <ProjectReference Include="..\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" />
     </ItemGroup>
 
     <ItemGroup>

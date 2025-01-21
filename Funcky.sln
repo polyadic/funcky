@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 		GlobalUsings.Test.props = GlobalUsings.Test.props
 		NuGet.config = NuGet.config
 		typos.toml = typos.toml
+		Analyzers.props = Analyzers.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Xunit", "Funcky.Xunit\Funcky.Xunit.csproj", "{F2E98B0D-CC17-4576-89DE-065FF475BE6E}"
@@ -60,6 +61,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Funcky.FsCheck", "Funcky.FsCheck\Funcky.FsCheck.fsproj", "{AC29055D-546B-4C32-8A7B-F7CF9541B08E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.TrimmingTest", "Funcky.TrimmingTest\Funcky.TrimmingTest.csproj", "{F35DB62D-22A8-41E8-B3BB-CD9064974190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.BuiltinAnalyzers.CodeFixes", "Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj", "{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +138,10 @@ Global
 		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F35DB62D-22A8-41E8-B3BB-CD9064974190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +155,7 @@ Global
 		{1EE94F73-967E-49D1-BA68-EA2783EA0244} = {18ED7503-3198-455D-861E-84841C48069C}
 		{C1412F64-1D24-4245-8DC7-F4AF01815F58} = {18ED7503-3198-455D-861E-84841C48069C}
 		{539432B9-1257-4237-91FD-5D237855765E} = {BBE35279-7416-4B9D-B89D-B6D1FF369681}
+		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2} = {BBE35279-7416-4B9D-B89D-B6D1FF369681}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F800283-D010-4227-94C9-09C02B0411DE}

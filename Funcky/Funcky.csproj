@@ -50,6 +50,7 @@
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
         <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
+        <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers.CodeFixes\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.CodeFixes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
         <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>

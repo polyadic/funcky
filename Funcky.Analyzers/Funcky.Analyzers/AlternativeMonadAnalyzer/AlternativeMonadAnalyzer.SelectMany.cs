@@ -7,7 +7,7 @@ namespace Funcky.Analyzers;
 
 public partial class AlternativeMonadAnalyzer
 {
-    public static readonly DiagnosticDescriptor PreferSelectMany = new DiagnosticDescriptor(
+    public static readonly DiagnosticDescriptor PreferSelectMany = new(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",
         title: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
