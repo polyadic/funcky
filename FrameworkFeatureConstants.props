@@ -16,9 +16,9 @@
 		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSABLE;AOT</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSABLE</DefineConstants>
+		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSABLE;JSON_SERIALIZER_OPTIONS_TRY_GET_TYPE_INFO;IP_NETWORK</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))">
-		<DefineConstants>$(DefineConstants);REFLECTION_ASSEMBLY_NAME_INFO;REFLECTION_TYPE_NAME</DefineConstants>
+		<DefineConstants>$(DefineConstants);REFLECTION_ASSEMBLY_NAME_INFO;REFLECTION_TYPE_NAME;ORDERED_DICTIONARY</DefineConstants>
 	</PropertyGroup>
 </Project>

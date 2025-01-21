@@ -1,1 +1,7 @@
 #nullable enable
+Funcky.Extensions.JsonSerializerOptionsExtensions
+Funcky.Extensions.OrderedDictionaryExtensions
+static Funcky.Extensions.JsonSerializerOptionsExtensions.GetTypeInfoOrNone(this System.Text.Json.JsonSerializerOptions! options, System.Type! type) -> Funcky.Monads.Option<System.Text.Json.Serialization.Metadata.JsonTypeInfo!>
+static Funcky.Extensions.OrderedDictionaryExtensions.IndexOfOrNone<TKey, TValue>(this System.Collections.Generic.OrderedDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
+static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
