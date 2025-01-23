@@ -20,7 +20,7 @@
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
 		<PackageVersion Include="xunit" Version="2.9.3" />
 		<PackageVersion Include="xunit.runner.visualstudio" Version="3.0.1" />
-		<PackageVersion Include="FsCheck.Xunit" Version="3.0.0" />
+		<PackageVersion Include="FsCheck.Xunit" Version="3.0.1" />
 		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
 		<PackageVersion Include="Verify.XUnit" Version="16.8.1" />
 		<PackageVersion Include="Verify.SourceGenerators" Version="1.4.0" />
