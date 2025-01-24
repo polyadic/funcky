@@ -1,8 +1,112 @@
 #nullable enable
 Funcky.Extensions.JsonSerializerOptionsExtensions
 Funcky.Extensions.OrderedDictionaryExtensions
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T3, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T2, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4, T5 p5) -> System.Func<T1, T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T3, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T3, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4, T5 p5) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T2, T3, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T2, T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T2, T3, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T2, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T2, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T2, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4, T5 p5) -> System.Func<T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T3, T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T3, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T4, T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T5, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4) -> System.Func<T1, T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4) -> System.Func<T1, T2, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4) -> System.Func<T1, T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T1, T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4) -> System.Func<T1, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4) -> System.Func<T1, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T2, T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4) -> System.Func<T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4) -> System.Func<T2, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4) -> System.Func<T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T3, T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4) -> System.Func<T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, TResult>(this System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4) -> System.Func<T4, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3) -> System.Func<T1, T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3) -> System.Func<T1, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3) -> System.Func<T2, T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3) -> System.Func<T2, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.Func<T1, T2, T3, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3) -> System.Func<T3, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! func, Funcky.Unit p1, T2 p2) -> System.Func<T1, TResult>!
+static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! func, T1 p1, Funcky.Unit p2) -> System.Func<T2, TResult>!
 static Funcky.Extensions.JsonSerializerOptionsExtensions.GetTypeInfoOrNone(this System.Text.Json.JsonSerializerOptions! options, System.Type! type) -> Funcky.Monads.Option<System.Text.Json.Serialization.Metadata.JsonTypeInfo!>
 static Funcky.Extensions.OrderedDictionaryExtensions.IndexOfOrNone<TKey, TValue>(this System.Collections.Generic.OrderedDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T3, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T2, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T2, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4, T5 p5) -> System.Func<T1, T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T3, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T3, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T1, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4, T5 p5) -> System.Func<T1, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T2, T3, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T2, T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T2, T3, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T2, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T2, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T2, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T2, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4, T5 p5) -> System.Func<T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T3, T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T3, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4, Funcky.Unit p5) -> System.Func<T4, T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4, T5 p5) -> System.Func<T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, T1 p1, T2 p2, T3 p3, T4 p4, Funcky.Unit p5) -> System.Func<T5, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4) -> System.Func<T1, T2, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4) -> System.Func<T1, T2, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3, T4 p4) -> System.Func<T1, T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T1, T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3, T4 p4) -> System.Func<T1, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, Funcky.Unit p4) -> System.Func<T1, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3, T4 p4) -> System.Func<T1, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T2, T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4) -> System.Func<T2, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, Funcky.Unit p4) -> System.Func<T2, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3, T4 p4) -> System.Func<T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, Funcky.Unit p4) -> System.Func<T3, T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3, T4 p4) -> System.Func<T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, T4, TResult>(System.Func<T1, T2, T3, T4, TResult>! func, T1 p1, T2 p2, T3 p3, Funcky.Unit p4) -> System.Func<T4, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, T3 p3) -> System.Func<T1, T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, T2 p2, Funcky.Unit p3) -> System.Func<T1, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, Funcky.Unit p1, T2 p2, T3 p3) -> System.Func<T1, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, T1 p1, Funcky.Unit p2, Funcky.Unit p3) -> System.Func<T2, T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, T1 p1, Funcky.Unit p2, T3 p3) -> System.Func<T2, TResult>!
+static Funcky.Functional.Apply<T1, T2, T3, TResult>(System.Func<T1, T2, T3, TResult>! func, T1 p1, T2 p2, Funcky.Unit p3) -> System.Func<T3, TResult>!
+static Funcky.Functional.Apply<T1, T2, TResult>(System.Func<T1, T2, TResult>! func, Funcky.Unit p1, T2 p2) -> System.Func<T1, TResult>!
+static Funcky.Functional.Apply<T1, T2, TResult>(System.Func<T1, T2, TResult>! func, T1 p1, Funcky.Unit p2) -> System.Func<T2, TResult>!
 static Funcky.Functional.Fn<T>(T value) -> T
