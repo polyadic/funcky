@@ -18,6 +18,8 @@ public sealed class ApplyGenerator : IIncrementalGenerator
 
     private static string GenerateApplyExtensions()
         => $$"""
+             #nullable enable
+
              namespace Funcky.Extensions;
 
              public static partial class FuncExtensions
@@ -28,6 +30,8 @@ public sealed class ApplyGenerator : IIncrementalGenerator
 
     private static string GenerateApplyFunctions()
         => $$"""
+             #nullable enable
+
              namespace Funcky;
 
              public static partial class Functional
