@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+	<PropertyGroup>
+		<!-- We are loaded *before* NuGet.Build.Tasks.Pack.targets, so we can't use the $(NuGetPackTaskAssemblyFile) and $(NuGetBuildTasksPackTargets) properties.
+		     Thus we re-define some of the things here based on $(MSBuildToolsPath). Let's hope it doesn't break. -->
+		<_NuGetVersioningAssemblyFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildToolsPath)/Sdks/NuGet.Build.Tasks.Pack/CoreCLR/NuGet.Versioning.dll</_NuGetVersioningAssemblyFile>
+		<_NuGetVersioningAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildToolsPath)/Sdks/NuGet.Build.Tasks.Pack/Desktop/NuGet.Versioning.dll</_NuGetVersioningAssemblyFile>
+		<_NuGetVersioningAssemblyFile Condition="!$([System.IO.Path]::Exists('$(_NuGetVersioningAssemblyFile)'))">$(MSBuildToolsPath)/NuGet.Versioning.dll</_NuGetVersioningAssemblyFile>
+	</PropertyGroup>
 	<UsingTask TaskName="GenerateSemanticVersionRanges" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
 		<ParameterGroup>
 			<ProjectReferencesWithVersions ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
 			<ProjectReferencesWithExactVersions ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
 		</ParameterGroup>
 		<Task>
-			<!-- $(NuGetPackTaskAssemblyFile) is a path relative to the $(NuGetBuildTasksPackTargets) file. -->
-			<Reference Include="$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::Combine($([System.IO.Path]::GetDirectoryName($(NuGetBuildTasksPackTargets))), $(NuGetPackTaskAssemblyFile)))))/NuGet.Versioning.dll" />
+			<Reference Include="$(_NuGetVersioningAssemblyFile)" />
 			<Using Namespace="NuGet.Versioning" />
 			<!-- language=C# -->
 			<Code Type="Fragment" Language="cs"><![CDATA[
