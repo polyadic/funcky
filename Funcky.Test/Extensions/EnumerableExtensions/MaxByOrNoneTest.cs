@@ -1,5 +1,6 @@
 #if NET6_0_OR_GREATER
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 #endif
 

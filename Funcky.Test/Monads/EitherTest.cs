@@ -1,15 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
-using Funcky.FsCheck;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class EitherTest
 {
-    public EitherTest()
-        => FunckyGenerators.Register();
-
     [Fact]
     public void LeftConstructorThrowsWhenNullIsPassed()
     {

@@ -1,22 +1,19 @@
 #if PRIORITY_QUEUE
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
 using Funcky.FsCheck;
 
 namespace Funcky.Test.Extensions;
 
 public sealed class PriorityQueueExtensionsTest
 {
-    public PriorityQueueExtensionsTest()
-        => FunckyGenerators.Register();
-
-    [Property]
+    [FunckyProperty]
     public Property PeekOrNoneReturnsLogicallyTheSameAsTryPeek(PriorityQueue<string, int> priorityQueue)
         => (priorityQueue.TryPeek(out var element, out var priority)
             ? priorityQueue.PeekOrNone().Match(none: false, some: IsSame(element, priority))
             : priorityQueue.PeekOrNone().Match(none: true, some: False)).ToProperty();
 
-    [Property]
+    [FunckyProperty]
     public Property DequeueOrNoneReturnsLogicallyTheSameAsTryDequeue(PriorityQueue<string, int> priorityQueue)
     {
         // Dequeue has a side-effect, so we need a Copy

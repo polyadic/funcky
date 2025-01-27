@@ -1,4 +1,5 @@
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Async.Test.TestUtilities;
 using Xunit.Sdk;

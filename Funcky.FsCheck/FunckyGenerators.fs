@@ -1,8 +1,12 @@
 namespace Funcky.FsCheck
 
 open System
+#if PRIORITY_QUEUE
 open System.Collections.Generic
+#endif
 open FsCheck
+open FsCheck.FSharp
+open FsCheck.Xunit
 open Funcky.Monads
 open Microsoft.FSharp.Core
 
@@ -25,57 +29,62 @@ type NonNull<'a> = NonNull of 'a with
     member x.Get = match x with NonNull r -> r
 
 module FunckyArb =
-    let generateNonNull<'a> = Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get)
+    let generateNonNull<'a> map = map |> ArbMap.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get)
 
 [<Sealed>]
 [<AbstractClass>]
 type FunckyGenerators =
-    static member generateNonNull<'a>() = Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get)
-
-    static member either<'a, 'b>() =
+    static member either<'a, 'b>(map) =
         (Arb.fromGen << Gen.oneof) [
-            FunckyArb.generateNonNull<'a> |> Gen.map Either<'a, 'b>.Left
-            FunckyArb.generateNonNull<'b> |> Gen.map Either<'a, 'b>.Right]
+            map |> FunckyArb.generateNonNull<'a> |> Gen.map Either<'a, 'b>.Left
+            map |> FunckyArb.generateNonNull<'b> |> Gen.map Either<'a, 'b>.Right]
 
-    static member result<'a>() =
+    static member result<'a>(map) =
         (Arb.fromGen << Gen.oneof) [
-            FunckyGenerators.generateNonNull<'a>() |> Gen.map Result.Ok
-            Arb.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
+            map |> FunckyArb.generateNonNull<'a> |> Gen.map Result.Ok
+            map |> ArbMap.generate<string> |> Gen.map (EquatableException >> Result<'a>.Error)]
 
-    static member tuple2<'a, 'b>() =
-       Arb.from<Tuple<'a, 'b>> |> Arb.convert TupleExtensions.ToValueTuple TupleExtensions.ToTuple
+    static member tuple2<'a, 'b>(map) =
+       map |> ArbMap.arbitrary<Tuple<'a, 'b>> |> Arb.convert TupleExtensions.ToValueTuple TupleExtensions.ToTuple
 
 #if PRIORITY_QUEUE
-    static member priorityQueue<'a, 'priority>() =
+    static member priorityQueue<'a, 'priority>(map) =
          Arb.fromGen <|
-             gen { let! values = Arb.generate<List<ValueTuple<'a, 'priority>>>
+             gen { let! values = map |> ArbMap.generate<List<ValueTuple<'a, 'priority>>>
                    return PriorityQueue(values) }
 #endif
 
-    static member nonNull<'a>() =
-        Arb.from<'a>
+    static member nonNull<'a>(map) =
+        map |> ArbMap.arbitrary<'a>
             |> Arb.filter (fun x -> not (Object.ReferenceEquals(x, null)))
-            |> Arb.convert NonNull (fun x -> x.Get)
+            |> Arb.convert NonNull _.Get
 
-    static member option<'a>() =
+    static member option<'a>(map) =
         { new Arbitrary<Funcky.Monads.Option<'a>>() with
             override _.Generator =
-                Gen.frequency [(1, gen { return Option<'a>.None }); (7, FunckyArb.generateNonNull<'a> |> Gen.map Option.Some)]
+                Gen.frequency [(1, gen { return Option<'a>.None }); (7, map |> FunckyArb.generateNonNull<'a> |> Gen.map Option.Some)]
             override _.Shrinker o =
-                o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in Arb.shrink x -> Option.Some x' })
+                o.Match(none = Seq.empty, some = fun x -> seq { yield Option<'a>.None; for x' in map |> ArbMap.arbitrary<'a> |> Arb.toShrink <| x -> Option.Some x' })
         }
 
 #if INDEX_TYPE
-    static member index() =
-        Arb.from<Tuple<PositiveInt, bool>>
+    static member index(map) =
+        map |> ArbMap.arbitrary<Tuple<PositiveInt, bool>>
             |> Arb.convert (fun (value, fromEnd) -> Index(value.Get, fromEnd)) (fun x -> (PositiveInt(x.Value), x.IsFromEnd))
 #endif
 
-    static member generateLazy<'a>() =
-        Arb.fromGen (Arb.generate<NonNull<'a>> |> Gen.map (fun x -> x.Get) |> Gen.map Lazy.Return)
+    static member generateLazy<'a>(map) =
+        map |> ArbMap.arbitrary<NonNull<'a>>
+            |> Arb.convert (fun x -> Lazy.Return(x.Get)) (fun x -> NonNull(x.Value))
 
-    static member generateReader<'env, 'a>() =
-        Arb.fromGen (Arb.generate<Func<'env, NonNull<'a>>> |> Gen.map (fun f -> fun env -> f.Invoke(env).Get) |> Gen.map Reader<'env>.FromFunc)
+    static member generateReader<'env, 'a>(map) =
+        Arb.fromGen (
+            map |> ArbMap.generate<Func<'env, NonNull<'a>>>
+                |> Gen.map (fun f -> fun env -> f.Invoke(env).Get)
+                |> Gen.map Reader<'env>.FromFunc)
 
-    [<CompiledName("Register")>]
-    static member register() = Arb.registerByType typeof<FunckyGenerators> |> ignore
+type FunckyPropertyAttribute() as self =
+    inherit PropertyAttribute()
+
+    do
+        self.Arbitrary <- List.toArray [typedefof<FunckyGenerators>]

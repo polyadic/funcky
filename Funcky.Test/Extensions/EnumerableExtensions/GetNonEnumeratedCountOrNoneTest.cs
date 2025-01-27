@@ -1,5 +1,6 @@
 #if TRY_GET_NON_ENUMERATED_COUNT
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
 

@@ -1,4 +1,5 @@
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 
 namespace Funcky.Test.Extensions.StringExtensions;
@@ -6,7 +7,7 @@ namespace Funcky.Test.Extensions.StringExtensions;
 public sealed class LazySplitTest
 {
     [Property]
-    public Property SplitLazyWithSingleCharacterWorksTheSameAsSplit(StringNoNulls text, char separator)
+    public Property SplitLazyWithSingleCharacterWorksTheSameAsSplit(StringNoNullChar text, char separator)
         => (text.Get is null
            || text
             .Get
@@ -15,7 +16,7 @@ public sealed class LazySplitTest
             .ToProperty();
 
     [Property]
-    public Property SplitLazyWithMultipleCharactersWorksTheSameAsSplit(StringNoNulls text, char separator, char separator2, char separator3)
+    public Property SplitLazyWithMultipleCharactersWorksTheSameAsSplit(StringNoNullChar text, char separator, char separator2, char separator3)
         => (text.Get is null
             || text
                 .Get
@@ -25,7 +26,7 @@ public sealed class LazySplitTest
 
 #if SPLIT_ACCEPTS_STRING_SEPARATOR
     [Property]
-    public Property SplitLazyWithSingleStringWorksTheSameAsSplit(StringNoNulls text, StringNoNulls separator)
+    public Property SplitLazyWithSingleStringWorksTheSameAsSplit(StringNoNullChar text, StringNoNullChar separator)
         => (text.Get is null
             || separator.Get is null
             || text

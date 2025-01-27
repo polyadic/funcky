@@ -1,14 +1,11 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
 using Funcky.FsCheck;
 
 namespace Funcky.Test.Monads;
 
 public class OptionExtensionsTest
 {
-    public OptionExtensionsTest()
-        => FunckyGenerators.Register();
-
     public enum Reason
     {
         UserNotFound,
@@ -27,7 +24,7 @@ public class OptionExtensionsTest
         fullUser.Switch(left: _ => Assert.Fail("failed"), right: firstName => Assert.Equal("Name", firstName));
     }
 
-    [Property]
+    [FunckyProperty]
     public Property AnOptionWithAValueTypeCanBeConvertedToANullable(Option<int> input)
     {
         var nullable = input.ToNullable();
@@ -38,7 +35,7 @@ public class OptionExtensionsTest
             .ToProperty();
     }
 
-    [Property]
+    [FunckyProperty]
     public Property AnOptionWithAReferenceTypeCanBeConvertedToNullableReferences(Option<string> input)
     {
         var nullable = input.ToNullable();
