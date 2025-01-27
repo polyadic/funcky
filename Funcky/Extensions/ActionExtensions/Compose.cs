@@ -6,6 +6,7 @@ public static partial class ActionExtensions
     /// Function composition with action.
     /// </summary>
     /// <returns>f ∘ g,v => f(g(v)).</returns>
+    /// <seealso cref="Fn{T}"/>
     [Pure]
     public static Action<TInput> Compose<TInput, TIntermediate>(this Action<TIntermediate> f, Func<TInput, TIntermediate> g)
         => v => f(g(v));
@@ -14,6 +15,7 @@ public static partial class ActionExtensions
     /// Function composition with Action.
     /// </summary>
     /// <returns>f ∘ g, () => f(g()).</returns>
+    /// <seealso cref="Fn{T}"/>
     [Pure]
     public static Action Compose<TIntermediate>(this Action<TIntermediate> f, Func<TIntermediate> g)
         => () => f(g());
