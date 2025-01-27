@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<UsingTask TaskName="GenerateSemanticVersionRanges" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<ProjectReferencesWithVersions ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+			<ProjectReferencesWithExactVersions ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+		</ParameterGroup>
+		<Task>
+			<!-- $(NuGetPackTaskAssemblyFile) is a path relative to the $(NuGetBuildTasksPackTargets) file. -->
+			<Reference Include="$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::Combine($([System.IO.Path]::GetDirectoryName($(NuGetBuildTasksPackTargets))), $(NuGetPackTaskAssemblyFile)))))/NuGet.Versioning.dll" />
+			<Using Namespace="NuGet.Versioning" />
+			<!-- language=C# -->
+			<Code Type="Fragment" Language="cs"><![CDATA[
+				foreach (var projectReference in ProjectReferencesWithVersions)
+				{
+					var versionString = projectReference.GetMetadata("ProjectVersion");
+					if (!SemanticVersion.TryParse(versionString, out var version)) {
+						Log.LogError("'{0}' is not a valid semantic version", versionString);
+						return false;
+					}
+
+					var range = version switch
+					{
+                        // No SemVer guarantees for pre-release (e.g. nightly) versions, so we use an exact version.
+						{ IsPrerelease: true } => $"[{version}]",
+						// We use Cargo's convention for 0.x versions i.e. minor = breaking, patch = feature or patch.
+						{ Major: 0, Minor: var minor, Patch: var patch } => $"[0.{minor}.{patch}, 0.{minor + 1})",
+						// 1.x versions follow regular SemVer rules.
+						{ Major: var major, Minor: var minor, Patch: var patch } => $"[{major}.{minor}.{patch}, {major + 1})",
+					};
+					projectReference.SetMetadata("ProjectVersion", range);
+				}
+
+				ProjectReferencesWithExactVersions = ProjectReferencesWithVersions;
+			]]></Code>
+		</Task>
+	</UsingTask>
+	<!-- This workaround is based on comments in: https://github.com/NuGet/Home/issues/5556#issuecomment-753526765 -->
+	<Target Name="_ExactProjectReferencesVersion" AfterTargets="_GetProjectReferenceVersions">
+		<GenerateSemanticVersionRanges ProjectReferencesWithVersions="@(_ProjectReferencesWithVersions)">
+			<Output ItemName="_ProjectReferencesWithExactVersions" TaskParameter="ProjectReferencesWithExactVersions" />
+		</GenerateSemanticVersionRanges>
+		<ItemGroup>
+			<_ProjectReferencesWithVersions Remove="@(_ProjectReferencesWithVersions)" />
+			<_ProjectReferencesWithVersions Include="@(_ProjectReferencesWithExactVersions)" />
+		</ItemGroup>
+	</Target>
+</Project>

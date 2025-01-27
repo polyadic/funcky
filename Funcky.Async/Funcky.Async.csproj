@@ -51,4 +51,5 @@
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <Import Project="..\SemanticVersioning.targets" />
 </Project>
