@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
         <PackageTags>Functional Async Monad Linq</PackageTags>
-        <Version>1.4.0</Version>
+        <VersionPrefix>1.4.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
@@ -51,4 +51,5 @@
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <Import Project="..\SemanticVersioning.targets" />
 </Project>
