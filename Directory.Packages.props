@@ -6,7 +6,7 @@
 	<ItemGroup Label="Runtime Dependencies">
 		<PackageVersion Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
 		<PackageVersion Include="System.Collections.Immutable" Version="1.7.1" />
-		<PackageVersion Include="System.Text.Json" Version="5.0.0" />
+		<PackageVersion Include="System.Text.Json" Version="5.0.2" />
 		<PackageVersion Include="xunit.assert" Version="[2.9.3, 2.10)" />
 		<PackageVersion Include="xunit.extensibility.core" Version="[2.9.3, 2.10)" />
 		<PackageVersion Include="xunit.v3.assert" Version="[1.0.1, 2)" />
