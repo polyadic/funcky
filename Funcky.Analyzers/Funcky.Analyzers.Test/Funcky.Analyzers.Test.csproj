@@ -19,6 +19,8 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" />
+        <!-- Microsoft.CodeAnalysis.CSharp.Analyzer.Testing depends on an old version of Nuget.Packaging which pulls in vulnerable packages -->
+        <PackageReference Include="Nuget.Packaging" />
     </ItemGroup>
 
     <ItemGroup>
