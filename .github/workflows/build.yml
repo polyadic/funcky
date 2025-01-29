@@ -50,6 +50,8 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
+    - name: Restore dependencies
+      run: dotnet restore -r linux-x64
     - name: Run trimming test
       run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
     - name: Run AOT test
