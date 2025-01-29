@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
-		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;SPLIT_ACCEPTS_STRING_SEPARATOR;LAZY_RETURN_CONSTRUCTOR;QUEUE_TRY_OVERLOADS;OPTIMIZED_ELEMENT_AT;RANGE_SUPPORTED;READ_ONLY_SPAN_SUPPORTED;INDEX_TYPE;JOIN_TO_STRING_CHAR_SEPARATOR</DefineConstants>
+		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;SPLIT_ACCEPTS_STRING_SEPARATOR;LAZY_RETURN_CONSTRUCTOR;QUEUE_TRY_OVERLOADS;OPTIMIZED_ELEMENT_AT;RANGE_SUPPORTED;READ_ONLY_SPAN_SUPPORTED;INDEX_TYPE;JOIN_TO_STRING_CHAR_SEPARATOR;REMOVE_EXTENSION</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netcoreapp3.0'))">
 		<DefineConstants>$(DefineConstants);SYSTEM_INDEX_SUPPORTED;IP_END_POINT_TRY_PARSE_SUPPORTED</DefineConstants>
