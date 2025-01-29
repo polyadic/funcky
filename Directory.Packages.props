@@ -22,13 +22,16 @@
 		<PackageVersion Include="xunit.runner.visualstudio" Version="3.0.1" />
 		<PackageVersion Include="FsCheck.Xunit" Version="2.16.4" />
 		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
-		<PackageVersion Include="Nuget.Packaging" Version="6.12.1" />
 		<PackageVersion Include="Verify.XUnit" Version="16.8.1" />
 		<PackageVersion Include="Verify.SourceGenerators" Version="1.4.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.2" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="1.1.2" />
+	</ItemGroup>
+	<ItemGroup Label="Transient Test Dependencies">
+		<PackageVersion Include="Nuget.Packaging" Version="6.12.1" />
+		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.3" />
 	</ItemGroup>
 	<ItemGroup Label="Analyzer">
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
