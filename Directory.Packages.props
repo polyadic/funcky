@@ -41,4 +41,7 @@
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
 		<PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.0.1597"/>
 	</ItemGroup>
+	<PropertyGroup>
+		<_FunckyNuGetVersioningVersion>6.12.1</_FunckyNuGetVersioningVersion>
+	</PropertyGroup>
 </Project>
