@@ -9,6 +9,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FsCheck.Xunit" />
+        <PackageReference Include="xunit.extensibility.execution" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="FunckyGenerators.fs" />
