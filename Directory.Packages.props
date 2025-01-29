@@ -25,14 +25,18 @@
 		<PackageVersion Include="Nuget.Packaging" Version="6.12.1" />
 		<PackageVersion Include="Verify.XUnit" Version="16.8.1" />
 		<PackageVersion Include="Verify.SourceGenerators" Version="1.4.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.2" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="1.1.2" />
 	</ItemGroup>
 	<ItemGroup Label="Analyzer">
-		<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" Version="1.1.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" Version="1.1.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" Version="1.1.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" /><!-- We explicitly reference these analyzers to get the latest version even though we might not use the latest version of Microsoft.CodeAnalysis everywhere. -->
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
 		<PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.0.1597"/>
 	</ItemGroup>
