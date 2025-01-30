@@ -51,6 +51,7 @@ jobs:
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - run: dotnet nuget config paths
+    - run: cat /home/runner/.nuget/NuGet/NuGet.Config
     - name: Restore dependencies
       run: dotnet restore -r linux-x64
     - name: Run trimming test
