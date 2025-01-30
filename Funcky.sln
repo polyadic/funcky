@@ -65,6 +65,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.TrimmingTest", "Func
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.BuiltinAnalyzers.CodeFixes", "Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj", "{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit.v3", "Funcky.Xunit.v3\Funcky.Xunit.v3.csproj", "{2EA64974-E4A4-416E-9E35-5744B5244EBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funcky.Xunit.v3.Test", "Funcky.Xunit.v3.Test\Funcky.Xunit.v3.Test.csproj", "{D9E9CC4B-34F9-4195-B21C-B11AD4DA63F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +147,14 @@ Global
 		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82BAB120-6F95-4B5A-83EA-C7BCFB1C03C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA64974-E4A4-416E-9E35-5744B5244EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA64974-E4A4-416E-9E35-5744B5244EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA64974-E4A4-416E-9E35-5744B5244EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA64974-E4A4-416E-9E35-5744B5244EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E9CC4B-34F9-4195-B21C-B11AD4DA63F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E9CC4B-34F9-4195-B21C-B11AD4DA63F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E9CC4B-34F9-4195-B21C-B11AD4DA63F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E9CC4B-34F9-4195-B21C-B11AD4DA63F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
