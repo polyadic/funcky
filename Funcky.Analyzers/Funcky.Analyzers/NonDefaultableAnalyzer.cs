@@ -17,7 +17,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         description: "Values instantiated with default are in an invalid state; any member may throw an exception.");
 
-    private const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
+    internal const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DoNotUseDefault);
 
@@ -27,6 +27,10 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.RegisterCompilationStartAction(OnCompilationStart);
     }
+
+    internal static bool IsParameterlessObjectCreationOfNonDefaultableStruct(IObjectCreationOperation operation, INamedTypeSymbol nonDefaultableAttribute)
+        => operation is { Type: { } type, Arguments.Length: 0, Initializer: null }
+            && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute));
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
@@ -51,8 +55,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         => context =>
         {
             var operation = (IObjectCreationOperation)context.Operation;
-            if (operation is { Type: { } type, Arguments.Length: 0, Initializer: null }
-                && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute)))
+            if (IsParameterlessObjectCreationOfNonDefaultableStruct(operation, nonDefaultableAttribute))
             {
                 ReportDiagnostic(context);
             }
