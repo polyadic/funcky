@@ -19,4 +19,10 @@
     <Left>lib/netstandard2.1/Funcky.dll</Left>
     <Right>lib/netcoreapp3.1/Funcky.dll</Right>
   </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0021</DiagnosticId>
+    <Target>M:Funcky.Extensions.DictionaryExtensions.RemoveOrNone``2(System.Collections.Generic.IDictionary{``0,``1},``0)``0:notnull</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/netcoreapp3.1/Funcky.dll</Right>
+  </Suppression>
 </Suppressions>
