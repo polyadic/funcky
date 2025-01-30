@@ -9,5 +9,8 @@
     "@swirly/renderer-node": "^0.21.0",
     "@swirly/theme-default-light": "^0.21.0",
     "glob": "^7.1.7"
+  },
+  "dependencies": {
+    "@swirly/theme-default-dark": "^0.21.0"
   }
 }
