@@ -25,6 +25,7 @@ public sealed class NonDefaultableTest
                 private void Usage()
                 {
                     _ = default(Foo);
+                    _ = new Foo();
                 }
             }
 
@@ -63,6 +64,41 @@ public sealed class NonDefaultableTest
         [
             VerifyCS.Diagnostic().WithSpan(7, 13, 7, 25).WithArguments("Foo"),
             VerifyCS.Diagnostic().WithSpan(8, 13, 8, 41).WithArguments("Generic<int>"),
+        ];
+
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + AttributeSource, expectedDiagnostics);
+    }
+
+    [Fact]
+    public async Task ParameterlessConstructorInstantiationsOfAnnotatedStructsGetError()
+    {
+        const string inputCode =
+            """
+            using Funcky.CodeAnalysis;
+
+            class Test
+            {
+                private void Usage()
+                {
+                    _ = new Foo();
+                    _ = new Funcky.Generic<int>();
+                }
+            }
+
+            [NonDefaultable]
+            struct Foo { }
+
+            namespace Funcky
+            {
+                [NonDefaultable]
+                struct Generic<T> { }
+            }
+            """;
+
+        DiagnosticResult[] expectedDiagnostics =
+        [
+            VerifyCS.Diagnostic().WithSpan(7, 13, 7, 22).WithArguments("Foo"),
+            VerifyCS.Diagnostic().WithSpan(8, 13, 8, 38).WithArguments("Generic<int>"),
         ];
 
         await VerifyCS.VerifyAnalyzerAsync(inputCode + AttributeSource, expectedDiagnostics);
