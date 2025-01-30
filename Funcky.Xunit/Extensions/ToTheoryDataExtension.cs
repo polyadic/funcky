@@ -1,3 +1,4 @@
+#if !XUNIT_V3
 using Xunit;
 
 namespace Funcky.Extensions;
@@ -237,3 +238,4 @@ public static class ToTheoryDataExtension
         return theoryData;
     }
 }
+#endif
