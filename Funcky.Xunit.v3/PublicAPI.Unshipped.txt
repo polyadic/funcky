@@ -1,4 +1,10 @@
 #nullable enable
+Funcky.Xunit.RegisterEitherSerializerAttribute
+Funcky.Xunit.RegisterEitherSerializerAttribute.RegisterEitherSerializerAttribute() -> void
+Funcky.Xunit.RegisterOptionSerializerAttribute
+Funcky.Xunit.RegisterOptionSerializerAttribute.RegisterOptionSerializerAttribute() -> void
+Funcky.Xunit.RegisterUnitSerializerAttribute
+Funcky.Xunit.RegisterUnitSerializerAttribute.RegisterUnitSerializerAttribute() -> void
 static Funcky.FunctionalAssert.Some<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void
 static Funcky.FunctionalAssert.Some<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
 static Funcky.FunctionalAssert.Right<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void

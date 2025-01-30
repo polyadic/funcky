@@ -8,7 +8,7 @@ namespace Funcky.Monads;
 /// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
 /// </remarks>
 [NonDefaultable]
-public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
+public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>, IEither
     where TLeft : notnull
     where TRight : notnull
 {
@@ -106,6 +106,10 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
         => Match(
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
+
+    void IEither.InternalImplementationOnly()
+    {
+    }
 
     [Pure]
     [UseWithArgumentNames]

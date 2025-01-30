@@ -4,7 +4,7 @@ using Funcky.CodeAnalysis;
 
 namespace Funcky.Monads;
 
-public readonly partial struct Option<TItem>
+public readonly partial struct Option<TItem> : IOption
     where TItem : notnull
 {
     private readonly bool _hasItem;
@@ -88,6 +88,10 @@ public readonly partial struct Option<TItem>
         => Match(
              none: "None",
              some: value => $"Some({value})");
+
+    void IOption.InternalImplementationOnly()
+    {
+    }
 }
 
 public static partial class Option
