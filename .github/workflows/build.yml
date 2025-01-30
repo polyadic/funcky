@@ -50,10 +50,13 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
+    # Building the analyzers (the code fix projects in particular) for the linux runtime
+    # results in some super-old System.* packages with vulnerabilities being pulled in.
+    # Our analyzers don't do anything wrt. trimming and AOT so it's safe to disable them.
     - name: Run trimming test
-      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
+      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true
     - name: Run AOT test
-      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyTestAot=true
+      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true /p:FunckyTestAot=true
 
   nupkg:
     name: Generate NuGet Packages
