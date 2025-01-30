@@ -12,6 +12,9 @@
         <PackageReference Include="xunit.v3" />
         <PackageReference Include="xunit.runner.visualstudio" />
     </ItemGroup>
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
+    </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\Funcky.Xunit.Test\**\*.cs" />
     </ItemGroup>

@@ -1,3 +1,4 @@
+#if !XUNIT_V3
 namespace Funcky.Xunit.Test.Extensions;
 
 public sealed class ToTheoryDataExtensionTest
@@ -24,3 +25,4 @@ public sealed class ToTheoryDataExtensionTest
     public static TheoryData<int, string> TheoryFromRepeat()
         => Sequence.Return(Tuple.Create(IntValue, StringValue)).ToTheoryData();
 }
+#endif
