@@ -52,6 +52,7 @@ jobs:
       name: Install Current .NET SDK
     - run: dotnet nuget config paths
     - run: cat /home/runner/.nuget/NuGet/NuGet.Config
+    - run: dotnet list Funcky.TrimmingTest package --vulnerable
     - name: Restore dependencies
       run: dotnet restore -r linux-x64
     - name: Run trimming test
