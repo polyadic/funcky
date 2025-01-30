@@ -43,6 +43,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net5.0'" />
         <PackageReference Include="PolySharp" PrivateAssets="all" />
+        <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
     <ItemGroup>
@@ -51,5 +52,4 @@
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
-    <Import Project="..\SemanticVersioning.targets" />
 </Project>
