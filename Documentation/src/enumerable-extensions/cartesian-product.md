@@ -8,7 +8,7 @@ In other words: The Cartesian product produces all possible pairs of two given `
 <picture>
     <picture>
       <source srcset="cartesian-product-dark.svg" media="(prefers-color-scheme: dark)">
-      <img src="cartesian-product.svg" alt="A marble diagram showing the CartesionProduct operation">
+      <img src="cartesian-product.svg" alt="A marble diagram showing the CartesianProduct operation">
     </picture>
 </picture>
 
