@@ -52,9 +52,9 @@ jobs:
       name: Install Current .NET SDK
     - run: dotnet nuget config paths
     - run: cat /home/runner/.nuget/NuGet/NuGet.Config
-    - run: dotnet list Funcky.TrimmingTest package --vulnerable
     - name: Restore dependencies
       run: dotnet restore -r linux-x64
+    - run: dotnet list Funcky.TrimmingTest package --vulnerable
     - name: Run trimming test
       run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true
     - name: Run AOT test
