@@ -5,7 +5,12 @@ is the set of all ordered pairs (a, b) where a ∈ A and b ∈ B.
 
 In other words: The Cartesian product produces all possible pairs of two given `IEnumerable`s.
 
-![cartesian-product with marbles](cartesian-product.svg "Marble me!")
+<picture>
+    <picture>
+      <source srcset="cartesian-product-dark.svg" media="(prefers-color-scheme: dark)">
+      <img src="cartesian-product.svg" alt="A marble diagram showing the CartesianProduct operation">
+    </picture>
+</picture>
 
 ### Recipe
 The Cartesian product can be easily implemented ad-hoc using LINQ's built-in `SelectMany` extension function:

@@ -35,6 +35,13 @@
   resolved "https://registry.yarnpkg.com/@swirly/theme-default-base/-/theme-default-base-0.21.0.tgz#35ff01e240e712db4015576202ca81bb838ebce6"
   integrity sha512-jW6wkwnUZMaU1PuhWEzvHkX9rezpe33xUvVqen9dvLM9FJimaZljfHdjYFhiTJJZ/V6a0inCDBJbWS3OfHHV+g==
 
+"@swirly/theme-default-dark@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/theme-default-dark/-/theme-default-dark-0.21.0.tgz#6991992885969ef40b75756025136616576adc53"
+  integrity sha512-XHktjZ00AN/+Std71Lu8oTTIQnyagqFZwblNdssvsMuConz+/joTpey8nLsTrmLeMPowX2fVu6nVfW3l+H+ERA==
+  dependencies:
+    "@swirly/theme-default-base" "^0.21.0"
+
 "@swirly/theme-default-light@^0.21.0":
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/@swirly/theme-default-light/-/theme-default-light-0.21.0.tgz#f85f24383165e920ee41d70a53e73a998f9585d4"
