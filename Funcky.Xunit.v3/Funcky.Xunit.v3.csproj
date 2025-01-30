@@ -24,6 +24,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="PolySharp" PrivateAssets="all" />
+        <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="xunit.v3.assert" />
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
     </ItemGroup>
@@ -32,5 +33,4 @@
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
-    <Import Project="..\SemanticVersioning.targets" />
 </Project>
