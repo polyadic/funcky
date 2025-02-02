@@ -17,7 +17,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         description: "Values instantiated with default are in an invalid state; any member may throw an exception.");
 
-    private const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
+    internal const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DoNotUseDefault);
 
@@ -28,11 +28,16 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(OnCompilationStart);
     }
 
+    internal static bool IsParameterlessObjectCreationOfNonDefaultableStruct(IObjectCreationOperation operation, INamedTypeSymbol nonDefaultableAttribute)
+        => operation is { Type: { } type, Arguments.Length: 0, Initializer: null }
+            && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute));
+
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
         if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } nonDefaultableAttribute)
         {
             context.RegisterOperationAction(AnalyzeDefaultValueOperation(nonDefaultableAttribute), OperationKind.DefaultValue);
+            context.RegisterOperationAction(AnalyzeObjectCreationOperation(nonDefaultableAttribute), OperationKind.ObjectCreation);
         }
     }
 
@@ -42,12 +47,25 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
             var operation = (IDefaultValueOperation)context.Operation;
             if (operation.Type is { } type && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute)))
             {
-                context.ReportDiagnostic(Diagnostic.Create(
-                    DoNotUseDefault,
-                    operation.Syntax.GetLocation(),
-                    messageArgs: type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)));
+                ReportDiagnostic(context);
             }
         };
+
+    private static Action<OperationAnalysisContext> AnalyzeObjectCreationOperation(INamedTypeSymbol nonDefaultableAttribute)
+        => context =>
+        {
+            var operation = (IObjectCreationOperation)context.Operation;
+            if (IsParameterlessObjectCreationOfNonDefaultableStruct(operation, nonDefaultableAttribute))
+            {
+                ReportDiagnostic(context);
+            }
+        };
+
+    private static void ReportDiagnostic(OperationAnalysisContext context)
+        => context.ReportDiagnostic(Diagnostic.Create(
+            DoNotUseDefault,
+            context.Operation.Syntax.GetLocation(),
+            messageArgs: context.Operation.Type?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)));
 
     private static Func<AttributeData, bool> IsAttribute(INamedTypeSymbol attributeClass)
         => attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeClass);
