@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adapted from https://github.com/dotnet/runtime/blob/4bd597ffde128555b4ff017e87c60adc2fedd178/eng/generatorProjects.targets -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- This file is included in the individual analyzer project files and allows
+	     Funcky.Analyzers.Package project to retrieve the files to package. It
+	     does this by invoking the `GetAnalyzerPackFiles` target. -->
+	<Target Name="GetAnalyzerPackFiles"
+			DependsOnTargets="$(GenerateNuspecDependsOn)"
+			Returns="@(_AnalyzerPackFile)">
+		<PropertyGroup>
+			<_analyzerPath>analyzers/dotnet</_analyzerPath>
+			<_analyzerRoslynVersion Condition="'$(AnalyzerRoslynVersion)' != ''">$([System.Version]::Parse($(AnalyzerRoslynVersion)).Major).$([System.Version]::Parse($(AnalyzerRoslynVersion)).Minor)</_analyzerRoslynVersion>
+			<_analyzerPath Condition="'$(AnalyzerRoslynVersion)' != ''">$(_analyzerPath)/roslyn$(_analyzerRoslynVersion)</_analyzerPath>
+			<_analyzerPath Condition="'$(AnalyzerLanguage)' != ''">$(_analyzerPath)/$(AnalyzerLanguage)</_analyzerPath>
+		</PropertyGroup>
+
+		<!-- Filter on netstandard2.0 so that generator projects can multi-target for the purpose of enabling nullable reference type compiler checks. -->
+		<ItemGroup>
+			<_AnalyzerPackFile Include="@(_BuildOutputInPackage->WithMetadataValue('TargetFramework', 'netstandard2.0'))" IsSymbol="false" />
+			<_AnalyzerPackFile Include="@(_TargetPathsToSymbols->WithMetadataValue('TargetFramework', 'netstandard2.0'))" IsSymbol="true" />
+			<_AnalyzerPackFile PackagePath="$(_analyzerPath)/%(TargetPath)" />
+		</ItemGroup>
+
+		<Error Text="Analyzers must target netstandard2.0 since they run in the compiler which targets netstandard2.0. $(MSBuildProjectFullPath) targets '$([MSBuild]::ValueOrDefault('$(TargetFrameworks)', '$(TargetFramework)'))' instead."
+			   Condition="'@(_AnalyzerPackFile)' == ''" />
+	</Target>
+</Project>
