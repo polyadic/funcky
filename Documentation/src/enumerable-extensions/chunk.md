@@ -3,7 +3,12 @@
 With the `.Chunk(int)` extension method, you can turn an `IEnumerable<T>` into a `IEnumerable<IEnumerable<T>>`, with the inner Enumerables being of the given size.
 Empty and negative chunk sizes are not allowed and will throw a `ArgumentOutOfRangeException`.
 
-![chunk with marbles](chunk.svg)
+<picture>
+    <picture>
+      <source srcset="chunk-dark.svg" media="(prefers-color-scheme: dark)">
+      <img src="chunk.svg" alt="A marble diagram showing the Chunk operation">
+    </picture>
+</picture>
 
 ### Examples
 
