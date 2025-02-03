@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RoslynApiVersion>4.0.1</RoslynApiVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.Roslyn4.0.csproj" PrivateAssets="all" />
+    </ItemGroup>
+    <Import Project="Funcky.Analyzers.CodeFixes.targets" />
+</Project>

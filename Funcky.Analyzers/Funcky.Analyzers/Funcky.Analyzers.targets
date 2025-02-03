@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<!-- Avoid ID conflicts with the package project. -->
+		<PackageId>*$(MSBuildProjectFile)*</PackageId>
+		<AssemblyName>Funcky.Analyzers</AssemblyName>
+		<LangVersion>preview</LangVersion>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<AnalysisLevel>5</AnalysisLevel>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
+		<RoslynApiVersion Condition="'$(RoslynApiVersion)' == '' And '$(AnalyzerRoslynVersion)' != ''">$(AnalyzerRoslynVersion)</RoslynApiVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="PolySharp" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(RoslynApiVersion)" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+	</ItemGroup>
+	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />
+</Project>
