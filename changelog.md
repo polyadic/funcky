@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
+
+This is a patch release which fixes vulnerability warnings of (direct and transitive) dependencies.
+
 ## Funcky 3.5.0 | Funcky.Async 1.4.0 | Funcky.Xunit 2.1.0 | Funcky.Analyzers 1.4.0
 This update is mainly to update to .NET 9 but also has several smaller improvements.
 
