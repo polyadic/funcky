@@ -20,12 +20,19 @@
         <DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="Funcky.Xunit.v3.Test" />
+    </ItemGroup>
+    <ItemGroup>
         <Compile Include="..\Funcky.Xunit\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="build\$(PackageId).targets" Pack="true" PackagePath="build\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="xunit.v3.assert" />
+        <PackageReference Include="xunit.v3.extensibility.core" />
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
     </ItemGroup>
     <ItemGroup>
