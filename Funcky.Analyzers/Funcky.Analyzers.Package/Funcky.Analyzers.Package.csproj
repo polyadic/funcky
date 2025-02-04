@@ -25,6 +25,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+        <None Update="buildTransitive\$(PackageId).targets" Pack="true" PackagePath="%(Identity)" />
     </ItemGroup>
     <!-- Adapted from https://github.com/dotnet/runtime/blob/4bd597ffde128555b4ff017e87c60adc2fedd178/eng/packaging.targets#L136 -->
     <PropertyGroup>
