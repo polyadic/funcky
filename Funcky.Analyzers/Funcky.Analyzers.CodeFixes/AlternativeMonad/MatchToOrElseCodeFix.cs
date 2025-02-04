@@ -26,8 +26,7 @@ public sealed class MatchToOrElseCodeFix : CodeFixProvider
         foreach (var diagnostic in context.Diagnostics)
         {
             if (syntaxRoot?.FindInvocationExpression(context.Span) is { Expression: MemberAccessExpressionSyntax memberAccessExpression } invocation
-                && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var errorStateArgumentIndexString)
-                && int.TryParse(errorStateArgumentIndexString, out var noneArgumentIndex))
+                && diagnostic.TryGetIntProperty(PreservedArgumentIndexProperty, out var noneArgumentIndex))
             {
                 context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex, DiagnosticIdToMethodName(diagnostic.Id)), diagnostic);
             }

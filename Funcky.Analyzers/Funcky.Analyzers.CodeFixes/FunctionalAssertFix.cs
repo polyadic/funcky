@@ -26,10 +26,8 @@ public sealed class FunctionalAssertFix : CodeFixProvider
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                if (diagnostic.Properties.TryGetValue(ExpectedArgumentIndex, out var expectedArgumentIndexString)
-                    && int.TryParse(expectedArgumentIndexString, out var expectedArgumentIndex)
-                    && diagnostic.Properties.TryGetValue(ActualArgumentIndex, out var actualArgumentIndexString)
-                    && int.TryParse(actualArgumentIndexString, out var actualArgumentIndex)
+                if (diagnostic.TryGetIntProperty(ExpectedArgumentIndex, out var expectedArgumentIndex)
+                    && diagnostic.TryGetIntProperty(ActualArgumentIndex, out var actualArgumentIndex)
                     && root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invocationSyntax
                     && invocationSyntax.ArgumentList.Arguments[expectedArgumentIndex] is var expectedArgumentSyntax
                     && invocationSyntax.ArgumentList.Arguments[actualArgumentIndex] is var actualArgumentSyntax
