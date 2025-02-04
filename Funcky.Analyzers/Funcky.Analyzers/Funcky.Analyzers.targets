@@ -5,7 +5,6 @@
 		<IsPackable>false</IsPackable>
 		<!-- Avoid ID conflicts with the package project. -->
 		<PackageId>*$(MSBuildProjectFile)*</PackageId>
-		<AssemblyName>Funcky.Analyzers</AssemblyName>
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
@@ -13,13 +12,18 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	</PropertyGroup>
 	<PropertyGroup>
+		<!-- These are properties that are usually default to the project name, but since
+		     we have a project per roslyn version, we need to be explicit. -->
+		<AssemblyName>Funcky.Analyzers</AssemblyName>
+		<RootNamespace>Funcky.Analyzers</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
 		<AnalyzerLanguage>cs</AnalyzerLanguage>
-		<RoslynApiVersion Condition="'$(RoslynApiVersion)' == '' And '$(AnalyzerRoslynVersion)' != ''">$(AnalyzerRoslynVersion)</RoslynApiVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="PolySharp" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(RoslynApiVersion)" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">

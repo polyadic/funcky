@@ -2,20 +2,23 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<IsPackable>false</IsPackable>
-		<RootNamespace>Funcky.Analyzers</RootNamespace>
-		<AssemblyName>Funcky.Analyzers.CodeFixes</AssemblyName>
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<AnalysisLevel>5</AnalysisLevel>
 	</PropertyGroup>
 	<PropertyGroup>
+		<!-- These are properties that are usually default to the project name, but since
+		     we have a project per roslyn version, we need to be explicit. -->
+		<AssemblyName>Funcky.Analyzers.CodeFixes</AssemblyName>
+		<RootNamespace>Funcky.Analyzers</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
 		<AnalyzerLanguage>cs</AnalyzerLanguage>
-		<RoslynApiVersion Condition="'$(RoslynApiVersion)' == '' And '$(AnalyzerRoslynVersion)' != ''">$(AnalyzerRoslynVersion)</RoslynApiVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="PolySharp" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="$(RoslynApiVersion)" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="CodeFixResources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="CodeFixResources.resx" />

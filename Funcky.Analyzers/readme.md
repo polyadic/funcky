@@ -22,14 +22,29 @@ This means that we ship multiple copies of the analyzer assembly in the followin
 ```
 ╰─ analyzers
    ╰─ dotnet
-      ├─ cs
-      │  ├─ Funcky.Analyzers.dll
-      │  ╰─ ...
+      ├─ roslyn4.0
+      │   ╰─ cs
+      │      ├─ Funcky.Analyzers.dll
+      │      ╰─ ...
       ╰─ roslyn4.12
          ╰─ cs
             ├─ Funcky.Analyzers.dll
             ╰─ ...
 ```
+
+From the different versions, the highest compatible version is picked.
+
+### Remarks
+* SDKs that don't support multi-targeting load analyzers recursively,
+  even inside the "versioned" `roslyn*` directories.
+    * The `System.Text.Json` package fixes this by shipping a `.targets` file with their packages that
+      catches this case by checking for the `SupportsRoslynComponentVersioning` property
+      and manually removing discovered analyzers that are incompatible.
+    * Our analyzers require at least Roslyn 4.0 / .NET 6.0 (which is the version that introduced multi-targeting)
+      so we fix this by shipping a `.targets` file that removes all our analyzers and warns the user.
+* SDKs versions that support multi-targeting also load analyzers
+  that are not in a `roslyn*` directory, so to avoid loading analyzers twice
+  all analyzers need to be inside a `roslyn*` directory.
 
 ## Roslyn Version Compatibility
 There are three documents that help figure out what version of Roslyn to target:
