@@ -10,6 +10,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <RootNamespace>Funcky</RootNamespace>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
     </PropertyGroup>
     <PropertyGroup>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -30,6 +31,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
+        <None Include="package.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />

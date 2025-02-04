@@ -10,6 +10,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <RootNamespace>Funcky</RootNamespace>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
     </PropertyGroup>
     <PropertyGroup>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -28,6 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="build\$(PackageId).targets" Pack="true" PackagePath="build\" />
+        <None Include="package.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="PolySharp" PrivateAssets="all" />

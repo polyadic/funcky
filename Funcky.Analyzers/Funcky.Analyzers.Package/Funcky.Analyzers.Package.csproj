@@ -17,6 +17,7 @@
         <PackageTags>funcky, analyzers, roslyn</PackageTags>
         <DevelopmentDependency>true</DevelopmentDependency>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" PackAsAnalyzer="true" />
@@ -25,6 +26,7 @@
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.Roslyn4.0.csproj" PackAsAnalyzer="true" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="package.md" Pack="true" PackagePath="\" />
         <None Include="..\..\Artwork\logo-red-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
     </ItemGroup>
     <ItemGroup>
