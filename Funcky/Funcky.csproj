@@ -10,6 +10,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -55,6 +56,9 @@
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />

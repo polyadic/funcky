@@ -16,12 +16,16 @@
         <Description>Analyzers to guide to the correct usage of Funcky.</Description>
         <PackageTags>funcky, analyzers, roslyn</PackageTags>
         <DevelopmentDependency>true</DevelopmentDependency>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.Roslyn4.0.csproj" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.Roslyn4.0.csproj" PackAsAnalyzer="true" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\Artwork\logo-red-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
     </ItemGroup>
     <ItemGroup>
         <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />

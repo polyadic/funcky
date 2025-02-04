@@ -9,6 +9,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <RootNamespace>Funcky</RootNamespace>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     <PropertyGroup>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -37,6 +38,9 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../Funcky/Funcky.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
