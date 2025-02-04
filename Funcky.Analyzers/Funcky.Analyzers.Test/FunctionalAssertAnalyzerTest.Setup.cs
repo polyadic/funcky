@@ -37,6 +37,8 @@ public sealed partial class FunctionalAssertAnalyzerTest
             {
                 [Funcky.CodeAnalysis.AssertMethodHasOverloadWithExpectedValueAttribute]
                 public static T Some<T>(Option<T> option) => throw null!;
+
+                public static T Some<T>(T expected, Option<T> option) => throw null!;
             }
         }
         """;

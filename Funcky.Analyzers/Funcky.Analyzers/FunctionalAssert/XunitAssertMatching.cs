@@ -7,9 +7,14 @@ namespace Funcky.Analyzers.FunctionalAssert;
 
 internal sealed class XunitAssertMatching
 {
-    public static bool MatchGenericAssertEqualInvocation(IInvocationOperation invocation, [NotNullWhen(true)] out IArgumentOperation? actualArgument)
+    public static bool MatchGenericAssertEqualInvocation(
+        IInvocationOperation invocation,
+        [NotNullWhen(true)] out IArgumentOperation? expectedArgument,
+        [NotNullWhen(true)] out IArgumentOperation? actualArgument)
     {
-        const int actualArgumentIndex = 1;
+        const int expectedParameterIndex = 0;
+        const int actualParameterIndex = 1;
+        expectedArgument = null;
         actualArgument = null;
         return invocation.TargetMethod.Name == XunitAssert.EqualMethodName
            && invocation.SemanticModel?.Compilation.GetXunitAssertType() is { } assertType
@@ -18,6 +23,7 @@ internal sealed class XunitAssertMatching
            && invocation.TargetMethod.OriginalDefinition.Parameters is [var firstParameter, var secondParameter]
            && SymbolEqualityComparer.Default.Equals(firstParameter.Type, typeParameter)
            && SymbolEqualityComparer.Default.Equals(secondParameter.Type, typeParameter)
-           && (actualArgument = invocation.GetArgumentForParameterAtIndex(actualArgumentIndex)) is var _;
+           && (expectedArgument = invocation.GetArgumentForParameterAtIndex(expectedParameterIndex)) is var _
+           && (actualArgument = invocation.GetArgumentForParameterAtIndex(actualParameterIndex)) is var _;
     }
 }

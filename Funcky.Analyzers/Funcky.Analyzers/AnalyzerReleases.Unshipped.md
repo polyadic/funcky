@@ -4,3 +4,4 @@
 ### New Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
+λ1101 | Funcky | Warning | FunctionalAssertAnalyzer
