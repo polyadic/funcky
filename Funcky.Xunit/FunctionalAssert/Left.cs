@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Funcky.CodeAnalysis;
 using Xunit.Sdk;
 using static Xunit.Sdk.ArgumentFormatter;
 
@@ -41,6 +42,7 @@ public static partial class FunctionalAssert
     /// <summary>Asserts that the given <paramref name="either"/> is <c>Left</c>.</summary>
     /// <exception cref="XunitException">Thrown when <paramref name="either"/> is <c>Right</c>.</exception>
     /// <returns>Returns the value in <paramref name="either"/> if it was <c>Left</c>.</returns>
+    [AssertMethodHasOverloadWithExpectedValue]
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #else
