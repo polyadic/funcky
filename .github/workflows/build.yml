@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ main, funcky3 ]
+    branches: [ main, release/** ]
   pull_request:
-    branches: [ main, funcky3 ]
+    branches: [ main, release/** ]
 
 env:
   DOTNET_NOLOGO: 1
@@ -68,7 +68,7 @@ jobs:
     - name: Generate NuGet Packages
       run: dotnet pack --output nupkg
     - uses: actions/upload-artifact@v4
-      if: success() && github.ref == 'refs/heads/main'
+      if: success() && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))
       with:
         name: nupkg
         path: nupkg/*
