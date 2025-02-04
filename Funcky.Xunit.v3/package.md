@@ -52,7 +52,7 @@ FunctionalAssert.Left("failure", left);
 [MemberData(nameof(OptionValues))]
 public void Example(Option<int> option) { /* ... */ }
 
-public static TheoryData<int> OptionValues()
+public static TheoryData<Option<int>> OptionValues()
    => [
        Option<int>.None,
        Option.Some(10),
