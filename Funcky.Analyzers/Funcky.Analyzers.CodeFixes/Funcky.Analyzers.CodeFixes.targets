@@ -1,0 +1,25 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<RootNamespace>Funcky.Analyzers</RootNamespace>
+		<AssemblyName>Funcky.Analyzers.CodeFixes</AssemblyName>
+		<LangVersion>preview</LangVersion>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<AnalysisLevel>5</AnalysisLevel>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
+		<RoslynApiVersion Condition="'$(RoslynApiVersion)' == '' And '$(AnalyzerRoslynVersion)' != ''">$(AnalyzerRoslynVersion)</RoslynApiVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="PolySharp" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="$(RoslynApiVersion)" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="CodeFixResources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="CodeFixResources.resx" />
+		<EmbeddedResource Update="CodeFixResources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="CodeFixResources.Designer.cs" />
+	</ItemGroup>
+	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />
+</Project>

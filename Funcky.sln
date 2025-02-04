@@ -26,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Config", "Build Confi
 		GlobalUsings.props = GlobalUsings.props
 		GlobalUsings.Test.props = GlobalUsings.Test.props
 		NuGet.config = NuGet.config
-		SemanticVersioning.targets = SemanticVersioning.targets
 		typos.toml = typos.toml
 	EndProjectSection
 EndProject
@@ -35,6 +34,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Xunit.Test", "Funcky.Xunit.Test\Funcky.Xunit.Test.csproj", "{C2400B4E-63DD-475E-BF7B-5D5079601F51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{BBE35279-7416-4B9D-B89D-B6D1FF369681}"
+	ProjectSection(SolutionItems) = preProject
+		Funcky.Analyzers\readme.md = Funcky.Analyzers\readme.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funcky.Analyzers", "Funcky.Analyzers\Funcky.Analyzers\Funcky.Analyzers.csproj", "{38795B14-3E1A-4491-AEA0-173A73CE9E3A}"
 EndProject

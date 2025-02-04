@@ -20,10 +20,10 @@ jobs:
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v2
         with:
-          mdbook-version: '0.4.2'
+          mdbook-version: '0.4.44'
       - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '22'
       - run: yarn install
         working-directory: ./Documentation
       - name: Build Marble Graphics
