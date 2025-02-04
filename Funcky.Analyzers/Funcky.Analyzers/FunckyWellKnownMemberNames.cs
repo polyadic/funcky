@@ -38,4 +38,9 @@ public static class FunckyWellKnownMemberNames
 
     /// <summary>The <c>ToNullable</c> method on alternative monad types.</summary>
     public const string ToNullableMethodName = "ToNullable";
+
+    public static class XunitAssert
+    {
+        public const string EqualMethodName = "Equal";
+    }
 }
