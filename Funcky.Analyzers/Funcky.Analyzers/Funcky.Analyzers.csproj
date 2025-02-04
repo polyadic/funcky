@@ -10,6 +10,7 @@
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <AnalysisLevel>5</AnalysisLevel>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
     <ItemGroup>
