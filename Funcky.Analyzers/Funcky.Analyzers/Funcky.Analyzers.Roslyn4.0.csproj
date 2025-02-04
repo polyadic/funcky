@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <RoslynApiVersion>4.0.1</RoslynApiVersion>
+        <AnalyzerRoslynVersion>4.0.1</AnalyzerRoslynVersion>
     </PropertyGroup>
     <Import Project="Funcky.Analyzers.targets" />
 </Project>

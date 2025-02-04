@@ -7,6 +7,9 @@
 	<Target Name="GetAnalyzerPackFiles"
 			DependsOnTargets="$(GenerateNuspecDependsOn)"
 			Returns="@(_AnalyzerPackFile)">
+		<Error Text="Project is missing the 'AnalyzerRoslynVersion' property" Condition="'$(AnalyzerRoslynVersion)' == ''" />
+		<Error Text="Project is missing the 'AnalyzerLanguage' property" Condition="'$(AnalyzerLanguage)' == ''" />
+
 		<PropertyGroup>
 			<_analyzerPath>analyzers/dotnet</_analyzerPath>
 			<_analyzerRoslynVersion Condition="'$(AnalyzerRoslynVersion)' != ''">$([System.Version]::Parse($(AnalyzerRoslynVersion)).Major).$([System.Version]::Parse($(AnalyzerRoslynVersion)).Minor)</_analyzerRoslynVersion>

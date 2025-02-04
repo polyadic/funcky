@@ -19,12 +19,11 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<AnalyzerLanguage>cs</AnalyzerLanguage>
-		<RoslynApiVersion Condition="'$(RoslynApiVersion)' == '' And '$(AnalyzerRoslynVersion)' != ''">$(AnalyzerRoslynVersion)</RoslynApiVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="PolySharp" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(RoslynApiVersion)" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">
