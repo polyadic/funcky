@@ -1,5 +1,6 @@
+using System.ComponentModel;
 using System.Diagnostics;
-using static System.Diagnostics.DebuggerBrowsableState;
+using Funcky.CodeAnalysis;
 
 namespace Funcky.Monads;
 
@@ -10,14 +11,18 @@ public readonly partial struct Option<TItem>
     private const int SomeLength = 1;
 
     [Pure]
-    [DebuggerBrowsable(Never)]
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [SyntaxSupportOnly(SyntaxSupportOnlyAttribute.ListPattern)]
     public int Count
         => _hasItem
             ? SomeLength
             : NoneLength;
 
     [Pure]
-    [DebuggerBrowsable(Never)]
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [SyntaxSupportOnly(SyntaxSupportOnlyAttribute.ListPattern)]
     public TItem this[int index]
         => _hasItem && index is 0
             ? _item

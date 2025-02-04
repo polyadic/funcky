@@ -7,6 +7,7 @@
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
         <!-- We use 2.7.0 for compatibility with VS 2019 and .NET Core SDK 3.x.
              See https://docs.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support for VS compatibility.-->
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="3.7.0" />
