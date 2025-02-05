@@ -30,7 +30,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
 
     internal static bool IsParameterlessObjectCreationOfNonDefaultableStruct(IObjectCreationOperation operation, INamedTypeSymbol nonDefaultableAttribute)
         => operation is { Type: { } type, Arguments.Length: 0, Initializer: null }
-            && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute));
+            && type.HasAttribute(nonDefaultableAttribute);
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
@@ -45,7 +45,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         => context =>
         {
             var operation = (IDefaultValueOperation)context.Operation;
-            if (operation.Type is { } type && type.GetAttributes().Any(IsAttribute(nonDefaultableAttribute)))
+            if (operation.Type is { } type && type.HasAttribute(nonDefaultableAttribute))
             {
                 ReportDiagnostic(context);
             }
@@ -66,7 +66,4 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
             DoNotUseDefault,
             context.Operation.Syntax.GetLocation(),
             messageArgs: context.Operation.Type?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)));
-
-    private static Func<AttributeData, bool> IsAttribute(INamedTypeSymbol attributeClass)
-        => attribute => SymbolEquals(attribute.AttributeClass, attributeClass);
 }
