@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.NonDefaultable;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
