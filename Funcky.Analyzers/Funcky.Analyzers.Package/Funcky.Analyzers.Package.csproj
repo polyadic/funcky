@@ -12,7 +12,7 @@
     </PropertyGroup>
     <PropertyGroup Label="NuGet Metadata">
         <PackageId>Funcky.Analyzers</PackageId>
-        <PackageVersionPrefix>1.4.0</PackageVersionPrefix>
+        <PackageVersionPrefix>1.4.1</PackageVersionPrefix>
         <Description>Analyzers to guide to the correct usage of Funcky.</Description>
         <PackageTags>funcky, analyzers, roslyn</PackageTags>
         <DevelopmentDependency>true</DevelopmentDependency>
