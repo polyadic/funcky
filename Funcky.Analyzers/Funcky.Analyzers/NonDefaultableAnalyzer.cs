@@ -68,5 +68,5 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
             messageArgs: context.Operation.Type?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)));
 
     private static Func<AttributeData, bool> IsAttribute(INamedTypeSymbol attributeClass)
-        => attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeClass);
+        => attribute => SymbolEquals(attribute.AttributeClass, attributeClass);
 }

@@ -12,7 +12,7 @@ public sealed class FunctionalAssertMatching
             && invocation.Arguments.Length == 1;
 
     private static Func<AttributeData, bool> IsAttribute(INamedTypeSymbol attributeType)
-        => data => SymbolEqualityComparer.Default.Equals(data.AttributeClass, attributeType);
+        => data => SymbolEquals(data.AttributeClass, attributeType);
 }
 
 public sealed record AssertMethodHasOverloadWithExpectedValueAttributeType(INamedTypeSymbol Value);

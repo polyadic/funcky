@@ -29,13 +29,13 @@ public partial class AlternativeMonadAnalyzer
 
         bool IsToNullableReferenceType()
             => itemType.IsReferenceType
-                && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
+                && SymbolEquals(receiverType.TypeArguments.Single(), matchInvocation.Type)
                 && IsNullOrNullFunction(noneArgument.Value)
                 && IsIdentityFunction(someArgument.Value);
 
         bool IsToNullableValueType()
             => itemType.IsValueType
-                && SymbolEqualityComparer.Default.Equals(matchInvocation.SemanticModel?.NullableOfT(itemType), matchInvocation.Type)
+                && SymbolEquals(matchInvocation.SemanticModel?.NullableOfT(itemType), matchInvocation.Type)
                 && IsNullOrNullFunction(noneArgument.Value)
                 && IsIdentityFunctionWithNullConversion(someArgument.Value);
 

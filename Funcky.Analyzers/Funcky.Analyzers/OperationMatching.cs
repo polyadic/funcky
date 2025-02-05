@@ -10,8 +10,7 @@ internal static class OperationMatching
         IInvocationOperation operation,
         INamedTypeSymbol type,
         string methodName)
-        => SymbolEqualityComparer.Default.Equals(operation.TargetMethod.ContainingType, type)
-            && operation.TargetMethod.Name == methodName;
+        => SymbolEquals(operation.TargetMethod.ContainingType, type) && operation.TargetMethod.Name == methodName;
 
     public static bool MatchArguments(
         IInvocationOperation operation,
@@ -33,8 +32,7 @@ internal static class OperationMatching
         IFieldReferenceOperation operation,
         INamedTypeSymbol type,
         string fieldName)
-        => SymbolEqualityComparer.Default.Equals(operation.Type, type)
-           && operation.Field.Name == fieldName;
+        => SymbolEquals(operation.Type, type) && operation.Field.Name == fieldName;
 
     public static bool AnyArgument(IArgumentOperation operation) => true;
 

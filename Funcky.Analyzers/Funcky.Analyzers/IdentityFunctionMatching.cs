@@ -20,16 +20,16 @@ internal static class IdentityFunctionMatching
         => operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
            && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
            && returnOperation.ReturnedValue is IConversionOperation { Conversion.IsNullable: true, Operand: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }
-           && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+           && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsAnonymousIdentityFunction(IAnonymousFunctionOperation anonymousFunction)
         => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
             && returnOperation.ReturnedValue is IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }
-            && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+            && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsFunckyIdentityFunction(IMethodReferenceOperation methodReference)
         => methodReference.Method.Name == IdentityMethodName
-            && SymbolEqualityComparer.Default.Equals(
+            && SymbolEquals(
                 methodReference.Method.ContainingType,
                 methodReference.SemanticModel?.Compilation.GetFunctionalType());
 }

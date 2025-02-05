@@ -18,8 +18,8 @@ public partial class AlternativeMonadAnalyzer
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
     private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation errorStateArgument, IArgumentOperation successStateArgument)
-        => SymbolEqualityComparer.IncludeNullability.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(errorStateArgument.Value))
-            && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(successStateArgument.Value))
+        => SymbolEqualsIncludeNullability(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(errorStateArgument.Value))
+            && SymbolEquals(receiverType.TypeArguments.Last(), GetTypeOrDelegateReturnType(successStateArgument.Value))
             && IsIdentityFunction(successStateArgument.Value);
 
     private static ITypeSymbol? GetTypeOrDelegateReturnType(IOperation operation)

@@ -32,7 +32,7 @@ internal static partial class SyntaxNodeExtensions
     private static bool LambdaIsExpressionTree(IsExpressionTreeContext context)
     {
         var typeInfo = context.SemanticModel.GetTypeInfo(context.Syntax, context.CancellationToken);
-        return SymbolEqualityComparer.Default.Equals(context.ExpressionType, typeInfo.ConvertedType?.OriginalDefinition);
+        return SymbolEquals(context.ExpressionType, typeInfo.ConvertedType?.OriginalDefinition);
     }
 
     private static bool QueryExpressionIsExpressionTree(IsExpressionTreeContext context)
@@ -53,7 +53,7 @@ internal static partial class SyntaxNodeExtensions
 
     private static bool TakesExpressionTreeAsFirstArgument(ISymbol symbol, INamedTypeSymbol expressionType)
         => symbol is IMethodSymbol { Parameters: [var firstParameter, ..] }
-           && SymbolEqualityComparer.Default.Equals(expressionType, firstParameter.Type.OriginalDefinition);
+            && SymbolEquals(expressionType, firstParameter.Type.OriginalDefinition);
 
     private sealed record IsExpressionTreeContext(
         SyntaxNode Syntax,

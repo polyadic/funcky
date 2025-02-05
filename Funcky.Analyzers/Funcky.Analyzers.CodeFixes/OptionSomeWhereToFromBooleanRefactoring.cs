@@ -52,7 +52,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     {
         whereInvocation = null;
         return semanticModel.GetOperation(syntax) is IInvocationOperation { TargetMethod.Name: WhereMethodName } operation
-               && SymbolEqualityComparer.Default.Equals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
+               && SymbolEquals(symbols.GenericOptionType, operation.TargetMethod.ContainingType.ConstructedFrom)
                && (whereInvocation = operation) is var _;
     }
 
@@ -60,7 +60,7 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     {
         returnInvocationOperation = null;
         return candidate is IInvocationOperation { TargetMethod.Name: MonadReturnMethodName or OptionSomeMethodName } operation
-               && SymbolEqualityComparer.Default.Equals(symbols.OptionType, operation.TargetMethod.ContainingType)
+               && SymbolEquals(symbols.OptionType, operation.TargetMethod.ContainingType)
                && (returnInvocationOperation = operation) is var _;
     }
 

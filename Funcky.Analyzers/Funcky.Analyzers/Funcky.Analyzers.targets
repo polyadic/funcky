@@ -26,6 +26,9 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
+		<Using Include="Funcky.Analyzers.SymbolEqualityFunctions" Static="true" />
+	</ItemGroup>
+	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
