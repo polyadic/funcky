@@ -8,6 +8,8 @@
         <VersionPrefix>1.4.1</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
     </PropertyGroup>
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -48,6 +50,10 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
+        <None Include="package.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
