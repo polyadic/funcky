@@ -15,7 +15,7 @@ internal static class ConstantFunctionMatching
         };
 
     private static bool IsConstantFunction(IAnonymousFunctionOperation anonymousFunction, object? expectedValue)
-        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
             && returnOperation.ReturnedValue is { ConstantValue: { HasValue: true, Value: var returnedValue } }
             && returnedValue == expectedValue;
 }

@@ -23,13 +23,13 @@ internal static class MonadReturnMatching
                 || SymbolEquals(methodType.ConstructedFrom, alternativeMonadType.ConstructorsType));
 
     private static bool IsReturnFunction(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)
-        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
            && returnOperation is { ReturnedValue: IInvocationOperation { Arguments: [{ Value: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }] } returnedValue }
            && IsReturn(alternativeMonadType, returnedValue.TargetMethod)
            && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsImplicitReturn(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)
-        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
             && returnOperation is { ReturnedValue: IConversionOperation { IsImplicit: true, Operand: IParameterReferenceOperation, Type: var conversionType } }
             && SymbolEquals(conversionType?.OriginalDefinition, alternativeMonadType.Type);
 }

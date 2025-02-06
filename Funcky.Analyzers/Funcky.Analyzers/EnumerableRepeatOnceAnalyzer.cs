@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -45,23 +44,17 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
         => context =>
         {
             var operation = (IInvocationOperation)context.Operation;
-            if (MatchRepeatOnce(operation, enumerableType, out var valueArgument))
+            if (MatchRepeatOnce(operation, enumerableType) is [var valueArgument])
             {
                 context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
             }
         };
 
-    private static bool MatchRepeatOnce(
-        IInvocationOperation operation,
-        INamedTypeSymbol enumerableType,
-        [NotNullWhen(true)] out IArgumentOperation? valueArgument)
-    {
-        valueArgument = null;
-        return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
-            && operation.GetArgumentsInParameterOrder() is [var valueArgument_, var countArgument]
+    private static Option<IArgumentOperation> MatchRepeatOnce(IInvocationOperation operation, INamedTypeSymbol enumerableType)
+        => MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+            && operation.GetArgumentsInParameterOrder() is [var valueArgument, var countArgument]
             && MatchConstantArgument(countArgument, 1)
-            && (valueArgument = valueArgument_) is var _;
-    }
+                ? [valueArgument] : [];
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
         => Diagnostic.Create(

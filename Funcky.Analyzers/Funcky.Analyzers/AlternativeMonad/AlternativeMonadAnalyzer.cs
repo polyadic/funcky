@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -35,73 +34,68 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     {
         var operation = (IInvocationOperation)context.Operation;
 
-        if (IsMatchInvocation(operation, alternativeMonadTypes, out var receiverType, out var alternativeMonad, out var errorStateArgument, out var successStateArgument)
-            && AnalyzeMatchInvocation(operation, alternativeMonad, receiverType, errorStateArgument, successStateArgument) is { } diagnostic)
+        if (MatchMatchInvocation(operation, alternativeMonadTypes) is [var matchInvocation]
+            && AnalyzeMatchInvocation(operation, matchInvocation) is { } diagnostic)
         {
             context.ReportDiagnostic(diagnostic);
         }
     }
 
-    private static bool IsMatchInvocation(
-        IInvocationOperation invocation,
-        AlternativeMonadTypeCollection alternativeMonadTypes,
-        [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType,
-        [NotNullWhen(true)] out AlternativeMonadType? alternativeMonadType,
-        [NotNullWhen(true)] out IArgumentOperation? errorStateArgument,
-        [NotNullWhen(true)] out IArgumentOperation? successStateArgument)
-    {
-        matchReceiverType = null;
-        alternativeMonadType = null;
-        errorStateArgument = null;
-        successStateArgument = null;
-        var arguments = invocation.GetArgumentsInParameterOrder();
-        return invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
-               && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
-               && arguments.Length == 2
-               && (errorStateArgument = arguments[alternativeMonadType.ErrorStateArgumentIndex]) is var _
-               && (successStateArgument = arguments[alternativeMonadType.SuccessStateArgumentIndex]) is var _
-               && (matchReceiverType = receiverType) is var _;
-    }
+    private static Option<MatchInvocation> MatchMatchInvocation(IInvocationOperation invocation, AlternativeMonadTypeCollection alternativeMonadTypes)
+        => invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
+            && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out var alternativeMonadType)
+            && invocation.GetArgumentsInParameterOrder() is { Length: 2 } arguments
+                ? [new MatchInvocation(
+                    receiverType,
+                    alternativeMonadType,
+                    arguments[alternativeMonadType.ErrorStateArgumentIndex],
+                    arguments[alternativeMonadType.SuccessStateArgumentIndex])]
+                : [];
 
     private static Diagnostic? AnalyzeMatchInvocation(
-        IInvocationOperation matchInvocation,
-        AlternativeMonadType alternativeMonadType,
-        INamedTypeSymbol receiverType,
-        IArgumentOperation errorStateArgument,
-        IArgumentOperation successStateArgument)
+        IInvocationOperation operation,
+        MatchInvocation match)
     {
-        if (alternativeMonadType.HasToNullable && IsToNullableEquivalent(matchInvocation, receiverType, errorStateArgument, successStateArgument))
+        var alternativeMonadType = match.AlternativeMonadType;
+
+        if (alternativeMonadType.HasToNullable && IsToNullableEquivalent(operation, match.Receiver, match.ErrorState, match.SuccessState))
         {
-            return Diagnostic.Create(PreferToNullable, matchInvocation.Syntax.GetLocation());
+            return Diagnostic.Create(PreferToNullable, operation.Syntax.GetLocation());
         }
 
-        if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(receiverType, errorStateArgument, successStateArgument))
+        if (alternativeMonadType.HasGetOrElse && IsGetOrElseEquivalent(match.Receiver, match.ErrorState, match.SuccessState))
         {
-            var errorStateArgumentIndex = matchInvocation.Arguments.IndexOf(errorStateArgument);
+            var errorStateArgumentIndex = operation.Arguments.IndexOf(match.ErrorState);
             return Diagnostic.Create(
                 PreferGetOrElse,
-                matchInvocation.Syntax.GetLocation(),
+                operation.Syntax.GetLocation(),
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, errorStateArgumentIndex.ToString()));
         }
 
-        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(alternativeMonadType, matchInvocation, receiverType, successStateArgument))
+        if (alternativeMonadType.HasOrElse && IsOrElseEquivalent(alternativeMonadType, operation, match.Receiver, match.SuccessState))
         {
-            var errorStateArgumentIndex = matchInvocation.Arguments.IndexOf(errorStateArgument);
+            var errorStateArgumentIndex = operation.Arguments.IndexOf(match.ErrorState);
             return Diagnostic.Create(
                 PreferOrElse,
-                matchInvocation.Syntax.GetLocation(),
+                operation.Syntax.GetLocation(),
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, errorStateArgumentIndex.ToString()));
         }
 
-        if (IsSelectManyEquivalent(alternativeMonadType, matchInvocation, receiverType, errorStateArgument))
+        if (IsSelectManyEquivalent(alternativeMonadType, operation, match.Receiver, match.ErrorState))
         {
-            var successStateArgumentIndex = matchInvocation.Arguments.IndexOf(successStateArgument);
+            var successStateArgumentIndex = operation.Arguments.IndexOf(match.SuccessState);
             return Diagnostic.Create(
                 PreferSelectMany,
-                matchInvocation.Syntax.GetLocation(),
+                operation.Syntax.GetLocation(),
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, successStateArgumentIndex.ToString()));
         }
 
         return null;
     }
+
+    private sealed record MatchInvocation(
+        INamedTypeSymbol Receiver,
+        AlternativeMonadType AlternativeMonadType,
+        IArgumentOperation ErrorState,
+        IArgumentOperation SuccessState);
 }

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
 namespace Funcky.Analyzers.Functions;
@@ -6,19 +5,14 @@ namespace Funcky.Analyzers.Functions;
 internal static class AnonymousFunctionMatching
 {
     /// <summary>Matches an anonymous function of the shape <c>(x) => y</c>.</summary>
-    public static bool MatchAnonymousUnaryFunctionWithSingleReturn(
-        IAnonymousFunctionOperation anonymousFunction,
-        [NotNullWhen(true)] out IReturnOperation? returnOperation)
-        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction, out returnOperation)
-            && anonymousFunction.Symbol.Parameters is [_];
+    public static Option<IReturnOperation> MatchAnonymousUnaryFunctionWithSingleReturn(
+        IAnonymousFunctionOperation anonymousFunction)
+        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
+            && anonymousFunction.Symbol.Parameters is [_]
+                ? [returnOperation] : [];
 
     /// <summary>Matches an anonymous function of the shape <c>(...) => y</c>.</summary>
-    public static bool MatchAnonymousFunctionWithSingleReturn(
-        IAnonymousFunctionOperation anonymousFunction,
-        [NotNullWhen(true)] out IReturnOperation? functionReturnOperation)
-    {
-        functionReturnOperation = null;
-        return anonymousFunction.Body.Operations is [IReturnOperation returnOperation]
-               && (functionReturnOperation = returnOperation) is var _;
-    }
+    public static Option<IReturnOperation> MatchAnonymousFunctionWithSingleReturn(IAnonymousFunctionOperation anonymousFunction)
+        => anonymousFunction.Body.Operations is [IReturnOperation returnOperation]
+            ? [returnOperation] : [];
 }
