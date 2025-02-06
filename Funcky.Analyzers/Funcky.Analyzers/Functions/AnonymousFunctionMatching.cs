@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.Functions;
 
 internal static class AnonymousFunctionMatching
 {

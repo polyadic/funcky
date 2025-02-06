@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.ConstantFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
-using static Funcky.Analyzers.IdentityFunctionMatching;
+using static Funcky.Analyzers.Functions.ConstantFunctionMatching;
+using static Funcky.Analyzers.Functions.IdentityFunctionMatching;
 
 namespace Funcky.Analyzers.AlternativeMonad;
 

@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
+using static Funcky.Analyzers.Functions.AnonymousFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.Functions;
 
 internal static class ConstantFunctionMatching
 {

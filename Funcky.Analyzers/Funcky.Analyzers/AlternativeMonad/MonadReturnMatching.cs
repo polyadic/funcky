@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
+using static Funcky.Analyzers.Functions.AnonymousFunctionMatching;
 
 namespace Funcky.Analyzers.AlternativeMonad;
 
