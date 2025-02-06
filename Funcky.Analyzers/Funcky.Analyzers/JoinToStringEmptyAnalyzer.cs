@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -58,12 +59,14 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         valueArgument = null;
         stringArgument = null;
         return MatchMethod(operation, symbols.EnumerableType, JoinToString)
-               && MatchArguments(operation, out valueArgument, AnyArgument, out stringArgument, IsEmptyString(symbols.StringType));
+            && operation.GetArgumentsInParameterOrder() is [var valueArgument_, var stringArgument_]
+            && IsEmptyString(stringArgument_, symbols.StringType)
+            && (stringArgument = stringArgument_) is var _
+            && (valueArgument = valueArgument_) is var _;
     }
 
-    private static Func<IArgumentOperation, bool> IsEmptyString(INamedTypeSymbol stringType)
-        => argument
-            => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);
+    private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
+        => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);
 
     private static bool IsStringEmptyField(INamedTypeSymbol stringType, IArgumentOperation argument)
         => argument.Value is IFieldReferenceOperation fieldReferenceOperation && MatchField(fieldReferenceOperation, stringType, nameof(string.Empty));

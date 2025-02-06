@@ -35,13 +35,8 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     {
         var operation = (IInvocationOperation)context.Operation;
 
-        if (IsMatchInvocation(operation, alternativeMonadTypes, out var receiverType, out var alternativeMonad)
-            && AnalyzeMatchInvocation(
-                operation,
-                alternativeMonad,
-                receiverType,
-                errorStateArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.ErrorStateArgumentIndex),
-                successStateArgument: operation.GetArgumentForParameterAtIndex(alternativeMonad.SuccessStateArgumentIndex)) is { } diagnostic)
+        if (IsMatchInvocation(operation, alternativeMonadTypes, out var receiverType, out var alternativeMonad, out var errorStateArgument, out var successStateArgument)
+            && AnalyzeMatchInvocation(operation, alternativeMonad, receiverType, errorStateArgument, successStateArgument) is { } diagnostic)
         {
             context.ReportDiagnostic(diagnostic);
         }
@@ -51,12 +46,20 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         IInvocationOperation invocation,
         AlternativeMonadTypeCollection alternativeMonadTypes,
         [NotNullWhen(true)] out INamedTypeSymbol? matchReceiverType,
-        [NotNullWhen(true)] out AlternativeMonadType? alternativeMonadType)
+        [NotNullWhen(true)] out AlternativeMonadType? alternativeMonadType,
+        [NotNullWhen(true)] out IArgumentOperation? errorStateArgument,
+        [NotNullWhen(true)] out IArgumentOperation? successStateArgument)
     {
         matchReceiverType = null;
         alternativeMonadType = null;
-        return invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName }, Arguments: [_, _] }
+        errorStateArgument = null;
+        successStateArgument = null;
+        var arguments = invocation.GetArgumentsInParameterOrder();
+        return invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
                && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out alternativeMonadType)
+               && arguments.Length == 2
+               && (errorStateArgument = arguments[alternativeMonadType.ErrorStateArgumentIndex]) is var _
+               && (successStateArgument = arguments[alternativeMonadType.SuccessStateArgumentIndex]) is var _
                && (matchReceiverType = receiverType) is var _;
     }
 

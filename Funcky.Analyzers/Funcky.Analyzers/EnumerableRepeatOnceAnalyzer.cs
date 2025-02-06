@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -57,7 +58,9 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
     {
         valueArgument = null;
         return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
-            && MatchArguments(operation, out valueArgument, AnyArgument,  out _, ConstantArgument(1));
+            && operation.GetArgumentsInParameterOrder() is [var valueArgument_, var countArgument]
+            && MatchConstantArgument(countArgument, 1)
+            && (valueArgument = valueArgument_) is var _;
     }
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
