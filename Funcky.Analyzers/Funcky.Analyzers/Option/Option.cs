@@ -1,4 +1,3 @@
-using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -7,7 +6,7 @@ namespace Funcky.Analyzers;
 /// <summary>A very minimal option implementation
 /// intended for use with pattern matching.</summary>
 [CollectionBuilder(typeof(Option), nameof(Option.Create))]
-internal readonly partial struct Option<TItem> : IEnumerable<TItem>
+internal readonly partial struct Option<TItem>
     where TItem : notnull
 {
     private readonly bool _hasItem;
@@ -25,15 +24,34 @@ internal readonly partial struct Option<TItem> : IEnumerable<TItem>
         _hasItem = true;
     }
 
-    IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
+    // Enumerator is required by collection expression.
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public Enumerator GetEnumerator() => new(this);
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public struct Enumerator
     {
-        if (_hasItem)
+        private readonly TItem _item;
+        private bool _hasItem;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal Enumerator(Option<TItem> option)
         {
-            yield return _item;
+            _item = option._item;
+            _hasItem = option._hasItem;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly TItem Current => _item;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool MoveNext()
+        {
+            var hasItem = _hasItem;
+            _hasItem = false;
+            return hasItem;
         }
     }
-
-    IEnumerator IEnumerable.GetEnumerator() => (this as IEnumerable<TItem>).GetEnumerator();
 }
 
 internal static class Option
