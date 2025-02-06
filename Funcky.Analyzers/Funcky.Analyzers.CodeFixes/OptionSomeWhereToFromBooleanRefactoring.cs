@@ -1,5 +1,6 @@
 using System.Composition;
 using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;

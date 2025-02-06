@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.CodeAnalysisExtensions;
 
 internal static class SymbolEqualityFunctions
 {

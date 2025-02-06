@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.CodeAnalysisExtensions;
 
 internal static class ArgumentOperationExtensions
 {

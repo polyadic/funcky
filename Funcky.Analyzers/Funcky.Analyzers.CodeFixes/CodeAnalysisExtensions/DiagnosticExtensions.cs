@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.CodeAnalysisExtensions;
 
 internal static class DiagnosticExtensions
 {

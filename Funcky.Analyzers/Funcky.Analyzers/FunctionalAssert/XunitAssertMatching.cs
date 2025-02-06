@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 

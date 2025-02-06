@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
