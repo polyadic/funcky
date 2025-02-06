@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer

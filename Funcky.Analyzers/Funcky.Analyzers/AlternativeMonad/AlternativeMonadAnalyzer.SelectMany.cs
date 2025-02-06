@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AlternativeMonadErrorStateConstructorMatching;
+using static Funcky.Analyzers.AlternativeMonad.AlternativeMonadErrorStateConstructorMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {

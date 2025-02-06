@@ -1,4 +1,4 @@
-namespace Funcky.Analyzers.Test;
+namespace Funcky.Analyzers.Test.AlternativeMonad;
 
 public sealed partial class AlternativeMonadAnalyzerTest
 {

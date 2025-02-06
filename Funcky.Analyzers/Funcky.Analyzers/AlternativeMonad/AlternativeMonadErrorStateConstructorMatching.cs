@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 internal static class AlternativeMonadErrorStateConstructorMatching
 {

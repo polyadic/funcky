@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.IdentityFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {

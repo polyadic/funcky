@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.AnonymousFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 internal static class MonadReturnMatching
 {
