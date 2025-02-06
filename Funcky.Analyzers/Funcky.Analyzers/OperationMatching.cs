@@ -7,7 +7,7 @@ internal static class OperationMatching
 {
     public static bool MatchMethod(
         IInvocationOperation operation,
-        INamedTypeSymbol type,
+        INamedTypeSymbol? type,
         string methodName)
         => SymbolEquals(operation.TargetMethod.ContainingType, type) && operation.TargetMethod.Name == methodName;
 
