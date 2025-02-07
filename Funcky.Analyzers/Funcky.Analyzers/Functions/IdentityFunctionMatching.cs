@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
+using static Funcky.Analyzers.Functions.AnonymousFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.Functions;
 
 internal static class IdentityFunctionMatching
 {
@@ -18,18 +18,18 @@ internal static class IdentityFunctionMatching
 
     public static bool IsIdentityFunctionWithNullConversion(IOperation operation)
         => operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation anonymousFunction }
-           && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+           && MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
            && returnOperation.ReturnedValue is IConversionOperation { Conversion.IsNullable: true, Operand: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }
-           && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+           && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsAnonymousIdentityFunction(IAnonymousFunctionOperation anonymousFunction)
-        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
             && returnOperation.ReturnedValue is IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol }
-            && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+            && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsFunckyIdentityFunction(IMethodReferenceOperation methodReference)
         => methodReference.Method.Name == IdentityMethodName
-            && SymbolEqualityComparer.Default.Equals(
+            && SymbolEquals(
                 methodReference.Method.ContainingType,
                 methodReference.SemanticModel?.Compilation.GetFunctionalType());
 }

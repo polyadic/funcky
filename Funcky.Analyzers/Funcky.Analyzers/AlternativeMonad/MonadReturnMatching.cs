@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
+using static Funcky.Analyzers.Functions.AnonymousFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 internal static class MonadReturnMatching
 {
@@ -19,17 +19,17 @@ internal static class MonadReturnMatching
     private static bool IsReturn(AlternativeMonadType alternativeMonadType, IMethodSymbol method)
         => method is { Name: var name, IsStatic: true, ContainingType: var methodType }
             && (name is MonadReturnMethodName || name == alternativeMonadType.ReturnAlias)
-            && (SymbolEqualityComparer.Default.Equals(methodType.ConstructedFrom, alternativeMonadType.Type)
-                || SymbolEqualityComparer.Default.Equals(methodType.ConstructedFrom, alternativeMonadType.ConstructorsType));
+            && (SymbolEquals(methodType.ConstructedFrom, alternativeMonadType.Type)
+                || SymbolEquals(methodType.ConstructedFrom, alternativeMonadType.ConstructorsType));
 
     private static bool IsReturnFunction(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)
-        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
            && returnOperation is { ReturnedValue: IInvocationOperation { Arguments: [{ Value: IParameterReferenceOperation { Parameter.ContainingSymbol: var parameterContainingSymbol } }] } returnedValue }
            && IsReturn(alternativeMonadType, returnedValue.TargetMethod)
-           && SymbolEqualityComparer.Default.Equals(parameterContainingSymbol, anonymousFunction.Symbol);
+           && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static bool IsImplicitReturn(AlternativeMonadType alternativeMonadType, IAnonymousFunctionOperation anonymousFunction)
-        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousUnaryFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
             && returnOperation is { ReturnedValue: IConversionOperation { IsImplicit: true, Operand: IParameterReferenceOperation, Type: var conversionType } }
-            && SymbolEqualityComparer.Default.Equals(conversionType?.OriginalDefinition, alternativeMonadType.Type);
+            && SymbolEquals(conversionType?.OriginalDefinition, alternativeMonadType.Type);
 }

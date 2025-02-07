@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 internal sealed class AlternativeMonadTypeCollection
 {

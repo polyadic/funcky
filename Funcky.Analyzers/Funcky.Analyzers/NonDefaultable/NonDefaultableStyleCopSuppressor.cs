@@ -2,9 +2,9 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.NonDefaultableAnalyzer;
+using static Funcky.Analyzers.NonDefaultable.NonDefaultableAnalyzer;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.NonDefaultable;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NonDefaultableStyleCopSuppressor : DiagnosticSuppressor

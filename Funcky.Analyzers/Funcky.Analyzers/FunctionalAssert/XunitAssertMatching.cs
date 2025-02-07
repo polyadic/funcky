@@ -1,29 +1,18 @@
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
+using static Funcky.Analyzers.OperationMatching;
 
 namespace Funcky.Analyzers.FunctionalAssert;
 
 internal sealed class XunitAssertMatching
 {
-    public static bool MatchGenericAssertEqualInvocation(
-        IInvocationOperation invocation,
-        [NotNullWhen(true)] out IArgumentOperation? expectedArgument,
-        [NotNullWhen(true)] out IArgumentOperation? actualArgument)
-    {
-        const int expectedParameterIndex = 0;
-        const int actualParameterIndex = 1;
-        expectedArgument = null;
-        actualArgument = null;
-        return invocation.TargetMethod.Name == XunitAssert.EqualMethodName
-           && invocation.SemanticModel?.Compilation.GetXunitAssertType() is { } assertType
-           && SymbolEqualityComparer.Default.Equals(invocation.TargetMethod.ContainingType, assertType)
-           && invocation.TargetMethod.TypeParameters is [var typeParameter]
-           && invocation.TargetMethod.OriginalDefinition.Parameters is [var firstParameter, var secondParameter]
-           && SymbolEqualityComparer.Default.Equals(firstParameter.Type, typeParameter)
-           && SymbolEqualityComparer.Default.Equals(secondParameter.Type, typeParameter)
-           && (expectedArgument = invocation.GetArgumentForParameterAtIndex(expectedParameterIndex)) is var _
-           && (actualArgument = invocation.GetArgumentForParameterAtIndex(actualParameterIndex)) is var _;
-    }
+    public static Option<(IArgumentOperation Expected, IArgumentOperation Actual)> MatchGenericAssertEqualInvocation(
+        IInvocationOperation invocation)
+        => MatchMethod(invocation, invocation.SemanticModel?.Compilation.GetXunitAssertType(), XunitAssert.EqualMethodName)
+            && invocation.TargetMethod.TypeParameters is [var typeParameter]
+            && invocation.GetArgumentsInParameterOrder() is [var expectedArgument, var actualArgument]
+            && SymbolEquals(expectedArgument.Parameter?.OriginalDefinition.Type, typeParameter)
+            && SymbolEquals(actualArgument.Parameter?.OriginalDefinition.Type, typeParameter)
+                ? [(expectedArgument, actualArgument)] : [];
 }

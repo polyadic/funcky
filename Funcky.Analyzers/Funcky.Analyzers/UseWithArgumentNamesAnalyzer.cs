@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -45,7 +46,7 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
             var invocation = (IInvocationOperation)context.Operation;
             var semanticModel = invocation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never be null for operations passed to an analyzer (according to docs)");
 
-            if (invocation.TargetMethod.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeSymbol))
+            if (invocation.TargetMethod.HasAttribute(attributeSymbol)
                 && !invocation.Syntax.IsInExpressionTree(semanticModel, expressionOfTType, context.CancellationToken))
             {
                 foreach (var argument in invocation.Arguments)

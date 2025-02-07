@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.AnonymousFunctionMatching;
+using static Funcky.Analyzers.Functions.AnonymousFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.Functions;
 
 internal static class ConstantFunctionMatching
 {
@@ -15,7 +15,7 @@ internal static class ConstantFunctionMatching
         };
 
     private static bool IsConstantFunction(IAnonymousFunctionOperation anonymousFunction, object? expectedValue)
-        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction, out var returnOperation)
+        => MatchAnonymousFunctionWithSingleReturn(anonymousFunction) is [var returnOperation]
             && returnOperation.ReturnedValue is { ConstantValue: { HasValue: true, Value: var returnedValue } }
             && returnedValue == expectedValue;
 }

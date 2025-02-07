@@ -1,9 +1,9 @@
 #pragma warning disable SA1118 // StyleCop support for collection expressions is missing
 using Xunit;
-using static Funcky.Analyzers.AlternativeMonadAnalyzer;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToOrElseCodeFix>;
+using static Funcky.Analyzers.AlternativeMonad.AlternativeMonadAnalyzer;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.AlternativeMonad.AlternativeMonadAnalyzer, Funcky.Analyzers.AlternativeMonad.MatchToOrElseCodeFix>;
 
-namespace Funcky.Analyzers.Test;
+namespace Funcky.Analyzers.Test.AlternativeMonad;
 
 public sealed partial class AlternativeMonadAnalyzerTest
 {

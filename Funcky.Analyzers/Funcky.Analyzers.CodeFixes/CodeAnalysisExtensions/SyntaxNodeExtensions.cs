@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.CodeAnalysisExtensions;
 
 internal static partial class SyntaxNodeExtensions
 {

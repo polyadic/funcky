@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -44,21 +44,17 @@ public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
         {
             var operation = (IInvocationOperation)context.Operation;
 
-            if (MatchRepeatNever(enumerableType, operation, out var valueArgument))
+            if (MatchRepeatNever(enumerableType, operation) is [var valueArgument])
             {
                 context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument));
             }
         };
 
-    private static bool MatchRepeatNever(
-        INamedTypeSymbol enumerableType,
-        IInvocationOperation operation,
-        [NotNullWhen(true)] out IArgumentOperation? valueArgument)
-    {
-        valueArgument = null;
-        return MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
-            && MatchArguments(operation, out valueArgument, AnyArgument, out _, ConstantArgument(0));
-    }
+    private static Option<IArgumentOperation> MatchRepeatNever(INamedTypeSymbol enumerableType, IInvocationOperation operation)
+        => MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+            && operation.GetArgumentsInParameterOrder() is [var valueArgument, var countArgument]
+            && MatchConstantArgument(countArgument, 0)
+                ? [valueArgument] : [];
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
         => Diagnostic.Create(

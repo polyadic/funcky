@@ -1,10 +1,11 @@
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
-using static Funcky.Analyzers.ConstantFunctionMatching;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
-using static Funcky.Analyzers.IdentityFunctionMatching;
+using static Funcky.Analyzers.Functions.ConstantFunctionMatching;
+using static Funcky.Analyzers.Functions.IdentityFunctionMatching;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {
@@ -29,13 +30,13 @@ public partial class AlternativeMonadAnalyzer
 
         bool IsToNullableReferenceType()
             => itemType.IsReferenceType
-                && SymbolEqualityComparer.Default.Equals(receiverType.TypeArguments.Single(), matchInvocation.Type)
+                && SymbolEquals(receiverType.TypeArguments.Single(), matchInvocation.Type)
                 && IsNullOrNullFunction(noneArgument.Value)
                 && IsIdentityFunction(someArgument.Value);
 
         bool IsToNullableValueType()
             => itemType.IsValueType
-                && SymbolEqualityComparer.Default.Equals(matchInvocation.SemanticModel?.NullableOfT(itemType), matchInvocation.Type)
+                && SymbolEquals(matchInvocation.SemanticModel?.NullableOfT(itemType), matchInvocation.Type)
                 && IsNullOrNullFunction(noneArgument.Value)
                 && IsIdentityFunctionWithNullConversion(someArgument.Value);
 

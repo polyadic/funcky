@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.Analyzers.AlternativeMonad;
 
 internal static class AlternativeMonadErrorStateConstructorMatching
 {
@@ -24,6 +24,6 @@ internal static class AlternativeMonadErrorStateConstructorMatching
            && IsTypeContainingConstructors(alternativeMonadType, containingType);
 
     private static bool IsTypeContainingConstructors(AlternativeMonadType alternativeMonadType, INamedTypeSymbol type)
-        => SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, alternativeMonadType.Type)
-           || SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, alternativeMonadType.ConstructorsType);
+        => SymbolEquals(type.ConstructedFrom, alternativeMonadType.Type)
+            || SymbolEquals(type.ConstructedFrom, alternativeMonadType.ConstructorsType);
 }

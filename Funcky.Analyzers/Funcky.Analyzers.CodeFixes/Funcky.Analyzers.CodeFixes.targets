@@ -17,6 +17,10 @@
 		<AnalyzerLanguage>cs</AnalyzerLanguage>
 	</PropertyGroup>
 	<ItemGroup>
+		<Compile Include="..\Funcky.Analyzers\CodeAnalysisExtensions\SymbolEqualityFunctions.cs" Link="CodeAnalysisExtensions\%(Filename)%(Extension)" />
+		<Using Include="Funcky.Analyzers.CodeAnalysisExtensions.SymbolEqualityFunctions" Static="true" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="PolySharp" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
 	</ItemGroup>

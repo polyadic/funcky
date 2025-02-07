@@ -44,7 +44,7 @@ public sealed class FunctionalAssertAnalyzer : DiagnosticAnalyzer
         => context =>
         {
             var invocation = (IInvocationOperation)context.Operation;
-            if (MatchGenericAssertEqualInvocation(invocation, out var expectedArgument, out var actualArgument)
+            if (MatchGenericAssertEqualInvocation(invocation) is [var (expectedArgument, actualArgument)]
                 && actualArgument.Value is IInvocationOperation innerInvocation
                 && IsAssertMethodWithAccompanyingEqualOverload(innerInvocation, attributeType))
             {
