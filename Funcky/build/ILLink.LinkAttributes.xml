@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+    <assembly fullname="System.Private.CoreLib">
+        <!-- We use this attribute extensively as documentation of our methods, so let's remove it. -->
+        <type fullname="System.Diagnostics.Contracts.PureAttribute">
+            <attribute internal="RemoveAttributeInstances" />
+        </type>
+    </assembly>
+</linker>

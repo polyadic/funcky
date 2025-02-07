@@ -6,4 +6,9 @@
         <Using Include="Funcky.Monads" />
         <Using Include="Funcky.Functional" Static="true" />
     </ItemGroup>
+	<Target	Name="_FunckyBeforePrepareForILLink" BeforeTargets="PrepareForILLink">
+		<ItemGroup>
+			<_ILLinkSuppressions Include="$(MSBuildThisFileDirectory)ILLink.LinkAttributes.xml" />
+		</ItemGroup>
+	</Target>
 </Project>

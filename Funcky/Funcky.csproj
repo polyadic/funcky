@@ -58,6 +58,9 @@
         <!-- This resource is recognized by the IL Linker (trimmer) and allows us to instruct it
              to remove usages of our code analysis attributes. See: https://github.com/dotnet/runtime/blob/main/docs/tools/illink/data-formats.md#custom-attributes-annotations-format -->
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
+        <!-- Unfortunately, we're not allowed to annotate types outside our own assembly via the embedded resource,
+             so instead we ship the XML in the NuGet package and pass it to the linker manually. -->
+        <None Include="build/ILLink.LinkAttributes.xml" Pack="true" PackagePath="build" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
