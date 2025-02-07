@@ -55,6 +55,8 @@
         <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
+        <!-- This resource is recognized by the IL Linker (trimmer) and allows us to instruct it
+             to remove usages of our code analysis attributes. See: https://github.com/dotnet/runtime/blob/main/docs/tools/illink/data-formats.md#custom-attributes-annotations-format -->
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
     </ItemGroup>
     <ItemGroup>
