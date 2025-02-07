@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <linker>
     <assembly fullname="Funcky">
+        <type fullname="Funcky.CodeAnalysis.NonDefaultableAttribute">
+            <attribute internal="RemoveAttributeInstances" />
+        </type>
+        <type fullname="Funcky.CodeAnalysis.SyntaxSupportOnlyAttribute">
+            <attribute internal="RemoveAttributeInstances" />
+        </type>
         <type fullname="Funcky.CodeAnalysis.UseWithArgumentNamesAttribute">
             <attribute internal="RemoveAttributeInstances" />
         </type>
