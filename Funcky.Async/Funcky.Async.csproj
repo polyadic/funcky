@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
@@ -29,6 +30,11 @@
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
         <IsAotCompatible>true</IsAotCompatible>
     </PropertyGroup>
+    <!-- These files are included by Microsoft.CodeAnalysis.PublicApiAnalyzers is included. -->
+    <ItemGroup Condition="'$(TargetFramework)' != '$(FunckyNewestTargetFramework)'">
+        <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+        <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+    </ItemGroup>
     <ItemGroup>
         <Compile Include="..\Funcky\Internal\Aggregators\DecimalAverageAggregator.cs" Link="Internal\Aggregators\DecimalAverageAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\DoubleAverageAggregator.cs" Link="Internal\Aggregators\DoubleAverageAggregator.cs" />
@@ -43,7 +49,7 @@
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net5.0'" />
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == '$(FunckyNewestTargetFramework)'" />
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="System.Linq.Async" />
