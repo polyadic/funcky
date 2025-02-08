@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+        <FunckyNewestTargetFramework>net6.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Package to use Funcky with xUnit v3</Description>
@@ -36,7 +37,6 @@
         <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="xunit.v3.assert" />
         <PackageReference Include="xunit.v3.extensibility.core" />
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net6.0'" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../Funcky/Funcky.csproj" />
@@ -46,4 +46,5 @@
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
+    <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>
