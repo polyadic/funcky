@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- We intentionally only include the public API analyzers for the newest target
+	     framework because we often add APIs in newer target frameworks
+	     that we don't add for older target frameworks. -->
 	<ItemGroup Condition="'$(TargetFramework)' == '$(FunckyNewestTargetFramework)'">
 		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
 	</ItemGroup>
