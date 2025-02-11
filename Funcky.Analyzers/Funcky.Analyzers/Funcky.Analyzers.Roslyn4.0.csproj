@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AnalyzerRoslynVersion>4.0.1</AnalyzerRoslynVersion>
+        <DisableAnalyzerReleaseTracking>true</DisableAnalyzerReleaseTracking>
     </PropertyGroup>
     <Import Project="Funcky.Analyzers.targets" />
 </Project>

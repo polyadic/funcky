@@ -38,5 +38,15 @@
 	<ItemGroup>
 		<EmbeddedResource Update="Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
 	</ItemGroup>
+	<PropertyGroup Condition="'$(DisableAnalyzerReleaseTracking)' == 'true'">
+		<!-- RS2008: Enable analyzer release tracking -->
+		<NoWarn>$(NoWarn);RS2008</NoWarn>
+	</PropertyGroup>
+	<Target Name="_FunckyRemoveAnalyzerReleasesFiles" BeforeTargets="CoreCompile" Condition="'$(DisableAnalyzerReleaseTracking)' == 'true'">
+		<ItemGroup>
+			<AdditionalFiles Remove="AnalyzerReleases.Shipped.md" />
+			<AdditionalFiles Remove="AnalyzerReleases.Unshipped.md" />
+		</ItemGroup>
+	</Target>
 	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />
 </Project>
