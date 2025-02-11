@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Product>Funcky</Product>
@@ -20,10 +21,8 @@
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
-        <TargetFrameworkForPublicApiAnalyzers>net9.0</TargetFrameworkForPublicApiAnalyzers>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == '$(TargetFrameworkForPublicApiAnalyzers)'" />
         <PackageReference Include="Microsoft.Bcl.HashCode" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
@@ -33,11 +32,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
-    </ItemGroup>
-    <!-- These files are included by Microsoft.CodeAnalysis.PublicApiAnalyzers is included. -->
-    <ItemGroup Condition="'$(TargetFramework)' != '$(TargetFrameworkForPublicApiAnalyzers)'">
-        <AdditionalFiles Include="PublicAPI.Shipped.txt" />
-        <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
         <IsTrimmable>true</IsTrimmable>
@@ -63,4 +57,5 @@
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>

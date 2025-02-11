@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- We intentionally only include the public API analyzers for the newest target
+	     framework because we often add APIs in newer target frameworks
+	     that we don't add for older target frameworks. -->
+	<ItemGroup Condition="'$(TargetFramework)' == '$(FunckyNewestTargetFramework)'">
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+	</ItemGroup>
+	<!-- These files are included by Microsoft.CodeAnalysis.PublicApiAnalyzers if it is enabled. -->
+	<ItemGroup Condition="'$(TargetFramework)' != '$(FunckyNewestTargetFramework)'">
+		<AdditionalFiles Include="PublicAPI.Shipped.txt" />
+		<AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+	</ItemGroup>
+	<PropertyGroup>
+		<CoreCompileDependsOn>$(CoreCompileDependsOn);_ValidateFunckyNewestTargetFrameworkIsSet</CoreCompileDependsOn>
+	</PropertyGroup>
+	<Target	Name="_ValidateFunckyNewestTargetFrameworkIsSet" Condition="'$(FunckyNewestTargetFramework)' == ''">
+		<PropertyGroup>
+			<_Text>The 'FunckyNewestTargetFramework' property is not set; public API analyzers will not run</_Text>
+		</PropertyGroup>
+		<Warning Text="$(_Text)" File="$(MSBuildProjectFullPath)" Condition="'$(TreatWarningsAsErrors)' != 'true'" />
+		<Error Text="$(_Text)" File="$(MSBuildProjectFullPath)" Condition="'$(TreatWarningsAsErrors)' == 'true'" />
+	</Target>
+</Project>
