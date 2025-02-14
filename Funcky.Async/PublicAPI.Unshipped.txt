@@ -1,1 +1,2 @@
 #nullable enable
+static Funcky.Extensions.AsyncEnumerableExtensions.Traverse<TSource, T>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Lazy<T>!>! selector) -> System.Lazy<System.Collections.Generic.IAsyncEnumerable<T>!>!
