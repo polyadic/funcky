@@ -1,4 +1,5 @@
 #if !XUNIT_V3
+using System.ComponentModel;
 using Xunit;
 
 namespace Funcky.Extensions;
@@ -38,8 +39,14 @@ public static class ToTheoryDataExtension
         => source.Aggregate(new TheoryData<T1, T2, T3, T4, T5, T6, T7>(), AddElementToTheoryData);
 
     [Pure]
+    [Obsolete("This overload is incorrect, the last element has to be a tuple itself.")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(this IEnumerable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>> source)
         where T8 : notnull
+        => source.Aggregate(new TheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(), AddElementToTheoryData);
+
+    [Pure]
+    public static TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> ToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(this IEnumerable<Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>> source)
         => source.Aggregate(new TheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(), AddElementToTheoryData);
 
     [Pure]
@@ -150,6 +157,13 @@ public static class ToTheoryDataExtension
         where T8 : notnull
     {
         theoryData.Add(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7, tuple.Rest);
+
+        return theoryData;
+    }
+
+    private static TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> AddElementToTheoryData<T1, T2, T3, T4, T5, T6, T7, T8>(TheoryData<T1, T2, T3, T4, T5, T6, T7, T8> theoryData, Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>> tuple)
+    {
+        theoryData.Add(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7, tuple.Rest.Item1);
 
         return theoryData;
     }
