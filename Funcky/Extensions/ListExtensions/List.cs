@@ -2,12 +2,8 @@ using static Funcky.Internal.ValueMapper;
 
 namespace Funcky.Extensions;
 
-public static class ListExtensions
+public static partial class ListExtensions
 {
-    [Pure]
-    public static Option<int> IndexOfOrNone<TValue>(this IList<TValue> list, TValue value)
-        => MapNotFoundToNone(list.IndexOf(value));
-
     [Pure]
     public static Option<int> FindIndexOrNone<TValue>(this List<TValue> list, Predicate<TValue> match)
         => MapNotFoundToNone(list.FindIndex(match));
