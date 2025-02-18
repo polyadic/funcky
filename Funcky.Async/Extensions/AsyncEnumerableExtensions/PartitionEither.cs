@@ -24,7 +24,7 @@ public static partial class AsyncEnumerableExtensions
             .ConfigureAwait(false))
             .Build(resultSelector);
 
-    /// Partitions the items in an <see cref="IAsyncEnumerable{T}"/> into a left and a right partition.
+    /// <summary>Partitions the items in an <see cref="IAsyncEnumerable{T}"/> into a left and a right partition.</summary>
     public static ValueTask<EitherPartitions<TLeft, TRight>> PartitionAsync<TSource, TLeft, TRight>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, Either<TLeft, TRight>> selector,
