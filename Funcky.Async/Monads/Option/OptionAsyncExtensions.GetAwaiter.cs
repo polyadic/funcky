@@ -4,7 +4,7 @@ namespace Funcky.Monads;
 
 public static partial class OptionAsyncExtensions
 {
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static OptionTaskAwaiter GetAwaiter(this Option<Task> option)
         => new(option.GetOrElse(Task.CompletedTask).GetAwaiter());
 
@@ -16,7 +16,7 @@ public static partial class OptionAsyncExtensions
     public static ConfiguredOptionTaskAwaitable ConfigureAwait(this Option<Task> option, bool continueOnCapturedContext)
         => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static OptionTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<Task<TItem>> option)
         where TItem : notnull
         => new(option.Select(task => task.GetAwaiter()));
@@ -42,7 +42,7 @@ public static partial class OptionAsyncExtensions
     public static ConfiguredOptionValueTaskAwaitable ConfigureAwait(this Option<ValueTask> option, bool continueOnCapturedContext)
         => new(option.Select(task => task.ConfigureAwait(continueOnCapturedContext)));
 
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static OptionValueTaskAwaiter<TItem> GetAwaiter<TItem>(this Option<ValueTask<TItem>> option)
         where TItem : notnull
         => new(option.Select(task => task.GetAwaiter()));

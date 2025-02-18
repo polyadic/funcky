@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Funcky.Monads;
 
-[EditorBrowsable(EditorBrowsableState.Advanced)]
+[EditorBrowsable(EditorBrowsableState.Never)]
 public readonly struct OptionTaskAwaiter<TItem> : INotifyCompletion
     where TItem : notnull
 {
@@ -22,7 +22,7 @@ public readonly struct OptionTaskAwaiter<TItem> : INotifyCompletion
         => _awaiter.Select(awaiter => awaiter.GetResult());
 }
 
-[EditorBrowsable(EditorBrowsableState.Advanced)]
+[EditorBrowsable(EditorBrowsableState.Never)]
 public readonly struct OptionTaskAwaiter : INotifyCompletion
 {
     private readonly TaskAwaiter _awaiter;

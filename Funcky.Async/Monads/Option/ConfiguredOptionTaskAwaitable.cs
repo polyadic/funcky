@@ -1,7 +1,9 @@
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Funcky.Monads;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public readonly struct ConfiguredOptionTaskAwaitable<TItem>
     where TItem : notnull
 {
@@ -9,8 +11,10 @@ public readonly struct ConfiguredOptionTaskAwaitable<TItem>
 
     internal ConfiguredOptionTaskAwaitable(Option<ConfiguredTaskAwaitable<TItem>> awaitable) => _awaitable = awaitable;
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct ConfiguredOptionTaskAwaiter : INotifyCompletion
     {
         private readonly Option<ConfiguredTaskAwaitable<TItem>.ConfiguredTaskAwaiter> _awaiter;
@@ -25,14 +29,17 @@ public readonly struct ConfiguredOptionTaskAwaitable<TItem>
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public readonly struct ConfiguredOptionTaskAwaitable
 {
     private readonly Option<ConfiguredTaskAwaitable> _awaitable;
 
     internal ConfiguredOptionTaskAwaitable(Option<ConfiguredTaskAwaitable> awaitable) => _awaitable = awaitable;
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public ConfiguredOptionTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct ConfiguredOptionTaskAwaiter : INotifyCompletion
     {
         private readonly Option<ConfiguredTaskAwaitable.ConfiguredTaskAwaiter> _awaiter;

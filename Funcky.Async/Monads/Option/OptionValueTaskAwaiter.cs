@@ -22,7 +22,7 @@ public readonly struct OptionValueTaskAwaiter<TItem> : INotifyCompletion
         => _awaiter.Select(awaiter => awaiter.GetResult());
 }
 
-[EditorBrowsable(EditorBrowsableState.Advanced)]
+[EditorBrowsable(EditorBrowsableState.Never)]
 public readonly struct OptionValueTaskAwaiter : INotifyCompletion
 {
     private readonly ValueTaskAwaiter _awaiter;
