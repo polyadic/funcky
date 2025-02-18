@@ -4,6 +4,18 @@ using Xunit;
 
 namespace Funcky.Extensions;
 
+/// <summary>Extension methods for converting tuple sequences to their corresponding
+/// <see cref="TheoryData"/> equivalent.</summary>
+/// <example>
+/// Dynamically generate theory data:
+/// <code><![CDATA[
+/// public static TheoryData<int, string> GetEvenNumbers()
+///     => Sequence.Successors(0, n => n + 2)
+///         .Select(n => (n, n.ToString()))
+///         .Take(15)
+///         .ToTheoryData();
+/// ]]></code>
+/// </example>
 public static class ToTheoryDataExtension
 {
     [Pure]
