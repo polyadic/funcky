@@ -44,7 +44,7 @@ public readonly partial struct Option<TItem> : IOption
 
     /// <summary>
     /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option
-    /// has a value. Serves the same purpose as a switch expression.</para>
+    /// has a value. Serves the same purpose as a <see langword="switch"/> expression.</para>
     /// <para>Note that there are often better alternatives available:
     /// <list type="bullet">
     /// <item><description><see cref="Select{TResult}"/></description></item>
@@ -62,7 +62,7 @@ public readonly partial struct Option<TItem> : IOption
 
     /// <summary>
     /// <para>Calls either <paramref name="none"/> when the option has no value or <paramref name="some"/> when the option
-    /// has a value. Serves the same purpose as a switch statement.</para>
+    /// has a value. Serves the same purpose as a <see langword="switch"/> statement.</para>
     /// <para>Note that there are often better alternatives available, such as:
     /// <list type="bullet">
     /// <item><description><see cref="AndThen(System.Action{TItem})"/></description></item>
