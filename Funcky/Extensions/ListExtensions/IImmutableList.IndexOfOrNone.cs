@@ -3,7 +3,7 @@ using static Funcky.Internal.ValueMapper;
 
 namespace Funcky.Extensions;
 
-public static partial class ImmutableListExtensions
+public static partial class ListExtensions
 {
     /// <summary>
     /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the <see cref="IImmutableList{T}" /> that starts at the specified index and contains the specified number of elements.

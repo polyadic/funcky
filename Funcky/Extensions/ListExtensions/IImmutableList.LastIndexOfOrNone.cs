@@ -3,7 +3,7 @@ using static Funcky.Internal.ValueMapper;
 
 namespace Funcky.Extensions;
 
-public static partial class ImmutableListExtensions
+public static partial class ListExtensions
 {
     /// <summary>
     /// Searches for the specified object and returns the zero-based index of the last occurrence within the range of elements in the <see cref="IImmutableList{T}" /> that contains the specified number of elements and ends at the specified index.

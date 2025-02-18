@@ -58,6 +58,16 @@ static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, TResult>(this System.F
 static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! func, Funcky.Unit p1, T2 p2) -> System.Func<T1, TResult>!
 static Funcky.Extensions.FuncExtensions.Apply<T1, T2, TResult>(this System.Func<T1, T2, TResult>! func, T1 p1, Funcky.Unit p2) -> System.Func<T2, TResult>!
 static Funcky.Extensions.JsonSerializerOptionsExtensions.GetTypeInfoOrNone(this System.Text.Json.JsonSerializerOptions! options, System.Type! type) -> Funcky.Monads.Option<System.Text.Json.Serialization.Metadata.JsonTypeInfo!>
+static Funcky.Extensions.ListExtensions.IndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.IndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.IndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex, int count) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.IndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex, int count, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.IndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex, int count) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex, int count, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.OrderedDictionaryExtensions.IndexOfOrNone<TKey, TValue>(this System.Collections.Generic.OrderedDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
