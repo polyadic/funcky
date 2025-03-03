@@ -1,9 +1,10 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using static Funcky.Internal.ValueMapper;
 
 namespace Funcky.Extensions;
 
-public static partial class ImmutableListExtensions
+public static partial class ListExtensions
 {
     /// <summary>
     /// Searches for the specified object and returns the zero-based index of the first occurrence within the range of elements in the <see cref="IImmutableList{T}" /> that starts at the specified index and contains the specified number of elements.
@@ -25,6 +26,7 @@ public static partial class ImmutableListExtensions
     /// <param name="list">An <see cref="IImmutableList{T}" /> of values.</param>
     /// <param name="item">The object to locate in the <see cref="T:System.Collections.Immutable.IImmutableList`1" />. This value can be null for reference types.</param>
     /// <returns>The zero-based index of the first occurrence of <paramref name="item" /> within the range of elements in the <see cref="IImmutableList{T}" /> if found; otherwise <see cref="Option{T}.None" />.</returns>
+    [OverloadResolutionPriority(1)]
     public static Option<int> IndexOfOrNone<TItem>(this IImmutableList<TItem> list, TItem item)
         => MapNotFoundToNone(list.IndexOf(item));
 

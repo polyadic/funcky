@@ -55,4 +55,11 @@ public sealed class IndexOfOrNoneTest
         FunctionalAssert.None(list.IndexOfOrNone("Gamma", 0));
         FunctionalAssert.None(list.IndexOfOrNone("Gamma", 0, 0));
     }
+
+    [Fact]
+    public void CallIsNotAmbiguousWhenUsedOnConcreteTypes()
+    {
+        _ = ImmutableArray<string>.Empty.IndexOfOrNone("foo");
+        _ = ImmutableList<string>.Empty.IndexOfOrNone("foo");
+    }
 }
