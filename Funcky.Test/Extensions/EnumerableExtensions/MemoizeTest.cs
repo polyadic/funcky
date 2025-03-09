@@ -80,13 +80,31 @@ public sealed class MemoizeTest
     }
 
     [Fact]
-    public void MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
+    public void DisposingAMemoizedBorrowedBufferDoesNotDisposeOriginalBorrowedBuffer()
     {
         var source = EnumerateOnce.Create<int>([]);
-        using var memoized = source.Memoize();
-        using var memoizedBuffer = memoized.Memoize();
-        using var memoizedBuffer2 = memoizedBuffer.Memoize();
-        Assert.Same(memoizedBuffer, memoizedBuffer2);
+        using var firstMemoization = source.Memoize();
+        using var borrowedBuffer = firstMemoization.Memoize();
+
+        using (borrowedBuffer.Memoize())
+        {
+        }
+
+        borrowedBuffer.ForEach(NoOperation);
+    }
+
+    /// <summary>This test disallows "re-borrowing" i.e. creating a fresh BorrowedBuffer over the original buffer.</summary>
+    [Fact]
+    public void UsagesOfSecondBorrowThrowAfterFirstBorrowIsDisposed()
+    {
+        var source = EnumerateOnce.Create<int>([]);
+        using var firstMemoization = source.Memoize();
+        using var firstBorrow = firstMemoization.Memoize();
+        using var secondBorrow = firstBorrow.Memoize();
+#pragma warning disable IDISP017
+        firstBorrow.Dispose();
+#pragma warning restore IDISP017
+        Assert.Throws<ObjectDisposedException>(() => secondBorrow.ForEach(NoOperation));
     }
 
     [Fact]

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using Funcky.Buffers;
 
 namespace Funcky.Extensions;
@@ -23,9 +22,8 @@ public static partial class EnumerableExtensions
             _ => MemoizedBuffer.Create(source),
         };
 
-    [SuppressMessage("IDisposableAnalyzers", "IDISP015: Member should not return created and cached instance.", Justification = "False positive.")]
     private static IBuffer<TSource> Borrow<TSource>(IBuffer<TSource> buffer)
-        => buffer as BorrowedBuffer<TSource> ?? new BorrowedBuffer<TSource>(buffer);
+        => new BorrowedBuffer<TSource>(buffer);
 
     private static class MemoizedBuffer
     {
