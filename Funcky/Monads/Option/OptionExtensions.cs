@@ -1,6 +1,5 @@
 using System.ComponentModel;
 
-#pragma warning disable RS0026
 namespace Funcky.Monads;
 
 public static partial class OptionExtensions

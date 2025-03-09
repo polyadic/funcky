@@ -1,5 +1,7 @@
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Collections;
+using Funcky.Test.TestUtils;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -22,6 +24,17 @@ public sealed class FirstSingleLastOrNoneTest
     {
         ExpectedSingleOrNoneBehaviour(valueEnumerable, () => valueEnumerable.SingleOrNone().Match(none: false, some: True));
         ExpectedSingleOrNoneBehaviour(valueEnumerable, () => referenceEnumerable.SingleOrNone().Match(none: false, some: True));
+    }
+
+    [Fact]
+    public void DoesNotEnumerateListsWhenCalledWithoutPredicate()
+    {
+        var list = new FailOnEnumerateListWrapper<string>(["foo"]);
+        _ = list.FirstOrNone();
+        _ = list.LastOrNone();
+
+        // SingleOrNone does not specialize for `Select`ed lists.
+        Assert.Throws<XunitException>(() => _ = list.SingleOrNone());
     }
 
     public static TheoryData<List<int>, List<string>> ValueReferenceEnumerables()
