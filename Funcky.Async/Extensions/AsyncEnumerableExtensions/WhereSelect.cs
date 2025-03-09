@@ -55,7 +55,5 @@ public static partial class AsyncEnumerableExtensions
 
     private static IAsyncEnumerable<TItem> ToAsyncEnumerable<TItem>(Option<TItem> option)
         where TItem : notnull
-        => option.Match(
-            none: AsyncEnumerable.Empty<TItem>,
-            some: AsyncSequence.Return);
+        => option.ToAsyncEnumerable();
 }
