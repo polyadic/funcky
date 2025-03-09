@@ -5,6 +5,7 @@ Funcky.Monads.IEither
 Funcky.Monads.IOption
 static Funcky.Extensions.DictionaryExtensions.RemoveOrNone<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<TValue>
 static Funcky.Extensions.EnumerableExtensions.Traverse<TSource, T>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, System.Lazy<T>!>! selector) -> System.Lazy<System.Collections.Generic.IEnumerable<T>!>!
+static Funcky.Extensions.EnumerableExtensions.WhereSelect<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, int, Funcky.Monads.Option<TResult>>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T3, T4, TResult>!
 static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T3, T5, TResult>!
 static Funcky.Extensions.FuncExtensions.Apply<T1, T2, T3, T4, T5, TResult>(this System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T2, T3, TResult>!
