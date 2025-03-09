@@ -28,7 +28,7 @@ public sealed class MemoizeTest
     [Fact]
     public void MemoizingAnEmptyListIsEmpty()
     {
-        var empty = Enumerable.Empty<string>();
+        var empty = Enumerable.Empty<string>().PreventLinqOptimizations();
         using var memoized = empty.Memoize();
 
         Assert.Empty(memoized);
@@ -87,5 +87,21 @@ public sealed class MemoizeTest
         using var memoizedBuffer = memoized.Memoize();
         using var memoizedBuffer2 = memoizedBuffer.Memoize();
         Assert.Same(memoizedBuffer, memoizedBuffer2);
+    }
+
+    [Fact]
+    public void MemoizingAListReturnsAnObjectImplementingIList()
+    {
+        var source = new List<int> { 10, 20, 30 };
+        using var memoized = source.Memoize();
+        Assert.IsType<IList<int>>(memoized, exactMatch: false);
+    }
+
+    [Fact]
+    public void MemoizingACollectionReturnsAnObjectImplementingICollection()
+    {
+        var source = new HashSet<int> { 10, 20, 30 };
+        using var memoized = source.Memoize();
+        Assert.IsType<ICollection<int>>(memoized, exactMatch: false);
     }
 }
