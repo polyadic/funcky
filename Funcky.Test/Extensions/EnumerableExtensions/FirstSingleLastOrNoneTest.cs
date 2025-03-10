@@ -26,7 +26,11 @@ public sealed class FirstSingleLastOrNoneTest
         ExpectedSingleOrNoneBehaviour(valueEnumerable, () => referenceEnumerable.SingleOrNone().Match(none: false, some: True));
     }
 
+#if OPTIMIZED_FIRST_LAST_OR_DEFAULT
     [Fact]
+#else
+    [Fact(Skip = ".NET Framework 4.8 doesn't optimize these methods")]
+#endif
     public void DoesNotEnumerateListsWhenCalledWithoutPredicate()
     {
         var list = new FailOnEnumerateListWrapper<string>(["foo"]);
