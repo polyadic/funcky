@@ -4,7 +4,7 @@
 		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;SPLIT_ACCEPTS_STRING_SEPARATOR;LAZY_RETURN_CONSTRUCTOR;QUEUE_TRY_OVERLOADS;OPTIMIZED_ELEMENT_AT;RANGE_SUPPORTED;READ_ONLY_SPAN_SUPPORTED;INDEX_TYPE;JOIN_TO_STRING_CHAR_SEPARATOR;REMOVE_EXTENSION</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netcoreapp3.0'))">
-		<DefineConstants>$(DefineConstants);SYSTEM_INDEX_SUPPORTED;IP_END_POINT_TRY_PARSE_SUPPORTED</DefineConstants>
+		<DefineConstants>$(DefineConstants);SYSTEM_INDEX_SUPPORTED;IP_END_POINT_TRY_PARSE_SUPPORTED;OPTIMIZED_FIRST_LAST_OR_DEFAULT</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net5.0'))">
 		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;DYNAMICALLY_ACCESSED_MEMBERS_ATTRIBUTE_SUPPORTED</DefineConstants>

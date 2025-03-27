@@ -9,7 +9,9 @@ public static partial class EnumerableExtensions
     [Pure]
     public static Option<TSource> LastOrNone<TSource>(this IEnumerable<TSource> source)
         where TSource : notnull
-        => source.LastOrNone(True);
+        => source
+            .Select(Option.Some)
+            .LastOrDefault();
 
     /// <summary>
     /// Returns the last element of a sequence that satisfies a condition as an <see cref="Option{T}" />  or a <see cref="Option{T}.None" /> value if no such element is found.
