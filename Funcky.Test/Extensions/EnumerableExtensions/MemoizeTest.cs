@@ -28,7 +28,7 @@ public sealed class MemoizeTest
     [Fact]
     public void MemoizingAnEmptyListIsEmpty()
     {
-        var empty = Enumerable.Empty<string>();
+        var empty = Enumerable.Empty<string>().PreventLinqOptimizations();
         using var memoized = empty.Memoize();
 
         Assert.Empty(memoized);
@@ -80,12 +80,46 @@ public sealed class MemoizeTest
     }
 
     [Fact]
-    public void MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
+    public void DisposingAMemoizedBorrowedBufferDoesNotDisposeOriginalBorrowedBuffer()
     {
         var source = EnumerateOnce.Create<int>([]);
+        using var firstMemoization = source.Memoize();
+        using var borrowedBuffer = firstMemoization.Memoize();
+
+        using (borrowedBuffer.Memoize())
+        {
+        }
+
+        borrowedBuffer.ForEach(NoOperation);
+    }
+
+    /// <summary>This test disallows "re-borrowing" i.e. creating a fresh BorrowedBuffer over the original buffer.</summary>
+    [Fact]
+    public void UsagesOfSecondBorrowThrowAfterFirstBorrowIsDisposed()
+    {
+        var source = EnumerateOnce.Create<int>([]);
+        using var firstMemoization = source.Memoize();
+        using var firstBorrow = firstMemoization.Memoize();
+        using var secondBorrow = firstBorrow.Memoize();
+#pragma warning disable IDISP017
+        firstBorrow.Dispose();
+#pragma warning restore IDISP017
+        Assert.Throws<ObjectDisposedException>(() => secondBorrow.ForEach(NoOperation));
+    }
+
+    [Fact]
+    public void MemoizingAListReturnsAnObjectImplementingIList()
+    {
+        var source = new List<int> { 10, 20, 30 };
         using var memoized = source.Memoize();
-        using var memoizedBuffer = memoized.Memoize();
-        using var memoizedBuffer2 = memoizedBuffer.Memoize();
-        Assert.Same(memoizedBuffer, memoizedBuffer2);
+        Assert.IsType<IList<int>>(memoized, exactMatch: false);
+    }
+
+    [Fact]
+    public void MemoizingACollectionReturnsAnObjectImplementingICollection()
+    {
+        var source = new HashSet<int> { 10, 20, 30 };
+        using var memoized = source.Memoize();
+        Assert.IsType<ICollection<int>>(memoized, exactMatch: false);
     }
 }

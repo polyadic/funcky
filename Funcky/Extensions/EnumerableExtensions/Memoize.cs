@@ -1,6 +1,5 @@
-#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+using Funcky.Buffers;
 
 namespace Funcky.Extensions;
 
@@ -15,13 +14,16 @@ public static partial class EnumerableExtensions
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
     public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
-        => source is IBuffer<TSource> buffer
-            ? Borrow(buffer)
-            : MemoizedBuffer.Create(source);
+        => source switch
+        {
+            IBuffer<TSource> buffer => Borrow(buffer),
+            IList<TSource> list => ListBuffer.Create(list),
+            ICollection<TSource> list => CollectionBuffer.Create(list),
+            _ => MemoizedBuffer.Create(source),
+        };
 
-    [SuppressMessage("IDisposableAnalyzers", "IDISP015: Member should not return created and cached instance.", Justification = "False positive.")]
     private static IBuffer<TSource> Borrow<TSource>(IBuffer<TSource> buffer)
-        => buffer as BorrowedBuffer<TSource> ?? new BorrowedBuffer<TSource>(buffer);
+        => new BorrowedBuffer<TSource>(buffer);
 
     private static class MemoizedBuffer
     {

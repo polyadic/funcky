@@ -80,12 +80,30 @@ public sealed class MemoizeTest
     }
 
     [Fact]
-    public async Task MemoizingAMemoizedBufferTwiceReturnsTheOriginalObject()
+    public async Task DisposingAMemoizedBorrowedBufferDoesNotDisposeOriginalBorrowedBuffer()
     {
-        var source = AsyncEnumerateOnce.Create(Enumerable.Empty<int>());
-        await using var memoized = source.Memoize();
-        await using var memoizedBuffer = memoized.Memoize();
-        await using var memoizedBuffer2 = memoizedBuffer.Memoize();
-        Assert.Same(memoizedBuffer, memoizedBuffer2);
+        var source = AsyncEnumerateOnce.Create<int>([]);
+        await using var firstMemoization = source.Memoize();
+        await using var borrowedBuffer = firstMemoization.Memoize();
+
+        await using (borrowedBuffer.Memoize())
+        {
+        }
+
+        await borrowedBuffer.ForEachAsync(NoOperation<int>);
+    }
+
+    /// <summary>This test disallows "re-borrowing" i.e. creating a fresh BorrowedBuffer over the original buffer.</summary>
+    [Fact]
+    public async Task UsagesOfSecondBorrowThrowAfterFirstBorrowIsDisposed()
+    {
+        var source = AsyncEnumerateOnce.Create<int>([]);
+        await using var firstMemoization = source.Memoize();
+        await using var firstBorrow = firstMemoization.Memoize();
+        await using var secondBorrow = firstBorrow.Memoize();
+#pragma warning disable IDISP017
+        await firstBorrow.DisposeAsync();
+#pragma warning restore IDISP017
+        await Assert.ThrowsAsync<ObjectDisposedException>(async () => await secondBorrow.ForEachAsync(NoOperation<int>));
     }
 }
