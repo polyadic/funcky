@@ -1,4 +1,5 @@
 using Funcky.Test.TestUtils;
+using static Funcky.Discard;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -19,6 +20,16 @@ public sealed class WhereSelectTest
         var expectedResult = new[] { 0, 4, 16, 36, 64 };
         var result = input.WhereSelect(SquareEvenNumbers);
         Assert.Equal(expectedResult, result);
+    }
+
+    [Fact]
+    public void WhereSelectReceivesTheSourceElementsIndex()
+    {
+        const int count = 6;
+        var expectedSequence = Enumerable.Range(0, count: count);
+        var units = Sequence.Cycle(__).Take(count);
+        var indexes = units.WhereSelect((_, index) => Option.Some(index));
+        Assert.Equal(expectedSequence, indexes);
     }
 
     [Fact]
