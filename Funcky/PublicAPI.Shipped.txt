@@ -758,11 +758,13 @@ static Funcky.Monads.EitherExtensions.Traverse<TLeft, TRight, T>(this Funcky.Mon
 static Funcky.Monads.EitherExtensions.Traverse<TLeft, TRight, TEnvironment, TResult>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Either<TLeft, TResult>>!
 static Funcky.Monads.EitherExtensions.Traverse<TLeft, TRight, TItem>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<Funcky.Monads.Either<TLeft, TItem>>
 static Funcky.Monads.EitherExtensions.Traverse<TLeft, TRight, TValidResult>(this Funcky.Monads.Either<TLeft, TRight> either, System.Func<TRight, Funcky.Monads.Result<TValidResult>>! selector) -> Funcky.Monads.Result<Funcky.Monads.Either<TLeft, TValidResult>>
+static Funcky.Monads.EitherExtensions.Flatten<TLeft, TRight>(this Funcky.Monads.Either<TLeft, Funcky.Monads.Either<TLeft, TRight>> either) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Monads.Lazy.FromFunc<T>(System.Func<T>! valueFactory) -> System.Lazy<T>!
 static Funcky.Monads.Lazy.Return<T>(T value) -> System.Lazy<T>!
 static Funcky.Monads.LazyExtensions.Select<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
 static Funcky.Monads.LazyExtensions.SelectMany<T, TLazy, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
 static Funcky.Monads.LazyExtensions.SelectMany<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!
+static Funcky.Monads.LazyExtensions.Flatten<T>(this System.Lazy<System.Lazy<T>!>! lazy) -> System.Lazy<T>!
 static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
 static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
@@ -797,12 +799,14 @@ static Funcky.Monads.OptionExtensions.Traverse<TItem, T>(this Funcky.Monads.Opti
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TEnvironment, TResult>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Option<TResult>>!
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TLeft, TRight>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Either<TLeft, TRight>>! selector) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Option<TRight>>
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TValidResult>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Result<TValidResult>>! selector) -> Funcky.Monads.Result<Funcky.Monads.Option<TValidResult>>
+static Funcky.Monads.OptionExtensions.Flatten<T>(this Funcky.Monads.Option<Funcky.Monads.Option<T>> option) -> Funcky.Monads.Option<T>
 static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
 static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.Reader<TEnvironment>.Return<TResult>(TResult value) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.Select<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, TResult>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TReader, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TReader>!>! selector, System.Func<TSource, TReader, TResult>! resultSelector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.ReaderExtensions.SelectMany<TEnvironment, TSource, TResult>(this Funcky.Monads.Reader<TEnvironment, TSource>! source, System.Func<TSource, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, TResult>!
+static Funcky.Monads.ReaderExtensions.Flatten<TEnvironment, TItem>(this Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Reader<TEnvironment, TItem>!>! reader) -> Funcky.Monads.Reader<TEnvironment, TItem>!
 static Funcky.Monads.Result.Ok<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.Return<TValidResult>(TValidResult result) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result<TValidResult>.Error(System.Exception! exception) -> Funcky.Monads.Result<TValidResult>
@@ -819,6 +823,7 @@ static Funcky.Monads.ResultExtensions.Traverse<TValidResult, T>(this Funcky.Mona
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TEnvironment, TResult>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Reader<TEnvironment, TResult>!>! selector) -> Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Result<TResult>>!
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TItem>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<Funcky.Monads.Result<TItem>>
 static Funcky.Monads.ResultExtensions.Traverse<TValidResult, TLeft, TRight>(this Funcky.Monads.Result<TValidResult> result, System.Func<TValidResult, Funcky.Monads.Either<TLeft, TRight>>! selector) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Result<TRight>>
+static Funcky.Monads.ResultExtensions.Flatten<T>(this Funcky.Monads.Result<Funcky.Monads.Result<T>> result) -> Funcky.Monads.Result<T>
 static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Sequence.Cycle<TResult>(TResult element) -> System.Collections.Generic.IEnumerable<TResult>!

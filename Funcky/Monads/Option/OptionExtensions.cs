@@ -4,6 +4,10 @@ namespace Funcky.Monads;
 
 public static partial class OptionExtensions
 {
+    public static Option<T> Flatten<T>(this Option<Option<T>> option)
+        where T : notnull
+        => option.SelectMany(Identity);
+
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, TLeft left)
         where TLeft : notnull
         where TRight : notnull
