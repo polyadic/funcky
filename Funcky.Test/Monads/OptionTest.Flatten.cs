@@ -17,6 +17,6 @@ public sealed partial class OptionTest
     [Fact]
     public void FlattenSomeSomeIsSome()
     {
-        Assert.Equal(4711, FunctionalAssert.Some(Option.Some(Option.Some(4711)).Flatten()));
+        FunctionalAssert.Some(4711, Option.Some(Option.Some(4711)).Flatten());
     }
 }

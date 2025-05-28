@@ -17,6 +17,6 @@ public sealed partial class EitherTest
     [Fact]
     public void FlattenRightRightIsRight()
     {
-        Assert.Equal(4711, FunctionalAssert.Right(Either<string, Either<string, int>>.Right(Either<string, int>.Right(4711)).Flatten()));
+        FunctionalAssert.Right(4711, Either<string, Either<string, int>>.Right(Either<string, int>.Right(4711)).Flatten());
     }
 }

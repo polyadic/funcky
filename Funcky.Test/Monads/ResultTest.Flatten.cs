@@ -17,6 +17,6 @@ public sealed partial class ResultTest
     [Fact]
     public void FlattenSomeSomeIsSome()
     {
-        Assert.Equal(4711, FunctionalAssert.Ok(Result.Ok(Result.Ok(4711)).Flatten()));
+        FunctionalAssert.Ok(4711, Result.Ok(Result.Ok(4711)).Flatten());
     }
 }
