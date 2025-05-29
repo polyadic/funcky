@@ -123,6 +123,7 @@ Funcky.Monads.OptionEqualityComparer<TItem>
 Funcky.Monads.OptionExtensions
 Funcky.Monads.OptionJsonConverter
 Funcky.Monads.OptionJsonConverter.OptionJsonConverter() -> void
+Funcky.Monads.IEnumerableExtensions
 Funcky.Monads.Reader<TEnvironment, TResult>
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
@@ -800,6 +801,7 @@ static Funcky.Monads.OptionExtensions.Traverse<TItem, TEnvironment, TResult>(thi
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TLeft, TRight>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Either<TLeft, TRight>>! selector) -> Funcky.Monads.Either<TLeft, Funcky.Monads.Option<TRight>>
 static Funcky.Monads.OptionExtensions.Traverse<TItem, TValidResult>(this Funcky.Monads.Option<TItem> option, System.Func<TItem, Funcky.Monads.Result<TValidResult>>! selector) -> Funcky.Monads.Result<Funcky.Monads.Option<TValidResult>>
 static Funcky.Monads.OptionExtensions.Flatten<T>(this Funcky.Monads.Option<Funcky.Monads.Option<T>> option) -> Funcky.Monads.Option<T>
+static Funcky.Monads.IEnumerableExtensions.Flatten<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>!>! enumerable) -> System.Collections.Generic.IEnumerable<T>!
 static Funcky.Monads.Reader<TEnvironment>.FromAction(System.Action<TEnvironment>! action) -> Funcky.Monads.Reader<TEnvironment, Funcky.Unit>!
 static Funcky.Monads.Reader<TEnvironment>.FromFunc<TResult>(System.Func<TEnvironment, TResult>! function) -> Funcky.Monads.Reader<TEnvironment, TResult>!
 static Funcky.Monads.Reader<TEnvironment>.Return<TResult>(TResult value) -> Funcky.Monads.Reader<TEnvironment, TResult>!
