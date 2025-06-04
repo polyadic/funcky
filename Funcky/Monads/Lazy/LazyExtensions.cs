@@ -6,5 +6,5 @@ namespace Funcky.Monads;
 public static partial class LazyExtensions
 {
     public static Lazy<T> Flatten<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(this Lazy<Lazy<T>> lazy)
-        => new Lazy<T>(() => lazy.Value.Value);
+        => Lazy.FromFunc(() => lazy.Value.Value);
 }
