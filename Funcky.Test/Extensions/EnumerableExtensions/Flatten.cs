@@ -1,6 +1,6 @@
-namespace Funcky.Test.Monads;
+namespace Funcky.Test.Extensions.EnumerableExtensions;
 
-public sealed partial class IEnumerableTest
+public sealed class Flatten
 {
     [Fact]
     public void FlattenFlatsIEnumerable()

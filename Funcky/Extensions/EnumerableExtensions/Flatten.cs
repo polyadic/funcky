@@ -1,8 +1,7 @@
-namespace Funcky.Monads;
+namespace Funcky.Extensions;
 
-public static partial class IEnumerableExtensions
+public static partial class EnumerableExtensions
 {
     public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
-        where T : notnull
         => enumerable.SelectMany(Identity);
 }
