@@ -9,7 +9,7 @@ public sealed partial class ResultTest
     }
 
     [Fact]
-    public void FlattenSomeNoneIsNone()
+    public void FlattenOkErrorIsError()
     {
         FunctionalAssert.Error(Result.Ok(Result<int>.Error(new Exception())).Flatten());
     }
