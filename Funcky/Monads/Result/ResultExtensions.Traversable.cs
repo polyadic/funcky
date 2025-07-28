@@ -3,7 +3,7 @@ using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
 
 namespace Funcky.Monads;
 
-public static class ResultExtensions
+public static partial class ResultExtensions
 {
     [Pure]
     public static Either<TLeft, Result<TRight>> Traverse<TValidResult, TLeft, TRight>(
