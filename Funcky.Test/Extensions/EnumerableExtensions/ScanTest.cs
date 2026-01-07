@@ -3,7 +3,7 @@ using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Test.TestUtils;
 
-namespace Funcky.Test.Extensions.AsyncEnumerableExtensions;
+namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public class ScanTest
 {

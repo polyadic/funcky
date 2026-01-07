@@ -33,8 +33,6 @@
     <File Path="README.md" />
     <File Path="SupportPolicy.md" />
   </Folder>
-  <Project Path="Funcky.Async.Test/Funcky.Async.Test.csproj" />
-  <Project Path="Funcky.Async/Funcky.Async.csproj" />
   <Project Path="Funcky.FsCheck/Funcky.FsCheck.fsproj" />
   <Project Path="Funcky.Test.Internal/Funcky.Test.Internal.csproj" />
   <Project Path="Funcky.Test/Funcky.Test.csproj" />

@@ -8,4 +8,7 @@ internal sealed class CountCreation
     }
 
     public static int Count { get; private set; }
+
+    public static void Reset()
+        => Count = 0;
 }

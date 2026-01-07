@@ -7,6 +7,8 @@ public sealed class TransposeTest
     [Fact]
     public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
     {
+        CountCreation.Reset();
+
         const int numberOfRows = 5;
         const int numberOfColumns = 3;
         var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
