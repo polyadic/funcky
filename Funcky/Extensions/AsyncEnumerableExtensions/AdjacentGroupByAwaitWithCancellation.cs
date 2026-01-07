@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using static Funcky.Async.ValueTaskFactory;
+using static Funcky.ValueTaskFactory;
 
 namespace Funcky.Extensions;
 

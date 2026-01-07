@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Funcky.Async;
+namespace Funcky;
 
 internal static class ValueTaskFactory
 {

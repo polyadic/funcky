@@ -11,7 +11,6 @@
     <ItemGroup>
         <!-- Analyze the whole library, even if attributed with "IsTrimmable" -->
         <TrimmerRootAssembly Include="Funcky" />
-        <TrimmerRootAssembly Include="Funcky.Async" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />

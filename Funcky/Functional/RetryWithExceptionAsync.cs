@@ -1,5 +1,5 @@
 using Funcky.RetryPolicies;
-using static Funcky.Async.ValueTaskFactory;
+using static Funcky.ValueTaskFactory;
 
 namespace Funcky;
 
