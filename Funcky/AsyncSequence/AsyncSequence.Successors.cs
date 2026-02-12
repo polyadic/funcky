@@ -5,7 +5,7 @@ public static partial class AsyncSequence
 {
     /// <summary>
     /// Generates a sequence based on a <paramref name="successor"/> function stopping at the first <see cref="Option{TItem}.None"/> value.
-    /// This is essentially the inverse operation of an <see cref="AsyncEnumerable.AggregateAsync{T}"/>.
+    /// This is essentially the inverse operation of an <see cref="System.Linq.AsyncEnumerable.AggregateAsync{TSource}(System.Collections.Generic.IAsyncEnumerable{TSource}, System.Func{TSource, TSource, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask{TSource}}, System.Threading.CancellationToken)"/>.
     /// </summary>
     /// <param name="first">The first element of the sequence.</param>
     /// <param name="successor">Generates the next element of the sequence or <see cref="Option{TItem}.None"/> based on the previous item.</param>

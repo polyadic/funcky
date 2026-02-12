@@ -54,7 +54,7 @@ public static partial class AsyncEnumerableExtensions
     [Pure]
     public static ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
         where TResult : notnull
-        => source.Select(selector).AggregateAsync(Option<TResult>.None, async (min, current, _) => MaxAggregator.Aggregate(min, await current), cancellationToken);
+        => source.Select(selector).AggregateAsync(Option<TResult>.None, async (min, current, _) => MaxAggregator.Aggregate(min, await current.ConfigureAwait(false)), cancellationToken);
 
     /// <summary>
     /// Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.

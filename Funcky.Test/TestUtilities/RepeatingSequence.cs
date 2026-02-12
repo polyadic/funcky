@@ -38,11 +38,11 @@ public static class RepeatingSequence
                 .Range(0, count)
                 .AggregateAsync(true, AggregateEquality);
 
-        public async ValueTask<bool> AggregateEquality(bool b, int i, CancellationToken token)
+        public async ValueTask<bool> AggregateEquality(bool b, int i, CancellationToken cancellationToken)
             => b && await _sequence
-                .Skip(i * await _pattern.CountAsync(token))
+                .Skip(i * await _pattern.CountAsync(cancellationToken))
                 .Zip(_pattern, (l, r) => l == r)
-                .AllAsync(Identity, token);
+                .AllAsync(Identity, cancellationToken);
     }
 #endif
 }
