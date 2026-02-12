@@ -314,7 +314,6 @@ static Funcky.Extensions.EnumerableExtensions.Sequence<TLeft, TSource>(this Syst
 static Funcky.Extensions.EnumerableExtensions.Sequence<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Option<TSource>>! source) -> Funcky.Monads.Option<System.Collections.Generic.IReadOnlyList<TSource>!>
 static Funcky.Extensions.EnumerableExtensions.Sequence<TSource>(this System.Collections.Generic.IEnumerable<Funcky.Monads.Result<TSource>>! source) -> Funcky.Monads.Result<System.Collections.Generic.IReadOnlyList<TSource>!>
 static Funcky.Extensions.EnumerableExtensions.Sequence<TSource>(this System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>! sequence) -> System.Lazy<System.Collections.Generic.IEnumerable<TSource>!>!
-static Funcky.Extensions.EnumerableExtensions.Shuffle<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IReadOnlyList<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Shuffle<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Random! random) -> System.Collections.Generic.IReadOnlyList<TSource>!
 static Funcky.Extensions.EnumerableExtensions.SingleOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<TSource>
 static Funcky.Extensions.EnumerableExtensions.SingleOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> Funcky.Monads.Option<TSource>

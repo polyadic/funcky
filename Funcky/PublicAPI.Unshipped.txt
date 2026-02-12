@@ -70,8 +70,13 @@ static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Col
 static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, int startIndex, int count, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.ListExtensions.LastIndexOfOrNone<TItem>(this System.Collections.Immutable.IImmutableList<TItem>! list, TItem item, System.Collections.Generic.IEqualityComparer<TItem>? equalityComparer) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.OrderedDictionaryExtensions.IndexOfOrNone<TKey, TValue>(this System.Collections.Generic.OrderedDictionary<TKey, TValue>! dictionary, TKey key) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseGuidOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Guid>
+static Funcky.Extensions.ParseExtensions.ParseIPAddressOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this string? candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
+static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
 static Funcky.Extensions.ParseExtensions.ParseIPNetworkOrNone(this System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<System.Net.IPNetwork>
+static Funcky.Extensions.ParseExtensions.ParseVersionOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Version!>
 static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, Funcky.Unit p4, T5 p5) -> System.Func<T1, T2, T3, T4, TResult>!
 static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, Funcky.Unit p5) -> System.Func<T1, T2, T3, T5, TResult>!
 static Funcky.Functional.Apply<T1, T2, T3, T4, T5, TResult>(System.Func<T1, T2, T3, T4, T5, TResult>! func, Funcky.Unit p1, Funcky.Unit p2, Funcky.Unit p3, T4 p4, T5 p5) -> System.Func<T1, T2, T3, TResult>!
