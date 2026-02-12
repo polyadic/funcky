@@ -1,4 +1,4 @@
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 using static Funcky.Discard;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;

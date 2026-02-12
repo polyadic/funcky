@@ -2,7 +2,7 @@ using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
 #if !SHUFFLE_EXTENSION
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 using Xunit.Sdk;
 #endif
 
