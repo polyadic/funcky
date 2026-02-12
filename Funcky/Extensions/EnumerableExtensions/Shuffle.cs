@@ -6,6 +6,7 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
+#if !SHUFFLE_EXTENSION
     /// <summary>
     /// Returns the given sequence eagerly in random Order in O(n).
     /// </summary>
@@ -14,6 +15,7 @@ public static partial class EnumerableExtensions
     [Pure]
     public static IReadOnlyList<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
         => source.Shuffle(new Random());
+#endif
 
     /// <summary>
     /// Returns the given sequence eagerly in random Order in O(n).
@@ -32,5 +34,5 @@ public static partial class EnumerableExtensions
         => source
             .ToList()
             .ToRandomList(random);
-    #endif
+#endif
 }
