@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FunckyNewestTargetFramework>net10.0</FunckyNewestTargetFramework>
-        <TargetFrameworks>$(FunckyNewestTargetFramework);net9.0;net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>

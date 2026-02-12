@@ -1,4 +1,3 @@
-#if SHUFFLE_EXTENSION
 #if !RANDOM_SHUFFLE
 using Funcky.Internal;
 #endif
@@ -28,4 +27,3 @@ public static partial class AsyncEnumerableExtensions
         => (await source.ToListAsync(cancellationToken).ConfigureAwait(false)).ToRandomList(random);
 #endif
 }
-#endif

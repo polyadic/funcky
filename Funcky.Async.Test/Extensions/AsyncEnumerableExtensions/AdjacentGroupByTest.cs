@@ -29,7 +29,7 @@ public sealed class AdjacentGroupByTest
     public async Task GivenAnEmptySequenceAnyKeySelectorReturnsAnEmptySequence()
     {
         var empty = AsyncEnumerable.Empty<DateTime>();
-
+        
         await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.Month));
         await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.DayOfYear / 7));
         await AsyncAssert.Empty(empty.AdjacentGroupBy(date => date.Year));
