@@ -1,7 +1,7 @@
 using FsCheck;
 using FsCheck.Fluent;
 using Funcky.FsCheck;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Monads;
 

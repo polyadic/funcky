@@ -17,6 +17,7 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
         <EnablePackageValidation>true</EnablePackageValidation>
+        <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
         <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     </PropertyGroup>
     <PropertyGroup>

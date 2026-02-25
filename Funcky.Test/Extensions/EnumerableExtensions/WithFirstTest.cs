@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 

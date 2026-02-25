@@ -1,4 +1,4 @@
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Monads;
 

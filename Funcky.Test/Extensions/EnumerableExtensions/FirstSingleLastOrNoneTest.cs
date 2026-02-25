@@ -1,6 +1,6 @@
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using System.Collections;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;

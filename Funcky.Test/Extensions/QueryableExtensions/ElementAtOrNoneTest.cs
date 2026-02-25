@@ -3,7 +3,7 @@ using FsCheck.Xunit;
 #if ELEMENT_AT_INDEX
 using Funcky.FsCheck;
 #endif
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Extensions.QueryableExtensions;
 
