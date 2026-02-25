@@ -5,7 +5,7 @@ namespace Funcky.Extensions;
 public static partial class AsyncEnumerableExtensions
 {
     /// <summary>
-    /// Scan generates a sequence known as the the inclusive prefix sum.
+    /// Scan generates a sequence known as the inclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
@@ -17,7 +17,7 @@ public static partial class AsyncEnumerableExtensions
         => InclusiveScanEnumerable(source, seed, accumulator);
 
     /// <summary>
-    /// Scan generates a sequence known as the the inclusive prefix sum.
+    /// Scan generates a sequence known as the inclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
@@ -29,7 +29,7 @@ public static partial class AsyncEnumerableExtensions
         => InclusiveScanAwaitEnumerable(source, seed, accumulator);
 
     /// <summary>
-    /// Scan generates a sequence known as the the inclusive prefix sum.
+    /// Scan generates a sequence known as the inclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
@@ -41,7 +41,7 @@ public static partial class AsyncEnumerableExtensions
         => InclusiveScanAwaitWithCancellationEnumerable(source, seed, accumulator);
 
     /// <summary>
-    /// Scan generates a sequence known as the the exclusive prefix sum.
+    /// Scan generates a sequence known as the exclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
@@ -53,7 +53,7 @@ public static partial class AsyncEnumerableExtensions
         => ExclusiveScanEnumerable(source, seed, accumulator);
 
     /// <summary>
-    /// Scan generates a sequence known as the the exclusive prefix sum.
+    /// Scan generates a sequence known as the exclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
@@ -65,7 +65,7 @@ public static partial class AsyncEnumerableExtensions
         => ExclusiveScanAwaitEnumerable(source, seed, accumulator);
 
     /// <summary>
-    /// Scan generates a sequence known as the the exclusive prefix sum.
+    /// Scan generates a sequence known as the exclusive prefix sum.
     /// </summary>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
     /// <typeparam name="TAccumulate">The seed and target type.</typeparam>

@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## Funcky 3.6.0
+
+This update is mainly to update to .NET 10.
+
+* remove dependency to System.Linq.Async because it is integrated into .NET 10
+* Integrate Funcky.Async into Funcky, as the async extensions are now in the same assembly as the sync ones.
+  * This means that there is no longer a separate `Funcky.Async` package.
+
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
 This is a patch release which fixes vulnerability warnings of (direct and transitive) dependencies.
