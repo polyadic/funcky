@@ -133,4 +133,8 @@
     <value>Use ConcatToString</value>
     <comment>The title of the code fix.</comment>
   </data>
+  <data name="SequenceReturnCollectionExpressionCodeFixTitle" xml:space="preserve">
+    <value>Use collection expression</value>
+    <comment>The title of the code fix.</comment>
+  </data>
 </root>
