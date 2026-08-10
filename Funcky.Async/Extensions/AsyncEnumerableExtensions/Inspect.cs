@@ -11,7 +11,7 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TSource">The inner type of the async enumerable.</typeparam>
     /// <param name="source">An async enumerable.</param>
     /// <param name="inspector">A synchronous action.</param>
-    /// <returns>Returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
+    /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Inspect<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> inspector)
         => InspectInternal(source, inspector);
@@ -23,7 +23,7 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TSource">The inner type of the async enumerable.</typeparam>
     /// <param name="source">An async enumerable.</param>
     /// <param name="inspector">An asynchronous action.</param>
-    /// <returns>Returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
+    /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> InspectAwait<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> inspector)
         => InspectAwaitInternal(source, inspector);
@@ -35,7 +35,7 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TSource">The inner type of the async enumerable.</typeparam>
     /// <param name="source">An async enumerable.</param>
     /// <param name="inspector">An asynchronous action.</param>
-    /// <returns>Returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
+    /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> InspectAwaitWithCancellation<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask> inspector)
         => InspectAwaitWithCancellationInternal(source, inspector);
