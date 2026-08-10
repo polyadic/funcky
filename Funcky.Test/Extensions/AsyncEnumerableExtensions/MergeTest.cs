@@ -76,5 +76,12 @@ public sealed class MergeTest
 
         return AsyncAssert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
     }
+
+    [Fact]
+    public async Task CancellationIsPropagated()
+    {
+        var canceledToken = new CancellationToken(canceled: true);
+        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(AsyncEnumerable.Empty<Unit>()).ToListAsync(canceledToken);
+    }
 }
 #endif
