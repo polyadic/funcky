@@ -11,7 +11,7 @@ public static partial class AsyncEnumerableExtensions
         where TValidResult : notnull
         => source.PartitionAsync(ResultPartitions.Create, cancellationToken);
 
-    /// <summary>Partitions the either values in an <see cref="IEnumerable{T}"/> into an error and ok partition.</summary>
+    /// <inheritdoc cref="PartitionAsync{TValidResult}(IAsyncEnumerable{Result{TValidResult}},CancellationToken)"/>
     public static async ValueTask<TResult> PartitionAsync<TValidResult, TResult>(
         this IAsyncEnumerable<Result<TValidResult>> source,
         Func<IReadOnlyList<Exception>, IReadOnlyList<TValidResult>, TResult> resultSelector,
