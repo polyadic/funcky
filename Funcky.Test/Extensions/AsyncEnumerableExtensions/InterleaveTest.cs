@@ -97,5 +97,12 @@ public sealed class InterleaveTest
             expected = (expected % 4) + 1;
         }
     }
+
+    [Fact]
+    public async Task CancellationIsPropagated()
+    {
+        var canceledToken = new CancellationToken(canceled: true);
+        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Interleave(new AssertIsCancellationRequestedAsyncSequence<Unit>()).ToListAsync(canceledToken);
+    }
 }
 #endif
