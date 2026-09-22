@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+* Fix: awaiting an empty `Option<Task>`, `Option<Task<T>>`, `Option<ValueTask>` or `Option<ValueTask<T>>`
+  via the awaiter's `OnCompleted` method never invoked the continuation. The `await` keyword was not
+  affected, because the compiler checks `IsCompleted` first, but custom schedulers and other
+  awaiter-based code could hang forever.
+* The `Option` awaiters now implement `ICriticalNotifyCompletion`, so `await` no longer needs to
+  flow the `ExecutionContext` when the underlying task awaiter does not either.
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
