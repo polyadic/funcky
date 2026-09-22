@@ -96,4 +96,14 @@ public sealed class InterleaveTest
             expected = (expected % 4) + 1;
         }
     }
+
+    [Fact]
+    public async Task CancellationIsPropagated()
+    {
+        // System.Linq.Async throws for an already canceled token, so the interleaved sequence
+        // is expected to be canceled after the inner sequences have observed the token.
+        var canceledToken = new CancellationToken(canceled: true);
+        var interleaved = new AssertIsCancellationRequestedAsyncSequence<Unit>().Interleave(new AssertIsCancellationRequestedAsyncSequence<Unit>());
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await interleaved.ToListAsync(canceledToken));
+    }
 }
