@@ -1,6 +1,7 @@
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
+using Funcky.Async.Test.TestUtilities;
 using Funcky.RetryPolicies;
 using static Funcky.AsyncFunctional;
 
@@ -49,6 +50,16 @@ public sealed class RetryWithExceptionAsyncTest
 
         const int firstCall = 1;
         return (called == firstCall + retries.Get).ToProperty();
+    }
+
+    [Fact]
+    public async Task RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        await Assert.ThrowsAsync<ExceptionStub>(async () => await RetryAsync(Throw<Unit>, True, retryPolicy));
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
     }
 
     private static TResult Throw<TResult>() => throw new ExceptionStub();

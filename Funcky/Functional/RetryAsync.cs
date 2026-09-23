@@ -35,7 +35,7 @@ public static partial class AsyncFunctional
             .Select((int item, CancellationToken _) => ProduceDelayedAsync(producer, retryPolicy, cancellationToken)(item));
 
     private static IAsyncEnumerable<int> Retries(IRetryPolicy retryPolicy)
-        => AsyncEnumerable.Range(0, retryPolicy.MaxRetries);
+        => AsyncEnumerable.Range(1, retryPolicy.MaxRetries);
 
     private static Func<int, ValueTask<Option<TResult>>> ProduceDelayedAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
         where TResult : notnull

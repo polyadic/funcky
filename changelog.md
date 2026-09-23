@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+* Fix: the `Option`-based `Retry` and `RetryAsync` overloads numbered the retries from 0 while the
+  exception-based overloads numbered them from 1, so the same `IRetryPolicy` produced different delays
+  depending on the overload. With a `LinearBackOffRetryPolicy` the `Option`-based overloads retried
+  immediately the first time. `IRetryPolicy.Delay(retryCount)` is now documented as one-based
+  (`Delay(1)` is the wait before the first retry) and all overloads follow that contract.
+* Fix: `ExponentialBackOffRetryPolicy` now waits `firstDelay` before the first retry, like
+  `LinearBackOffRetryPolicy`. Previously the first delay was `firstDelay * 1.5` with the
+  exception-based `Retry` overloads.
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
