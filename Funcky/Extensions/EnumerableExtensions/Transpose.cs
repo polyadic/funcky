@@ -50,10 +50,11 @@ public static partial class EnumerableExtensions
             }
         }
 
-        return advancedRows == 0
-            ? false
-            : advancedRows == rows.Count
-                ? true
-                : throw new InvalidOperationException("Transpose requires a rectangular matrix, but the rows do not all have the same length.");
+        return advancedRows switch
+        {
+            0 => false,
+            _ when advancedRows == rows.Count => true,
+            _ => throw new InvalidOperationException("Transpose requires a rectangular matrix, but the rows do not all have the same length."),
+        };
     }
 }
