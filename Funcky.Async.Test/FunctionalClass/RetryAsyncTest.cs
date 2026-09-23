@@ -84,6 +84,16 @@ public sealed class RetryAsyncTest
         await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None), new ConstantDelayPolicy(10, delay), source.Token));
     }
 
+    [Fact]
+    public async Task RetriesTheProducerManyTimesWithoutOverflowingTheStack()
+    {
+        const int failedAttempts = 100_000;
+        var producer = new OptionProducer<int>(failedAttempts, 42);
+
+        Assert.Equal(42, await RetryAsync(producer.ProduceAsync));
+        Assert.Equal(failedAttempts + 1, producer.Called);
+    }
+
     private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)
         => async () =>
         {
