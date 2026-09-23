@@ -29,6 +29,16 @@ public sealed class RetryTest
         Assert.Single(stack);
     }
 
+    [Fact]
+    public void RetriesTheProducerManyTimesWithoutOverflowingTheStack()
+    {
+        const int failedAttempts = 100_000;
+        var producer = new OptionProducer<int>(failedAttempts, 42);
+
+        Assert.Equal(42, Retry(producer.Produce));
+        Assert.Equal(failedAttempts + 1, producer.Called);
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
