@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+* Fix: `Transpose` enumerated the outer sequence three times, two of them eagerly when the method was
+  called. It now enumerates the outer sequence exactly once, lazily, when the first column is requested. (#895)
+* Breaking: `Transpose` now throws an `InvalidOperationException` when the rows do not all have the same
+  length, instead of silently producing a wrongly shaped result. The behaviour for jagged input was
+  documented as undefined. (#895)
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
