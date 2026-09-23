@@ -1,22 +1,60 @@
-#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
     /// <summary>
-    /// On a rectangular matrix (sequence of sequence where every inner sequence is of the same length) this extension function produces the transposed matrix (rows and columns switched).
-    /// PRECONDITION: rectangular matrix -> The result for ragged sequences is not defined, and can change as an implementation detail.
+    /// On a rectangular matrix (sequence of sequences where every inner sequence is of the same length) this extension function produces the transposed matrix (rows and columns switched).
     /// </summary>
-    /// <remarks>The transpose extension function only returns a transposed matrix for rectangular matrices. The sequence elements are yielded lazily however the outer sequence will be iterated greedily once to count its length.</remarks>
+    /// <remarks>
+    /// The columns are yielded lazily: the outer sequence is enumerated once when the first column is requested,
+    /// and every row is advanced by exactly one element per column.
+    /// </remarks>
     /// <param name="source">A source matrix.</param>
     /// <typeparam name="TSource">The type of the elements of the source matrix.</typeparam>
-    /// <returns>A partially lazy transposition of a matrix.</returns>
+    /// <returns>A lazy transposition of the matrix.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the rows of <paramref name="source"/> do not all have the same length.</exception>
     [Pure]
-    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "We need to know the length of the outer IEnumerable to Chunk correctly, we only iterate the outer sequence, which should be cheap")]
     public static IEnumerable<IReadOnlyList<TSource>> Transpose<TSource>(this IEnumerable<IEnumerable<TSource>> source)
-        => source.Any()
-            ? source.Interleave().Chunk(source.Count())
-            : [];
+    {
+        var rows = new List<IEnumerator<TSource>>();
+
+        try
+        {
+            foreach (var row in source)
+            {
+                rows.Add(row.GetEnumerator());
+            }
+
+            while (MoveToNextColumn(rows))
+            {
+                yield return rows.Select(row => row.Current).ToImmutableList();
+            }
+        }
+        finally
+        {
+            rows.ForEach(row => row.Dispose());
+        }
+    }
+
+    private static bool MoveToNextColumn<TSource>(List<IEnumerator<TSource>> rows)
+    {
+        var advancedRows = 0;
+
+        foreach (var row in rows)
+        {
+            if (row.MoveNext())
+            {
+                advancedRows++;
+            }
+        }
+
+        return advancedRows switch
+        {
+            0 => false,
+            _ when advancedRows == rows.Count => true,
+            _ => throw new InvalidOperationException("Transpose requires a rectangular matrix, but the rows do not all have the same length."),
+        };
+    }
 }

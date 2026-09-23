@@ -5,19 +5,31 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 public sealed class TransposeTest
 {
     [Fact]
-    public async Task TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
+    public async Task TransposeEnumeratesTheOuterSequenceLazilyAndOnlyOnce()
     {
-        const int numberOfRows = 5;
-        const int numberOfColumns = 3;
-        var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
+        var enumerations = 0;
 
-        var transposedMatrix = lazyMatrix.Transpose();
+        var transposed = CountingMatrix(() => enumerations++).Transpose();
+        Assert.Equal(0, enumerations);
 
-        Assert.Equal(0, CountCreation.Count);
+        await transposed.ToListAsync();
+        Assert.Equal(1, enumerations);
+    }
 
-        await transposedMatrix.ForEachAsync(row => _ = row.ToList());
+    [Fact]
+    public async Task TransposeEnumeratesTheInnerSequencesLazily()
+    {
+        var enumeratedElements = 0;
+        var lazyMatrix = Enumerable.Range(0, 5).Select(_ => AsyncEnumerable.Range(0, 3).Select(_ => enumeratedElements++));
 
-        Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
+        await using var columns = lazyMatrix.Transpose().GetAsyncEnumerator();
+        Assert.Equal(0, enumeratedElements);
+
+        Assert.True(await columns.MoveNextAsync());
+        Assert.Equal(5, enumeratedElements);
+
+        Assert.True(await columns.MoveNextAsync());
+        Assert.Equal(10, enumeratedElements);
     }
 
     [Fact]
@@ -57,17 +69,33 @@ public sealed class TransposeTest
     }
 
     [Fact]
-    public async Task GivenAJaggedArrayTheTransposeDoesNotWorkAsExpected()
+    public async Task TransposingAJaggedMatrixThrows()
     {
-        // Jagged sequences do not work!
-        // If you use jagged sequences, in Transpose you are using an implementation detail which could change.
         var transposed = JaggedMatrixExample().Transpose();
 
-        await AsyncAssert.Collection(
-            transposed,
-            row => { Assert.Equal([1, 6, 5, 10], row); },
-            row => { Assert.Equal([2, 9, 3, 42], row); },
-            row => { Assert.Equal([4], row); });
+        await Assert.ThrowsAsync<InvalidOperationException>(async () => await transposed.ToListAsync());
+    }
+
+    [Fact]
+    public async Task TransposingAJaggedMatrixYieldsTheRectangularColumnsBeforeThrowing()
+    {
+        var jaggedMatrix = Sequence.Return(AsyncSequence.Return(1, 2, 3), AsyncSequence.Return(4, 5));
+
+        await using var columns = jaggedMatrix.Transpose().GetAsyncEnumerator();
+
+        Assert.True(await columns.MoveNextAsync());
+        Assert.Equal([1, 4], columns.Current);
+        Assert.True(await columns.MoveNextAsync());
+        Assert.Equal([2, 5], columns.Current);
+        await Assert.ThrowsAsync<InvalidOperationException>(async () => await columns.MoveNextAsync());
+    }
+
+    [Fact]
+    public async Task TransposingAMatrixWithEmptyRowsResultsInAnEmptyMatrix()
+    {
+        var matrix = Sequence.Return(AsyncEnumerable.Empty<int>(), AsyncEnumerable.Empty<int>());
+
+        await AsyncAssert.Empty(matrix.Transpose());
     }
 
     private static IEnumerable<IAsyncEnumerable<int>> MagicSquare()
@@ -95,8 +123,12 @@ public sealed class TransposeTest
             AsyncSequence.Return(10)
         ];
 
-    private static IEnumerable<IAsyncEnumerable<CountCreation>> LazyMatrix(int rows, int columns) =>
-        from row in Enumerable.Range(0, rows)
-        select from column in AsyncEnumerable.Range(0, columns)
-               select new CountCreation();
+    private static IEnumerable<IAsyncEnumerable<int>> CountingMatrix(Action onEnumeration)
+    {
+        onEnumeration();
+
+        yield return AsyncSequence.Return(1, 2, 3, 4);
+        yield return AsyncSequence.Return(5, 6, 7, 8);
+        yield return AsyncSequence.Return(9, 10, 11, 12);
+    }
 }
