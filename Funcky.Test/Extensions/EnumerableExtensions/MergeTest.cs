@@ -11,6 +11,9 @@ namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public sealed class MergeTest
 {
+    private static readonly Option<IComparer<(int Key, string Tag)>> KeyComparer
+        = Comparer<(int Key, string Tag)>.Create((left, right) => left.Key.CompareTo(right.Key));
+
     [Fact]
     public void MergeIsEnumeratedLazily()
     {
@@ -76,5 +79,26 @@ public sealed class MergeTest
         var expected = Enumerable.Range(1, 8).Reverse();
 
         Assert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
+    }
+
+    [Fact]
+    public void MergeIsStableOnEqualElements()
+    {
+        var sequence1 = new List<(int Key, string Tag)> { (1, "A1"), (2, "A2") };
+        var sequence2 = new List<(int Key, string Tag)> { (1, "B1"), (2, "B2") };
+        var expected = new List<(int Key, string Tag)> { (1, "A1"), (1, "B1"), (2, "A2"), (2, "B2") };
+
+        Assert.Equal(expected, sequence1.Merge(sequence2, KeyComparer));
+    }
+
+    [Fact]
+    public void MergeOfASequenceOfSequencesIsStableOnEqualElements()
+    {
+        var sequence1 = new List<(int Key, string Tag)> { (1, "A1"), (2, "A2") };
+        var sequence2 = new List<(int Key, string Tag)> { (1, "B1"), (2, "B2") };
+        var sequence3 = new List<(int Key, string Tag)> { (1, "C1"), (2, "C2") };
+        var expected = new List<(int Key, string Tag)> { (1, "A1"), (1, "B1"), (1, "C1"), (2, "A2"), (2, "B2"), (2, "C2") };
+
+        Assert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
     }
 }
