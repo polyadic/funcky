@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+* Fix: calling `Split(separator)` on an array in C# 14 (the default for .NET 10) bound to
+  `MemoryExtensions.Split(ReadOnlySpan<T>, T)` because of first-class span conversions, so the
+  result was a `SpanSplitEnumerator<T>` instead of an `IEnumerable<IReadOnlyList<T>>` and the
+  following LINQ call failed to compile. An array overload of `Split` now keeps arrays bound to
+  Funcky. (#893)
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
