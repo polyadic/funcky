@@ -26,6 +26,8 @@ public sealed partial class AlternativeMonadAnalyzerTest
 
                 public Option<TItem> OrElse(System.Func<Option<TItem>> fallback) => default!;
 
+                public Option<TResult> Select<TResult>(System.Func<TItem, TResult> selector) where TResult : notnull => default;
+
                 public Option<TResult> SelectMany<TResult>(System.Func<TItem, Option<TResult>> selector) where TResult : notnull => default;
             }
 
@@ -51,6 +53,8 @@ public sealed partial class AlternativeMonadAnalyzerTest
 
                 public static Either<TLeft, TRight> Right(TRight right) => default;
 
+                public static implicit operator Either<TLeft, TRight>(TRight right) => default;
+
                 public TRight GetOrElse(TRight fallback) => default!;
 
                 public TRight GetOrElse(System.Func<TLeft, TRight> fallback) => default!;
@@ -58,6 +62,8 @@ public sealed partial class AlternativeMonadAnalyzerTest
                 public Either<TLeft, TRight> OrElse(Either<TLeft, TRight> fallback) => default;
 
                 public Either<TLeft, TRight> OrElse(System.Func<TLeft, Either<TLeft, TRight>> fallback) => default;
+
+                public Either<TLeft, TResult> Select<TResult>(System.Func<TRight, TResult> selector) where TResult : notnull => default;
 
                 public Either<TLeft, TResult> SelectMany<TResult>(System.Func<TRight, Either<TLeft, TResult>> selector) where TResult : notnull => default;
 
@@ -77,6 +83,8 @@ public sealed partial class AlternativeMonadAnalyzerTest
             {
                 public static Result<TValidResult> Error(System.Exception exception) => default;
 
+                public static implicit operator Result<TValidResult>(TValidResult result) => default;
+
                 public Result<TValidResult> OrElse(Result<TValidResult> fallback) => default;
 
                 public Result<TValidResult> OrElse(System.Func<System.Exception, Result<TValidResult>> fallback) => default;
@@ -84,6 +92,8 @@ public sealed partial class AlternativeMonadAnalyzerTest
                 public TValidResult GetOrElse(TValidResult fallback) => default!;
 
                 public TValidResult GetOrElse(System.Func<System.Exception, TValidResult> fallback) => default!;
+
+                public Result<TResult> Select<TResult>(System.Func<TValidResult, TResult> selector) where TResult : notnull => default;
 
                 public Result<TResult> SelectMany<TResult>(System.Func<TValidResult, Result<TResult>> selector) where TResult : notnull => default;
 

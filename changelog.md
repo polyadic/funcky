@@ -11,6 +11,10 @@ This update is mainly to update to .NET 10.
 * Integrate Funcky.Async into Funcky, as the async extensions are now in the same assembly as the sync ones.
   * This means that there is no longer a separate `Funcky.Async` package.
 
+### Funcky.Analyzers
+The new analyzer rule `λ1011` suggests `Select(f)` over `Match(none: Option<T>.None, some: x => f(x))`
+(and the equivalent shapes for `Either` and `Result`), with a code fix.
+
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
 This is a patch release which fixes vulnerability warnings of (direct and transitive) dependencies.
