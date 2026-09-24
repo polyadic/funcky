@@ -16,7 +16,7 @@ namespace Funcky.Analyzers.AlternativeMonad;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MatchToOrElseCodeFix))]
 public sealed class MatchToOrElseCodeFix : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id, PreferSelectMany.Id);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferGetOrElse.Id, PreferOrElse.Id, PreferSelect.Id, PreferSelectMany.Id);
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -39,6 +39,7 @@ public sealed class MatchToOrElseCodeFix : CodeFixProvider
         {
             _ when diagnosticId == PreferGetOrElse.Id => IdentifierName(GetOrElseMethodName),
             _ when diagnosticId == PreferOrElse.Id => IdentifierName(OrElseMethodName),
+            _ when diagnosticId == PreferSelect.Id => IdentifierName(SelectMethodName),
             _ when diagnosticId == PreferSelectMany.Id => IdentifierName(SelectManyMethodName),
             _ => throw new NotSupportedException("Internal error: This branch should be unreachable"),
         };

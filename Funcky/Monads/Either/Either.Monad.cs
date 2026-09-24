@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Funcky.Monads;
 
 /// <remarks>
@@ -7,6 +9,7 @@ namespace Funcky.Monads;
 public readonly partial struct Either<TLeft, TRight>
 {
     [Pure]
+    [SuppressMessage("Funcky", "λ1011:Prefer Select over Match", Justification = "This is the implementation of Select.")]
     public Either<TLeft, TResult> Select<TResult>(Func<TRight, TResult> selector)
         where TResult : notnull
         => Match(
