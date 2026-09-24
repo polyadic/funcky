@@ -1,13 +1,19 @@
+#if GENERIC_MATH
+using System.Numerics;
+
 namespace Funcky.Extensions;
 
-public class Excluding : IIntervalBoundary
+/// <summary>An interval boundary which excludes its value.</summary>
+public readonly struct Excluding : IIntervalBoundary
 {
-    private Excluding(int number)
-    {
-        Value = number;
-    }
+    [Pure]
+    public static bool IsLowerBoundOf<T>(T boundary, T number)
+        where T : IComparisonOperators<T, T, bool>
+        => boundary < number;
 
-    public int Value { get; }
-
-    public static implicit operator Excluding(int number) => new(number);
+    [Pure]
+    public static bool IsUpperBoundOf<T>(T boundary, T number)
+        where T : IComparisonOperators<T, T, bool>
+        => number < boundary;
 }
+#endif

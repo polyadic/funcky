@@ -10,6 +10,7 @@ This update is mainly to update to .NET 10.
 * remove dependency to System.Linq.Async because it is integrated into .NET 10
 * Integrate Funcky.Async into Funcky, as the async extensions are now in the same assembly as the sync ones.
   * This means that there is no longer a separate `Funcky.Async` package.
+* Add `InRange<TFrom, TTo>(from, to)` extension (.NET 7+) on all BCL numeric types to check whether a value lies within an interval. The boundary kinds are given as type arguments `Including` / `Excluding`, e.g. `5.InRange<Including, Excluding>(0, 10)`. Custom types implementing `IComparisonOperators<T, T, bool>` can use the static `NumberExtensions.InRange<TNumber, TFrom, TTo>`.
 
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
