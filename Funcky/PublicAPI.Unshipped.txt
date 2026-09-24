@@ -2,3 +2,52 @@
 static Funcky.Extensions.AsyncEnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Extensions.AsyncEnumerableExtensions.ChunkAwait<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, System.Threading.Tasks.ValueTask<TResult>>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Extensions.AsyncEnumerableExtensions.ChunkAwaitWithCancellation<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<TResult>>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
+Funcky.Extensions.Excluding
+Funcky.Extensions.Excluding.Excluding() -> void
+Funcky.Extensions.IIntervalBoundary
+Funcky.Extensions.Including
+Funcky.Extensions.Including.Including() -> void
+Funcky.Extensions.NumberExtensions
+Funcky.Extensions.NumberExtensions.extension(byte)
+Funcky.Extensions.NumberExtensions.extension(byte).InRange<TFrom, TTo>(byte from, byte to) -> bool
+Funcky.Extensions.NumberExtensions.extension(sbyte)
+Funcky.Extensions.NumberExtensions.extension(sbyte).InRange<TFrom, TTo>(sbyte from, sbyte to) -> bool
+Funcky.Extensions.NumberExtensions.extension(short)
+Funcky.Extensions.NumberExtensions.extension(short).InRange<TFrom, TTo>(short from, short to) -> bool
+Funcky.Extensions.NumberExtensions.extension(ushort)
+Funcky.Extensions.NumberExtensions.extension(ushort).InRange<TFrom, TTo>(ushort from, ushort to) -> bool
+Funcky.Extensions.NumberExtensions.extension(int)
+Funcky.Extensions.NumberExtensions.extension(int).InRange<TFrom, TTo>(int from, int to) -> bool
+Funcky.Extensions.NumberExtensions.extension(uint)
+Funcky.Extensions.NumberExtensions.extension(uint).InRange<TFrom, TTo>(uint from, uint to) -> bool
+Funcky.Extensions.NumberExtensions.extension(long)
+Funcky.Extensions.NumberExtensions.extension(long).InRange<TFrom, TTo>(long from, long to) -> bool
+Funcky.Extensions.NumberExtensions.extension(ulong)
+Funcky.Extensions.NumberExtensions.extension(ulong).InRange<TFrom, TTo>(ulong from, ulong to) -> bool
+Funcky.Extensions.NumberExtensions.extension(nint)
+Funcky.Extensions.NumberExtensions.extension(nint).InRange<TFrom, TTo>(nint from, nint to) -> bool
+Funcky.Extensions.NumberExtensions.extension(nuint)
+Funcky.Extensions.NumberExtensions.extension(nuint).InRange<TFrom, TTo>(nuint from, nuint to) -> bool
+Funcky.Extensions.NumberExtensions.extension(System.Int128)
+Funcky.Extensions.NumberExtensions.extension(System.Int128).InRange<TFrom, TTo>(System.Int128 from, System.Int128 to) -> bool
+Funcky.Extensions.NumberExtensions.extension(System.UInt128)
+Funcky.Extensions.NumberExtensions.extension(System.UInt128).InRange<TFrom, TTo>(System.UInt128 from, System.UInt128 to) -> bool
+Funcky.Extensions.NumberExtensions.extension(System.Half)
+Funcky.Extensions.NumberExtensions.extension(System.Half).InRange<TFrom, TTo>(System.Half from, System.Half to) -> bool
+Funcky.Extensions.NumberExtensions.extension(float)
+Funcky.Extensions.NumberExtensions.extension(float).InRange<TFrom, TTo>(float from, float to) -> bool
+Funcky.Extensions.NumberExtensions.extension(double)
+Funcky.Extensions.NumberExtensions.extension(double).InRange<TFrom, TTo>(double from, double to) -> bool
+Funcky.Extensions.NumberExtensions.extension(decimal)
+Funcky.Extensions.NumberExtensions.extension(decimal).InRange<TFrom, TTo>(decimal from, decimal to) -> bool
+Funcky.Extensions.NumberExtensions.extension(char)
+Funcky.Extensions.NumberExtensions.extension(char).InRange<TFrom, TTo>(char from, char to) -> bool
+Funcky.Extensions.NumberExtensions.extension(System.Numerics.BigInteger)
+Funcky.Extensions.NumberExtensions.extension(System.Numerics.BigInteger).InRange<TFrom, TTo>(System.Numerics.BigInteger from, System.Numerics.BigInteger to) -> bool
+static Funcky.Extensions.Excluding.IsLowerBoundOf<T>(T boundary, T number) -> bool
+static Funcky.Extensions.Excluding.IsUpperBoundOf<T>(T boundary, T number) -> bool
+static Funcky.Extensions.Including.IsLowerBoundOf<T>(T boundary, T number) -> bool
+static Funcky.Extensions.Including.IsUpperBoundOf<T>(T boundary, T number) -> bool
+static Funcky.Extensions.NumberExtensions.InRange<TNumber, TFrom, TTo>(TNumber number, TNumber from, TNumber to) -> bool
+Funcky.Extensions.IIntervalBoundary.IsLowerBoundOf<T>(T boundary, T number) -> bool
+Funcky.Extensions.IIntervalBoundary.IsUpperBoundOf<T>(T boundary, T number) -> bool
