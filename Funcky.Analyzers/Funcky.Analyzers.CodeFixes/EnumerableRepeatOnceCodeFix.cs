@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Composition;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -31,8 +32,7 @@ public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
         var diagnosticSpan = diagnostic.Location.SourceSpan;
 
         if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration
-            && diagnostic.Properties.TryGetValue(ValueParameterIndexProperty, out var valueParameterIndexProperty)
-            && int.TryParse(valueParameterIndexProperty, out var valueParameterIndex))
+            && diagnostic.TryGetIntProperty(ValueParameterIndexProperty, out var valueParameterIndex))
         {
             context.RegisterCodeFix(new ToSequenceReturnCodeAction(context.Document, declaration, valueParameterIndex), diagnostic);
         }

@@ -1,0 +1,47 @@
+<Solution>
+  <Folder Name="/Analyzers/">
+    <File Path="Funcky.Analyzers/readme.md" />
+    <Project Path="Funcky.Analyzers/Funcky.Analyzers.CodeFixes/Funcky.Analyzers.CodeFixes.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.Analyzers.Package/Funcky.Analyzers.Package.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.Analyzers.Test/Funcky.Analyzers.Test.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.Analyzers.Vsix/Funcky.Analyzers.Vsix.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.Analyzers/Funcky.Analyzers.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers.CodeFixes/Funcky.BuiltinAnalyzers.CodeFixes.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers/Funcky.BuiltinAnalyzers.csproj" />
+  </Folder>
+  <Folder Name="/Build Config/">
+    <File Path="Analyzers.props" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="FrameworkFeatureConstants.props" />
+    <File Path="Funcky/CompatibilitySuppressions.xml" />
+    <File Path="global.json" />
+    <File Path="GlobalUsings.props" />
+    <File Path="GlobalUsings.Test.props" />
+    <File Path="NuGet.config" />
+    <File Path="PublicApiAnalyzers.targets" />
+    <File Path="typos.toml" />
+  </Folder>
+  <Folder Name="/Generators/">
+    <Project Path="Funcky.SourceGenerator.Test/Funcky.SourceGenerator.Test.csproj" />
+    <Project Path="Funcky.SourceGenerator/Funcky.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="changelog.md" />
+    <File Path="README.md" />
+    <File Path="SupportPolicy.md" />
+  </Folder>
+  <Project Path="Funcky.Async.Test/Funcky.Async.Test.csproj" />
+  <Project Path="Funcky.Async/Funcky.Async.csproj" />
+  <Project Path="Funcky.FsCheck/Funcky.FsCheck.fsproj" />
+  <Project Path="Funcky.Test.Internal/Funcky.Test.Internal.csproj" />
+  <Project Path="Funcky.Test/Funcky.Test.csproj" />
+  <Project Path="Funcky.TrimmingTest/Funcky.TrimmingTest.csproj" />
+  <Project Path="Funcky.Xunit.Test/Funcky.Xunit.Test.csproj" />
+  <Project Path="Funcky.Xunit.v3.Test/Funcky.Xunit.v3.Test.csproj" />
+  <Project Path="Funcky.Xunit.v3/Funcky.Xunit.v3.csproj" />
+  <Project Path="Funcky.Xunit/Funcky.Xunit.csproj" />
+  <Project Path="Funcky/Funcky.csproj" />
+</Solution>

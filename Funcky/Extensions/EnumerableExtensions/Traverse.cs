@@ -35,8 +35,9 @@ public static partial class EnumerableExtensions
         where TResult : notnull
         => source.Select(selector).Sequence();
 
+    [Pure]
     public static Lazy<IEnumerable<T>> Traverse<TSource, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
-        IEnumerable<TSource> source,
+        this IEnumerable<TSource> source,
         Func<TSource, Lazy<T>> selector)
         => source.Select(selector).Sequence();
 }

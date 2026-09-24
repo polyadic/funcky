@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Extensions.ImmutableListExtensions;
 

@@ -8,8 +8,11 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.{props,sln,targets}]
+[*.{props,slnx,targets}]
 indent_style = tab
+
+[*.{slnx}]
+end_of_line = crlf
 
 [*.{yml,yaml}]
 indent_size = 2

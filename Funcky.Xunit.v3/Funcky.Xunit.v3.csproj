@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <FunckyNewestTargetFramework>net6.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);netstandard2.0</TargetFrameworks>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <Description>Package to use Funcky with xUnit v3</Description>
+        <PackageTags>Functional Monad xUnit</PackageTags>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <RootNamespace>Funcky</RootNamespace>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <EnablePackageValidation>true</EnablePackageValidation>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+        <DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Funcky.Xunit.v3.Test" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\Funcky.Xunit\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="build\$(PackageId).targets" Pack="true" PackagePath="build\" />
+        <None Include="package.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="PolySharp" PrivateAssets="all" />
+        <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
+        <PackageReference Include="xunit.v3.assert" />
+        <PackageReference Include="xunit.v3.extensibility.core" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Funcky/Funcky.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
+    </ItemGroup>
+    <Import Project="..\Analyzers.props" />
+    <Import Project="..\GlobalUsings.props" />
+    <Import Project="..\PublicApiAnalyzers.targets" />
+</Project>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<!-- Avoid ID conflicts with the package project. -->
+		<PackageId>*$(MSBuildProjectFile)*</PackageId>
+		<LangVersion>preview</LangVersion>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<AnalysisLevel>5</AnalysisLevel>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- These are properties that are usually default to the project name, but since
+		     we have a project per roslyn version, we need to be explicit. -->
+		<AssemblyName>Funcky.Analyzers</AssemblyName>
+		<RootNamespace>Funcky.Analyzers</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="PolySharp" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<Using Include="Funcky.Analyzers.CodeAnalysisExtensions.SymbolEqualityFunctions" Static="true" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+	</ItemGroup>
+	<PropertyGroup Condition="'$(DisableAnalyzerReleaseTracking)' == 'true'">
+		<!-- RS2008: Enable analyzer release tracking -->
+		<NoWarn>$(NoWarn);RS2008</NoWarn>
+	</PropertyGroup>
+	<Target Name="_FunckyRemoveAnalyzerReleasesFiles" BeforeTargets="CoreCompile" Condition="'$(DisableAnalyzerReleaseTracking)' == 'true'">
+		<ItemGroup>
+			<AdditionalFiles Remove="AnalyzerReleases.Shipped.md" />
+			<AdditionalFiles Remove="AnalyzerReleases.Unshipped.md" />
+		</ItemGroup>
+	</Target>
+	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />
+</Project>

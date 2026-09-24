@@ -1,5 +1,6 @@
 #if NET6_0_OR_GREATER
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 #endif
 
@@ -21,7 +22,7 @@ public sealed class MaxByOrNoneTest
     }
 
     [Property]
-    public Property MaxByOrNoneWithCustomComparererReturnsTheSameAsMaxByWithTheSameCustomeComparer(List<MyRecord> list)
+    public Property MaxByOrNoneWithCustomComparerReturnsTheSameAsMaxByWithTheSameCustomComparer(List<MyRecord> list)
     {
         IComparer<int> customComparer = new CustomIntComparer();
         var maxOrNull = list.MaxBy(element => element.Number, customComparer);

@@ -1,27 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <FunckyNewestTargetFramework>net10.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Product>Funcky</Product>
         <Description>Funcky is a functional C# library</Description>
         <PackageTags>Functional Monad Linq</PackageTags>
-        <VersionPrefix>3.4.0</VersionPrefix>
+        <VersionPrefix>3.6.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
         <EnablePackageValidation>true</EnablePackageValidation>
+        <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     </PropertyGroup>
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
-        <TargetFrameworkForPublicApiAnalyzers>net8.0</TargetFrameworkForPublicApiAnalyzers>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == '$(TargetFrameworkForPublicApiAnalyzers)'" />
         <PackageReference Include="Microsoft.Bcl.HashCode" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
@@ -31,11 +33,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
-    </ItemGroup>
-    <!-- These files are included by Microsoft.CodeAnalysis.PublicApiAnalyzers is included. -->
-    <ItemGroup Condition="'$(TargetFramework)' != '$(TargetFrameworkForPublicApiAnalyzers)'">
-        <AdditionalFiles Include="PublicAPI.Shipped.txt" />
-        <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
         <IsTrimmable>true</IsTrimmable>
@@ -49,12 +46,17 @@
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
         <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
+        <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers.CodeFixes\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.CodeFixes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
         <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
     </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
+    </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>

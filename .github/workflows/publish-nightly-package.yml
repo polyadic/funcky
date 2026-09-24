@@ -13,6 +13,6 @@ jobs:
     - uses: actions/setup-dotnet@v4
       name: Install Current .NET SDK
     - name: Pack Packages
-      run: dotnet pack Funcky/Funcky.csproj --output nupkg --version-suffix "nightly.$(git rev-parse --short "${{github.sha}}")"
-    - name: Push Package
+      run: dotnet pack --output nupkg --version-suffix "nightly.$(git rev-parse --short "${{github.sha}}")"
+    - name: Push Packages
       run: dotnet nuget push --source https://nuget.pkg.github.com/polyadic/index.json --api-key ${{secrets.GITHUB_TOKEN}} nupkg/Funcky.*.nupkg

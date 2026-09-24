@@ -1,6 +1,7 @@
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test;
 
@@ -15,8 +16,8 @@ public sealed class CycleRangeTest
     }
 
     [Fact]
-    public void CyclingAnEmptySetThrowsAnArgumentException()
-            => Assert.Throws<InvalidOperationException>(CycleEmptySequence);
+    public void CyclingAnEmptySetThrowsAnException()
+        => Assert.Throws<InvalidOperationException>(CycleEmptySequence);
 
     [Property]
     public Property CycleRangeCanProduceArbitraryManyItems(NonEmptySet<int> sequence, PositiveInt arbitraryElements)

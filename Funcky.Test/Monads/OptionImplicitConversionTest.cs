@@ -1,4 +1,4 @@
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Monads;
 
@@ -20,7 +20,7 @@ public sealed class OptionImplicitConversionTest
     }
 
     [Fact]
-    public void OverloadResoltionPrefersTypeWithoutImplicitConversion()
+    public void OverloadResolutionPrefersTypeWithoutImplicitConversion()
     {
         Assert.True(OverloadResolution(42));
         Assert.False(OverloadResolution(Option.Some(42)));

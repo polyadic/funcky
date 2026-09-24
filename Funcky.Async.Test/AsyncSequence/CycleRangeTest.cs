@@ -1,4 +1,5 @@
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.TestUtils;
@@ -16,8 +17,8 @@ public sealed class CycleRangeTest
     }
 
     [Fact]
-    public void CyclingAnEmptySetThrowsAnArgumentException()
-        => Assert.ThrowsAsync<InvalidOperationException>(CycleEmptySequenceAsync);
+    public async Task CyclingAnEmptySetThrowsAnArgumentException()
+        => await Assert.ThrowsAsync<InvalidOperationException>(CycleEmptySequenceAsync);
 
     [Property]
     public Property CycleRangeCanProduceArbitraryManyItemsAsync(NonEmptySet<int> sequence, PositiveInt arbitraryElements)

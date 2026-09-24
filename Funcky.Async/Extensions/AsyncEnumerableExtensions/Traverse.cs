@@ -37,7 +37,7 @@ public static partial class AsyncEnumerableExtensions
 
     [Pure]
     public static Lazy<IAsyncEnumerable<T>> Traverse<TSource, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] T>(
-        IAsyncEnumerable<TSource> source,
+        this IAsyncEnumerable<TSource> source,
         Func<TSource, Lazy<T>> selector)
         => source.Select(selector).Sequence();
 }

@@ -2,25 +2,25 @@
 
 Funcky is a functional library for C# which encourages correct usage of the functional programming paradigm.
 
-[![Build](https://github.com/polyadic/funcky/workflows/Build/badge.svg)](https://github.com/messerli-informatik-ag/funcky/actions?query=workflow%3ABuild)
+[![Build](https://github.com/polyadic/funcky/workflows/Build/badge.svg)](https://github.com/polyadic/funcky/actions?query=workflow%3ABuild)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](https://raw.githubusercontent.com/polyadic/funcky/main/LICENSE-MIT)
 [![Licence: Apache](https://img.shields.io/badge/licence-Apache-green)](https://raw.githubusercontent.com/polyadic/funcky/main/LICENSE-Apache)
 
 ## Packages
 
 * **Funcky** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky)](https://www.nuget.org/packages/Funcky)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky)
 * **Funcky.Async** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
 * **Funcky.XUnit** \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
 * **Funcky.Analyzers**: Analyzers to guide to the correct usage of Funcky. \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers)
 * **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)**: Provides interoperability between Funcky and EF Core \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
   [![git: polyadic/funcky-efcore](https://img.shields.io/badge/git-polyadic%2Ffuncky--efcore-blue)](https://github.com/polyadic/funcky-efcore)
 * **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)**: Provides source generator for discriminated union support in C# \
-  [![NuGet package](https://buildstats.info/nuget/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
+  [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
   [![git: polyadic/funcky-discriminated-union](https://img.shields.io/badge/git-polyadic%2Ffuncky--discriminated--union-blue)](https://github.com/polyadic/funcky-discriminated-union)
 
 ## Features
@@ -71,7 +71,7 @@ Sequence.Return(1, 2, 3, 4)
 
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
 
-Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it beeing a monad, which probably helped.
+Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it being a monad, which probably helped.
 
 Mark Seemann points out that "Unfortunately, Maybe implementations often come with an API that enables you to ask a Maybe object if it's populated or empty, and a way to extract the value from the Maybe container. This misleads many programmers [...]"
 
@@ -101,7 +101,7 @@ This library is probably the most complete attempt to functional programming in 
 
 Eff is inspired by the Eff programming language and the implementation of Algebraic Effects. It's only purpose is the handling of side effects and using the await syntax in a very elegant way.
 
-We think the approach is very nice but cumbersome in usage, however we really love the appraoch with the await syntax. The library is very specialised an can be used in combination with any other functional style library.
+We think the approach is very nice but cumbersome in usage, however we really love the approach with the await syntax. The library is very specialised an can be used in combination with any other functional style library.
 
 ### [MoreLinq](https://github.com/morelinq/MoreLINQ/)
 

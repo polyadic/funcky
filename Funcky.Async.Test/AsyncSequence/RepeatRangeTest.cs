@@ -1,4 +1,5 @@
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.TestUtils;
@@ -41,7 +42,7 @@ public sealed class RepeatRangeTest
             var repeatRange = AsyncSequence.RepeatRange(list, repeats);
             await using var enumerator = repeatRange.GetAsyncEnumerator();
 
-            Assert.True(await AsyncEnumerable.Range(0, i).AllAwaitAsync(async _ => await enumerator.MoveNextAsync()).ConfigureAwait(false));
+            Assert.True(await AsyncEnumerable.Range(0, i).AllAwaitAsync(async _ => await enumerator.MoveNextAsync()));
 
 #pragma warning disable IDISP016 // we test behaviour after Dispose
 #pragma warning disable IDISP017 // we test behaviour after Dispose

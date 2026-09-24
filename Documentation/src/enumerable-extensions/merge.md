@@ -1,6 +1,11 @@
 ## Merge
 
-![merge with marbles](merge.svg)
+<picture>
+    <picture>
+      <source srcset="merge-dark.svg" media="(prefers-color-scheme: dark)">
+      <img src="merge.svg" alt="A marble diagram showing the Merge operation">
+    </picture>
+</picture>
 
 ### Examples
 
@@ -12,9 +17,9 @@ Given two sequences which are already ordered the same way:
 ```
 
 By merging we get one single sequence with the all elements of the given sequences with the same order.
-  
+
 ```
-  sequence1.Merge(sequence2) => 
+  sequence1.Merge(sequence2) =>
               [1, 2,       7,    9,         14    ]
               [      3, 6,    8,    11, 12,     16]
               -------------------------------------

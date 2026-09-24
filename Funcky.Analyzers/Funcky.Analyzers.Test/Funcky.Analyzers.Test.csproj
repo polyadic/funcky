@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
 
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -16,9 +16,11 @@
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
         <PackageReference Include="Microsoft.CodeAnalysis" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" />
+        <!-- Microsoft.CodeAnalysis.CSharp.Analyzer.Testing depends on an old version of Nuget.Packaging which pulls in vulnerable packages -->
+        <PackageReference Include="Nuget.Packaging" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +28,7 @@
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" />
         <ProjectReference Include="..\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" />
+        <ProjectReference Include="..\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" />
     </ItemGroup>
 
     <ItemGroup>

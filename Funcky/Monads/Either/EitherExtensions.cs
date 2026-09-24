@@ -2,6 +2,11 @@ namespace Funcky.Monads;
 
 public static partial class EitherExtensions
 {
+    public static Either<TLeft, TRight> Flatten<TLeft, TRight>(this Either<TLeft, Either<TLeft, TRight>> either)
+        where TLeft : notnull
+        where TRight : notnull
+        => either.SelectMany(Identity);
+
     /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a right value.</summary>
     [Pure]
     public static Option<TLeft> LeftOrNone<TLeft, TRight>(this Either<TLeft, TRight> either)

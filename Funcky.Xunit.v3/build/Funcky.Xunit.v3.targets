@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<FunckyRegisterXunitSerializers Condition="'$(FunckyRegisterXunitSerializers)' == '' And '$(IsTestProject)' == 'true'">true</FunckyRegisterXunitSerializers>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(FunckyRegisterXunitSerializers)' == 'true'">
+		<AssemblyAttribute Include="Funcky.Xunit.RegisterOptionSerializerAttribute" />
+		<AssemblyAttribute Include="Funcky.Xunit.RegisterUnitSerializerAttribute" />
+		<AssemblyAttribute Include="Funcky.Xunit.RegisterEitherSerializerAttribute" />
+	</ItemGroup>
+</Project>

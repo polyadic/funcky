@@ -1,5 +1,5 @@
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
 using Funcky.FsCheck;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
@@ -33,9 +33,7 @@ public sealed class ElementAtOrNoneTest
 
     public sealed class IndexIndex
     {
-        public IndexIndex() => FunckyGenerators.Register();
-
-        [Property(Verbose = true)]
+        [FunckyProperty(Verbose = true)]
         public Property BehavesIdenticalToSynchronousCounterpart(List<int> source, Index index)
             => (source.ElementAtOrNone(index) == source.ToAsyncEnumerable().ElementAtOrNoneAsync(index).Result)
                 .ToProperty();

@@ -1,0 +1,32 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<LangVersion>preview</LangVersion>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<AnalysisLevel>5</AnalysisLevel>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- These are properties that are usually default to the project name, but since
+		     we have a project per roslyn version, we need to be explicit. -->
+		<AssemblyName>Funcky.Analyzers.CodeFixes</AssemblyName>
+		<RootNamespace>Funcky.Analyzers</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\Funcky.Analyzers\CodeAnalysisExtensions\SymbolEqualityFunctions.cs" Link="CodeAnalysisExtensions\%(Filename)%(Extension)" />
+		<Using Include="Funcky.Analyzers.CodeAnalysisExtensions.SymbolEqualityFunctions" Static="true" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="PolySharp" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="$(AnalyzerRoslynVersion)" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="CodeFixResources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="CodeFixResources.resx" />
+		<EmbeddedResource Update="CodeFixResources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="CodeFixResources.Designer.cs" />
+	</ItemGroup>
+	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />
+</Project>

@@ -1,5 +1,5 @@
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -9,7 +9,7 @@ public sealed class AdjacentGroupByTest
     private const int DaysInALeapYear = 366;
     private const int MonthsInAYear = 12;
     private const int February = 1;
-    private const int DaysInFebruraryInLeapYears = 29;
+    private const int DaysInFebruaryInLeapYears = 29;
 
     [Fact]
     public void AdjacentGroupByIsEnumeratedLazily()
@@ -117,5 +117,5 @@ public sealed class AdjacentGroupByTest
 
     private static IEnumerable<int> DaysInMonthsOfALeapYear()
         => DaysInMonthsOfAYear()
-            .Select((value, index) => index == February ? DaysInFebruraryInLeapYears : value);
+            .Select((value, index) => index == February ? DaysInFebruaryInLeapYears : value);
 }

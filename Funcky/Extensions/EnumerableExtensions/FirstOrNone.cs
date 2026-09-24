@@ -9,7 +9,9 @@ public static partial class EnumerableExtensions
     [Pure]
     public static Option<TSource> FirstOrNone<TSource>(this IEnumerable<TSource> source)
         where TSource : notnull
-        => source.FirstOrNone(True);
+        => source
+            .Select(Option.Some)
+            .FirstOrDefault();
 
     /// <summary>
     /// Returns the first element of the sequence as an <see cref="Option{T}" /> that satisfies a condition or a <see cref="Option{T}.None" /> value if no such element is found.

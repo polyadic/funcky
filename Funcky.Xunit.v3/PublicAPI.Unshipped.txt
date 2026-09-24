@@ -1,0 +1,18 @@
+#nullable enable
+Funcky.Xunit.RegisterEitherSerializerAttribute
+Funcky.Xunit.RegisterEitherSerializerAttribute.RegisterEitherSerializerAttribute() -> void
+Funcky.Xunit.RegisterOptionSerializerAttribute
+Funcky.Xunit.RegisterOptionSerializerAttribute.RegisterOptionSerializerAttribute() -> void
+Funcky.Xunit.RegisterUnitSerializerAttribute
+Funcky.Xunit.RegisterUnitSerializerAttribute.RegisterUnitSerializerAttribute() -> void
+static Funcky.FunctionalAssert.Some<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void
+static Funcky.FunctionalAssert.Some<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
+static Funcky.FunctionalAssert.Right<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
+static Funcky.FunctionalAssert.Right<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TRight
+static Funcky.FunctionalAssert.Ok<TValidResult>(TValidResult expectedResult, Funcky.Monads.Result<TValidResult> result) -> void
+static Funcky.FunctionalAssert.Ok<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> TValidResult
+static Funcky.FunctionalAssert.None<TItem>(Funcky.Monads.Option<TItem> option) -> void
+static Funcky.FunctionalAssert.Left<TLeft, TRight>(TLeft expectedLeft, Funcky.Monads.Either<TLeft, TRight> either) -> void
+static Funcky.FunctionalAssert.Left<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TLeft
+static Funcky.FunctionalAssert.Error<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> System.Exception!
+Funcky.FunctionalAssert

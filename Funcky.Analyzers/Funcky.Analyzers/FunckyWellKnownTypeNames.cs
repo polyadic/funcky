@@ -27,4 +27,6 @@ public static class FunckyWellKnownTypeNames
     public static INamedTypeSymbol? GetFunctionalType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Functional");
 
     public static INamedTypeSymbol? GetExpressionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
+
+    public static INamedTypeSymbol? GetXunitAssertType(this Compilation compilation) => compilation.GetTypeByMetadataName("Xunit.Assert");
 }

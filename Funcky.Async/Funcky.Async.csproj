@@ -1,19 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
         <PackageTags>Functional Async Monad Linq</PackageTags>
-        <Version>1.3.0</Version>
+        <VersionPrefix>1.4.1</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>package.md</PackageReadmeFile>
     </PropertyGroup>
     <PropertyGroup>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisModeReliability>All</AnalysisModeReliability>
         <EnablePackageValidation>true</EnablePackageValidation>
         <NoWarn>$(NoWarn);RS0026</NoWarn><!-- RS0026: Do not add multiple overloads with optional parameters -->
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     </PropertyGroup>
     <PropertyGroup>
         <RootNamespace>Funcky</RootNamespace>
@@ -37,19 +41,22 @@
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
-        <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMemberTypes.cs" Link="Compatibility\DynamicallyAccessedMemberTypes.cs" />
-        <Compile Include="..\Funcky\Compatibility\DynamicallyAccessedMembersAttribute.cs" Link="Compatibility\DynamicallyAccessedMembersAttribute.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" Condition="'$(TargetFramework)' == 'net5.0'" />
         <PackageReference Include="PolySharp" PrivateAssets="all" />
+        <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
         <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Artwork\logo-green-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
+        <None Include="package.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>

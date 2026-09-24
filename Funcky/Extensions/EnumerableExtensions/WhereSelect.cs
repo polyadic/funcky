@@ -3,7 +3,7 @@ namespace Funcky.Extensions;
 public static partial class EnumerableExtensions
 {
     /// <summary>
-    /// Filters out all the empty values from an <c>IEnumerable&lt;Option&lt;T&gt;&gt;</c> and therefore returns an <see cref="IEnumerable{T}"/>.
+    /// Filters out all the empty values from an <see cref="IEnumerable{T}"><![CDATA[IEnumerable<Option<T>>]]></see> and therefore returns an <see cref="IEnumerable{T}"/>.
     /// </summary>
     [Pure]
     public static IEnumerable<TSource> WhereSelect<TSource>(this IEnumerable<Option<TSource>> source)
@@ -18,4 +18,10 @@ public static partial class EnumerableExtensions
     public static IEnumerable<TResult> WhereSelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector)
         where TResult : notnull
         => source.SelectMany(input => selector(input).ToEnumerable());
+
+    /// <inheritdoc cref="WhereSelect{TSource,TResult}(IEnumerable{TSource},Func{TSource,Option{TResult}})"/>
+    [Pure]
+    public static IEnumerable<TResult> WhereSelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, int, Option<TResult>> selector)
+        where TResult : notnull
+        => source.SelectMany((input, index) => selector(input, index).ToEnumerable());
 }

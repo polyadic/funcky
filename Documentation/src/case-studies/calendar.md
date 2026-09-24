@@ -2,7 +2,7 @@
 
 This case study is taken from [Component programming with ranges](https://wiki.dlang.org/Component_programming_with_ranges) by By H. S. Teoh written for [D](https://dlang.org/).
 
-We shall use as example the classic task of laying out a yearly calendar on the console, such that given a particular year, the program will print out a number of lines that displays the 12 months in a nice grid layout, with numbers indicating each day within the month. Something like this: 
+We shall use as example the classic task of laying out a yearly calendar on the console, such that given a particular year, the program will print out a number of lines that displays the 12 months in a nice grid layout, with numbers indicating each day within the month. Something like this:
 
 ```
        January              February                March        
@@ -36,7 +36,7 @@ We shall use as example the classic task of laying out a yearly calendar on the 
  23 24 25 26 27 28 29  27 28 29 30           25 26 27 28 29 30 31
  30 31
  ```
- 
+
  While intuitively straightforward, this task has many points of complexity.
 
 Although generating all dates in a year is trivial, the order in which they must be processed is far from obvious. Since we're writing to the console, we're limited to outputting one line at a time; we can't draw one cell of the grid and then go back up a few lines, move a few columns over, and draw the next cell in the grid. We have to somehow print the first lines of all cells in the top row, followed by the second lines, then the third lines, etc., and repeat this process for each row in the grid. Of course, we could create an internal screen buffer that we can write to in arbitrary order, and then output this buffer line-by-line at the end, but this approach is not as elegant because it requires a much bigger memory footprint than is really necessary.
@@ -45,13 +45,13 @@ In any case, as a result of this mismatch between the structure of the calendar 
 
 With this level of complexity, writing our calendar program using the traditional ad hoc way of resolving structure conflicts will certainly result in very complex, hard-to-understand, and bug-prone code. There would not be much hope of getting any reusable pieces out of it.
 
-Nonetheless the end result will look pretty simple, and it will be completley streamable.
+Nonetheless the end result will look pretty simple, and it will be completely streamable.
 
 ## Create the date-range
 
 There are obviously many ways to achieve this, you could write your own Implementation of `IEnumerable<T>` with a hand written `IEnumerator<T>` or you could simply write a function and take advantage of `yield` to create the iterator.
 
-We want to avoid to write such a function and take advantage of the numerous generators availaible in Funcky.
+We want to avoid to write such a function and take advantage of the numerous generators available in Funcky.
 
 `Sequence.Successors` creates an infinite sequence of days, starting with January first of the given year. We take all the values in the same year, so this sequence should yield all the days of a year.
 
@@ -60,7 +60,7 @@ return Sequence.Successors(JanuaryFirst(year), NextDay)
     .TakeWhile(IsSameYear(year));
 ```
 
-Most of these helper function are straight forward, but `IsSameYear` might be a bit special if you havent worked with curried functions before.
+Most of these helper function are straight forward, but `IsSameYear` might be a bit special if you haven't worked with curried functions before.
 
 The function `IsSameYear` takes one parameter and returns a function which takes another parameter, this is also called the curried form of a function, there is also the `Functional.Curry` and `Functional.Uncurry` functions which can transform between both forms without the need to write them both. `IsSameYear(2000)` returns a function which always returns `true` if the Date is from the year 2000. That way of using functions might come in handy a lot more often than you think.
 
@@ -76,7 +76,7 @@ private static Func<DateOnly, bool> IsSameYear(int year)
         => day.Year == year;
 ```
 
-This makes the the main body of the code semantic very easy to understand. All the helper functions are trivially to understand on it's own too.
+This makes the main body of the code semantic very easy to understand. All the helper functions are trivially to understand on its own too.
 
 ## Group this into months
 
@@ -91,7 +91,7 @@ return Sequence.Successors(JanuaryFirst(year), NextDay)
 There are two things we should consider here though.
 
 1.) GroupBy is like the SQL GROUP BY and can rearrange elements, and therefore is not a lazy Extension function.
-2.) GroupBy would also Group all days from a different year into the same 12 montly buckets.
+2.) GroupBy would also Group all days from a different year into the same 12 monthly buckets.
 
 Often that is exactly what you want, but in this case if we think of an endless stream of days this is not what we need at all. The days do not need to be rearranged, all days in the same month are next to each other and if we find a second January, we would like to have a new 13th bucket.
 
@@ -147,12 +147,12 @@ private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
     }
 
     yield return $"{string.Empty,WidthOfAWeek}";
-} 
+}
 ```
 
 This is a fine way to do this, it is very easy to read, but the foreach is really annoying. We already have an `IEnumerable<T>`, we just want to add it between the first and the last line. But with yield you are often limited to very procedural constructs.
 
-Often you can avoid that, for simple cases we have Sequence.Return, Concat and other helpers, in this case though the nicest way is probaly creating an ImmutableList, because the syntax allows to combine ranges and single items elegantly.
+Often you can avoid that, for simple cases we have Sequence.Return, Concat and other helpers, in this case though the nicest way is probably creating an ImmutableList, because the syntax allows to combine ranges and single items elegantly.
 
 ```cs
 private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
@@ -162,7 +162,7 @@ private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
         .Add(new string(' ', WidthOfAWeek));
 ```
 
-Let's dive into our helper functions. First we take a look at the name of the month. The only noteworthy detail is the very functional mindest seen in the solution to the centering problem. It uses a pattern match to fill in the missing spaces: it is not very efficent, but easy to understand. The recursion will be very short because our lines are only 21 characters wide.
+Let's dive into our helper functions. First we take a look at the name of the month. The only noteworthy detail is the very functional mindset seen in the solution to the centering problem. It uses a pattern match to fill in the missing spaces: it is not very efficient, but easy to understand. The recursion will be very short because our lines are only 21 characters wide.
 
 
 ```cs
@@ -187,7 +187,7 @@ internal static class StringExtensions
 
 We have already seen the heart of `FormatWeeks` in the yield solution, but now it is a separate function. `FormatWeeks` again needs 2 very simple helper functions, the first one projects the week of the year, the other one will format a sequence of days.
 
-The sequence of days can be either a complete week, or a partial week from the beginning or the end of the month. But because of the way we construct these sequences, there always is at least one element in it. 
+The sequence of days can be either a complete week, or a partial week from the beginning or the end of the month. But because of the way we construct these sequences, there always is at least one element in it.
 
 ```cs
 private static IEnumerable<string> FormatWeeks(IEnumerable<DateOnly> month)
@@ -211,13 +211,13 @@ We are almost done with `FormatMonth`, now we really format the week, each day h
 ```cs
 private static string FormatWeek(IGrouping<int, DateOnly> week)
     => PadWeek(week.Select(FormatDay).ConcatToString(), week);
-  
+
 private static string FormatDay(DateOnly day)
     => $"{day.Day,WidthOfDay}";
 ```
 
 We can ignore the full weeks, because they are already 21 characters long. How do we distinguish the beginning of the month from the end? The week at the end of the month must start with the first day of the week. So we pad accordingly from the left or the right.
-  
+
 ```cs
 private static string PadWeek(string formattedWeek, IGrouping<int, DateOnly> week)
     => StartsOnFirstDayOfWeek(week)
@@ -241,7 +241,7 @@ Now we have an `IEnumerable<IEnumerable<string>>`, where the inner one is still 
 
 ## Layouting the months together.
 
-At this point we could print a list of months, we just would need to join all the lines together and it would look like this. (shortend to 2 months)
+At this point we could print a list of months, we just would need to join all the lines together and it would look like this. (shortened to 2 months)
 
 ```
         January      
@@ -275,7 +275,7 @@ To do this lazily we use `Chunk`.
 
 `Chunk` is supported with .NET 6, before that Funcky has nearly identical Replacement. (The return type is slightly different)
 
-Chunk is grouping a sequnce into multiple sequnces of the same length. In our case we want to make the sequence of 12 months in to 4 sequences of length 3.
+Chunk is grouping a sequence into multiple sequences of the same length. In our case we want to make the sequence of 12 months in to 4 sequences of length 3.
 
 ```cs
 const MonthsPerRow = 3;
@@ -288,17 +288,21 @@ private static string CreateCalendarString(int year)
         .Chunk(MonthsPerRow);
 ```
 
-That means we have now an `IEnumerable<IEnumerable<IEnumerable<string>>>` where in the outermost `IEnumerable` we group 3 months together respectivly.
+That means we have now an `IEnumerable<IEnumerable<IEnumerable<string>>>` where in the outermost `IEnumerable` we group 3 months together respectively.
 
 Why does that help us with the layout? To create the first line of our final layout, we need the first lines of each month, and then the second, and so on. So we need to group the months together.
 
 One of these chunks now looks like this:
+
+<!-- spellchecker:off -->
 
 ```
         Januar        |         1  2  3  4  5 |   6  7  8  9 10 11 12 |  13 14 15 16 17 18 19 |  20 21 22 23 24 25 26 |  27 28 29 30 31       |
        Februar        |                  1  2 |   3  4  5  6  7  8  9 |  10 11 12 13 14 15 16 |  17 18 19 20 21 22 23 |  24 25 26 27 28 29    |
          März         |                     1 |   2  3  4  5  6  7  8 |   9 10 11 12 13 14 15 |  16 17 18 19 20 21 22 |  23 24 25 26 27 28 29 |  30 31                |
 ```
+
+<!-- spellchecker:on -->
 
 That actually already looks a lot like what we want, but we want the months on the top not on the left.
 
@@ -322,6 +326,8 @@ private static string CreateCalendarString(int year)
 
 After this transforamtion our chunk of 3 months looks like this:
 
+<!-- spellchecker:off -->
+
 ```
         Januar        |        Februar        |          März
         1  2  3  4  5 |                  1  2 |                     1
@@ -332,7 +338,9 @@ After this transforamtion our chunk of 3 months looks like this:
                       |                       |  30 31
 ```
 
-I think it is obvious that at this point, we are done. We just have to join the chunks together to have our final output. 
+<!-- spellchecker:on -->
+
+I think it is obvious that at this point, we are done. We just have to join the chunks together to have our final output.
 
 ```cs
 private static string CreateCalendarString(int year)

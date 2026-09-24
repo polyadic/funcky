@@ -1,7 +1,5 @@
-#pragma warning disable SA1010 // list patterns are not supported yet
 namespace Funcky.Test.Monads;
 
-#if SYSTEM_INDEX_SUPPORTED
 public sealed partial class OptionTest
 {
     [Fact]
@@ -69,4 +67,3 @@ public sealed partial class OptionTest
         }
     }
 }
-#endif

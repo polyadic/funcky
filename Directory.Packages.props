@@ -6,34 +6,39 @@
 	<ItemGroup Label="Runtime Dependencies">
 		<PackageVersion Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
 		<PackageVersion Include="System.Collections.Immutable" Version="1.7.1" />
-		<PackageVersion Include="System.Text.Json" Version="5.0.0" />
-		<PackageVersion Include="xunit.assert" Version="[2.4.0, 2.5)" />
-		<PackageVersion Include="xunit.extensibility.core" Version="[2.4.0, 2.5)" />
+		<PackageVersion Include="System.Text.Json" Version="5.0.2" />
+		<PackageVersion Include="xunit.assert" Version="[2.9.3, 2.10)" />
+		<PackageVersion Include="xunit.extensibility.core" Version="[2.9.3, 2.10)" />
+		<PackageVersion Include="xunit.v3.assert" Version="[1.0.1, 2)" />
+		<PackageVersion Include="xunit.v3.extensibility.core" Version="[1.0.1, 2)" />
 		<PackageVersion Include="System.Linq.Async" Version="[5.0.0, 7)" />
 	</ItemGroup>
 	<ItemGroup Label="Build Dependencies">
-		<PackageVersion Include="PolySharp" Version="1.14.0" />
-		<PackageVersion Include="Messerli.CodeStyle" Version="2.3.0" />
+		<PackageVersion Include="PolySharp" Version="1.15.0" />
+		<PackageVersion Include="Polyadic.Build.SemanticVersioning" Version="1.0.0" />
+		<PackageVersion Include="Polyadic.CodeStyle" Version="1.0.0" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
-		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
 	</ItemGroup>
 	<ItemGroup Label="Test Dependencies">
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-		<PackageVersion Include="xunit" Version="2.4.2" />
-		<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
-		<PackageVersion Include="FsCheck.Xunit" Version="2.16.4" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageVersion Include="xunit" Version="2.9.3" />
+		<PackageVersion Include="xunit.runner.visualstudio" Version="3.0.1" />
+		<PackageVersion Include="xunit.v3" Version="1.0.1" />
+		<PackageVersion Include="FsCheck.Xunit" Version="3.0.1" />
 		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
 		<PackageVersion Include="Verify.XUnit" Version="16.8.1" />
 		<PackageVersion Include="Verify.SourceGenerators" Version="1.4.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.2" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="1.1.2" />
+	</ItemGroup>
+	<ItemGroup Label="Transient Test Dependencies">
+		<PackageVersion Include="Nuget.Packaging" Version="6.12.1" />
+		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.3" />
 	</ItemGroup>
 	<ItemGroup Label="Analyzer">
-		<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.0.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" Version="1.1.0" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" Version="1.1.0" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.XUnit" Version="1.1.0" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" /><!-- We explicitly reference these analyzers to get the latest version even though we might not use the latest version of Microsoft.CodeAnalysis everywhere. -->
 		<PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.0.1597"/>
 	</ItemGroup>
 </Project>

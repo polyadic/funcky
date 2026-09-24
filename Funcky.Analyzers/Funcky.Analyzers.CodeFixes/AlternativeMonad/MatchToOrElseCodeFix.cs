@@ -1,11 +1,12 @@
 using System.Collections.Immutable;
 using System.Composition;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using static Funcky.Analyzers.AlternativeMonadAnalyzer;
+using static Funcky.Analyzers.AlternativeMonad.AlternativeMonadAnalyzer;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -26,8 +27,7 @@ public sealed class MatchToOrElseCodeFix : CodeFixProvider
         foreach (var diagnostic in context.Diagnostics)
         {
             if (syntaxRoot?.FindInvocationExpression(context.Span) is { Expression: MemberAccessExpressionSyntax memberAccessExpression } invocation
-                && diagnostic.Properties.TryGetValue(PreservedArgumentIndexProperty, out var errorStateArgumentIndexString)
-                && int.TryParse(errorStateArgumentIndexString, out var noneArgumentIndex))
+                && diagnostic.TryGetIntProperty(PreservedArgumentIndexProperty, out var noneArgumentIndex))
             {
                 context.RegisterCodeFix(new GetOrElseCodeFixAction(context.Document, invocation, memberAccessExpression, noneArgumentIndex, DiagnosticIdToMethodName(diagnostic.Id)), diagnostic);
             }

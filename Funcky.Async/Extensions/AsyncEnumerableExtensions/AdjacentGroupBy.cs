@@ -12,7 +12,7 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
+    /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
         this IAsyncEnumerable<TSource> source,
@@ -27,7 +27,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
-    /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
+    /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
         this IAsyncEnumerable<TSource> source,
@@ -44,7 +44,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">The source sequence.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
-    /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
+    /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
         this IAsyncEnumerable<TSource> source,
@@ -62,7 +62,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
-    /// <returns>An <see cref="IEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
+    /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
         this IAsyncEnumerable<TSource> source,

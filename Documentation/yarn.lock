@@ -35,6 +35,13 @@
   resolved "https://registry.yarnpkg.com/@swirly/theme-default-base/-/theme-default-base-0.21.0.tgz#35ff01e240e712db4015576202ca81bb838ebce6"
   integrity sha512-jW6wkwnUZMaU1PuhWEzvHkX9rezpe33xUvVqen9dvLM9FJimaZljfHdjYFhiTJJZ/V6a0inCDBJbWS3OfHHV+g==
 
+"@swirly/theme-default-dark@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@swirly/theme-default-dark/-/theme-default-dark-0.21.0.tgz#6991992885969ef40b75756025136616576adc53"
+  integrity sha512-XHktjZ00AN/+Std71Lu8oTTIQnyagqFZwblNdssvsMuConz+/joTpey8nLsTrmLeMPowX2fVu6nVfW3l+H+ERA==
+  dependencies:
+    "@swirly/theme-default-base" "^0.21.0"
+
 "@swirly/theme-default-light@^0.21.0":
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/@swirly/theme-default-light/-/theme-default-light-0.21.0.tgz#f85f24383165e920ee41d70a53e73a998f9585d4"
@@ -43,9 +50,9 @@
     "@swirly/theme-default-base" "^0.21.0"
 
 "@xmldom/xmldom@^0.8.2":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.7.tgz#8b1e39c547013941974d83ad5e9cf5042071a9a0"
-  integrity sha512-sI1Ly2cODlWStkINzqGrZ8K6n+MTSbAeQnAipGyL+KZCXuHaRlj2gyyy8B/9MvsFFqN7XHryQnB2QwhzvJXovg==
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.15.tgz#71ebf80729e4e95221d519ac9b1e1eaea7784907"
+  integrity sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -53,9 +60,9 @@ balanced-match@^1.0.0:
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
 brace-expansion@^1.1.7:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
-  integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.16.tgz#723d3a30c0558c225abc9fc479a73e14e26c3c2f"
+  integrity sha512-IDw48K2/2kRkg9LdJxurvq3lV3aBgq0REY89duEqFRthjlPdXHKMj7EnQOXVckxzgisinf3nHfrcE2FufFLXMw==
   dependencies:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
@@ -96,9 +103,9 @@ inherits@2:
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 minimatch@^3.1.1:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
-  integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.5.tgz#580c88f8d5445f2bd6aa8f3cadefa0de79fbd69e"
+  integrity sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==
   dependencies:
     brace-expansion "^1.1.7"
 

@@ -1,5 +1,6 @@
 #if NET6_0_OR_GREATER
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
 #endif
 
@@ -21,7 +22,7 @@ public sealed class MinByOrNoneTest
     }
 
     [Property]
-    public Property MinByOrNoneWithCustomComparererReturnsTheSameAsMinByWithTheSameCustomeComparer(List<MyRecord> list)
+    public Property MinByOrNoneWithCustomComparererReturnsTheSameAsMinByWithTheSameCustomComparer(List<MyRecord> list)
     {
         IComparer<int> customComparer = new CustomIntComparer();
         var minOrNull = list.MinBy(element => element.Number, customComparer);

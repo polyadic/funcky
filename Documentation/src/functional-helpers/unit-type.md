@@ -30,11 +30,11 @@ public abstract class SimpleAlgebraicDatatype
 		{
 			SomeValue = someValue;
 		}
-		
+
 		public string SomeValue { get; }
 
 		public override TResult Match<TResult>(
-			Func<Variant1, TResult> variant1, 
+			Func<Variant1, TResult> variant1,
 			Func<Variant2, TResult> variant2)
 			=> variant1(this);
 	}
@@ -45,11 +45,11 @@ public abstract class SimpleAlgebraicDatatype
 		{
 			SomeValue = someValue;
 		}
-		
+
 		public int SomeValue { get; }
 
 		public override TResult Match<TResult>(
-			Func<Variant1, TResult> variant1, 
+			Func<Variant1, TResult> variant1,
 			Func<Variant2, TResult> variant2)
 			=> variant2(this);
 	}
@@ -125,7 +125,7 @@ See [ActionToUnit](./action-to-unit.md) for an explanation.
 
 ## Example 2 - the "switch expression must return something" dilemma:
 
-The following two code snippes do **not** comple:
+The following two code snippets do **not** compile:
 
 ```csharp
 // Error [CS0201]: Only assignment, call, increment, decrement, and new object expressions can be used as a statement.
@@ -136,7 +136,7 @@ variant switch
 	_ => throw new Exception("Unreachable"),
 };
 
-// Error [CS0029]: Cannot implicitly convert type 'thorw-expression' to 'void'
+// Error [CS0029]: Cannot implicitly convert type 'throw-expression' to 'void'
 // Error [CS9209]: A value of type 'void' may not be assigned.
 _ = variant switch
 {

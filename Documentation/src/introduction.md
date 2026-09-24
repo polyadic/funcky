@@ -1,6 +1,6 @@
 Functional programming is the oldest of the three major programming paradigms, none the less it is the last which gets wide spread usage. Even in languages like C++, Java or C# we want to use a functional style of programming.
 
-Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it beeing a monad, which probably helped.
+Linq is the first Monad which got wide spread use in C#, and most C# programmers were not even aware of it being a monad, which probably helped.
 
 [Mark Seemann] points out that "Unfortunately, Maybe implementations often come with an API that enables you to ask a Maybe object if it's populated or empty, and a way to extract the value from the Maybe container. This misleads many programmers \[...]"
 

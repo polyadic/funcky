@@ -1,23 +1,26 @@
 using FsCheck;
+using FsCheck.Fluent;
 
 namespace Funcky.Async.Test;
 
-public class AsyncGenerator<T>
+internal static class AsyncGenerator
 {
-    public static Arbitrary<IAsyncEnumerable<T>> GenerateAsyncEnumerable()
-        => Arb.Default.List<T>().Generator.Select(list => list.ToAsyncEnumerable()).ToArbitrary();
+    public static Arbitrary<IAsyncEnumerable<T>> GenerateAsyncEnumerable<T>(IArbMap map)
+        => map.GeneratorFor<List<T>>().Select(list => list.ToAsyncEnumerable()).ToArbitrary();
 
-    public static Arbitrary<Func<T, ValueTask<T>>> GenerateAwaitSelector()
-        => Arb.Default.SystemFunc1<T, T>().Generator.Select(ResultToValueTask).ToArbitrary();
+    public static Arbitrary<AwaitSelector<T>> GenerateAwaitSelector<T>(IArbMap map)
+        => map.GeneratorFor<Func<T, T>>().Select(ResultToValueTask).ToArbitrary();
 
-    public static Arbitrary<Func<T, CancellationToken, ValueTask<T>>> GenerateAwaitWithCancellationSelector()
-        => Arb.Default.SystemFunc1<T, T>().Generator.Select(ResultToValueTaskX).ToArbitrary();
+    public static Arbitrary<AwaitSelectorWithCancellation<T>> GenerateAwaitWithCancellationSelector<T>(IArbMap map)
+        => map.GeneratorFor<Func<T, T>>().Select(ResultToValueTaskX).ToArbitrary();
 
-    private static Func<T, ValueTask<T>> ResultToValueTask(Func<T, T> f)
-        => value
-            => ValueTask.FromResult(f(value));
+    private static AwaitSelector<T> ResultToValueTask<T>(Func<T, T> f)
+        => new(value => ValueTask.FromResult(f(value)));
 
-    private static Func<T, CancellationToken, ValueTask<T>> ResultToValueTaskX(Func<T, T> f)
-        => (value, cancellationToken)
-            => ValueTask.FromResult(f(value));
+    private static AwaitSelectorWithCancellation<T> ResultToValueTaskX<T>(Func<T, T> f)
+        => new((value, _) => ValueTask.FromResult(f(value)));
 }
+
+public sealed record AwaitSelector<T>(Func<T, ValueTask<T>> Get);
+
+public sealed record AwaitSelectorWithCancellation<T>(Func<T, CancellationToken, ValueTask<T>> Get);

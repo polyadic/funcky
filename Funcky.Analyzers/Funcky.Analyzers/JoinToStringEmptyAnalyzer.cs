@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -22,7 +22,7 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
 
     private static readonly LocalizableString Description = LoadFromResource(nameof(JoinToStringEmptyAnalyzerDescription));
 
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -47,23 +47,20 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         {
             var operation = (IInvocationOperation)context.Operation;
 
-            if (MatchJoinToStringEmpty(symbols, operation, out var valueArgument, out var stringArgument))
+            if (MatchJoinToStringEmpty(symbols, operation) is [var (valueArgument, stringArgument)])
             {
                 context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument, stringArgument));
             }
         };
 
-    private static bool MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation, [NotNullWhen(true)] out IArgumentOperation? valueArgument, [NotNullWhen(true)] out IArgumentOperation? stringArgument)
-    {
-        valueArgument = null;
-        stringArgument = null;
-        return MatchMethod(operation, symbols.EnumerableType, JoinToString)
-               && MatchArguments(operation, out valueArgument, AnyArgument, out stringArgument, IsEmptyString(symbols.StringType));
-    }
+    private static Option<(IArgumentOperation Value, IArgumentOperation String)> MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation)
+        => MatchMethod(operation, symbols.EnumerableType, JoinToString)
+            && operation.GetArgumentsInParameterOrder() is [var valueArgument, var stringArgument]
+            && IsEmptyString(stringArgument, symbols.StringType)
+                ? [(valueArgument, stringArgument)] : [];
 
-    private static Func<IArgumentOperation, bool> IsEmptyString(INamedTypeSymbol stringType)
-        => argument
-            => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);
+    private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
+        => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);
 
     private static bool IsStringEmptyField(INamedTypeSymbol stringType, IArgumentOperation argument)
         => argument.Value is IFieldReferenceOperation fieldReferenceOperation && MatchField(fieldReferenceOperation, stringType, nameof(string.Empty));

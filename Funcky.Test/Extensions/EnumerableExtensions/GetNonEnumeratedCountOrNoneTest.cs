@@ -1,7 +1,8 @@
 #if TRY_GET_NON_ENUMERATED_COUNT
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
-using Funcky.Test.TestUtils;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -22,7 +23,7 @@ public class GetNonEnumeratedCountOrNoneTest
 
         var range = Enumerable.Range(1, count);
 
-        Assert.Equal(count, FunctionalAssert.Some(range.GetNonEnumeratedCountOrNone()));
+        FunctionalAssert.Some(count, range.GetNonEnumeratedCountOrNone());
     }
 
     [Property]

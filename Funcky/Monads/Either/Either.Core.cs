@@ -7,7 +7,8 @@ namespace Funcky.Monads;
 /// Either values constructed using <c>default</c> are in an invalid state.
 /// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
 /// </remarks>
-public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
+[NonDefaultable]
+public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>, IEither
     where TLeft : notnull
     where TRight : notnull
 {
@@ -105,6 +106,10 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
         => Match(
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
+
+    void IEither.InternalImplementationOnly()
+    {
+    }
 
     [Pure]
     [UseWithArgumentNames]

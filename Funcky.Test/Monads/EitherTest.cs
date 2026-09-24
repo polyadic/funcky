@@ -1,14 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
 using FsCheck;
+using FsCheck.Fluent;
 using FsCheck.Xunit;
-using Funcky.FsCheck;
 
 namespace Funcky.Test.Monads;
 
 public sealed partial class EitherTest
 {
-    public EitherTest()
-        => FunckyGenerators.Register();
-
     [Fact]
     public void LeftConstructorThrowsWhenNullIsPassed()
     {
@@ -46,6 +44,7 @@ public sealed partial class EitherTest
     }
 
     [Fact]
+    [SuppressMessage("Funcky", "λ1009:Do not use default to instantiate this type", Justification = "Intentionally creating an invalid instance.")]
     public void MatchThrowsWhenEitherIsCreatedWithDefault()
     {
         var value = default(Either<string, int>);

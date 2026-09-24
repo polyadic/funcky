@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Funcky.FsCheck;
 using Xunit.Sdk;
 
 namespace Funcky.Test.Monads;
@@ -9,7 +8,6 @@ public sealed partial class OptionTest
 {
     public OptionTest()
     {
-        FunckyGenerators.Register();
         Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
     }
 
@@ -228,10 +226,10 @@ public sealed partial class OptionTest
         var some = Option.Some(42);
 
         FunctionalAssert.None(none.AndThen(_ => 1337));
-        Assert.Equal(1337, FunctionalAssert.Some(some.AndThen(_ => 1337)));
+        FunctionalAssert.Some(1337, some.AndThen(_ => 1337));
 
         FunctionalAssert.None(none.AndThen(_ => Option.Some(1337)));
-        Assert.Equal(1337, FunctionalAssert.Some(some.AndThen(_ => Option.Some(1337))));
+        FunctionalAssert.Some(1337, some.AndThen(_ => Option.Some(1337)));
     }
 
     [Fact]
