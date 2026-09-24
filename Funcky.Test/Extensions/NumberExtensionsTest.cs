@@ -7,6 +7,6 @@ public class NumberExtensionsTest
     {
         var position = 12;
 
-        Assert.True(position.IsBetween<Including, Excluding>(20, 0));
+        Assert.True(position.InRange<Including, Excluding>(20, 0));
     }
 }

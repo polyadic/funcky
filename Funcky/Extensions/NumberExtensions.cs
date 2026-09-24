@@ -2,14 +2,20 @@ namespace Funcky.Extensions;
 
 public static class NumberExtensions
 {
-    public static bool IsBetween<TFrom, TTo>(this int number, TFrom from, TTo to)
+    public static bool InRange<TFrom, TTo>(this int number, TFrom from, TTo to)
+        where TFrom : IIntervalBoundary
+        where TTo : IIntervalBoundary
+        => InRange(from, to)
+            .Invoke(number, from, to);
+
+    public static Func<int, TFrom, TTo, bool> InRange<TFrom, TTo>(TFrom from, TTo to)
         where TFrom : IIntervalBoundary
         where TTo : IIntervalBoundary
         => from.Value < to.Value
-            ? IsBetweenForward(number, from, to)
-            : IsBetweenBackward(number, from, to);
+            ? InRangeForward
+            : InRangeBackward;
 
-    private static bool IsBetweenForward<TFrom, TTo>(int number, TFrom from, TTo to)
+    private static bool InRangeForward<TFrom, TTo>(int number, TFrom from, TTo to)
         where TFrom : IIntervalBoundary
         where TTo : IIntervalBoundary
         => (from, to) switch
@@ -21,7 +27,7 @@ public static class NumberExtensions
             _ => false,
         };
 
-    private static bool IsBetweenBackward<TFrom, TTo>(int number, TFrom from, TTo to)
+    private static bool InRangeBackward<TFrom, TTo>(int number, TFrom from, TTo to)
         where TFrom : IIntervalBoundary
         where TTo : IIntervalBoundary
         => (from, to) switch
