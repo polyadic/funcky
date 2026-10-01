@@ -91,9 +91,9 @@ See [Side effects and evaluation](./side-effects-and-evaluation.md).
 |------------------------------------------------------------------------------|------------------------------------------------------------------|
 | [ForEach](./side-effects-and-evaluation.md#foreach) | Run an action for each element, eagerly                          |
 | [Inspect](./side-effects-and-evaluation.md#inspect) ⁂                        | Run an action for each element as it passes through, lazily      |
-| InspectEmpty ⁂ | Run an action if the sequence turns out to be empty              |
+| [InspectEmpty](./side-effects-and-evaluation.md#inspectempty) ⁂ | Run an action if the sequence turns out to be empty              |
 | [Materialize](./side-effects-and-evaluation.md#materialize) ⁂                | Evaluate once into a collection, unless it already is one        |
-| Memoize ⁂ | Evaluate lazily, but at most once, even for several consumers    |
+| [Memoize](./side-effects-and-evaluation.md#memoize) ⁂ | Evaluate lazily, but at most once, even for several consumers    |
 | [Shuffle](./side-effects-and-evaluation.md#shuffle) ⁂                        | A random permutation                                             |
 
 ## Strings and monads
