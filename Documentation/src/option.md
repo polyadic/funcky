@@ -249,4 +249,4 @@ where a `null` could slip through. Here, the compiler does not let it.
 
 * [The TryVerb-pattern](./try-pattern.md) lists the `…OrNone` methods that produce options from BCL calls.
 * The [`if null` case study](./case-studies/if-null-to-option.md) walks through migrating an existing method.
-* `Result<T>` and `Either<L, R>` follow the same ladder, with an error value in place of `None`.
+* [`Result<T>`](./result.md) and [`Either<L, R>`](./either.md) follow the same ladder, with an error value in place of `None`.
