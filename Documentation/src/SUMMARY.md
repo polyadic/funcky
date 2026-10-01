@@ -30,7 +30,7 @@
   * [Context for each element](./enumerable-extensions/element-context.md)
   * [Filtering and partitioning](./enumerable-extensions/filtering-and-partitioning.md)
   * [Side effects and evaluation](./enumerable-extensions/side-effects-and-evaluation.md)
-  * [Strings and monads]()
+  * [Strings and monads](./enumerable-extensions/strings-and-monads.md)
 * [String Extensions](./string-extensions.md)
 * [Stream Extensions]()
 * [Analyzer Rules](./analyzer-rules/analyzer-rules.md)
