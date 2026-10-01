@@ -55,7 +55,7 @@ Operations that take several sequences and produce one. See [Combining sequences
 | [Interleave](./combining-sequences.md#interleave) ⁂                          | Alternate elements from several sequences                        |
 | [Intersperse](./combining-sequences.md#intersperse) ⁂                        | Put a separator element between every two elements               |
 | [ZipLongest](./combining-sequences.md#ziplongest) ⁂ | Zip two sequences without truncating the longer one              |
-| Flatten                                                                      | Concatenate a sequence of sequences                              |
+| [Flatten](./combining-sequences.md#flatten) | Concatenate a sequence of sequences                              |
 | [CartesianProduct](./combining-sequences.md#cartesianproduct)                | All pairs, as a recipe with `SelectMany`                         |
 
 ## Context for each element
