@@ -68,7 +68,7 @@ Operations that pair every element with information about its position. See [Con
 | [WithFirst](./element-context.md#withfirst) ⁂                                | Each element with a flag telling whether it is the first         |
 | [WithLast](./element-context.md#withlast) ⁂                                  | Each element with a flag telling whether it is the last          |
 | [WithPrevious](./element-context.md#withprevious) ⁂                          | Each element with its predecessor as an `Option`                 |
-| InclusiveScan, ExclusiveScan ⁂ | Running aggregate, like `Aggregate` yielding every intermediate  |
+| [InclusiveScan, ExclusiveScan](./element-context.md#inclusivescan-exclusivescan) ⁂ | Running aggregate, like `Aggregate` yielding every intermediate  |
 
 ## Filtering and partitioning
 
@@ -80,7 +80,7 @@ See [Filtering and partitioning](./filtering-and-partitioning.md).
 | [WhereNotNull](./filtering-and-partitioning.md#wherenotnull) ⁂               | Drop the `null`s and narrow the element type                     |
 | [Partition](./filtering-and-partitioning.md#partition) ⁂                     | Split into two lists by a predicate, or by `Either`/`Result` case |
 | [None](./filtering-and-partitioning.md#none) ⁂                               | `!Any`, as a readable name                                       |
-| AnyOrElse ⁂ | The sequence itself, or a fallback if it is empty                |
+| [AnyOrElse](./filtering-and-partitioning.md#anyorelse) ⁂ | The sequence itself, or a fallback if it is empty                |
 
 ## Side effects and evaluation
 
