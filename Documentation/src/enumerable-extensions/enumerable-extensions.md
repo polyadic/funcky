@@ -98,9 +98,11 @@ See [Side effects and evaluation](./side-effects-and-evaluation.md).
 
 ## Strings and monads
 
+See [Strings and monads](./strings-and-monads.md).
+
 | Operation                                                                    | Description                                                      |
 |------------------------------------------------------------------------------|------------------------------------------------------------------|
-| JoinToString ⁂ | `string.Join` as an extension                                    |
-| ConcatToString ⁂ | `string.Concat` as an extension                                  |
-| Sequence                                                                     | Turn a sequence of `Option`/`Result`/`Either` inside out         |
-| Traverse                                                                     | `Select` with a monadic selector, then `Sequence`                |
+| [JoinToString](./strings-and-monads.md#jointostring) ⁂ | `string.Join` as an extension                                    |
+| [ConcatToString](./strings-and-monads.md#concattostring) ⁂ | `string.Concat` as an extension                                  |
+| [Sequence](./strings-and-monads.md#sequence) ⁂ | Turn a sequence of `Option`/`Result`/`Either` inside out         |
+| [Traverse](./strings-and-monads.md#traverse) ⁂ | `Select` with a monadic selector, then `Sequence`                |
