@@ -29,7 +29,7 @@ public static partial class Functional
             .Select(ProduceDelayed(producer, retryPolicy));
 
     private static IEnumerable<int> Retries(IRetryPolicy retryPolicy)
-        => Enumerable.Range(0, retryPolicy.MaxRetries);
+        => Enumerable.Range(1, retryPolicy.MaxRetries);
 
     private static Func<int, Option<TResult>> ProduceDelayed<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
         where TResult : notnull

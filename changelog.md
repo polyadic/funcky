@@ -5,6 +5,14 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the `Option`-based `Retry` and `RetryAsync` overloads numbered the retries from 0 while the
+  exception-based overloads numbered them from 1, so the same `IRetryPolicy` produced different delays
+  depending on the overload. With a `LinearBackOffRetryPolicy` the `Option`-based overloads retried
+  immediately the first time. `IRetryPolicy.Delay(retryCount)` is now documented as one-based
+  (`Delay(1)` is the wait before the first retry) and all overloads follow that contract.
+* Fix: `ExponentialBackOffRetryPolicy` now waits `firstDelay` before the first retry, like
+  `LinearBackOffRetryPolicy`. Previously the first delay was `firstDelay * 1.5` with the
+  exception-based `Retry` overloads.
 * Fix: `Transpose` enumerated the outer sequence three times, two of them eagerly when the method was
   called. It now enumerates the outer sequence exactly once, lazily, when the first column is requested. (#895)
 * Breaking: `Transpose` now throws an `InvalidOperationException` when the rows do not all have the same

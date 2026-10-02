@@ -58,4 +58,14 @@ public sealed class RetryTest
         Assert.Equal(produceString, Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
     }
+
+    [Fact]
+    public void RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        _ = Retry(() => Option<int>.None, retryPolicy);
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
+    }
 }

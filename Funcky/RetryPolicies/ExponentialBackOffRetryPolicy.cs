@@ -10,5 +10,5 @@ public sealed class ExponentialBackOffRetryPolicy(int maxRetries, TimeSpan first
         => firstDelay.Multiply(Exponential(retryCount));
 
     private static double Exponential(int retryCount)
-        => Math.Pow(BaseFactor, retryCount);
+        => Math.Pow(BaseFactor, retryCount - 1);
 }
