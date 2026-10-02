@@ -1,0 +1,13 @@
+% AnyOrElse
+
+------1----2----3---|
+
+> AnyOrElse(fallback)
+
+------1----2----3---|
+
+---|
+
+> AnyOrElse(fallback)
+
+---a----b---|
