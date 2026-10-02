@@ -95,6 +95,16 @@ public sealed class RetryAsyncTest
         Assert.Equal(failedAttempts + 1, producer.Called);
     }
 
+    [Fact]
+    public async Task RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        _ = await RetryAsync(() => ValueTask.FromResult(Option<int>.None), retryPolicy);
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
+    }
+
     private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)
         => async () =>
         {

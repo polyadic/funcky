@@ -82,4 +82,15 @@ public sealed class WithFirstTest
         var sequence = Sequence.Return(1, 2, 3).ToList();
         Assert.True(sequence.WithFirst().Contains(new ValueWithFirst<int>(1, isFirst: true)));
     }
+
+    [Fact]
+    public void CopyToOnAnOptimizedSourceWithFirstWritesAllElementsStartingAtTheArrayIndex()
+    {
+        var collection = (ICollection<ValueWithFirst<int>>)new List<int> { 10, 20, 30 }.WithFirst();
+        var array = new ValueWithFirst<int>[5];
+
+        collection.CopyTo(array, 2);
+
+        Assert.Equal([(0, false), (0, false), (10, true), (20, false), (30, false)], array.Select(v => (v.Value, v.IsFirst)));
+    }
 }

@@ -34,7 +34,7 @@ public static partial class AsyncEnumerableExtensions
 
         try
         {
-            await foreach (var element in InterleaveEnumeratorAsync(enumerators).ConfigureAwait(false))
+            await foreach (var element in InterleaveEnumeratorAsync(enumerators, cancellationToken).ConfigureAwait(false))
             {
                 yield return element;
             }
@@ -54,11 +54,11 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken)
         => source.Select(s => s.GetAsyncEnumerator(cancellationToken)).ToImmutableList();
 
-    private static async IAsyncEnumerable<TSource> InterleaveEnumeratorAsync<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators)
+    private static async IAsyncEnumerable<TSource> InterleaveEnumeratorAsync<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         while (!enumerators.IsEmpty)
         {
-            enumerators = enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false));
+            enumerators = enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync(cancellationToken).ConfigureAwait(false));
             foreach (var enumerator in enumerators)
             {
                 yield return enumerator.Current;

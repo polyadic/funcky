@@ -113,6 +113,6 @@ public static partial class AsyncEnumerableExtensions
         => enumerators.Aggregate(Minimum(comparer));
 
     private static Func<IAsyncEnumerator<TSource>, IAsyncEnumerator<TSource>, IAsyncEnumerator<TSource>> Minimum<TSource>(IComparer<TSource> comparer)
-        => (enumerator, minimum) => comparer.Compare(minimum.Current, enumerator.Current) <= 0 ? minimum : enumerator;
+        => (minimum, enumerator) => comparer.Compare(minimum.Current, enumerator.Current) <= 0 ? minimum : enumerator;
 }
 #endif
