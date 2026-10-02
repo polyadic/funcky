@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Funcky.Extensions;
 
@@ -55,13 +56,20 @@ public static partial class AsyncEnumerableExtensions
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
-    public static async IAsyncEnumerable<TSource> Merge<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
+    public static IAsyncEnumerable<TSource> Merge<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
+        => MergeInternal(sources, comparer);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static async IAsyncEnumerable<TSource> MergeInternal<TSource>(
+        IEnumerable<IAsyncEnumerable<TSource>> sources,
+        Option<IComparer<TSource>> comparer,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var enumerators = GetMergeEnumerators(sources);
+        var enumerators = GetMergeEnumerators(sources, cancellationToken);
 
         try
         {
-            await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync().ConfigureAwait(false)), GetMergeComparer(comparer)).ConfigureAwait(false))
+            await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().WhereAwait(async f => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync(cancellationToken).ConfigureAwait(false)), GetMergeComparer(comparer)).ConfigureAwait(false))
             {
                 yield return element;
             }
@@ -75,8 +83,8 @@ public static partial class AsyncEnumerableExtensions
         }
     }
 
-    private static ImmutableList<IAsyncEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IAsyncEnumerable<TSource>> sources)
-        => ImmutableList.Create<IAsyncEnumerator<TSource>>().AddRange(sources.Select(s => s.GetAsyncEnumerator()));
+    private static ImmutableList<IAsyncEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IAsyncEnumerable<TSource>> sources, CancellationToken cancellationToken)
+        => ImmutableList.Create<IAsyncEnumerator<TSource>>().AddRange(sources.Select(s => s.GetAsyncEnumerator(cancellationToken)));
 
     private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
         => comparer.GetOrElse(Comparer<TSource>.Default);
