@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Merge` on `IEnumerable<T>` and `IAsyncEnumerable<T>` was not stable: when elements from
+  different sources compared equal, the element from the later source was yielded first. Equal
+  elements now keep the order of the sources, like a stable sort. (#891)
 * Fix: `WithIndex`, `WithFirst`, `WithLast` and `WithPrevious` on an `IList<T>` source returned a
   collection whose `CopyTo` skipped the first `arrayIndex` elements of the source, so copying it
   into an array at a non-zero offset (e.g. via `List<T>.AddRange` or `InsertRange` on a non-empty

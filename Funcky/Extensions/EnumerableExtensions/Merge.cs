@@ -103,5 +103,5 @@ public static partial class EnumerableExtensions
         => enumerators.Aggregate(Minimum(comparer));
 
     private static Func<IEnumerator<TSource>, IEnumerator<TSource>, IEnumerator<TSource>> Minimum<TSource>(IComparer<TSource> comparer)
-        => (enumerator, minimum) => comparer.Compare(minimum.Current, enumerator.Current) <= 0 ? minimum : enumerator;
+        => (minimum, enumerator) => comparer.Compare(minimum.Current, enumerator.Current) <= 0 ? minimum : enumerator;
 }
