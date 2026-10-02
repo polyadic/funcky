@@ -1,12 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <!-- Starting with .NET 10, IAsyncEnumerable LINQ is part of the base class library and Funcky's
+             async APIs live in the Funcky package itself. The net10.0 asset of this package therefore only
+             contains type forwards to Funcky, so projects that reference both packages keep compiling.
+             The public API is tracked on the newest framework that still carries the implementation. -->
         <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
-        <TargetFrameworks>$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
-        <Description>Extends Funcky with support for IAsyncEnumerable and Tasks.</Description>
+        <Description>Extends Funcky with support for IAsyncEnumerable and Tasks on frameworks older than .NET 10. On .NET 10 and newer these APIs are part of the Funcky package and this package only forwards to them.</Description>
         <PackageTags>Functional Async Monad Linq</PackageTags>
-        <VersionPrefix>1.4.1</VersionPrefix>
+        <VersionPrefix>1.5.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageIcon>icon.png</PackageIcon>
@@ -23,6 +27,9 @@
         <RootNamespace>Funcky</RootNamespace>
         <DefineConstants>$(DefineConstants);CONTRACTS_FULL</DefineConstants>
     </PropertyGroup>
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">
+        <FunckyAsyncIntegrated>true</FunckyAsyncIntegrated>
+    </PropertyGroup>
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
@@ -30,7 +37,12 @@
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
         <IsAotCompatible>true</IsAotCompatible>
     </PropertyGroup>
-    <ItemGroup>
+    <ItemGroup Condition="'$(FunckyAsyncIntegrated)' == 'true'">
+        <Compile Remove="**\*.cs" />
+        <Compile Include="TypeForwards.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(FunckyAsyncIntegrated)' != 'true'">
+        <Compile Remove="TypeForwards.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\DecimalAverageAggregator.cs" Link="Internal\Aggregators\DecimalAverageAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\DoubleAverageAggregator.cs" Link="Internal\Aggregators\DoubleAverageAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\FloatAverageAggregator.cs" Link="Internal\Aggregators\FloatAverageAggregator.cs" />
@@ -42,11 +54,11 @@
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
+        <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="Polyadic.Build.SemanticVersioning" PrivateAssets="all" />
-        <PackageReference Include="System.Linq.Async" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky\Funcky.csproj" />

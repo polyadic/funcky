@@ -99,4 +99,14 @@ public sealed class MergeTest
 
         return AsyncAssert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
     }
+
+    [Fact]
+    public async Task CancellationIsPropagated()
+    {
+        // System.Linq.Async throws for an already canceled token, so the merged sequence
+        // is expected to be canceled after the inner sequences have observed the token.
+        var canceledToken = new CancellationToken(canceled: true);
+        var merged = new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(new AssertIsCancellationRequestedAsyncSequence<Unit>());
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await merged.ToListAsync(canceledToken));
+    }
 }
