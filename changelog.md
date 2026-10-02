@@ -5,6 +5,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `WithIndex`, `WithFirst`, `WithLast` and `WithPrevious` on an `IList<T>` source returned a
+  collection whose `CopyTo` skipped the first `arrayIndex` elements of the source, so copying it
+  into an array at a non-zero offset (e.g. via `List<T>.AddRange` or `InsertRange` on a non-empty
+  list) dropped elements and left default values behind. (#889)
 * Fix: awaiting an empty `Option<Task>`, `Option<Task<T>>`, `Option<ValueTask>` or `Option<ValueTask<T>>`
   via the awaiter's `OnCompleted` method never invoked the continuation. The `await` keyword was not
   affected, because the compiler checks `IsCompleted` first, but custom schedulers and other
