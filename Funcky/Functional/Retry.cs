@@ -8,9 +8,17 @@ public static partial class Functional
     /// <summary>
     /// Calls the given <paramref name="producer"/> over and over until it returns a value.
     /// </summary>
+    /// <remarks>
+    /// This overload never gives up and never waits between attempts. Use the overload with an <see cref="IRetryPolicy"/>
+    /// when the producer can fail permanently or should not be called in a tight loop.
+    /// </remarks>
     public static TResult Retry<TResult>(Func<Option<TResult>> producer)
         where TResult : notnull
-        => producer().GetOrElse(() => Retry(producer));
+        => Sequence
+            .Cycle(producer)
+            .Select(produce => produce())
+            .WhereSelect()
+            .First();
 
     /// <summary>
     /// Calls the given <paramref name="producer"/> repeatedly until it returns a value or the retry policy conditions are no longer met.

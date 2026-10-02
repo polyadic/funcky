@@ -86,6 +86,16 @@ public sealed class RetryAsyncTest
     }
 
     [Fact]
+    public async Task RetriesTheProducerManyTimesWithoutOverflowingTheStack()
+    {
+        const int failedAttempts = 100_000;
+        var producer = new OptionProducer<int>(failedAttempts, 42);
+
+        Assert.Equal(42, await RetryAsync(producer.ProduceAsync));
+        Assert.Equal(failedAttempts + 1, producer.Called);
+    }
+
+    [Fact]
     public async Task RequestsTheDelaysWithOneBasedRetryCounts()
     {
         var retryPolicy = new RecordingRetryPolicy(3);
