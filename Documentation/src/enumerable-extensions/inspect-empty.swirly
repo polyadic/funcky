@@ -1,0 +1,14 @@
+% InspectEmpty
+
+------1----2----3---|
+
+> InspectEmpty(Log)
+
+------1----2----3---|
+
+------|
+
+> InspectEmpty(Log)
+
+------L|
+L := Log
