@@ -71,6 +71,23 @@ public sealed class OptionAwaiterTest
         AssertContinuationIsInvoked(continuation => Option.Some(Task.FromResult(10)).ConfigureAwait(false).GetAwaiter().OnCompleted(continuation));
         AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.FromResult(10)).GetAwaiter().OnCompleted(continuation));
         AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.FromResult(10)).ConfigureAwait(false).GetAwaiter().OnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.CompletedTask).GetAwaiter().OnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.CompletedTask).ConfigureAwait(false).GetAwaiter().OnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.CompletedTask).GetAwaiter().OnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.CompletedTask).ConfigureAwait(false).GetAwaiter().OnCompleted(continuation));
+    }
+
+    [Fact]
+    public void UnsafeOnCompletedInvokesTheContinuationForSome()
+    {
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.FromResult(10)).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.FromResult(10)).ConfigureAwait(false).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.FromResult(10)).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.FromResult(10)).ConfigureAwait(false).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.CompletedTask).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(Task.CompletedTask).ConfigureAwait(false).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.CompletedTask).GetAwaiter().UnsafeOnCompleted(continuation));
+        AssertContinuationIsInvoked(continuation => Option.Some(ValueTask.CompletedTask).ConfigureAwait(false).GetAwaiter().UnsafeOnCompleted(continuation));
     }
 
     private static void AssertContinuationIsInvoked(Action<Action> registerContinuation)
