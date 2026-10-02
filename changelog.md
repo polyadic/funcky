@@ -3,13 +3,30 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Funcky 3.6.1 | Funcky.Async 1.5.0
+
+* Add a `net10.0` target to `Funcky.Async` that only forwards all its types to `Funcky`.
+  Projects that reference both `Funcky` and `Funcky.Async` no longer get ambiguous type errors
+  (`CS0433`) when they move to .NET 10. On .NET 10 you can simply remove the `Funcky.Async` reference.
+* Fix: `Interleave` and `Merge` for `IAsyncEnumerable` now pass the cancellation token to the inner
+  enumerators (same fix as in Funcky 3.6.0).
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
 
-* remove dependency to System.Linq.Async because it is integrated into .NET 10
-* Integrate Funcky.Async into Funcky, as the async extensions are now in the same assembly as the sync ones.
-  * This means that there is no longer a separate `Funcky.Async` package.
+* Funcky now targets `net10.0`.
+* On .NET 10 and newer, the `IAsyncEnumerable` extensions, `AsyncSequence`, `AsyncFunctional` and the
+  async `Option`/`Result`/`Either` extensions are part of the `Funcky` package itself, because
+  `System.Linq.AsyncEnumerable` is now part of the base class library. Funcky does not depend on
+  `System.Linq.Async` on this framework.
+* `Funcky.Async` stays the home of these APIs on .NET 9 and older frameworks, where it continues to
+  depend on `System.Linq.Async`.
+* The `Chunk(int)` overload for `IAsyncEnumerable` is not provided on .NET 10; the identically named
+  method in the base class library is used instead and returns arrays rather than `IReadOnlyList<T>`.
+  The `Chunk` overloads with a `resultSelector` are unchanged.
+* `AdjacentGroupBy` for `IAsyncEnumerable` returns `IGrouping<TKey, TElement>` on .NET 10
+  instead of the `IAsyncGrouping<TKey, TElement>` type from `System.Linq.Async`.
 
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
