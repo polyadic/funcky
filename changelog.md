@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Transpose` enumerated the outer sequence three times, two of them eagerly when the method was
+  called. It now enumerates the outer sequence exactly once, lazily, when the first column is requested. (#895)
+* Breaking: `Transpose` now throws an `InvalidOperationException` when the rows do not all have the same
+  length, instead of silently producing a wrongly shaped result. The behaviour for jagged input was
+  documented as undefined. (#895)
 * Fix: calling `Split(separator)` on an array in C# 14 (the default for .NET 10) bound to
   `MemoryExtensions.Split(ReadOnlySpan<T>, T)` because of first-class span conversions, so the
   result was a `SpanSplitEnumerator<T>` instead of an `IEnumerable<IReadOnlyList<T>>` and the
