@@ -2,3 +2,11 @@
 static Funcky.Extensions.AsyncEnumerableExtensions.Chunk<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Extensions.AsyncEnumerableExtensions.ChunkAwait<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, System.Threading.Tasks.ValueTask<TResult>>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Extensions.AsyncEnumerableExtensions.ChunkAwaitWithCancellation<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IReadOnlyList<TSource>!, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<TResult>>! resultSelector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
+Funcky.Monads.ConfiguredOptionTaskAwaitable.ConfiguredOptionTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionTaskAwaitable<TItem>.ConfiguredOptionTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable.ConfiguredOptionValueTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.ConfiguredOptionValueTaskAwaitable<TItem>.ConfiguredOptionValueTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionTaskAwaiter<TItem>.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionValueTaskAwaiter.UnsafeOnCompleted(System.Action! continuation) -> void
+Funcky.Monads.OptionValueTaskAwaiter<TItem>.UnsafeOnCompleted(System.Action! continuation) -> void
