@@ -1,0 +1,15 @@
+% Traverse
+
+---1----2----3---|
+
+> Traverse(ParseInt32OrNone)
+
+-----------------(L|)
+L := Some([1, 2, 3])
+
+---1----x----3---|
+
+> Traverse(ParseInt32OrNone)
+
+--------(N|)
+N := None

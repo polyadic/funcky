@@ -1,20 +1,34 @@
 ## ForEach
-With the `.ForEach` extension method, you can invoke an action for each item in an enumerable, just like a `foreach` statement would allow you to do.
 
-This method is already available in .NET, but just on `List`s, and it makes sense for it to be available on every enumerable.
+Runs an action for every element, immediately.
 
-Keep in mind that `.ForEach` is imperative and only expects an `Action<T>`. It should not be used to change state of anything outside of the `.ForEach`.
-If you want to combine the enumerable into a result, consider using `.Aggregate()`, as that is designed for such use-cases.
+```cs
+Unit ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+Unit ForEach<TSource>(this IEnumerable<TSource> source, Func<TSource, Unit> action)
+```
+
+`List<T>` has a `ForEach` method; this one works on any `IEnumerable<T>`. It is **eager**: the whole sequence is
+enumerated during the call, which is the difference from [`Inspect`](#inspect). It returns
+[`Unit`](../functional-helpers/unit-type.md) rather than `void`, so it can be used as the last expression of an
+expression-bodied member or a lambda that must return something.
+
+`ForEach` is the end of a pipeline, not a step in it: everything before it should be pure, and the action is where
+the side effects happen. If the loop body builds up a value, that is an `Aggregate`, not a `ForEach` with a
+captured variable.
 
 ### Example
 
-```csharp
-// Original
-foreach (var item in Items)
+```cs
+// Before
+foreach (var order in orders)
 {
-   DoSomething(item);
+    Ship(order);
 }
 
-// Using `.ForEach`
-Items.ForEach(DoSomething); // equivalent to Items.ForEach(item => DoSomething(item));
+// After
+orders.ForEach(Ship);
+
+// As an expression-bodied member
+public Unit ShipAll(IEnumerable<Order> orders)
+    => orders.ForEach(Ship);
 ```

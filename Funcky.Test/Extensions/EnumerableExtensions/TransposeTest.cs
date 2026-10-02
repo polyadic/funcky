@@ -4,20 +4,36 @@ namespace Funcky.Test.Extensions.EnumerableExtensions;
 
 public sealed class TransposeTest
 {
-    [Fact(Skip = "3*5 is always 15")]
-    public void TransposeIsLazyElementsGetOnlyEnumeratedWhenRequested()
+    [Fact]
+    public void TransposeIsEnumeratedLazily()
     {
-        const int numberOfRows = 5;
-        const int numberOfColumns = 3;
-        var lazyMatrix = LazyMatrix(numberOfRows, numberOfColumns);
+        var doNotEnumerate = new FailOnEnumerationSequence<IEnumerable<int>>();
 
-        var transposedMatrix = lazyMatrix.Transpose();
+        _ = doNotEnumerate.Transpose();
+    }
 
-        Assert.Equal(0, CountCreation.Count);
+    [Fact]
+    public void TransposeEnumeratesTheOuterSequenceOnlyOnce()
+    {
+        var transposed = EnumerateOnce.Create(MatrixExample()).Transpose();
 
-        transposedMatrix.ForEach(row => _ = row.ToList());
+        Assert.Equal([[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]], transposed);
+    }
 
-        Assert.Equal(numberOfRows * numberOfColumns, CountCreation.Count);
+    [Fact]
+    public void TransposeEnumeratesTheInnerSequencesLazily()
+    {
+        var enumeratedElements = 0;
+        var lazyMatrix = Enumerable.Range(0, 5).Select(_ => Enumerable.Range(0, 3).Select(_ => enumeratedElements++));
+
+        using var columns = lazyMatrix.Transpose().GetEnumerator();
+        Assert.Equal(0, enumeratedElements);
+
+        Assert.True(columns.MoveNext());
+        Assert.Equal(5, enumeratedElements);
+
+        Assert.True(columns.MoveNext());
+        Assert.Equal(10, enumeratedElements);
     }
 
     [Fact]
@@ -57,17 +73,33 @@ public sealed class TransposeTest
     }
 
     [Fact]
-    public void GivenAJaggedArrayTheTransposeDoesNotWorkAsExpected()
+    public void TransposingAJaggedMatrixThrows()
     {
-        // Jagged sequences do not work!
-        // If you use jagged sequences, in Transpose you are using an implementation detail which could change.
         var transposed = JaggedMatrixExample().Transpose();
 
-        Assert.Collection(
-            transposed,
-            row => { Assert.Equal([1, 6, 5, 10], row); },
-            row => { Assert.Equal([2, 9, 3, 42], row); },
-            row => { Assert.Equal([4], row); });
+        Assert.Throws<InvalidOperationException>(() => transposed.ToList());
+    }
+
+    [Fact]
+    public void TransposingAJaggedMatrixYieldsTheRectangularColumnsBeforeThrowing()
+    {
+        var jaggedMatrix = Sequence.Return(Sequence.Return(1, 2, 3), Sequence.Return(4, 5));
+
+        using var columns = jaggedMatrix.Transpose().GetEnumerator();
+
+        Assert.True(columns.MoveNext());
+        Assert.Equal([1, 4], columns.Current);
+        Assert.True(columns.MoveNext());
+        Assert.Equal([2, 5], columns.Current);
+        Assert.Throws<InvalidOperationException>(() => columns.MoveNext());
+    }
+
+    [Fact]
+    public void TransposingAMatrixWithEmptyRowsResultsInAnEmptyMatrix()
+    {
+        var matrix = Sequence.Return(Enumerable.Empty<int>(), Enumerable.Empty<int>());
+
+        Assert.Empty(matrix.Transpose());
     }
 
     private static IEnumerable<IEnumerable<int>> MagicSquare()
@@ -88,9 +120,4 @@ public sealed class TransposeTest
             Sequence.Return(6, 9, 42),
             Sequence.Return(5),
             Sequence.Return(10));
-
-    private static IEnumerable<IEnumerable<CountCreation>> LazyMatrix(int rows, int columns)
-        => from row in Enumerable.Range(0, rows)
-           select from column in Enumerable.Range(0, columns)
-                  select new CountCreation();
 }
