@@ -46,6 +46,9 @@ jobs:
   trimming-test:
     name: Trimming and AOT Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        framework: [ 'net8.0', 'net10.0' ]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
@@ -54,9 +57,9 @@ jobs:
     # results in some super-old System.* packages with vulnerabilities being pulled in.
     # Our analyzers don't do anything wrt. trimming and AOT so it's safe to disable them.
     - name: Run trimming test
-      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true
+      run: dotnet publish -c Release Funcky.TrimmingTest -f ${{matrix.framework}} -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true
     - name: Run AOT test
-      run: dotnet publish -c Release Funcky.TrimmingTest -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true /p:FunckyTestAot=true
+      run: dotnet publish -c Release Funcky.TrimmingTest -f ${{matrix.framework}} -r linux-x64 --self-contained /p:TreatWarningsAsErrors=true /p:FunckyDisableAnalyzers=true /p:FunckyTestAot=true
 
   nupkg:
     name: Generate NuGet Packages

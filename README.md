@@ -10,7 +10,7 @@ Funcky is a functional library for C# which encourages correct usage of the func
 
 * **Funcky** \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky)
-* **Funcky.Async** \
+* **Funcky.Async**: Async extensions for frameworks older than .NET 10. On .NET 10 and newer these APIs are part of **Funcky** itself. \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
 * **Funcky.XUnit** \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
