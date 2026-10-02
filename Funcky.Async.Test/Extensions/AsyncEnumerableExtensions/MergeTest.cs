@@ -9,6 +9,9 @@ namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public sealed class MergeTest
 {
+    private static readonly Option<IComparer<(int Key, string Tag)>> KeyComparer
+        = Comparer<(int Key, string Tag)>.Create((left, right) => left.Key.CompareTo(right.Key));
+
     [Fact]
     public void MergeIsEnumeratedLazily()
     {
@@ -74,5 +77,36 @@ public sealed class MergeTest
         var expected = AsyncEnumerable.Range(1, 8).Reverse();
 
         return AsyncAssert.Equal(expected, sequence1.Merge(sequence2, DescendingIntComparer.Create()));
+    }
+
+    [Fact]
+    public Task MergeIsStableOnEqualElements()
+    {
+        var sequence1 = AsyncSequence.Return((1, "A1"), (2, "A2"));
+        var sequence2 = AsyncSequence.Return((1, "B1"), (2, "B2"));
+        var expected = AsyncSequence.Return((1, "A1"), (1, "B1"), (2, "A2"), (2, "B2"));
+
+        return AsyncAssert.Equal(expected, sequence1.Merge(sequence2, KeyComparer));
+    }
+
+    [Fact]
+    public Task MergeOfASequenceOfSequencesIsStableOnEqualElements()
+    {
+        var sequence1 = AsyncSequence.Return((1, "A1"), (2, "A2"));
+        var sequence2 = AsyncSequence.Return((1, "B1"), (2, "B2"));
+        var sequence3 = AsyncSequence.Return((1, "C1"), (2, "C2"));
+        var expected = AsyncSequence.Return((1, "A1"), (1, "B1"), (1, "C1"), (2, "A2"), (2, "B2"), (2, "C2"));
+
+        return AsyncAssert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
+    }
+
+    [Fact]
+    public async Task CancellationIsPropagated()
+    {
+        // System.Linq.Async throws for an already canceled token, so the merged sequence
+        // is expected to be canceled after the inner sequences have observed the token.
+        var canceledToken = new CancellationToken(canceled: true);
+        var merged = new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(new AssertIsCancellationRequestedAsyncSequence<Unit>());
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await merged.ToListAsync(canceledToken));
     }
 }

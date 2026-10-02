@@ -11,7 +11,7 @@ public readonly struct ConfiguredOptionValueTaskAwaitable<TItem>
 
     public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
-    public readonly struct ConfiguredOptionValueTaskAwaiter : INotifyCompletion
+    public readonly struct ConfiguredOptionValueTaskAwaiter : ICriticalNotifyCompletion
     {
         private readonly Option<ConfiguredValueTaskAwaitable<TItem>.ConfiguredValueTaskAwaiter> _awaiter;
 
@@ -19,7 +19,9 @@ public readonly struct ConfiguredOptionValueTaskAwaitable<TItem>
 
         public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.Switch(none: continuation, some: awaiter => awaiter.OnCompleted(continuation));
+
+        public void UnsafeOnCompleted(Action continuation) => _awaiter.Switch(none: continuation, some: awaiter => awaiter.UnsafeOnCompleted(continuation));
 
         public Option<TItem> GetResult() => _awaiter.Select(task => task.GetResult());
     }
@@ -34,7 +36,7 @@ public readonly struct ConfiguredOptionValueTaskAwaitable
 
     public ConfiguredOptionValueTaskAwaiter GetAwaiter() => new(_awaitable.Select(awaitable => awaitable.GetAwaiter()));
 
-    public readonly struct ConfiguredOptionValueTaskAwaiter : INotifyCompletion
+    public readonly struct ConfiguredOptionValueTaskAwaiter : ICriticalNotifyCompletion
     {
         private readonly Option<ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter> _awaiter;
 
@@ -43,7 +45,9 @@ public readonly struct ConfiguredOptionValueTaskAwaitable
 
         public bool IsCompleted => _awaiter.Select(awaiter => awaiter.IsCompleted).GetOrElse(true);
 
-        public void OnCompleted(Action continuation) => _awaiter.AndThen(awaiter => awaiter.OnCompleted(continuation));
+        public void OnCompleted(Action continuation) => _awaiter.Switch(none: continuation, some: awaiter => awaiter.OnCompleted(continuation));
+
+        public void UnsafeOnCompleted(Action continuation) => _awaiter.Switch(none: continuation, some: awaiter => awaiter.UnsafeOnCompleted(continuation));
 
         public void GetResult() => _awaiter.AndThen(awaiter => awaiter.GetResult());
     }

@@ -1,7 +1,12 @@
 ## Chunk
 
-With the `.Chunk(int)` extension method, you can turn an `IEnumerable<T>` into a `IEnumerable<IEnumerable<T>>`, with the inner Enumerables being of the given size.
-Empty and negative chunk sizes are not allowed and will throw a `ArgumentOutOfRangeException`.
+Cuts a sequence into consecutive pieces of a fixed size. The last piece is smaller if the length is not a
+multiple of the size.
+
+```cs
+IEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
+IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
+```
 
 <picture>
     <picture>
@@ -10,29 +15,23 @@ Empty and negative chunk sizes are not allowed and will throw a `ArgumentOutOfRa
     </picture>
 </picture>
 
-### Examples
+A size of zero or less throws an `ArgumentOutOfRangeException` immediately, not on enumeration. The chunks are
+produced lazily, but each chunk is materialized when it is yielded, so you can hold on to a chunk after moving
+to the next one.
 
-```csharp
-var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-var chunked = numbers.Chunk(3);
-// Result: IEnumerable with Chunks of size 3:
-// 1st Chunk: 1, 2, 3
-// 2nd Chunk: 4, 5, 6
-// 3rd Chunk: 7, 8, 9
-```
+.NET 6 added `Enumerable.Chunk` to the BCL, returning arrays. On those targets Funcky's own `Chunk(size)` steps
+aside and the BCL method is picked; the overload with a result selector remains Funcky's, and is the shorter
+way to write `Chunk(size).Select(selector)`.
 
-When the last chunk isn't complete, we get a smaller, incomplete last chunk:
-```csharp
-var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-var chunked = numbers.Chunk(4);
-// Result: IEnumerable with Chunks of size 4:
-// 1st Chunk: 1, 2, 3, 4
-// 2nd Chunk: 5, 6, 7
-```
+### Example
 
-If required, you can also pass a result selector, that turns the inner IEnumerables into a different type:
-```csharp
-var magicSquare = new List<int> { 4, 9, 2, 3, 5, 7, 8, 1, 6 };
-var result = magicSquare.Chunk(3, Enumerable.Average); // equivalent to magicSquare.Chunk(3, number => Enumerable.Average(number));
-// Result: IEnumerable<int> with 5, 5, 5 as items
+```cs
+var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7);
+
+numbers.Chunk(3);
+// [[1, 2, 3], [4, 5, 6], [7]]
+
+var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
+magicSquare.Chunk(3, row => row.Sum());
+// [15, 15, 15]
 ```

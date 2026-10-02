@@ -1,0 +1,10 @@
+% Successors
+
+> Successors(1, Double)
+
+---1----2----4----8----g----|
+g := 16
+
+> Successors(1, n < 10 ? Double : None)
+
+---1----2----4----8----|
