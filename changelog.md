@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: calling `Split(separator)` on an array in C# 14 (the default for .NET 10) bound to
+  `MemoryExtensions.Split(ReadOnlySpan<T>, T)` because of first-class span conversions, so the
+  result was a `SpanSplitEnumerator<T>` instead of an `IEnumerable<IReadOnlyList<T>>` and the
+  following LINQ call failed to compile. An array overload of `Split` now keeps arrays bound to
+  Funcky. (#893)
 * Fix: `Merge` on `IEnumerable<T>` and `IAsyncEnumerable<T>` was not stable: when elements from
   different sources compared equal, the element from the later source was yielded first. Equal
   elements now keep the order of the sources, like a stable sort. (#891)

@@ -16,6 +16,22 @@ public static partial class EnumerableExtensions
         => source.Split(separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
+    /// Splits the source array by the given separator.
+    /// </summary>
+    /// <remarks>
+    /// This overload exists so that arrays keep binding to Funcky's <c>Split</c> in C# 14 and later, where
+    /// the first-class span conversion would otherwise make <c>MemoryExtensions.Split(ReadOnlySpan{T}, T)</c> win.
+    /// </remarks>
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> array.</typeparam>
+    /// <param name="source">The source array.</param>
+    /// <param name="separator">A single element of type <typeparamref name="TSource"/> separating the parts.</param>
+    /// <returns>A sequence of sequences.</returns>
+    [Pure]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this TSource[] source, TSource separator)
+        => source.Split(separator, EqualityComparer<TSource>.Default);
+
+    /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
     /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>

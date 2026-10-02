@@ -37,4 +37,15 @@ public sealed class SplitTest
 
         Assert.Equal(expected, parts);
     }
+
+    [Fact]
+    public void SplitOnAnArrayBindsToTheEnumerableOverload()
+    {
+        // With C# 14 first-class span conversions, an array receiver would otherwise bind to MemoryExtensions.Split(ReadOnlySpan<T>, T).
+        int[] array = [1, 0, 2, 0, 3];
+
+        var parts = array.Split(0);
+
+        Assert.Equal([[1], [2], [3]], parts.Select(part => part.ToList()));
+    }
 }
