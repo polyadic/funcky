@@ -248,5 +248,8 @@ where a `null` could slip through. Here, the compiler does not let it.
 ## Where to go next
 
 * [The TryVerb-pattern](./try-pattern.md) lists the `…OrNone` methods that produce options from BCL calls.
+* [Finding one element](./enumerable-extensions/finding-one-element.md) covers `FirstOrNone` and friends on
+  sequences, and [`WhereSelect`](./enumerable-extensions/filtering-and-partitioning.md#whereselect) is how
+  options and sequences combine.
 * The [`if null` case study](./case-studies/if-null-to-option.md) walks through migrating an existing method.
 * [`Result<T>`](./result.md) and [`Either<L, R>`](./either.md) follow the same ladder, with an error value in place of `None`.
