@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 #pragma warning disable CS1998
 
 namespace Funcky.Async.Test.TestUtilities;

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
 using FsCheck.Fluent;

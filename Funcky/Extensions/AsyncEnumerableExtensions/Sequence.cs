@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Funcky.Internal;

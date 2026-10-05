@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.RetryPolicies;
 
 namespace Funcky;

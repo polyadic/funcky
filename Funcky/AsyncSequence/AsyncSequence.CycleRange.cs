@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 namespace Funcky;
 

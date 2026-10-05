@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 #if !RANDOM_SHUFFLE
 using Funcky.Internal;
 #endif

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
 using Funcky.Internal;
 using Funcky.Internal.Validators;

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
