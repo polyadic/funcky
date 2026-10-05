@@ -44,8 +44,7 @@ public sealed class PairwiseTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Pairwise().ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Pairwise());
     }
 }
 #endif

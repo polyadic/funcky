@@ -47,7 +47,11 @@ public sealed class AdjacentGroupByTest
 
         var grouping = await AsyncAssert.Single(group);
         Assert.Equal(groupKey, grouping.Key);
+#if SYSTEM_LINQ_ASYNC
+        Assert.Equal(elementCount, await grouping.CountAsync());
+#else
         Assert.Equal(elementCount, grouping.Count());
+#endif
     }
 
     [Fact]
@@ -67,7 +71,11 @@ public sealed class AdjacentGroupByTest
 
         Assert.Equal(DaysInALeapYear, await dates.CountAsync());
         Assert.Equal(MonthsInAYear, await months.CountAsync());
+#if SYSTEM_LINQ_ASYNC
+        await AsyncAssert.Equal(DaysInMonthsOfALeapYear(), months.SelectAwait(async month => await month.CountAsync()));
+#else
         await AsyncAssert.Equal(DaysInMonthsOfALeapYear(), months.Select((month, _) => month.Count()));
+#endif
     }
 
     [Fact]
@@ -79,7 +87,11 @@ public sealed class AdjacentGroupByTest
 
         Assert.Equal(DaysInAYear + DaysInALeapYear, await dates.CountAsync());
         Assert.Equal(2 * MonthsInAYear, await months.CountAsync());
+#if SYSTEM_LINQ_ASYNC
+        await AsyncAssert.Equal(DaysInMonthsOfAYear().Concat(DaysInMonthsOfALeapYear()), months.SelectAwait(async month => await month.CountAsync()));
+#else
         await AsyncAssert.Equal(DaysInMonthsOfAYear().Concat(DaysInMonthsOfALeapYear()), months.Select((month, _) => month.Count()));
+#endif
     }
 
     [Fact]
@@ -98,7 +110,11 @@ public sealed class AdjacentGroupByTest
         var numbers = AsyncEnumerable.Range(1, 5);
 
         var grouped = numbers.AdjacentGroupBy(number => number / 3, number => number * -1);
+#if SYSTEM_LINQ_ASYNC
+        Assert.Equal("-3,-4,-5", string.Join(",", await (await grouped.LastAsync()).ToListAsync()));
+#else
         Assert.Equal("-3,-4,-5", string.Join(",", await grouped.LastAsync()));
+#endif
     }
 
 #pragma warning disable CS1998

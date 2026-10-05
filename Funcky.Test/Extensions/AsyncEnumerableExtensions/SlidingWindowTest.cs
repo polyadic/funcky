@@ -84,8 +84,7 @@ public sealed class SlidingWindowTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().SlidingWindow(1).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().SlidingWindow(1));
     }
 }
 #endif

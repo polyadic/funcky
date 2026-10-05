@@ -4,6 +4,10 @@
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <!-- The async tests live in Funcky.Test (guarded by ASYNC_SUPPORTED, where they run on net10.0 against Funcky)
+             and are linked into this project to run against Funcky.Async and System.Linq.Async.
+             SYSTEM_LINQ_ASYNC marks the few tests that differ between the two, see Funcky.Async.csproj. -->
+        <DefineConstants>$(DefineConstants);ASYNC_SUPPORTED;SYSTEM_LINQ_ASYNC</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="System.Linq.Async" VersionOverride="$(SystemLinqAsyncVersion)" Condition="'$(SystemLinqAsyncVersion)' != ''" />
@@ -17,6 +21,27 @@
         <ProjectReference Include="..\Funcky.FsCheck\Funcky.FsCheck.fsproj" />
         <ProjectReference Include="..\Funcky.Test.Internal\Funcky.Test.Internal.csproj" />
         <ProjectReference Include="..\Funcky.Xunit\Funcky.Xunit.csproj" />
+    </ItemGroup>
+    <ItemGroup Label="Async tests shared with Funcky.Test">
+        <Compile Include="..\Funcky.Test\AsyncGenerator.cs" />
+        <Compile Include="..\Funcky.Test\FunckyAsyncPropertyAttribute.cs" />
+        <Compile Include="..\Funcky.Test\AsyncSequence\*.cs" LinkBase="AsyncSequence" />
+        <Compile Include="..\Funcky.Test\Extensions\AsyncEnumerableExtensions\*.cs" LinkBase="Extensions\AsyncEnumerableExtensions" />
+        <Compile Include="..\Funcky.Test\FunctionalClass\RetryAsyncTest.cs" LinkBase="FunctionalClass" />
+        <Compile Include="..\Funcky.Test\FunctionalClass\RetryWithExceptionAsyncTest.cs" LinkBase="FunctionalClass" />
+        <Compile Include="..\Funcky.Test\Monads\OptionAsyncExtensions\*.cs" LinkBase="Monads\OptionAsyncExtensions" />
+        <Compile Include="..\Funcky.Test\Monads\OptionAwaiterTest.cs" LinkBase="Monads" />
+        <Compile Include="..\Funcky.Test\TestUtilities\AssertIsCancellationRequestedAsyncSequence.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\AsyncAssert.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\AsyncEnumerateOnce.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\FailOnCall.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\FailOnEnumerateAsyncSequence.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\KnownIssues.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\OptionProducer.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\RecordingRetryPolicy.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\RepeatingSequence.cs" LinkBase="TestUtilities" />
+        <!-- The same adapter Funcky.Async uses to compile the .NET 10 operator shapes against System.Linq.Async. -->
+        <Compile Include="..\Funcky.Async\Internal\SystemLinqAsyncAdapter.cs" LinkBase="TestUtilities" />
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />

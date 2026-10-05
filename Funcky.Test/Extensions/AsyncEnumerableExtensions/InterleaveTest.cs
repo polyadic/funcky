@@ -101,8 +101,7 @@ public sealed class InterleaveTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Interleave(new AssertIsCancellationRequestedAsyncSequence<Unit>()).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Interleave(new AssertIsCancellationRequestedAsyncSequence<Unit>()));
     }
 }
 #endif
