@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 namespace Funcky.Async.Test.Monads;
 
 public sealed class OptionAwaiterTest

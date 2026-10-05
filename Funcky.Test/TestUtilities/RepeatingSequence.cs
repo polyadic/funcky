@@ -5,7 +5,7 @@ public static class RepeatingSequence
     public static RepeatingSequenceHelper IsSequenceRepeating(this IEnumerable<int> sequence, IEnumerable<int> pattern)
         => new(sequence, pattern);
 
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
     public static RepeatingAsyncSequenceHelper IsSequenceRepeating(this IAsyncEnumerable<int> sequence, IAsyncEnumerable<int> pattern)
         => new(sequence, pattern);
 #endif
@@ -24,7 +24,7 @@ public static class RepeatingSequence
                 .All(Identity);
     }
 
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
     public class RepeatingAsyncSequenceHelper
     {
         private readonly IAsyncEnumerable<int> _sequence;

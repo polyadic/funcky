@@ -12,7 +12,7 @@ internal sealed class OptionProducer<T>(int retriesNeeded, T result)
         return Option.FromBoolean(retriesNeeded == (Called - 1), result);
     }
 
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
     public ValueTask<Option<T>> ProduceAsync()
     {
         Called += 1;

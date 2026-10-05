@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using static Funcky.ValueTaskFactory;
@@ -16,7 +16,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector)
         => AdjacentGroupByAwaitInternal(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default);
@@ -31,7 +35,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
         IEqualityComparer<TKey> comparer)
@@ -48,7 +56,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
         Func<TSource, ValueTask<TElement>> elementSelector)
@@ -66,7 +78,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
         Func<TSource, ValueTask<TElement>> elementSelector,
@@ -185,8 +201,13 @@ public static partial class AsyncEnumerableExtensions
         yield return await resultSelector(key, group).ConfigureAwait(false);
     }
 
+#if SYSTEM_LINQ_ASYNC
+    private static ValueTask<AsyncGrouping<TKey, TElement>> CreateGroupingAwait<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
+        => ValueTaskFromResult(new AsyncGrouping<TKey, TElement>(key, elements));
+#else
     private static ValueTask<Grouping<TKey, TElement>> CreateGroupingAwait<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
         => ValueTaskFromResult(new Grouping<TKey, TElement>(key, elements));
+#endif
 
     private static async Task<(IImmutableList<TElement> Group, TKey Key)> CreateGroupAndKeyAsync<TSource, TKey, TElement>(Func<TSource, ValueTask<TKey>> keySelector, Func<TSource, ValueTask<TElement>> elementSelector, IAsyncEnumerator<TSource> enumerator)
     {

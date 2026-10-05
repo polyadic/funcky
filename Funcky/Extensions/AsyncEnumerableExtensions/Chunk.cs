@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
 using Funcky.Internal.Validators;
 
@@ -6,6 +6,20 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
+#if SYSTEM_LINQ_ASYNC
+    /// <summary>
+    /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
+    /// </summary>
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    /// <param name="source">The source sequence.</param>
+    /// <param name="size">The desired size of the chunks.</param>
+    /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
+    /// <remarks>Starting with .NET 10 the base class library provides this overload itself, so it is only part of Funcky.Async.</remarks>
+    [Pure]
+    public static IAsyncEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IAsyncEnumerable<TSource> source, int size)
+        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size));
+#endif
+
     /// <summary>
     /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
     /// </summary>

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
@@ -15,7 +15,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector)
         => AdjacentGroupByInternal(source, keySelector, Identity, CreateGrouping, EqualityComparer<TKey>.Default);
@@ -30,7 +34,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         IEqualityComparer<TKey> comparer)
@@ -47,7 +55,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector)
@@ -65,7 +77,11 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+#if SYSTEM_LINQ_ASYNC
+    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
+#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
+#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
@@ -184,8 +200,13 @@ public static partial class AsyncEnumerableExtensions
         yield return resultSelector(key, group);
     }
 
+#if SYSTEM_LINQ_ASYNC
+    private static AsyncGrouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
+        => new(key, elements);
+#else
     private static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
         => new(key, elements);
+#endif
 
     private static (IImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IAsyncEnumerator<TSource> enumerator)
     {

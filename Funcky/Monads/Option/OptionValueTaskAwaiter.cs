@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

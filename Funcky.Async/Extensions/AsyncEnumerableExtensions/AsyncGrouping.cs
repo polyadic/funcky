@@ -1,3 +1,4 @@
+#if SYSTEM_LINQ_ASYNC
 using System.Collections.Immutable;
 
 namespace Funcky.Extensions;
@@ -27,3 +28,4 @@ public static partial class AsyncEnumerableExtensions
         }
     }
 }
+#endif
