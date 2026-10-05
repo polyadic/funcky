@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
+  configuration. They are now built in Release.
 * Fix: the `Retry` and `RetryAsync` overloads without a retry policy were implemented recursively, so a
   producer that returned `None` often enough crashed the process with a `StackOverflowException`.
   They are now plain loops.
