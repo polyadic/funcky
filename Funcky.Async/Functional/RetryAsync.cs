@@ -5,15 +5,23 @@ namespace Funcky;
 public static partial class AsyncFunctional
 {
     /// <summary>
-    /// Calls the given <paramref name="producer"/> over and over until it returns a value.
+    /// Calls the given <paramref name="producer"/> over and over until it returns a value or the <paramref name="cancellationToken"/> is cancelled.
     /// </summary>
+    /// <remarks>
+    /// This overload never gives up and never waits between attempts. Use the overload with an <see cref="IRetryPolicy"/>
+    /// when the producer can fail permanently or should not be called in a tight loop.
+    /// </remarks>
     public static async ValueTask<TResult> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken = default)
         where TResult : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return await (await producer().ConfigureAwait(false)).Match(
-            none: (Func<ValueTask<TResult>>)(async () => await RetryAsync(producer, cancellationToken).ConfigureAwait(false)),
-            some: result => new ValueTask<TResult>(result)).ConfigureAwait(false);
+        return await Sequence
+            .Cycle(producer)
+            .ToAsyncEnumerable()
+            .SelectAwaitWithCancellation(ProduceUnlessCancelled)
+            .WhereSelect(Identity)
+            .FirstAsync(cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public static async ValueTask<Option<TResult>> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
@@ -26,6 +34,13 @@ public static partial class AsyncFunctional
             .WhereSelect(Identity)
             .FirstOrNoneAsync(cancellationToken)
             .ConfigureAwait(false);
+    }
+
+    private static ValueTask<Option<TResult>> ProduceUnlessCancelled<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken)
+        where TResult : notnull
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return producer();
     }
 
     private static IAsyncEnumerable<Option<TResult>> TailRetriesAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)

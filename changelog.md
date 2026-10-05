@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the `Retry` and `RetryAsync` overloads without a retry policy were implemented recursively, so a
+  producer that returned `None` often enough crashed the process with a `StackOverflowException`.
+  They are now plain loops.
 * Fix: the `Option`-based `Retry` and `RetryAsync` overloads numbered the retries from 0 while the
   exception-based overloads numbered them from 1, so the same `IRetryPolicy` produced different delays
   depending on the overload. With a `LinearBackOffRetryPolicy` the `Option`-based overloads retried
