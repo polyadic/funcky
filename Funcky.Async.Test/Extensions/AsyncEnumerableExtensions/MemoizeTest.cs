@@ -106,4 +106,50 @@ public sealed class MemoizeTest
 #pragma warning restore IDISP017
         await Assert.ThrowsAsync<ObjectDisposedException>(async () => await secondBorrow.ForEachAsync(NoOperation<int>));
     }
+
+    [Fact]
+    public async Task EnumeratingAMemoizedBufferHonoursTheCancellationToken()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        await using var memoized = AsyncEnumerable.Range(1, 10).Memoize();
+        Assert.Equal(1, await memoized.FirstAsync());
+
+        cancellationTokenSource.Cancel();
+        await using var enumerator = memoized.GetAsyncEnumerator(cancellationTokenSource.Token);
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+    }
+
+    [Fact]
+    public async Task ConcurrentConsumersOfAMemoizedBufferAllSeeTheWholeSequenceInOrder()
+    {
+        const int count = 1000;
+        await using var memoized = SlowRange(count).Memoize();
+
+        var results = await Task.WhenAll(
+            Task.Run(() => ConsumeAll(memoized)),
+            Task.Run(() => ConsumeAll(memoized)),
+            Task.Run(() => ConsumeAll(memoized)));
+
+        Assert.All(results, result => Assert.Equal(Enumerable.Range(0, count), result));
+    }
+
+    private static async Task<List<int>> ConsumeAll(IAsyncEnumerable<int> source)
+    {
+        var result = new List<int>();
+        await foreach (var item in source)
+        {
+            result.Add(item);
+        }
+
+        return result;
+    }
+
+    private static async IAsyncEnumerable<int> SlowRange(int count)
+    {
+        for (var index = 0; index < count; index++)
+        {
+            await Task.Yield();
+            yield return index;
+        }
+    }
 }
