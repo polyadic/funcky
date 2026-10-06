@@ -104,6 +104,34 @@ public sealed class RetryAsyncTest
         Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
     }
 
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationToken()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+
+        var receivedToken = await RetryAsync(token => ValueTask.FromResult(Option.Some(token)), cancellationTokenSource.Token);
+
+        Assert.Equal(cancellationTokenSource.Token, receivedToken);
+    }
+
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationTokenWhenRetryingWithAPolicy()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var receivedTokens = new List<CancellationToken>();
+
+        FunctionalAssert.None(await RetryAsync(
+            token =>
+            {
+                receivedTokens.Add(token);
+                return ValueTask.FromResult(Option<int>.None);
+            },
+            new NoDelayRetryPolicy(2),
+            cancellationTokenSource.Token));
+
+        Assert.Equal([cancellationTokenSource.Token, cancellationTokenSource.Token, cancellationTokenSource.Token], receivedTokens);
+    }
+
     private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)
         => async () =>
         {

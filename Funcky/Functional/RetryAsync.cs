@@ -12,7 +12,13 @@ public static partial class AsyncFunctional
     /// This overload never gives up and never waits between attempts. Use the overload with an <see cref="IRetryPolicy"/>
     /// when the producer can fail permanently or should not be called in a tight loop.
     /// </remarks>
-    public static async ValueTask<TResult> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken = default)
+    public static ValueTask<TResult> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken = default)
+        where TResult : notnull
+        => RetryAsync(_ => producer(), cancellationToken);
+
+    /// <inheritdoc cref="RetryAsync{TResult}(Func{ValueTask{Option{TResult}}}, CancellationToken)"/>
+    /// <remarks>The <paramref name="producer"/> receives the <paramref name="cancellationToken"/>, so it can abort an attempt that is in progress.</remarks>
+    public static async ValueTask<TResult> RetryAsync<TResult>(Func<CancellationToken, ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken = default)
         where TResult : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -25,26 +31,36 @@ public static partial class AsyncFunctional
             .ConfigureAwait(false);
     }
 
-    public static async ValueTask<Option<TResult>> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Calls the given <paramref name="producer"/> until it returns a value or the <paramref name="retryPolicy"/> is exhausted,
+    /// waiting between the attempts for the delay given by the policy.
+    /// </summary>
+    public static ValueTask<Option<TResult>> RetryAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
+        where TResult : notnull
+        => RetryAsync(_ => producer(), retryPolicy, cancellationToken);
+
+    /// <inheritdoc cref="RetryAsync{TResult}(Func{ValueTask{Option{TResult}}}, IRetryPolicy, CancellationToken)"/>
+    /// <remarks>The <paramref name="producer"/> receives the <paramref name="cancellationToken"/>, so it can abort an attempt that is in progress.</remarks>
+    public static async ValueTask<Option<TResult>> RetryAsync<TResult>(Func<CancellationToken, ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken = default)
         where TResult : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
         return await AsyncSequence
-            .Return(await producer().ConfigureAwait(false))
+            .Return(await producer(cancellationToken).ConfigureAwait(false))
             .Concat(TailRetriesAsync(producer, retryPolicy, cancellationToken))
             .WhereSelect(Identity)
             .FirstOrNoneAsync(cancellationToken)
             .ConfigureAwait(false);
     }
 
-    private static ValueTask<Option<TResult>> ProduceUnlessCancelled<TResult>(Func<ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken)
+    private static ValueTask<Option<TResult>> ProduceUnlessCancelled<TResult>(Func<CancellationToken, ValueTask<Option<TResult>>> producer, CancellationToken cancellationToken)
         where TResult : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return producer();
+        return producer(cancellationToken);
     }
 
-    private static IAsyncEnumerable<Option<TResult>> TailRetriesAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
+    private static IAsyncEnumerable<Option<TResult>> TailRetriesAsync<TResult>(Func<CancellationToken, ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
         where TResult : notnull
         => Retries(retryPolicy)
             .Select((int item, CancellationToken _) => ProduceDelayedAsync(producer, retryPolicy, cancellationToken)(item));
@@ -52,12 +68,12 @@ public static partial class AsyncFunctional
     private static IAsyncEnumerable<int> Retries(IRetryPolicy retryPolicy)
         => AsyncEnumerable.Range(1, retryPolicy.MaxRetries);
 
-    private static Func<int, ValueTask<Option<TResult>>> ProduceDelayedAsync<TResult>(Func<ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
+    private static Func<int, ValueTask<Option<TResult>>> ProduceDelayedAsync<TResult>(Func<CancellationToken, ValueTask<Option<TResult>>> producer, IRetryPolicy retryPolicy, CancellationToken cancellationToken)
         where TResult : notnull
         => async retryCount =>
         {
             await Task.Delay(retryPolicy.Delay(retryCount), cancellationToken).ConfigureAwait(false);
-            return await producer().ConfigureAwait(false);
+            return await producer(cancellationToken).ConfigureAwait(false);
         };
 }
 #endif

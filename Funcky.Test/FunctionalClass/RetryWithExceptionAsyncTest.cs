@@ -63,6 +63,81 @@ public sealed class RetryWithExceptionAsyncTest
         Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
     }
 
+    [Fact]
+    public async Task DoesNotRetryWhenTheProducerWasCancelled()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var called = 0;
+
+        ValueTask<Unit> Producer()
+        {
+            called++;
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            return ValueTask.FromResult(Unit.Value);
+        }
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAwaitAsync(Producer, True, new NoDelayRetryPolicy(5), cancellationTokenSource.Token));
+        Assert.Equal(1, called);
+    }
+
+    [Fact]
+    public async Task ThrowsImmediatelyWhenAlreadyCancelled()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(Throw<Unit>, True, new NoDelayRetryPolicy(5), cancellationTokenSource.Token));
+    }
+
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationToken()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+
+        var receivedToken = await RetryAwaitAsync(token => ValueTask.FromResult(token), True, new ThrowOnRetryPolicy(), cancellationTokenSource.Token);
+
+        Assert.Equal(cancellationTokenSource.Token, receivedToken);
+    }
+
+    [Fact]
+    public async Task TheActionReceivesTheCancellationToken()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var receivedToken = CancellationToken.None;
+
+        await RetryAwaitAsync(
+            token =>
+            {
+                receivedToken = token;
+                return ValueTask.CompletedTask;
+            },
+            True,
+            new ThrowOnRetryPolicy(),
+            cancellationTokenSource.Token);
+
+        Assert.Equal(cancellationTokenSource.Token, receivedToken);
+    }
+
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationTokenOnEveryRetry()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var receivedTokens = new List<CancellationToken>();
+
+        await Assert.ThrowsAsync<ExceptionStub>(async () => await RetryAwaitAsync<Unit>(
+            token =>
+            {
+                receivedTokens.Add(token);
+                throw new ExceptionStub();
+            },
+            True,
+            new NoDelayRetryPolicy(2),
+            cancellationTokenSource.Token));
+
+        Assert.Equal([cancellationTokenSource.Token, cancellationTokenSource.Token, cancellationTokenSource.Token], receivedTokens);
+    }
+
     private static TResult Throw<TResult>() => throw new ExceptionStub();
 
     private sealed class ExceptionStub : Exception;

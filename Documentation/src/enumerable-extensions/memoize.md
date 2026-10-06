@@ -27,6 +27,11 @@ copy it.
 
 `Memoize` is not thread-safe. Use it from a single thread, or memoize before handing the sequence out.
 
+The `IAsyncEnumerable` variant returns an `IAsyncBuffer<T>` with the same contract, except that several consumers
+may enumerate it concurrently: the source is still pulled one element at a time and every element is produced
+once. The cancellation token passed to `GetAsyncEnumerator`, for example through `WithCancellation`, cancels that
+consumer's enumeration only.
+
 ### Example
 
 ```cs
