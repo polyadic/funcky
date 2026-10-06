@@ -83,8 +83,7 @@ public sealed class MergeTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(AsyncEnumerable.Empty<Unit>()).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(AsyncEnumerable.Empty<Unit>()));
     }
 
     [Fact]

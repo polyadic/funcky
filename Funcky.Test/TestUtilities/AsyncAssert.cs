@@ -66,6 +66,29 @@ internal static class AsyncAssert
     public static async Task Equal<TElement>(IAsyncEnumerable<TElement> expectedResult, IAsyncEnumerable<TElement> actual)
         => Assert.Equal(await expectedResult.ToListAsync(), await actual.ToListAsync());
 
+    /// <summary>
+    /// Enumerates <paramref name="sequence"/> with an already cancelled token. Build the sequence from
+    /// <see cref="AssertIsCancellationRequestedAsyncSequence{T}"/> instances, which assert that the token reaches them.
+    /// </summary>
+    /// <remarks>
+    /// System.Linq.Async throws an <see cref="OperationCanceledException"/> for an already cancelled token once the
+    /// inner sequences have observed it, the .NET 10 operators complete normally. Both outcomes are accepted.
+    /// </remarks>
+    public static async Task CancellationIsPropagated<T>(IAsyncEnumerable<T> sequence)
+    {
+        var canceledToken = new CancellationToken(canceled: true);
+
+        try
+        {
+            await foreach (var dummy in sequence.WithCancellation(canceledToken))
+            {
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
     private static async Task<IReadOnlyCollection<TElement>> MaterializeCollectionStart<TElement>(IAsyncEnumerable<TElement> asyncSequence)
     {
         // This should *ideally* be kept in sync with XUnit's `ArgumentFormatter.MAX_ENUMERABLE_LENGTH + 1` (which is private).
