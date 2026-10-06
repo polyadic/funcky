@@ -5,6 +5,19 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
+  configuration. They are now built in Release.
+* Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
+  * `AsyncSequence.Successors` now honours the cancellation token passed to `GetAsyncEnumerator`
+    (e.g. via `WithCancellation`) and stops before computing the next element.
+  * `Memoize` and `CycleRange`/`RepeatRange` for `IAsyncEnumerable` no longer acquire the source's enumerator
+    when the buffer is created, but when the first element is requested, and they honour each consumer's
+    cancellation token. The memoized buffer can now be enumerated by several consumers concurrently.
+  * `AnyOrElse` for `IAsyncEnumerable` now awaits with `ConfigureAwait(false)` like the other operators.
+  * The exception-based `RetryAsync`/`RetryAwaitAsync` no longer retry once the cancellation token is cancelled,
+    even if `shouldRetry` matches the exception, and check the token before the first attempt.
+* New: `RetryAsync` and `RetryAwaitAsync` overloads whose producer receives the `CancellationToken`,
+  so an attempt in progress can be aborted.
 * Fix: the `Retry` and `RetryAsync` overloads without a retry policy were implemented recursively, so a
   producer that returned `None` often enough crashed the process with a `StackOverflowException`.
   They are now plain loops.

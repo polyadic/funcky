@@ -53,6 +53,18 @@ Both forms block the thread with `Thread.Sleep` during delays. In asynchronous c
 `RetryAwaitAsync` from `AsyncFunctional`, which await the delay, accept a `CancellationToken`, and have
 producers returning `ValueTask`. They live in `Funcky.Async`, and in `Funcky` itself on .NET 10.
 
+The async forms check the token before every attempt and never retry once it is cancelled, even when
+`shouldRetry` would accept the exception. To abort an attempt that is already in progress, use the overloads
+whose producer receives the token:
+
+```cs
+var content = await RetryAwaitAsync(
+    token => httpClient.GetStringAsync(url, token),
+    shouldRetry: e => e is HttpRequestException,
+    retryPolicy: new LinearBackOffRetryPolicy(maxRetries: 3, firstDelay: TimeSpan.FromSeconds(1)),
+    cancellationToken);
+```
+
 ## Retry policies
 
 A policy is an `IRetryPolicy` with two members: how many retries to make, and how long to wait before each one.
