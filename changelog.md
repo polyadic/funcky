@@ -65,6 +65,10 @@ This update is mainly to update to .NET 10.
 * `AdjacentGroupBy` for `IAsyncEnumerable` returns `IGrouping<TKey, TElement>` on .NET 10
   instead of the `IAsyncGrouping<TKey, TElement>` type from `System.Linq.Async`.
 
+### Funcky.Analyzers
+The new analyzer rule `λ1011` suggests `Select(f)` over `Match(none: Option<T>.None, some: x => f(x))`
+(and the equivalent shapes for `Either` and `Result`), with a code fix.
+
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
 This is a patch release which fixes vulnerability warnings of (direct and transitive) dependencies.

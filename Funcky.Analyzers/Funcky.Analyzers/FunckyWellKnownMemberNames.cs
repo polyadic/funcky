@@ -30,6 +30,9 @@ public static class FunckyWellKnownMemberNames
     /// <summary>The <c>GetOrElse</c> method on Either-like types.</summary>
     public const string OrElseMethodName = "OrElse";
 
+    /// <summary>The <c>Select</c> method on monadic types.</summary>
+    public const string SelectMethodName = "Select";
+
     /// <summary>The <c>SelectMany</c> method on monadic types.</summary>
     public const string SelectManyMethodName = "SelectMany";
 

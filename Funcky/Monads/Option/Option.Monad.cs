@@ -1,8 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Funcky.Monads;
 
 public readonly partial struct Option<TItem>
 {
     [Pure]
+    [SuppressMessage("Funcky", "λ1011:Prefer Select over Match", Justification = "This is the implementation of Select.")]
     public Option<TResult> Select<TResult>(Func<TItem, TResult> selector)
         where TResult : notnull
         => Match(

@@ -12,7 +12,7 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
 {
     public const string PreservedArgumentIndexProperty = nameof(PreservedArgumentIndexProperty);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany, PreferToNullable);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(PreferGetOrElse, PreferOrElse, PreferSelectMany, PreferToNullable, PreferSelect);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -79,6 +79,15 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                 PreferOrElse,
                 operation.Syntax.GetLocation(),
                 properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, errorStateArgumentIndex.ToString()));
+        }
+
+        if (IsSelectEquivalent(alternativeMonadType, operation, match.ErrorState, match.SuccessState))
+        {
+            var successStateArgumentIndex = operation.Arguments.IndexOf(match.SuccessState);
+            return Diagnostic.Create(
+                PreferSelect,
+                operation.Syntax.GetLocation(),
+                properties: ImmutableDictionary<string, string?>.Empty.Add(PreservedArgumentIndexProperty, successStateArgumentIndex.ToString()));
         }
 
         if (IsSelectManyEquivalent(alternativeMonadType, operation, match.Receiver, match.ErrorState))
