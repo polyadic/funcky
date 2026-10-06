@@ -39,4 +39,52 @@ public sealed class SuccessorsTest
             AsyncEnumerable.Range(0, 11),
             AsyncSequence.Successors(0, i => ValueTask.FromResult(Option.FromBoolean(i < 10, i + 1))));
     }
+
+    [Fact]
+    public async Task SuccessorsStopWhenCancelledWhileComputingTheNextElement()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var successors = AsyncSequence.Successors(0, i => ValueTask.FromResult(Option.Some(i + 1)));
+
+        var consumed = new List<int>();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+        {
+            await foreach (var item in successors.WithCancellation(cancellationTokenSource.Token))
+            {
+                consumed.Add(item);
+                cancellationTokenSource.Cancel();
+
+                if (consumed.Count > 1)
+                {
+                    break; // guard against an endless loop when cancellation is ignored
+                }
+            }
+        });
+
+        Assert.Equal([0], consumed);
+    }
+
+    [Fact]
+    public async Task EndlessSuccessorsStopWhenCancelledWhileComputingTheNextElement()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var successors = AsyncSequence.Successors(0, i => ValueTask.FromResult(i + 1));
+
+        var consumed = new List<int>();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+        {
+            await foreach (var item in successors.WithCancellation(cancellationTokenSource.Token))
+            {
+                consumed.Add(item);
+                cancellationTokenSource.Cancel();
+
+                if (consumed.Count > 1)
+                {
+                    break; // guard against an endless loop when cancellation is ignored
+                }
+            }
+        });
+
+        Assert.Equal([0], consumed);
+    }
 }

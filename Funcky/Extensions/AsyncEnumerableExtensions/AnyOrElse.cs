@@ -19,7 +19,7 @@ public static partial class AsyncEnumerableExtensions
     {
         var hasItems = false;
 
-        await foreach (var item in source.WithCancellation(cancellationToken))
+        await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
             hasItems = true;
             yield return item;
@@ -27,7 +27,7 @@ public static partial class AsyncEnumerableExtensions
 
         if (!hasItems)
         {
-            await foreach (var item in fallback().WithCancellation(cancellationToken))
+            await foreach (var item in fallback().WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 yield return item;
             }
