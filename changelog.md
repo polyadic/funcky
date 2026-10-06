@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
+  configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
   * `AsyncSequence.Successors` now honours the cancellation token passed to `GetAsyncEnumerator`
     (e.g. via `WithCancellation`) and stops before computing the next element.
