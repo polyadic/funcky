@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Breaking: `Split` on `IEnumerable<T>` and `IAsyncEnumerable<T>` now behaves exactly like `string.Split`:
+  a separator at the end of the source produces a trailing empty part, and an empty source produces a single
+  empty part. Previously both cases swallowed the empty part, so `[1, 0].Split(0)` gave `[[1]]` while
+  `[0, 1].Split(0)` gave `[[], [1]]`, and the source could not be reconstructed from the parts. The result
+  now always has exactly one part more than there are separators.
 * Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
   configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
