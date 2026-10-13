@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `MinByOrNone` and `MaxByOrNone` now treat `null` keys like `Enumerable.MinBy`/`Enumerable.MaxBy`:
+  elements whose key is `null` are never chosen as the minimum or maximum, and if all keys are `null`
+  the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,
+  because the default comparer orders `null` before everything else. Both methods also evaluate the key
+  selector only once per element instead of twice.
 * Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
   configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
