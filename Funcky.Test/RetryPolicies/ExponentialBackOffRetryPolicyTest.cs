@@ -23,4 +23,20 @@ public sealed class ExponentialBackOffRetryPolicyTest
             [TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(150), TimeSpan.FromMilliseconds(225)],
             Enumerable.Range(1, retryPolicy.MaxRetries).Select(retryPolicy.Delay));
     }
+
+    [Fact]
+    public void ZeroRetriesAreAllowed()
+    {
+        var retryPolicy = new ExponentialBackOffRetryPolicy(maxRetries: 0, TimeSpan.FromMilliseconds(100));
+
+        Assert.Equal(0, retryPolicy.MaxRetries);
+    }
+
+    [Fact]
+    public void ANegativeNumberOfRetriesIsRejected()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new ExponentialBackOffRetryPolicy(maxRetries: -1, TimeSpan.FromMilliseconds(100)));
+
+        Assert.Equal("maxRetries", exception.ParamName);
+    }
 }

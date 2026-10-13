@@ -23,4 +23,20 @@ public sealed class LinearBackOffRetryPolicyTest
             [TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(200), TimeSpan.FromMilliseconds(300)],
             Enumerable.Range(1, retryPolicy.MaxRetries).Select(retryPolicy.Delay));
     }
+
+    [Fact]
+    public void ZeroRetriesAreAllowed()
+    {
+        var retryPolicy = new LinearBackOffRetryPolicy(maxRetries: 0, TimeSpan.FromMilliseconds(100));
+
+        Assert.Equal(0, retryPolicy.MaxRetries);
+    }
+
+    [Fact]
+    public void ANegativeNumberOfRetriesIsRejected()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new LinearBackOffRetryPolicy(maxRetries: -1, TimeSpan.FromMilliseconds(100)));
+
+        Assert.Equal("maxRetries", exception.ParamName);
+    }
 }
