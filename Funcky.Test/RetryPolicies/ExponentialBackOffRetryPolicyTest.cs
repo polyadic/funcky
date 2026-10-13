@@ -39,4 +39,12 @@ public sealed class ExponentialBackOffRetryPolicyTest
 
         Assert.Equal("maxRetries", exception.ParamName);
     }
+
+    [Fact]
+    public void ANegativeDelayIsRejected()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new ExponentialBackOffRetryPolicy(maxRetries: 3, TimeSpan.FromMilliseconds(-1)));
+
+        Assert.Equal("firstDelay", exception.ParamName);
+    }
 }

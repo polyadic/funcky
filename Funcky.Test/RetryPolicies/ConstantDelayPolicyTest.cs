@@ -30,4 +30,12 @@ public sealed class ConstantDelayPolicyTest
 
         Assert.Equal("maxRetries", exception.ParamName);
     }
+
+    [Fact]
+    public void ANegativeDelayIsRejected()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new ConstantDelayPolicy(maxRetries: 3, TimeSpan.FromMilliseconds(-1)));
+
+        Assert.Equal("delay", exception.ParamName);
+    }
 }
