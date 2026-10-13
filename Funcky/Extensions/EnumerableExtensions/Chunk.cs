@@ -19,7 +19,7 @@ public static partial class EnumerableExtensions
 #else
     public static IEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int size)
 #endif
-        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size));
+        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size));
 
     /// <summary>
     /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
@@ -32,8 +32,8 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence of results based on equally sized chunks.</returns>
     [Pure]
     public static IEnumerable<TResult> Chunk<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        => ChunkEnumerable(source, ChunkSizeValidator.Validate(size))
-            .Select(resultSelector);
+        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
+            .Select(ArgumentValidator.NotNull(resultSelector));
 
     private static IEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IEnumerable<TSource> source, int size)
     {

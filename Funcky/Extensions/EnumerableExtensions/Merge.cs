@@ -1,6 +1,7 @@
 #pragma warning disable RS0026
 
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -17,7 +18,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
-        => Merge([source1, source2], comparer);
+        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)], comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -31,7 +32,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
-        => Merge([source1, source2, source3], comparer);
+        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)], comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -46,7 +47,7 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, IEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
-        => Merge([source1, source2, source3, source4], comparer);
+        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)], comparer);
 
     /// <summary>
     /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -58,6 +59,9 @@ public static partial class EnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
+        => MergeIterator(ArgumentValidator.NotNull(sources), comparer);
+
+    private static IEnumerable<TSource> MergeIterator<TSource>(IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer)
     {
         var enumerators = GetMergeEnumerators(sources);
 

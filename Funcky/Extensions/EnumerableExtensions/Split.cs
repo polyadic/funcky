@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -60,6 +61,13 @@ public static partial class EnumerableExtensions
     [Pure]
     public static IEnumerable<TResult> Split<TSource, TResult>(
         this IEnumerable<TSource> source,
+        TSource separator,
+        IEqualityComparer<TSource> comparer,
+        Func<IReadOnlyList<TSource>, TResult> resultSelector)
+        => SplitIterator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer), ArgumentValidator.NotNull(resultSelector));
+
+    private static IEnumerable<TResult> SplitIterator<TSource, TResult>(
+        IEnumerable<TSource> source,
         TSource separator,
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)

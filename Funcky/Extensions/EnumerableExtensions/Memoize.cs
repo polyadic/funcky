@@ -1,5 +1,6 @@
 using System.Collections;
 using Funcky.Buffers;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -14,7 +15,7 @@ public static partial class EnumerableExtensions
     /// <returns>A lazy buffer of the underlying sequence.</returns>
     [Pure]
     public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
-        => source switch
+        => ArgumentValidator.NotNull(source) switch
         {
             IBuffer<TSource> buffer => Borrow(buffer),
             IList<TSource> list => ListBuffer.Create(list),
