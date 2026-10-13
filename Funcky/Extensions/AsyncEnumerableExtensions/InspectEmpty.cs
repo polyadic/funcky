@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -13,7 +14,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the async enumerable.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> InspectEmpty<TSource>(this IAsyncEnumerable<TSource> source, Action inspector)
-        => InspectEmptyInternal(source, inspector);
+        => InspectEmptyInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(inspector));
 
     private static async IAsyncEnumerable<TSource> InspectEmptyInternal<TSource>(
         this IAsyncEnumerable<TSource> source,

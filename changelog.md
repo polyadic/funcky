@@ -5,6 +5,14 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
+  `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
+  `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
+  `WithPrevious`, `ZipLongest`) and `AsyncSequence.Successors` now validate their arguments when they are called,
+  like LINQ: a `null` source, selector, comparer or fallback throws an `ArgumentNullException` naming the
+  parameter immediately, instead of a `NullReferenceException` when the result is first enumerated.
+* Fix: `WithFirst`, `WithLast` and `ZipLongest` for `IAsyncEnumerable` now pass the cancellation token
+  given to `GetAsyncEnumerator` (e.g. via `WithCancellation`) on to the source sequence.
 * Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
   configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):

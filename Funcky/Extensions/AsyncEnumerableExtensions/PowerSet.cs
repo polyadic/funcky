@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -15,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <remarks>The PowerSet function returns a sequence with 2^n elements where n is the number of elements int the source sequence.
     /// This means it is only viable for small source sequences.</remarks>
     public static IAsyncEnumerable<IEnumerable<TSource>> PowerSet<TSource>(this IAsyncEnumerable<TSource> source)
-        => source.PowerSetInternal();
+        => ArgumentValidator.NotNull(source).PowerSetInternal();
 
     private static async IAsyncEnumerable<IEnumerable<TSource>> PowerSetInternal<TSource>(this IAsyncEnumerable<TSource> source, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 using static Funcky.ValueTaskFactory;
 
 namespace Funcky.Extensions;
@@ -23,7 +24,7 @@ public static partial class AsyncEnumerableExtensions
 #endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and compares the keys by using a specified comparer.
@@ -43,7 +44,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, CreateGroupingAwait, comparer);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ValueTaskFromResult, CreateGroupingAwait, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
@@ -64,7 +65,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, CreateGroupingAwait, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), CreateGroupingAwait, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and projects the elements for each group by using a specified function.
@@ -87,7 +88,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, CreateGroupingAwait, comparer);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), CreateGroupingAwait, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key.
@@ -104,7 +105,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TKey, IEnumerable<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ValueTaskFromResult, ArgumentValidator.NotNull(resultSelector), EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
@@ -124,7 +125,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
         Func<TKey, IEnumerable<TElement>, CancellationToken, ValueTask<TResult>> resultSelector)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), ArgumentValidator.NotNull(resultSelector), EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
@@ -143,7 +144,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TKey, IEnumerable<TSource>, CancellationToken, ValueTask<TResult>> resultSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, ValueTaskFromResult, resultSelector, comparer);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ValueTaskFromResult, ArgumentValidator.NotNull(resultSelector), ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
@@ -165,7 +166,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
         Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByAwaitWithCancellationInternal(source, keySelector, elementSelector, resultSelector, comparer);
+        => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), ArgumentValidator.NotNull(resultSelector), ArgumentValidator.NotNull(comparer));
 
     private static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellationInternal<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,

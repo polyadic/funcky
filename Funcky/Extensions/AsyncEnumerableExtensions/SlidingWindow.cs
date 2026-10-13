@@ -21,7 +21,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>Returns a sequence of equally sized window sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IAsyncEnumerable<TSource> source, int width)
-        => SlidingWindowEnumerable(source, WindowWidthValidator.Validate(width));
+        => SlidingWindowEnumerable(ArgumentValidator.NotNull(source), WindowWidthValidator.Validate(width));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(

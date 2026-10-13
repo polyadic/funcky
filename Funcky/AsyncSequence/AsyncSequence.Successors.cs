@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky;
 
@@ -15,7 +16,7 @@ public static partial class AsyncSequence
     [Pure]
     public static IAsyncEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, ValueTask<Option<TResult>>> successor)
         where TResult : notnull
-        => SuccessorsInternal(first, successor);
+        => SuccessorsInternal(first, ArgumentValidator.NotNull(successor));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
     [Pure]
@@ -27,12 +28,16 @@ public static partial class AsyncSequence
     [Pure]
     public static IAsyncEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, ValueTask<TResult>> successor)
         where TResult : notnull
-        => Successors(first, async previous => Option.Some(await successor(previous).ConfigureAwait(false)));
+        => Successors(first, ToOptionSuccessor(ArgumentValidator.NotNull(successor)));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
     [Pure]
     public static IAsyncEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, ValueTask<TResult>> successor)
-        => SuccessorsInternal(first, successor);
+        => SuccessorsInternal(first, ArgumentValidator.NotNull(successor));
+
+    private static Func<TResult, ValueTask<Option<TResult>>> ToOptionSuccessor<TResult>(Func<TResult, ValueTask<TResult>> successor)
+        where TResult : notnull
+        => async previous => Option.Some(await successor(previous).ConfigureAwait(false));
 
     private static async IAsyncEnumerable<TResult> SuccessorsInternal<TResult>(
         Option<TResult> first,
