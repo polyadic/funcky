@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `GetHashCode` and `ToString` of `Either<L, R>` and `GetHashCode` of `EitherOrBoth<L, R>` threw
+  `NotSupportedException` for a value constructed with `default`, so such a value broke `HashSet`, `Dictionary`,
+  `Distinct`, string interpolation and logging. Both members are now total like `Equals` already was: a defaulted
+  value hashes to 0 and prints as `Uninitialized`. `Match`, `Switch` and everything built on them still throw.
+* New: `EitherOrBoth<L, R>` overrides `ToString` (`Left(…)`, `Right(…)`, `Both(…, …)`).
 * Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
   `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
   `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,

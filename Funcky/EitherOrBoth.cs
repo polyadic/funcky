@@ -5,7 +5,8 @@ namespace Funcky;
 
 /// <remarks>
 /// EitherOrBoth values constructed using <c>default</c> are in an invalid state.
-/// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
+/// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>,
+/// except <see cref="Equals(EitherOrBoth{TLeft, TRight})"/>, <see cref="GetHashCode"/> and <see cref="ToString"/>, which are total.
 /// </remarks>
 [NonDefaultable]
 public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLeft, TRight>>
@@ -108,19 +109,25 @@ public readonly struct EitherOrBoth<TLeft, TRight> : IEquatable<EitherOrBoth<TLe
 
     [Pure]
     public override int GetHashCode()
-        => Match(left: HashFromLeft, right: HashFromRight, both: HashFromBoth);
+        => _side switch
+        {
+            Side.Left => _left.GetHashCode(),
+            Side.Right => _right.GetHashCode(),
+            Side.Both => HashCode.Combine(_left, _right),
+            Side.Uninitialized => 0,
+            _ => throw new NotSupportedException(UnknownSide),
+        };
 
     [Pure]
-    private static int HashFromLeft(TLeft left)
-        => left.GetHashCode();
-
-    [Pure]
-    private static int HashFromRight(TRight right)
-        => right.GetHashCode();
-
-    [Pure]
-    private static int HashFromBoth(TLeft left, TRight right)
-        => HashCode.Combine(left, right);
+    public override string ToString()
+        => _side switch
+        {
+            Side.Left => $"Left({_left})",
+            Side.Right => $"Right({_right})",
+            Side.Both => $"Both({_left}, {_right})",
+            Side.Uninitialized => "Uninitialized",
+            _ => throw new NotSupportedException(UnknownSide),
+        };
 }
 
 public static class EitherOrBoth
