@@ -5,6 +5,15 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
+  so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
+* Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
+  `Parse…OrNone` method on strings.
+* Fix: on frameworks without `ExceptionDispatchInfo.SetCurrentStackTrace` (.NET Framework, .NET Standard,
+  .NET Core 3.1), `Result<T>.Error` captures the stack trace by reflecting on private runtime members in a static
+  initializer. On a runtime that names them differently or cannot compile expression trees, the first `Error` call
+  failed with a `TypeInitializationException`. The lookup is now defensive: if it fails, the stack trace is simply
+  not captured and `Error` works as usual.
 * Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
   `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
   `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
