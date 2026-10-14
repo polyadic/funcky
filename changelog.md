@@ -5,7 +5,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-
+* Fix: the iterator-based `IEnumerable` extensions (`AdjacentGroupBy`, `AnyOrElse`, `Chunk`, `Inspect`,
+  `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`, `ExclusiveScan`,
+  `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`, `WithPrevious`, `ZipLongest`) and
+  `Sequence.Successors` now validate their arguments when they are called, like LINQ: a `null` source,
+  selector, comparer or fallback throws an `ArgumentNullException` naming the parameter immediately,
+  instead of a `NullReferenceException` when the result is first enumerated.
 * Breaking: `Split` on `IEnumerable<T>` and `IAsyncEnumerable<T>` now behaves exactly like `string.Split`:
   a separator at the end of the source produces a trailing empty part, and an empty source produces a single
   empty part. Previously both cases swallowed the empty part, so `[1, 0].Split(0)` gave `[[1]]` while

@@ -20,7 +20,7 @@ public static partial class EnumerableExtensions
     /// <returns>Returns a sequence of equally sized window sequences.</returns>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
-        => SlidingWindowEnumerable(source, WindowWidthValidator.Validate(width));
+        => SlidingWindowEnumerable(ArgumentValidator.NotNull(source), WindowWidthValidator.Validate(width));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)

@@ -44,4 +44,13 @@ public sealed class SuccessorsTest
         var fibonacci = Sequence.Successors((0, 1), n => (n.Item2, n.Item1 + n.Item2)).Select(n => n.Item1);
         Assert.Equal(Sequence.Return(0, 1, 1, 2, 3, 5, 8, 13, 21, 34), fibonacci.Take(10));
     }
+
+    [Fact]
+    public void ANullSuccessorFunctionIsRejectedWhenTheMethodIsCalled()
+    {
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => Sequence.Successors(1, (Func<int, int>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => Sequence.Successors(1, (Func<int, Option<int>>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => Sequence.Successors(Option.Some(1), (Func<int, int>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => Sequence.Successors(Option.Some(1), (Func<int, Option<int>>)null!)).ParamName);
+    }
 }
