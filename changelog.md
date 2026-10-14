@@ -5,6 +5,14 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Shuffle` and `ShuffleAsync` without a `Random` argument used `new Random()` per call, which on .NET Framework
+  is seeded from the clock, so two shuffles within the same tick returned the same order. They now draw from
+  `Random.Shared` on .NET 6 and later and from a shared, per-thread generator on older frameworks.
+* Fix: on frameworks before .NET 8, `Shuffle` built its result by appending to an `ImmutableList`, which is
+  O(n log n) and allocates per element. It now shuffles an array in place like the .NET 8 implementation, so the
+  result is O(n) and identical for a given seed on every target framework. Both overloads also drop the `[Pure]`
+  attribute, since they advance the state of the random number generator.
+* Documentation: the XML docs of `Shuffle` and `ShuffleAsync` claimed deferred execution; both are eager.
 * Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
   `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
   `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
