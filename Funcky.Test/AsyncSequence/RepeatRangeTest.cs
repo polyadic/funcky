@@ -61,7 +61,7 @@ public sealed class RepeatRangeTest
             .Result
             .ToProperty();
 
-    [Property(Skip = KnownIssues.CycleBufferRewindsExhaustedSource)]
+    [Property]
     public Property TheSequenceRepeatsTheGivenNumberOfTimes(List<int> list, NonNegativeInt count)
         => TheSequenceRepeatsTheGivenNumberOfTimesAsync(list.ToAsyncEnumerable(), count.Get)
             .Result

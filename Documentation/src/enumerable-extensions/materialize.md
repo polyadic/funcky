@@ -17,7 +17,10 @@ The second overload lets you choose the collection for the lazy case, for exampl
 or `Materialize(Enumerable.ToHashSet)`. Note that it is only used when the input is not already a collection.
 
 The result is `IReadOnlyCollection<T>`, which is the honest type: you can count it and enumerate it any number
-of times, and the caller's list is not copied, so it is not necessarily yours to keep.
+of times. Because an existing collection is returned or wrapped rather than copied, the result is a live view:
+later changes to the caller's collection show through, and the wrapper itself cannot be used to modify the
+source. `Materialize` guarantees that a lazy sequence is evaluated only once, not that you hold a snapshot.
+Call `ToList()` or `ToImmutableList()` when you need one.
 
 ### Example
 

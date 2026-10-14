@@ -9,8 +9,9 @@ public readonly partial struct Result<TValidResult>
 {
     [DebuggerBrowsable(Never)]
     private string DebuggerDisplay => Match(
-        ok: _ => "Ok",
-        error: _ => "Error");
+        uninitialized: static () => "Uninitialized",
+        ok: static _ => "Ok",
+        error: static _ => "Error");
 }
 
 internal sealed class ResultDebugView<TValidResult>(Result<TValidResult> result)
@@ -18,6 +19,7 @@ internal sealed class ResultDebugView<TValidResult>(Result<TValidResult> result)
 {
     [DebuggerBrowsable(RootHidden)]
     public object Value => result.Match(
-        ok: value => (object)new { Value = value },
-        error: exception => new { Exception = exception });
+        uninitialized: static () => new { },
+        ok: static value => (object)new { Value = value },
+        error: static exception => new { Exception = exception });
 }

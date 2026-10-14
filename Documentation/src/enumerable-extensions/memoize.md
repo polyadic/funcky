@@ -25,12 +25,12 @@ enumerator of the source. Dispose it when you are done, typically with `using`; 
 throws `ObjectDisposedException`. Memoizing a sequence that is already a list, a collection or a buffer does not
 copy it.
 
-`Memoize` is not thread-safe. Use it from a single thread, or memoize before handing the sequence out.
+Several consumers may enumerate the buffer concurrently: the source is still pulled one element at a time and
+every element is produced once. The source is not touched before the first element is requested, and its
+enumerator is disposed as soon as it is exhausted.
 
-The `IAsyncEnumerable` variant returns an `IAsyncBuffer<T>` with the same contract, except that several consumers
-may enumerate it concurrently: the source is still pulled one element at a time and every element is produced
-once. The cancellation token passed to `GetAsyncEnumerator`, for example through `WithCancellation`, cancels that
-consumer's enumeration only.
+The `IAsyncEnumerable` variant returns an `IAsyncBuffer<T>` with the same contract. The cancellation token passed
+to `GetAsyncEnumerator`, for example through `WithCancellation`, cancels that consumer's enumeration only.
 
 ### Example
 
