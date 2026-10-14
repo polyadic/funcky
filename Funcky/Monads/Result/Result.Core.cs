@@ -12,6 +12,10 @@ using System.Diagnostics;
 
 namespace Funcky.Monads;
 
+/// <remarks>
+/// Result values constructed using <c>default</c> are in an invalid state.
+/// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
+/// </remarks>
 [NonDefaultable]
 public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidResult>>
     where TValidResult : notnull
@@ -22,6 +26,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 
     private readonly TValidResult _result;
     private readonly Exception? _error;
+    private readonly State _state;
 
     internal Result(TValidResult result)
     {
@@ -31,12 +36,21 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
         }
 
         _result = result;
+        _state = State.Ok;
     }
 
     private Result(Exception error)
     {
         _result = default!;
         _error = error;
+        _state = State.Error;
+    }
+
+    private enum State : byte
+    {
+        Uninitialized,
+        Ok,
+        Error,
     }
 
     [Pure]
@@ -82,20 +96,29 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     [Pure]
     [UseWithArgumentNames]
     public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
-        => _error is null
-            ? ok(_result)
-            : error(_error);
+        => _state switch
+        {
+            State.Ok => ok(_result),
+            State.Error => error(_error!),
+            State.Uninitialized => throw UninitializedException(),
+            _ => throw UnreachableException(),
+        };
 
     [UseWithArgumentNames]
     public void Switch(Action<TValidResult> ok, Action<Exception> error)
     {
-        if (_error is null)
+        switch (_state)
         {
-            ok(_result);
-        }
-        else
-        {
-            error(_error);
+            case State.Ok:
+                ok(_result);
+                break;
+            case State.Error:
+                error(_error!);
+                break;
+            case State.Uninitialized:
+                throw UninitializedException();
+            default:
+                throw UnreachableException();
         }
     }
 
@@ -111,14 +134,34 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     [Pure]
     public override int GetHashCode()
         => Match(
-            ok: result => result?.GetHashCode(),
-            error: error => error.GetHashCode()) ?? 0;
+            uninitialized: static () => 0,
+            ok: static result => result.GetHashCode(),
+            error: static error => error.GetHashCode());
 
     [Pure]
     public override string ToString()
         => Match(
+            uninitialized: static () => "Uninitialized",
             ok: static result => $"Ok({result})",
             error: static exception => $"Error({exception.GetType().FullName}: {exception.Message})");
+
+    /// <summary>A total match that also handles the invalid state of a <c>default</c> value; for members that must never throw.</summary>
+    [Pure]
+    [UseWithArgumentNames]
+    internal TMatchResult Match<TMatchResult>(Func<TMatchResult> uninitialized, Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
+        => _state switch
+        {
+            State.Ok => ok(_result),
+            State.Error => error(_error!),
+            State.Uninitialized => uninitialized(),
+            _ => throw UnreachableException(),
+        };
+
+    private static NotSupportedException UninitializedException()
+        => new($"Result constructed via default instead of a factory function ({nameof(Result)}.{nameof(Result.Ok)} or {nameof(Result<TValidResult>)}.{nameof(Error)})");
+
+    private NotSupportedException UnreachableException()
+        => new($"Unreachable: Enum variant {_state} is not handled");
 }
 
 public static class Result

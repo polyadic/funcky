@@ -6,6 +6,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Unreleased
 
 
+* Fix: a `Result<T>` constructed with `default` behaved like `Ok` with a `null` value, bypassing the null check of
+  `Result.Ok`. `Match`, `Switch` and every operation built on them now throw `NotSupportedException` for such a
+  value, like `Either<L, R>` already did. `Equals`, `GetHashCode` and `ToString` stay total. The analyzer λ1009
+  still reports `default(Result<T>)` at compile time; see polyadic/funcky#934 for making it a built-in analyzer.
 * Fix: `Shuffle` and `ShuffleAsync` without a `Random` argument used `new Random()` per call, which on .NET Framework
   is seeded from the clock, so two shuffles within the same tick returned the same order. They now draw from
   `Random.Shared` on .NET 6 and later and from a shared, per-thread generator on older frameworks.
