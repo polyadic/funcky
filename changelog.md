@@ -5,6 +5,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Memoize` and `CycleRange`/`RepeatRange` for `IEnumerable` no longer acquire the source's enumerator when the
+  buffer is created, but when the first element is requested, so a source that opens a resource or throws from
+  `GetEnumerator` does so lazily and a buffer that is disposed unused never touches the source. The source enumerator
+  is disposed as soon as it is exhausted instead of when the buffer is disposed, and `Memoize` can now be enumerated by
+  several threads concurrently. The `IAsyncEnumerable` cycle buffer no longer calls `MoveNextAsync` on an exhausted
+  source, which rewound a .NET 10 compiler-generated iterator and repeated the source instead of the buffer.
+
 * Fix: the read-only view that `Materialize` returns for an `IList<T>` or `ICollection<T>` source can no longer be
   used to modify the source through a cast to the mutable interface: `IsReadOnly` is `true` and `Add`, `Clear`,
   `Remove`, `Insert`, `RemoveAt` and the indexer setter throw `NotSupportedException`, like `ReadOnlyCollection<T>`.
