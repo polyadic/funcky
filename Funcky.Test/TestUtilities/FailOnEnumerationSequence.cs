@@ -5,14 +5,10 @@ namespace Funcky.Test.TestUtilities;
 
 internal sealed class FailOnEnumerationSequence<T> : IEnumerable<T>
 {
+    // Throws from GetEnumerator itself (not from the first MoveNext), so that an operator which acquires the
+    // enumerator eagerly is caught by the laziness tests.
     public IEnumerator<T> GetEnumerator()
-    {
-        throw new XunitException("Sequence was unexpectedly enumerated.");
-
-#pragma warning disable CS0162 // Unreachable code detected
-        yield break; // this forces the method to emit the statemachine even though it is not reachable!
-#pragma warning restore CS0162 // Unreachable code detected
-    }
+        => throw new XunitException("Sequence was unexpectedly enumerated.");
 
     IEnumerator IEnumerable.GetEnumerator()
         => GetEnumerator();

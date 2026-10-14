@@ -26,6 +26,7 @@ public static partial class AsyncSequence
         private readonly List<T> _buffer = [];
 
         private IAsyncEnumerator<T>? _source;
+        private bool _sourceExhausted;
         private bool _disposed;
 
         public async ValueTask DisposeAsync()
@@ -33,12 +34,7 @@ public static partial class AsyncSequence
             if (!_disposed)
             {
                 _disposed = true;
-
-                if (_source is { } sourceEnumerator)
-                {
-                    await sourceEnumerator.DisposeAsync().ConfigureAwait(false);
-                }
-
+                await DisposeSourceAsync().ConfigureAwait(false);
                 _buffer.Clear();
             }
         }
@@ -64,11 +60,9 @@ public static partial class AsyncSequence
 
                 if (index == _buffer.Count)
                 {
-                    _source ??= source.GetAsyncEnumerator(CancellationToken.None);
-
-                    if (await _source.MoveNextAsync().ConfigureAwait(false))
+                    if (await TryFetchNextAsync().ConfigureAwait(false))
                     {
-                        _buffer.Add(_source.Current);
+                        _buffer.Add(_source!.Current);
                     }
                     else
                     {
@@ -103,6 +97,34 @@ public static partial class AsyncSequence
 
                     yield return _buffer[index];
                 }
+            }
+        }
+
+        private async ValueTask<bool> TryFetchNextAsync()
+        {
+            if (_sourceExhausted)
+            {
+                return false;
+            }
+
+            _source ??= source.GetAsyncEnumerator(CancellationToken.None);
+
+            if (await _source.MoveNextAsync().ConfigureAwait(false))
+            {
+                return true;
+            }
+
+            _sourceExhausted = true;
+            await DisposeSourceAsync().ConfigureAwait(false);
+            return false;
+        }
+
+        private async ValueTask DisposeSourceAsync()
+        {
+            if (_source is { } sourceEnumerator)
+            {
+                _source = null;
+                await sourceEnumerator.DisposeAsync().ConfigureAwait(false);
             }
         }
 
