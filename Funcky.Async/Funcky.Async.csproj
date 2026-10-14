@@ -77,6 +77,7 @@
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
+        <Compile Include="..\Funcky\Internal\Validators\ArgumentValidator.cs" Link="Internal\Validators\ArgumentValidator.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
         <PackageReference Include="System.Linq.Async" />
     </ItemGroup>

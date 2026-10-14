@@ -88,5 +88,14 @@ public sealed class SuccessorsTest
 
         Assert.Equal([0], consumed);
     }
+
+    [Fact]
+    public void ANullSuccessorFunctionIsRejectedWhenTheMethodIsCalled()
+    {
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => AsyncSequence.Successors(1, (Func<int, ValueTask<int>>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => AsyncSequence.Successors(1, (Func<int, ValueTask<Option<int>>>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => AsyncSequence.Successors(Option.Some(1), (Func<int, ValueTask<int>>)null!)).ParamName);
+        Assert.Equal("successor", Assert.Throws<ArgumentNullException>(() => AsyncSequence.Successors(Option.Some(1), (Func<int, ValueTask<Option<int>>>)null!)).ParamName);
+    }
 }
 #endif

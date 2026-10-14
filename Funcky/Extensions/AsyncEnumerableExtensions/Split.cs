@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -15,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IAsyncEnumerable<TSource> source, TSource separator)
-        => SplitEnumerator(source, separator, EqualityComparer<TSource>.Default);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
@@ -27,7 +28,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> comparer)
-        => SplitEnumerator(source, separator, comparer);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
@@ -47,8 +48,8 @@ public static partial class AsyncEnumerableExtensions
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
         where TSource : notnull
-        => SplitEnumerator(source, separator, comparer)
-            .Select(resultSelector);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer))
+            .Select(ArgumentValidator.NotNull(resultSelector));
 
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> SplitEnumerator<TSource>(IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -22,7 +23,7 @@ public static partial class AsyncEnumerableExtensions
 #endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector)
-        => AdjacentGroupByInternal(source, keySelector, Identity, CreateGrouping, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), Identity, CreateGrouping, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and compares the keys by using a specified comparer.
@@ -42,7 +43,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByInternal(source, keySelector, Identity, CreateGrouping, comparer);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), Identity, CreateGrouping, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
@@ -63,7 +64,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector)
-        => AdjacentGroupByInternal(source, keySelector, elementSelector, CreateGrouping, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), CreateGrouping, EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and projects the elements for each group by using a specified function.
@@ -86,7 +87,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByInternal(source, keySelector, elementSelector, CreateGrouping, comparer);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), CreateGrouping, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key.
@@ -103,7 +104,7 @@ public static partial class AsyncEnumerableExtensions
         this IAsyncEnumerable<TSource> source,
         Func<TSource, TKey> keySelector,
         Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
-        => AdjacentGroupByInternal(source, keySelector, Identity, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), Identity, ArgumentValidator.NotNull(resultSelector), EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
@@ -123,7 +124,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector,
         Func<TKey, IEnumerable<TElement>, TResult> resultSelector)
-        => AdjacentGroupByInternal(source, keySelector, elementSelector, resultSelector, EqualityComparer<TKey>.Default);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), ArgumentValidator.NotNull(resultSelector), EqualityComparer<TKey>.Default);
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
@@ -142,7 +143,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TKey> keySelector,
         Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByInternal(source, keySelector, Identity, resultSelector, comparer);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), Identity, ArgumentValidator.NotNull(resultSelector), ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Groups adjacent elements of a source sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
@@ -164,7 +165,7 @@ public static partial class AsyncEnumerableExtensions
         Func<TSource, TElement> elementSelector,
         Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
         IEqualityComparer<TKey> comparer)
-        => AdjacentGroupByInternal(source, keySelector, elementSelector, resultSelector, comparer);
+        => AdjacentGroupByInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), ArgumentValidator.NotNull(resultSelector), ArgumentValidator.NotNull(comparer));
 
     private static async IAsyncEnumerable<TResult> AdjacentGroupByInternal<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,

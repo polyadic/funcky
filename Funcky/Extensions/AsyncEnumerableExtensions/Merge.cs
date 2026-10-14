@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -17,7 +18,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2).Merge(comparer);
+        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)).Merge(comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -31,7 +32,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2, source3).Merge(comparer);
+        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)).Merge(comparer);
 
     /// <summary>
     /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -46,7 +47,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, IAsyncEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(source1, source2, source3, source4).Merge(comparer);
+        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)).Merge(comparer);
 
     /// <summary>
     /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
@@ -58,7 +59,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The merged sequences in the same order as the given sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Merge<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
-        => MergeInternal(sources, comparer);
+        => MergeInternal(ArgumentValidator.NotNull(sources), comparer);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TSource> MergeInternal<TSource>(

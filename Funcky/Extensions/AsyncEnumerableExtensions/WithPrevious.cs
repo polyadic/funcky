@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -10,7 +11,7 @@ public static partial class AsyncEnumerableExtensions
     [Pure]
     public static IAsyncEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IAsyncEnumerable<TSource> source)
         where TSource : notnull
-        => source.WithPreviousInternal();
+        => ArgumentValidator.NotNull(source).WithPreviousInternal();
 
     private static async IAsyncEnumerable<ValueWithPrevious<TSource>> WithPreviousInternal<TSource>(this IAsyncEnumerable<TSource> source, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         where TSource : notnull

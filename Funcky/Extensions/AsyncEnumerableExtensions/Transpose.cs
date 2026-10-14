@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -19,7 +20,7 @@ public static partial class AsyncEnumerableExtensions
     /// <exception cref="InvalidOperationException">Thrown when the rows of <paramref name="source"/> do not all have the same length.</exception>
     [Pure]
     public static IAsyncEnumerable<IEnumerable<TSource>> Transpose<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source)
-        => TransposeInternal(source);
+        => TransposeInternal(ArgumentValidator.NotNull(source));
 
     private static async IAsyncEnumerable<IEnumerable<TSource>> TransposeInternal<TSource>(
         IEnumerable<IAsyncEnumerable<TSource>> source,

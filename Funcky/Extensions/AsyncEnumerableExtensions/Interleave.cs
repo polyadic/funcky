@@ -1,6 +1,7 @@
 #if ASYNC_SUPPORTED
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -15,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
     public static IAsyncEnumerable<TSource> Interleave<TSource>(this IAsyncEnumerable<TSource> source, params IAsyncEnumerable<TSource>[] otherSources)
-        => ImmutableList.Create(source).AddRange(otherSources).Interleave();
+        => ImmutableList.Create(ArgumentValidator.NotNull(source)).AddRange(ArgumentValidator.NotNull(otherSources)).Interleave();
 
     /// <summary>
     /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
@@ -24,7 +25,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="source">the source sequences.</param>
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
-    public static IAsyncEnumerable<TSource> Interleave<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source) => InterleaveInternal(source);
+    public static IAsyncEnumerable<TSource> Interleave<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source) => InterleaveInternal(ArgumentValidator.NotNull(source));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TSource> InterleaveInternal<TSource>(

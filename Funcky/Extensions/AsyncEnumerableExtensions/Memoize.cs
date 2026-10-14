@@ -1,6 +1,8 @@
 #if ASYNC_SUPPORTED
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
@@ -20,7 +22,7 @@ public static partial class AsyncEnumerableExtensions
     /// </remarks>
     [Pure]
     public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> source)
-        => source is IAsyncBuffer<TSource> buffer
+        => ArgumentValidator.NotNull(source) is IAsyncBuffer<TSource> buffer
             ? Borrow(buffer)
             : MemoizedAsyncBuffer.Create(source);
 
