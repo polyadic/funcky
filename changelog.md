@@ -5,6 +5,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+
 * Fix: `Shuffle` and `ShuffleAsync` without a `Random` argument used `new Random()` per call, which on .NET Framework
   is seeded from the clock, so two shuffles within the same tick returned the same order. They now draw from
   `Random.Shared` on .NET 6 and later and from a shared, per-thread generator on older frameworks.
@@ -13,6 +14,17 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   result is O(n) and identical for a given seed on every target framework. Both overloads also drop the `[Pure]`
   attribute, since they advance the state of the random number generator.
 * Documentation: the XML docs of `Shuffle` and `ShuffleAsync` claimed deferred execution; both are eager.
+* Fix: `Memoize` and `CycleRange`/`RepeatRange` for `IEnumerable` no longer acquire the source's enumerator when the
+  buffer is created, but when the first element is requested, so a source that opens a resource or throws from
+  `GetEnumerator` does so lazily and a buffer that is disposed unused never touches the source. The source enumerator
+  is disposed as soon as it is exhausted instead of when the buffer is disposed, and `Memoize` can now be enumerated by
+  several threads concurrently. The `IAsyncEnumerable` cycle buffer no longer calls `MoveNextAsync` on an exhausted
+  source, which rewound a .NET 10 compiler-generated iterator and repeated the source instead of the buffer.
+* Fix: the read-only view that `Materialize` returns for an `IList<T>` or `ICollection<T>` source can no longer be
+  used to modify the source through a cast to the mutable interface: `IsReadOnly` is `true` and `Add`, `Clear`,
+  `Remove`, `Insert`, `RemoveAt` and the indexer setter throw `NotSupportedException`, like `ReadOnlyCollection<T>`.
+  The view still reflects later changes to the source; `Materialize` evaluates a lazy sequence once, it does not
+  take a snapshot.
 * Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
   `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
   `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
