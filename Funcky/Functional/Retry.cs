@@ -23,6 +23,8 @@ public static partial class Functional
     /// <summary>
     /// Calls the given <paramref name="producer"/> repeatedly until it returns a value or the retry policy conditions are no longer met.
     /// </summary>
+    /// <remarks>Note that this function blocks the calling thread with <see cref="Thread.Sleep(TimeSpan)"/> for the delay between retries.
+    /// Consider using <c>AsyncFunctional.RetryAsync</c> instead (part of Funcky on .NET 10 and newer, part of the <c>Funcky.Async</c> package on older frameworks).</remarks>
     public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
         where TResult : notnull
         => Sequence

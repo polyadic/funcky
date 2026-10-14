@@ -17,11 +17,36 @@ public sealed class SplitTest
     }
 
     [Property]
-    public Property SplittingAnEmptyIAsyncEnumerableAlwaysReturnsAnEmptyEnumerable(int separator)
+    public Property SplittingAnEmptyIAsyncEnumerableReturnsASingleEmptyPart(int separator)
     {
-        var parts = AsyncEnumerable.Empty<int>().Split(separator);
+        var parts = AsyncEnumerable.Empty<int>().Split(separator).ToListAsync().Result;
 
-        return (!parts.AnyAsync().Result).ToProperty();
+        return (parts.Count == 1 && parts[0].Count == 0).ToProperty();
+    }
+
+    [Property]
+    public Property SplitBehavesLikeStringSplit(List<char> characters, char separator)
+    {
+        var expected = new string(characters.ToArray()).Split(separator);
+        var parts = characters.ToAsyncEnumerable().Split(separator).ToListAsync().Result.Select(part => new string(part.ToArray()));
+
+        return expected.SequenceEqual(parts).ToProperty();
+    }
+
+    [Fact]
+    public async Task ASeparatorAtTheEndProducesATrailingEmptyPart()
+    {
+        var parts = await AsyncSequence.Return(1, 0).Split(0).ToListAsync();
+
+        Assert.Equal([[1], []], parts.Select(part => part.ToList()));
+    }
+
+    [Fact]
+    public async Task ALoneSeparatorProducesTwoEmptyParts()
+    {
+        var parts = await AsyncSequence.Return(0).Split(0).ToListAsync();
+
+        Assert.Equal([[], []], parts.Select(part => part.ToList()));
     }
 
     [Fact]

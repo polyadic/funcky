@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -28,6 +30,11 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence that contains merged elements of two input sequences.</returns>
     [Pure]
     public static IEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IEnumerable<TLeft> left, IEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+        where TLeft : notnull
+        where TRight : notnull
+        => ZipLongestIterator(ArgumentValidator.NotNull(left), ArgumentValidator.NotNull(right), ArgumentValidator.NotNull(resultSelector));
+
+    private static IEnumerable<TResult> ZipLongestIterator<TLeft, TRight, TResult>(IEnumerable<TLeft> left, IEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
         where TLeft : notnull
         where TRight : notnull
     {

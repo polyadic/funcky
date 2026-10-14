@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -17,6 +18,9 @@ public static partial class EnumerableExtensions
     /// <exception cref="InvalidOperationException">Thrown when the rows of <paramref name="source"/> do not all have the same length.</exception>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> Transpose<TSource>(this IEnumerable<IEnumerable<TSource>> source)
+        => TransposeIterator(ArgumentValidator.NotNull(source));
+
+    private static IEnumerable<IReadOnlyList<TSource>> TransposeIterator<TSource>(IEnumerable<IEnumerable<TSource>> source)
     {
         var rows = new List<IEnumerator<TSource>>();
 

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -146,6 +147,22 @@ public static partial class EnumerableExtensions
         Func<TSource, TElement> elementSelector,
         Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
         IEqualityComparer<TKey> comparer)
+        => AdjacentGroupByIterator(
+            ArgumentValidator.NotNull(source),
+            ArgumentValidator.NotNull(keySelector),
+            ArgumentValidator.NotNull(elementSelector),
+            ArgumentValidator.NotNull(resultSelector),
+            ArgumentValidator.NotNull(comparer));
+
+    internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
+        => new(key, elements);
+
+    private static IEnumerable<TResult> AdjacentGroupByIterator<TSource, TKey, TElement, TResult>(
+        IEnumerable<TSource> source,
+        Func<TSource, TKey> keySelector,
+        Func<TSource, TElement> elementSelector,
+        Func<TKey, IImmutableList<TElement>, TResult> resultSelector,
+        IEqualityComparer<TKey> comparer)
     {
         using var enumerator = source.GetEnumerator();
 
@@ -171,9 +188,6 @@ public static partial class EnumerableExtensions
 
         yield return resultSelector(key, group);
     }
-
-    internal static Grouping<TKey, TElement> CreateGrouping<TKey, TElement>(TKey key, IImmutableList<TElement> elements)
-        => new(key, elements);
 
     private static (IImmutableList<TElement> Group, TKey Key) CreateGroupAndKey<TSource, TKey, TElement>(Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEnumerator<TSource> enumerator)
     {
