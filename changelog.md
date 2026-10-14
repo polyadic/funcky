@@ -5,6 +5,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: a `Result<T>` constructed with `default` behaved like `Ok` with a `null` value, bypassing the null check of
+  `Result.Ok`. `Match`, `Switch` and every operation built on them now throw `NotSupportedException` for such a
+  value, like `Either<L, R>` already did. `Equals`, `GetHashCode` and `ToString` stay total. The analyzer λ1009
+  still reports `default(Result<T>)` at compile time; see polyadic/funcky#934 for making it a built-in analyzer.
 * Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
   `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
   `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
