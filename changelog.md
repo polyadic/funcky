@@ -10,6 +10,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,
   because the default comparer orders `null` before everything else. Both methods also evaluate the key
   selector only once per element instead of twice.
+* Fix: the retry policies (`ConstantDelayPolicy`, `NoDelayRetryPolicy`, `LinearBackOffRetryPolicy`,
+  `ExponentialBackOffRetryPolicy`) now reject a negative `maxRetries` with an `ArgumentOutOfRangeException`
+  when they are constructed, instead of failing later inside `Retry`.
+* Fix: `ConstantDelayPolicy`, `LinearBackOffRetryPolicy` and `ExponentialBackOffRetryPolicy` now reject a
+  negative delay with an `ArgumentOutOfRangeException` when they are constructed, instead of failing
+  later from `Thread.Sleep` or `Task.Delay`.
 * Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
   configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
