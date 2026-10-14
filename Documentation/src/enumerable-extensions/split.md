@@ -15,10 +15,11 @@ IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source, T
     </picture>
 </picture>
 
-The separators themselves are not part of the result. Two adjacent separators produce an empty part between
-them, and a separator at the very start produces an empty first part. A separator at the very end does not
-produce a trailing empty part, and an empty source produces no parts at all. The parts are produced lazily
-and each part is materialized when it is yielded.
+The separators themselves are not part of the result. The result has exactly one part more than there are
+separators, exactly like `string.Split`: two adjacent separators produce an empty part between them, a
+separator at the very start produces an empty first part, a separator at the very end produces an empty last
+part, and an empty source produces a single empty part. Joining the parts with the separator therefore always
+restores the source. The parts are produced lazily and each part is materialized when it is yielded.
 
 ### Example
 

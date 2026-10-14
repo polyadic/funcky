@@ -5,6 +5,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+
+* Breaking: `Split` on `IEnumerable<T>` and `IAsyncEnumerable<T>` now behaves exactly like `string.Split`:
+  a separator at the end of the source produces a trailing empty part, and an empty source produces a single
+  empty part. Previously both cases swallowed the empty part, so `[1, 0].Split(0)` gave `[[1]]` while
+  `[0, 1].Split(0)` gave `[[], [1]]`, and the source could not be reconstructed from the parts. The result
+  now always has exactly one part more than there are separators.
 * Fix: `MinByOrNone` and `MaxByOrNone` now treat `null` keys like `Enumerable.MinBy`/`Enumerable.MaxBy`:
   elements whose key is `null` are never chosen as the minimum or maximum, and if all keys are `null`
   the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,

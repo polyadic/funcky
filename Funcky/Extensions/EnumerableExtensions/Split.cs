@@ -64,31 +64,21 @@ public static partial class EnumerableExtensions
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
     {
-        using var sourceEnumerator = source.GetEnumerator();
+        var part = ImmutableList.CreateBuilder<TSource>();
 
-        while (sourceEnumerator.MoveNext())
+        foreach (var element in source)
         {
-            yield return resultSelector(TakeSkipWhile(sourceEnumerator, TakeSkipPredicate(separator, comparer)).ToImmutableList());
-        }
-    }
-
-    private static Func<TSource, bool> TakeSkipPredicate<TSource>(TSource separator, IEqualityComparer<TSource> equalityComparer)
-        => element
-            => !equalityComparer.Equals(element, separator);
-
-    private static IEnumerable<TSource> TakeSkipWhile<TSource>(IEnumerator<TSource> source, Func<TSource, bool> predicate)
-    {
-        do
-        {
-            if (predicate(source.Current))
+            if (comparer.Equals(element, separator))
             {
-                yield return source.Current;
+                yield return resultSelector(part.ToImmutable());
+                part.Clear();
             }
             else
             {
-                yield break;
+                part.Add(element);
             }
         }
-        while (source.MoveNext());
+
+        yield return resultSelector(part.ToImmutable());
     }
 }
