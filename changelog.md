@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `MinByOrNone` and `MaxByOrNone` now treat `null` keys like `Enumerable.MinBy`/`Enumerable.MaxBy`:
+  elements whose key is `null` are never chosen as the minimum or maximum, and if all keys are `null`
+  the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,
+  because the default comparer orders `null` before everything else. Both methods also evaluate the key
+  selector only once per element instead of twice.
 * Fix: the retry policies (`ConstantDelayPolicy`, `NoDelayRetryPolicy`, `LinearBackOffRetryPolicy`,
   `ExponentialBackOffRetryPolicy`) now reject a negative `maxRetries` with an `ArgumentOutOfRangeException`
   when they are constructed, instead of failing later inside `Retry`.
