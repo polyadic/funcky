@@ -11,6 +11,22 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `Sequence.Successors` now validate their arguments when they are called, like LINQ: a `null` source,
   selector, comparer or fallback throws an `ArgumentNullException` naming the parameter immediately,
   instead of a `NullReferenceException` when the result is first enumerated.
+* Breaking: `Split` on `IEnumerable<T>` and `IAsyncEnumerable<T>` now behaves exactly like `string.Split`:
+  a separator at the end of the source produces a trailing empty part, and an empty source produces a single
+  empty part. Previously both cases swallowed the empty part, so `[1, 0].Split(0)` gave `[[1]]` while
+  `[0, 1].Split(0)` gave `[[], [1]]`, and the source could not be reconstructed from the parts. The result
+  now always has exactly one part more than there are separators.
+* Fix: `MinByOrNone` and `MaxByOrNone` now treat `null` keys like `Enumerable.MinBy`/`Enumerable.MaxBy`:
+  elements whose key is `null` are never chosen as the minimum or maximum, and if all keys are `null`
+  the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,
+  because the default comparer orders `null` before everything else. Both methods also evaluate the key
+  selector only once per element instead of twice.
+* Fix: the retry policies (`ConstantDelayPolicy`, `NoDelayRetryPolicy`, `LinearBackOffRetryPolicy`,
+  `ExponentialBackOffRetryPolicy`) now reject a negative `maxRetries` with an `ArgumentOutOfRangeException`
+  when they are constructed, instead of failing later inside `Retry`.
+* Fix: `ConstantDelayPolicy`, `LinearBackOffRetryPolicy` and `ExponentialBackOffRetryPolicy` now reject a
+  negative delay with an `ArgumentOutOfRangeException` when they are constructed, instead of failing
+  later from `Thread.Sleep` or `Task.Delay`.
 * Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
   configuration. They are now built in Release.
 * Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):

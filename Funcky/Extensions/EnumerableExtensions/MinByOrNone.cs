@@ -1,3 +1,5 @@
+using Funcky.Internal;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -22,24 +24,5 @@ public static partial class EnumerableExtensions
     [Pure]
     public static Option<TSource> MinByOrNone<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         where TSource : notnull
-    {
-        using var enumerator = source.GetEnumerator();
-
-        if (!enumerator.MoveNext())
-        {
-            return Option<TSource>.None;
-        }
-
-        var minimum = enumerator.Current;
-        while (enumerator.MoveNext())
-        {
-            var nextValue = enumerator.Current;
-            if (comparer.Compare(keySelector(nextValue), keySelector(minimum)) < 0)
-            {
-                minimum = nextValue;
-            }
-        }
-
-        return minimum;
-    }
+        => ExtremumByOrNone.MinByOrNone(source, keySelector, comparer);
 }
