@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: on frameworks without `ExceptionDispatchInfo.SetCurrentStackTrace` (.NET Framework, .NET Standard,
+  .NET Core 3.1), `Result<T>.Error` captures the stack trace by reflecting on private runtime members in a static
+  initializer. On a runtime that names them differently or cannot compile expression trees, the first `Error` call
+  failed with a `TypeInitializationException`. The lookup is now defensive: if it fails, the stack trace is simply
+  not captured and `Error` works as usual.
 * Fix: `Memoize` and `CycleRange`/`RepeatRange` for `IEnumerable` no longer acquire the source's enumerator when the
   buffer is created, but when the first element is requested, so a source that opens a resource or throws from
   `GetEnumerator` does so lazily and a buffer that is disposed unused never touches the source. The source enumerator
