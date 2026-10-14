@@ -5,6 +5,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the `OrNoneFromTryPattern` source generator handles try methods it previously generated broken code for or
+  crashed on: `in`, `ref` and `ref readonly` parameters are forwarded with their modifiers instead of being dropped from
+  the signature, non-null default values (numbers, strings, chars, booleans, enums and `default` structs) are copied
+  instead of throwing at generation time, overloads that do not follow the try pattern (no or several `out`
+  parameters, non-`bool` return, instance methods) are skipped instead of crashing, and two attributed source files
+  with the same file name no longer collide on the generated hint name. Generated methods now carry a summary, so
+  the `Parse…OrNone` family shows documentation in IntelliSense.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
