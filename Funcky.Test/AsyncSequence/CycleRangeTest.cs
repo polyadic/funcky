@@ -26,7 +26,7 @@ public sealed class CycleRangeTest
         => (GetArbitraryManyItemsAsync(sequence.Get, arbitraryElements.Get).Result == arbitraryElements.Get)
             .ToProperty();
 
-    [Property(Skip = KnownIssues.CycleBufferRewindsExhaustedSource)]
+    [Property]
     public Property CycleRangeRepeatsTheElementsArbitraryManyTimes(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
         => CycleRangeRepeatsTheElementsArbitraryManyTimesAsync(sequence.Get.ToAsyncEnumerable(), arbitraryElements.Get)
             .Result.ToProperty();

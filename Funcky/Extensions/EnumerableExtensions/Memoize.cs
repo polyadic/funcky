@@ -13,6 +13,11 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <returns>A lazy buffer of the underlying sequence.</returns>
+    /// <remarks>
+    /// The source is not enumerated before the first element is requested. The buffer can be enumerated by several
+    /// consumers concurrently; the source is still pulled one element at a time and each element is produced exactly once.
+    /// A list or collection source is not copied: the buffer is a view over it.
+    /// </remarks>
     [Pure]
     public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
         => ArgumentValidator.NotNull(source) switch
@@ -58,8 +63,10 @@ public static partial class EnumerableExtensions
     private sealed class MemoizedBuffer<T>(IEnumerable<T> source) : IBuffer<T>
     {
         private readonly List<T> _buffer = [];
-        private readonly IEnumerator<T> _source = source.GetEnumerator();
+        private readonly object _sourceLock = new();
 
+        private IEnumerator<T>? _source;
+        private bool _sourceExhausted;
         private bool _disposed;
 
         public IEnumerator<T> GetEnumerator()
@@ -78,11 +85,14 @@ public static partial class EnumerableExtensions
 
         public void Dispose()
         {
-            if (!_disposed)
+            lock (_sourceLock)
             {
-                _source.Dispose();
-                _buffer.Clear();
-                _disposed = true;
+                if (!_disposed)
+                {
+                    _disposed = true;
+                    DisposeSource();
+                    _buffer.Clear();
+                }
             }
         }
 
@@ -90,22 +100,55 @@ public static partial class EnumerableExtensions
         {
             for (var index = 0; true; index++)
             {
-                ThrowIfDisposed();
+                var (hasElement, element) = GetElement(index);
 
-                if (index == _buffer.Count)
+                if (!hasElement)
                 {
-                    if (_source.MoveNext())
-                    {
-                        _buffer.Add(_source.Current);
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    yield break;
                 }
 
-                yield return _buffer[index];
+                yield return element!;
             }
+        }
+
+        private (bool HasElement, T? Element) GetElement(int index)
+        {
+            lock (_sourceLock)
+            {
+                ThrowIfDisposed();
+
+                return index < _buffer.Count
+                    ? (true, _buffer[index])
+                    : FetchNext();
+            }
+        }
+
+        // Must only be called while holding the source lock.
+        private (bool HasElement, T? Element) FetchNext()
+        {
+            if (_sourceExhausted)
+            {
+                return (false, default);
+            }
+
+            _source ??= source.GetEnumerator();
+
+            if (_source.MoveNext())
+            {
+                _buffer.Add(_source.Current);
+                return (true, _source.Current);
+            }
+
+            _sourceExhausted = true;
+            DisposeSource();
+            return (false, default);
+        }
+
+        // Must only be called while holding the source lock.
+        private void DisposeSource()
+        {
+            _source?.Dispose();
+            _source = null;
         }
 
         private void ThrowIfDisposed()
