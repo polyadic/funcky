@@ -53,6 +53,8 @@ Both type parameters are constrained to `notnull`. There is no implicit conversi
 
 `Either<L, R>` has no valid `default`. The struct is marked `[NonDefaultable]`, [λ1009](./analyzer-rules/λ1009.md)
 from `Funcky.Analyzers` reports an error for `default(Either<…>)`, and any operation on such a value throws `NotSupportedException` at runtime.
+Only `Equals`, `GetHashCode` and `ToString` stay total, so a defaulted value in a collection or a log message
+does not throw.
 
 `Either<L>.Return` looks odd at first. It is the monad's `Return` with the left type fixed and the right type
 inferred, and it exists so that `Return` can be passed as a method group where the left type is already known:
