@@ -1,3 +1,5 @@
+using Funcky.Internal;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -22,24 +24,5 @@ public static partial class EnumerableExtensions
     [Pure]
     public static Option<TSource> MaxByOrNone<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         where TSource : notnull
-    {
-        using var enumerator = source.GetEnumerator();
-
-        if (!enumerator.MoveNext())
-        {
-            return Option<TSource>.None;
-        }
-
-        var maximum = enumerator.Current;
-        while (enumerator.MoveNext())
-        {
-            var nextValue = enumerator.Current;
-            if (comparer.Compare(keySelector(nextValue), keySelector(maximum)) > 0)
-            {
-                maximum = nextValue;
-            }
-        }
-
-        return maximum;
-    }
+        => ExtremumByOrNone.MaxByOrNone(source, keySelector, comparer);
 }
