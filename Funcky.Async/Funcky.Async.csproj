@@ -73,6 +73,7 @@
         <Compile Include="..\Funcky\Internal\Aggregators\MaxAggregator.cs" Link="Internal\Aggregators\MaxAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Aggregators\MinAggregator.cs" Link="Internal\Aggregators\MinAggregator.cs" />
         <Compile Include="..\Funcky\Internal\Mixer.cs" Link="Internal\Mixer.cs" />
+        <Compile Include="..\Funcky\Internal\RandomProvider.cs" Link="Internal\RandomProvider.cs" />
         <Compile Include="..\Funcky\Internal\SlidingWindowQueue.cs" Link="Internal\SlidingWindowQueue.cs" />
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />

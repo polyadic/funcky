@@ -5,7 +5,8 @@ namespace Funcky.Monads;
 
 /// <remarks>
 /// Either values constructed using <c>default</c> are in an invalid state.
-/// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>.
+/// Any attempt to perform actions on such a value will throw a <see cref="NotSupportedException"/>,
+/// except <see cref="Equals(Either{TLeft, TRight})"/>, <see cref="GetHashCode"/> and <see cref="ToString"/>, which are total.
 /// </remarks>
 [NonDefaultable]
 public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>, IEither
@@ -92,8 +93,9 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     public override int GetHashCode()
         => Match(
-            left: left => left?.GetHashCode(),
-            right: right => right?.GetHashCode()) ?? 0;
+            uninitialized: static () => 0,
+            left: static left => left.GetHashCode(),
+            right: static right => right.GetHashCode());
 
     [Pure]
     public Either<TRight, TLeft> Flip()
@@ -104,6 +106,7 @@ public readonly partial struct Either<TLeft, TRight> : IEquatable<Either<TLeft, 
     [Pure]
     public override string ToString()
         => Match(
+            uninitialized: static () => "Uninitialized",
             left: static left => $"Left({left})",
             right: static right => $"Right({right})");
 

@@ -36,7 +36,6 @@
         <Compile Include="..\Funcky.Test\TestUtilities\AsyncEnumerateOnce.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnCall.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnEnumerateAsyncSequence.cs" LinkBase="TestUtilities" />
-        <Compile Include="..\Funcky.Test\TestUtilities\KnownIssues.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\OptionProducer.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\RecordingRetryPolicy.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\RepeatingSequence.cs" LinkBase="TestUtilities" />

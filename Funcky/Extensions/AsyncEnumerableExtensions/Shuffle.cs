@@ -1,31 +1,37 @@
 #if ASYNC_SUPPORTED
-#if !RANDOM_SHUFFLE
 using Funcky.Internal;
-#endif
 
 namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
     /// <summary>
-    /// Returns the given sequence eagerly in random Order in O(n).
+    /// Returns the elements of the given sequence in random order.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements in the enumerable.</typeparam>
-    /// <remarks>This method is implemented by using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its GetEnumerator method directly or by using foreach.</remarks>
-    [Pure]
+    /// <remarks>
+    /// This method is eager: the source is enumerated once when the returned task is awaited, and the result is an
+    /// independent list shuffled in O(n) with a Fisher-Yates shuffle, so every permutation is equally likely. The random
+    /// numbers come from a shared generator; pass a <see cref="Random"/> for reproducible results.
+    /// </remarks>
     public static async ValueTask<IReadOnlyList<TSource>> ShuffleAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
-        => await source.ShuffleAsync(new Random(), cancellationToken).ConfigureAwait(false);
+        => await source.ShuffleAsync(RandomProvider.Shared, cancellationToken).ConfigureAwait(false);
 
-    [Pure]
+    /// <summary>
+    /// Returns the elements of the given sequence in random order, drawing the random numbers from <paramref name="random"/>.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the elements in the enumerable.</typeparam>
+    /// <remarks>
+    /// This method is eager: the source is enumerated once when the returned task is awaited, and the result is an
+    /// independent list shuffled in O(n) with a Fisher-Yates shuffle, so every permutation is equally likely. The state
+    /// of <paramref name="random"/> is advanced; two calls with the same instance return different orders, two calls
+    /// with generators seeded alike return the same order.
+    /// </remarks>
     public static async ValueTask<IReadOnlyList<TSource>> ShuffleAsync<TSource>(this IAsyncEnumerable<TSource> source, Random random, CancellationToken cancellationToken = default)
-#if RANDOM_SHUFFLE
     {
         var materialized = await source.ToArrayAsync(cancellationToken).ConfigureAwait(false);
         random.Shuffle(materialized);
         return materialized;
     }
-#else
-        => (await source.ToListAsync(cancellationToken).ConfigureAwait(false)).ToRandomList(random);
-#endif
 }
 #endif
