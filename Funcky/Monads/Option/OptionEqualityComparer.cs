@@ -1,5 +1,3 @@
-using Funcky.Internal;
-
 namespace Funcky.Monads;
 
 /// <summary>
@@ -15,9 +13,10 @@ namespace Funcky.Monads;
 public static class OptionEqualityComparer<TItem>
     where TItem : notnull
 {
-    /// <summary>Returns a default sort order comparer for the item type specified by the generic argument.</summary>
+    /// <summary>Returns a default equality comparer for the item type specified by the generic argument.</summary>
+    /// <remarks>The instance is created once per item type and cached, like <see cref="EqualityComparer{T}.Default"/>.</remarks>
     /// <seealso cref="EqualityComparer{T}.Default"/>
-    public static EqualityComparer<Option<TItem>> Default => OptionEqualityComparer.Create(EqualityComparer<TItem>.Default);
+    public static EqualityComparer<Option<TItem>> Default { get; } = OptionEqualityComparer.Create(EqualityComparer<TItem>.Default);
 }
 
 /// <inheritdoc cref="OptionEqualityComparer{TItem}"/>
@@ -35,14 +34,8 @@ internal sealed class OptionEqualityComparerInternal<TItem>(IEqualityComparer<TI
     where TItem : notnull
 {
     public override bool Equals(Option<TItem> x, Option<TItem> y)
-        => (x, y).Match(
-            right: False,
-            none: True,
-            left: False,
-            leftAndRight: comparer.Equals);
+        => x.EqualsWith(y, comparer);
 
     public override int GetHashCode(Option<TItem> option)
-        => option.Match(
-            none: 0,
-            some: comparer.GetHashCode);
+        => option.GetHashCodeWith(comparer);
 }
