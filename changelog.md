@@ -5,6 +5,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: the generic `ParseOrNone<T>` (string, `ReadOnlySpan<char>` and UTF-8 `ReadOnlySpan<byte>`) and
+  `ParseNumberOrNone<T>` (string and `ReadOnlySpan<char>`) gain overloads without the `IFormatProvider`, which use the
+  current culture like the generated `Parse…OrNone` methods, and `ParseNumberOrNone<T>` gains overloads without the
+  `NumberStyles`, which use the number type's default style.
+* Fix: `ParseNumberOrNone<T>` on strings accepts a `null` candidate and returns `None`, like `ParseOrNone<T>` and the
+  generated parse methods. All generic parse methods are now marked `[Pure]` and documented.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
