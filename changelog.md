@@ -5,6 +5,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `OptionEqualityComparer<T>.Default` and `OptionComparer<T>.Default` created a new comparer instance on every
+  read, and every `Equals`, `GetHashCode`, `==` and `CompareTo` on an `Option<T>` went through them and through
+  several delegate allocations. Both defaults are now cached per item type like `EqualityComparer<T>.Default`, and
+  equality, hashing and comparison of options no longer allocate.
 * Fix: `GetHashCode` and `ToString` of `Either<L, R>` and `GetHashCode` of `EitherOrBoth<L, R>` threw
   `NotSupportedException` for a value constructed with `default`, so such a value broke `HashSet`, `Dictionary`,
   `Distinct`, string interpolation and logging. Both members are now total like `Equals` already was: a defaulted

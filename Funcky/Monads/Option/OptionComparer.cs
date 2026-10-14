@@ -1,5 +1,3 @@
-using Funcky.Internal;
-
 namespace Funcky.Monads;
 
 /// <summary>
@@ -18,8 +16,9 @@ public static class OptionComparer<TItem>
     where TItem : notnull
 {
     /// <summary>Returns a default sort order comparer for the item type specified by the generic argument.</summary>
+    /// <remarks>The instance is created once per item type and cached, like <see cref="Comparer{T}.Default"/>.</remarks>
     /// <seealso cref="Comparer{T}.Default"/>
-    public static Comparer<Option<TItem>> Default => OptionComparer.Create(Comparer<TItem>.Default);
+    public static Comparer<Option<TItem>> Default { get; } = OptionComparer.Create(Comparer<TItem>.Default);
 
     /// <inheritdoc cref="Comparer{T}.Create"/>
     public static Comparer<Option<TItem>> Create(Comparison<TItem> comparison)
@@ -41,9 +40,5 @@ internal sealed class OptionComparerInternal<TItem>(IComparer<TItem> comparer) :
     where TItem : notnull
 {
     public override int Compare(Option<TItem> x, Option<TItem> y)
-        => (x, y).Match(
-            right: _ => ComparisonResult.LessThan,
-            none: () => ComparisonResult.Equal,
-            left: _ => ComparisonResult.GreaterThan,
-            leftAndRight: comparer.Compare);
+        => x.CompareWith(y, comparer);
 }
