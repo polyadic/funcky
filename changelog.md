@@ -12,6 +12,16 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   parameters, non-`bool` return, instance methods) are skipped instead of crashing, and two attributed source files
   with the same file name no longer collide on the generated hint name. Generated methods now carry a summary, so
   the `Parse…OrNone` family shows documentation in IntelliSense.
+* New: the generic `ParseOrNone<T>` (string, `ReadOnlySpan<char>` and UTF-8 `ReadOnlySpan<byte>`) and
+  `ParseNumberOrNone<T>` (string and `ReadOnlySpan<char>`) gain overloads without the `IFormatProvider`, which use the
+  current culture like the generated `Parse…OrNone` methods, and `ParseNumberOrNone<T>` gains overloads without the
+  `NumberStyles`, which use the number type's default style.
+* Fix: `ParseNumberOrNone<T>` on strings accepts a `null` candidate and returns `None`, like `ParseOrNone<T>` and the
+  generated parse methods. All generic parse methods are now marked `[Pure]` and documented.
+* Fix: `Sequence.Return(params T[])` returned the array itself typed as `IReadOnlyList<T>`, so the result could be cast
+  back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
+  does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
+  to the `params` overload rather than producing a one-element sequence.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
