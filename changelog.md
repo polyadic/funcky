@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the `FunctionalAssert` code fix (λ1101) was exported under the name of the argument-name code fix, which broke
+  fix-all grouping in the IDE.
 * Fix: the `NonDefaultable` and `SyntaxSupportOnly` marker attributes are removed by the trimmer like `UseWithArgumentNames`
   already was; all three are compile-time-only.
 * Packaging: the Funcky and Funcky.Analyzers packages no longer ship the `tools/install.ps1` and `uninstall.ps1` hooks,

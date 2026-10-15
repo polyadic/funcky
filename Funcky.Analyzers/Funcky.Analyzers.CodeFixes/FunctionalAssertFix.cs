@@ -11,7 +11,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Funcky.Analyzers;
 
 [Shared]
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddArgumentNameCodeFix))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FunctionalAssertFix))]
 public sealed class FunctionalAssertFix : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
