@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `WhereSelect` and its async variants no longer allocate an enumerable per element; they are plain iterators now and
+  validate their arguments when called like the other iterator-based extensions.
 * Fix: `AnyOrElse` with a fallback function invoked the function when `AnyOrElse` was called if the source was an empty
   collection, but when the result was enumerated otherwise. The function is now always invoked on enumeration.
 * Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
