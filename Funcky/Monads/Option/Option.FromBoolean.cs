@@ -24,7 +24,9 @@ public static partial class Option
     [EditorBrowsable(Advanced)]
     public static Option<TItem> FromBoolean<TItem>(bool boolean, TItem item)
         where TItem : notnull
-        => FromBoolean(boolean, () => item);
+        => boolean
+            ? Option.Some(item)
+            : Option<TItem>.None;
 
     /// <summary>
     /// Returns an <see cref="Option{TItem}" /> where the given item is returned from a selector function if the boolean is true.

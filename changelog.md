@@ -5,6 +5,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Option<T>.Where` and `Option.FromBoolean(bool, T)` no longer allocate a closure per call.
 * Fix: `SlidingWindow` and `SlidingWindowAsync` kept the window in an `ImmutableQueue` and built an `ImmutableList` for
   every window. They now use a ring buffer and copy each window into a read-only array, which is O(width) per window
   with a single allocation instead of a tree per window.
