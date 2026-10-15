@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Build: the public API of every package is now tracked per target framework. The `PublicAPI.Shipped.txt` and
+  `PublicAPI.Unshipped.txt` files moved to `PublicAPI/<target framework>/` and the public API analyzer runs for every
+  target framework instead of only the newest one. The old single file listed the async APIs for frameworks that do
+  not have them and did not know about APIs that only exist on older frameworks, so a breaking change on those was
+  not detected.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
