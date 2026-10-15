@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
+  stack trace of a failed assertion on frameworks without `[StackTraceHidden]`. The JIT never inlines a method with an
+  exception handler, so the attribute was dead; it is removed and the readme now states that on .NET 6 and later the
+  trace starts at the test method, and on older frameworks with a single `FunctionalAssert` frame above it. Both
+  behaviours are now covered by tests, the latter on .NET Framework 4.8.
 * Build: the public API of every package is now tracked per target framework. The `PublicAPI.Shipped.txt` and
   `PublicAPI.Unshipped.txt` files moved to `PublicAPI/<target framework>/` and the public API analyzer runs for every
   target framework instead of only the newest one. The old single file listed the async APIs for frameworks that do
