@@ -4,6 +4,8 @@
         <TargetFrameworks>$(FunckyNewestTargetFramework);net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
+        <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Product>Funcky</Product>
         <Description>Funcky is a functional C# library</Description>
         <PackageTags>Functional Monad Linq</PackageTags>
