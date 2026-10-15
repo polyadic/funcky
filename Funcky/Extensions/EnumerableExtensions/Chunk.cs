@@ -11,6 +11,7 @@ public static partial class EnumerableExtensions
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
     /// <param name="size">The desired size of the chunks.</param>
+    /// <remarks>On .NET 6 and later the extension method form binds to the BCL's <c>Enumerable.Chunk</c>, which yields arrays; this overload is then only callable as a static method and keeps the <see cref="IReadOnlyList{T}"/> result. On older frameworks it is the extension method, so the element type of the chunks differs per target framework.</remarks>
     /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
     [Pure]
 #if NET6_0_OR_GREATER
