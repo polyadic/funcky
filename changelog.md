@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `AnyOrElse` with a fallback function invoked the function when `AnyOrElse` was called if the source was an empty
+  collection, but when the result was enumerated otherwise. The function is now always invoked on enumeration.
 * Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
   stack trace of a failed assertion on frameworks without `[StackTraceHidden]`. The JIT never inlines a method with an
   exception handler, so the attribute was dead; it is removed and the readme now states that on .NET 6 and later the

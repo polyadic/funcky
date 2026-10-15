@@ -56,6 +56,23 @@ public sealed class AnyOrElseTest
         Assert.Same(fallback, source.AnyOrElse(fallback));
     }
 
+    [Fact]
+    public void FallbackProviderIsInvokedLazilyForEmptyCollections()
+    {
+        var source = new FailOnEnumerationList(length: 0);
+        var invoked = false;
+
+        var result = source.AnyOrElse(() =>
+        {
+            invoked = true;
+            return [42];
+        });
+        Assert.False(invoked);
+
+        Assert.Equal([42], result);
+        Assert.True(invoked);
+    }
+
 #if NET6_0_OR_GREATER
     [Fact]
     public void ReturnsSourceDirectlyWhenSourceIsNonEmptyAndNonEnumeratedCountIsKnown()
