@@ -5,6 +5,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Sequence.RepeatRange` and `AsyncSequence.RepeatRange` reject a negative `count` with an
+  `ArgumentOutOfRangeException` when they are called, like `RepeatMaterialized` and `Enumerable.Repeat`. Previously a
+  negative count silently yielded the source once. The XML docs of all three methods described the result as infinite;
+  it contains the source exactly `count` times.
 * Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
   stack trace of a failed assertion on frameworks without `[StackTraceHidden]`. The JIT never inlines a method with an
   exception handler, so the attribute was dead; it is removed and the readme now states that on .NET 6 and later the

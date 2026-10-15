@@ -18,6 +18,23 @@ public sealed class RepeatRangeTest
     }
 
     [Fact]
+    public void RepeatRangeThrowsForNegativeCountBeforeEnumeration()
+    {
+        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
+
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => AsyncSequence.RepeatRange(doNotEnumerate, -1));
+        Assert.Equal("count", exception.ParamName);
+    }
+
+    [Fact]
+    public async Task RepeatRangeWithCountZeroIsEmpty()
+    {
+        await using var repeatRange = AsyncSequence.RepeatRange(AsyncSequence.Return(1, 2, 3), 0);
+
+        Assert.Empty(await repeatRange.ToListAsync());
+    }
+
+    [Fact]
     public async Task RepeatRangeThrowsWhenAlreadyDisposedAsync()
     {
         var repeatRange = AsyncSequence.RepeatRange(AsyncSequence.Return(1337), 5);
