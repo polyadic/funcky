@@ -146,8 +146,10 @@ works exactly like the corresponding `int.TryParse`.
 | `IUtf8SpanParsable<T>.TryParse`                   | `ParseOrNone<TParsable>` on `ReadOnlySpan<byte>` | .NET 8+ |
 
 The generic `ParseOrNone<T>` and `ParseNumberOrNone<T>` cover any type implementing the static abstract parsing
-interfaces, including your own, so on .NET 7 and later `text.ParseOrNone<Guid>(null)` and
-`text.ParseGuidOrNone()` are equivalent.
+interfaces, including your own, so on .NET 7 and later `text.ParseOrNone<Guid>()` and
+`text.ParseGuidOrNone()` are equivalent. Both take an optional `IFormatProvider`; without one the current culture
+is used, as in the BCL. `ParseNumberOrNone<T>` additionally accepts a `NumberStyles`; without one the type's own
+default applies, `Integer` for the integer types and `Float | AllowThousands` for the floating-point types.
 
 The `TryParse` methods of the `System.Net.Http.Headers` value types are mirrored as well:
 

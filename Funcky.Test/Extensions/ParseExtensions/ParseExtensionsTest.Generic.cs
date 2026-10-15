@@ -21,6 +21,48 @@ public sealed partial class ParseExtensionsTest
         Assert.Equal(expected, input.AsSpan().ParseOrNone<double>(null));
     }
 
+    [Theory]
+    [MemberData(nameof(ParsableDoubleNumbers))]
+    public void ParseGenericWithoutProviderUsesTheCurrentCulture(Option<double> expected, string input)
+    {
+        Assert.Equal(expected, input.ParseOrNone<double>());
+        Assert.Equal(expected, input.AsSpan().ParseOrNone<double>());
+        Assert.Equal(expected, input.ParseNumberOrNone<double>());
+        Assert.Equal(expected, input.AsSpan().ParseNumberOrNone<double>());
+        Assert.Equal(expected, input.ParseNumberOrNone<double>(CultureInfo.InvariantCulture));
+        Assert.Equal(expected, input.AsSpan().ParseNumberOrNone<double>(CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void ParseNumberWithoutStyleUsesTheDefaultStyleOfTheType()
+    {
+        Assert.Equal(Option.Some(42), "42".ParseNumberOrNone<int>());
+        Assert.Equal(Option.Some(-42), " -42 ".ParseNumberOrNone<int>());
+        Assert.Equal(Option<int>.None, "4.2".ParseNumberOrNone<int>());
+        Assert.Equal(Option<int>.None, "1,000".ParseNumberOrNone<int>(CultureInfo.InvariantCulture));
+        Assert.Equal(Option.Some(1000.0), "1,000".ParseNumberOrNone<double>(CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void ParseNumberOrNoneReturnsNoneForNull()
+    {
+        string? candidate = null;
+
+        Assert.Equal(Option<int>.None, candidate.ParseNumberOrNone<int>());
+        Assert.Equal(Option<int>.None, candidate.ParseNumberOrNone<int>(null));
+        Assert.Equal(Option<int>.None, candidate.ParseNumberOrNone<int>(NumberStyles.Integer, null));
+        Assert.Equal(Option<int>.None, candidate.ParseOrNone<int>());
+    }
+
+#if UTF8_SPAN_PARSABLE
+    [Fact]
+    public void ParseGenericUtf8SpanWithoutProviderParses()
+    {
+        Assert.Equal(Option.Some(42), "42"u8.ParseOrNone<int>());
+        Assert.Equal(Option<int>.None, "no"u8.ParseOrNone<int>());
+    }
+#endif
+
     public static TheoryData<Option<double>, string> ParsableDoubleNumbers()
         => new()
         {
