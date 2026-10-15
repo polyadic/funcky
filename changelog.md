@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Deprecation: the obsolete `ImmutableListExtensions` (superseded by `ListExtensions` in 3.0) now announces its removal in
+  Funcky 4.0.0 in the obsolete message.
 * Documentation: `SplitLines` states that a trailing new line adds no empty line, that an empty text yields nothing and
   that only CR, LF and CRLF are recognized.
 * New: `Unit` overrides `ToString` (prints `Unit` instead of the type name) and implements the non-generic `IComparable`.
