@@ -486,4 +486,161 @@ public sealed class TryGetValueTest
             """;
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
     }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedAsChildExpressionOfCatchFilterClause()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = new Option<int>();
+                    try { }
+                    catch when (option.TryGetValue(out var value) && value > 0) { }
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInLambdaWithinCatchFilterClause()
+    {
+        const string inputCode = """
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = new Option<int>();
+                    try { }
+                    catch when (Invoke(() => option.TryGetValue(out _))) { }
+                }
+
+                private static bool Invoke(Func<bool> func) => func();
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(10, 34, 10, 59));
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInLambdaWithinWhileCondition()
+    {
+        const string inputCode = """
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = new Option<int>();
+                    while (Invoke(() => option.TryGetValue(out _))) { }
+                }
+
+                private static bool Invoke(Func<bool> func) => func();
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(9, 29, 9, 54));
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInLocalFunctionWithinWhileCondition()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    var option = new Option<int>();
+                    while (Check()) { }
+
+                    bool Check() => option.TryGetValue(out _);
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(10, 25, 10, 50));
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInLambdaWithinIfConditionOfIterator()
+    {
+        const string inputCode = """
+            using System;
+            using Funcky.Monads;
+            using System.Collections.Generic;
+
+            public static class C
+            {
+                public static IEnumerable<int> M()
+                {
+                    var option = new Option<int>();
+                    if (Invoke(() => option.TryGetValue(out _))) { yield break; }
+                }
+
+                private static bool Invoke(Func<bool> func) => func();
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(10, 26, 10, 51));
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsAllowedInRazorPages()
+    {
+        const string inputCode = """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public class C : Microsoft.AspNetCore.Mvc.Razor.RazorPage<object>
+            {
+                public static void M(Option<int> option)
+                {
+                    #line 10 "Example.cshtml"
+                    if (option.TryGetValue(out _))
+                    {
+                    }
+                }
+            }
+
+            namespace Microsoft.AspNetCore.Mvc.Razor
+            {
+                public abstract class RazorPageBase { }
+
+                public abstract class RazorPage : RazorPageBase { }
+
+                public abstract class RazorPage<TModel> : RazorPage { }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode);
+    }
+
+    [Fact]
+    public async Task UseOfTryGetValueIsDisallowedInRazorFileOutsideComponentOrPage()
+    {
+        const string inputCode = """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public class C
+            {
+                public static void M(Option<int> option)
+                {
+                    #line 10 "Example.razor"
+                    if (option.TryGetValue(out _))
+                    {
+                    }
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + TryGetValueCode, VerifyCS.Diagnostic().WithSpan(10, 13, 10, 38));
+    }
 }

@@ -80,6 +80,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
   does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
   to the `params` overload rather than producing a one-element sequence.
+* Fix: the built-in analyzer λ0001 applied its allowance rules inconsistently. `TryGetValue` is now allowed anywhere inside
+  a `catch` filter clause, not only as its outermost expression, so `catch when (option.TryGetValue(out var h) && h.CanHandle(e))`
+  compiles. Conversely, a call inside a lambda or local function that is merely used by a loop condition, a catch filter or
+  an `if` condition in an iterator, such as `while (items.Any(i => i.Option.TryGetValue(out _)))`, is now reported; it
+  used to slip through because the check walked all ancestors. The exemption for `.cshtml` files finally applies: it
+  recognizes Razor pages and views deriving from `RazorPageBase`, where it used to require a Blazor `ComponentBase`.
+  The documentation of λ0001 now lists every allowed use case, including `if` statements that yield.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
