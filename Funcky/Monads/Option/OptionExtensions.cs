@@ -29,6 +29,8 @@ public static partial class OptionExtensions
             some: Either<TLeft, TRight>.Right);
     }
 
+    /// <summary>Converts the option to a nullable value: <c>Some(item)</c> becomes the item, <c>None</c> becomes <c>null</c>.</summary>
+    /// <remarks>Never pass <paramref name="ω"/>. It only exists so that the overloads for structs and classes, which would otherwise have the same signature, can coexist; <see cref="RequireStruct{T}"/> and <see cref="RequireClass{T}"/> have no other purpose.</remarks>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     [Pure]
     public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireStruct<TItem>? ω = null)
@@ -37,6 +39,8 @@ public static partial class OptionExtensions
             none: null as TItem?,
             some: item => item);
 
+    /// <summary>Converts the option to a nullable value: <c>Some(item)</c> becomes the item, <c>None</c> becomes <c>null</c>.</summary>
+    /// <remarks>Never pass <paramref name="ω"/>. It only exists so that the overloads for structs and classes, which would otherwise have the same signature, can coexist; <see cref="RequireStruct{T}"/> and <see cref="RequireClass{T}"/> have no other purpose.</remarks>
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     [Pure]
     public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireClass<TItem>? ω = null)
