@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `GetNonEnumeratedCountOrNone` is available on every target framework; it was limited to .NET 6 and later although
+  the polyfill for the underlying check was already shipped. On older frameworks only collections with a `Count` are
+  recognized.
 * Fix: `Option<T>.Where` and `Option.FromBoolean(bool, T)` no longer allocate a closure per call.
 * Fix: `SlidingWindow` and `SlidingWindowAsync` kept the window in an `ImmutableQueue` and built an `ImmutableList` for
   every window. They now use a ring buffer and copy each window into a read-only array, which is O(width) per window
