@@ -18,7 +18,8 @@ public sealed class SyntaxSupportOnlyAnalyzer : DiagnosticAnalyzer
         category: nameof(Funcky),
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
-        customTags: [WellKnownDiagnosticTags.NotConfigurable]);
+        customTags: [WellKnownDiagnosticTags.NotConfigurable],
+        helpLinkUri: "https://polyadic.github.io/funcky/analyzer-rules/λ0003.html");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SyntaxSupportOnly);
 

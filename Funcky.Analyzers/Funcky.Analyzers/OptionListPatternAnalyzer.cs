@@ -9,13 +9,16 @@ namespace Funcky.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class OptionListPatternAnalyzer : DiagnosticAnalyzer
 {
+    public const string OptionHasZeroOrOneElementsId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}10";
+
     public static readonly DiagnosticDescriptor OptionHasZeroOrOneElements = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}10",
+        id: OptionHasZeroOrOneElementsId,
         title: "An option has either zero or one elements",
         messageFormat: "An option has either zero or one elements, testing for more elements will never match",
         category: nameof(Funcky),
         DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticName.HelpLink(OptionHasZeroOrOneElementsId));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(OptionHasZeroOrOneElements);
 
