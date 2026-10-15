@@ -10,3 +10,5 @@ static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? can
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
 static Funcky.Extensions.EnumerableExtensions.GetNonEnumeratedCountOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.Monads.Option<int>
+Funcky.Unit.CompareTo(object? obj) -> int
+override Funcky.Unit.ToString() -> string!

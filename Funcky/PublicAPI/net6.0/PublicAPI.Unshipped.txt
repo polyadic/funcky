@@ -9,3 +9,5 @@ static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? can
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+Funcky.Unit.CompareTo(object? obj) -> int
+override Funcky.Unit.ToString() -> string!
