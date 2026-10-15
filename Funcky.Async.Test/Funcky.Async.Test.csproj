@@ -38,6 +38,7 @@
         <Compile Include="..\Funcky.Test\TestUtilities\AssertIsCancellationRequestedAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\AsyncAssert.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\AsyncEnumerateOnce.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\DisposeTrackingAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnCall.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnEnumerateAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\OptionProducer.cs" LinkBase="TestUtilities" />

@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Interleave` and `Merge` (sync and async) acquired the enumerators of all sources before entering the `try` that
+  disposes them, so if the `GetEnumerator` of one source threw, the enumerators of the sources before it were never
+  disposed. They are now acquired inside the `try` and the ones acquired so far are disposed.
 * Fix: `Sequence.RepeatRange` and `AsyncSequence.RepeatRange` reject a negative `count` with an
   `ArgumentOutOfRangeException` when they are called, like `RepeatMaterialized` and `Enumerable.Repeat`. Previously a
   negative count silently yielded the source once. The XML docs of all three methods described the result as infinite;

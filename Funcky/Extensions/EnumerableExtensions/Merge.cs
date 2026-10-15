@@ -63,23 +63,26 @@ public static partial class EnumerableExtensions
 
     private static IEnumerable<TSource> MergeIterator<TSource>(IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer)
     {
-        var enumerators = GetMergeEnumerators(sources);
+        // The enumerators are acquired inside the try, so the ones acquired before a failing GetEnumerator are disposed.
+        var enumerators = new List<IEnumerator<TSource>>();
 
         try
         {
-            foreach (var element in MergeEnumerators(enumerators.RemoveAll(HasMoreElements), GetMergeComparer(comparer)))
+            foreach (var sequence in sources)
+            {
+                enumerators.Add(sequence.GetEnumerator());
+            }
+
+            foreach (var element in MergeEnumerators(enumerators.ToImmutableList().RemoveAll(HasMoreElements), GetMergeComparer(comparer)))
             {
                 yield return element;
             }
         }
         finally
         {
-            enumerators.ForEach(s => s.Dispose());
+            enumerators.ForEach(enumerator => enumerator.Dispose());
         }
     }
-
-    private static ImmutableList<IEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> sources)
-        => sources.Select(s => s.GetEnumerator()).ToImmutableList();
 
     private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
         => comparer.GetOrElse(Comparer<TSource>.Default);
