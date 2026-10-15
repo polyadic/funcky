@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `SlidingWindow` and `SlidingWindowAsync` kept the window in an `ImmutableQueue` and built an `ImmutableList` for
+  every window. They now use a ring buffer and copy each window into a read-only array, which is O(width) per window
+  with a single allocation instead of a tree per window.
 * Fix: `WhereSelect` and its async variants no longer allocate an enumerable per element; they are plain iterators now and
   validate their arguments when called like the other iterator-based extensions.
 * Fix: `AnyOrElse` with a fallback function invoked the function when `AnyOrElse` was called if the source was an empty
