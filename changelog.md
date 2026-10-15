@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Documentation: `SplitLines` states that a trailing new line adds no empty line, that an empty text yields nothing and
+  that only CR, LF and CRLF are recognized.
 * New: `Unit` overrides `ToString` (prints `Unit` instead of the type name) and implements the non-generic `IComparable`.
 * Fix: `Flatten` (Option, Either, Lazy, IEnumerable), `Option.ToEither`, `Option.ToNullable`, `Either.SelectLeft`,
   `Option.ToAsyncEnumerable` and the string `Chunk` and `SlidingWindow` are marked `[Pure]` like their siblings.
