@@ -7,6 +7,7 @@ public static partial class OptionAsyncExtensions
     /// Returns an <see cref="IAsyncEnumerable{T}"/> that yields exactly one value when the option
     /// has an item and nothing when the option is empty.
     /// </summary>
+    [Pure]
     public static IAsyncEnumerable<TItem> ToAsyncEnumerable<TItem>(this Option<TItem> option)
         where TItem : notnull
         => option.Match(

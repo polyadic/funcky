@@ -12,6 +12,7 @@ public static partial class StringExtensions
     /// <param name="source">The source string.</param>
     /// <param name="width">The width of the sliding window in characters.</param>
     /// <returns>Returns a sequence of equally sized substrings.</returns>
+    [Pure]
     public static IEnumerable<string> SlidingWindow(this string source, int width)
         => StringSlidingWindow(source, WindowWidthValidator.Validate(width));
 

@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `Flatten` (Option, Either, Lazy, IEnumerable), `Option.ToEither`, `Option.ToNullable`, `Either.SelectLeft`,
+  `Option.ToAsyncEnumerable` and the string `Chunk` and `SlidingWindow` are marked `[Pure]` like their siblings.
 * New: `GetNonEnumeratedCountOrNone` is available on every target framework; it was limited to .NET 6 and later although
   the polyfill for the underlying check was already shipped. On older frameworks only collections with a `Count` are
   recognized.

@@ -4,10 +4,12 @@ namespace Funcky.Monads;
 
 public static partial class OptionExtensions
 {
+    [Pure]
     public static Option<T> Flatten<T>(this Option<Option<T>> option)
         where T : notnull
         => option.SelectMany(Identity);
 
+    [Pure]
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, TLeft left)
         where TLeft : notnull
         where TRight : notnull
@@ -15,6 +17,7 @@ public static partial class OptionExtensions
             none: Either<TLeft, TRight>.Left(left),
             some: Either<TLeft, TRight>.Right);
 
+    [Pure]
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, Func<TLeft> left)
         where TLeft : notnull
         where TRight : notnull
@@ -27,6 +30,7 @@ public static partial class OptionExtensions
     }
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Pure]
     public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireStruct<TItem>? ω = null)
         where TItem : struct
         => option.Match(
@@ -34,6 +38,7 @@ public static partial class OptionExtensions
             some: item => item);
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Pure]
     public static TItem? ToNullable<TItem>(this Option<TItem> option, RequireClass<TItem>? ω = null)
         where TItem : class
         => option.Match(
