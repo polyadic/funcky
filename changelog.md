@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the `NonDefaultable` and `SyntaxSupportOnly` marker attributes are removed by the trimmer like `UseWithArgumentNames`
+  already was; all three are compile-time-only.
 * Packaging: the Funcky and Funcky.Analyzers packages no longer ship the `tools/install.ps1` and `uninstall.ps1` hooks,
   which `PackageReference` never runs.
 * Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
