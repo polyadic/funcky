@@ -16,3 +16,4 @@ static Funcky.FunctionalAssert.Right<TLeft, TRight>(Funcky.Monads.Either<TLeft, 
 static Funcky.FunctionalAssert.Right<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
 static Funcky.FunctionalAssert.Some<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
 static Funcky.FunctionalAssert.Some<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void
+static Funcky.FunctionalAssert.Error<TException, TValidResult>(Funcky.Monads.Result<TValidResult> result) -> TException!

@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
+  exception type and returns it typed, the analogue of `Assert.Throws`.
 * Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
   `null` value is serializable; it answers `false` and reports a failure reason like the interface asks for.
 * Deprecation: the obsolete `ImmutableListExtensions` (superseded by `ListExtensions` in 3.0) now announces its removal in
