@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Build: the public API of every package is now tracked per target framework. The `PublicAPI.Shipped.txt` and
+  `PublicAPI.Unshipped.txt` files moved to `PublicAPI/<target framework>/` and the public API analyzer runs for every
+  target framework instead of only the newest one. The old single file listed the async APIs for frameworks that do
+  not have them and did not know about APIs that only exist on older frameworks, so a breaking change on those was
+  not detected.
 * Fix: the `OrNoneFromTryPattern` source generator handles try methods it previously generated broken code for or
   crashed on: `in`, `ref` and `ref readonly` parameters are forwarded with their modifiers instead of being dropped from
   the signature, non-null default values (numbers, strings, chars, booleans, enums and `default` structs) are copied

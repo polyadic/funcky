@@ -96,5 +96,9 @@
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
+    <PropertyGroup Condition="'$(TargetFramework)' != 'net10.0' and '$(TargetFramework)' != 'netstandard2.0'">
+        <!-- The public API is identical on every target framework except net10.0 (type forwards only) and netstandard2.0 (no System.Index). -->
+        <FunckyPublicApiGroup>common</FunckyPublicApiGroup>
+    </PropertyGroup>
     <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>
