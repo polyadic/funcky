@@ -48,6 +48,7 @@ public static partial class Sequence
         => Successors(first, ToOptionSuccessor(ArgumentValidator.NotNull(successor)));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
+    /// <remarks>Unlike the other overloads, this one never wraps the elements in an <see cref="Option{T}"/>, so <typeparamref name="TResult"/> is not constrained to <c>notnull</c>: it can produce <c>null</c> elements.</remarks>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, TResult> successor)
         => SuccessorsIterator(first, ArgumentValidator.NotNull(successor));

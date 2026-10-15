@@ -31,6 +31,7 @@ public static partial class AsyncSequence
         => Successors(first, ToOptionSuccessor(ArgumentValidator.NotNull(successor)));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, ValueTask{Option{TResult}}})" />
+    /// <remarks>Unlike the other overloads, this one never wraps the elements in an <see cref="Option{T}"/>, so <typeparamref name="TResult"/> is not constrained to <c>notnull</c>: it can produce <c>null</c> elements.</remarks>
     [Pure]
     public static IAsyncEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, ValueTask<TResult>> successor)
         => SuccessorsInternal(first, ArgumentValidator.NotNull(successor));
