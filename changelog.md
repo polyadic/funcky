@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
+  `null` value is serializable; it answers `false` and reports a failure reason like the interface asks for.
 * Deprecation: the obsolete `ImmutableListExtensions` (superseded by `ListExtensions` in 3.0) now announces its removal in
   Funcky 4.0.0 in the obsolete message.
 * Documentation: `SplitLines` states that a trailing new line adds no empty line, that an empty text yields nothing and
