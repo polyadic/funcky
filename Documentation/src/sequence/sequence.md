@@ -35,7 +35,13 @@ flags the last one.
 
 The `params` overload gives you a literal sequence of several elements, which is why the examples throughout
 this book use it. The result is an `IReadOnlyList<T>`, so it is materialized and can be enumerated any number
-of times.
+of times. It is a read-only view over the array the compiler builds for the call: nothing is copied, and the
+view cannot be cast back to a mutable array. If you pass an existing array yourself, the view reflects later
+changes to that array.
+
+Passing an array binds to the `params` overload, as with any `params` method: `Sequence.Return(array)` is a
+sequence of the array's elements. To get a sequence whose single element is the array, name the type argument,
+`Sequence.Return<int[]>(array)`.
 
 ```cs
 IEnumerable<string> greeting = Sequence.Return("hello");

@@ -11,6 +11,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `NumberStyles`, which use the number type's default style.
 * Fix: `ParseNumberOrNone<T>` on strings accepts a `null` candidate and returns `None`, like `ParseOrNone<T>` and the
   generated parse methods. All generic parse methods are now marked `[Pure]` and documented.
+* Fix: `Sequence.Return(params T[])` returned the array itself typed as `IReadOnlyList<T>`, so the result could be cast
+  back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
+  does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
+  to the `params` overload rather than producing a one-element sequence.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
