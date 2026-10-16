@@ -18,7 +18,7 @@ transiently.
 | [All, Any, Not](./predicate-composition.md)     | Combine predicates into a new predicate                        |
 | [Curry, Uncurry](./curry.md)                    | Convert between multi-argument and one-argument-at-a-time functions |
 | [Flip](./flip.md)                               | Swap the first two parameters of a function                    |
-| [Compose](./compose.md)                         | Chain two functions into one                                   |
+| [Compose, Then](./compose.md)                   | Chain two functions into one, backwards or forwards            |
 | [Apply](./apply.md)                             | Fix some arguments of a function, leave the others open        |
 | [Fn](./curry.md#fn)                             | Give a method group a delegate type so it can be passed on     |
 | [Retry](./retry.md)                             | Repeat an operation until it succeeds, with a delay policy     |

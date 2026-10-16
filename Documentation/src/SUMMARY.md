@@ -20,7 +20,7 @@
   * [Identity](./functional-helpers/identity.md)
   * [Curry and Uncurry](./functional-helpers/curry.md)
   * [Flip](./functional-helpers/flip.md)
-  * [Compose](./functional-helpers/compose.md)
+  * [Compose and Then](./functional-helpers/compose.md)
   * [Apply](./functional-helpers/apply.md)
   * [Retry](./functional-helpers/retry.md)
   * [Predicate Composition](./functional-helpers/predicate-composition.md)
