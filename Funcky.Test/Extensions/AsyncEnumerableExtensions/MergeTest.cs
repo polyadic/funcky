@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using FsCheck.Xunit;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.Internal;
+using Xunit.Sdk;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
@@ -105,6 +106,19 @@ public sealed class MergeTest
         var expected = AsyncSequence.Return((1, "A1"), (1, "B1"), (1, "C1"), (2, "A2"), (2, "B2"), (2, "C2"));
 
         return AsyncAssert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
+    }
+
+    [Fact]
+    public async Task MergeDisposesTheEnumeratorsAcquiredBeforeAFailingGetAsyncEnumerator()
+    {
+        var first = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(1, 2));
+        var second = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(3, 4));
+        var sources = Sequence.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
+
+        await Assert.ThrowsAsync<XunitException>(async () => await sources.Merge().FirstAsync());
+
+        Assert.Equal(1, first.EnumeratorsDisposed);
+        Assert.Equal(1, second.EnumeratorsDisposed);
     }
 }
 #endif

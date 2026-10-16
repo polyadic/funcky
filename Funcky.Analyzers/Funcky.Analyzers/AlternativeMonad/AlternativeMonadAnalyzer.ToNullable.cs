@@ -9,14 +9,17 @@ namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {
+    public const string PreferToNullableId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08";
+
     public static readonly DiagnosticDescriptor PreferToNullable = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}08",
+        id: PreferToNullableId,
         title: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: string.Empty);
+        description: string.Empty,
+        helpLinkUri: DiagnosticName.HelpLink(PreferToNullableId));
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: null, some: Identity)</c>.</summary>
     private static bool IsToNullableEquivalent(

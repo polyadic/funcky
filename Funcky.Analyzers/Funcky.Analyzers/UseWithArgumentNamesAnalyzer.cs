@@ -22,7 +22,8 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
         description: Resources.UseWithArgumentNamesAnalyzerDescription,
         category: Category,
         defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticName.HelpLink(DiagnosticId));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 

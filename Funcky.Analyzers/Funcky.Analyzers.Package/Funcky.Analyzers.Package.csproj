@@ -30,7 +30,6 @@
         <None Include="..\..\Artwork\logo-red-rounded.png" Pack="true" PackagePath="\icon.png" Visible="false" />
     </ItemGroup>
     <ItemGroup>
-        <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
         <None Update="buildTransitive\$(PackageId).targets" Pack="true" PackagePath="%(Identity)" />
     </ItemGroup>
     <!-- Adapted from https://github.com/dotnet/runtime/blob/4bd597ffde128555b4ff017e87c60adc2fedd178/eng/packaging.targets#L136 -->

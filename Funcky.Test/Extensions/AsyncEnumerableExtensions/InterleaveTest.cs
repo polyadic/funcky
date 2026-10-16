@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
+using Xunit.Sdk;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
@@ -102,6 +103,19 @@ public sealed class InterleaveTest
     public async Task CancellationIsPropagated()
     {
         await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Interleave(new AssertIsCancellationRequestedAsyncSequence<Unit>()));
+    }
+
+    [Fact]
+    public async Task InterleaveDisposesTheEnumeratorsAcquiredBeforeAFailingGetAsyncEnumerator()
+    {
+        var first = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(1, 2));
+        var second = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(3, 4));
+        var sources = Sequence.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
+
+        await Assert.ThrowsAsync<XunitException>(async () => await sources.Interleave().FirstAsync());
+
+        Assert.Equal(1, first.EnumeratorsDisposed);
+        Assert.Equal(1, second.EnumeratorsDisposed);
     }
 }
 #endif

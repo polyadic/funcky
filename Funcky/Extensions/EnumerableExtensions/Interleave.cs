@@ -28,11 +28,17 @@ public static partial class EnumerableExtensions
 
     private static IEnumerable<TSource> InterleaveIterator<TSource>(IEnumerable<IEnumerable<TSource>> source)
     {
-        var enumerators = GetInterleaveEnumerators(source);
+        // The enumerators are acquired inside the try, so the ones acquired before a failing GetEnumerator are disposed.
+        var enumerators = new List<IEnumerator<TSource>>();
 
         try
         {
-            foreach (var element in InterleaveEnumerator(enumerators))
+            foreach (var sequence in source)
+            {
+                enumerators.Add(sequence.GetEnumerator());
+            }
+
+            foreach (var element in InterleaveEnumerator(enumerators.ToImmutableList()))
             {
                 yield return element;
             }
@@ -42,9 +48,6 @@ public static partial class EnumerableExtensions
             enumerators.ForEach(enumerator => enumerator.Dispose());
         }
     }
-
-    private static ImmutableList<IEnumerator<TSource>> GetInterleaveEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> source)
-        => source.Select(s => s.GetEnumerator()).ToImmutableList();
 
     private static IEnumerable<TSource> InterleaveEnumerator<TSource>(ImmutableList<IEnumerator<TSource>> enumerators)
     {

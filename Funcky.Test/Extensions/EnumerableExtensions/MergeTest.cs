@@ -6,6 +6,7 @@ using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.Test.Internal;
 using Funcky.Test.TestUtilities;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -100,5 +101,18 @@ public sealed class MergeTest
         var expected = new List<(int Key, string Tag)> { (1, "A1"), (1, "B1"), (1, "C1"), (2, "A2"), (2, "B2"), (2, "C2") };
 
         Assert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
+    }
+
+    [Fact]
+    public void MergeDisposesTheEnumeratorsAcquiredBeforeAFailingGetEnumerator()
+    {
+        var first = new DisposeTrackingSequence<int>([1, 2]);
+        var second = new DisposeTrackingSequence<int>([3, 4]);
+        var sources = Sequence.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
+
+        Assert.Throws<XunitException>(() => sources.Merge().First());
+
+        Assert.Equal(1, first.EnumeratorsDisposed);
+        Assert.Equal(1, second.EnumeratorsDisposed);
     }
 }
