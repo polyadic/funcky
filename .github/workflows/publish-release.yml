@@ -10,6 +10,9 @@ jobs:
   publish:
     name: Pack and Push to nuget.org
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # lets the job request the GitHub OIDC token that nuget.org exchanges for a short-lived API key
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
@@ -18,10 +21,18 @@ jobs:
       run: dotnet pack --configuration Release --output nupkg
     - name: List Packages
       run: ls -l nupkg
+    # Trusted Publishing: no long-lived API key is stored. nuget.org validates the OIDC token against the
+    # trusted publishing policy of the package owner (repository polyadic/funcky, workflow publish-release.yml)
+    # and returns an API key that is valid for one hour, so the login runs right before the push.
+    - name: NuGet login (OIDC)
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{vars.NUGET_USER}} # nuget.org profile name of the policy's creator, a member of the polyadic organization
     - name: Push Packages
       # Pushes the .snupkg symbol packages alongside the .nupkg files. --skip-duplicate makes a re-run
       # after a partial failure idempotent: versions that are already on nuget.org are reported, not rejected.
-      run: dotnet nuget push 'nupkg/*.nupkg' --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
+      run: dotnet nuget push 'nupkg/*.nupkg' --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}} --skip-duplicate
     - uses: actions/upload-artifact@v4
       with:
         name: nupkg
