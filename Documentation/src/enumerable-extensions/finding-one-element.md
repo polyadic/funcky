@@ -1,6 +1,7 @@
 # Finding one element
 
-LINQ's `First`, `Last`, `Single`, `ElementAt`, `Min`, `Max` and `Average` all share one problem: there may be
+LINQ's `First`, `Last`, `Single`, `ElementAt`, `Min`, `Max`, `Average` and the seedless `Aggregate` all share one problem:
+there may be
 nothing to return. The BCL answers this in two ways. The plain methods throw an `InvalidOperationException`, and
 the `…OrDefault` variants return `default(T)`, which for a `List<int>` is `0`, indistinguishable from a real
 element with the value `0`, and for a reference type is a `null` you have to remember to check.
@@ -47,5 +48,7 @@ See the [Option Monad](../option.md) chapter for what to do with the result, and
 {{#include ./max-by-or-none.md}}
 
 {{#include ./average-or-none.md}}
+
+{{#include ./aggregate-or-none.md}}
 
 {{#include ./get-non-enumerated-count-or-none.md}}
