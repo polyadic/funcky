@@ -1,13 +1,1 @@
 #nullable enable
-override Funcky.EitherOrBoth<TLeft, TRight>.ToString() -> string!
-static Funcky.Extensions.EnumerableExtensions.Split<TSource>(this TSource[]! source, TSource separator) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate) -> Funcky.Monads.Option<TEnum>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
-*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
-*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
-*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
-*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
-Funcky.Unit.CompareTo(object? obj) -> int
-override Funcky.Unit.ToString() -> string!

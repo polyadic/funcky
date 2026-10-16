@@ -7,7 +7,7 @@ chapter assume that.
 
 Most of them exist to replace a lambda that says nothing with a name that says something: `x => x` becomes
 `Identity`, `_ => {}` becomes `NoOperation`, `_ => true` becomes `True`. The rest are the classic
-function combinators, `Curry`, `Flip` and `Compose`, and a `Retry` helper for operations that may fail
+function combinators, `Curry`, `Flip`, `Compose` and `Apply`, and a `Retry` helper for operations that may fail
 transiently.
 
 | Helper                                          | Purpose                                                        |
@@ -18,7 +18,8 @@ transiently.
 | [All, Any, Not](./predicate-composition.md)     | Combine predicates into a new predicate                        |
 | [Curry, Uncurry](./curry.md)                    | Convert between multi-argument and one-argument-at-a-time functions |
 | [Flip](./flip.md)                               | Swap the first two parameters of a function                    |
-| [Compose](./compose.md)                         | Chain two functions into one                                   |
+| [Compose, Then](./compose.md)                   | Chain two functions into one, backwards or forwards            |
+| [Apply](./apply.md)                             | Fix some arguments of a function, leave the others open        |
 | [Fn](./curry.md#fn)                             | Give a method group a delegate type so it can be passed on     |
 | [Retry](./retry.md)                             | Repeat an operation until it succeeds, with a delay policy     |
 | [Unit](./unit-type.md)                          | The type with one value, for "returns nothing" in generics     |

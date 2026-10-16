@@ -2,12 +2,20 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## Unreleased
 
 * Breaking (Funcky.Analyzers): the package no longer ships an asset for Roslyn 4.0; the analyzers require Roslyn 4.4
   (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
   Studio version that is out of support.
+
+## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
+
+* New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
+  empty sequence. The async variant also takes an accumulator receiving the cancellation token.
+* New: `And`, `Or` and `Not` extension methods on `Func<T, bool>` in `Funcky.Extensions`, the extension form of `All`,
+  `Any` and `Not`. The type argument is inferred from the receiver, so `isActive.And(isAdmin)` needs no `<User>`.
+* New: `Then` on `Func<…>`, the forward form of `Compose`: `f.Then(g)` is `x => g(f(x))`, so a pipeline reads in the
+  order it runs. Overloads mirror `Compose`, including a nullary function and an `Action` as the last step.
 * New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
   exception type and returns it typed, the analogue of `Assert.Throws`.
 * Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
@@ -36,6 +44,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   fix-all grouping in the IDE.
 * Fix: the `NonDefaultable` and `SyntaxSupportOnly` marker attributes are removed by the trimmer like `UseWithArgumentNames`
   already was; all three are compile-time-only.
+* Packaging: the Funcky.Analyzers package declared its version in a property the SDK does not read, so every package
+  built since February 2025 outside a release was versioned 1.0.0. It uses `VersionPrefix` like the other packages.
 * Packaging: the Funcky and Funcky.Analyzers packages no longer ship the `tools/install.ps1` and `uninstall.ps1` hooks,
   which `PackageReference` never runs.
 * Fix: `AverageOrNone` and `AverageOrNoneAsync` on `long` (and `Option<long>`) summed in `double` and lost precision for
@@ -195,9 +205,6 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   awaiter-based code could hang forever.
 * The `Option` awaiters now implement `ICriticalNotifyCompletion`, so `await` no longer needs to
   flow the `ExecutionContext` when the underlying task awaiter does not either.
-
-## Funcky 3.6.1 | Funcky.Async 1.5.0
-
 * Add a `net10.0` target to `Funcky.Async` that only forwards all its types to `Funcky`.
   Projects that reference both `Funcky` and `Funcky.Async` no longer get ambiguous type errors
   (`CS0433`) when they move to .NET 10. On .NET 10 you can simply remove the `Funcky.Async` reference.
