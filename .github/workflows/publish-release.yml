@@ -10,6 +10,7 @@ jobs:
   publish:
     name: Pack and Push to nuget.org
     runs-on: ubuntu-latest
+    environment: production # must match the environment of the trusted publishing policy on nuget.org
     permissions:
       contents: read
       id-token: write # lets the job request the GitHub OIDC token that nuget.org exchanges for a short-lived API key
