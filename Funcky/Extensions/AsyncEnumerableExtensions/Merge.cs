@@ -67,11 +67,18 @@ public static partial class AsyncEnumerableExtensions
         Option<IComparer<TSource>> comparer,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var enumerators = GetMergeEnumerators(sources, cancellationToken);
+        // The enumerators are acquired inside the try, so the ones acquired before a failing GetAsyncEnumerator are disposed.
+        var enumerators = new List<IAsyncEnumerator<TSource>>();
 
         try
         {
-            await foreach (var element in MergeEnumerators(enumerators.RemoveRange(await enumerators.ToAsyncEnumerable().Where(async (f, _) => await HasMoreElements(f).ConfigureAwait(false)).ToListAsync(cancellationToken).ConfigureAwait(false)), GetMergeComparer(comparer)).ConfigureAwait(false))
+            foreach (var sequence in sources)
+            {
+                enumerators.Add(sequence.GetAsyncEnumerator(cancellationToken));
+            }
+
+            var exhausted = await enumerators.ToAsyncEnumerable().Where(async (enumerator, _) => await HasMoreElements(enumerator).ConfigureAwait(false)).ToListAsync(cancellationToken).ConfigureAwait(false);
+            await foreach (var element in MergeEnumerators(enumerators.ToImmutableList().RemoveRange(exhausted), GetMergeComparer(comparer)).ConfigureAwait(false))
             {
                 yield return element;
             }
@@ -84,9 +91,6 @@ public static partial class AsyncEnumerableExtensions
             }
         }
     }
-
-    private static ImmutableList<IAsyncEnumerator<TSource>> GetMergeEnumerators<TSource>(IEnumerable<IAsyncEnumerable<TSource>> sources, CancellationToken cancellationToken)
-        => ImmutableList.Create<IAsyncEnumerator<TSource>>().AddRange(sources.Select(s => s.GetAsyncEnumerator(cancellationToken)));
 
     private static IComparer<TSource> GetMergeComparer<TSource>(Option<IComparer<TSource>> comparer = default)
         => comparer.GetOrElse(Comparer<TSource>.Default);

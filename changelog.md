@@ -10,6 +10,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   that overflows `long` throws `OverflowException` instead of returning an inexact average. The `float` overloads sum in
   `double` like the BCL. The element count is a `long`, so sequences with more than two billion elements are averaged
   correctly. Internally the three per-type aggregator classes became one allocation-free generic struct.
+* Fix: `Interleave` and `Merge` (sync and async) acquired the enumerators of all sources before entering the `try` that
+  disposes them, so if the `GetEnumerator` of one source threw, the enumerators of the sources before it were never
+  disposed. They are now acquired inside the `try` and the ones acquired so far are disposed.
+* Fix: `Sequence.RepeatRange` and `AsyncSequence.RepeatRange` reject a negative `count` with an
+  `ArgumentOutOfRangeException` when they are called, like `RepeatMaterialized` and `Enumerable.Repeat`. Previously a
+  negative count silently yielded the source once. The XML docs of all three methods described the result as infinite;
+  it contains the source exactly `count` times.
 * Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
   stack trace of a failed assertion on frameworks without `[StackTraceHidden]`. The JIT never inlines a method with an
   exception handler, so the attribute was dead; it is removed and the readme now states that on .NET 6 and later the
