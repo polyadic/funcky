@@ -9,7 +9,7 @@ public sealed class FlipTest
     [Property]
     public Property GivenAFunctionWith2ParametersTheFirstTwoParametersGetFlipped(int number, string text, Func<int, string, string> f)
     {
-        return (f(number, text) == Flip(f)(text, number)).ToProperty();
+        return (f(number, text) == Flip(f)(text, number) && f(number, text) == f.Flip()(text, number)).ToProperty();
     }
 
     [Property]

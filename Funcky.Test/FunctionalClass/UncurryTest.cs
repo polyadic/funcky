@@ -11,7 +11,7 @@ public sealed class UncurryTest
     {
         Func<int, Func<string, string>> f = number => text => $"number:{number}, text:{text}";
 
-        return (f(number)(text) == Uncurry(f)(number, text)).ToProperty();
+        return (f(number)(text) == Uncurry(f)(number, text) && f(number)(text) == f.Uncurry()(number, text)).ToProperty();
     }
 
     [Property]
