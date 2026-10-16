@@ -15,7 +15,7 @@ public sealed class SequenceReturnCollectionExpressionTest
             {
                 IReadOnlyList<int> M()
                 {
-                    IReadOnlyList<int> result = {|λ1011:Sequence.Return(0)|};
+                    IReadOnlyList<int> result = {|λ1013:Sequence.Return(0)|};
                     return result;
                 }
             }
@@ -43,7 +43,7 @@ public sealed class SequenceReturnCollectionExpressionTest
             """
             class C
             {
-                IEnumerable<int> M() => {|λ1011:Sequence.Return(0)|};
+                IEnumerable<int> M() => {|λ1013:Sequence.Return(0)|};
             }
             """);
 
@@ -67,7 +67,7 @@ public sealed class SequenceReturnCollectionExpressionTest
             {
                 void Consume(IReadOnlyList<int> values) { }
 
-                void M() => Consume({|λ1011:Sequence.Return(0)|});
+                void M() => Consume({|λ1013:Sequence.Return(0)|});
             }
             """);
 
@@ -91,7 +91,7 @@ public sealed class SequenceReturnCollectionExpressionTest
             """
             class C
             {
-                IReadOnlyList<int> M(int x) => {|λ1011:Sequence.Return(x + 1)|};
+                IReadOnlyList<int> M(int x) => {|λ1013:Sequence.Return(x + 1)|};
             }
             """);
 
