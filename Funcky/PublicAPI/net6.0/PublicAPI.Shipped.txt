@@ -894,7 +894,19 @@ static Funcky.UpCast<TResult>.From<TItem>(Funcky.Monads.Option<TItem> option) ->
 static Funcky.UpCast<TResult>.From<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> Funcky.Monads.Either<TLeft, TResult>
 static Funcky.UpCast<TResult>.From<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> Funcky.Monads.Result<TResult>
 static readonly Funcky.Discard.__ -> Funcky.Unit
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
-static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+override Funcky.EitherOrBoth<TLeft, TRight>.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.Split<TSource>(this TSource[]! source, TSource separator) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+Funcky.Unit.CompareTo(object? obj) -> int
+override Funcky.Unit.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.AggregateOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Not<T>(this System.Func<T, bool>! predicate) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate, TOutput>(this System.Func<TInput, TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate>(this System.Func<TInput, TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action<TInput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate, TOutput>(this System.Func<TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate>(this System.Func<TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action!
