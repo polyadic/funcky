@@ -30,6 +30,37 @@ var activeAdmins = users.Where(u => isActive(u) && isAdmin(u));
 
 Because the result is an ordinary `Func<T, bool>`, it composes further: `Not(All(a, b))` is "not both".
 
+## And, Or, Not as extension methods
+
+The static forms cannot infer `T` from a method group, so `Not(string.IsNullOrEmpty)` does not compile without
+`Not<string>(...)`. The same three combinators exist as extension methods on `Func<T, bool>` in
+`Funcky.Extensions`, where the receiver fixes the type:
+
+```cs
+Func<T, bool> And<T>(this Func<T, bool> predicate, params Func<T, bool>[] predicates)
+Func<T, bool> Or<T>(this Func<T, bool> predicate, params Func<T, bool>[] predicates)
+Func<T, bool> Not<T>(this Func<T, bool> predicate)
+```
+
+`a.And(b, c)` is `All(a, b, c)`, `a.Or(b, c)` is `Any(a, b, c)` and `a.Not()` is `Not(a)`, with the same
+short-circuiting. They read left to right, which suits longer chains:
+
+```cs
+var needsAttention = users.Where(isVerified.Not().Or(isActive.Not()));
+var activeAdmins = users.Where(isActive.And(isAdmin));
+```
+
+## And, Or, Not as extension methods
+
+The static forms cannot infer  from a method group, so  does not compile without
+. The same three combinators exist as extension methods on  in
+, where the receiver fixes the type:
+
+\
+ is ,  is  and  is , with the same
+short-circuiting. They read left to right, which suits longer chains:
+
+\
 ## True and False
 
 `True` and `False` are predicates that ignore their arguments and return a constant, with overloads for zero

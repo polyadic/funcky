@@ -12,3 +12,6 @@ static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? can
 Funcky.Unit.CompareTo(object? obj) -> int
 override Funcky.Unit.ToString() -> string!
 static Funcky.Extensions.EnumerableExtensions.AggregateOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Not<T>(this System.Func<T, bool>! predicate) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
