@@ -9,16 +9,18 @@ namespace Funcky.BuiltinAnalyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class SyntaxSupportOnlyAnalyzer : DiagnosticAnalyzer
 {
+    public const string MemberOnlyForSyntaxId = $"{DiagnosticName.Prefix}{DiagnosticName.BuiltIn}03";
     private const string AttributeFullName = "Funcky.CodeAnalysis.SyntaxSupportOnlyAttribute";
 
     private static readonly DiagnosticDescriptor SyntaxSupportOnly = new(
-        id: "λ0003",
+        id: MemberOnlyForSyntaxId,
         title: "Member is not intended for direct usage",
         messageFormat: "This {0} exists only to support the {1} syntax, do not use it directly",
         category: nameof(Funcky),
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
-        customTags: [WellKnownDiagnosticTags.NotConfigurable]);
+        customTags: [WellKnownDiagnosticTags.NotConfigurable],
+        helpLinkUri: DiagnosticName.HelpLink(MemberOnlyForSyntaxId));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SyntaxSupportOnly);
 

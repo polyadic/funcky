@@ -9,14 +9,17 @@ namespace Funcky.Analyzers.NonDefaultable;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
 {
+    public const string DoNotUseDefaultId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}09";
+
     public static readonly DiagnosticDescriptor DoNotUseDefault = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}09",
+        id: DoNotUseDefaultId,
         title: "Do not use default to instantiate this type",
         messageFormat: "Do not use default(...) to instantiate '{0}'",
         category: nameof(Funcky),
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
-        description: "Values instantiated with default are in an invalid state; any member may throw an exception.");
+        description: "Values instantiated with default are in an invalid state; any member may throw an exception.",
+        helpLinkUri: DiagnosticName.HelpLink(DoNotUseDefaultId));
 
     internal const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
 

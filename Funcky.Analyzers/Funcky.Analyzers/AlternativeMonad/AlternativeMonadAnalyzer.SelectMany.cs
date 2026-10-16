@@ -7,14 +7,17 @@ namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {
+    public const string PreferSelectManyId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07";
+
     public static readonly DiagnosticDescriptor PreferSelectMany = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}07",
+        id: PreferSelectManyId,
         title: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: string.Empty);
+        description: string.Empty,
+        helpLinkUri: DiagnosticName.HelpLink(PreferSelectManyId));
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: Option&lt;T&gt;>.None, some: A)</c>.</summary>
     private static bool IsSelectManyEquivalent(AlternativeMonadType alternativeMonadType, IInvocationOperation matchInvocation, INamedTypeSymbol receiverType, IArgumentOperation errorStateArgument)

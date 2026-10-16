@@ -26,7 +26,7 @@ This means that we ship multiple copies of the analyzer assembly in the followin
       │   ╰─ cs
       │      ├─ Funcky.Analyzers.dll
       │      ╰─ ...
-      ╰─ roslyn4.12
+      ╰─ roslyn4.4
          ╰─ cs
             ├─ Funcky.Analyzers.dll
             ╰─ ...
