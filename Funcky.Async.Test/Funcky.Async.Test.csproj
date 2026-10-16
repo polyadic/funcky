@@ -10,6 +10,10 @@
         <DefineConstants>$(DefineConstants);ASYNC_SUPPORTED;SYSTEM_LINQ_ASYNC</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <!-- CI sets SystemLinqAsyncVersion to each version of the allowed range. Only the test project is overridden on
+             purpose: Funcky.Async itself stays compiled against the lowest version, and NuGet unifies the graph to the
+             overridden version at runtime, so the tests run the shipped binary against the newer System.Linq.Async
+             exactly like a consumer does. -->
         <PackageReference Include="System.Linq.Async" VersionOverride="$(SystemLinqAsyncVersion)" Condition="'$(SystemLinqAsyncVersion)' != ''" />
         <PackageReference Include="FsCheck.Xunit" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -34,6 +38,7 @@
         <Compile Include="..\Funcky.Test\TestUtilities\AssertIsCancellationRequestedAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\AsyncAssert.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\AsyncEnumerateOnce.cs" LinkBase="TestUtilities" />
+        <Compile Include="..\Funcky.Test\TestUtilities\DisposeTrackingAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnCall.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\FailOnEnumerateAsyncSequence.cs" LinkBase="TestUtilities" />
         <Compile Include="..\Funcky.Test\TestUtilities\OptionProducer.cs" LinkBase="TestUtilities" />
