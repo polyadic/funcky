@@ -5,6 +5,28 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
+  exception type and returns it typed, the analogue of `Assert.Throws`.
+* Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
+  `null` value is serializable; it answers `false` and reports a failure reason like the interface asks for.
+* Deprecation: the obsolete `ImmutableListExtensions` (superseded by `ListExtensions` in 3.0) now announces its removal in
+  Funcky 4.0.0 in the obsolete message.
+* Documentation: `SplitLines` states that a trailing new line adds no empty line, that an empty text yields nothing and
+  that only CR, LF and CRLF are recognized.
+* New: `Unit` overrides `ToString` (prints `Unit` instead of the type name) and implements the non-generic `IComparable`.
+* Fix: `Flatten` (Option, Either, Lazy, IEnumerable), `Option.ToEither`, `Option.ToNullable`, `Either.SelectLeft`,
+  `Option.ToAsyncEnumerable` and the string `Chunk` and `SlidingWindow` are marked `[Pure]` like their siblings.
+* New: `GetNonEnumeratedCountOrNone` is available on every target framework; it was limited to .NET 6 and later although
+  the polyfill for the underlying check was already shipped. On older frameworks only collections with a `Count` are
+  recognized.
+* Fix: `Option<T>.Where` and `Option.FromBoolean(bool, T)` no longer allocate a closure per call.
+* Fix: `SlidingWindow` and `SlidingWindowAsync` kept the window in an `ImmutableQueue` and built an `ImmutableList` for
+  every window. They now use a ring buffer and copy each window into a read-only array, which is O(width) per window
+  with a single allocation instead of a tree per window.
+* Fix: `WhereSelect` and its async variants no longer allocate an enumerable per element; they are plain iterators now and
+  validate their arguments when called like the other iterator-based extensions.
+* Fix: `AnyOrElse` with a fallback function invoked the function when `AnyOrElse` was called if the source was an empty
+  collection, but when the result was enumerated otherwise. The function is now always invoked on enumeration.
 * Fix: every analyzer rule now carries a help link to its documentation page (`https://polyadic.github.io/funcky/analyzer-rules/<id>.html`);
   previously only λ0001 had one.
 * Fix: the `FunctionalAssert` code fix (λ1101) was exported under the name of the argument-name code fix, which broke
