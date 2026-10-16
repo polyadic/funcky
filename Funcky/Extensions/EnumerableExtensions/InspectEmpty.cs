@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -10,6 +12,9 @@ public static partial class EnumerableExtensions
     /// <returns>returns an <see cref="IEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
     [Pure]
     public static IEnumerable<TSource> InspectEmpty<TSource>(this IEnumerable<TSource> source, Action inspector)
+        => InspectEmptyIterator(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(inspector));
+
+    private static IEnumerable<TSource> InspectEmptyIterator<TSource>(IEnumerable<TSource> source, Action inspector)
     {
         using var enumerator = source.GetEnumerator();
 

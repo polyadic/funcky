@@ -1,19 +1,26 @@
 ## None
-With the `.None` extension method, you can make `!enumerable.Any()` calls easier.
 
-That's all there is. You can replace:
-```csharp
-if (!enumerable.Any()) { ... }
+Returns `true` if the sequence is empty, or if no element satisfies the predicate. It is `!Any()`, with the
+negation where it is easy to see.
+
+```cs
+bool None<TSource>(this IEnumerable<TSource> source)
+bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 ```
 
-with the easier to read
+Like `Any`, `None` stops at the first element that decides the answer, so it is safe on infinite sequences as
+long as a matching element exists.
 
-```csharp
-if (enumerable.None()) { ... }
-```
+`!items.Any(x => x.IsValid)` reads as "not any valid" and is easy to confuse with `items.Any(x => !x.IsValid)`,
+which means something else. `items.None(x => x.IsValid)` says what it checks.
 
-Just like with `.Any()`, you can additionally pass a predicate as a parameter:
+### Example
 
-```csharp
-if (enumerable.None(item => item.SomeNumericProperty == 2) { ... }
+```cs
+if (errors.None())
+{
+    Commit();
+}
+
+bool allSettled = payments.None(p => p.IsPending);
 ```

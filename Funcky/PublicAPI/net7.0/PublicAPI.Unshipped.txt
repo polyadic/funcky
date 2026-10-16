@@ -1,0 +1,29 @@
+#nullable enable
+override Funcky.EitherOrBoth<TLeft, TRight>.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.Split<TSource>(this TSource[]! source, TSource separator) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string? candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType) -> Funcky.Monads.Option<object!>
+*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone(this string! candidate, System.Type! enumType, bool ignoreCase) -> Funcky.Monads.Option<object!>
+*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate) -> Funcky.Monads.Option<TEnum>
+*REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string? value) -> Funcky.Monads.Option<TNumber>
+static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string? value, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
+static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string? value, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
+static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this System.ReadOnlySpan<char> value) -> Funcky.Monads.Option<TNumber>
+static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this System.ReadOnlySpan<char> value, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
+static Funcky.Extensions.ParseExtensions.ParseOrNone<TParsable>(this string? value) -> Funcky.Monads.Option<TParsable>
+static Funcky.Extensions.ParseExtensions.ParseOrNone<TParsable>(this System.ReadOnlySpan<char> value) -> Funcky.Monads.Option<TParsable>
+*REMOVED*static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string! value, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
+Funcky.Unit.CompareTo(object? obj) -> int
+override Funcky.Unit.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.AggregateOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Not<T>(this System.Func<T, bool>! predicate) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate, TOutput>(this System.Func<TInput, TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate>(this System.Func<TInput, TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action<TInput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate, TOutput>(this System.Func<TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate>(this System.Func<TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action!

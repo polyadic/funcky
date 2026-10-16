@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -28,13 +28,25 @@ public sealed class ShuffleTest
     }
 
     [Property]
-    public Property AShuffleHasTheSameElementsAsTheSource(List<int> source)
+    public Property AShuffleIsAPermutationOfTheSource(List<int> source, int seed)
         => source
             .ToAsyncEnumerable()
-            .ShuffleAsync()
+            .ShuffleAsync(new System.Random(seed))
             .Result
-            .All(source.Contains)
+            .OrderBy(Identity)
+            .SequenceEqual(source.OrderBy(Identity))
             .ToProperty();
+
+    // Two shuffles of 32 elements agree with probability 1/32!, unless the seedless overload seeds from the clock
+    // and both calls land in the same tick.
+    [Fact]
+    public async Task TwoConsecutiveSeedlessShufflesDiffer()
+    {
+        var source = Enumerable.Range(0, 32).ToList();
+        _ = await source.ToAsyncEnumerable().ShuffleAsync(); // warm up, so that JIT time does not push the two calls into different ticks
+
+        Assert.NotEqual(await source.ToAsyncEnumerable().ShuffleAsync(), await source.ToAsyncEnumerable().ShuffleAsync());
+    }
 
     [Property]
     public Property AShuffleHasTheSameLengthAsTheSource(List<int> source)

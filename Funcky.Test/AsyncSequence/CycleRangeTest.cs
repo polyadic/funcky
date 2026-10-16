@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -26,7 +26,7 @@ public sealed class CycleRangeTest
         => (GetArbitraryManyItemsAsync(sequence.Get, arbitraryElements.Get).Result == arbitraryElements.Get)
             .ToProperty();
 
-    [Property(Skip = "Tofix")]
+    [Property]
     public Property CycleRangeRepeatsTheElementsArbitraryManyTimes(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
         => CycleRangeRepeatsTheElementsArbitraryManyTimesAsync(sequence.Get.ToAsyncEnumerable(), arbitraryElements.Get)
             .Result.ToProperty();

@@ -1,5 +1,6 @@
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Test.TestUtilities;
+using Xunit.Sdk;
 
 namespace Funcky.Test.Extensions.EnumerableExtensions;
 
@@ -105,5 +106,18 @@ public sealed class InterleaveTest
             Assert.Equal(expected, element);
             expected = (expected % 4) + 1;
         }
+    }
+
+    [Fact]
+    public void InterleaveDisposesTheEnumeratorsAcquiredBeforeAFailingGetEnumerator()
+    {
+        var first = new DisposeTrackingSequence<int>([1, 2]);
+        var second = new DisposeTrackingSequence<int>([3, 4]);
+        var sources = Sequence.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
+
+        Assert.Throws<XunitException>(() => sources.Interleave().First());
+
+        Assert.Equal(1, first.EnumeratorsDisposed);
+        Assert.Equal(1, second.EnumeratorsDisposed);
     }
 }

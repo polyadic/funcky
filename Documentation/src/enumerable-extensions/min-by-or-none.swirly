@@ -1,0 +1,11 @@
+% MinByOrNone
+
+------E----M----C----D---|
+E := Elephant
+M := Mouse
+C := Cat
+D := Dog
+
+> MinByOrNone(Weight)
+
+-------------------------(M|)

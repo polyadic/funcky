@@ -1,4 +1,5 @@
 using System.Collections;
+using Funcky.Internal;
 
 namespace Funcky.Monads;
 
@@ -24,5 +25,16 @@ public readonly partial struct Option<TItem> : IComparable<Option<TItem>>, IComp
     /// and the type <typeparamref name="TItem"/> does not implement either the <see cref="IComparable{T}" />
     /// generic interface or the <see cref="IComparable" /> interface.</exception>
     public int CompareTo(Option<TItem> other)
-        => OptionComparer<TItem>.Default.Compare(this, other);
+        => CompareWith(other, Comparer<TItem>.Default);
+
+    /// <summary>Comparison with a custom item comparer; shared with <see cref="OptionComparer"/>. Allocates nothing.</summary>
+    [Pure]
+    internal int CompareWith(Option<TItem> other, IComparer<TItem> comparer)
+        => (_hasItem, other._hasItem) switch
+        {
+            (true, true) => comparer.Compare(_item, other._item),
+            (true, false) => ComparisonResult.GreaterThan,
+            (false, true) => ComparisonResult.LessThan,
+            (false, false) => ComparisonResult.Equal,
+        };
 }

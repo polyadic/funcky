@@ -1,5 +1,6 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -30,13 +31,18 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="resultSelector">A function that specifies how to merge the elements from the two sequences.</param>
     /// <returns>A sequence that contains merged elements of two input sequences.</returns>
     [Pure]
-    public static async IAsyncEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+    public static IAsyncEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+        where TLeft : notnull
+        where TRight : notnull
+        => ZipLongestInternal(ArgumentValidator.NotNull(left), ArgumentValidator.NotNull(right), ArgumentValidator.NotNull(resultSelector));
+
+    private static async IAsyncEnumerable<TResult> ZipLongestInternal<TLeft, TRight, TResult>(IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         where TLeft : notnull
         where TRight : notnull
     {
         #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
-        await using var leftEnumerator = left.ConfigureAwait(false).GetAsyncEnumerator();
-        await using var rightEnumerator = right.ConfigureAwait(false).GetAsyncEnumerator();
+        await using var leftEnumerator = left.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
+        await using var rightEnumerator = right.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
         #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
 
         while ((await MoveNextOrNone(leftEnumerator, rightEnumerator).ConfigureAwait(false)).TryGetValue(out var next))

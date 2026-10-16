@@ -5,31 +5,31 @@ using static Funcky.Internal.ValueMapper;
 namespace Funcky.Extensions;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-[Obsolete($"Use {nameof(ListExtensions)} instead.")]
+[Obsolete($"Use {nameof(ListExtensions)} instead. This type will be removed in Funcky 4.0.0.")]
 public static partial class ImmutableListExtensions
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead.")]
+    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead. This method will be removed in Funcky 4.0.0.")]
     public static Option<int> IndexOfOrNone<TItem>(IImmutableList<TItem> list, TItem item, int startIndex, int count, IEqualityComparer<TItem>? equalityComparer)
         => MapNotFoundToNone(list.IndexOf(item, startIndex, count, equalityComparer));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead.")]
+    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead. This method will be removed in Funcky 4.0.0.")]
     public static Option<int> IndexOfOrNone<TItem>(IImmutableList<TItem> list, TItem item)
         => MapNotFoundToNone(list.IndexOf(item));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead.")]
+    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead. This method will be removed in Funcky 4.0.0.")]
     public static Option<int> IndexOfOrNone<TItem>(IImmutableList<TItem> list, TItem item, IEqualityComparer<TItem>? equalityComparer)
         => MapNotFoundToNone(list.IndexOf(item, equalityComparer));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead.")]
+    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead. This method will be removed in Funcky 4.0.0.")]
     public static Option<int> IndexOfOrNone<TItem>(IImmutableList<TItem> list, TItem item, int startIndex)
         => MapNotFoundToNone(list.IndexOf(item, startIndex));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead.")]
+    [Obsolete($"Use {nameof(ListExtensions)}.{nameof(IndexOfOrNone)} instead. This method will be removed in Funcky 4.0.0.")]
     public static Option<int> IndexOfOrNone<TItem>(IImmutableList<TItem> list, TItem item, int startIndex, int count)
         => MapNotFoundToNone(list.IndexOf(item, startIndex, count));
 

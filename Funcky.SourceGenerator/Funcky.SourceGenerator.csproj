@@ -16,5 +16,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="..\Funcky\Extensions\EnumerableExtensions\PowerSet.cs" Link="Extensions\%(Filename)%(Extension)" />
+        <Compile Include="..\Funcky\Internal\Validators\ArgumentValidator.cs" Link="Internal\Validators\%(Filename)%(Extension)" />
     </ItemGroup>
 </Project>

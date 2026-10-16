@@ -21,14 +21,30 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
 
     private static void RegisterOrNonePartials(SourceProductionContext context, ImmutableArray<MethodPartial> partialMethods)
         => _ = partialMethods
-            .GroupBy(partialMethod => partialMethod.SourceTree.FilePath)
+            .GroupBy(partialMethod => (partialMethod.SourceTree.FilePath, partialMethod.NamespaceName, partialMethod.ClassName))
+            .Select(group => (HintName: GetHintName(group.Key.NamespaceName, group.Key.ClassName, group.Key.FilePath), Methods: group))
+            .GroupBy(source => source.HintName)
+            .SelectMany(DisambiguateHintNames)
             .Aggregate(context, CreateSourceByClass);
 
-    private static SourceProductionContext CreateSourceByClass(SourceProductionContext context, IGrouping<string, MethodPartial> methodByClass)
-    {
-        var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(methodByClass.First().NamespaceName, methodByClass.First().ClassName, methodByClass.SelectMany(m => m.Methods));
+    // The hint name is derived from the class and the file name; when two source files share both (a partial class
+    // split over equally named files in different folders), an index keeps the hint names unique.
+    private static IEnumerable<(string HintName, IGrouping<(string FilePath, string NamespaceName, string ClassName), MethodPartial> Methods)> DisambiguateHintNames(
+        IGrouping<string, (string HintName, IGrouping<(string FilePath, string NamespaceName, string ClassName), MethodPartial> Methods)> sameHintName)
+        => sameHintName
+            .OrderBy(source => source.Methods.Key.FilePath, StringComparer.Ordinal)
+            .Select((source, index) => (sameHintName.Count() is 1 ? source.HintName : $"{source.HintName}.{index + 1}", source.Methods));
 
-        context.AddSource($"{Path.GetFileName(methodByClass.Key)}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString());
+    private static string GetHintName(string namespaceName, string className, string filePath)
+        => string.Join(".", new[] { namespaceName, className, Path.GetFileNameWithoutExtension(filePath) }.Where(part => part.Length > 0));
+
+    private static SourceProductionContext CreateSourceByClass(
+        SourceProductionContext context,
+        (string HintName, IGrouping<(string FilePath, string NamespaceName, string ClassName), MethodPartial> Methods) source)
+    {
+        var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(source.Methods.Key.NamespaceName, source.Methods.Key.ClassName, source.Methods.SelectMany(m => m.Methods));
+
+        context.AddSource($"{source.HintName}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString());
 
         return context;
     }
@@ -63,18 +79,28 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     private static IEnumerable<MethodDeclarationSyntax> GenerateMethods(SemanticTarget semanticTarget)
         => (from attribute in semanticTarget.Attributes
             from method in attribute.Type.GetMembers().OfType<IMethodSymbol>()
-            where method.Name == attribute.MethodName
+            where method.Name == attribute.MethodName && FollowsTryPattern(method)
             select GenerateOrNoneMethod(attribute.Type, method));
+
+    // A try method is static, returns bool and has exactly one out parameter, which carries the result.
+    private static bool FollowsTryPattern(IMethodSymbol method)
+        => method is { IsStatic: true, ReturnType.SpecialType: SpecialType.System_Boolean }
+            && method.Parameters.Count(IsOutParameter) is 1;
 
     private static MethodDeclarationSyntax GenerateOrNoneMethod(ITypeSymbol type, IMethodSymbol method)
         => MethodDeclaration(
             ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>"),
             GetMethodName(type, method))
             .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
-            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(p => p.RefKind is RefKind.None).Select(GenerateParameter))))
+            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(IsForwardedParameter).Select(GenerateParameter))))
             .WithExpressionBody(ArrowExpressionClause(GenerateOrNoneImplementation(type, method)))
             .WithAttributeLists(SingletonList(AttributeList(SingletonSeparatedList(Attribute(IdentifierName("global::System.Diagnostics.Contracts.Pure"))))))
-            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+            .WithLeadingTrivia(GenerateDocumentation(type, method));
+
+    private static SyntaxTriviaList GenerateDocumentation(ITypeSymbol type, IMethodSymbol method)
+        => ParseLeadingTrivia(
+            $"/// <summary>Calls <c>{method.ContainingType.ToDisplayString()}.{method.Name}</c> and returns the parsed <c>{type.ToDisplayString()}</c>, or <c>None</c> when it fails.</summary>\n");
 
     private static ExpressionSyntax GenerateOrNoneImplementation(ITypeSymbol type, IMethodSymbol method)
         => ConditionalExpression(
@@ -93,9 +119,28 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     private static ArgumentSyntax GenerateTryMethodArgument(IParameterSymbol parameter, int index)
         => IsOutParameter(parameter)
             ? GenerateOutVarArgument(Identifier(GetParameterName(parameter, index)))
-            : Argument(IdentifierName(GetParameterName(parameter, index)));
+            : Argument(nameColon: null, GetArgumentRefKindKeyword(parameter), IdentifierName(GetParameterName(parameter, index)));
 
     private static bool IsOutParameter(IParameterSymbol parameter) => parameter.RefKind is RefKind.Out;
+
+    private static bool IsForwardedParameter(IParameterSymbol parameter) => !IsOutParameter(parameter);
+
+    private static SyntaxToken GetArgumentRefKindKeyword(IParameterSymbol parameter)
+        => parameter.RefKind switch
+        {
+            RefKind.Ref => Token(SyntaxKind.RefKeyword),
+            RefKind.In or RefKind.RefReadOnlyParameter => Token(SyntaxKind.InKeyword),
+            _ => default,
+        };
+
+    private static SyntaxTokenList GetParameterRefKindModifiers(IParameterSymbol parameter)
+        => parameter.RefKind switch
+        {
+            RefKind.Ref => TokenList(Token(SyntaxKind.RefKeyword)),
+            RefKind.In => TokenList(Token(SyntaxKind.InKeyword)),
+            RefKind.RefReadOnlyParameter => TokenList(Token(SyntaxKind.RefKeyword), Token(SyntaxKind.ReadOnlyKeyword)),
+            _ => TokenList(),
+        };
 
     private static ArgumentSyntax GenerateOutVarArgument(SyntaxToken identifier)
         => Argument(
@@ -110,7 +155,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
 
     private static ParameterSyntax GenerateParameter(IParameterSymbol parameter, int index)
         => Parameter(Identifier(GetParameterName(parameter, index)))
-            .WithModifiers(index == 0 ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList())
+            .WithModifiers(TokenList((index == 0 ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList()).Concat(GetParameterRefKindModifiers(parameter))))
             .WithType(GenerateTypeSyntax(parameter.Type))
             .WithDefault(GetParameterDefaultValue(parameter))
             .WithAttributeLists(GenerateParameterAttributeLists(parameter));
@@ -170,11 +215,35 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             ? EqualsValueClause(GetLiteralForConstantValue(parameter.ExplicitDefaultValue, parameter.Type))
             : null;
 
+    // Mirrors how the compiler exposes default values: null for reference types and nullable value types,
+    // the underlying primitive for enums, and null for a value type defaulted with `default`.
     private static ExpressionSyntax GetLiteralForConstantValue(object? value, ITypeSymbol type)
+        => (value, type) switch
+        {
+            (null, { IsValueType: true, NullableAnnotation: not NullableAnnotation.Annotated }) => LiteralExpression(SyntaxKind.DefaultLiteralExpression),
+            (null, _) => LiteralExpression(SyntaxKind.NullLiteralExpression),
+            (_, { TypeKind: TypeKind.Enum }) => CastExpression(GenerateTypeSyntax(type), ParenthesizedExpression(ParseExpression(FormatPrimitive(value)))),
+            (_, INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, TypeArguments: [{ TypeKind: TypeKind.Enum } enumType] }) => CastExpression(GenerateTypeSyntax(enumType), ParenthesizedExpression(ParseExpression(FormatPrimitive(value)))),
+            _ => ParseExpression(FormatPrimitive(value)),
+        };
+
+    // Primitive constants with the suffix their type needs, so that e.g. a float default does not become a double literal.
+    private static string FormatPrimitive(object value)
         => value switch
         {
-            null => LiteralExpression(SyntaxKind.NullLiteralExpression),
-            _ => throw new NotSupportedException($"unsupported constant: {value} ({type})"),
+            float f when float.IsNaN(f) => "float.NaN",
+            float f when float.IsPositiveInfinity(f) => "float.PositiveInfinity",
+            float f when float.IsNegativeInfinity(f) => "float.NegativeInfinity",
+            float f => f.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "F",
+            double d when double.IsNaN(d) => "double.NaN",
+            double d when double.IsPositiveInfinity(d) => "double.PositiveInfinity",
+            double d when double.IsNegativeInfinity(d) => "double.NegativeInfinity",
+            double d => d.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "D",
+            decimal m => m.ToString(System.Globalization.CultureInfo.InvariantCulture) + "M",
+            long l => l.ToString(System.Globalization.CultureInfo.InvariantCulture) + "L",
+            ulong ul => ul.ToString(System.Globalization.CultureInfo.InvariantCulture) + "UL",
+            uint u => u.ToString(System.Globalization.CultureInfo.InvariantCulture) + "U",
+            _ => SymbolDisplay.FormatPrimitive(value, quoteStrings: true, useHexadecimalNumbers: false),
         };
 
     private static void RegisterOrNoneAttribute(IncrementalGeneratorPostInitializationContext context)

@@ -109,6 +109,22 @@ public sealed class UnitTest
         Assert.Equal(default, Unit.Value);
     }
 
+    [Fact]
+    public void UnitPrintsItsName()
+    {
+        Assert.Equal("Unit", Unit.Value.ToString());
+    }
+
+    [Fact]
+    public void UnitIsComparableAsAnObject()
+    {
+        IComparable comparable = Unit.Value;
+
+        Assert.Equal(0, comparable.CompareTo(Unit.Value));
+        Assert.Equal(1, comparable.CompareTo(null));
+        Assert.Throws<ArgumentException>(() => comparable.CompareTo("not a unit"));
+    }
+
     private static void AnAction(SideEffect sideEffect)
     {
         sideEffect.Do();

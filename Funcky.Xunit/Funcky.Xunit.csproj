@@ -4,6 +4,8 @@
         <TargetFrameworks>$(FunckyNewestTargetFramework);netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
+        <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Description>Package to use Funcky with xUnit</Description>
         <PackageTags>Functional Monad xUnit</PackageTags>
         <VersionPrefix>2.1.1</VersionPrefix>
@@ -35,5 +37,9 @@
     </ItemGroup>
     <Import Project="..\Analyzers.props" />
     <Import Project="..\GlobalUsings.props" />
+    <PropertyGroup>
+        <!-- The public API is identical on every target framework. -->
+        <FunckyPublicApiGroup>all</FunckyPublicApiGroup>
+    </PropertyGroup>
     <Import Project="..\PublicApiAnalyzers.targets" />
 </Project>

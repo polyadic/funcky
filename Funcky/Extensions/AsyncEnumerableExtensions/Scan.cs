@@ -1,5 +1,6 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -15,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">A binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> InclusiveScan<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
-        => InclusiveScanEnumerable(source, seed, accumulator);
+        => InclusiveScanEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the inclusive prefix sum.
@@ -27,7 +28,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> InclusiveScanAwait<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator)
-        => InclusiveScanAwaitEnumerable(source, seed, accumulator);
+        => InclusiveScanAwaitEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the inclusive prefix sum.
@@ -39,7 +40,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">A binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> InclusiveScanAwaitWithCancellation<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
-        => InclusiveScanAwaitWithCancellationEnumerable(source, seed, accumulator);
+        => InclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the exclusive prefix sum.
@@ -51,7 +52,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">a binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> ExclusiveScan<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
-        => ExclusiveScanEnumerable(source, seed, accumulator);
+        => ExclusiveScanEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the exclusive prefix sum.
@@ -63,7 +64,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> ExclusiveScanAwait<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator)
-        => ExclusiveScanAwaitEnumerable(source, seed, accumulator);
+        => ExclusiveScanAwaitEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the exclusive prefix sum.
@@ -75,7 +76,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IAsyncEnumerable<TAccumulate> ExclusiveScanAwaitWithCancellation<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
-        => ExclusiveScanAwaitWithCancellationEnumerable(source, seed, accumulator);
+        => ExclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     private static async IAsyncEnumerable<TAccumulate> InclusiveScanEnumerable<TSource, TAccumulate>(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

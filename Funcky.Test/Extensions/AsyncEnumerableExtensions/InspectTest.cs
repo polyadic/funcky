@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
@@ -60,15 +60,13 @@ public sealed class InspectTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Inspect(NoOperation).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Inspect(NoOperation));
     }
 
     [Fact]
     public async Task CancellationIsPropagatedInAwaitOverload()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().InspectAwait(_ => ValueTask.CompletedTask).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().InspectAwait(_ => ValueTask.CompletedTask));
     }
 }
 #endif

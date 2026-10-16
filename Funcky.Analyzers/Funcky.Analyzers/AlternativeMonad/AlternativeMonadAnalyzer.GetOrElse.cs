@@ -7,14 +7,17 @@ namespace Funcky.Analyzers.AlternativeMonad;
 
 public partial class AlternativeMonadAnalyzer
 {
+    public const string PreferGetOrElseId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05";
+
     public static readonly DiagnosticDescriptor PreferGetOrElse = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}05",
+        id: PreferGetOrElseId,
         title: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
         category: nameof(Funcky),
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: string.Empty);
+        description: string.Empty,
+        helpLinkUri: DiagnosticName.HelpLink(PreferGetOrElseId));
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: A, some: Identity)</c>.</summary>
     private static bool IsGetOrElseEquivalent(INamedTypeSymbol receiverType, IArgumentOperation errorStateArgument, IArgumentOperation successStateArgument)

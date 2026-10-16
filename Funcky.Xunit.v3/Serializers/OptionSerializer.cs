@@ -27,9 +27,22 @@ internal sealed class OptionSerializer : IXunitSerializer
 
     public bool IsSerializable(Type type, object? value, [NotNullWhen(false)] out string? failureReason)
     {
-        failureReason = string.Empty;
-        return GetItemType(type) is [var itemType]
-            && (bool)GenericIsSerializable.MakeGenericMethod(itemType).Invoke(null, [itemType, value])!;
+        if (GetItemType(type) is not [var itemType])
+        {
+            failureReason = $"{type} is not an Option<T>";
+            return false;
+        }
+
+        if ((bool)GenericIsSerializable.MakeGenericMethod(itemType).Invoke(null, [itemType, value])!)
+        {
+            failureReason = null;
+            return true;
+        }
+
+        failureReason = value is null
+            ? $"The value is not an {type}"
+            : $"The item of the {type} is not serializable";
+        return false;
     }
 
     public string Serialize(object value)
@@ -57,10 +70,8 @@ internal sealed class OptionSerializer : IXunitSerializer
 
     private static bool IsSerializable<TItem>(Type itemType, object? value)
         where TItem : notnull
-    {
-        var option = (Option<TItem>)(value ?? throw new InvalidOperationException("TODO"));
-        return option.Match(none: true, some: item => SerializationHelper.Instance.IsSerializable(item, itemType));
-    }
+        => value is Option<TItem> option
+           && option.Match(none: true, some: item => SerializationHelper.Instance.IsSerializable(item, itemType));
 
     private static string Serialize<TItem>(object obj)
         where TItem : notnull

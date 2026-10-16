@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -13,6 +14,22 @@ public static partial class EnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IEnumerable<TSource> source, TSource separator)
+        => source.Split(separator, EqualityComparer<TSource>.Default);
+
+    /// <summary>
+    /// Splits the source array by the given separator.
+    /// </summary>
+    /// <remarks>
+    /// This overload exists so that arrays keep binding to Funcky's <c>Split</c> in C# 14 and later, where
+    /// the first-class span conversion would otherwise make <c>MemoryExtensions.Split(ReadOnlySpan{T}, T)</c> win.
+    /// </remarks>
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> array.</typeparam>
+    /// <param name="source">The source array.</param>
+    /// <param name="separator">A single element of type <typeparamref name="TSource"/> separating the parts.</param>
+    /// <returns>A sequence of sequences.</returns>
+    [Pure]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(this TSource[] source, TSource separator)
         => source.Split(separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
@@ -47,32 +64,29 @@ public static partial class EnumerableExtensions
         TSource separator,
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
+        => SplitIterator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer), ArgumentValidator.NotNull(resultSelector));
+
+    private static IEnumerable<TResult> SplitIterator<TSource, TResult>(
+        IEnumerable<TSource> source,
+        TSource separator,
+        IEqualityComparer<TSource> comparer,
+        Func<IReadOnlyList<TSource>, TResult> resultSelector)
     {
-        using var sourceEnumerator = source.GetEnumerator();
+        var part = ImmutableList.CreateBuilder<TSource>();
 
-        while (sourceEnumerator.MoveNext())
+        foreach (var element in source)
         {
-            yield return resultSelector(TakeSkipWhile(sourceEnumerator, TakeSkipPredicate(separator, comparer)).ToImmutableList());
-        }
-    }
-
-    private static Func<TSource, bool> TakeSkipPredicate<TSource>(TSource separator, IEqualityComparer<TSource> equalityComparer)
-        => element
-            => !equalityComparer.Equals(element, separator);
-
-    private static IEnumerable<TSource> TakeSkipWhile<TSource>(IEnumerator<TSource> source, Func<TSource, bool> predicate)
-    {
-        do
-        {
-            if (predicate(source.Current))
+            if (comparer.Equals(element, separator))
             {
-                yield return source.Current;
+                yield return resultSelector(part.ToImmutable());
+                part.Clear();
             }
             else
             {
-                yield break;
+                part.Add(element);
             }
         }
-        while (source.MoveNext());
+
+        yield return resultSelector(part.ToImmutable());
     }
 }

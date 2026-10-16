@@ -4,10 +4,12 @@
         <TargetFrameworks>$(FunckyNewestTargetFramework);net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
+        <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Product>Funcky</Product>
         <Description>Funcky is a functional C# library</Description>
         <PackageTags>Functional Monad Linq</PackageTags>
-        <VersionPrefix>3.6.0</VersionPrefix>
+        <VersionPrefix>3.6.1</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -47,7 +49,6 @@
         <None Include="..\README.md" Pack="true" PackagePath="\" />
         <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
         <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers.CodeFixes\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.CodeFixes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
-        <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />

@@ -2,6 +2,7 @@ using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
 using Funcky.RetryPolicies;
+using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.FunctionalClass;
 
@@ -48,6 +49,16 @@ public sealed class RetryWithExceptionTest
 
         const int firstCall = 1;
         return (called == firstCall + retries.Get).ToProperty();
+    }
+
+    [Fact]
+    public void RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        Assert.Throws<ExceptionStub>(() => Retry(Throw<Unit>, True, retryPolicy));
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
     }
 
     private static TResult Throw<TResult>() => throw new ExceptionStub();

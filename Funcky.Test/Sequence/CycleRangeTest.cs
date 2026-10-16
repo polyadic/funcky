@@ -55,6 +55,32 @@ public sealed class CycleRangeTest
             .ForEach(NoOperation);
     }
 
+    [Fact]
+    public void CycleRangeAcquiresTheSourceEnumeratorOnlyWhenTheFirstElementIsRequested()
+    {
+        var source = new DisposeTrackingSequence<int>([1, 2, 3]);
+        using var cycleRange = Sequence.CycleRange(source);
+
+        using var enumerator = cycleRange.GetEnumerator();
+        Assert.Equal(0, source.EnumeratorsCreated);
+
+        Assert.True(enumerator.MoveNext());
+        Assert.Equal(1, source.EnumeratorsCreated);
+    }
+
+    [Fact]
+    public void CycleRangeDisposesTheSourceEnumeratorOnceTheSourceIsExhausted()
+    {
+        var source = new DisposeTrackingSequence<int>([1, 2, 3]);
+        using var cycleRange = Sequence.CycleRange(source);
+
+        Assert.Equal([1, 2, 3, 1], cycleRange.Take(4));
+        Assert.Equal(1, source.EnumeratorsDisposed);
+
+        Assert.Equal([1, 2, 3, 1, 2], cycleRange.Take(5));
+        Assert.Equal(1, source.EnumeratorsCreated);
+    }
+
     private static void CycleEmptySequence()
     {
         using var cycledRange = Sequence.CycleRange(Sequence.Return<string>());

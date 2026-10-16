@@ -2,6 +2,7 @@ namespace Funcky.Monads;
 
 public static partial class EitherExtensions
 {
+    [Pure]
     public static Either<TLeft, TRight> Flatten<TLeft, TRight>(this Either<TLeft, Either<TLeft, TRight>> either)
         where TLeft : notnull
         where TRight : notnull
