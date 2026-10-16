@@ -1,0 +1,28 @@
+on:
+  push:
+    tags:
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-*'
+
+name: Publish Release Packages
+
+jobs:
+  publish:
+    name: Pack and Push to nuget.org
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      name: Install Current .NET SDK
+    - name: Pack Packages
+      run: dotnet pack --configuration Release --output nupkg
+    - name: List Packages
+      run: ls -l nupkg
+    - name: Push Packages
+      # Pushes the .snupkg symbol packages alongside the .nupkg files. --skip-duplicate makes a re-run
+      # after a partial failure idempotent: versions that are already on nuget.org are reported, not rejected.
+      run: dotnet nuget push 'nupkg/*.nupkg' --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
+    - uses: actions/upload-artifact@v4
+      with:
+        name: nupkg
+        path: nupkg/*
