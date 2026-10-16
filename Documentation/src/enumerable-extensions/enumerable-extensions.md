@@ -28,6 +28,7 @@ See [Finding one element](./finding-one-element.md).
 | [MinByOrNone](./finding-one-element.md#minbyornone)                          | The element with the smallest key                                |
 | [MaxByOrNone](./finding-one-element.md#maxbyornone)                          | The element with the largest key                                 |
 | [AverageOrNone](./finding-one-element.md#averageornone) ⁂                    | The arithmetic mean                                              |
+| [AggregateOrNone](./finding-one-element.md#aggregateornone) ⁂                | The seedless fold                                                |
 | [GetNonEnumeratedCountOrNone](./finding-one-element.md#getnonenumeratedcountornone) | The count, if it is known without enumerating             |
 
 ## Grouping and windowing

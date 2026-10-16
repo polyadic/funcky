@@ -11,6 +11,10 @@ static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string? can
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseEnumOrNone<TEnum>(this string! candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
 Funcky.Unit.CompareTo(object? obj) -> int
 override Funcky.Unit.ToString() -> string!
+static Funcky.Extensions.EnumerableExtensions.AggregateOrNone<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> Funcky.Monads.Option<TSource>
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Not<T>(this System.Func<T, bool>! predicate) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
 static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate, TOutput>(this System.Func<TInput, TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
 static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate>(this System.Func<TInput, TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action<TInput>!
 static Funcky.Extensions.FuncExtensions.Then<TIntermediate, TOutput>(this System.Func<TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!

@@ -5,6 +5,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
+  empty sequence. The async variant also takes an accumulator receiving the cancellation token.
+* New: `And`, `Or` and `Not` extension methods on `Func<T, bool>` in `Funcky.Extensions`, the extension form of `All`,
+  `Any` and `Not`. The type argument is inferred from the receiver, so `isActive.And(isAdmin)` needs no `<User>`.
 * New: `Then` on `Func<…>`, the forward form of `Compose`: `f.Then(g)` is `x => g(f(x))`, so a pipeline reads in the
   order it runs. Overloads mirror `Compose`, including a nullary function and an `Action` as the last step.
 * New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
