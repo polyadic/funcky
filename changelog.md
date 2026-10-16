@@ -5,6 +5,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Breaking (Funcky.Analyzers): the package no longer ships an asset for Roslyn 4.0; the analyzers require Roslyn 4.4
+  (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
+  Studio version that is out of support.
 * New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
   exception type and returns it typed, the analogue of `Assert.Throws`.
 * Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
