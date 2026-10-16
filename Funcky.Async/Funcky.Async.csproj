@@ -5,8 +5,10 @@
              contains type forwards to Funcky, so projects that reference both packages keep compiling.
              On older frameworks this package compiles Funcky's async sources (linked from the Funcky project)
              against System.Linq.Async; see Internal\SystemLinqAsyncAdapter.cs for how the two operator
-             vocabularies are bridged. The public API is tracked on the newest framework that still carries
-             the implementation. -->
+             vocabularies are bridged. The package is compiled against the lowest supported System.Linq.Async
+             version (5.0.0) so that the shipped binary works with every version in the allowed range; CI runs
+             the tests against each version of the range (see the SystemLinqAsyncVersion matrix in build.yml
+             and Funcky.Async.Test.csproj), which exercises exactly the binary compatibility consumers rely on. -->
         <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
         <TargetFrameworks>net10.0;$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
@@ -78,6 +80,7 @@
         <Compile Include="..\Funcky\Internal\UnsafeEither.cs" Link="Internal\UnsafeEither.cs" />
         <Compile Include="..\Funcky\Internal\Validators\WindowWidthValidator.cs" Link="Internal\Validators\WindowWidthValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ChunkSizeValidator.cs" Link="Internal\Validators\ChunkSizeValidator.cs" />
+        <Compile Include="..\Funcky\Internal\Validators\RepeatCountValidator.cs" Link="Internal\Validators\RepeatCountValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ArgumentValidator.cs" Link="Internal\Validators\ArgumentValidator.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
         <PackageReference Include="System.Linq.Async" />

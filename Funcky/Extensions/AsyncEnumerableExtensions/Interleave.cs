@@ -32,18 +32,24 @@ public static partial class AsyncEnumerableExtensions
         IEnumerable<IAsyncEnumerable<TSource>> source,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var enumerators = GetInterleaveEnumerators(source, cancellationToken);
+        // The enumerators are acquired inside the try, so the ones acquired before a failing GetAsyncEnumerator are disposed.
+        var enumerators = new List<IAsyncEnumerator<TSource>>();
 
         try
         {
-            await foreach (var element in InterleaveEnumeratorAsync(enumerators, cancellationToken).ConfigureAwait(false))
+            foreach (var sequence in source)
+            {
+                enumerators.Add(sequence.GetAsyncEnumerator(cancellationToken));
+            }
+
+            await foreach (var element in InterleaveEnumeratorAsync(enumerators.ToImmutableList(), cancellationToken).ConfigureAwait(false))
             {
                 yield return element;
             }
         }
         finally
         {
-            await foreach (var enumerator in enumerators.ToAsyncEnumerable().WithCancellation(cancellationToken).ConfigureAwait(false))
+            foreach (var enumerator in enumerators)
             {
                 await DisposeEnumerator(enumerator).ConfigureAwait(false);
             }
@@ -53,11 +59,6 @@ public static partial class AsyncEnumerableExtensions
 #pragma warning disable IDISP007 // The entire point of this method is to dispose.
     private static async Task DisposeEnumerator<T>(IAsyncEnumerator<T> enumerator) => await enumerator.DisposeAsync().ConfigureAwait(false);
 #pragma warning restore IDISP007
-
-    private static ImmutableList<IAsyncEnumerator<TSource>> GetInterleaveEnumerators<TSource>(
-        IEnumerable<IAsyncEnumerable<TSource>> source,
-        CancellationToken cancellationToken)
-        => source.Select(s => s.GetAsyncEnumerator(cancellationToken)).ToImmutableList();
 
     private static async IAsyncEnumerable<TSource> InterleaveEnumeratorAsync<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
