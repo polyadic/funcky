@@ -20,3 +20,7 @@ static Funcky.Extensions.ParseExtensions.ParseOrNone<TParsable>(this System.Read
 *REMOVED*static Funcky.Extensions.ParseExtensions.ParseNumberOrNone<TNumber>(this string! value, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
 Funcky.Unit.CompareTo(object? obj) -> int
 override Funcky.Unit.ToString() -> string!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate, TOutput>(this System.Func<TInput, TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate>(this System.Func<TInput, TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action<TInput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate, TOutput>(this System.Func<TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate>(this System.Func<TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action!

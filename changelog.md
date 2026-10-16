@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `Then` on `Func<…>`, the forward form of `Compose`: `f.Then(g)` is `x => g(f(x))`, so a pipeline reads in the
+  order it runs. Overloads mirror `Compose`, including a nullary function and an `Action` as the last step.
 * New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
   exception type and returns it typed, the analogue of `Assert.Throws`.
 * Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
