@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
+  `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
+  `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
+  The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
+  because they need a failure value.
+
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
 * New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
