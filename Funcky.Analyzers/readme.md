@@ -5,9 +5,34 @@ Analyzers and code fixes are split in two projects.
 This is to prevent us from accidentally referencing `Microsoft.CodeAnalysis.*.Workspaces`
 which is only available in the IDE, but not during `dotnet build`.
 
-## BuiltinAnalyzers
-These are analyzers that in our eyes are *mandatory* (disallow `TryGetValue`),
-so we package them directly in the Funcky package to ensure that every user is using them.
+## Which Package Does a Rule Belong To?
+One written rule decides this, so that new rules can be classified without discussion:
+
+* **`Funcky.BuiltinAnalyzers`** (packed into the `Funcky` package, always on, severity *Error*, category `Funcky.Correctness`):
+  the flagged code is *outside the supported surface* of the library. Either the member only exists to support a
+  compiler feature (`TryGetValue`, the list pattern members), or the value is one the type system permits but Funcky
+  does not support (`default(Either<L, R>)`), or the code can never do what it says (a two-element list pattern on an
+  option). Nothing is "nicer" here, the code is wrong, so the rule needs no code fix.
+* **`Funcky.Analyzers`** (opt-in package, severity *Warning* or *Suggestion*, category `Funcky.Style`):
+  the flagged code works and is supported, but Funcky has a more idiomatic, shorter or cheaper form.
+  Every rule in this package comes with a code fix.
+
+This mirrors how the .NET libraries do it: `System.Text.Json`, `Microsoft.Extensions.*`, `CommunityToolkit.Mvvm` and
+EF Core ship their usage diagnostics inside the library package, whereas best-practice hints such as `xunit.analyzers`,
+`FluentAssertions.Analyzers` or `Moq.Analyzers` are separate packages.
+
+### Rule IDs
+Rule IDs are stable identifiers and never change once shipped, even when a rule moves between the packages
+(λ1009 and λ1010 moved to the built-in analyzers in Funcky 3.7.0 and kept their numbers). The number range records
+where a rule was born: `λ00xx` built-in, `λ10xx` `Funcky.Analyzers`, `λ11xx` `FunctionalAssert` rules. The rules table in
+the documentation is the authority on where a rule lives.
+
+### Built-in Analyzers and Roslyn Versions
+The built-in analyzers have to load on every SDK that can consume `Funcky`, so their baseline is Roslyn 3.7
+(`Funcky.BuiltinAnalyzers.Roslyn3.7.csproj`). Rules that need newer compiler APIs are guarded with `#if ROSLYN_4_4_0` and
+only ship in the `roslyn4.4` asset (`Funcky.BuiltinAnalyzers.csproj`); the `Funcky` package packs both assets with the
+same `GetAnalyzerPackFiles` mechanism as `Funcky.Analyzers.Package`, and `Funcky/build/Funcky.targets` removes the
+`roslyn4.4` asset on SDKs without analyzer versioning and honours `FunckyDisableBuiltinAnalyzers`.
 
 ## Roslyn Multi-Targeting
 In order to support newer C# features (which in turn requires an upgrade of the `Microsoft.CodeAnalysis.*` packages)

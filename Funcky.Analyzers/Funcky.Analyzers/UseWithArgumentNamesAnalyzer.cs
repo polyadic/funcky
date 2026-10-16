@@ -11,7 +11,7 @@ namespace Funcky.Analyzers;
 public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
 {
     public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}03";
-    private const string Category = nameof(Funcky);
+    private const string Category = DiagnosticName.Category;
 
     private const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
 
