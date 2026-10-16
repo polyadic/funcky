@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Breaking (Funcky.Analyzers): the package no longer ships an asset for Roslyn 4.0; the analyzers require Roslyn 4.4
+  (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
+  Studio version that is out of support.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
