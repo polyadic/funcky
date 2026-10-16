@@ -13,7 +13,7 @@ public partial class AlternativeMonadAnalyzer
         id: PreferGetOrElseId,
         title: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {GetOrElseMethodName} over {MatchMethodName}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: string.Empty,

@@ -43,7 +43,7 @@ Result<int> error = Result<int>.Error(new InvalidOperationException("boom"));
 
 The type parameter is constrained to `notnull`, and `Ok(null)` throws. Unlike `Option<T>`, a `Result<T>` has
 no meaningful `default`: the struct is marked `[NonDefaultable]`, [λ1009](./analyzer-rules/λ1009.md) from
-`Funcky.Analyzers` reports an error if you try to construct one with `default`, and `Match`, `Switch` and
+the `Funcky` package reports an error if you try to construct one with `default`, and `Match`, `Switch` and
 everything built on them throw `NotSupportedException` at runtime for such a value, the same as for `Either`.
 Only `Equals`, `GetHashCode` and `ToString` stay total, so a defaulted value in a collection does not throw.
 
