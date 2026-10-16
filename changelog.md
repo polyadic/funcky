@@ -5,6 +5,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Fix: `AverageOrNone` and `AverageOrNoneAsync` on `long` (and `Option<long>`) summed in `double` and lost precision for
+  large values; they now sum exactly in a checked `long` like `Enumerable.Average`, so the result matches the BCL and a sum
+  that overflows `long` throws `OverflowException` instead of returning an inexact average. The `float` overloads sum in
+  `double` like the BCL. The element count is a `long`, so sequences with more than two billion elements are averaged
+  correctly. Internally the three per-type aggregator classes became one allocation-free generic struct.
 * Fix: `Interleave` and `Merge` (sync and async) acquired the enumerators of all sources before entering the `try` that
   disposes them, so if the `GetEnumerator` of one source threw, the enumerators of the sources before it were never
   disposed. They are now acquired inside the `try` and the ones acquired so far are disposed.
