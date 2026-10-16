@@ -12,3 +12,7 @@ static Funcky.Extensions.EnumerableExtensions.AggregateOrNone<TSource>(this Syst
 static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
 static Funcky.Extensions.FuncExtensions.Not<T>(this System.Func<T, bool>! predicate) -> System.Func<T, bool>!
 static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate, TOutput>(this System.Func<TInput, TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TInput, TIntermediate>(this System.Func<TInput, TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action<TInput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate, TOutput>(this System.Func<TIntermediate>! f, System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!
+static Funcky.Extensions.FuncExtensions.Then<TIntermediate>(this System.Func<TIntermediate>! f, System.Action<TIntermediate>! next) -> System.Action!
