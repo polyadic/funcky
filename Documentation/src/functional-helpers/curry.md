@@ -32,6 +32,8 @@ and noisy when repeated.
 
 `Uncurry` goes the other way, which is rarely needed in C# but completes the pair: `Uncurry(Curry(f))` is `f`.
 
+To fix an argument other than the first, or several at once, see [`Apply`](./apply.md).
+
 ## Fn
 
 Method groups do not have a type of their own, so the compiler cannot infer the type parameters of `Curry`

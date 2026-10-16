@@ -21,6 +21,7 @@
   * [Curry and Uncurry](./functional-helpers/curry.md)
   * [Flip](./functional-helpers/flip.md)
   * [Compose and Then](./functional-helpers/compose.md)
+  * [Apply](./functional-helpers/apply.md)
   * [Retry](./functional-helpers/retry.md)
   * [Predicate Composition](./functional-helpers/predicate-composition.md)
   * [Unit Type](./functional-helpers/unit-type.md)
