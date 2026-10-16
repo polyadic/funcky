@@ -9,15 +9,17 @@ namespace Funcky.BuiltinAnalyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 {
+    public const string DisallowedTryGetId = $"{DiagnosticName.Prefix}{DiagnosticName.BuiltIn}01";
+
     private static readonly DiagnosticDescriptor Descriptor = new(
-        id: "λ0001",
+        id: DisallowedTryGetId,
         title: "Disallowed use of TryGetValue",
         messageFormat: "Disallowed use of TryGetValue",
         category: "Funcky",
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "TryGetValue should be used carefully.",
-        helpLinkUri: "https://polyadic.github.io/funcky/analyzer-rules/λ0001.html");
+        helpLinkUri: DiagnosticName.HelpLink(DisallowedTryGetId));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 

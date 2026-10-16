@@ -1,9 +1,8 @@
 ## CartesianProduct
 
-In mathematics, specifically set theory, the Cartesian product of two sets A and B, denoted A×B,
-is the set of all ordered pairs (a, b) where a ∈ A and b ∈ B.
-
-In other words: The Cartesian product produces all possible pairs of two given `IEnumerable`s.
+The Cartesian product of two sequences is the sequence of all pairs with the first element from the first
+sequence and the second from the second. Funcky does not ship a method for it, because LINQ already has one
+under a different name, and this section exists so that you find it.
 
 <picture>
     <picture>
@@ -13,54 +12,37 @@ In other words: The Cartesian product produces all possible pairs of two given `
 </picture>
 
 ### Recipe
-The Cartesian product can be easily implemented ad-hoc using LINQ's built-in `SelectMany` extension function:
+
+`SelectMany` with a selector that ignores its argument is the Cartesian product:
 
 ```cs
-using System;
-using System.Linq;
+// As tuples
+var pairs = first.SelectMany(_ => second, ValueTuple.Create);
 
-// Version A: Get each pair as a tuple
-var result = sequenceA.SelectMany(_ => sequenceB, ValueTuple.Create);
+// With a selector
+var combined = first.SelectMany(_ => second, (a, b) => ...);
 
-// Version B: Transform each pair using a selector
-var result = sequenceA.SelectMany(_ => sequenceB, (a, b) => ...);
-
-// Version C: Using LINQs declarative query syntax
-var result =
-    from a in sequenceA
-    from b in sequenceB
+// In query syntax, which reads most naturally
+var combined =
+    from a in first
+    from b in second
     select ...;
 ```
 
+The second sequence is enumerated once per element of the first, so if it is expensive to produce, materialize
+it before.
 
-### Examples
+### Example
 
-Two sequences as input:
-
-```
-smiles = [😀, 😐, 🙄]
-fruits = [🍉, 🍌, 🍇, 🍓]
-```
-
-The Cartesian products of smiles and fruits:
-
-```
-smiles × fruits => [[😀, 🍉], [😀, 🍌], [😀, 🍇], [😀, 🍓],
-                    [😐, 🍉], [😐, 🍌], [😐, 🍇], [😐, 🍓],
-				    [🙄, 🍉], [🙄, 🍌], [🙄, 🍇], [🙄, 🍓]]
-```
-
-In this C# example you see how all playing cards are in fact a Cartesian products of a suit and a value.
-
-This example uses the overload with a selector, because we just want a sequence of strings.
+Every playing card is a suit combined with a rank:
 
 ```cs
-using System;
-using System.Linq;
-using Funcky;
-
 var suits = Sequence.Return("♠", "♣", "♥", "♦");
-var values = Sequence.Return("2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A");
+var ranks = Sequence.Return("2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A");
 
-var deck = suits.SelectMany(_ => values, (suit, value) => $"{value}{suit}");
+var deck =
+    from suit in suits
+    from rank in ranks
+    select $"{rank}{suit}";
+// ["2♠", "3♠", …, "A♦"], 52 cards
 ```

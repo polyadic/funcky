@@ -1,26 +1,21 @@
 #if !RANDOM_SHUFFLE
-using System.Collections.Immutable;
-
 namespace Funcky.Internal;
 
+/// <summary>Polyfill of <c>Random.Shuffle(T[])</c>, which exists since .NET 8, with the same draw order.</summary>
 internal static class Mixer
 {
-    public static IReadOnlyList<TSource> ToRandomList<TSource>(this IList<TSource> source, Random random)
-        => Enumerable
-            .Range(0, source.Count)
-            .Aggregate(ImmutableList<TSource>.Empty, AggregateShuffle(source, random));
-
-    private static Func<ImmutableList<TSource>, int, ImmutableList<TSource>> AggregateShuffle<TSource>(IList<TSource> source, Random random)
-        => (shuffled, currentIndex)
-            => shuffled.Add(UseElement(source, currentIndex, random.Next(currentIndex, source.Count)));
-
-    private static TSource UseElement<TSource>(IList<TSource> source, int currentIndex, int randomIndex)
+    /// <summary>Shuffles the array in place in O(n) with a Fisher-Yates shuffle, so every permutation is equally likely.</summary>
+    public static void Shuffle<TSource>(this Random random, TSource[] values)
     {
-        var result = source[randomIndex];
+        for (var currentIndex = 0; currentIndex < values.Length - 1; currentIndex++)
+        {
+            var randomIndex = random.Next(currentIndex, values.Length);
 
-        source[randomIndex] = source[currentIndex];
-
-        return result;
+            if (randomIndex != currentIndex)
+            {
+                (values[currentIndex], values[randomIndex]) = (values[randomIndex], values[currentIndex]);
+            }
+        }
     }
 }
 #endif

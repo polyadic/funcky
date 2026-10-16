@@ -1,5 +1,6 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
+
 namespace Funcky;
 
 public static partial class AsyncSequence
@@ -23,17 +24,18 @@ public static partial class AsyncSequence
     private sealed class AsyncCycleBuffer<T>(IAsyncEnumerable<T> source, Option<int> maxCycles = default) : IAsyncBuffer<T>
     {
         private readonly List<T> _buffer = [];
-        private readonly IAsyncEnumerator<T> _source = source.GetAsyncEnumerator();
 
+        private IAsyncEnumerator<T>? _source;
+        private bool _sourceExhausted;
         private bool _disposed;
 
         public async ValueTask DisposeAsync()
         {
             if (!_disposed)
             {
-                await _source.DisposeAsync().ConfigureAwait(false);
-                _buffer.Clear();
                 _disposed = true;
+                await DisposeSourceAsync().ConfigureAwait(false);
+                _buffer.Clear();
             }
         }
 
@@ -41,10 +43,10 @@ public static partial class AsyncSequence
         {
             ThrowIfDisposed();
 
-            return GetEnumeratorInternal();
+            return GetEnumeratorInternal(cancellationToken);
         }
 
-        private async IAsyncEnumerator<T> GetEnumeratorInternal()
+        private async IAsyncEnumerator<T> GetEnumeratorInternal(CancellationToken cancellationToken)
         {
             if (HasNoCycles())
             {
@@ -54,12 +56,13 @@ public static partial class AsyncSequence
             for (var index = 0; true; ++index)
             {
                 ThrowIfDisposed();
+                cancellationToken.ThrowIfCancellationRequested();
 
                 if (index == _buffer.Count)
                 {
-                    if (await _source.MoveNextAsync().ConfigureAwait(false))
+                    if (await TryFetchNextAsync().ConfigureAwait(false))
                     {
-                        _buffer.Add(_source.Current);
+                        _buffer.Add(_source!.Current);
                     }
                     else
                     {
@@ -90,9 +93,38 @@ public static partial class AsyncSequence
                 for (var index = 0; index < bufferCount; ++index)
                 {
                     ThrowIfDisposed();
+                    cancellationToken.ThrowIfCancellationRequested();
 
                     yield return _buffer[index];
                 }
+            }
+        }
+
+        private async ValueTask<bool> TryFetchNextAsync()
+        {
+            if (_sourceExhausted)
+            {
+                return false;
+            }
+
+            _source ??= source.GetAsyncEnumerator(CancellationToken.None);
+
+            if (await _source.MoveNextAsync().ConfigureAwait(false))
+            {
+                return true;
+            }
+
+            _sourceExhausted = true;
+            await DisposeSourceAsync().ConfigureAwait(false);
+            return false;
+        }
+
+        private async ValueTask DisposeSourceAsync()
+        {
+            if (_source is { } sourceEnumerator)
+            {
+                _source = null;
+                await sourceEnumerator.DisposeAsync().ConfigureAwait(false);
             }
         }
 

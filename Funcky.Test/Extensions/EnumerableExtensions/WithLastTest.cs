@@ -72,4 +72,15 @@ public sealed class WithLastTest
 
         Assert.Equal(length, nonEnumerableList.WithLast().Aggregate(0, (sum, _) => sum + 1));
     }
+
+    [Fact]
+    public void CopyToOnAnOptimizedSourceWithLastWritesAllElementsStartingAtTheArrayIndex()
+    {
+        var collection = (ICollection<ValueWithLast<int>>)new List<int> { 10, 20, 30 }.WithLast();
+        var array = new ValueWithLast<int>[5];
+
+        collection.CopyTo(array, 2);
+
+        Assert.Equal([(0, false), (0, false), (10, false), (20, false), (30, true)], array.Select(v => (v.Value, v.IsLast)));
+    }
 }

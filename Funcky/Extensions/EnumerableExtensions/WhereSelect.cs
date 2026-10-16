@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -17,11 +19,42 @@ public static partial class EnumerableExtensions
     [Pure]
     public static IEnumerable<TResult> WhereSelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector)
         where TResult : notnull
-        => source.SelectMany(input => selector(input).ToEnumerable());
+        => WhereSelectIterator(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
 
     /// <inheritdoc cref="WhereSelect{TSource,TResult}(IEnumerable{TSource},Func{TSource,Option{TResult}})"/>
     [Pure]
     public static IEnumerable<TResult> WhereSelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, int, Option<TResult>> selector)
         where TResult : notnull
-        => source.SelectMany((input, index) => selector(input, index).ToEnumerable());
+        => WhereSelectIterator(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
+
+    private static IEnumerable<TResult> WhereSelectIterator<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, Option<TResult>> selector)
+        where TResult : notnull
+    {
+        foreach (var item in source)
+        {
+            if (selector(item).TryGetValue(out var result))
+            {
+                yield return result;
+            }
+        }
+    }
+
+    private static IEnumerable<TResult> WhereSelectIterator<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, int, Option<TResult>> selector)
+        where TResult : notnull
+    {
+        var index = 0;
+
+        foreach (var item in source)
+        {
+            if (selector(item, index).TryGetValue(out var result))
+            {
+                yield return result;
+            }
+
+            checked
+            {
+                index++;
+            }
+        }
+    }
 }

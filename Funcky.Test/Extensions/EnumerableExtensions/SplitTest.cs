@@ -16,11 +16,46 @@ public sealed class SplitTest
     }
 
     [Property]
-    public Property SplittingAnEmptyEnumerableAlwaysReturnsAnEmptyEnumerable(int separator)
+    public Property SplittingAnEmptyEnumerableReturnsASingleEmptyPart(int separator)
     {
         var parts = Enumerable.Empty<int>().Split(separator);
 
-        return (!parts.Any()).ToProperty();
+        return (parts.Count() == 1 && !parts.First().Any()).ToProperty();
+    }
+
+    [Property]
+    public Property SplitBehavesLikeStringSplit(List<char> characters, char separator)
+    {
+        var expected = new string(characters.ToArray()).Split(separator);
+        var parts = characters.Split(separator).Select(part => new string(part.ToArray()));
+
+        return expected.SequenceEqual(parts).ToProperty();
+    }
+
+    [Property]
+    public Property JoiningThePartsWithTheSeparatorRestoresTheSource(List<int> source, int separator)
+    {
+        var parts = source.Split(separator);
+
+        return source.SequenceEqual(parts.Intersperse([separator]).SelectMany(Identity)).ToProperty();
+    }
+
+    [Fact]
+    public void ASeparatorAtTheEndProducesATrailingEmptyPart()
+    {
+        Assert.Equal([[1], []], Sequence.Return(1, 0).Split(0).Select(part => part.ToList()));
+    }
+
+    [Fact]
+    public void ASeparatorAtTheStartProducesALeadingEmptyPart()
+    {
+        Assert.Equal([[], [1]], Sequence.Return(0, 1).Split(0).Select(part => part.ToList()));
+    }
+
+    [Fact]
+    public void ALoneSeparatorProducesTwoEmptyParts()
+    {
+        Assert.Equal([[], []], Sequence.Return(0).Split(0).Select(part => part.ToList()));
     }
 
     [Fact]
@@ -36,5 +71,16 @@ public sealed class SplitTest
             Sequence.Return(9, 11, 99, 99));
 
         Assert.Equal(expected, parts);
+    }
+
+    [Fact]
+    public void SplitOnAnArrayBindsToTheEnumerableOverload()
+    {
+        // With C# 14 first-class span conversions, an array receiver would otherwise bind to MemoryExtensions.Split(ReadOnlySpan<T>, T).
+        int[] array = [1, 0, 2, 0, 3];
+
+        var parts = array.Split(0);
+
+        Assert.Equal([[1], [2], [3]], parts.Select(part => part.ToList()));
     }
 }

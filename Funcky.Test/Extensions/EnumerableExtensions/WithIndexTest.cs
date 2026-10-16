@@ -65,4 +65,25 @@ public sealed class WithIndexTest
 
         Assert.Equal(length, nonEnumerableList.WithIndex().Aggregate(0, (sum, _) => sum + 1));
     }
+
+    [Fact]
+    public void AddingAnOptimizedSourceWithIndexToANonEmptyListCopiesAllElements()
+    {
+        var target = new List<ValueWithIndex<int>> { new(1, 0), new(2, 1) };
+
+        target.AddRange(new List<int> { 10, 20, 30 }.WithIndex());
+
+        Assert.Equal([(1, 0), (2, 1), (10, 0), (20, 1), (30, 2)], target.Select(v => (v.Value, v.Index)));
+    }
+
+    [Fact]
+    public void CopyToOnAnOptimizedSourceWithIndexWritesAllElementsStartingAtTheArrayIndex()
+    {
+        var collection = (ICollection<ValueWithIndex<int>>)new List<int> { 10, 20, 30 }.WithIndex();
+        var array = new ValueWithIndex<int>[5];
+
+        collection.CopyTo(array, 2);
+
+        Assert.Equal([(0, 0), (0, 0), (10, 0), (20, 1), (30, 2)], array.Select(v => (v.Value, v.Index)));
+    }
 }

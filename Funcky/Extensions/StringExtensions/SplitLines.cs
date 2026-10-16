@@ -7,6 +7,8 @@ public static partial class StringExtensions
 
     /// <summary>
     /// Splits a string into individual lines lazily, by any new line (CR, LF, CRLF).
+    /// Unlike <c>string.Split</c>, a new line at the very end of the text does not produce a trailing empty line, and an empty text
+    /// yields no lines at all. Consecutive new lines produce empty lines. Other Unicode line separators are not recognized.
     /// </summary>
     /// <param name="text">The input text.</param>
     /// <returns>A lazy IEnumerable containing the lines.</returns>

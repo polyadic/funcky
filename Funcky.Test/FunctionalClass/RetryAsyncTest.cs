@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.RetryPolicies;
 using Funcky.Test.TestUtilities;
 using static Funcky.AsyncFunctional;
@@ -83,6 +83,54 @@ public sealed class RetryAsyncTest
         using var source = new CancellationTokenSource();
         source.CancelAfter(delay);
         await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await RetryAsync(() => ValueTask.FromResult(Option<int>.None), new ConstantDelayPolicy(10, delay), source.Token));
+    }
+
+    [Fact]
+    public async Task RetriesTheProducerManyTimesWithoutOverflowingTheStack()
+    {
+        const int failedAttempts = 100_000;
+        var producer = new OptionProducer<int>(failedAttempts, 42);
+
+        Assert.Equal(42, await RetryAsync(producer.ProduceAsync));
+        Assert.Equal(failedAttempts + 1, producer.Called);
+    }
+
+    [Fact]
+    public async Task RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        _ = await RetryAsync(() => ValueTask.FromResult(Option<int>.None), retryPolicy);
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
+    }
+
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationToken()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+
+        var receivedToken = await RetryAsync(token => ValueTask.FromResult(Option.Some(token)), cancellationTokenSource.Token);
+
+        Assert.Equal(cancellationTokenSource.Token, receivedToken);
+    }
+
+    [Fact]
+    public async Task TheProducerReceivesTheCancellationTokenWhenRetryingWithAPolicy()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var receivedTokens = new List<CancellationToken>();
+
+        FunctionalAssert.None(await RetryAsync(
+            token =>
+            {
+                receivedTokens.Add(token);
+                return ValueTask.FromResult(Option<int>.None);
+            },
+            new NoDelayRetryPolicy(2),
+            cancellationTokenSource.Token));
+
+        Assert.Equal([cancellationTokenSource.Token, cancellationTokenSource.Token, cancellationTokenSource.Token], receivedTokens);
     }
 
     private static Func<ValueTask<Option<int>>> ProducerWithDelay(TimeSpan delay)

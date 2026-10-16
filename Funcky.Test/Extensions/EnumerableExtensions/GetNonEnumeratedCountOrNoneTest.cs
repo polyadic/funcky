@@ -1,4 +1,3 @@
-#if TRY_GET_NON_ENUMERATED_COUNT
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -16,6 +15,7 @@ public class GetNonEnumeratedCountOrNoneTest
             .ToProperty();
     }
 
+#if TRY_GET_NON_ENUMERATED_COUNT
     [Fact]
     public void GetNonEnumeratedCountOrNoneReturnsCountOnEnumerableRange()
     {
@@ -25,6 +25,7 @@ public class GetNonEnumeratedCountOrNoneTest
 
         FunctionalAssert.Some(count, range.GetNonEnumeratedCountOrNone());
     }
+#endif
 
     [Property]
     public Property GetNonEnumeratedCountOrNoneReturnsNoneForInstancesWithoutCount(List<int> list)
@@ -34,4 +35,3 @@ public class GetNonEnumeratedCountOrNoneTest
             .ToProperty();
     }
 }
-#endif

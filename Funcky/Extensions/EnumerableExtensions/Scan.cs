@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -12,15 +14,7 @@ public static partial class EnumerableExtensions
     /// <param name="accumulator">a binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IEnumerable<TAccumulate> InclusiveScan<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
-    {
-        using var enumerator = source.GetEnumerator();
-
-        while (enumerator.MoveNext())
-        {
-            seed = accumulator(seed, enumerator.Current);
-            yield return seed;
-        }
-    }
+        => InclusiveScanIterator(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
     /// <summary>
     /// Scan generates a sequence known as the exclusive prefix sum.
@@ -32,6 +26,9 @@ public static partial class EnumerableExtensions
     /// <param name="accumulator">a binary operator to aggregate a value.</param>
     /// <returns>A sequence of aggregated values.</returns>
     public static IEnumerable<TAccumulate> ExclusiveScan<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
+        => ExclusiveScanIterator(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
+
+    private static IEnumerable<TAccumulate> ExclusiveScanIterator<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
     {
         using var enumerator = source.GetEnumerator();
 
@@ -39,6 +36,17 @@ public static partial class EnumerableExtensions
         {
             yield return seed;
             seed = accumulator(seed, enumerator.Current);
+        }
+    }
+
+    private static IEnumerable<TAccumulate> InclusiveScanIterator<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
+    {
+        using var enumerator = source.GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            seed = accumulator(seed, enumerator.Current);
+            yield return seed;
         }
     }
 }

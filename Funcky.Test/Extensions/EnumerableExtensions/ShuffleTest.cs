@@ -29,11 +29,32 @@ public sealed class ShuffleTest
     }
 
     [Property]
-    public Property AShuffleHasTheSameElementsAsTheSource(List<int> source)
+    public Property AShuffleIsAPermutationOfTheSource(List<int> source, int seed)
         => source
-            .Shuffle()
-            .All(source.Contains)
+            .Shuffle(new Random(seed))
+            .OrderBy(Identity)
+            .SequenceEqual(source.OrderBy(Identity))
             .ToProperty();
+
+    [Property]
+    public Property AShuffleWithTheSameSeedIsReproducible(List<int> source, int seed)
+        => source
+            .Shuffle(new Random(seed))
+            .SequenceEqual(source.Shuffle(new Random(seed)))
+            .ToProperty();
+
+#if !SHUFFLE_EXTENSION
+    // Two shuffles of 32 elements agree with probability 1/32!, unless the seedless overload seeds from the clock
+    // and both calls land in the same tick.
+    [Fact]
+    public void TwoConsecutiveSeedlessShufflesDiffer()
+    {
+        var source = Enumerable.Range(0, 32).ToList();
+        _ = source.Shuffle(); // warm up, so that JIT time does not push the two calls into different ticks
+
+        Assert.NotEqual(source.Shuffle(), source.Shuffle());
+    }
+#endif
 
     [Property]
     public Property AShuffleHasTheSameLengthAsTheSource(List<int> source)

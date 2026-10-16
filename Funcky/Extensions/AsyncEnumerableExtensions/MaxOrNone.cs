@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.Internal.Aggregators;
 
 namespace Funcky.Extensions;

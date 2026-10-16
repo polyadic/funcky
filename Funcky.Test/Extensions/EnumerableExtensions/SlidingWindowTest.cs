@@ -75,4 +75,16 @@ public sealed class SlidingWindowTest
             window => Assert.Equal(Enumerable.Range(1, width), window),
             window => Assert.Equal(Enumerable.Range(2, width), window));
     }
+
+    [Fact]
+    public void YieldedWindowsAreSnapshotsThatLaterWindowsDoNotChange()
+    {
+        const int width = 3;
+
+        var windows = Enumerable.Range(0, 5).SlidingWindow(width).ToList();
+
+        Assert.Equal(Enumerable.Range(0, width), windows[0]);
+        Assert.Equal(Enumerable.Range(1, width), windows[1]);
+        Assert.Equal(Enumerable.Range(2, width), windows[2]);
+    }
 }

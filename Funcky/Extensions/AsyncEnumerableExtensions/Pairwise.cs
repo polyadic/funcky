@@ -1,5 +1,6 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -26,7 +27,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>Returns a sequence of ValueTuple-pairs.</returns>
     [Pure]
     public static IAsyncEnumerable<TResult> Pairwise<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-        => PairwiseInternal(source, resultSelector);
+        => PairwiseInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(resultSelector));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TResult> PairwiseInternal<TSource, TResult>(

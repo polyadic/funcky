@@ -7,6 +7,13 @@ namespace Funcky.Test.Monads;
 public sealed class OptionEqualityComparerTest
 {
     [Fact]
+    public void DefaultComparerIsCached()
+    {
+        Assert.Same(OptionEqualityComparer<int>.Default, OptionEqualityComparer<int>.Default);
+        Assert.Same(OptionEqualityComparer<string>.Default, OptionEqualityComparer<string>.Default);
+    }
+
+    [Fact]
     public void TwoNoneOptionsAreEqual()
     {
         Assert.Equal(Option<int>.None, Option<int>.None, OptionEqualityComparer.Create(new ThrowingEqualityComparer<int>()));

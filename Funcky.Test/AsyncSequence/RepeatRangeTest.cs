@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -15,6 +15,23 @@ public sealed class RepeatRangeTest
         var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
         await using var repeatRange = AsyncSequence.RepeatRange(doNotEnumerate, 2);
+    }
+
+    [Fact]
+    public void RepeatRangeThrowsForNegativeCountBeforeEnumeration()
+    {
+        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
+
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => AsyncSequence.RepeatRange(doNotEnumerate, -1));
+        Assert.Equal("count", exception.ParamName);
+    }
+
+    [Fact]
+    public async Task RepeatRangeWithCountZeroIsEmpty()
+    {
+        await using var repeatRange = AsyncSequence.RepeatRange(AsyncSequence.Return(1, 2, 3), 0);
+
+        Assert.Empty(await repeatRange.ToListAsync());
     }
 
     [Fact]
@@ -61,7 +78,7 @@ public sealed class RepeatRangeTest
             .Result
             .ToProperty();
 
-    [Property(Skip = "Tofix")]
+    [Property]
     public Property TheSequenceRepeatsTheGivenNumberOfTimes(List<int> list, NonNegativeInt count)
         => TheSequenceRepeatsTheGivenNumberOfTimesAsync(list.ToAsyncEnumerable(), count.Get)
             .Result

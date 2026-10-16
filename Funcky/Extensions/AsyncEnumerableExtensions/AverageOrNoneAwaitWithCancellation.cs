@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.Internal.Aggregators;
 
 namespace Funcky.Extensions;
@@ -16,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<int>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Int64, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of optional <see cref="int"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -29,7 +29,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<int>>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Int64, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -42,7 +42,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<long>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Int64, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of optional <see cref="long"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -55,7 +55,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<long>>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Int64, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -75,7 +75,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<float>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<float>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(FloatAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Single, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of optional <see cref="float"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -95,7 +95,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<float>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<float>>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(FloatAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Single, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -115,7 +115,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<double>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Double, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of optional <see cref="double"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -135,7 +135,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<double>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<double>>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DoubleAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Double, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -148,7 +148,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<decimal>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<decimal>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DecimalAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Decimal, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 
     /// <summary>
     /// Computes the average of a sequence of optional <see cref="decimal"/> values that are obtained by invoking a transform function on each element of the input sequence of <typeparamref name ="TSource"/>.
@@ -161,6 +161,6 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>The average of the sequence of values or None.</returns>
     [Pure]
     public static async ValueTask<Option<decimal>> AverageOrNoneAwaitWithCancellationAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<Option<decimal>>> selector, CancellationToken cancellationToken = default)
-        => (await source.AggregateAsync(DecimalAverageAggregator.Empty, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
+        => (await source.AggregateAsync(AverageAggregators.Decimal, async (calculator, element, token) => calculator.Add(await selector(element, token).ConfigureAwait(false)), cancellationToken).ConfigureAwait(false)).Average;
 }
 #endif

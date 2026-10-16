@@ -3,13 +3,225 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
+
+* New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
+  empty sequence. The async variant also takes an accumulator receiving the cancellation token.
+* New: `And`, `Or` and `Not` extension methods on `Func<T, bool>` in `Funcky.Extensions`, the extension form of `All`,
+  `Any` and `Not`. The type argument is inferred from the receiver, so `isActive.And(isAdmin)` needs no `<User>`.
+* New: `Then` on `Func<…>`, the forward form of `Compose`: `f.Then(g)` is `x => g(f(x))`, so a pipeline reads in the
+  order it runs. Overloads mirror `Compose`, including a nullary function and an `Action` as the last step.
+* New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
+  exception type and returns it typed, the analogue of `Assert.Throws`.
+* Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
+  `null` value is serializable; it answers `false` and reports a failure reason like the interface asks for.
+* Deprecation: the obsolete `ImmutableListExtensions` (superseded by `ListExtensions` in 3.0) now announces its removal in
+  Funcky 4.0.0 in the obsolete message.
+* Documentation: `SplitLines` states that a trailing new line adds no empty line, that an empty text yields nothing and
+  that only CR, LF and CRLF are recognized.
+* New: `Unit` overrides `ToString` (prints `Unit` instead of the type name) and implements the non-generic `IComparable`.
+* Fix: `Flatten` (Option, Either, Lazy, IEnumerable), `Option.ToEither`, `Option.ToNullable`, `Either.SelectLeft`,
+  `Option.ToAsyncEnumerable` and the string `Chunk` and `SlidingWindow` are marked `[Pure]` like their siblings.
+* New: `GetNonEnumeratedCountOrNone` is available on every target framework; it was limited to .NET 6 and later although
+  the polyfill for the underlying check was already shipped. On older frameworks only collections with a `Count` are
+  recognized.
+* Fix: `Option<T>.Where` and `Option.FromBoolean(bool, T)` no longer allocate a closure per call.
+* Fix: `SlidingWindow` and `SlidingWindowAsync` kept the window in an `ImmutableQueue` and built an `ImmutableList` for
+  every window. They now use a ring buffer and copy each window into a read-only array, which is O(width) per window
+  with a single allocation instead of a tree per window.
+* Fix: `WhereSelect` and its async variants no longer allocate an enumerable per element; they are plain iterators now and
+  validate their arguments when called like the other iterator-based extensions.
+* Fix: `AnyOrElse` with a fallback function invoked the function when `AnyOrElse` was called if the source was an empty
+  collection, but when the result was enumerated otherwise. The function is now always invoked on enumeration.
+* Fix: every analyzer rule now carries a help link to its documentation page (`https://polyadic.github.io/funcky/analyzer-rules/<id>.html`);
+  previously only λ0001 had one.
+* Fix: the `FunctionalAssert` code fix (λ1101) was exported under the name of the argument-name code fix, which broke
+  fix-all grouping in the IDE.
+* Fix: the `NonDefaultable` and `SyntaxSupportOnly` marker attributes are removed by the trimmer like `UseWithArgumentNames`
+  already was; all three are compile-time-only.
+* Packaging: the Funcky.Analyzers package declared its version in a property the SDK does not read, so every package
+  built since February 2025 outside a release was versioned 1.0.0. It uses `VersionPrefix` like the other packages.
+* Packaging: the Funcky and Funcky.Analyzers packages no longer ship the `tools/install.ps1` and `uninstall.ps1` hooks,
+  which `PackageReference` never runs.
+* Fix: `AverageOrNone` and `AverageOrNoneAsync` on `long` (and `Option<long>`) summed in `double` and lost precision for
+  large values; they now sum exactly in a checked `long` like `Enumerable.Average`, so the result matches the BCL and a sum
+  that overflows `long` throws `OverflowException` instead of returning an inexact average. The `float` overloads sum in
+  `double` like the BCL. The element count is a `long`, so sequences with more than two billion elements are averaged
+  correctly. Internally the three per-type aggregator classes became one allocation-free generic struct.
+* Fix: `Interleave` and `Merge` (sync and async) acquired the enumerators of all sources before entering the `try` that
+  disposes them, so if the `GetEnumerator` of one source threw, the enumerators of the sources before it were never
+  disposed. They are now acquired inside the `try` and the ones acquired so far are disposed.
+* Fix: `Sequence.RepeatRange` and `AsyncSequence.RepeatRange` reject a negative `count` with an
+  `ArgumentOutOfRangeException` when they are called, like `RepeatMaterialized` and `Enumerable.Repeat`. Previously a
+  negative count silently yielded the source once. The XML docs of all three methods described the result as infinite;
+  it contains the source exactly `count` times.
+* Documentation: the Funcky.Xunit readme claimed that `AggressiveInlining` removes the `FunctionalAssert` frame from the
+  stack trace of a failed assertion on frameworks without `[StackTraceHidden]`. The JIT never inlines a method with an
+  exception handler, so the attribute was dead; it is removed and the readme now states that on .NET 6 and later the
+  trace starts at the test method, and on older frameworks with a single `FunctionalAssert` frame above it. Both
+  behaviours are now covered by tests, the latter on .NET Framework 4.8.
+* Build: the public API of every package is now tracked per target framework. The `PublicAPI.Shipped.txt` and
+  `PublicAPI.Unshipped.txt` files moved to `PublicAPI/<target framework>/` and the public API analyzer runs for every
+  target framework instead of only the newest one. The old single file listed the async APIs for frameworks that do
+  not have them and did not know about APIs that only exist on older frameworks, so a breaking change on those was
+  not detected.
+* Fix: the `OrNoneFromTryPattern` source generator handles try methods it previously generated broken code for or
+  crashed on: `in`, `ref` and `ref readonly` parameters are forwarded with their modifiers instead of being dropped from
+  the signature, non-null default values (numbers, strings, chars, booleans, enums and `default` structs) are copied
+  instead of throwing at generation time, overloads that do not follow the try pattern (no or several `out`
+  parameters, non-`bool` return, instance methods) are skipped instead of crashing, and two attributed source files
+  with the same file name no longer collide on the generated hint name. Generated methods now carry a summary, so
+  the `Parse…OrNone` family shows documentation in IntelliSense.
+* New: the generic `ParseOrNone<T>` (string, `ReadOnlySpan<char>` and UTF-8 `ReadOnlySpan<byte>`) and
+  `ParseNumberOrNone<T>` (string and `ReadOnlySpan<char>`) gain overloads without the `IFormatProvider`, which use the
+  current culture like the generated `Parse…OrNone` methods, and `ParseNumberOrNone<T>` gains overloads without the
+  `NumberStyles`, which use the number type's default style.
+* Fix: `ParseNumberOrNone<T>` on strings accepts a `null` candidate and returns `None`, like `ParseOrNone<T>` and the
+  generated parse methods. All generic parse methods are now marked `[Pure]` and documented.
+* Fix: `Sequence.Return(params T[])` returned the array itself typed as `IReadOnlyList<T>`, so the result could be cast
+  back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
+  does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
+  to the `params` overload rather than producing a one-element sequence.
+* Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
+  so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
+* Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
+  `Parse…OrNone` method on strings.
+* Fix: on frameworks without `ExceptionDispatchInfo.SetCurrentStackTrace` (.NET Framework, .NET Standard,
+  .NET Core 3.1), `Result<T>.Error` captures the stack trace by reflecting on private runtime members in a static
+  initializer. On a runtime that names them differently or cannot compile expression trees, the first `Error` call
+  failed with a `TypeInitializationException`. The lookup is now defensive: if it fails, the stack trace is simply
+  not captured and `Error` works as usual.
+* Fix: `OptionEqualityComparer<T>.Default` and `OptionComparer<T>.Default` created a new comparer instance on every
+  read, and every `Equals`, `GetHashCode`, `==` and `CompareTo` on an `Option<T>` went through them and through
+  several delegate allocations. Both defaults are now cached per item type like `EqualityComparer<T>.Default`, and
+  equality, hashing and comparison of options no longer allocate.
+* Fix: `GetHashCode` and `ToString` of `Either<L, R>` and `GetHashCode` of `EitherOrBoth<L, R>` threw
+  `NotSupportedException` for a value constructed with `default`, so such a value broke `HashSet`, `Dictionary`,
+  `Distinct`, string interpolation and logging. Both members are now total like `Equals` already was: a defaulted
+  value hashes to 0 and prints as `Uninitialized`. `Match`, `Switch` and everything built on them still throw.
+* New: `EitherOrBoth<L, R>` overrides `ToString` (`Left(…)`, `Right(…)`, `Both(…, …)`).
+* Fix: a `Result<T>` constructed with `default` behaved like `Ok` with a `null` value, bypassing the null check of
+  `Result.Ok`. `Match`, `Switch` and every operation built on them now throw `NotSupportedException` for such a
+  value, like `Either<L, R>` already did. `Equals`, `GetHashCode` and `ToString` stay total. The analyzer λ1009
+  still reports `default(Result<T>)` at compile time; see polyadic/funcky#934 for making it a built-in analyzer.
+* Fix: `Shuffle` and `ShuffleAsync` without a `Random` argument used `new Random()` per call, which on .NET Framework
+  is seeded from the clock, so two shuffles within the same tick returned the same order. They now draw from
+  `Random.Shared` on .NET 6 and later and from a shared, per-thread generator on older frameworks.
+* Fix: on frameworks before .NET 8, `Shuffle` built its result by appending to an `ImmutableList`, which is
+  O(n log n) and allocates per element. It now shuffles an array in place like the .NET 8 implementation, so the
+  result is O(n) and identical for a given seed on every target framework. Both overloads also drop the `[Pure]`
+  attribute, since they advance the state of the random number generator.
+* Documentation: the XML docs of `Shuffle` and `ShuffleAsync` claimed deferred execution; both are eager.
+* Fix: `Memoize` and `CycleRange`/`RepeatRange` for `IEnumerable` no longer acquire the source's enumerator when the
+  buffer is created, but when the first element is requested, so a source that opens a resource or throws from
+  `GetEnumerator` does so lazily and a buffer that is disposed unused never touches the source. The source enumerator
+  is disposed as soon as it is exhausted instead of when the buffer is disposed, and `Memoize` can now be enumerated by
+  several threads concurrently. The `IAsyncEnumerable` cycle buffer no longer calls `MoveNextAsync` on an exhausted
+  source, which rewound a .NET 10 compiler-generated iterator and repeated the source instead of the buffer.
+* Fix: the read-only view that `Materialize` returns for an `IList<T>` or `ICollection<T>` source can no longer be
+  used to modify the source through a cast to the mutable interface: `IsReadOnly` is `true` and `Add`, `Clear`,
+  `Remove`, `Insert`, `RemoveAt` and the indexer setter throw `NotSupportedException`, like `ReadOnlyCollection<T>`.
+  The view still reflects later changes to the source; `Materialize` evaluates a lazy sequence once, it does not
+  take a snapshot.
+* Fix: the iterator-based `IAsyncEnumerable` extensions (`AdjacentGroupBy` and its `Await` variants, `AnyOrElse`,
+  `Chunk`, `Inspect`, `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`,
+  `ExclusiveScan` and their `Await` variants, `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`,
+  `WithPrevious`, `ZipLongest`) and `AsyncSequence.Successors` now validate their arguments when they are called,
+  like LINQ: a `null` source, selector, comparer or fallback throws an `ArgumentNullException` naming the
+  parameter immediately, instead of a `NullReferenceException` when the result is first enumerated.
+* Fix: `WithFirst`, `WithLast` and `ZipLongest` for `IAsyncEnumerable` now pass the cancellation token
+  given to `GetAsyncEnumerator` (e.g. via `WithCancellation`) on to the source sequence.
+* Fix: the iterator-based `IEnumerable` extensions (`AdjacentGroupBy`, `AnyOrElse`, `Chunk`, `Inspect`,
+  `InspectEmpty`, `Interleave`, `Memoize`, `Merge`, `Pairwise`, `PowerSet`, `InclusiveScan`, `ExclusiveScan`,
+  `SlidingWindow`, `Split`, `Transpose`, `WithFirst`, `WithLast`, `WithPrevious`, `ZipLongest`) and
+  `Sequence.Successors` now validate their arguments when they are called, like LINQ: a `null` source,
+  selector, comparer or fallback throws an `ArgumentNullException` naming the parameter immediately,
+  instead of a `NullReferenceException` when the result is first enumerated.
+* Breaking: `Split` on `IEnumerable<T>` and `IAsyncEnumerable<T>` now behaves exactly like `string.Split`:
+  a separator at the end of the source produces a trailing empty part, and an empty source produces a single
+  empty part. Previously both cases swallowed the empty part, so `[1, 0].Split(0)` gave `[[1]]` while
+  `[0, 1].Split(0)` gave `[[], [1]]`, and the source could not be reconstructed from the parts. The result
+  now always has exactly one part more than there are separators.
+* Fix: `MinByOrNone` and `MaxByOrNone` now treat `null` keys like `Enumerable.MinBy`/`Enumerable.MaxBy`:
+  elements whose key is `null` are never chosen as the minimum or maximum, and if all keys are `null`
+  the first element is returned. Previously `MinByOrNone` returned the first element with a `null` key,
+  because the default comparer orders `null` before everything else. Both methods also evaluate the key
+  selector only once per element instead of twice.
+* Fix: the retry policies (`ConstantDelayPolicy`, `NoDelayRetryPolicy`, `LinearBackOffRetryPolicy`,
+  `ExponentialBackOffRetryPolicy`) now reject a negative `maxRetries` with an `ArgumentOutOfRangeException`
+  when they are constructed, instead of failing later inside `Retry`.
+* Fix: `ConstantDelayPolicy`, `LinearBackOffRetryPolicy` and `ExponentialBackOffRetryPolicy` now reject a
+  negative delay with an `ArgumentOutOfRangeException` when they are constructed, instead of failing
+  later from `Thread.Sleep` or `Task.Delay`.
+* Fix: the NuGet packages produced by CI (nightly feed and release artifacts) were built in the Debug
+  configuration. They are now built in Release.
+* Fix: cancellation gaps in the async APIs (`Funcky.Async`, and `Funcky` itself on .NET 10):
+  * `AsyncSequence.Successors` now honours the cancellation token passed to `GetAsyncEnumerator`
+    (e.g. via `WithCancellation`) and stops before computing the next element.
+  * `Memoize` and `CycleRange`/`RepeatRange` for `IAsyncEnumerable` no longer acquire the source's enumerator
+    when the buffer is created, but when the first element is requested, and they honour each consumer's
+    cancellation token. The memoized buffer can now be enumerated by several consumers concurrently.
+  * `AnyOrElse` for `IAsyncEnumerable` now awaits with `ConfigureAwait(false)` like the other operators.
+  * The exception-based `RetryAsync`/`RetryAwaitAsync` no longer retry once the cancellation token is cancelled,
+    even if `shouldRetry` matches the exception, and check the token before the first attempt.
+* New: `RetryAsync` and `RetryAwaitAsync` overloads whose producer receives the `CancellationToken`,
+  so an attempt in progress can be aborted.
+* Fix: the `Retry` and `RetryAsync` overloads without a retry policy were implemented recursively, so a
+  producer that returned `None` often enough crashed the process with a `StackOverflowException`.
+  They are now plain loops.
+* Fix: the `Option`-based `Retry` and `RetryAsync` overloads numbered the retries from 0 while the
+  exception-based overloads numbered them from 1, so the same `IRetryPolicy` produced different delays
+  depending on the overload. With a `LinearBackOffRetryPolicy` the `Option`-based overloads retried
+  immediately the first time. `IRetryPolicy.Delay(retryCount)` is now documented as one-based
+  (`Delay(1)` is the wait before the first retry) and all overloads follow that contract.
+* Fix: `ExponentialBackOffRetryPolicy` now waits `firstDelay` before the first retry, like
+  `LinearBackOffRetryPolicy`. Previously the first delay was `firstDelay * 1.5` with the
+  exception-based `Retry` overloads.
+* Fix: `Transpose` enumerated the outer sequence three times, two of them eagerly when the method was
+  called. It now enumerates the outer sequence exactly once, lazily, when the first column is requested. (#895)
+* Breaking: `Transpose` now throws an `InvalidOperationException` when the rows do not all have the same
+  length, instead of silently producing a wrongly shaped result. The behaviour for jagged input was
+  documented as undefined. (#895)
+* Fix: calling `Split(separator)` on an array in C# 14 (the default for .NET 10) bound to
+  `MemoryExtensions.Split(ReadOnlySpan<T>, T)` because of first-class span conversions, so the
+  result was a `SpanSplitEnumerator<T>` instead of an `IEnumerable<IReadOnlyList<T>>` and the
+  following LINQ call failed to compile. An array overload of `Split` now keeps arrays bound to
+  Funcky. (#893)
+* Fix: `Merge` on `IEnumerable<T>` and `IAsyncEnumerable<T>` was not stable: when elements from
+  different sources compared equal, the element from the later source was yielded first. Equal
+  elements now keep the order of the sources, like a stable sort. (#891)
+* Fix: `WithIndex`, `WithFirst`, `WithLast` and `WithPrevious` on an `IList<T>` source returned a
+  collection whose `CopyTo` skipped the first `arrayIndex` elements of the source, so copying it
+  into an array at a non-zero offset (e.g. via `List<T>.AddRange` or `InsertRange` on a non-empty
+  list) dropped elements and left default values behind. (#889)
+* Fix: awaiting an empty `Option<Task>`, `Option<Task<T>>`, `Option<ValueTask>` or `Option<ValueTask<T>>`
+  via the awaiter's `OnCompleted` method never invoked the continuation. The `await` keyword was not
+  affected, because the compiler checks `IsCompleted` first, but custom schedulers and other
+  awaiter-based code could hang forever.
+* The `Option` awaiters now implement `ICriticalNotifyCompletion`, so `await` no longer needs to
+  flow the `ExecutionContext` when the underlying task awaiter does not either.
+* Add a `net10.0` target to `Funcky.Async` that only forwards all its types to `Funcky`.
+  Projects that reference both `Funcky` and `Funcky.Async` no longer get ambiguous type errors
+  (`CS0433`) when they move to .NET 10. On .NET 10 you can simply remove the `Funcky.Async` reference.
+* Fix: `Interleave` and `Merge` for `IAsyncEnumerable` now pass the cancellation token to the inner
+  enumerators (same fix as in Funcky 3.6.0).
+
 ## Funcky 3.6.0
 
 This update is mainly to update to .NET 10.
 
-* remove dependency to System.Linq.Async because it is integrated into .NET 10
-* Integrate Funcky.Async into Funcky, as the async extensions are now in the same assembly as the sync ones.
-  * This means that there is no longer a separate `Funcky.Async` package.
+* Funcky now targets `net10.0`.
+* On .NET 10 and newer, the `IAsyncEnumerable` extensions, `AsyncSequence`, `AsyncFunctional` and the
+  async `Option`/`Result`/`Either` extensions are part of the `Funcky` package itself, because
+  `System.Linq.AsyncEnumerable` is now part of the base class library. Funcky does not depend on
+  `System.Linq.Async` on this framework.
+* `Funcky.Async` stays the home of these APIs on .NET 9 and older frameworks, where it continues to
+  depend on `System.Linq.Async`.
+* The `Chunk(int)` overload for `IAsyncEnumerable` is not provided on .NET 10; the identically named
+  method in the base class library is used instead and returns arrays rather than `IReadOnlyList<T>`.
+  The `Chunk` overloads with a `resultSelector` are unchanged.
+* `AdjacentGroupBy` for `IAsyncEnumerable` returns `IGrouping<TKey, TElement>` on .NET 10
+  instead of the `IAsyncGrouping<TKey, TElement>` type from `System.Linq.Async`.
 
 ### Funcky.Analyzers
 The new analyzer rule `λ1011` suggests `Select(f)` over `Match(none: Option<T>.None, some: x => f(x))`

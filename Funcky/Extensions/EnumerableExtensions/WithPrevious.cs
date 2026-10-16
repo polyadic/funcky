@@ -1,4 +1,5 @@
 using Funcky.Internal;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -9,7 +10,7 @@ public static partial class EnumerableExtensions
     [Pure]
     public static IEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IEnumerable<TSource> source)
         where TSource : notnull
-        => source switch
+        => ArgumentValidator.NotNull(source) switch
         {
             IList<TSource> list => ListWithSelector.Create(list, ValueWithPrevious),
             _ => source.WithPreviousImplementation(),

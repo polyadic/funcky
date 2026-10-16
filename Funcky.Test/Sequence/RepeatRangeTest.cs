@@ -16,6 +16,23 @@ public sealed class RepeatRangeTest
     }
 
     [Fact]
+    public void RepeatRangeThrowsForNegativeCountBeforeEnumeration()
+    {
+        var doNotEnumerate = new FailOnEnumerationSequence<object>();
+
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Sequence.RepeatRange(doNotEnumerate, -1).Dispose());
+        Assert.Equal("count", exception.ParamName);
+    }
+
+    [Fact]
+    public void RepeatRangeWithCountZeroIsEmpty()
+    {
+        using var repeatRange = Sequence.RepeatRange(Sequence.Return(1, 2, 3), 0);
+
+        Assert.Empty(repeatRange);
+    }
+
+    [Fact]
     public void RepeatRangeThrowsWhenAlreadyDisposed()
     {
         var repeatRange = Sequence.RepeatRange(Sequence.Return(1337), 5);

@@ -11,7 +11,10 @@ public static partial class Sequence
     /// <typeparam name="TSource">Type of the elements to be cycled.</typeparam>
     /// <param name="source">The sequence of elements which are cycled. Throws an exception if the sequence is empty.</param>
     /// <returns>Returns an infinite IEnumerable repeating the same sequence of elements.</returns>
-    /// <remarks>Use <see cref="CycleMaterialized{TSource}"/> if you need to cycle an already materialized sequence.</remarks>
+    /// <remarks>
+    /// Use <see cref="CycleMaterialized{TSource}"/> if you need to cycle an already materialized sequence.
+    /// The source is not enumerated before the first element is requested, and it is enumerated only once.
+    /// </remarks>
     [Pure]
     public static IBuffer<TSource> CycleRange<TSource>(IEnumerable<TSource> source)
         => CycleBuffer.Create(source);
@@ -25,16 +28,18 @@ public static partial class Sequence
     private sealed class CycleBuffer<T>(IEnumerable<T> source, Option<int> maxCycles = default) : IBuffer<T>
     {
         private readonly List<T> _buffer = [];
-        private readonly IEnumerator<T> _source = source.GetEnumerator();
+
+        private IEnumerator<T>? _source;
+        private bool _sourceExhausted;
         private bool _disposed;
 
         public void Dispose()
         {
             if (!_disposed)
             {
-                _source.Dispose();
-                _buffer.Clear();
                 _disposed = true;
+                DisposeSource();
+                _buffer.Clear();
             }
         }
 
@@ -65,9 +70,9 @@ public static partial class Sequence
 
                 if (index == _buffer.Count)
                 {
-                    if (_source.MoveNext())
+                    if (TryFetchNext())
                     {
-                        _buffer.Add(_source.Current);
+                        _buffer.Add(_source!.Current);
                     }
                     else
                     {
@@ -102,6 +107,31 @@ public static partial class Sequence
                     yield return _buffer[index];
                 }
             }
+        }
+
+        private bool TryFetchNext()
+        {
+            if (_sourceExhausted)
+            {
+                return false;
+            }
+
+            _source ??= source.GetEnumerator();
+
+            if (_source.MoveNext())
+            {
+                return true;
+            }
+
+            _sourceExhausted = true;
+            DisposeSource();
+            return false;
+        }
+
+        private void DisposeSource()
+        {
+            _source?.Dispose();
+            _source = null;
         }
 
         private bool HasNoCycles()

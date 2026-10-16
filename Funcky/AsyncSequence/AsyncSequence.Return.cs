@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 namespace Funcky;
 
 public static partial class AsyncSequence

@@ -36,6 +36,13 @@ public sealed class OptionSerializerTest
     }
 
     [Fact]
+    public void ANullValueIsNotSerializableAndGivesAReason()
+    {
+        Assert.False(Serializer.IsSerializable(typeof(Option<int>), null, out var reason));
+        Assert.NotEmpty(reason);
+    }
+
+    [Fact]
     public void NoneIsAlwaysSerializable()
     {
         Assert.True(Serializer.IsSerializable(typeof(Option<NonSerializable>), Option<NonSerializable>.None, out _));

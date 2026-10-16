@@ -108,6 +108,62 @@ public sealed class MemoizeTest
     }
 
     [Fact]
+    public void MemoizeAcquiresTheSourceEnumeratorOnlyWhenTheFirstElementIsRequested()
+    {
+        var source = new DisposeTrackingSequence<int>([1, 2, 3]);
+        using var memoized = source.Memoize();
+
+        using var enumerator = memoized.GetEnumerator();
+        Assert.Equal(0, source.EnumeratorsCreated);
+
+        Assert.True(enumerator.MoveNext());
+        Assert.Equal(1, source.EnumeratorsCreated);
+    }
+
+    [Fact]
+    public void MemoizeDisposesTheSourceEnumeratorOnceTheSourceIsExhausted()
+    {
+        var source = new DisposeTrackingSequence<int>([1, 2, 3]);
+        using var memoized = source.Memoize();
+
+        Assert.Equal([1, 2, 3], memoized);
+        Assert.Equal(1, source.EnumeratorsDisposed);
+
+        Assert.Equal([1, 2, 3], memoized);
+        Assert.Equal(1, source.EnumeratorsCreated);
+    }
+
+    [Fact]
+    public void MemoizeNeverAcquiresTheSourceEnumeratorWhenDisposedUnused()
+    {
+        var source = new DisposeTrackingSequence<int>([1, 2, 3]);
+
+        using (source.Memoize())
+        {
+        }
+
+        Assert.Equal(0, source.EnumeratorsCreated);
+    }
+
+    [Fact]
+    public void MemoizeCanBeEnumeratedConcurrentlyAndProducesEachElementOnce()
+    {
+        const int count = 10_000;
+        var pulled = 0;
+        var source = Enumerable.Range(0, count).Inspect(_ => Interlocked.Increment(ref pulled));
+        using var memoized = source.Memoize();
+
+        var results = Enumerable.Range(0, 4)
+            .AsParallel()
+            .WithDegreeOfParallelism(4)
+            .Select(_ => memoized.ToList())
+            .ToList();
+
+        Assert.All(results, result => Assert.Equal(Enumerable.Range(0, count), result));
+        Assert.Equal(count, pulled);
+    }
+
+    [Fact]
     public void MemoizingAListReturnsAnObjectImplementingIList()
     {
         var source = new List<int> { 10, 20, 30 };

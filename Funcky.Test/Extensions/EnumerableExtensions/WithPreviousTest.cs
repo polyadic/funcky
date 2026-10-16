@@ -72,6 +72,17 @@ public sealed class WithPreviousTest
         Assert.Equal(length, nonEnumerableList.WithPrevious().Aggregate(0, (sum, _) => sum + 1));
     }
 
+    [Fact]
+    public void CopyToOnAnOptimizedSourceWithPreviousWritesAllElementsStartingAtTheArrayIndex()
+    {
+        var collection = (ICollection<ValueWithPrevious<int>>)new List<int> { 10, 20, 30 }.WithPrevious();
+        var array = new ValueWithPrevious<int>[5];
+
+        collection.CopyTo(array, 2);
+
+        Assert.Equal([(0, Option<int>.None), (0, Option<int>.None), (10, Option<int>.None), (20, Option.Some(10)), (30, Option.Some(20))], array.Select(v => (v.Value, v.Previous)));
+    }
+
     private static void CheckValues(IEnumerable<ValueWithPrevious<int>> listWithLast, int index)
     {
         Assert.Equal(index, listWithLast.ElementAt(index).Value);

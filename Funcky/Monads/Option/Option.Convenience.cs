@@ -8,7 +8,9 @@ public readonly partial struct Option<TItem>
 
     [Pure]
     public Option<TItem> Where(Func<TItem, bool> predicate)
-        => SelectMany(item => Option.FromBoolean(predicate(item), item));
+        => _hasItem && predicate(_item)
+            ? this
+            : None;
 
     [Pure]
     public Option<TItem> OrElse(Option<TItem> fallback)
