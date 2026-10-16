@@ -5,6 +5,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* New: `And`, `Or` and `Not` extension methods on `Func<T, bool>` in `Funcky.Extensions`, the extension form of `All`,
+  `Any` and `Not`. The type argument is inferred from the receiver, so `isActive.And(isAdmin)` needs no `<User>`.
 * New: `FunctionalAssert.Error<TException, TValidResult>(result)` asserts that a `Result` is an error of exactly the given
   exception type and returns it typed, the analogue of `Assert.Throws`.
 * Fix: the xUnit v3 `Option` serializer no longer throws an `InvalidOperationException("TODO")` when asked whether a
