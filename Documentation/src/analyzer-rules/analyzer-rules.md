@@ -4,7 +4,8 @@ Funcky ships two sets of Roslyn analyzers that guide you towards correct and idi
 * **Built-in analyzers** (`λ0xxx`) are part of the `Funcky` package itself and are always active.
   They guard against usages that we consider incorrect or unsafe.
 * **[`Funcky.Analyzers`]** (`λ1xxx`) is an optional package with additional style and usage rules,
-  most of them with an automatic code fix. Install it with:
+  most of them with an automatic code fix. They report warnings, except for pure performance hints such as
+  [λ1015](./λ1015.md), which report an info. Install it with:
   ```xml
   <PackageReference Include="Funcky.Analyzers" Version="..." PrivateAssets="all" />
   ```
@@ -32,6 +33,7 @@ Rules in the `λ11xx` range concern the `FunctionalAssert` helpers from the [`Fu
 | [λ1008](./λ1008.md) | Warning | Prefer `ToNullable` over `Match` |
 | [λ1009](./λ1009.md) | Error | Do not use `default` to instantiate this type |
 | [λ1010](./λ1010.md) | Error | An option has either zero or one elements |
+| [λ1015](./λ1015.md) | Info | Fallback is computed eagerly |
 | [λ1101](./λ1101.md) | Warning | Assert can be simplified |
 
 ## Removed rules

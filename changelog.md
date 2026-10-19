@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1015` reports a fallback passed to the eager overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
+  `Result<T>` and `Either<L, R>` that does work (a method call, an object creation, an interpolated string, an `await`),
+  e.g. `option.GetOrElse(LoadDefault())`: the work happens even when there is a value. The code fix passes a function
+  instead. As a performance hint rather than a correctness issue the rule reports an info, the first rule in the package
+  to do so.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
