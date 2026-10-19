@@ -9,8 +9,8 @@ One written rule decides where a rule lives:
   **errors** and carry the category `Funcky.Correctness`.
 * **[`Funcky.Analyzers`]** is an optional package with additional rules.
   A rule lives there when the flagged code *works*, but Funcky offers a more idiomatic, shorter or cheaper form.
-  These rules report **warnings**, always come with a code fix and carry the category `Funcky.Style`. Install the
-  package with:
+  These rules report **warnings**, always come with a code fix and carry the category `Funcky.Style`. A rule that is
+  purely a performance hint, such as [λ1015](./λ1015.md), reports an **info** instead. Install the package with:
   ```xml
   <PackageReference Include="Funcky.Analyzers" Version="..." PrivateAssets="all" />
   ```

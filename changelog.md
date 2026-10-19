@@ -10,7 +10,7 @@ The analyzer rules now follow one written rule for which package a rule lives in
 package** when the flagged code is outside the supported surface of the library (the code is wrong, not merely
 unidiomatic), and it lives in the opt-in **`Funcky.Analyzers`** package when the code works but Funcky offers a more
 idiomatic form. The built-in rules report errors and carry the category `Funcky.Correctness`, the opt-in rules report
-warnings, come with a code fix and carry the category `Funcky.Style`. See the
+warnings (an info for pure performance hints), come with a code fix and carry the category `Funcky.Style`. See the
 [analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html) page.
 
 * Breaking: `λ1009` "Do not use `default` to instantiate this type" and `λ1010` "An option has either zero or one

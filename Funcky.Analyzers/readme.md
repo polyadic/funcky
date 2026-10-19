@@ -13,9 +13,10 @@ One written rule decides this, so that new rules can be classified without discu
   compiler feature (`TryGetValue`, the list pattern members), or the value is one the type system permits but Funcky
   does not support (`default(Either<L, R>)`), or the code can never do what it says (a two-element list pattern on an
   option). Nothing is "nicer" here, the code is wrong, so the rule needs no code fix.
-* **`Funcky.Analyzers`** (opt-in package, severity *Warning* or *Suggestion*, category `Funcky.Style`):
+* **`Funcky.Analyzers`** (opt-in package, severity *Warning*, category `Funcky.Style`):
   the flagged code works and is supported, but Funcky has a more idiomatic, shorter or cheaper form.
-  Every rule in this package comes with a code fix.
+  Every rule in this package comes with a code fix. A rule that is purely a performance hint and may be wrong about
+  the cost (λ1015, the eagerly computed fallback) reports an *Info* instead of a warning.
 
 This mirrors how the .NET libraries do it: `System.Text.Json`, `Microsoft.Extensions.*`, `CommunityToolkit.Mvvm` and
 EF Core ship their usage diagnostics inside the library package, whereas best-practice hints such as `xunit.analyzers`,
