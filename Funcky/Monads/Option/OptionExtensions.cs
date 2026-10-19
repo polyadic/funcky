@@ -7,7 +7,9 @@ public static partial class OptionExtensions
     [Pure]
     public static Option<T> Flatten<T>(this Option<Option<T>> option)
         where T : notnull
+#pragma warning disable λ1018 // This is the implementation of Flatten.
         => option.SelectMany(Identity);
+#pragma warning restore λ1018
 
     [Pure]
     public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, TLeft left)

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1018` reports `SelectMany(x => x)` and `SelectMany(Identity)` on a nested `Option`, `Result`, `Either` or
+  `IEnumerable` and suggests `Flatten()`, which says what happens without a selector to read. The code fix replaces the call.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 

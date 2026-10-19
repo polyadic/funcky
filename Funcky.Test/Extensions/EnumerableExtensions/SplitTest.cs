@@ -37,7 +37,7 @@ public sealed class SplitTest
     {
         var parts = source.Split(separator);
 
-        return source.SequenceEqual(parts.Intersperse([separator]).SelectMany(Identity)).ToProperty();
+        return source.SequenceEqual(parts.Intersperse([separator]).Flatten()).ToProperty();
     }
 
     [Fact]
