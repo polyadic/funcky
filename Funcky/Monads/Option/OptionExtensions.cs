@@ -47,5 +47,5 @@ public static partial class OptionExtensions
         where TItem : class
         => option.Match(
             none: null as TItem,
-            some: item => item);
+            some: Identity);
 }

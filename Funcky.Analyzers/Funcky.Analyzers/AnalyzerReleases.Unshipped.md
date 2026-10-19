@@ -5,4 +5,5 @@
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ1010 | Funcky | Error | OptionListPatternAnalyzer
+λ1017 | Funcky | Warning | PreferNamedFunctionAnalyzer
 λ1101 | Funcky | Warning | FunctionalAssertAnalyzer

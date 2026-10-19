@@ -154,26 +154,26 @@ public sealed class AverageOrNoneTest
     private static async Task<bool> CompareAverageAndHandleEmptyInt32SequenceAsync(IAsyncEnumerable<int> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyInt64SequenceAsync(IAsyncEnumerable<long> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptySingleSequenceAsync(IAsyncEnumerable<float> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyDoubleSequenceAsync(IAsyncEnumerable<double> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyDecimalSequenceAsync(IAsyncEnumerable<decimal> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 }
 #endif
