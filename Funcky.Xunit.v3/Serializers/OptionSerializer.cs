@@ -78,7 +78,7 @@ internal sealed class OptionSerializer : IXunitSerializer
     {
         var option = (Option<TItem>)obj;
         return option.Match(
-            none: () => Tag.None,
+            none: Tag.None,
             some: item => $"{Tag.Some}{SerializationHelper.Instance.Serialize(item)}");
     }
 

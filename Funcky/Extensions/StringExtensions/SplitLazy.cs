@@ -78,9 +78,9 @@ public static partial class StringExtensions
         Option<(int Index, int SeparatorLength)> result,
         Option<(int Index, int SeparatorLength)> current)
         => result.Match(
-            none: () => current,
+            none: current,
             some: r => current.Match(
-                none: () => r,
+                none: r,
                 some: Min(r)));
 
     private static Func<(int Index, int SeparatorLength), (int Index, int SeparatorLength)> Min((int Index, int SeparatorLength) result)

@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1016` reports a lambda passed to the lazy overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
+  `Result<T>` and `Either<L, R>` that only returns a literal, a constant, a variable or a member, e.g.
+  `option.GetOrElse(() => 0f)`: there is no work to defer, so the eager overload taking the value says the same with
+  less. The code fix replaces the lambda with its body.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
