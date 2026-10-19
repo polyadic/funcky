@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1014` reports a `throw` expression inside a fallback passed to the eager overload of `GetOrElse`, `OrElse`
+  or `Match` on `Option<T>`, `Result<T>` and `Either<L, R>`, e.g. `option.GetOrElse(fallback ?? throw …)`. The argument
+  is evaluated before the call, so it throws even when there is a value. The code fix passes a function instead.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
