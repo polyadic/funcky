@@ -9,4 +9,27 @@
 			<Analyzer Remove="@(Analyzer->WithMetadataValue('NuGetPackageId', 'Funcky.Analyzers'))" />
 		</ItemGroup>
 	</Target>
+
+	<!-- Opt-in: <FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>
+	     makes the generator emit these attributes into the project, so they can be used on its own members.
+	     The generator reads the list from a comma-separated copy of the property, because a semicolon starts
+	     a comment in the .editorconfig through which properties reach the compiler. -->
+	<ItemGroup>
+		<CompilerVisibleProperty Include="_FunckyCodeAnalysisAttributes" />
+	</ItemGroup>
+	<Target Name="_Funcky_Analyzers_PrepareCodeAnalysisAttributes"
+			Condition="'$(FunckyCodeAnalysisAttributes)' != ''"
+			BeforeTargets="GenerateMSBuildEditorConfigFileCore;CoreCompile">
+		<PropertyGroup>
+			<_FunckyCodeAnalysisAttributes>$(FunckyCodeAnalysisAttributes.Replace(';', ','))</_FunckyCodeAnalysisAttributes>
+			<!-- Property functions escape the semicolons they produce; unescaped they split the list into items. -->
+			<_FunckyCodeAnalysisAttributesList>$([MSBuild]::Unescape($(FunckyCodeAnalysisAttributes.Replace(',', ';'))))</_FunckyCodeAnalysisAttributesList>
+		</PropertyGroup>
+		<ItemGroup>
+			<_FunckyUnknownCodeAnalysisAttribute Include="$(_FunckyCodeAnalysisAttributesList)" Exclude="UseWithArgumentNames;NonDefaultable" />
+		</ItemGroup>
+		<Warning Code="λ.BUILD.0002"
+				 Condition="'@(_FunckyUnknownCodeAnalysisAttribute)' != ''"
+				 Text="Funcky.Analyzers has no attribute named '@(_FunckyUnknownCodeAnalysisAttribute)' to generate (FunckyCodeAnalysisAttributes). Known attributes: UseWithArgumentNames, NonDefaultable." />
+	</Target>
 </Project>

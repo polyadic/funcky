@@ -40,6 +40,22 @@ Rules in the `λ11xx` range concern the `FunctionalAssert` helpers from the [`Fu
 |------|-------|------|
 | λ0002 | Use of `Option<T>.None()` method group | `Option<T>.None()` was replaced by the `Option<T>.None` property in 3.0. The rule and its code fix were removed once the method was gone. See the [migration guide](../migration-guide.md). |
 
+## Using the attributes in your own code
+Two rules are driven by attributes: [λ1003](./λ1003.md) looks for `[UseWithArgumentNames]` on methods and
+[λ1009](./λ1009.md) for `[NonDefaultable]` on structs. The attributes are internal to Funcky, but the analyzers match them
+by their full name in the `Funcky.CodeAnalysis` namespace, so a copy in any assembly counts. `Funcky.Analyzers` can
+generate that copy into your project; list the attributes you want in the project file:
+
+```xml
+<PropertyGroup>
+  <FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>
+</PropertyGroup>
+```
+
+The generated attributes are `internal`, so projects that need them generate their own. The generation is opt-in because
+a project that already has its own copy of an attribute would otherwise get a duplicate type. An unknown name in the list
+produces the build warning `λ.BUILD.0002`.
+
 ## Configuring severity
 All rules can be configured in an `.editorconfig` like any other Roslyn diagnostic, for example:
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -21,6 +21,7 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
         description: "Values instantiated with default are in an invalid state; any member may throw an exception.",
         helpLinkUri: DiagnosticName.HelpLink(DoNotUseDefaultId));
 
+    /// <summary>The attribute is matched by name, so any assembly may define it: Funcky, the user's own project or the generator.</summary>
     internal const string AttributeFullName = "Funcky.CodeAnalysis.NonDefaultableAttribute";
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DoNotUseDefault);
@@ -29,41 +30,31 @@ public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
-        context.RegisterCompilationStartAction(OnCompilationStart);
+        context.RegisterOperationAction(AnalyzeDefaultValueOperation, OperationKind.DefaultValue);
+        context.RegisterOperationAction(AnalyzeObjectCreationOperation, OperationKind.ObjectCreation);
     }
 
-    internal static bool IsParameterlessObjectCreationOfNonDefaultableStruct(IObjectCreationOperation operation, INamedTypeSymbol nonDefaultableAttribute)
+    internal static bool IsParameterlessObjectCreationOfNonDefaultableStruct(IObjectCreationOperation operation)
         => operation is { Type: { } type, Arguments.Length: 0, Initializer: null }
-            && type.HasAttribute(nonDefaultableAttribute);
+            && type.HasAttribute(AttributeFullName);
 
-    private static void OnCompilationStart(CompilationStartAnalysisContext context)
+    private static void AnalyzeDefaultValueOperation(OperationAnalysisContext context)
     {
-        if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } nonDefaultableAttribute)
+        var operation = (IDefaultValueOperation)context.Operation;
+        if (operation.Type is { } type && type.HasAttribute(AttributeFullName))
         {
-            context.RegisterOperationAction(AnalyzeDefaultValueOperation(nonDefaultableAttribute), OperationKind.DefaultValue);
-            context.RegisterOperationAction(AnalyzeObjectCreationOperation(nonDefaultableAttribute), OperationKind.ObjectCreation);
+            ReportDiagnostic(context);
         }
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeDefaultValueOperation(INamedTypeSymbol nonDefaultableAttribute)
-        => context =>
+    private static void AnalyzeObjectCreationOperation(OperationAnalysisContext context)
+    {
+        var operation = (IObjectCreationOperation)context.Operation;
+        if (IsParameterlessObjectCreationOfNonDefaultableStruct(operation))
         {
-            var operation = (IDefaultValueOperation)context.Operation;
-            if (operation.Type is { } type && type.HasAttribute(nonDefaultableAttribute))
-            {
-                ReportDiagnostic(context);
-            }
-        };
-
-    private static Action<OperationAnalysisContext> AnalyzeObjectCreationOperation(INamedTypeSymbol nonDefaultableAttribute)
-        => context =>
-        {
-            var operation = (IObjectCreationOperation)context.Operation;
-            if (IsParameterlessObjectCreationOfNonDefaultableStruct(operation, nonDefaultableAttribute))
-            {
-                ReportDiagnostic(context);
-            }
-        };
+            ReportDiagnostic(context);
+        }
+    }
 
     private static void ReportDiagnostic(OperationAnalysisContext context)
         => context.ReportDiagnostic(Diagnostic.Create(

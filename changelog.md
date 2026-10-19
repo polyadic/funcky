@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: the attributes behind `λ1003` (`[UseWithArgumentNames]`) and `λ1009` (`[NonDefaultable]`) can be used on your own
+  members. The analyzers now match the attributes by name, so a copy in any assembly counts, and `Funcky.Analyzers`
+  generates that copy when the project sets `<FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>`.
+* Fixed: `λ1003` and `λ1009` went silent in a project referencing two assemblies that both define the attribute.
+
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
 * New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
