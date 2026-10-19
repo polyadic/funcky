@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: built-in rule `λ0005` reports a `null` literal that is converted to `Option<T>`, `Result<T>` or `Either<L, R>`
+  or passed to one of their factory methods (`Option.Some`, `Result.Ok`, `Either<L, R>.Left`, …). The monads reject
+  `null` with an `ArgumentNullException`, so `Option<string> option = null;` and even `option == null` throw at run time;
+  with nullable reference types disabled the compiler is silent about it. The code fix replaces the literal with
+  `Option<T>.None`.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 

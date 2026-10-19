@@ -8,13 +8,17 @@ public sealed partial class ResultTest
     [Fact]
     public void OkConstructorThrowsWhenNullIsPassed()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Assert.Throws<ArgumentNullException>(() => Result.Ok<string>(null!));
+#pragma warning restore λ0005
     }
 
     [Fact]
     public void ErrorConstructorThrowsWhenNullIsPassed()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Assert.Throws<ArgumentNullException>(() => Result<string>.Error(null!));
+#pragma warning restore λ0005
     }
 
     [Fact]
