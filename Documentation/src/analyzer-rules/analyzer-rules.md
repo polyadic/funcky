@@ -32,6 +32,7 @@ Rules in the `λ11xx` range concern the `FunctionalAssert` helpers from the [`Fu
 | [λ1008](./λ1008.md) | Warning | Prefer `ToNullable` over `Match` |
 | [λ1009](./λ1009.md) | Error | Do not use `default` to instantiate this type |
 | [λ1010](./λ1010.md) | Error | An option has either zero or one elements |
+| [λ1012](./λ1012.md) | Warning | Prefer the `…OrNone` method over `…OrDefault` with a null check |
 | [λ1101](./λ1101.md) | Warning | Assert can be simplified |
 
 ## Removed rules

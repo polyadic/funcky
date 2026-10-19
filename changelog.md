@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1012` reports `FirstOrDefault`, `LastOrDefault`, `SingleOrDefault` and `ElementAtOrDefault` whose result is
+  immediately tested for `null` (`?? fallback`, `?.`, `is null`, `is {} x`, `== null`, …) and suggests the `…OrNone`
+  variant, which makes the missing element a `None` instead of a `null`. The code fix rewrites `xs.FirstOrDefault() ?? fallback`
+  to `xs.FirstOrNone().GetOrElse(fallback)` and adds the `using Funcky.Extensions;` when needed.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
