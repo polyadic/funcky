@@ -17,6 +17,7 @@ Rules in the `λ11xx` range concern the `FunctionalAssert` helpers from the [`Fu
 |------|----------|-------|
 | [λ0001](./λ0001.md) | Error | Disallowed use of `TryGetValue` |
 | [λ0003](./λ0003.md) | Error | Member is not intended for direct usage |
+| [λ0004](./λ0004.md) | Error | The `default` literal is wrapped by an implicit conversion |
 
 ## Funcky.Analyzers
 

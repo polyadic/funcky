@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: built-in rule `λ0004` reports a bare `default` literal in a branch of a conditional, `switch` or `??` expression
+  that is implicitly converted to `Option<T>`, `Result<T>` or `Either<L, R>`. The literal takes the type of the sibling
+  branch, so `condition ? 42 : default` is `Some(0)` and never `None`; for value types and tuples the compiler is silent
+  about it. The code fix replaces the literal with `Option<T>.None`.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 

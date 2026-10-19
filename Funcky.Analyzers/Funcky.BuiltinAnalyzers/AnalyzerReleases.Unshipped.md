@@ -6,6 +6,7 @@
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ0003 | Funcky | Error | SyntaxSupportOnlyAnalyzer
+λ0004 | Funcky | Error | DefaultInConversionAnalyzer
 
 ### Removed Rules
 Rule ID | Category | Severity | Notes
