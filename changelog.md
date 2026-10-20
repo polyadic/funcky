@@ -34,6 +34,11 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   package's `buildTransitive` targets keep only the `roslyn3.7` assets on SDKs without analyzer versioning, the same
   arrangement System.Text.Json uses. `λ1010` needs the Roslyn 4.4 list pattern API and is only active there, which
   matches the compilers that can use list patterns on `Option<T>` at all.
+* New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
+  `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
+  `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
+  The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
+  because they need a failure value.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 

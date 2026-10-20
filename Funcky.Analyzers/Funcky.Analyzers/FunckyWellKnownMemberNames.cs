@@ -8,6 +8,8 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionFromBooleanMethodName = "FromBoolean";
 
+    public const string OptionFromNullableMethodName = "FromNullable";
+
     public const string OptionNonePropertyName = "None";
 
     public const string EitherRightMethodName = "Right";
