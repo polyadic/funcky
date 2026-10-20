@@ -23,6 +23,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="..\Funcky.BuiltinAnalyzers\CompilationExtensions.cs" />
+		<Compile Include="..\Funcky.BuiltinAnalyzers\DiagnosticName.cs" />
 		<Compile Include="..\Funcky.BuiltinAnalyzers\WellKnownMemberNames.cs" />
 	</ItemGroup>
 	<Import Project="..\Funcky.Analyzers.Package\Packing.targets" />

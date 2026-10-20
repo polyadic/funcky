@@ -6,6 +6,9 @@ internal static class DiagnosticName
 
     public const string BuiltIn = "00";
 
+    /// <summary>λ0004, shared by <c>DefaultInConversionAnalyzer</c> and its code fix, which live in different projects.</summary>
+    public const string DefaultInConversionId = $"{Prefix}{BuiltIn}04";
+
     /// <summary>The category of every built-in rule: the flagged code is outside the supported surface of Funcky.
     /// The opt-in rules in the <c>Funcky.Analyzers</c> package use <c>Funcky.Style</c> instead.</summary>
     public const string Category = "Funcky.Correctness";

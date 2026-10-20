@@ -34,6 +34,10 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   package's `buildTransitive` targets keep only the `roslyn3.7` assets on SDKs without analyzer versioning, the same
   arrangement System.Text.Json uses. `λ1010` needs the Roslyn 4.4 list pattern API and is only active there, which
   matches the compilers that can use list patterns on `Option<T>` at all.
+* New: built-in rule `λ0004` reports a bare `default` literal in a branch of a conditional, `switch` or `??` expression
+  that is implicitly converted to `Option<T>`, `Result<T>` or `Either<L, R>`. The literal takes the type of the sibling
+  branch, so `condition ? 42 : default` is `Some(0)` and never `None`; for value types and tuples the compiler is silent
+  about it. The code fix replaces the literal with `Option<T>.None`.
 * New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
   `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
   `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
