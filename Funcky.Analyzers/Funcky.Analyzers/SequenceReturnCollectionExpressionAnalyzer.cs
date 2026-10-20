@@ -19,7 +19,8 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
         messageFormat: "Replace 'Sequence.Return' with a collection expression",
         category: DiagnosticName.Category,
         DiagnosticSeverity.Info,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticName.HelpLink($"{DiagnosticName.Prefix}{DiagnosticName.Usage}13"));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(UseCollectionExpression);
 

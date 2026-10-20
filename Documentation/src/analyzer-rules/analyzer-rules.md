@@ -48,7 +48,9 @@ contains a rule.
 | [λ1006](./λ1006.md) | Warning | Prefer `OrElse` over `Match` |
 | [λ1007](./λ1007.md) | Warning | Prefer `SelectMany` over `Match` |
 | [λ1008](./λ1008.md) | Warning | Prefer `ToNullable` over `Match` |
+| [λ1011](./λ1011.md) | Warning | Prefer `Select` over `Match` |
 | [λ1012](./λ1012.md) | Warning | Prefer the `…OrNone` method over `…OrDefault` with a null check |
+| [λ1013](./λ1013.md) | Info | `Sequence.Return` can be replaced with a collection expression |
 | [λ1014](./λ1014.md) | Warning | Throw expression in an eagerly evaluated fallback |
 | [λ1015](./λ1015.md) | Info | Fallback is computed eagerly |
 | [λ1016](./λ1016.md) | Warning | Pass the fallback value directly |
