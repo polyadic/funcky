@@ -18,6 +18,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\Funcky.Analyzers\CodeAnalysisExtensions\SymbolEqualityFunctions.cs" Link="CodeAnalysisExtensions\%(Filename)%(Extension)" />
+		<Compile Include="..\Funcky.Analyzers\CodeAnalysisExtensions\SingleElementCollectionExpression.cs" Link="CodeAnalysisExtensions\%(Filename)%(Extension)" />
 		<Using Include="Funcky.Analyzers.CodeAnalysisExtensions.SymbolEqualityFunctions" Static="true" />
 	</ItemGroup>
 	<ItemGroup>

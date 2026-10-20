@@ -6,7 +6,9 @@
     <Project Path="Funcky.Analyzers/Funcky.Analyzers.Test/Funcky.Analyzers.Test.csproj" />
     <Project Path="Funcky.Analyzers/Funcky.Analyzers.Vsix/Funcky.Analyzers.Vsix.csproj" />
     <Project Path="Funcky.Analyzers/Funcky.Analyzers/Funcky.Analyzers.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers.CodeFixes/Funcky.BuiltinAnalyzers.CodeFixes.Roslyn3.7.csproj" />
     <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers.CodeFixes/Funcky.BuiltinAnalyzers.CodeFixes.csproj" />
+    <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers/Funcky.BuiltinAnalyzers.Roslyn3.7.csproj" />
     <Project Path="Funcky.Analyzers/Funcky.BuiltinAnalyzers/Funcky.BuiltinAnalyzers.csproj" />
   </Folder>
   <Folder Name="/Build Config/">

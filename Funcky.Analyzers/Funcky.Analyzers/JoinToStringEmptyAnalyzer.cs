@@ -13,7 +13,7 @@ namespace Funcky.Analyzers;
 public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
 {
     public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}04";
-    private const string Category = nameof(Funcky);
+    private const string Category = DiagnosticName.Category;
     private const string JoinToString = "JoinToString";
 
     private static readonly LocalizableString Title = LoadFromResource(nameof(JoinToStringEmptyAnalyzerTitle));

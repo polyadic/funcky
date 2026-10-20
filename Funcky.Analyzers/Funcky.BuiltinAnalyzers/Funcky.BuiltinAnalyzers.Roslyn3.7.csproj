@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Roslyn 3.7 is the oldest compiler the built-in analyzers support (VS 2019 16.7, .NET Core SDK 3.1.4xx).
+             See https://docs.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support for VS compatibility. -->
+        <AnalyzerRoslynVersion>3.7.0</AnalyzerRoslynVersion>
+        <DisableAnalyzerReleaseTracking>true</DisableAnalyzerReleaseTracking>
+    </PropertyGroup>
+    <Import Project="Funcky.BuiltinAnalyzers.targets" />
+</Project>
