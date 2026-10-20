@@ -44,6 +44,17 @@ public sealed class CodeAnalysisAttributesGeneratorTest
     }
 
     [Fact]
+    public void TheGeneratedAttributesCompileInCSharp73Projects()
+    {
+        var (compilation, diagnostics) = Generate(ConsumerCode.Replace("throw null!", "throw null"), property: "UseWithArgumentNames; NonDefaultable", LanguageVersion.CSharp7_3);
+
+        Assert.Empty(diagnostics);
+        Assert.Empty(compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error));
+        Assert.NotNull(compilation.GetTypeByMetadataName("Funcky.CodeAnalysis.UseWithArgumentNamesAttribute"));
+        Assert.NotNull(compilation.GetTypeByMetadataName("Funcky.CodeAnalysis.NonDefaultableAttribute"));
+    }
+
+    [Fact]
     public void OnlyTheRequestedAttributeIsGenerated()
     {
         var (compilation, diagnostics) = Generate("class C { }", property: "NonDefaultable");
@@ -70,16 +81,17 @@ public sealed class CodeAnalysisAttributesGeneratorTest
     public void ThePropertyIsSplitTrimmedAndDeduplicated(string value, string[] expected)
         => Assert.Equal(expected, CodeAnalysisAttributesGenerator.ParseAttributeNames(value));
 
-    private static (Compilation Compilation, ImmutableArray<Diagnostic> Diagnostics) Generate(string source, string? property)
+    private static (Compilation Compilation, ImmutableArray<Diagnostic> Diagnostics) Generate(string source, string? property, LanguageVersion languageVersion = LanguageVersion.Latest)
     {
+        var parseOptions = new CSharpParseOptions(languageVersion);
         var compilation = CSharpCompilation.Create(
             "Consumer",
-            [CSharpSyntaxTree.ParseText(source)],
+            [CSharpSyntaxTree.ParseText(source, parseOptions)],
             [MetadataReference.CreateFromFile(typeof(object).Assembly.Location)],
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         var driver = CSharpGeneratorDriver
-            .Create(new CodeAnalysisAttributesGenerator())
+            .Create([new CodeAnalysisAttributesGenerator().AsSourceGenerator()], parseOptions: parseOptions)
             .WithUpdatedAnalyzerConfigOptions(new BuildPropertyOptionsProvider(property))
             .RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
