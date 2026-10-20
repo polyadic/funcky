@@ -24,9 +24,5 @@ internal static class OperationDescent
     }
 
     private static IEnumerable<IOperation> ChildOperations(IOperation operation)
-#if ROSLYN_4_4_0
         => operation.ChildOperations;
-#else
-        => operation.Children;
-#endif
 }

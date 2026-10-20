@@ -4,18 +4,20 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers;
+namespace Funcky.BuiltinAnalyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class OptionListPatternAnalyzer : DiagnosticAnalyzer
 {
-    public const string OptionHasZeroOrOneElementsId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}10";
+    // λ1010 was written for Funcky.Analyzers and moved into the built-in analyzers before it shipped. It keeps its
+    // number: the λ0xxx/λ1xxx ranges record where a rule was born, the rules table in the documentation says where it lives.
+    public const string OptionHasZeroOrOneElementsId = $"{DiagnosticName.Prefix}1010";
 
     public static readonly DiagnosticDescriptor OptionHasZeroOrOneElements = new(
         id: OptionHasZeroOrOneElementsId,
         title: "An option has either zero or one elements",
         messageFormat: "An option has either zero or one elements, testing for more elements will never match",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         helpLinkUri: DiagnosticName.HelpLink(OptionHasZeroOrOneElementsId));
