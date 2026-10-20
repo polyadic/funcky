@@ -82,6 +82,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
   does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
   to the `params` overload rather than producing a one-element sequence.
+* Fix: the built-in analyzer λ0001 applied its allowance rules inconsistently. `TryGetValue` is now allowed anywhere inside
+  a `catch` filter clause, not only as its outermost expression, so `catch when (option.TryGetValue(out var h) && h.CanHandle(e))`
+  compiles. Conversely, a call inside a lambda or local function that is merely used by a loop condition, a catch filter or
+  an `if` condition in an iterator, such as `while (items.Any(i => i.Option.TryGetValue(out _)))`, is now reported; it
+  used to slip through because the check walked all ancestors. The exemption for `.cshtml` files finally applies: it
+  recognizes Razor pages and views deriving from `RazorPageBase`, where it used to require a Blazor `ComponentBase`.
+  The documentation of λ0001 now lists every allowed use case, including `if` statements that yield.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
@@ -222,6 +229,10 @@ This update is mainly to update to .NET 10.
   The `Chunk` overloads with a `resultSelector` are unchanged.
 * `AdjacentGroupBy` for `IAsyncEnumerable` returns `IGrouping<TKey, TElement>` on .NET 10
   instead of the `IAsyncGrouping<TKey, TElement>` type from `System.Linq.Async`.
+
+### Funcky.Analyzers
+The new analyzer rule `λ1011` suggests `Select(f)` over `Match(none: Option<T>.None, some: x => f(x))`
+(and the equivalent shapes for `Either` and `Result`), with a code fix.
 
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 

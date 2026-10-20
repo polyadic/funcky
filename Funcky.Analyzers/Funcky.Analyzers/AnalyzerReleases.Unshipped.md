@@ -6,4 +6,5 @@ Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ1010 | Funcky | Error | OptionListPatternAnalyzer
 λ1013 | Funcky | Info | SequenceReturnCollectionExpressionAnalyzer
+λ1011 | Funcky | Warning | AlternativeMonadAnalyzer
 λ1101 | Funcky | Warning | FunctionalAssertAnalyzer
