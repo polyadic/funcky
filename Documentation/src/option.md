@@ -99,6 +99,15 @@ Option<int> length =
 If the input is `None`, the lambda never runs and the result is `None`. No check, no branch, no way to forget the
 empty case.
 
+The selector has to return a value, not `null`: `TResult` is constrained to `notnull`. If it can return `null`, for
+example `user => user.MiddleName` with a `string?` property, the compiler reports CS8714 ("Nullability of type argument
+'string?' doesn't match 'notnull' constraint") at the call. The repair is `SelectMany` with `Option.FromNullable`, which
+turns the `null` into `None`; the `Funcky.Analyzers` package offers this rewrite as a code fix for CS8714:
+
+```cs
+Option<string> middleName = user.SelectMany(u => Option.FromNullable(u.MiddleName));
+```
+
 ### 2. Chain operations that might each fail with `SelectMany`
 
 When the function you want to apply itself returns an option, `Select` would give you an `Option<Option<T>>`.

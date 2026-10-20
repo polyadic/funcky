@@ -38,6 +38,11 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   that is implicitly converted to `Option<T>`, `Result<T>` or `Either<L, R>`. The literal takes the type of the sibling
   branch, so `condition ? 42 : default` is `Some(0)` and never `None`; for value types and tuples the compiler is silent
   about it. The code fix replaces the literal with `Option<T>.None`.
+* New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
+  `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
+  `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
+  The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
+  because they need a failure value.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
