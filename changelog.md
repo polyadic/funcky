@@ -6,8 +6,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 The analyzer release: Funcky itself gains built-in correctness rules, `Funcky.Analyzers` gains eight style rules and a
 code fix for a compiler warning, and the two packages settle which kind of rule lives where. The analyzer package becomes
-2.0.0 because it
-drops a supported Roslyn version, which is a breaking change under semantic versioning.
+2.0.0 because it drops a supported Roslyn version, which is a breaking change under semantic versioning.
 
 ### Analyzers
 The analyzer rules now follow one written rule for which package a rule lives in: a rule is **built into the `Funcky`
