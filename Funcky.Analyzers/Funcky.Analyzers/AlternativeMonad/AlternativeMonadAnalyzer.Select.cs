@@ -12,7 +12,7 @@ public partial class AlternativeMonadAnalyzer
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}11",
         title: $"Prefer {SelectMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {SelectMethodName} over {MatchMethodName}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: string.Empty);

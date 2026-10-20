@@ -1,19 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <IsPackable>false</IsPackable>
-        <LangVersion>preview</LangVersion>
-        <Nullable>enable</Nullable>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <RootNamespace>Funcky.BuiltinAnalyzers</RootNamespace>
+        <AnalyzerRoslynVersion>4.4.0</AnalyzerRoslynVersion>
     </PropertyGroup>
     <ItemGroup>
-        <!-- We use 2.7.0 for compatibility with VS 2019 and .NET Core SDK 3.x.
-             See https://docs.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support for VS compatibility.-->
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="3.7.0" />
+        <None Include="Funcky.BuiltinAnalyzers.CodeFixes.Roslyn3.7.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\Funcky.BuiltinAnalyzers\CompilationExtensions.cs" />
-        <Compile Include="..\Funcky.BuiltinAnalyzers\WellKnownMemberNames.cs" />
-    </ItemGroup>
+    <Import Project="Funcky.BuiltinAnalyzers.CodeFixes.targets" />
 </Project>
