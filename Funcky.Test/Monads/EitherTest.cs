@@ -10,13 +10,17 @@ public sealed partial class EitherTest
     [Fact]
     public void LeftConstructorThrowsWhenNullIsPassed()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Assert.Throws<ArgumentNullException>(() => Either<string, string>.Left(null!));
+#pragma warning restore λ0005
     }
 
     [Fact]
     public void RightConstructorThrowsWhenNullIsPassed()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Assert.Throws<ArgumentNullException>(() => Either<string, string>.Right(null!));
+#pragma warning restore λ0005
     }
 
     [Fact]

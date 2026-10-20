@@ -41,6 +41,7 @@
   * [λ0001](./analyzer-rules/λ0001.md)
   * [λ0003](./analyzer-rules/λ0003.md)
   * [λ0004](./analyzer-rules/λ0004.md)
+  * [λ0005](./analyzer-rules/λ0005.md)
   * [λ1001](./analyzer-rules/λ1001.md)
   * [λ1002](./analyzer-rules/λ1002.md)
   * [λ1003](./analyzer-rules/λ1003.md)
