@@ -14,7 +14,7 @@ Funcky is a functional library for C# which encourages correct usage of the func
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async)
 * **Funcky.XUnit** \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.XUnit)](https://www.nuget.org/packages/Funcky.XUnit)
-* **Funcky.Analyzers**: Analyzers to guide to the correct usage of Funcky. \
+* **Funcky.Analyzers**: Optional analyzers that suggest more idiomatic Funcky code. The correctness analyzers are built into **Funcky** itself. \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers)
 * **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)**: Provides interoperability between Funcky and EF Core \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
