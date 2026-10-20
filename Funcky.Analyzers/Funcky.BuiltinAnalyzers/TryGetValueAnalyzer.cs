@@ -19,7 +19,7 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         id: DisallowedTryGetId,
         title: "Disallowed use of TryGetValue",
         messageFormat: "Disallowed use of TryGetValue",
-        category: "Funcky",
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "TryGetValue should be used carefully.",

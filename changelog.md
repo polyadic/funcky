@@ -8,6 +8,33 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
   Studio version that is out of support.
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+The analyzer rules now follow one written rule for which package a rule lives in: a rule is **built into the `Funcky`
+package** when the flagged code is outside the supported surface of the library (the code is wrong, not merely
+unidiomatic), and it lives in the opt-in **`Funcky.Analyzers`** package when the code works but Funcky offers a more
+idiomatic form. The built-in rules report errors and carry the category `Funcky.Correctness`, the opt-in rules report
+warnings (an info for pure performance hints), come with a code fix and carry the category `Funcky.Style`. See the
+[analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html) page.
+
+* Breaking: `λ1009` "Do not use `default` to instantiate this type" and `λ1010` "An option has either zero or one
+  elements" moved from `Funcky.Analyzers` into the built-in analyzers, so every consumer of `Funcky` now gets them
+  without installing the analyzer package. The rule IDs stay the same, existing `.editorconfig` entries keep working.
+  Funcky.Analyzers 1.5.0 no longer contains the two rules; an older Funcky.Analyzers next to Funcky 3.7.0 reports
+  `λ1009` twice until it is updated.
+* Breaking: the diagnostic category of every rule changed from `Funcky` to `Funcky.Correctness` (built-in) or
+  `Funcky.Style` (opt-in). A `dotnet_analyzer_diagnostic.category-Funcky.severity` entry in an `.editorconfig` needs to
+  name the new categories; per-rule `dotnet_diagnostic.λ….severity` entries are unaffected. The split lets you tone down
+  all style rules with one line without touching the correctness rules.
+* New: `FunckyDisableBuiltinAnalyzers` MSBuild property. Setting it to `true` removes the built-in analyzers from the
+  build, the escape hatch for environments where they cannot run. `ExcludeAssets="analyzers"` on the package reference
+  has the same effect.
+* Fix: the built-in analyzers are shipped once per supported Roslyn version (`roslyn3.7` and `roslyn4.4`) and the
+  package's `buildTransitive` targets keep only the `roslyn3.7` assets on SDKs without analyzer versioning, the same
+  arrangement System.Text.Json uses. `λ1010` needs the Roslyn 4.4 list pattern API and is only active there, which
+  matches the compilers that can use list patterns on `Option<T>` at all.
+
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
 * New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an

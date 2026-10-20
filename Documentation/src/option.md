@@ -80,7 +80,7 @@ See [The TryVerb-pattern](./try-pattern.md) and [String Extensions](./string-ext
 This is the question every newcomer asks, and the rest of this chapter is the answer. There is no `Value`
 property and no `GetOrThrow`. The methods below are ordered from the ones you should reach for first to the
 ones that exist only for interop with imperative code. When you find yourself further down the ladder than
-necessary, the `Funcky.Analyzers` package will usually tell you.
+necessary, the built-in analyzers and the `Funcky.Analyzers` package will usually tell you.
 
 ### 1. Don't. Stay inside with `Select`
 

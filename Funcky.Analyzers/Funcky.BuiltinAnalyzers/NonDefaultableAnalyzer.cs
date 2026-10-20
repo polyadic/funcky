@@ -1,21 +1,22 @@
 ﻿using System.Collections.Immutable;
-using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Funcky.Analyzers.NonDefaultable;
+namespace Funcky.BuiltinAnalyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NonDefaultableAnalyzer : DiagnosticAnalyzer
 {
-    public const string DoNotUseDefaultId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}09";
+    // λ1009 was introduced in Funcky.Analyzers 1.4.0 and moved into the built-in analyzers in Funcky 3.7.0.
+    // Diagnostic IDs are stable identifiers (consumers configure and suppress them by ID), so it keeps its number.
+    public const string DoNotUseDefaultId = $"{DiagnosticName.Prefix}1009";
 
     public static readonly DiagnosticDescriptor DoNotUseDefault = new(
         id: DoNotUseDefaultId,
         title: "Do not use default to instantiate this type",
         messageFormat: "Do not use default(...) to instantiate '{0}'",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "Values instantiated with default are in an invalid state; any member may throw an exception.",

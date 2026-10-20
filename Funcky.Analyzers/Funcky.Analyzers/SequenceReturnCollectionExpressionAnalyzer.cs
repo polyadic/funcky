@@ -17,7 +17,7 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}13",
         title: "Sequence.Return can be replaced with a collection expression",
         messageFormat: "Replace 'Sequence.Return' with a collection expression",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Info,
         isEnabledByDefault: true);
 
