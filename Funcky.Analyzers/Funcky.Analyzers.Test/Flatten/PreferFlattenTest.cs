@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.Flatten.PreferFlattenAnalyzer, Funcky.Analyzers.Flatten.PreferFlattenCodeFix>;
 
@@ -201,6 +202,199 @@ public sealed class PreferFlattenTest
                 public static Option<int> NotNested(Option<int> option) => option.SelectMany(x => Some(x));
 
                 private static Option<int> Some(int x) => default;
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task ExplicitTypeArgumentsSelectTheElementTypeAndStay()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static List<object> Enumerable(IEnumerable<IEnumerable<string>> values) => {|λ1018:values.SelectMany<IEnumerable<string>, object>(x => x)|}.ToList();
+
+                public static Option<int> Option(Option<Option<int>> option) => {|λ1018:option.SelectMany<int>(x => x)|};
+
+                public static Either<string, int> Either(Either<string, Either<string, int>> either) => {|λ1018:either.SelectMany<int>(x => x)|};
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static List<object> Enumerable(IEnumerable<IEnumerable<string>> values) => values.Flatten<object>().ToList();
+
+                public static Option<int> Option(Option<Option<int>> option) => option.Flatten<int>();
+
+                public static Either<string, int> Either(Either<string, Either<string, int>> either) => {|λ1018:either.SelectMany<int>(x => x)|};
+            }
+            """;
+
+        // The remaining diagnostic has no fix, which the default markup handling of the fixed state would hide.
+        await new VerifyCS.Test
+        {
+            TestCode = inputCode + FunckyStubs,
+            FixedCode = fixedCode + FunckyStubs,
+            FixedState = { MarkupHandling = MarkupMode.Allow },
+        }.RunAsync();
+    }
+
+    [Fact]
+    public async Task UsingIsAddedWhenTheCallEndsTheFile()
+    {
+        const string inputCode = """
+            public static class C
+            {
+                public static Funcky.Monads.Option<int> M(Funcky.Monads.Option<Funcky.Monads.Option<int>> option) => {|λ1018:option.SelectMany(x => x)|};
+            }
+            """;
+        const string fixedCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Funcky.Monads.Option<int> M(Funcky.Monads.Option<Funcky.Monads.Option<int>> option) => option.Flatten();
+            }
+            """;
+        await new VerifyCS.Test
+        {
+            TestState = { Sources = { inputCode, FunckyStubs } },
+            FixedState = { Sources = { fixedCode, FunckyStubs } },
+        }.RunAsync();
+    }
+
+    [Fact]
+    public async Task UsingIsAddedAfterADefineDirective()
+    {
+        const string inputCode = """
+            #define FEATURE
+            public static class C
+            {
+                public static Funcky.Monads.Option<int> M(Funcky.Monads.Option<Funcky.Monads.Option<int>> option) => {|λ1018:option.SelectMany(x => x)|};
+            }
+            """;
+        const string fixedCode = """
+            #define FEATURE
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Funcky.Monads.Option<int> M(Funcky.Monads.Option<Funcky.Monads.Option<int>> option) => option.Flatten();
+            }
+            """;
+        await new VerifyCS.Test
+        {
+            TestState = { Sources = { inputCode, FunckyStubs } },
+            FixedState = { Sources = { fixedCode, FunckyStubs } },
+        }.RunAsync();
+    }
+
+    [Fact]
+    public async Task UsingIsAddedInsideARegionWithoutCopyingTheDirective()
+    {
+        const string inputCode = """
+            #region Imports
+            using System.Linq;
+            #endregion
+
+            public static class C
+            {
+                public static System.Collections.Generic.IEnumerable<int> M(int[][] values) => {|λ1018:values.SelectMany(x => x)|};
+            }
+            """;
+        const string fixedCode = """
+            #region Imports
+            using System.Linq;
+            using Funcky.Extensions;
+            #endregion
+
+            public static class C
+            {
+                public static System.Collections.Generic.IEnumerable<int> M(int[][] values) => values.Flatten();
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task AFlattenMemberOfTheReceiverIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+
+            public static class C
+            {
+                public static IEnumerable<int> Own(OwnFlatten values) => {|λ1018:values.SelectMany(x => x)|};
+
+                public static IEnumerable<int> Inapplicable(InapplicableFlatten values) => {|λ1018:values.SelectMany(x => x)|};
+            }
+
+            public sealed class OwnFlatten : List<int[]>
+            {
+                public IEnumerable<int> Flatten() => new int[0];
+            }
+
+            public sealed class InapplicableFlatten : List<int[]>
+            {
+                public IEnumerable<int> Flatten(int unused) => new int[0];
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static IEnumerable<int> Own(OwnFlatten values) => {|λ1018:values.SelectMany(x => x)|};
+
+                public static IEnumerable<int> Inapplicable(InapplicableFlatten values) => values.Flatten();
+            }
+
+            public sealed class OwnFlatten : List<int[]>
+            {
+                public IEnumerable<int> Flatten() => new int[0];
+            }
+
+            public sealed class InapplicableFlatten : List<int[]>
+            {
+                public IEnumerable<int> Flatten(int unused) => new int[0];
+            }
+            """;
+
+        // The remaining diagnostic has no fix, which the default markup handling of the fixed state would hide.
+        await new VerifyCS.Test
+        {
+            TestCode = inputCode + FunckyStubs,
+            FixedCode = fixedCode + FunckyStubs,
+            FixedState = { MarkupHandling = MarkupMode.Allow },
+        }.RunAsync();
+    }
+
+    [Fact]
+    public async Task ParallelAndQueryableSelectManyAreNotReported()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+
+            public static class C
+            {
+                public static void Parallel(IEnumerable<IEnumerable<int>> values) => values.AsParallel().SelectMany(x => x).ForAll(_ => { });
+
+                public static IQueryable<int> Queryable(IQueryable<IEnumerable<int>> values) => values.SelectMany(x => x);
             }
             """;
         await VerifyCS.VerifyAnalyzerAsync(inputCode + FunckyStubs);

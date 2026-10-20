@@ -24,7 +24,7 @@ public sealed class PreferFlattenAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "Prefer Flatten over SelectMany with the identity function",
         messageFormat: "Prefer 'Flatten' over 'SelectMany' with the identity function",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: "SelectMany with the identity function collapses one level of nesting. Flatten does the same and says so by name, without a selector to read.",
@@ -57,7 +57,7 @@ public sealed class PreferFlattenAnalyzer : DiagnosticAnalyzer
             if (invocation.TargetMethod.Name == FunckyWellKnownMemberNames.SelectManyMethodName
                 && MatchSelector(invocation) is { } selector
                 && (IsIdentityFunction(selector.Value) || IsIdentityFunctionWithReferenceConversion(selector.Value))
-                && flattenHolders.FindNamespace(ReceiverType(invocation)) is { } flattenNamespace
+                && flattenHolders.FindNamespace(ReceiverType(invocation), invocation.TargetMethod) is { } flattenNamespace
                 && !invocation.Syntax.IsInExpressionTree(invocation.SemanticModel!, expressionOfTType, context.CancellationToken))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -95,34 +95,38 @@ public sealed class PreferFlattenAnalyzer : DiagnosticAnalyzer
             _ => null,
         };
 
-    /// <summary>The types that have a <c>Flatten</c> extension method, keyed by the original definition of the receiver type,
-    /// together with the namespace the extension lives in.</summary>
+    /// <summary>The types that have a <c>Flatten</c> extension method, keyed by the original definition of the receiver type and
+    /// the type whose <c>SelectMany</c> it replaces, together with the namespace the extension lives in. Only that <c>SelectMany</c>
+    /// counts: <c>ParallelEnumerable</c> and <c>Queryable</c> also have one over an enumerable receiver, but <c>Flatten</c> would
+    /// turn their query into a plain enumerable.</summary>
     private sealed class FlattenHolders
     {
-        private readonly ImmutableArray<(INamedTypeSymbol ReceiverType, string Namespace)> _holders;
+        private readonly ImmutableArray<(INamedTypeSymbol ReceiverType, INamedTypeSymbol SelectManyOwner, string Namespace)> _holders;
 
-        private FlattenHolders(ImmutableArray<(INamedTypeSymbol ReceiverType, string Namespace)> holders)
+        private FlattenHolders(ImmutableArray<(INamedTypeSymbol ReceiverType, INamedTypeSymbol SelectManyOwner, string Namespace)> holders)
             => _holders = holders;
 
         public bool IsEmpty => _holders.IsEmpty;
 
         public static FlattenHolders Collect(Compilation compilation)
             => new(ImmutableArray.CreateRange(
-                new (INamedTypeSymbol? ReceiverType, INamedTypeSymbol? Holder)[]
+                new (INamedTypeSymbol? ReceiverType, INamedTypeSymbol? SelectManyOwner, INamedTypeSymbol? Holder)[]
                 {
-                    (compilation.GetOptionOfTType(), compilation.GetOptionExtensionsType()),
-                    (compilation.GetResultOfTType(), compilation.GetTypeByMetadataName("Funcky.Monads.ResultExtensions")),
-                    (compilation.GetEitherOfTType(), compilation.GetTypeByMetadataName("Funcky.Monads.EitherExtensions")),
-                    (compilation.GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T), compilation.GetEnumerableExtensionType()),
+                    (compilation.GetOptionOfTType(), compilation.GetOptionOfTType(), compilation.GetOptionExtensionsType()),
+                    (compilation.GetResultOfTType(), compilation.GetResultOfTType(), compilation.GetTypeByMetadataName("Funcky.Monads.ResultExtensions")),
+                    (compilation.GetEitherOfTType(), compilation.GetEitherOfTType(), compilation.GetTypeByMetadataName("Funcky.Monads.EitherExtensions")),
+                    (compilation.GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T), compilation.GetEnumerableType(), compilation.GetEnumerableExtensionType()),
                 }
-                .Where(pair => pair is { ReceiverType: not null, Holder: { } holder } && HasFlatten(holder))
-                .Select(pair => (pair.ReceiverType!, pair.Holder!.ContainingNamespace.ToDisplayString()))));
+                .Where(triple => triple is { ReceiverType: not null, SelectManyOwner: not null, Holder: { } holder } && HasFlatten(holder))
+                .Select(triple => (triple.ReceiverType!, triple.SelectManyOwner!, triple.Holder!.ContainingNamespace.ToDisplayString()))));
 
-        /// <summary>The receiver is the holder's type itself or, for <c>IEnumerable&lt;T&gt;</c>, any type implementing it.</summary>
-        public string? FindNamespace(ITypeSymbol? receiverType)
+        /// <summary>The receiver is the holder's type itself or, for <c>IEnumerable&lt;T&gt;</c>, any type implementing it, and the
+        /// <c>SelectMany</c> is the one of the monad or of <c>System.Linq.Enumerable</c>.</summary>
+        public string? FindNamespace(ITypeSymbol? receiverType, IMethodSymbol selectMany)
             => receiverType is null
                 ? null
                 : _holders
+                    .Where(holder => SymbolEquals(holder.SelectManyOwner, selectMany.ContainingType.OriginalDefinition))
                     .Where(holder => receiverType.AllInterfaces.Prepend(receiverType).Any(type => SymbolEquals(holder.ReceiverType, type.OriginalDefinition)))
                     .Select(holder => holder.Namespace)
                     .FirstOrDefault();
