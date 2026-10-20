@@ -4,7 +4,7 @@
 			Condition="'$(SupportsRoslynComponentVersioning)' != 'true'"
 			AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets">
 		<Warning Code="λ.BUILD.0001"
-				 Text="Funcky.Analyzers requires at least Roslyn 4.x i.e. Visual Studio 2022 / .NET 6.0" />
+				 Text="Funcky.Analyzers requires at least Roslyn 4.4 i.e. Visual Studio 2022 17.4 / .NET SDK 7.0" />
 		<ItemGroup>
 			<Analyzer Remove="@(Analyzer->WithMetadataValue('NuGetPackageId', 'Funcky.Analyzers'))" />
 		</ItemGroup>

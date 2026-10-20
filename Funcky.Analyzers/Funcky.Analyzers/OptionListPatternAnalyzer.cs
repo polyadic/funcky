@@ -1,4 +1,3 @@
-#if ROSLYN_4_4_0
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -49,4 +48,3 @@ public sealed class OptionListPatternAnalyzer : DiagnosticAnalyzer
                 }
             };
 }
-#endif
