@@ -21,9 +21,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" PackAsAnalyzer="true" />
-        <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.Roslyn4.0.csproj" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.csproj" PackAsAnalyzer="true" />
-        <ProjectReference Include="..\Funcky.Analyzers.CodeFixes\Funcky.Analyzers.CodeFixes.Roslyn4.0.csproj" PackAsAnalyzer="true" />
     </ItemGroup>
     <ItemGroup>
         <None Include="package.md" Pack="true" PackagePath="\" />

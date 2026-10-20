@@ -4,6 +4,7 @@
 ### New Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
+λ1011 | Funcky.Style | Warning | AlternativeMonadAnalyzer
 λ1101 | Funcky.Style | Warning | FunctionalAssertAnalyzer
 
 ### Removed Rules

@@ -43,22 +43,24 @@ To work around this, Roslyn supports shipping different analyzer assemblies
 in the NuGet package based on the Roslyn version i.e. ["multi-targeting" but for Roslyn][multi-targeting].
 
 The .NET SDK supports "multi-targeting" analyzers on the Roslyn version.
-This means that we ship multiple copies of the analyzer assembly in the following structure:
+This means that the analyzer assemblies live in a `roslyn<version>` directory, and several such directories
+can be shipped side by side:
 
 ```
 ╰─ analyzers
    ╰─ dotnet
-      ├─ roslyn4.0
-      │   ╰─ cs
-      │      ├─ Funcky.Analyzers.dll
-      │      ╰─ ...
       ╰─ roslyn4.4
          ╰─ cs
             ├─ Funcky.Analyzers.dll
             ╰─ ...
 ```
 
-From the different versions, the highest compatible version is picked.
+From the different versions, the highest compatible version is picked. Funcky.Analyzers currently ships a
+single asset for Roslyn 4.4 (Visual Studio 2022 17.4, .NET SDK 7.0.100), the oldest version the analyzers
+need. Until Funcky.Analyzers 1.4.1 there was a second, untested `roslyn4.0` asset for Visual Studio 2022
+17.0; it was dropped once that version was out of support. To add an asset for another Roslyn version, add a
+second project file next to `Funcky.Analyzers.csproj` with a different `AnalyzerRoslynVersion`, reference it
+from the package project with `PackAsAnalyzer`, and guard the sources that need the newer API with a define.
 
 ### Remarks
 * SDKs that don't support multi-targeting load analyzers recursively,
@@ -66,8 +68,10 @@ From the different versions, the highest compatible version is picked.
     * The `System.Text.Json` package fixes this by shipping a `.targets` file with their packages that
       catches this case by checking for the `SupportsRoslynComponentVersioning` property
       and manually removing discovered analyzers that are incompatible.
-    * Our analyzers require at least Roslyn 4.0 / .NET 6.0 (which is the version that introduced multi-targeting)
-      so we fix this by shipping a `.targets` file that removes all our analyzers and warns the user.
+    * Our analyzers require at least Roslyn 4.4; SDKs without multi-targeting support (before Roslyn 4.0 / .NET 6.0)
+      would load them anyway, so we ship a `.targets` file that removes all our analyzers and warns the user.
+    * An SDK that supports multi-targeting but is older than Roslyn 4.4 finds no compatible directory and loads
+      nothing, without a warning; that cannot be detected from MSBuild.
 * SDKs versions that support multi-targeting also load analyzers
   that are not in a `roslyn*` directory, so to avoid loading analyzers twice
   all analyzers need to be inside a `roslyn*` directory.

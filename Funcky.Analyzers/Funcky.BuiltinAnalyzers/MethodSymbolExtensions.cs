@@ -18,9 +18,11 @@ internal static class MethodSymbolExtensions
         return node.DescendantNodes(descendIntoChildren: n => n == node || !IsReturnableConstruct(n)).Any(IsYield);
     }
 
-    private static bool IsIterator(this SyntaxNode node) => ContainsYield(node);
+    /// <summary>Returns the node and its ancestors up to, but excluding, the enclosing method, lambda, local function or accessor.</summary>
+    public static IEnumerable<SyntaxNode> AncestorsAndSelfWithinReturnableConstruct(this SyntaxNode node)
+        => node.AncestorsAndSelf().TakeWhile(n => !IsReturnableConstruct(n));
 
-    private static bool IsReturnableConstruct(SyntaxNode node)
+    public static bool IsReturnableConstruct(this SyntaxNode node)
         => node.Kind()
             is SyntaxKind.AnonymousMethodExpression
             or SyntaxKind.SimpleLambdaExpression
@@ -36,4 +38,6 @@ internal static class MethodSymbolExtensions
             or SyntaxKind.ConversionOperatorDeclaration
             or SyntaxKind.AddAccessorDeclaration
             or SyntaxKind.RemoveAccessorDeclaration;
+
+    private static bool IsIterator(this SyntaxNode node) => ContainsYield(node);
 }
