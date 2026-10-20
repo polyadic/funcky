@@ -21,7 +21,7 @@ public sealed class EagerlyComputedFallbackAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "Fallback is computed eagerly",
         messageFormat: "The fallback passed to '{0}' is computed even when there is a value; pass a function to compute it only when needed",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Info,
         isEnabledByDefault: true,
         description: "An argument is evaluated before the method runs. A fallback that calls a method, allocates an object or awaits does that work even when the fallback is not needed. The lazy overload taking a function defers the work to the case where the fallback is actually used.",
@@ -51,9 +51,12 @@ public sealed class EagerlyComputedFallbackAnalyzer : DiagnosticAnalyzer
     {
         var invocation = (IInvocationOperation)context.Operation;
 
-        foreach (var argument in invocation.Arguments.Where(argument => !argument.IsImplicit && DoesWork(argument.Value, cheapInvocations)))
+        // The overload lookup is cheap and rules out almost every invocation; the argument is only traversed for actual fallbacks.
+        foreach (var argument in invocation.Arguments.Where(argument => !argument.IsImplicit))
         {
-            if (LazyOverloads.FindLazyOverload(invocation, argument, fallbackTypes) is { } lazyOverload && argument.Parameter is { } parameter)
+            if (LazyOverloads.FindLazyOverload(invocation, argument, fallbackTypes) is { } lazyOverload
+                && argument.Parameter is { } parameter
+                && DoesWork(argument.Value, cheapInvocations))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     Descriptor,
@@ -69,9 +72,19 @@ public sealed class EagerlyComputedFallbackAnalyzer : DiagnosticAnalyzer
     // A throw expression is the business of λ1014, so this rule stays silent on those arguments to not report them twice.
     private static bool DoesWork(IOperation operation, CheapInvocations cheapInvocations)
     {
-        var descendants = operation.DescendantsAndSelfOutsideFunctions().ToList();
-        return !descendants.Any(descendant => descendant is IThrowOperation)
-            && descendants.Any(descendant => IsWork(descendant, cheapInvocations));
+        var doesWork = false;
+
+        foreach (var descendant in operation.DescendantsAndSelfOutsideFunctions())
+        {
+            if (descendant is IThrowOperation)
+            {
+                return false;
+            }
+
+            doesWork |= IsWork(descendant, cheapInvocations);
+        }
+
+        return doesWork;
     }
 
     private static bool IsWork(IOperation operation, CheapInvocations cheapInvocations)

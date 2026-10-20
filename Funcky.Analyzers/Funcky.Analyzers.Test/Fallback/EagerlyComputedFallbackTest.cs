@@ -121,6 +121,73 @@ public sealed class EagerlyComputedFallbackTest
     }
 
     [Fact]
+    public async Task LambdaParameterAvoidsANameThatIsInScopeOrUsedInTheFallback()
+    {
+        const string inputCode =
+            """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                private static int _;
+
+                public static int E(Either<int, int> either)
+                    => either.GetOrElse({|λ1015:System.Math.Abs(_)|});
+
+                public static int R(Result<int> result, string text)
+                    => result.GetOrElse({|λ1015:int.TryParse(text, out _) ? 1 : 0|});
+            }
+            """;
+        const string fixedCode =
+            """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                private static int _;
+
+                public static int E(Either<int, int> either)
+                    => either.GetOrElse(__ => System.Math.Abs(_));
+
+                public static int R(Result<int> result, string text)
+                    => result.GetOrElse(__ => int.TryParse(text, out _) ? 1 : 0);
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, fixedCode + MonadStubCode);
+    }
+
+    [Fact]
+    public async Task NoFixWhenTheFallbackCannotMoveIntoALambda()
+    {
+        const string inputCode =
+            """
+            using System.Threading.Tasks;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static async Task<int> Awaited(Option<int> option)
+                    => option.GetOrElse({|λ1015:await LoadAsync()|});
+
+                public static int ByRef(Option<int> option, ref int value)
+                    => option.GetOrElse({|λ1015:System.Math.Abs(value)|});
+
+                public static int In(Option<int> option, in int value)
+                    => option.GetOrElse({|λ1015:System.Math.Abs(value)|});
+
+                public static int Declares(Option<int> option, string text)
+                {
+                    var fallback = option.GetOrElse({|λ1015:int.TryParse(text, out var parsed) ? parsed : 0|});
+                    return fallback + parsed;
+                }
+
+                private static Task<int> LoadAsync() => Task.FromResult(42);
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, inputCode + MonadStubCode);
+    }
+
+    [Fact]
     public async Task PlainValuesAndCheapConstructorsAreNotReported()
     {
         const string inputCode =
