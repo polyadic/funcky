@@ -53,6 +53,7 @@
   * [λ1010](./analyzer-rules/λ1010.md)
   * [λ1015](./analyzer-rules/λ1015.md)
   * [λ1014](./analyzer-rules/λ1014.md)
+  * [λ1016](./analyzer-rules/λ1016.md)
   * [λ1101](./analyzer-rules/λ1101.md)
 
 [Changelog](changelog.md)

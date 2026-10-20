@@ -8,6 +8,7 @@ Rule ID | Category | Severity | Notes
 λ1013 | Funcky.Style | Info | SequenceReturnCollectionExpressionAnalyzer
 λ1014 | Funcky.Style | Warning | ThrowInEagerFallbackAnalyzer
 λ1015 | Funcky.Style | Info | EagerlyComputedFallbackAnalyzer
+λ1016 | Funcky.Style | Warning | TrivialLazyFallbackAnalyzer
 λ1101 | Funcky.Style | Warning | FunctionalAssertAnalyzer
 
 ### Removed Rules
