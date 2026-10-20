@@ -57,8 +57,8 @@ can be shipped side by side:
 
 From the different versions, the highest compatible version is picked. Funcky.Analyzers currently ships a
 single asset for Roslyn 4.4 (Visual Studio 2022 17.4, .NET SDK 7.0.100), the oldest version the analyzers
-need. Until Funcky.Analyzers 1.4.1 there was a second, untested `roslyn4.0` asset for Visual Studio 2022
-17.0; it was dropped once that version was out of support. To add an asset for another Roslyn version, add a
+need. Up to Funcky.Analyzers 1.4.2 there was a second, untested `roslyn4.0` asset for Visual Studio 2022
+17.0; Funcky.Analyzers 2.0.0 dropped it, as that version is out of support. To add an asset for another Roslyn version, add a
 second project file next to `Funcky.Analyzers.csproj` with a different `AnalyzerRoslynVersion`, reference it
 from the package project with `PackAsAnalyzer`, and guard the sources that need the newer API with a define.
 
