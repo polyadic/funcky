@@ -80,7 +80,7 @@ See [The TryVerb-pattern](./try-pattern.md) and [String Extensions](./string-ext
 This is the question every newcomer asks, and the rest of this chapter is the answer. There is no `Value`
 property and no `GetOrThrow`. The methods below are ordered from the ones you should reach for first to the
 ones that exist only for interop with imperative code. When you find yourself further down the ladder than
-necessary, the `Funcky.Analyzers` package will usually tell you.
+necessary, the built-in analyzers and the `Funcky.Analyzers` package will usually tell you.
 
 ### 1. Don't. Stay inside with `Select`
 
@@ -98,6 +98,15 @@ Option<int> length =
 
 If the input is `None`, the lambda never runs and the result is `None`. No check, no branch, no way to forget the
 empty case.
+
+The selector has to return a value, not `null`: `TResult` is constrained to `notnull`. If it can return `null`, for
+example `user => user.MiddleName` with a `string?` property, the compiler reports CS8714 ("Nullability of type argument
+'string?' doesn't match 'notnull' constraint") at the call. The repair is `SelectMany` with `Option.FromNullable`, which
+turns the `null` into `None`; the `Funcky.Analyzers` package offers this rewrite as a code fix for CS8714:
+
+```cs
+Option<string> middleName = user.SelectMany(u => Option.FromNullable(u.MiddleName));
+```
 
 ### 2. Chain operations that might each fail with `SelectMany`
 

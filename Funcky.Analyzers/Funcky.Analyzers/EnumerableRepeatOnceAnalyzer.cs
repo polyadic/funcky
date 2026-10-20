@@ -15,7 +15,7 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
     public const string ValueParameterIndexProperty = nameof(ValueParameterIndexProperty);
 
     public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}01";
-    private const string Category = nameof(Funcky);
+    private const string Category = DiagnosticName.Category;
 
     private static readonly LocalizableString Title = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerTitle));
     private static readonly LocalizableString MessageFormat = LoadFromResource(nameof(EnumerableRepeatOnceAnalyzerMessageFormat));

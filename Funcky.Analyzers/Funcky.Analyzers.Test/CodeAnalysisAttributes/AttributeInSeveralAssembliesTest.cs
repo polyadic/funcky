@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.Testing;
 using Xunit;
-using NonDefaultableVerifier = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.Analyzers.NonDefaultable.NonDefaultableAnalyzer>;
+using NonDefaultableVerifier = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.BuiltinAnalyzers.NonDefaultableAnalyzer>;
 using UseWithArgumentNamesVerifier = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.Analyzers.UseWithArgumentNamesAnalyzer>;
 
 namespace Funcky.Analyzers.Test.CodeAnalysisAttributes;

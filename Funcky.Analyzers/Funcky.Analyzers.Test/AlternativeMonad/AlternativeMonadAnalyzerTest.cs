@@ -289,7 +289,6 @@ public sealed partial class AlternativeMonadAnalyzerTest
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
                     optionOfInt.Match(none: optionOfInt, some: x => Option.Return(x + 1));
                     optionOfInt.Match(none: optionOfInt, some: x => x + 1);
-                    optionOfInt.Match(none: Option<string>.None, some: x => x.ToString());
                     optionOfString.Match(none: (string?)null, some: x => x + "foo");
                     optionOfInt.Match(none: (int?)null, some: x => x + 1);
                 }

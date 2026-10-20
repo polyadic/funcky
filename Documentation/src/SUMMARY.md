@@ -40,6 +40,7 @@
 * [Analyzer Rules](./analyzer-rules/analyzer-rules.md)
   * [λ0001](./analyzer-rules/λ0001.md)
   * [λ0003](./analyzer-rules/λ0003.md)
+  * [λ0004](./analyzer-rules/λ0004.md)
   * [λ1001](./analyzer-rules/λ1001.md)
   * [λ1002](./analyzer-rules/λ1002.md)
   * [λ1003](./analyzer-rules/λ1003.md)
@@ -50,6 +51,9 @@
   * [λ1008](./analyzer-rules/λ1008.md)
   * [λ1009](./analyzer-rules/λ1009.md)
   * [λ1010](./analyzer-rules/λ1010.md)
+  * [λ1015](./analyzer-rules/λ1015.md)
+  * [λ1014](./analyzer-rules/λ1014.md)
+  * [λ1016](./analyzer-rules/λ1016.md)
   * [λ1101](./analyzer-rules/λ1101.md)
 
 [Changelog](changelog.md)

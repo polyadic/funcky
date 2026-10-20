@@ -19,7 +19,7 @@ public sealed class FunctionalAssertAnalyzer : DiagnosticAnalyzer
         id: PreferFunctionalAssertId,
         title: "Assert can be simplified",
         messageFormat: "Assert can be simplified to a single call to {0}.{1}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         helpLinkUri: DiagnosticName.HelpLink(PreferFunctionalAssertId));

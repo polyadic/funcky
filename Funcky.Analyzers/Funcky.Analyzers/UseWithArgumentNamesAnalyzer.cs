@@ -15,7 +15,7 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
     /// <summary>The attribute is matched by name, so any assembly may define it: Funcky, the user's own project or the generator.</summary>
     internal const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
 
-    private const string Category = nameof(Funcky);
+    private const string Category = DiagnosticName.Category;
 
     private static readonly DiagnosticDescriptor Descriptor = new(
         id: DiagnosticId,
