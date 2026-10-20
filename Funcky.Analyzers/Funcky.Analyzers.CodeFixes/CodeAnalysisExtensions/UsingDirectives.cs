@@ -35,7 +35,7 @@ internal static class UsingDirectives
             (null, { } first) => container.InsertNodesBefore(first, [usingDirective.WithLeadingTrivia(FormattingOnly(first.GetLeadingTrivia())).WithTrailingTrivia(endOfLine)]),
             (null, null) => container switch
             {
-                CompilationUnitSyntax compilationUnit => (TContainer)(SyntaxNode)compilationUnit.AddUsings(usingDirective.WithTrailingTrivia(endOfLine, endOfLine)),
+                CompilationUnitSyntax compilationUnit => (TContainer)(SyntaxNode)WithFirstUsing(compilationUnit, usingDirective.WithTrailingTrivia(endOfLine, endOfLine)),
                 BaseNamespaceDeclarationSyntax namespaceDeclaration => (TContainer)(SyntaxNode)namespaceDeclaration.AddUsings(usingDirective.WithTrailingTrivia(endOfLine, endOfLine)),
                 _ => container,
             },
@@ -46,6 +46,21 @@ internal static class UsingDirectives
     /// normalize together with the surrounding line endings.</summary>
     public static UsingDirectiveSyntax ParseUsingDirective(string directive)
         => ParseCompilationUnit(directive).Usings.Single();
+
+    // `#define` and `#undef` must precede every token, the using included. In a file without usings they lead the first
+    // member, so they (and whatever stands before them) move in front of the new using; an `#if` or a comment stays where it is.
+    private static CompilationUnitSyntax WithFirstUsing(CompilationUnitSyntax compilationUnit, UsingDirectiveSyntax usingDirective)
+    {
+        var firstToken = compilationUnit.GetFirstToken(includeZeroWidth: true);
+        var leadingTrivia = firstToken.LeadingTrivia;
+        var headerLength = leadingTrivia.Select((trivia, index) => (Trivia: trivia, Index: index)).Where(pair => pair.Trivia.IsKind(SyntaxKind.DefineDirectiveTrivia) || pair.Trivia.IsKind(SyntaxKind.UndefDirectiveTrivia)).Select(pair => pair.Index + 1).LastOrDefault();
+
+        return headerLength == 0
+            ? compilationUnit.AddUsings(usingDirective)
+            : compilationUnit
+                .ReplaceToken(firstToken, firstToken.WithLeadingTrivia(leadingTrivia.Skip(headerLength)))
+                .AddUsings(usingDirective.WithLeadingTrivia(leadingTrivia.Take(headerLength)));
+    }
 
     // Counting the directives before the using: more `#if` than `#endif` means it sits inside a region.
     private static bool IsInsideConditionalRegion(UsingDirectiveSyntax usingDirective)
