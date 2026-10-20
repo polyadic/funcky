@@ -148,6 +148,179 @@ public sealed class OptionSelectNullableSelectorCodeFixTest
     }
 
     [Fact]
+    public async Task SuppliesTheTypeArgumentWhenTheSelectorReturnsNullOrDefault()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(Option<string> option)
+                {
+                    var a = option.Select<string?>(_ => null);
+                    var b = option.Select<int?>(_ => default);
+                    var c = option.Select<string?>(value =>
+                    {
+                        if (value.Length > 3)
+                        {
+                            return null;
+                        }
+
+                        return default;
+                    });
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(Option<string> option)
+                {
+                    var a = option.SelectMany(_ => Option.FromNullable<string>(null));
+                    var b = option.SelectMany(_ => Option.FromNullable<int>(default));
+                    var c = option.SelectMany(value =>
+                    {
+                        if (value.Length > 3)
+                        {
+                            return Option.FromNullable<string>(null);
+                        }
+
+                        return Option.FromNullable<string>(default);
+                    });
+                }
+            }
+            """;
+
+        var test = new VerifyCS.Test
+        {
+            TestCode = inputCode + Environment.NewLine + OptionStubCode,
+            FixedCode = fixedCode + Environment.NewLine + OptionStubCode,
+            FixedState = { InheritanceMode = StateInheritanceMode.Explicit },
+        };
+        test.ExpectedDiagnostics.AddRange(
+        [
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(9, 17, 9, 39),
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(10, 17, 10, 36),
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(11, 17, 11, 39),
+        ]);
+        await test.RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task RewritesAnExplicitNullableReturnTypeToOption()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public sealed class User
+            {
+                public string? MiddleName { get; set; }
+
+                public int? Age { get; set; }
+            }
+
+            public static class C
+            {
+                public static void M(Option<User> option)
+                {
+                    var a = option.Select(string? (User user) => user.MiddleName);
+                    var b = option.Select(int? (user) =>
+                    {
+                        return user.Age;
+                    });
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public sealed class User
+            {
+                public string? MiddleName { get; set; }
+
+                public int? Age { get; set; }
+            }
+
+            public static class C
+            {
+                public static void M(Option<User> option)
+                {
+                    var a = option.SelectMany(Option<string> (User user) => Option.FromNullable(user.MiddleName));
+                    var b = option.SelectMany(Option<int> (user) =>
+                    {
+                        return Option.FromNullable(user.Age);
+                    });
+                }
+            }
+            """;
+
+        var test = new VerifyCS.Test
+        {
+            TestCode = inputCode + Environment.NewLine + OptionStubCode,
+            FixedCode = fixedCode + Environment.NewLine + OptionStubCode,
+            FixedState = { InheritanceMode = StateInheritanceMode.Explicit },
+        };
+        test.ExpectedDiagnostics.AddRange(
+        [
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(16, 17, 16, 30),
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(17, 17, 17, 30),
+        ]);
+        await test.RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task OffersNoFixForAConstrainedTypeInsideTheLambdaOrAThrowExpression()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public sealed class Box<T>
+                where T : notnull
+            {
+            }
+
+            public static class C
+            {
+                public static void M(Option<string> option)
+                {
+                    var a = option.Select(_ => new Box<string?>());
+                    var b = option.Select<string?>(_ => throw new System.InvalidOperationException());
+                }
+            }
+            """;
+        DiagnosticResult[] expectedDiagnostics =
+        [
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(14, 44, 14, 51),
+            DiagnosticResult.CompilerError(NotNullConstraintViolation).WithSpan(15, 17, 15, 39),
+        ];
+        var test = new VerifyCS.Test
+        {
+            TestCode = inputCode + Environment.NewLine + OptionStubCode,
+            FixedCode = inputCode + Environment.NewLine + OptionStubCode,
+        };
+        test.ExpectedDiagnostics.AddRange(expectedDiagnostics);
+        test.FixedState.ExpectedDiagnostics.AddRange(expectedDiagnostics);
+        await test.RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
     public async Task OffersNoFixForEitherAndResultOrForMethodGroups()
     {
         const string inputCode =
