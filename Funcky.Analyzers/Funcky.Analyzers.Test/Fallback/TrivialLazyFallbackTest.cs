@@ -131,6 +131,98 @@ public sealed class TrivialLazyFallbackTest
     }
 
     [Fact]
+    public async Task MemberReadOnAReceiverKnownToBeNonNullIsReported()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public sealed class Box
+            {
+                public int Field;
+
+                public int Property { get; set; }
+            }
+
+            public static class C
+            {
+                public static void M(Option<int> option, Box box)
+                {
+                    option.GetOrElse({|λ1016:() => box.Field|});
+                    option.GetOrElse({|λ1016:() => box.Property|});
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using Funcky.Monads;
+
+            public sealed class Box
+            {
+                public int Field;
+
+                public int Property { get; set; }
+            }
+
+            public static class C
+            {
+                public static void M(Option<int> option, Box box)
+                {
+                    option.GetOrElse(box.Field);
+                    option.GetOrElse(box.Property);
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, fixedCode + MonadStubCode);
+    }
+
+    [Fact]
+    public async Task ValuesThatOnlyLookCheapAreNotReported()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Monads;
+
+            public sealed class Source
+            {
+            }
+
+            public sealed class Target
+            {
+                public static implicit operator Target(Source source) => new();
+            }
+
+            public sealed class Box
+            {
+                public int Field;
+            }
+
+            public static class C
+            {
+                public static void M(Option<object> objects, Func<object> fallback, Option<Task<int>> tasks, Option<int> option, Lazy<int> lazy, int? nullable, Option<Target> targets, Source source, Result<string> result, Box? box)
+                {
+                    objects.GetOrElse(() => fallback);
+                    tasks.GetOrElse(async () => 42);
+                    option.GetOrElse(() => lazy.Value);
+                    option.GetOrElse(() => nullable!.Value);
+                    option.GetOrElse(() => box?.Field ?? 0);
+                    targets.GetOrElse(() => source);
+                    result.GetOrElse(error => nameof(error));
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + MonadStubCode);
+    }
+
+    [Fact]
     public async Task LambdasWithWorkOrUsingTheirParameterAreNotReported()
     {
         const string inputCode =
