@@ -56,6 +56,15 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   `option.GetOrElse(() => 0f)`: there is no work to defer, so the eager overload taking the value says the same with
   less. The code fix replaces the lambda with its body.
 
+## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+
+### Analyzers
+* New: rule `λ1017` reports a lambda that spells out one of the named functions in `Funcky.Functional`: `x => x` is
+  `Identity`, `_ => true` is `True`, `_ => false` is `False` and `() => { }` is `NoOperation`. It only reports where the
+  method group binds the same way as the lambda, so an ambiguous `Where(True)` is left alone. The code fix replaces the
+  lambda and adds `using static Funcky.Functional;` when needed. Before C# 11 the rule reports an info, because the
+  compiler only caches method group delegates from C# 11 on.
+
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
 * New: `AggregateOrNone` and `AggregateOrNoneAsync`, the `…OrNone` variant of the seedless `Aggregate`, which throws for an
