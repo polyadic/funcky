@@ -7,6 +7,7 @@ Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ0003 | Funcky.Correctness | Error | SyntaxSupportOnlyAnalyzer
 λ0004 | Funcky.Correctness | Error | DefaultInConversionAnalyzer
+λ0005 | Funcky.Correctness | Error | NullToMonadAnalyzer
 λ1009 | Funcky.Correctness | Error | NonDefaultableAnalyzer, moved from Funcky.Analyzers 1.4 (keeps its ID)
 λ1010 | Funcky.Correctness | Error | OptionListPatternAnalyzer, moved from Funcky.Analyzers before it shipped (keeps its ID)
 

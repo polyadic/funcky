@@ -32,6 +32,7 @@ contains a rule.
 | [λ0001](./λ0001.md) | Error | Disallowed use of `TryGetValue` |
 | [λ0003](./λ0003.md) | Error | Member is not intended for direct usage |
 | [λ0004](./λ0004.md) | Error | The `default` literal is wrapped by an implicit conversion |
+| [λ0005](./λ0005.md) | Error | A `null` literal is passed to `Option`, `Result` or `Either` |
 | [λ1009](./λ1009.md) | Error | Do not use `default` to instantiate this type (moved from `Funcky.Analyzers` in 3.7.0) |
 | [λ1010](./λ1010.md) | Error | An option has either zero or one elements (needs Roslyn 4.4, i.e. the .NET 7 SDK or newer) |
 

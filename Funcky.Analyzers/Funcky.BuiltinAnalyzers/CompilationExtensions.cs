@@ -20,4 +20,8 @@ internal static class CompilationExtensions
             new[] { compilation.GetOptionOfTType(), compilation.GetResultOfTType(), compilation.GetEitherOfTType() }
                 .Where(type => type is not null)
                 .Select(type => type!));
+
+    public static INamedTypeSymbol? GetResultType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Result");
+
+    public static INamedTypeSymbol? GetEitherOfLeftType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Either`1");
 }

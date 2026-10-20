@@ -55,6 +55,11 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   `Result<T>` and `Either<L, R>` that only returns a literal, a constant, a variable or a member, e.g.
   `option.GetOrElse(() => 0f)`: there is no work to defer, so the eager overload taking the value says the same with
   less. The code fix replaces the lambda with its body.
+* New: built-in rule `λ0005` reports a `null` literal that is converted to `Option<T>`, `Result<T>` or `Either<L, R>`
+  or passed to one of their factory methods (`Option.Some`, `Result.Ok`, `Either<L, R>.Left`, …). The monads reject
+  `null` with an `ArgumentNullException`, so `Option<string> option = null;` and even `option == null` throw at run time;
+  with nullable reference types disabled the compiler is silent about it. The code fix replaces the literal with
+  `Option<T>.None`.
 
 ## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
 

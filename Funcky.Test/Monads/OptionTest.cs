@@ -20,7 +20,9 @@ public sealed partial class OptionTest
     [Fact]
     public void OptionConstructorThrowsWhenNullIsPassed()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Assert.Throws<ArgumentNullException>(() => Option.Some<string>(null!));
+#pragma warning restore λ0005
     }
 
     [Fact]
