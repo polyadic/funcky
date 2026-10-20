@@ -11,11 +11,15 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
 {
     public const string DisallowedTryGetId = $"{DiagnosticName.Prefix}{DiagnosticName.BuiltIn}01";
 
+    private const string ComponentBaseTypeName = "Microsoft.AspNetCore.Components.ComponentBase";
+
+    private const string RazorPageBaseTypeName = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase";
+
     private static readonly DiagnosticDescriptor Descriptor = new(
         id: DisallowedTryGetId,
         title: "Disallowed use of TryGetValue",
         messageFormat: "Disallowed use of TryGetValue",
-        category: "Funcky",
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "TryGetValue should be used carefully.",
@@ -60,45 +64,52 @@ public sealed class TryGetValueAnalyzer : DiagnosticAnalyzer
         => method.MetadataName == WellKnownMemberNames.OptionOfT.TryGetValue
            && SymbolEqualityComparer.Default.Equals(method.ContainingType.OriginalDefinition, optionOfTType);
 
+    /// <summary>
+    /// <c>TryGetValue</c> is allowed anywhere inside a catch filter clause, inside the condition of a loop
+    /// or inside the condition of an <c>if</c> statement that yields, as long as the call belongs to the same
+    /// method, lambda or local function as that construct.
+    /// </summary>
     private static bool IsAllowedUsageOfTryGetValue(SyntaxNode node)
-        => IsPartOfCatchFilterClause(node)
-           || IsInLoopCondition(node)
-           || (IsInIfConditionWithYield(node) && node.IsWithinIterator());
+        => node.AncestorsAndSelfWithinReturnableConstruct().Any(n
+            => IsCatchFilterClause(n)
+               || IsLoopCondition(n)
+               || (IsIfConditionWithYield(n) && node.IsWithinIterator()));
 
-    private static bool IsPartOfCatchFilterClause(SyntaxNode node)
-        => node.Parent is CatchFilterClauseSyntax;
+    private static bool IsCatchFilterClause(SyntaxNode node)
+        => node is CatchFilterClauseSyntax;
 
-    private static bool IsInLoopCondition(SyntaxNode node)
-        => node.AncestorsAndSelf().Any(n => IsConditionOfWhileStatement(n) || IsConditionOfDoStatement(n) || IsConditionOfForStatement(n));
+    private static bool IsLoopCondition(SyntaxNode node)
+        => node.Parent switch
+        {
+            WhileStatementSyntax whileStatement => whileStatement.Condition == node,
+            DoStatementSyntax doStatement => doStatement.Condition == node,
+            ForStatementSyntax forStatement => forStatement.Condition == node,
+            _ => false,
+        };
 
-    private static bool IsInIfConditionWithYield(SyntaxNode node)
-        => node.AncestorsAndSelf().Any(n => n.Parent is IfStatementSyntax ifStatement
-            && ifStatement.Condition == n
-            && ifStatement.ContainsYield());
+    private static bool IsIfConditionWithYield(SyntaxNode node)
+        => node.Parent is IfStatementSyntax ifStatement
+           && ifStatement.Condition == node
+           && ifStatement.ContainsYield();
 
-    private static bool IsConditionOfWhileStatement(SyntaxNode node)
-        => node.Parent is WhileStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
-
-    private static bool IsConditionOfDoStatement(SyntaxNode node)
-        => node.Parent is DoStatementSyntax whileStatementSyntax && whileStatementSyntax.Condition == node;
-
-    private static bool IsConditionOfForStatement(SyntaxNode node)
-        => node.Parent is ForStatementSyntax forStatementSyntax && forStatementSyntax.Condition == node;
-
+    /// <summary>Razor components (<c>.razor</c>) and Razor pages and views (<c>.cshtml</c>) have no control flow constructs of their own.</summary>
     private static bool OriginatesInRazorComponent(OperationAnalysisContext context)
-        => OriginatesInRazorFile(context.Operation) && IsContainedInRazorComponentType(context);
+        => GetMappedFileExtension(context.Operation) switch
+        {
+            ".razor" => IsContainedInTypeDerivedFrom(context, ComponentBaseTypeName),
+            ".cshtml" => IsContainedInTypeDerivedFrom(context, RazorPageBaseTypeName),
+            _ => false,
+        };
 
-    private static bool IsContainedInRazorComponentType(OperationAnalysisContext context)
-    {
-        var componentBaseType = context.Compilation.GetTypeByMetadataName("Microsoft.AspNetCore.Components.ComponentBase");
-        return GetBaseTypes(context.ContainingSymbol.ContainingType).Contains(componentBaseType, SymbolEqualityComparer.Default);
-    }
-
-    private static bool OriginatesInRazorFile(IOperation operation)
+    private static string? GetMappedFileExtension(IOperation operation)
     {
         var mappedLineSpan = operation.Syntax.SyntaxTree.GetMappedLineSpan(operation.Syntax.Span);
-        return mappedLineSpan.HasMappedPath && Path.GetExtension(mappedLineSpan.Path) is ".razor" or ".cshtml";
+        return mappedLineSpan.HasMappedPath ? Path.GetExtension(mappedLineSpan.Path) : null;
     }
+
+    private static bool IsContainedInTypeDerivedFrom(OperationAnalysisContext context, string baseTypeMetadataName)
+        => context.Compilation.GetTypeByMetadataName(baseTypeMetadataName) is { } baseType
+           && GetBaseTypes(context.ContainingSymbol.ContainingType).Contains(baseType, SymbolEqualityComparer.Default);
 
     private static IEnumerable<INamedTypeSymbol> GetBaseTypes(INamedTypeSymbol type)
     {

@@ -15,7 +15,7 @@ public partial class AlternativeMonadAnalyzer
         id: PreferToNullableId,
         title: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {ToNullableMethodName} over {MatchMethodName}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: string.Empty,

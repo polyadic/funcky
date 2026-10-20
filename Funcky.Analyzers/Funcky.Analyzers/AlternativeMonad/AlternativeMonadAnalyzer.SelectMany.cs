@@ -13,7 +13,7 @@ public partial class AlternativeMonadAnalyzer
         id: PreferSelectManyId,
         title: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
         messageFormat: $"Prefer {SelectManyMethodName} over {MatchMethodName}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: string.Empty,

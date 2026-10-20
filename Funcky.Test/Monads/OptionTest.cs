@@ -165,9 +165,11 @@ public sealed partial class OptionTest
 
         foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(option => option.Match(none: false, some: True)))
         {
+#pragma warning disable λ1016 // The test exercises the lazy overload on purpose.
             var value = number.Match(
                 none: () => 0,
                 some: Identity);
+#pragma warning restore λ1016
 
             Assert.NotEqual(0, value);
         }
@@ -240,9 +242,11 @@ public sealed partial class OptionTest
         var none = Option<int>.None;
         var some = Option.Some(42);
 
+#pragma warning disable λ1016 // The test exercises the lazy overload on purpose.
         var option = none
             .OrElse(() => none)
             .OrElse(() => some);
+#pragma warning restore λ1016
 
         Assert.Equal(some, option);
     }
