@@ -227,6 +227,167 @@ public sealed class PreferNamedFunctionTest
     }
 
     [Fact]
+    public async Task TheQualifiedNameIsUsedWhenTheImportWouldMakeAnotherNameAmbiguous()
+    {
+        // language=csharp
+        const string inputCode =
+            """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky;
+            using static Other;
+
+            public static class Other
+            {
+                public static bool True() => true;
+            }
+
+            public static class C
+            {
+                public static bool M(IEnumerable<int> items)
+                    => items.Any({|λ1017:_ => true|}) && True();
+            }
+            """;
+
+        // language=csharp
+        const string fixedCode =
+            """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky;
+            using static Other;
+
+            public static class Other
+            {
+                public static bool True() => true;
+            }
+
+            public static class C
+            {
+                public static bool M(IEnumerable<int> items)
+                    => items.Any(Functional.True) && True();
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunctionalStub, fixedCode + FunctionalStub);
+    }
+
+    [Fact]
+    public async Task TheUsingStaticIsGloballyQualifiedWhenANestedFunckyNamespaceIsVisible()
+    {
+        // language=csharp
+        const string inputCode =
+            """
+            namespace App
+            {
+                using System.Collections.Generic;
+                using System.Linq;
+
+                namespace Funcky
+                {
+                    public static class Nested
+                    {
+                    }
+                }
+
+                public static class C
+                {
+                    public static IEnumerable<int> M(IEnumerable<int> items)
+                        => items.Select({|λ1017:x => x|});
+                }
+            }
+            """;
+
+        // language=csharp
+        const string fixedCode =
+            """
+            namespace App
+            {
+                using System.Collections.Generic;
+                using System.Linq;
+                using static global::Funcky.Functional;
+
+                namespace Funcky
+                {
+                    public static class Nested
+                    {
+                    }
+                }
+
+                public static class C
+                {
+                    public static IEnumerable<int> M(IEnumerable<int> items)
+                        => items.Select(Identity);
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunctionalStub, fixedCode + FunctionalStub);
+    }
+
+    [Fact]
+    public async Task TheUsingStaticIsInsertedOutsideOfConditionalRegions()
+    {
+        // language=csharp
+        const string inputCode =
+            """
+            using System.Collections.Generic;
+            using System.Linq;
+            #if true
+            using System.Text;
+            #endif
+
+            public static class C
+            {
+                public static IEnumerable<int> M(IEnumerable<int> items)
+                    => items.Select({|λ1017:x => x|});
+            }
+            """;
+
+        // language=csharp
+        const string fixedCode =
+            """
+            using System.Collections.Generic;
+            using System.Linq;
+            using static Funcky.Functional;
+            #if true
+            using System.Text;
+            #endif
+
+            public static class C
+            {
+                public static IEnumerable<int> M(IEnumerable<int> items)
+                    => items.Select(Identity);
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunctionalStub, fixedCode + FunctionalStub);
+    }
+
+    [Fact]
+    public async Task LambdasWhoseReplacementWouldBreakInferenceAreNotReported()
+    {
+        // language=csharp
+        const string inputCode =
+            """
+            using System;
+            using static Funcky.Functional;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    // Either lambda alone supplies T, both method groups together do not.
+                    Both((int x) => x, (int y) => y);
+
+                    // A method group has no natural type.
+                    var f = (int x) => x;
+                }
+
+                private static void Both<T>(Func<T, T> a, Func<T, T> b) { }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + FunctionalStub);
+    }
+
+    [Fact]
     public async Task LambdasThatAreNotEquivalentToANamedFunctionAreNotReported()
     {
         // language=csharp
