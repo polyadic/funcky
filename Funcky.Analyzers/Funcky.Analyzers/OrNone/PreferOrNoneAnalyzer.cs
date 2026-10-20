@@ -26,7 +26,7 @@ public sealed class PreferOrNoneAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "Prefer the …OrNone method over …OrDefault with a null check",
         messageFormat: "Prefer '{0}' over '{1}' followed by a null check",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: "FirstOrDefault, LastOrDefault, SingleOrDefault and ElementAtOrDefault signal a missing element with null, which the caller then has to test for. The …OrNone variants return an Option, so the missing element is a None and the handling is a GetOrElse, Select or Match instead of a null check.",
@@ -70,10 +70,11 @@ public sealed class PreferOrNoneAnalyzer : DiagnosticAnalyzer
         };
 
     /// <summary>The LINQ methods called in extension form, without the overloads that take an explicit default value, over a
-    /// reference type that is not nullable-annotated: there a <c>null</c> result can only mean "no element".
+    /// reference type that is not nullable-annotated: there a <c>null</c> result can only mean "no element". The element type
+    /// is the type argument, not the return type: the nullable-annotated LINQ returns <c>TSource?</c> for every sequence.
     /// The operation tree presents an extension call unreduced, with the receiver as the first argument.</summary>
     private static string? MatchOrDefaultMethod(IInvocationOperation invocation, INamedTypeSymbol enumerableType)
-        => invocation.TargetMethod is { IsExtensionMethod: true, ReturnType: { IsReferenceType: true, NullableAnnotation: not NullableAnnotation.Annotated } } method
+        => invocation.TargetMethod is { IsExtensionMethod: true, TypeArguments: [{ IsReferenceType: true, NullableAnnotation: not NullableAnnotation.Annotated }] } method
            && SymbolEquals(method.ContainingType, enumerableType)
            && OrDefaultMethodNames.Contains(method.Name)
            && method.Parameters.All(parameter => parameter.Name != "defaultValue")

@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.OrNone.PreferOrNoneAnalyzer, Funcky.Analyzers.OrNone.PreferOrNoneCodeFix>;
 
@@ -218,5 +219,190 @@ public sealed class PreferOrNoneTest
             }
             """;
         await VerifyCS.VerifyAnalyzerAsync(inputCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task ExplicitTypeArgumentsStayWhenRenaming()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static object M(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault<object>()|} ?? new object();
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static object M(IEnumerable<string> values) => values.FirstOrNone<object>().GetOrElse(() => new object());
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task CoalesceWithAWiderResultTypeIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static object M(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? new object();
+
+                public static object N(IEnumerable<string> values, object fallback) => {|λ1012:values.FirstOrDefault()|} ?? fallback;
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, inputCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task FallbackThatDoesWorkIsPassedLazily()
+    {
+        const string inputCode = """
+            using System;
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string Call(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? CreateFallback();
+
+                public static string Creation(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? new string('x', 3);
+
+                public static string Interpolated(IEnumerable<string> values, int count) => {|λ1012:values.FirstOrDefault()|} ?? $"fallback {count}";
+
+                public static string NestedThrow(IEnumerable<string> values, string other) => {|λ1012:values.FirstOrDefault()|} ?? (other ?? throw new InvalidOperationException());
+
+                public static string Variable(IEnumerable<string> values, string other) => {|λ1012:values.FirstOrDefault()|} ?? other;
+
+                public static string Field(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? string.Empty;
+
+                private static string CreateFallback() => "fallback";
+            }
+            """;
+        const string fixedCode = """
+            using System;
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string Call(IEnumerable<string> values) => values.FirstOrNone().GetOrElse(() => CreateFallback());
+
+                public static string Creation(IEnumerable<string> values) => values.FirstOrNone().GetOrElse(() => new string('x', 3));
+
+                public static string Interpolated(IEnumerable<string> values, int count) => values.FirstOrNone().GetOrElse(() => $"fallback {count}");
+
+                public static string NestedThrow(IEnumerable<string> values, string other) => values.FirstOrNone().GetOrElse(() => other ?? throw new InvalidOperationException());
+
+                public static string Variable(IEnumerable<string> values, string other) => values.FirstOrNone().GetOrElse(other);
+
+                public static string Field(IEnumerable<string> values) => values.FirstOrNone().GetOrElse(string.Empty);
+
+                private static string CreateFallback() => "fallback";
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task FallbackThatCannotMoveIntoALambdaIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static async Task<string> Awaited(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? await Task.FromResult("fallback");
+
+                public static string RefParameter(IEnumerable<string> values, ref string seed) => {|λ1012:values.FirstOrDefault()|} ?? Create(seed);
+
+                private static string Create(string seed) => seed;
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, inputCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task UsingIsAddedOutsideAConditionalRegion()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            #if DEBUG
+            using System.Diagnostics;
+            #endif
+
+            public static class C
+            {
+                public static string M(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? "fallback";
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+            #if DEBUG
+            using System.Diagnostics;
+            #endif
+
+            public static class C
+            {
+                public static string M(IEnumerable<string> values) => values.FirstOrNone().GetOrElse("fallback");
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task NonNullableElementsAreReportedWithNullableAnnotatedLinq()
+    {
+        const string inputCode = """
+            #nullable enable
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string M(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? "fallback";
+
+                public static string N(IEnumerable<string?> values) => values.FirstOrDefault() ?? "fallback";
+            }
+            """;
+        const string fixedCode = """
+            #nullable enable
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string M(IEnumerable<string> values) => values.FirstOrNone().GetOrElse("fallback");
+
+                public static string N(IEnumerable<string?> values) => values.FirstOrDefault() ?? "fallback";
+            }
+            """;
+        await new VerifyCS.Test
+        {
+            ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
+            TestCode = inputCode + FunckyStubs,
+            FixedCode = fixedCode + FunckyStubs,
+        }.RunAsync();
     }
 }

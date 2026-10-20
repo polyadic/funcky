@@ -58,7 +58,8 @@ warnings (an info for pure performance hints), come with a code fix and carry th
 * New: rule `λ1012` reports `FirstOrDefault`, `LastOrDefault`, `SingleOrDefault` and `ElementAtOrDefault` whose result is
   immediately tested for `null` (`?? fallback`, `?.`, `is null`, `is {} x`, `== null`, …) and suggests the `…OrNone`
   variant, which makes the missing element a `None` instead of a `null`. The code fix rewrites `xs.FirstOrDefault() ?? fallback`
-  to `xs.FirstOrNone().GetOrElse(fallback)` and adds the `using Funcky.Extensions;` when needed.
+  to `xs.FirstOrNone().GetOrElse(fallback)`, passes a fallback that does work as a function and adds the
+  `using Funcky.Extensions;` when needed.
 
 ## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
 

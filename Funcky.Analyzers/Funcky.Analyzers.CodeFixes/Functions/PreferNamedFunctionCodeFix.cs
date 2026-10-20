@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Composition;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -109,53 +110,14 @@ public sealed class PreferNamedFunctionCodeFix : CodeFixProvider
             (true, null) => WithUsingStatic((CompilationUnitSyntax)root.ReplaceNode(anonymousFunction, replacement), semanticModel, position: 0),
         };
 
-    /// <summary>Inserts the directive after the last using that is not inside a <c>#if</c> region, so that it is not swallowed by the
-    /// condition; when every using is conditional it goes in front of them all. It takes the indentation and line ending of its neighbour.
-    /// The directive is parsed rather than built from tokens so that it carries no elastic trivia, which the formatter would otherwise
-    /// normalize together with the surrounding line endings.</summary>
+    /// <summary>The <c>using static</c> goes after the last using outside a <c>#if</c> region, see <see cref="UsingDirectives.Insert{TContainer}"/>.</summary>
     private static TContainer WithUsingStatic<TContainer>(TContainer container, SemanticModel semanticModel, int position)
         where TContainer : SyntaxNode
-    {
-        var usings = container switch
-        {
-            CompilationUnitSyntax compilationUnit => compilationUnit.Usings,
-            BaseNamespaceDeclarationSyntax namespaceDeclaration => namespaceDeclaration.Usings,
-            _ => default,
-        };
-        var usingDirective = ParseCompilationUnit($"using static {QualifiedFunctionalName(semanticModel, position)};").Usings.Single();
-
-        return (usings.LastOrDefault(usingDirective => !IsInsideConditionalRegion(usingDirective)), usings.FirstOrDefault()) switch
-        {
-            ({ } anchor, _) => container.InsertNodesAfter(anchor, [usingDirective.WithLeadingTrivia(FormattingOnly(anchor.GetLeadingTrivia())).WithTrailingTrivia(FormattingOnly(anchor.GetTrailingTrivia()))]),
-            (null, { } first) => container.InsertNodesBefore(first, [usingDirective.WithTrailingTrivia(CarriageReturnLineFeed)]),
-            (null, null) => container switch
-            {
-                CompilationUnitSyntax compilationUnit => (TContainer)(SyntaxNode)compilationUnit.AddUsings(usingDirective.WithTrailingTrivia(CarriageReturnLineFeed, CarriageReturnLineFeed)),
-                BaseNamespaceDeclarationSyntax namespaceDeclaration => (TContainer)(SyntaxNode)namespaceDeclaration.AddUsings(usingDirective.WithTrailingTrivia(CarriageReturnLineFeed, CarriageReturnLineFeed)),
-                _ => container,
-            },
-        };
-    }
+        => UsingDirectives.Insert(container, UsingDirectives.ParseUsingDirective($"using static {QualifiedFunctionalName(semanticModel, position)};"));
 
     // Inside a namespace that contains its own `Funcky` namespace a relative `Funcky.Functional` would bind to that one.
     private static string QualifiedFunctionalName(SemanticModel semanticModel, int position)
         => semanticModel.LookupNamespacesAndTypes(position, name: FunctionalNamespace).Any(symbol => symbol is not INamespaceSymbol { ContainingNamespace.IsGlobalNamespace: true })
             ? $"global::{FunctionalNamespace}.{FunctionalTypeName}"
             : $"{FunctionalNamespace}.{FunctionalTypeName}";
-
-    // Counting the directives before the using: more `#if` than `#endif` means it sits inside a region.
-    private static bool IsInsideConditionalRegion(UsingDirectiveSyntax usingDirective)
-        => (usingDirective.Ancestors().LastOrDefault() ?? usingDirective)
-            .DescendantNodes(descendIntoTrivia: true)
-            .OfType<DirectiveTriviaSyntax>()
-            .Where(directive => directive.SpanStart < usingDirective.SpanStart)
-            .Sum(directive => directive switch
-            {
-                IfDirectiveTriviaSyntax => 1,
-                EndIfDirectiveTriviaSyntax => -1,
-                _ => 0,
-            }) > 0;
-
-    private static SyntaxTriviaList FormattingOnly(SyntaxTriviaList trivia)
-        => TriviaList(trivia.Where(t => t.IsKind(SyntaxKind.WhitespaceTrivia) || t.IsKind(SyntaxKind.EndOfLineTrivia)));
 }
