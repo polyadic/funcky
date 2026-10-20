@@ -19,7 +19,7 @@ public sealed class NullToMonadAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "A null literal is passed to Option, Result or Either",
         messageFormat: "{0} throws an ArgumentNullException for 'null'",
-        category: "Funcky",
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "Option, Result and Either never hold null. The implicit conversion from the inner type and the factory methods (Some, Return, Ok, Error, Left, Right) throw an ArgumentNullException when given null, so a null literal in that position throws every time it runs. Use Option<T>.None for an empty option.",
@@ -85,9 +85,12 @@ public sealed class NullToMonadAnalyzer : DiagnosticAnalyzer
         }
     }
 
+    // A lifted conversion to a nullable monad (`Option<int>? option = (int?)null`) propagates the null without calling the
+    // operator, so the result is a null `Option<int>?` rather than an exception; only an operator that receives the null throws.
     private static bool IsUserDefinedConversionTo(IConversionOperation conversion, ImmutableArray<INamedTypeSymbol> monadTypes)
         => conversion.Conversion is { IsUserDefined: true, MethodSymbol.ContainingType: var operatorOwner }
-           && monadTypes.Contains(operatorOwner.OriginalDefinition, SymbolEqualityComparer.Default);
+           && monadTypes.Contains(operatorOwner.OriginalDefinition, SymbolEqualityComparer.Default)
+           && conversion.Type is not INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T };
 
     /// <summary>Walks the branches of the expression and yields every <c>null</c> literal that can end up as its value.
     /// Other expressions are opaque: whether a variable or a call produces <c>null</c> is a runtime question.</summary>

@@ -55,16 +55,30 @@ public sealed class NullToOptionNoneCodeFix : CodeFixProvider
             ? new Replacement(invocation, returnType)
             : null;
 
-    /// <summary>The analyzer reports the literal, the conversion sits on it or on an ancestor: the first one whose converted type is an option.</summary>
+    /// <summary>The analyzer reports the literal, the conversion sits on it or on an ancestor. The fix is for the first user-defined
+    /// conversion on the way up, which is the one that produced the diagnostic: in <c>result == null</c> returned as <c>Option&lt;bool&gt;</c>
+    /// that is the conversion to <c>Result</c>, so there is no fix even though an option sits further out. A cast on the way
+    /// (<c>(string)null</c>) would reject or box the <c>None</c>, so there is no fix either.</summary>
     private static Replacement? FindConvertedExpression(SemanticModel semanticModel, LiteralExpressionSyntax nullLiteral, INamedTypeSymbol optionOfTType, CancellationToken cancellationToken)
-        => nullLiteral
-            .AncestorsAndSelf()
-            .TakeWhile(ancestor => ancestor is ExpressionSyntax or SwitchExpressionArmSyntax)
-            .Select(ancestor => semanticModel.GetTypeInfo(ancestor, cancellationToken).ConvertedType)
-            .OfType<INamedTypeSymbol>()
-            .FirstOrDefault(type => SymbolEqualityComparer.Default.Equals(type.OriginalDefinition, optionOfTType)) is { } targetType
-            ? new Replacement(nullLiteral, targetType)
-            : null;
+    {
+        foreach (var ancestor in nullLiteral.AncestorsAndSelf().TakeWhile(ancestor => ancestor is ExpressionSyntax or SwitchExpressionArmSyntax))
+        {
+            if (ancestor is CastExpressionSyntax)
+            {
+                return null;
+            }
+
+            if (ancestor is ExpressionSyntax expression && semanticModel.GetConversion(expression, cancellationToken).IsUserDefined)
+            {
+                return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol targetType
+                    && SymbolEqualityComparer.Default.Equals(targetType.OriginalDefinition, optionOfTType)
+                    ? new Replacement(nullLiteral, targetType)
+                    : null;
+            }
+        }
+
+        return null;
+    }
 
     private static CodeAction CreateFix(Document document, Replacement replacement)
         => CodeAction.Create(

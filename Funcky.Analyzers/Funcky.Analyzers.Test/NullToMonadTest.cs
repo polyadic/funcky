@@ -30,6 +30,10 @@ public sealed class NullToMonadTest
             {
                 public static implicit operator Result<TValidResult>(TValidResult result) => default;
                 public static Result<TValidResult> Error(System.Exception exception) => default;
+                public static bool operator ==(Result<TValidResult> left, Result<TValidResult> right) => true;
+                public static bool operator !=(Result<TValidResult> left, Result<TValidResult> right) => false;
+                public override bool Equals(object obj) => true;
+                public override int GetHashCode() => 0;
             }
 
             public static class Result
@@ -260,6 +264,57 @@ public sealed class NullToMonadTest
             }
             """;
         await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubs, inputCode + MonadStubs);
+    }
+
+    [Fact]
+    public async Task NullBehindACastIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    Option<string> text = (string){|λ0005:null|};
+                    Option<object> boxed = (object){|λ0005:null|};
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubs, inputCode + MonadStubs);
+    }
+
+    [Fact]
+    public async Task NullConvertedToResultInsideAnOptionIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Option<bool> M(Result<string> result) => result == {|λ0005:null|};
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubs, inputCode + MonadStubs);
+    }
+
+    [Fact]
+    public async Task LiftedConversionToANullableMonadIsNotReported()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M()
+                {
+                    Option<int>? option = (int?)null;
+                    Result<int>? result = (int?)null;
+                    Either<string, int>? either = (int?)null;
+                }
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + MonadStubs);
     }
 
     [Fact]
