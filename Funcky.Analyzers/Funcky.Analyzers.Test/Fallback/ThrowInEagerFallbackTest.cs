@@ -141,6 +141,122 @@ public sealed class ThrowInEagerFallbackTest
     }
 
     [Fact]
+    public async Task DelegateValuedFallbackIsReportedAndWrappedInLambda()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Func<int> M(Option<Func<int>> option, Func<int>? fallback)
+                    => option.GetOrElse({|λ1014:fallback ?? throw new Exception()|});
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Func<int> M(Option<Func<int>> option, Func<int>? fallback)
+                    => option.GetOrElse(() => fallback ?? throw new Exception());
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, fixedCode + MonadStubCode);
+    }
+
+    [Fact]
+    public async Task LambdaParameterAvoidsANameThatIsInScope()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                private static string? _;
+
+                public static string M(Either<string, string> either)
+                    => either.GetOrElse({|λ1014:_ ?? throw new Exception()|});
+
+                public static int N(Result<int> result, int? fallback)
+                {
+                    var _ = 42;
+                    return result.GetOrElse({|λ1014:fallback ?? throw new Exception()|});
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                private static string? _;
+
+                public static string M(Either<string, string> either)
+                    => either.GetOrElse(__ => _ ?? throw new Exception());
+
+                public static int N(Result<int> result, int? fallback)
+                {
+                    var _ = 42;
+                    return result.GetOrElse(__ => fallback ?? throw new Exception());
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, fixedCode + MonadStubCode);
+    }
+
+    [Fact]
+    public async Task NoFixWhenTheFallbackCannotMoveIntoALambda()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Monads;
+
+            public struct S
+            {
+                private readonly int? _field;
+
+                public int M(Option<int> option)
+                    => option.GetOrElse({|λ1014:_field ?? throw new Exception()|});
+            }
+
+            public static class C
+            {
+                public static async Task<string> Awaited(Option<string> option)
+                    => option.GetOrElse({|λ1014:(await LoadAsync()) ?? throw new Exception()|});
+
+                public static int ByRef(Option<int> option, ref int? value)
+                    => option.GetOrElse({|λ1014:value ?? throw new Exception()|});
+
+                public static int RefStruct(Option<int> option, ReadOnlySpan<int> span)
+                    => option.GetOrElse({|λ1014:span.Length > 0 ? span[0] : throw new Exception()|});
+
+                private static Task<string?> LoadAsync() => Task.FromResult<string?>(null);
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubCode, inputCode + MonadStubCode);
+    }
+
+    [Fact]
     public async Task ThrowInsideALambdaIsNotReported()
     {
         const string inputCode =

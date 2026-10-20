@@ -13,7 +13,6 @@ internal static class LazyOverloads
     public static IMethodSymbol? FindLazyOverload(IInvocationOperation invocation, IArgumentOperation argument, FallbackTypes fallbackTypes)
         => argument.Parameter is { Type: var eagerType } parameter
            && fallbackTypes.Contains(invocation.TargetMethod.ContainingType)
-           && !IsDelegate(eagerType)
             ? SiblingOverloads(invocation.TargetMethod)
                 .FirstOrDefault(sibling => DelegateReturnType(sibling.Parameters[parameter.Ordinal].Type) is { } returnType
                     && SymbolEquals(returnType, eagerType)

@@ -20,7 +20,7 @@ public sealed class ThrowInEagerFallbackAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "Throw expression in an eagerly evaluated fallback",
         messageFormat: "The fallback passed to '{0}' is evaluated before the call, so the throw expression throws even when there is a value; pass a function instead",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: "An argument is evaluated before the method runs. A throw expression inside a fallback argument therefore throws regardless of whether the fallback is needed. The lazy overload taking a function defers the evaluation to the case where the fallback is actually used.",
