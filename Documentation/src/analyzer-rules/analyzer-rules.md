@@ -48,6 +48,7 @@ contains a rule.
 | [λ1007](./λ1007.md) | Warning | Prefer `SelectMany` over `Match` |
 | [λ1008](./λ1008.md) | Warning | Prefer `ToNullable` over `Match` |
 | [λ1014](./λ1014.md) | Warning | Throw expression in an eagerly evaluated fallback |
+| [λ1015](./λ1015.md) | Info | Fallback is computed eagerly |
 | [λ1101](./λ1101.md) | Warning | Assert can be simplified |
 
 ## Removed rules
