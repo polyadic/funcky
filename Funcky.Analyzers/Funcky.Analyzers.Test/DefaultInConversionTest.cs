@@ -200,6 +200,48 @@ public sealed class DefaultInConversionTest
     }
 
     [Fact]
+    public async Task DefaultConvertedToResultInsideAnOptionIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Option<Result<int>> M(bool a, bool b, Result<int> other) => a ? other : (b ? 1 : {|λ0004:default|});
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubs, inputCode + MonadStubs);
+    }
+
+    [Fact]
+    public async Task DefaultBehindACastIsReportedWithoutFix()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Option<long> M(bool condition) => (long)(condition ? 42 : {|λ0004:default|});
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + MonadStubs, inputCode + MonadStubs);
+    }
+
+    [Fact]
+    public async Task CastDefaultOutsideABranchIsNotReported()
+    {
+        const string inputCode = """
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static Option<int> M() => (int)default;
+            }
+            """;
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + MonadStubs);
+    }
+
+    [Fact]
     public async Task DefaultDirectlyConvertedToOptionIsNotReported()
     {
         const string inputCode = """

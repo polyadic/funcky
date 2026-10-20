@@ -20,7 +20,7 @@ public sealed class DefaultInConversionAnalyzer : DiagnosticAnalyzer
         id: DiagnosticId,
         title: "The default literal is wrapped by an implicit conversion",
         messageFormat: "'default' evaluates to default({0}) here, which is then converted to {1}",
-        category: "Funcky",
+        category: DiagnosticName.Category,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "In a conditional, switch or null-coalescing expression the 'default' literal takes the type of the other branch. The implicit conversion then wraps that default value, it does not produce an empty Option, an Error or a Left.",
@@ -70,16 +70,17 @@ public sealed class DefaultInConversionAnalyzer : DiagnosticAnalyzer
 
     /// <summary>Walks the branches of the converted expression and yields every <c>default</c> literal that ends up
     /// as the value of the expression. Other expressions are opaque: they either have an explicit type or the author
-    /// wrote something more deliberate than a bare literal.</summary>
-    private static IEnumerable<IDefaultValueOperation> FindDefaultLiterals(IOperation operation)
+    /// wrote something more deliberate than a bare literal. A literal is only reported once a branch has been entered:
+    /// outside a branch, as in <c>(int)default</c>, the cast names the type and the literal is as explicit as <c>default(int)</c>.</summary>
+    private static IEnumerable<IDefaultValueOperation> FindDefaultLiterals(IOperation operation, bool insideBranch = false)
         => operation switch
         {
-            IDefaultValueOperation defaultValue when IsDefaultLiteral(defaultValue) => [defaultValue],
-            IConditionalOperation { WhenFalse: { } whenFalse } conditional => FindDefaultLiterals(conditional.WhenTrue).Concat(FindDefaultLiterals(whenFalse)),
-            ISwitchExpressionOperation switchExpression => switchExpression.Arms.SelectMany(arm => FindDefaultLiterals(arm.Value)),
-            ICoalesceOperation coalesce => FindDefaultLiterals(coalesce.WhenNull),
-            IConversionOperation { Conversion.IsUserDefined: false } conversion => FindDefaultLiterals(conversion.Operand),
-            IParenthesizedOperation parenthesized => FindDefaultLiterals(parenthesized.Operand),
+            IDefaultValueOperation defaultValue when insideBranch && IsDefaultLiteral(defaultValue) => [defaultValue],
+            IConditionalOperation { WhenFalse: { } whenFalse } conditional => FindDefaultLiterals(conditional.WhenTrue, insideBranch: true).Concat(FindDefaultLiterals(whenFalse, insideBranch: true)),
+            ISwitchExpressionOperation switchExpression => switchExpression.Arms.SelectMany(arm => FindDefaultLiterals(arm.Value, insideBranch: true)),
+            ICoalesceOperation coalesce => FindDefaultLiterals(coalesce.WhenNull, insideBranch: true),
+            IConversionOperation { Conversion.IsUserDefined: false } conversion => FindDefaultLiterals(conversion.Operand, insideBranch),
+            IParenthesizedOperation parenthesized => FindDefaultLiterals(parenthesized.Operand, insideBranch),
             _ => [],
         };
 

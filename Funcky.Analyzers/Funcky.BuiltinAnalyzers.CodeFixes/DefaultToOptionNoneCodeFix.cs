@@ -40,14 +40,30 @@ public sealed class DefaultToOptionNoneCodeFix : CodeFixProvider
         }
     }
 
-    /// <summary>The analyzer reports the literal, the conversion sits on an ancestor: the first one whose converted type is an option.</summary>
+    /// <summary>The analyzer reports the literal, the conversion sits on an ancestor. The fix is for the first user-defined
+    /// conversion on the way up, which is the one that produced the diagnostic: in <c>a ? other : (b ? 1 : default)</c>
+    /// converted to <c>Option&lt;Result&lt;int&gt;&gt;</c> that is the conversion to <c>Result</c>, so there is no fix even though
+    /// an option sits further out. A cast on the way (<c>(long)(c ? 42 : default)</c>) would reject the <c>None</c>, so there is no fix either.</summary>
     private static INamedTypeSymbol? FindTargetOptionType(SemanticModel semanticModel, SyntaxNode defaultLiteral, INamedTypeSymbol optionOfTType, CancellationToken cancellationToken)
-        => defaultLiteral
-            .Ancestors()
-            .TakeWhile(ancestor => ancestor is ExpressionSyntax or SwitchExpressionArmSyntax)
-            .Select(ancestor => semanticModel.GetTypeInfo(ancestor, cancellationToken).ConvertedType)
-            .OfType<INamedTypeSymbol>()
-            .FirstOrDefault(type => SymbolEqualityComparer.Default.Equals(type.OriginalDefinition, optionOfTType));
+    {
+        foreach (var ancestor in defaultLiteral.Ancestors().TakeWhile(ancestor => ancestor is ExpressionSyntax or SwitchExpressionArmSyntax))
+        {
+            if (ancestor is CastExpressionSyntax)
+            {
+                return null;
+            }
+
+            if (ancestor is ExpressionSyntax expression && semanticModel.GetConversion(expression, cancellationToken).IsUserDefined)
+            {
+                return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol convertedType
+                    && SymbolEqualityComparer.Default.Equals(convertedType.OriginalDefinition, optionOfTType)
+                    ? convertedType
+                    : null;
+            }
+        }
+
+        return null;
+    }
 
     private static CodeAction CreateFix(Document document, LiteralExpressionSyntax defaultLiteral, INamedTypeSymbol optionType)
         => CodeAction.Create(
