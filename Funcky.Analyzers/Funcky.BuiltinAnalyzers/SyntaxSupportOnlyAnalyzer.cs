@@ -16,7 +16,7 @@ public sealed class SyntaxSupportOnlyAnalyzer : DiagnosticAnalyzer
         id: MemberOnlyForSyntaxId,
         title: "Member is not intended for direct usage",
         messageFormat: "This {0} exists only to support the {1} syntax, do not use it directly",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         customTags: [WellKnownDiagnosticTags.NotConfigurable],
