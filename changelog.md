@@ -63,6 +63,11 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   members. The analyzers now match the attributes by name, so a copy in any assembly counts, and `Funcky.Analyzers`
   generates that copy when the project sets `<FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>`.
 * Fixed: `λ1003` and `λ1009` went silent in a project referencing two assemblies that both define the attribute.
+* New: rule `λ1017` reports a lambda that spells out one of the named functions in `Funcky.Functional`: `x => x` is
+  `Identity`, `_ => true` is `True`, `_ => false` is `False` and `() => { }` is `NoOperation`. It only reports where the
+  method group binds the same way as the lambda, so an ambiguous `Where(True)` is left alone. The code fix replaces the
+  lambda and adds `using static Funcky.Functional;` when needed. Before C# 11 the rule reports an info, because the
+  compiler only caches method group delegates from C# 11 on.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 

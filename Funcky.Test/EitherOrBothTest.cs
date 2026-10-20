@@ -14,9 +14,9 @@ public sealed class EitherOrBothTest
     [Fact]
     public void MatchSelectsTheConstructedSide()
     {
-        Assert.Equal("left", EitherOrBoth<string, int>.Left("left").Match(left: static l => l, right: static r => r.ToString(), both: static (l, r) => l + r));
-        Assert.Equal("1", EitherOrBoth<string, int>.Right(1).Match(left: static l => l, right: static r => r.ToString(), both: static (l, r) => l + r));
-        Assert.Equal("left1", EitherOrBoth<string, int>.Both("left", 1).Match(left: static l => l, right: static r => r.ToString(), both: static (l, r) => l + r));
+        Assert.Equal("left", EitherOrBoth<string, int>.Left("left").Match(left: Identity, right: static r => r.ToString(), both: static (l, r) => l + r));
+        Assert.Equal("1", EitherOrBoth<string, int>.Right(1).Match(left: Identity, right: static r => r.ToString(), both: static (l, r) => l + r));
+        Assert.Equal("left1", EitherOrBoth<string, int>.Both("left", 1).Match(left: Identity, right: static r => r.ToString(), both: static (l, r) => l + r));
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public sealed class EitherOrBothTest
     {
         var value = default(EitherOrBoth<string, int>);
 
-        Assert.Throws<NotSupportedException>(() => value.Match(left: static l => l, right: static r => r.ToString(), both: static (l, r) => l + r));
+        Assert.Throws<NotSupportedException>(() => value.Match(left: Identity, right: static r => r.ToString(), both: static (l, r) => l + r));
         Assert.Throws<NotSupportedException>(() => value.Switch(left: NoOperation, right: NoOperation, both: NoOperation));
     }
 

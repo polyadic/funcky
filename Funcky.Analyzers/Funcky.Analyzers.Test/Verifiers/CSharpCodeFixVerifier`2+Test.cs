@@ -1,4 +1,6 @@
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
@@ -29,5 +31,13 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
                 return solution;
             });
         }
+
+        /// <summary>The language version to compile the test code with; the latest version when <see langword="null"/>.</summary>
+        public LanguageVersion? LanguageVersion { get; init; }
+
+        protected override ParseOptions CreateParseOptions()
+            => LanguageVersion is { } languageVersion
+                ? ((CSharpParseOptions)base.CreateParseOptions()).WithLanguageVersion(languageVersion)
+                : base.CreateParseOptions();
     }
 }
