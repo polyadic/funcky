@@ -100,31 +100,31 @@ public sealed class MaxOrNoneTest
 
     private static bool CompareMaxAndHandleEmptyInt32Sequence(IReadOnlyCollection<int> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.Max() == sequence.MaxOrNone();
 
     private static bool CompareMaxAndHandleEmptyInt64Sequence(IReadOnlyCollection<long> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.Max() == sequence.MaxOrNone();
 
     private static bool CompareMaxAndHandleEmptySingleSequence(IReadOnlyCollection<float> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.Max() == sequence.MaxOrNone();
 
     private static bool CompareMaxAndHandleEmptyDoubleSequence(IReadOnlyCollection<double> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.Max() == sequence.MaxOrNone();
 
     private static bool CompareMaxAndHandleEmptyDecimalSequence(IReadOnlyCollection<decimal> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.Max() == sequence.MaxOrNone();
 
     private static bool CompareMaxAndHandleEmptyPersonSequence(IReadOnlyCollection<Person> sequence)
         => sequence.Count == 0
-            ? sequence.MaxOrNone().Match(none: true, some: _ => false)
+            ? sequence.MaxOrNone().Match(none: true, some: False)
             : sequence.MaxOrNone().Match(none: false, some: p => p.CompareTo(sequence.Max()) == 0);
 }

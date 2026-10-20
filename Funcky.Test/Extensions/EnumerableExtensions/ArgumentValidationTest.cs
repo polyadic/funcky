@@ -15,7 +15,7 @@ public sealed class ArgumentValidationTest
             { "source", () => NullSource.AdjacentGroupBy(Identity) },
             { "keySelector", () => Source.AdjacentGroupBy((Func<int, int>)null!) },
             { "elementSelector", () => Source.AdjacentGroupBy(Identity, (Func<int, int>)null!) },
-            { "resultSelector", () => Source.AdjacentGroupBy(x => x, (Func<int, IEnumerable<int>, int>)null!) },
+            { "resultSelector", () => Source.AdjacentGroupBy(Identity, (Func<int, IEnumerable<int>, int>)null!) },
             { "comparer", () => Source.AdjacentGroupBy(Identity, (IEqualityComparer<int>)null!) },
             { "source", () => NullSource.AggregateOrNone((a, b) => a + b) },
             { "func", () => Source.AggregateOrNone(null!) },
