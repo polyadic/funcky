@@ -95,5 +95,14 @@ namespace Funcky.Analyzers {
                 return ResourceManager.GetString("JoinToStringEmptyCodeFixTitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use collection expression.
+        /// </summary>
+        internal static string SequenceReturnCollectionExpressionCodeFixTitle {
+            get {
+                return ResourceManager.GetString("SequenceReturnCollectionExpressionCodeFixTitle", resourceCulture);
+            }
+        }
     }
 }
