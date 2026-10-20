@@ -13,5 +13,5 @@ public static partial class Sequence
     /// <remarks>Use <see cref="RepeatRange{TSource}"/> if you need to cycle a lazy sequence.</remarks>
     [Pure]
     public static IEnumerable<TSource> RepeatMaterialized<TSource>(IReadOnlyCollection<TSource> source, int count)
-        => Enumerable.Repeat(source, count).SelectMany(Identity);
+        => Enumerable.Repeat(source, count).Flatten();
 }

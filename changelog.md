@@ -60,6 +60,8 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   `null` with an `ArgumentNullException`, so `Option<string> option = null;` and even `option == null` throw at run time;
   with nullable reference types disabled the compiler is silent about it. The code fix replaces the literal with
   `Option<T>.None`.
+* New: rule `λ1018` reports `SelectMany(x => x)` and `SelectMany(Identity)` on a nested `Option`, `Result`, `Either` or
+  `IEnumerable` and suggests `Flatten()`, which says what happens without a selector to read. The code fix replaces the call.
 * New: rule `λ1012` reports `FirstOrDefault`, `LastOrDefault`, `SingleOrDefault` and `ElementAtOrDefault` whose result is
   immediately tested for `null` (`?? fallback`, `?.`, `is null`, `is {} x`, `== null`, …) and suggests the `…OrNone`
   variant, which makes the missing element a `None` instead of a `null`. The code fix rewrites `xs.FirstOrDefault() ?? fallback`

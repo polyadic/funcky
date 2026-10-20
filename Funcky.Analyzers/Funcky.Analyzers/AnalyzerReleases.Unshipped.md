@@ -11,6 +11,7 @@ Rule ID | Category | Severity | Notes
 λ1015 | Funcky.Style | Info | EagerlyComputedFallbackAnalyzer
 λ1016 | Funcky.Style | Warning | TrivialLazyFallbackAnalyzer
 λ1017 | Funcky.Style | Warning | PreferNamedFunctionAnalyzer
+λ1018 | Funcky.Style | Warning | PreferFlattenAnalyzer
 λ1101 | Funcky.Style | Warning | FunctionalAssertAnalyzer
 
 ### Removed Rules

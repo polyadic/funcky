@@ -53,6 +53,7 @@ contains a rule.
 | [λ1015](./λ1015.md) | Info | Fallback is computed eagerly |
 | [λ1016](./λ1016.md) | Warning | Pass the fallback value directly |
 | [λ1017](./λ1017.md) | Warning | Prefer the named function over the lambda |
+| [λ1018](./λ1018.md) | Warning | Prefer `Flatten` over `SelectMany` with the identity function |
 | [λ1101](./λ1101.md) | Warning | Assert can be simplified |
 
 ## Removed rules
