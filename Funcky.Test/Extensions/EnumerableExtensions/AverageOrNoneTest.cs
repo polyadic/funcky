@@ -102,26 +102,26 @@ public sealed class AverageOrNoneTest
 
     private static bool CompareAverageAndHandleEmptyInt32Sequence(IReadOnlyCollection<int> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyInt64Sequence(IReadOnlyCollection<long> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptySingleSequence(IReadOnlyCollection<float> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyDoubleSequence(IReadOnlyCollection<double> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyDecimalSequence(IReadOnlyCollection<decimal> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 }

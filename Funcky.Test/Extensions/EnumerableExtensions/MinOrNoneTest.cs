@@ -130,31 +130,31 @@ public sealed class MinOrNoneTest
 
     private static bool CompareMinAndHandleEmptyInt32Sequence(IReadOnlyCollection<int> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.Min() == sequence.MinOrNone();
 
     private static bool CompareMinAndHandleEmptyInt64Sequence(IReadOnlyCollection<long> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.Min() == sequence.MinOrNone();
 
     private static bool CompareMinAndHandleEmptySingleSequence(IReadOnlyCollection<float> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.Min() == sequence.MinOrNone();
 
     private static bool CompareMinAndHandleEmptyDoubleSequence(IReadOnlyCollection<double> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.Min() == sequence.MinOrNone();
 
     private static bool CompareMinAndHandleEmptyDecimalSequence(IReadOnlyCollection<decimal> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.Min() == sequence.MinOrNone();
 
     private static bool CompareMinAndHandleEmptyPersonSequence(IReadOnlyCollection<Person> sequence)
         => sequence.Count == 0
-            ? sequence.MinOrNone().Match(none: true, some: _ => false)
+            ? sequence.MinOrNone().Match(none: true, some: False)
             : sequence.MinOrNone().Match(none: false, some: p => p.CompareTo(sequence.Min()) == 0);
 }
