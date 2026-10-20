@@ -43,6 +43,11 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
   The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
   because they need a failure value.
+* New: rule `λ1015` reports a fallback passed to the eager overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
+  `Result<T>` and `Either<L, R>` that does work (a method call, an object creation, an interpolated string, an `await`),
+  e.g. `option.GetOrElse(LoadDefault())`: the work happens even when there is a value. The code fix passes a function
+  instead. As a performance hint rather than a correctness issue the rule reports an info, the first rule in the package
+  to do so.
 * New: rule `λ1014` reports a `throw` expression inside a fallback passed to the eager overload of `GetOrElse`, `OrElse`
   or `Match` on `Option<T>`, `Result<T>` and `Either<L, R>`, e.g. `option.GetOrElse(fallback ?? throw …)`. The argument
   is evaluated before the call, so it throws even when there is a value. The code fix passes a function instead.
