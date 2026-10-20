@@ -107,6 +107,265 @@ public sealed class SequenceReturnCollectionExpressionTest
     }
 
     [Fact]
+    public async Task CodeFixParenthesizesARangeWithoutLeftOperandSoItIsNotASpread()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<System.Range> M() => {|λ1013:Sequence.Return(..5)|};
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<System.Range> M() => [(..5)];
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task CodeFixKeepsCommentsInsideTheInvocation()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<int> M() => {|λ1013:Sequence.Return(/* explanation */ 0 /* trailing */)|};
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<int> M() => [/* explanation */ 0 /* trailing */];
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task CodeFixKeepsTheLineBreakAfterALineComment()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<int> M() => {|λ1013:Sequence.Return(0 // explanation
+                )|};
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                IReadOnlyList<int> M() => [0 // explanation
+                ];
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task SuggestsCollectionExpressionWhenAssignedToAVariableNamedUnderscore()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    IReadOnlyList<int> _;
+                    _ = {|λ1013:Sequence.Return(0)|};
+                }
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    IReadOnlyList<int> _;
+                    _ = [0];
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task SuggestsCollectionExpressionInReturnOfATargetTypedLambda()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    System.Func<IEnumerable<int>> f = () => { return {|λ1013:Sequence.Return(0)|}; };
+                }
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    System.Func<IEnumerable<int>> f = () => { return [0]; };
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task SuggestsCollectionExpressionWhenTheElementTypeIsInferredFromTheCollection()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void Consume<T>(IEnumerable<T> values) { }
+
+                void M() => Consume({|λ1013:Sequence.Return(0)|});
+            }
+            """);
+
+        var fixedSource = WithSequenceStub(
+            """
+            class C
+            {
+                void Consume<T>(IEnumerable<T> values) { }
+
+                void M() => Consume([0]);
+            }
+            """);
+
+        await VerifyCS.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestWhenAssignedToADiscard()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    _ = Sequence.Return(0);
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestInsideAnExpressionTree()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void Consume(IReadOnlyList<int> values) { }
+
+                void M()
+                {
+                    System.Linq.Expressions.Expression<System.Action> e = () => Consume(Sequence.Return(0));
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestWhenTheTargetElementTypeDiffersFromTheReturnedElementType()
+    {
+        var source = WithSequenceStub(
+            """
+            class Widget { }
+
+            class C
+            {
+                void M()
+                {
+                    IEnumerable<object> widgets = Sequence.Return(new Widget());
+                    IEnumerable<object> names = Sequence.Return("tag");
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestWhenTheTypeParameterCouldNotBeInferredFromACollectionExpression()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void Consume<T>(T value) { }
+
+                void M() => Consume(Sequence.Return(0));
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestWhenACollectionExpressionWouldPickAnotherOverload()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void Consume(IEnumerable<int> values) { }
+
+                void Consume(int[] values) { }
+
+                void M() => Consume(Sequence.Return(0));
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestInReturnOfALambdaWithInferredType()
+    {
+        var source = WithSequenceStub(
+            """
+            class C
+            {
+                void M()
+                {
+                    var f = () => { return Sequence.Return(0); };
+                }
+            }
+            """);
+
+        await VerifyCS.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
     public async Task DoesNotSuggestForImplicitlyTypedLocal()
     {
         var source = WithSequenceStub(

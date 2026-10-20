@@ -1,9 +1,9 @@
 using System.Collections.Immutable;
 using System.Composition;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using static Funcky.Analyzers.CodeFixResources;
@@ -56,11 +56,13 @@ public sealed class SequenceReturnCollectionExpressionCodeFix : CodeFixProvider
             return _document.WithSyntaxRoot(root!.ReplaceNode(_invocation, CreateCollectionExpression()));
         }
 
-        // SyntaxFactory.CollectionExpression is only available in Roslyn 4.7+, but the code fix is also
-        // compiled against older Roslyn versions. Parsing the expression keeps it portable: at runtime the
-        // host compiler (which supports C# 12, otherwise the diagnostic wouldn't fire) parses it correctly.
+        // Comments inside the parentheses hang off the parentheses and the element, so they are carried over into the
+        // brackets. A line comment keeps its line break, which stops it from swallowing the closing bracket.
         private SyntaxNode CreateCollectionExpression()
-            => SyntaxFactory.ParseExpression($"[{_argument.Expression}]")
+            => SingleElementCollectionExpression.Create(
+                    _argument.Expression,
+                    leadingTrivia: $"{_invocation.ArgumentList.OpenParenToken.TrailingTrivia}{_argument.Expression.GetLeadingTrivia()}",
+                    trailingTrivia: $"{_argument.Expression.GetTrailingTrivia()}{_invocation.ArgumentList.CloseParenToken.LeadingTrivia}")
                 .WithTriviaFrom(_invocation)
                 .WithAdditionalAnnotations(Formatter.Annotation);
     }
