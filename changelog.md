@@ -48,6 +48,9 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   e.g. `option.GetOrElse(LoadDefault())`: the work happens even when there is a value. The code fix passes a function
   instead. As a performance hint rather than a correctness issue the rule reports an info, the first rule in the package
   to do so.
+* New: rule `λ1014` reports a `throw` expression inside a fallback passed to the eager overload of `GetOrElse`, `OrElse`
+  or `Match` on `Option<T>`, `Result<T>` and `Either<L, R>`, e.g. `option.GetOrElse(fallback ?? throw …)`. The argument
+  is evaluated before the call, so it throws even when there is a value. The code fix passes a function instead.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
