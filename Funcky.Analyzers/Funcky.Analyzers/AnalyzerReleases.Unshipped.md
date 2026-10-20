@@ -5,6 +5,7 @@
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 λ1011 | Funcky.Style | Warning | AlternativeMonadAnalyzer
+λ1012 | Funcky.Style | Warning | PreferOrNoneAnalyzer
 λ1013 | Funcky.Style | Info | SequenceReturnCollectionExpressionAnalyzer
 λ1014 | Funcky.Style | Warning | ThrowInEagerFallbackAnalyzer
 λ1015 | Funcky.Style | Info | EagerlyComputedFallbackAnalyzer
