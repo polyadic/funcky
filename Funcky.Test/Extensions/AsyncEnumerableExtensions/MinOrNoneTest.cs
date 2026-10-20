@@ -185,31 +185,31 @@ public sealed class MinOrNoneTest
     private static async Task<bool> CompareMinAndHandleEmptyInt32Sequence(IAsyncEnumerable<int> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MinAsync() == await sequence.MinOrNoneAsync()
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMinAndHandleEmptyInt64Sequence(IAsyncEnumerable<long> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MinAsync() == await sequence.MinOrNoneAsync()
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMinAndHandleEmptySingleSequence(IAsyncEnumerable<float> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MinAsync() == await sequence.MinOrNoneAsync()
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMinAndHandleEmptyDoubleSequence(IAsyncEnumerable<double> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MinAsync() == await sequence.MinOrNoneAsync()
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMinAndHandleEmptyDecimalSequence(IAsyncEnumerable<decimal> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MinAsync() == await sequence.MinOrNoneAsync()
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMinAndHandleEmptyPersonSequence(IAsyncEnumerable<Person> sequence)
         => await sequence.AnyAsync()
             ? (await sequence.MinOrNoneAsync()).Match(none: false, some: p => p.CompareTo(sequence.MinAsync().Result) == 0)
-            : (await sequence.MinOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MinOrNoneAsync()).Match(none: true, some: False);
 }
 #endif

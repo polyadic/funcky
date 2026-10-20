@@ -192,31 +192,31 @@ public sealed class MaxOrNoneTest
     private static async Task<bool> CompareMaxAndHandleEmptyInt32Sequence(IAsyncEnumerable<int> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MaxAsync() == await sequence.MaxOrNoneAsync()
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMaxAndHandleEmptyInt64Sequence(IAsyncEnumerable<long> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MaxAsync() == await sequence.MaxOrNoneAsync()
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMaxAndHandleEmptySingleSequence(IAsyncEnumerable<float> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MaxAsync() == await sequence.MaxOrNoneAsync()
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMaxAndHandleEmptyDoubleSequence(IAsyncEnumerable<double> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MaxAsync() == await sequence.MaxOrNoneAsync()
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMaxAndHandleEmptyDecimalSequence(IAsyncEnumerable<decimal> sequence)
         => await sequence.AnyAsync()
             ? await sequence.MaxAsync() == await sequence.MaxOrNoneAsync()
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareMaxAndHandleEmptyPersonSequence(IAsyncEnumerable<Person> sequence)
         => await sequence.AnyAsync()
             ? (await sequence.MaxOrNoneAsync()).Match(none: false, some: p => p.CompareTo(sequence.MaxAsync().Result) == 0)
-            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.MaxOrNoneAsync()).Match(none: true, some: False);
 }
 #endif
