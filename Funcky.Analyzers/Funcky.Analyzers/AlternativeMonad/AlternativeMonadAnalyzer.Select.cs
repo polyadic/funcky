@@ -15,7 +15,8 @@ public partial class AlternativeMonadAnalyzer
         category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: string.Empty);
+        description: string.Empty,
+        helpLinkUri: DiagnosticName.HelpLink($"{DiagnosticName.Prefix}{DiagnosticName.Usage}11"));
 
     /// <summary>Tests for a <c>Match</c> invocation of the shape <c>Match(none: Option&lt;TResult&gt;.None, some: x => A)</c>
     /// where <c>A</c> is implicitly converted to <c>Option&lt;TResult&gt;</c>.</summary>

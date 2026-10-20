@@ -2,13 +2,11 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
-* Breaking (Funcky.Analyzers): the package no longer ships an asset for Roslyn 4.0; the analyzers require Roslyn 4.4
-  (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
-  Studio version that is out of support.
-
-## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
+The analyzer release: Funcky itself gains built-in correctness rules, `Funcky.Analyzers` gains eight style rules and a
+code fix for a compiler warning, and the two packages settle which kind of rule lives where. The analyzer package becomes
+2.0.0 because it drops a supported Roslyn version, which is a breaking change under semantic versioning.
 
 ### Analyzers
 The analyzer rules now follow one written rule for which package a rule lives in: a rule is **built into the `Funcky`
@@ -18,10 +16,13 @@ idiomatic form. The built-in rules report errors and carry the category `Funcky.
 warnings (an info for pure performance hints), come with a code fix and carry the category `Funcky.Style`. See the
 [analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html) page.
 
+* Breaking (Funcky.Analyzers): the package no longer ships an asset for Roslyn 4.0; the analyzers require Roslyn 4.4
+  (Visual Studio 2022 17.4, .NET SDK 7.0.100) or newer. The Roslyn 4.0 asset was never tested and targeted a Visual
+  Studio version that is out of support.
 * Breaking: `λ1009` "Do not use `default` to instantiate this type" and `λ1010` "An option has either zero or one
   elements" moved from `Funcky.Analyzers` into the built-in analyzers, so every consumer of `Funcky` now gets them
   without installing the analyzer package. The rule IDs stay the same, existing `.editorconfig` entries keep working.
-  Funcky.Analyzers 1.5.0 no longer contains the two rules; an older Funcky.Analyzers next to Funcky 3.7.0 reports
+  Funcky.Analyzers 2.0.0 no longer contains the two rules; an older Funcky.Analyzers next to Funcky 3.7.0 reports
   `λ1009` twice until it is updated.
 * Breaking: the diagnostic category of every rule changed from `Funcky` to `Funcky.Correctness` (built-in) or
   `Funcky.Style` (opt-in). A `dotnet_analyzer_diagnostic.category-Funcky.severity` entry in an `.editorconfig` needs to
@@ -34,52 +35,62 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   package's `buildTransitive` targets keep only the `roslyn3.7` assets on SDKs without analyzer versioning, the same
   arrangement System.Text.Json uses. `λ1010` needs the Roslyn 4.4 list pattern API and is only active there, which
   matches the compilers that can use list patterns on `Option<T>` at all.
+* New: the attributes behind `λ1003` (`[UseWithArgumentNames]`) and `λ1009` (`[NonDefaultable]`) can be used on your own
+  members. The analyzers now match the attributes by name, so a copy in any assembly counts, and `Funcky.Analyzers`
+  generates that copy when the project sets `<FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>`.
+* Fixed: `λ1003` and `λ1009` went silent in a project referencing two assemblies that both define the attribute.
+* Fix: the built-in analyzer λ0001 applied its allowance rules inconsistently. `TryGetValue` is now allowed anywhere inside
+  a `catch` filter clause, not only as its outermost expression, so `catch when (option.TryGetValue(out var h) && h.CanHandle(e))`
+  compiles. Conversely, a call inside a lambda or local function that is merely used by a loop condition, a catch filter or
+  an `if` condition in an iterator, such as `while (items.Any(i => i.Option.TryGetValue(out _)))`, is now reported; it
+  used to slip through because the check walked all ancestors. The exemption for `.cshtml` files finally applies: it
+  recognizes Razor pages and views deriving from `RazorPageBase`, where it used to require a Blazor `ComponentBase`.
+  The documentation of λ0001 now lists every allowed use case, including `if` statements that yield.
 * New: built-in rule `λ0004` reports a bare `default` literal in a branch of a conditional, `switch` or `??` expression
   that is implicitly converted to `Option<T>`, `Result<T>` or `Either<L, R>`. The literal takes the type of the sibling
   branch, so `condition ? 42 : default` is `Some(0)` and never `None`; for value types and tuples the compiler is silent
   about it. The code fix replaces the literal with `Option<T>.None`.
-* New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
-  `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
-  `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
-  The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
-  because they need a failure value.
-* New: rule `λ1015` reports a fallback passed to the eager overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
-  `Result<T>` and `Either<L, R>` that does work (a method call, an object creation, an interpolated string, an `await`),
-  e.g. `option.GetOrElse(LoadDefault())`: the work happens even when there is a value. The code fix passes a function
-  instead. As a performance hint rather than a correctness issue the rule reports an info, the first rule in the package
-  to do so.
-* New: rule `λ1014` reports a `throw` expression inside a fallback passed to the eager overload of `GetOrElse`, `OrElse`
-  or `Match` on `Option<T>`, `Result<T>` and `Either<L, R>`, e.g. `option.GetOrElse(fallback ?? throw …)`. The argument
-  is evaluated before the call, so it throws even when there is a value. The code fix passes a function instead.
-* New: rule `λ1016` reports a lambda passed to the lazy overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
-  `Result<T>` and `Either<L, R>` that only returns a literal, a constant, a variable or a member, e.g.
-  `option.GetOrElse(() => 0f)`: there is no work to defer, so the eager overload taking the value says the same with
-  less. The code fix replaces the lambda with its body.
 * New: built-in rule `λ0005` reports a `null` literal that is converted to `Option<T>`, `Result<T>` or `Either<L, R>`
   or passed to one of their factory methods (`Option.Some`, `Result.Ok`, `Either<L, R>.Left`, …). The monads reject
   `null` with an `ArgumentNullException`, so `Option<string> option = null;` and even `option == null` throw at run time;
   with nullable reference types disabled the compiler is silent about it. The code fix replaces the literal with
   `Option<T>.None`.
-* New: rule `λ1018` reports `SelectMany(x => x)` and `SelectMany(Identity)` on a nested `Option`, `Result`, `Either` or
-  `IEnumerable` and suggests `Flatten()`, which says what happens without a selector to read. The code fix replaces the call.
+* New: rule `λ1011` reports a `Match` whose failure branch returns the monad's own empty or error state and whose success
+  branch returns a plain value, e.g. `option.Match(none: Option<string>.None, some: x => x.ToString())`: that is `Select`.
+  The code fix rewrites the call for `Option<T>`, `Result<T>` and `Either<L, R>`.
 * New: rule `λ1012` reports `FirstOrDefault`, `LastOrDefault`, `SingleOrDefault` and `ElementAtOrDefault` whose result is
   immediately tested for `null` (`?? fallback`, `?.`, `is null`, `is {} x`, `== null`, …) and suggests the `…OrNone`
   variant, which makes the missing element a `None` instead of a `null`. The code fix rewrites `xs.FirstOrDefault() ?? fallback`
   to `xs.FirstOrNone().GetOrElse(fallback)`, passes a fallback that does work as a function and adds the
   `using Funcky.Extensions;` when needed.
-
-## Unreleased: Funcky 3.7.0 | Funcky.Analyzers 1.5.0
-
-### Analyzers
-* New: the attributes behind `λ1003` (`[UseWithArgumentNames]`) and `λ1009` (`[NonDefaultable]`) can be used on your own
-  members. The analyzers now match the attributes by name, so a copy in any assembly counts, and `Funcky.Analyzers`
-  generates that copy when the project sets `<FunckyCodeAnalysisAttributes>UseWithArgumentNames;NonDefaultable</FunckyCodeAnalysisAttributes>`.
-* Fixed: `λ1003` and `λ1009` went silent in a project referencing two assemblies that both define the attribute.
+* New: rule `λ1013` reports `Sequence.Return(x)` in a position with a target type of `IEnumerable<T>`,
+  `IReadOnlyCollection<T>` or `IReadOnlyList<T>` and suggests the collection expression `[x]`, which the code fix
+  produces. It needs C# 12 and only fires where the collection expression binds the same way and keeps the element type;
+  `var x = Sequence.Return(1)` and the receiver of a LINQ chain are left alone. The rule reports an info.
+* New: rule `λ1014` reports a `throw` expression inside a fallback passed to the eager overload of `GetOrElse`, `OrElse`
+  or `Match` on `Option<T>`, `Result<T>` and `Either<L, R>`, e.g. `option.GetOrElse(fallback ?? throw …)`. The argument
+  is evaluated before the call, so it throws even when there is a value. The code fix passes a function instead.
+* New: rule `λ1015` reports a fallback passed to the eager overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
+  `Result<T>` and `Either<L, R>` that does work (a method call, an object creation, an interpolated string, an `await`),
+  e.g. `option.GetOrElse(LoadDefault())`: the work happens even when there is a value. The code fix passes a function
+  instead. As a performance hint rather than a correctness issue the rule reports an info, the first rule in the package
+  to do so.
+* New: rule `λ1016` reports a lambda passed to the lazy overload of `GetOrElse`, `OrElse` or `Match` on `Option<T>`,
+  `Result<T>` and `Either<L, R>` that only returns a literal, a constant, a variable or a member, e.g.
+  `option.GetOrElse(() => 0f)`: there is no work to defer, so the eager overload taking the value says the same with
+  less. The code fix replaces the lambda with its body.
 * New: rule `λ1017` reports a lambda that spells out one of the named functions in `Funcky.Functional`: `x => x` is
   `Identity`, `_ => true` is `True`, `_ => false` is `False` and `() => { }` is `NoOperation`. It only reports where the
   method group binds the same way as the lambda, so an ambiguous `Where(True)` is left alone. The code fix replaces the
   lambda and adds `using static Funcky.Functional;` when needed. Before C# 11 the rule reports an info, because the
   compiler only caches method group delegates from C# 11 on.
+* New: rule `λ1018` reports `SelectMany(x => x)` and `SelectMany(Identity)` on a nested `Option`, `Result`, `Either` or
+  `IEnumerable` and suggests `Flatten()`, which says what happens without a selector to read. The code fix replaces the call.
+* New: a code fix for the compiler warning CS8714 ("Nullability of type argument doesn't match 'notnull' constraint") on
+  `Option<T>.Select`. A selector that can return `null` is rewritten to `SelectMany` with `Option.FromNullable`, so
+  `option.Select(user => user.MiddleName)` becomes `option.SelectMany(user => Option.FromNullable(user.MiddleName))`.
+  The fix handles expression-bodied and block-bodied lambdas and supports fix-all; `Either` and `Result` get no fix
+  because they need a failure value.
 
 ## Funcky 3.6.1 | Funcky.Async 1.5.0 | Funcky.Xunit 2.2.0 | Funcky.Xunit.v3 1.0.0 | Funcky.Analyzers 1.4.2
 
@@ -160,13 +171,6 @@ warnings (an info for pure performance hints), come with a code fix and carry th
   back to the array and modified. It now returns a read-only view over the array (`Array.AsReadOnly`), which still
   does not copy. The XML docs explain that an array passed in is viewed, not copied, and that passing an array binds
   to the `params` overload rather than producing a one-element sequence.
-* Fix: the built-in analyzer λ0001 applied its allowance rules inconsistently. `TryGetValue` is now allowed anywhere inside
-  a `catch` filter clause, not only as its outermost expression, so `catch when (option.TryGetValue(out var h) && h.CanHandle(e))`
-  compiles. Conversely, a call inside a lambda or local function that is merely used by a loop condition, a catch filter or
-  an `if` condition in an iterator, such as `while (items.Any(i => i.Option.TryGetValue(out _)))`, is now reported; it
-  used to slip through because the check walked all ancestors. The exemption for `.cshtml` files finally applies: it
-  recognizes Razor pages and views deriving from `RazorPageBase`, where it used to require a Blazor `ComponentBase`.
-  The documentation of λ0001 now lists every allowed use case, including `if` statements that yield.
 * Breaking: the generic `ParseEnumOrNone<TEnum>` overloads are constrained to `struct, Enum` instead of `struct`,
   so `"1".ParseEnumOrNone<int>()` is a compile error instead of an `ArgumentException` at runtime.
 * Fix: the `string` overloads of `ParseEnumOrNone` accept a `null` candidate and return `None`, like every other
@@ -307,10 +311,6 @@ This update is mainly to update to .NET 10.
   The `Chunk` overloads with a `resultSelector` are unchanged.
 * `AdjacentGroupBy` for `IAsyncEnumerable` returns `IGrouping<TKey, TElement>` on .NET 10
   instead of the `IAsyncGrouping<TKey, TElement>` type from `System.Linq.Async`.
-
-### Funcky.Analyzers
-The new analyzer rule `λ1011` suggests `Select(f)` over `Match(none: Option<T>.None, some: x => f(x))`
-(and the equivalent shapes for `Either` and `Result`), with a code fix.
 
 ## Funcky 3.5.1 | Funcky.Async 1.4.1 | Funcky.Xunit 2.1.1 | Funcky.Analyzers 1.4.1
 
