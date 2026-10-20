@@ -18,19 +18,11 @@ public sealed class NonDefaultableStyleCopSuppressor : DiagnosticSuppressor
 
     public override void ReportSuppressions(SuppressionAnalysisContext context)
     {
-        if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } nonDefaultableAttribute)
-        {
-            ReportSuppressions(context, nonDefaultableAttribute);
-        }
-    }
-
-    private static void ReportSuppressions(SuppressionAnalysisContext context, INamedTypeSymbol nonDefaultableAttribute)
-    {
         var styleCopDiagnostics = context.ReportedDiagnostics.Where(diagnostic => diagnostic.Id == DoNotUseDefaultValueTypeConstructorSuppression.SuppressedDiagnosticId);
         foreach (var diagnostic in styleCopDiagnostics)
         {
             if (GetOperation(context, diagnostic) is IObjectCreationOperation operation
-                && IsParameterlessObjectCreationOfNonDefaultableStruct(operation, nonDefaultableAttribute))
+                && IsParameterlessObjectCreationOfNonDefaultableStruct(operation))
             {
                 context.ReportSuppression(Suppression.Create(DoNotUseDefaultValueTypeConstructorSuppression, diagnostic));
             }
