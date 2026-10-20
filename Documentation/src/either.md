@@ -52,7 +52,7 @@ Both type parameters are constrained to `notnull`. There is no implicit conversi
 `Either<string, string>` would be ambiguous, and because constructing the failure case explicitly is a feature.
 
 `Either<L, R>` has no valid `default`. The struct is marked `[NonDefaultable]`, [λ1009](./analyzer-rules/λ1009.md)
-from `Funcky.Analyzers` reports an error for `default(Either<…>)`, and any operation on such a value throws `NotSupportedException` at runtime.
+built into the `Funcky` package reports an error for `default(Either<…>)`, and any operation on such a value throws `NotSupportedException` at runtime.
 Only `Equals`, `GetHashCode` and `ToString` stay total, so a defaulted value in a collection or a log message
 does not throw.
 
