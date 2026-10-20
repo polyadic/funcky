@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -11,7 +13,8 @@ internal static class LambdaWrapping
 
     /// <summary>Whether the expression may move into a synchronous lambda: no <c>await</c>, no reference to a <c>ref</c>,
     /// <c>in</c> or <c>out</c> parameter, a <c>ref</c> local or a <c>ref struct</c> value, and no <c>this</c> inside a struct, because a
-    /// lambda cannot capture any of those. Nested functions are not inspected, what happens inside them is deferred already.</summary>
+    /// lambda cannot capture any of those. A variable the expression declares (<c>out var x</c>, <c>is T x</c>) would be scoped
+    /// to the lambda and vanish for the code after the call. Nested functions are not inspected, what happens inside them is deferred already.</summary>
     public static bool CanWrapInLambda(SemanticModel semanticModel, ExpressionSyntax expression, CancellationToken cancellationToken)
     {
         var enclosingType = semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken)?.ContainingType;
@@ -21,6 +24,7 @@ internal static class LambdaWrapping
             .All(node => node switch
             {
                 AwaitExpressionSyntax => false,
+                SingleVariableDesignationSyntax => false,
                 ThisExpressionSyntax or BaseExpressionSyntax => enclosingType is not { IsValueType: true },
                 IdentifierNameSyntax identifier => IsCapturable(semanticModel.GetSymbolInfo(identifier, cancellationToken).Symbol, identifier, enclosingType),
                 _ => true,
@@ -50,14 +54,16 @@ internal static class LambdaWrapping
     private static bool HasExplicitReceiver(IdentifierNameSyntax identifier)
         => identifier.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.Name == identifier;
 
-    // A single `_` parameter is a regular parameter, not a discard: it would shadow a `_` in scope or clash with a local
-    // of that name, so the name is extended until nothing of that name is visible at the argument.
+    // A single `_` parameter is a regular parameter, not a discard: it would shadow a `_` in scope, clash with a local of
+    // that name or turn an `out _` discard inside the expression into a reference to the parameter. The name is extended
+    // until nothing of that name is visible at the argument or written inside the expression.
     private static async Task<string> UnusedParameterNameAsync(Document document, ExpressionSyntax expression, CancellationToken cancellationToken)
     {
         var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        var identifiersInExpression = expression.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText).ToImmutableHashSet();
         var name = DiscardName;
 
-        while (semanticModel is not null && semanticModel.LookupSymbols(expression.SpanStart, name: name).Length > 0)
+        while (identifiersInExpression.Contains(name) || (semanticModel is not null && semanticModel.LookupSymbols(expression.SpanStart, name: name).Length > 0))
         {
             name += DiscardName;
         }
