@@ -728,7 +728,6 @@ Funcky.Extensions.ActionExtensions.extension<T1, T2>(System.Func<T1, System.Acti
 Funcky.Extensions.ActionExtensions.extension<T1, T2>(System.Func<T1, System.Action<T2>!>!).Uncurry() -> System.Action<T1, T2>!
 Funcky.Extensions.ActionExtensions.extension<TIntermediate>(System.Action<TIntermediate>!)
 Funcky.Extensions.ActionExtensions.extension<TIntermediate>(System.Action<TIntermediate>!).Compose(System.Func<TIntermediate>! g) -> System.Action!
-Funcky.Extensions.ActionExtensions.extension<TIntermediate>(System.Action<TIntermediate>!).Compose<TInput>(System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
 Funcky.Extensions.DictionaryExtensions.extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue>!)
 Funcky.Extensions.DictionaryExtensions.extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue>!).GetValueOrNone(TKey key) -> Funcky.Monads.Option<TValue>
 Funcky.Extensions.DictionaryExtensions.extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue>!).RemoveOrNone(TKey key) -> Funcky.Monads.Option<TValue>
@@ -904,7 +903,6 @@ Funcky.Extensions.FuncExtensions.extension<TInput, TIntermediate>(System.Func<TI
 Funcky.Extensions.FuncExtensions.extension<TInput, TIntermediate>(System.Func<TInput, TIntermediate>!).Then<TOutput>(System.Func<TIntermediate, TOutput>! next) -> System.Func<TInput, TOutput>!
 Funcky.Extensions.FuncExtensions.extension<TIntermediate, TOutput>(System.Func<TIntermediate, TOutput>!)
 Funcky.Extensions.FuncExtensions.extension<TIntermediate, TOutput>(System.Func<TIntermediate, TOutput>!).Compose(System.Func<TIntermediate>! g) -> System.Func<TOutput>!
-Funcky.Extensions.FuncExtensions.extension<TIntermediate, TOutput>(System.Func<TIntermediate, TOutput>!).Compose<TInput>(System.Func<TInput, TIntermediate>! g) -> System.Func<TInput, TOutput>!
 Funcky.Extensions.FuncExtensions.extension<TIntermediate>(System.Func<TIntermediate>!)
 Funcky.Extensions.FuncExtensions.extension<TIntermediate>(System.Func<TIntermediate>!).Then(System.Action<TIntermediate>! next) -> System.Action!
 Funcky.Extensions.FuncExtensions.extension<TIntermediate>(System.Func<TIntermediate>!).Then<TOutput>(System.Func<TIntermediate, TOutput>! next) -> System.Func<TOutput>!
@@ -1033,10 +1031,11 @@ Funcky.Monads.OptionExtensions.extension<TItem>(Funcky.Monads.Option<TItem!>)
 Funcky.Monads.OptionExtensions.extension<TItem>(Funcky.Monads.Option<TItem!>).ToNullable(Funcky.RequireClass<TItem!>? ω = null) -> TItem?
 Funcky.Monads.OptionExtensions.extension<TItem>(Funcky.Monads.Option<TItem>)
 Funcky.Monads.OptionExtensions.extension<TItem>(Funcky.Monads.Option<TItem>).ToNullable(Funcky.RequireStruct<TItem>? ω = null) -> TItem?
-Funcky.Monads.OptionExtensions.extension<TRight>(Funcky.Monads.Option<TRight>)
-Funcky.Monads.OptionExtensions.extension<TRight>(Funcky.Monads.Option<TRight>).ToEither<TLeft>(System.Func<TLeft>! left) -> Funcky.Monads.Either<TLeft, TRight>
-Funcky.Monads.OptionExtensions.extension<TRight>(Funcky.Monads.Option<TRight>).ToEither<TLeft>(TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 Funcky.Monads.ReaderExtensions.extension<TEnvironment, TItem>(Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Reader<TEnvironment, TItem>!>!)
 Funcky.Monads.ReaderExtensions.extension<TEnvironment, TItem>(Funcky.Monads.Reader<TEnvironment, Funcky.Monads.Reader<TEnvironment, TItem>!>!).Flatten() -> Funcky.Monads.Reader<TEnvironment, TItem>!
 Funcky.Monads.ResultExtensions.extension<T>(Funcky.Monads.Result<Funcky.Monads.Result<T>>)
 Funcky.Monads.ResultExtensions.extension<T>(Funcky.Monads.Result<Funcky.Monads.Result<T>>).Flatten() -> Funcky.Monads.Result<T>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, System.Func<TLeft>! left) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
+static Funcky.Extensions.ActionExtensions.Compose<TInput, TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
+static Funcky.Extensions.FuncExtensions.Compose<TInput, TIntermediate, TOutput>(this System.Func<TIntermediate, TOutput>! f, System.Func<TInput, TIntermediate>! g) -> System.Func<TInput, TOutput>!

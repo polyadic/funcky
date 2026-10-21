@@ -14,28 +14,6 @@ public static partial class OptionExtensions
     }
 
 #pragma warning restore λ1018
-    extension<TRight>(Option<TRight> option)
-        where TRight : notnull
-    {
-        [Pure]
-        public Either<TLeft, TRight> ToEither<TLeft>(TLeft left)
-            where TLeft : notnull
-            => option.Match(
-                none: Either<TLeft, TRight>.Left(left),
-                some: Either<TLeft, TRight>.Right);
-
-        [Pure]
-        public Either<TLeft, TRight> ToEither<TLeft>(Func<TLeft> left)
-            where TLeft : notnull
-        {
-            var toLeft = Either<TLeft, TRight>.Left;
-
-            return option.Match(
-                none: toLeft.Compose(left),
-                some: Either<TLeft, TRight>.Right);
-        }
-    }
-
     extension<TItem>(Option<TItem> option)
         where TItem : struct
     {
@@ -60,5 +38,27 @@ public static partial class OptionExtensions
             => option.Match(
                 none: null as TItem,
                 some: Identity);
+    }
+
+    // ToEither stays a classic extension method: as an extension member its lowered static method would list the
+    // receiver's type parameter first, ToEither<TRight, TLeft>, which breaks every caller that names the type arguments.
+    [Pure]
+    public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, TLeft left)
+        where TLeft : notnull
+        where TRight : notnull
+        => option.Match(
+            none: Either<TLeft, TRight>.Left(left),
+            some: Either<TLeft, TRight>.Right);
+
+    [Pure]
+    public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this Option<TRight> option, Func<TLeft> left)
+        where TLeft : notnull
+        where TRight : notnull
+    {
+        var toLeft = Either<TLeft, TRight>.Left;
+
+        return option.Match(
+            none: toLeft.Compose(left),
+            some: Either<TLeft, TRight>.Right);
     }
 }
