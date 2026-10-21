@@ -42,13 +42,6 @@ public static partial class EnumerableExtensions
                 => sequence.Select(reader => reader(environment));
     }
 
-    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> sequence)
-    {
-        [Pure]
-        public Lazy<IEnumerable<TSource>> Sequence()
-            => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
-    }
-
     extension<TSource>(IEnumerable<TSource> source)
     {
         private UnsafeEither<TLeft, IReadOnlyList<TRight>> Traverse<TLeft, TRight>(
@@ -71,6 +64,10 @@ public static partial class EnumerableExtensions
             return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
         }
     }
+
+    [Pure]
+    public static Lazy<IEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IEnumerable<Lazy<TSource>> sequence)
+        => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
 
     // Workaround for https://github.com/dotnet/linker/issues/1416
     private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> source)

@@ -670,8 +670,6 @@ Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Gen
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!).Interleave() -> System.Collections.Generic.IEnumerable<TSource>!
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!).Merge(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!> comparer = default(Funcky.Monads.Option<System.Collections.Generic.IComparer<TSource>!>)) -> System.Collections.Generic.IEnumerable<TSource>!
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!).Transpose() -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<TSource>!>!
-Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>!)
-Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>!).Sequence() -> System.Lazy<System.Collections.Generic.IEnumerable<TSource>!>!
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<TSource>!)
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<TSource>!).AggregateOrNone(System.Func<TSource, TSource, TSource>! func) -> Funcky.Monads.Option<TSource>
 Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<TSource>!).AnyOrElse(System.Collections.Generic.IEnumerable<TSource>! fallback) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -880,12 +878,6 @@ Funcky.Monads.EitherExtensions.extension<TLeft, TRight>(Funcky.Monads.Either<TLe
 Funcky.Monads.EitherExtensions.extension<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight>)
 Funcky.Monads.EitherExtensions.extension<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight>).LeftOrNone() -> Funcky.Monads.Option<TLeft>
 Funcky.Monads.EitherExtensions.extension<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight>).RightOrNone() -> Funcky.Monads.Option<TRight>
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<System.Lazy<T>!>!)
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<System.Lazy<T>!>!).Flatten() -> System.Lazy<T>!
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!)
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).Select<TResult>(System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).SelectMany<TLazy, TResult>(System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
-Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).SelectMany<TResult>(System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!
 Funcky.Monads.OptionExtensions.extension<T>(Funcky.Monads.Option<Funcky.Monads.Option<T>>)
 Funcky.Monads.OptionExtensions.extension<T>(Funcky.Monads.Option<Funcky.Monads.Option<T>>).Flatten() -> Funcky.Monads.Option<T>
 Funcky.Monads.OptionExtensions.extension<TItem>(Funcky.Monads.Option<TItem!>)
@@ -900,3 +892,8 @@ static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads
 static Funcky.Monads.OptionExtensions.ToEither<TLeft, TRight>(this Funcky.Monads.Option<TRight> option, TLeft left) -> Funcky.Monads.Either<TLeft, TRight>
 static Funcky.Extensions.ActionExtensions.Compose<TInput, TIntermediate>(this System.Action<TIntermediate>! f, System.Func<TInput, TIntermediate>! g) -> System.Action<TInput>!
 static Funcky.Extensions.FuncExtensions.Compose<TInput, TIntermediate, TOutput>(this System.Func<TIntermediate, TOutput>! f, System.Func<TInput, TIntermediate>! g) -> System.Func<TInput, TOutput>!
+static Funcky.Extensions.EnumerableExtensions.Sequence<TSource>(this System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>! sequence) -> System.Lazy<System.Collections.Generic.IEnumerable<TSource>!>!
+static Funcky.Monads.LazyExtensions.Flatten<T>(this System.Lazy<System.Lazy<T>!>! lazy) -> System.Lazy<T>!
+static Funcky.Monads.LazyExtensions.Select<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
+static Funcky.Monads.LazyExtensions.SelectMany<T, TLazy, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
+static Funcky.Monads.LazyExtensions.SelectMany<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!

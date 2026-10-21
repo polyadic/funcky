@@ -43,13 +43,6 @@ public static partial class AsyncEnumerableExtensions
                 => source.Select(reader => reader(environment));
     }
 
-    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IAsyncEnumerable<Lazy<TSource>> source)
-    {
-        [Pure]
-        public Lazy<IAsyncEnumerable<TSource>> Sequence()
-            => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
-    }
-
     extension<TSource>(IAsyncEnumerable<TSource> source)
     {
         private async ValueTask<UnsafeEither<TLeft, IReadOnlyList<TRight>>> TraverseAsync<TLeft, TRight>(
@@ -73,6 +66,10 @@ public static partial class AsyncEnumerableExtensions
             return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
         }
     }
+
+    [Pure]
+    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> source)
+        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
 
     private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(
         IAsyncEnumerable<Lazy<TSource>> source)
