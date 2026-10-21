@@ -55,10 +55,13 @@ public sealed class DefaultToOptionNoneCodeFix : CodeFixProvider
 
             if (ancestor is ExpressionSyntax expression && semanticModel.GetConversion(expression, cancellationToken).IsUserDefined)
             {
-                return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol convertedType
-                    && SymbolEqualityComparer.Default.Equals(convertedType.OriginalDefinition, optionOfTType)
-                    ? convertedType
-                    : null;
+                if (semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol convertedType
+                    && SymbolEqualityComparer.Default.Equals(convertedType.OriginalDefinition, optionOfTType))
+                {
+                    return convertedType;
+                }
+
+                return null;
             }
         }
 

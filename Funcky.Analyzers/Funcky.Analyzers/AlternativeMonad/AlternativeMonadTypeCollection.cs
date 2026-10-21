@@ -30,8 +30,7 @@ internal sealed class AlternativeMonadTypeCollection
     }
 
     private static AlternativeMonadType? Option(Compilation compilation)
-        => compilation.GetOptionOfTType() is { } optionOfTType
-            && compilation.GetOptionType() is { } optionType
+        => compilation.GetOptionOfTType() is { } optionOfTType && compilation.GetOptionType() is { } optionType
             ? new AlternativeMonadType(
                 optionOfTType,
                 constructorsType: optionType,
@@ -41,8 +40,7 @@ internal sealed class AlternativeMonadTypeCollection
             : null;
 
     private static AlternativeMonadType? Either(Compilation compilation)
-        => compilation.GetEitherOfTType() is { } eitherOfTType
-            && compilation.GetEitherType() is { } eitherType
+        => compilation.GetEitherOfTType() is { } eitherOfTType && compilation.GetEitherType() is { } eitherType
             ? new AlternativeMonadType(
                 eitherOfTType,
                 constructorsType: eitherType,
@@ -51,8 +49,7 @@ internal sealed class AlternativeMonadTypeCollection
             : null;
 
     private static AlternativeMonadType? Result(Compilation compilation)
-        => compilation.GetResultOfTType() is { } resultOfTType
-            && compilation.GetResultType() is { } resultType
+        => compilation.GetResultOfTType() is { } resultOfTType && compilation.GetResultType() is { } resultType
             ? new AlternativeMonadType(
                 resultOfTType,
                 constructorsType: resultType,

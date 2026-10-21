@@ -54,10 +54,16 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         };
 
     private static Option<(IArgumentOperation Value, IArgumentOperation String)> MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation)
-        => MatchMethod(operation, symbols.EnumerableType, JoinToString)
+    {
+        if (MatchMethod(operation, symbols.EnumerableType, JoinToString)
             && operation.GetArgumentsInParameterOrder() is [var valueArgument, var stringArgument]
-            && IsEmptyString(stringArgument, symbols.StringType)
-                ? [(valueArgument, stringArgument)] : [];
+            && IsEmptyString(stringArgument, symbols.StringType))
+        {
+            return [(valueArgument, stringArgument)];
+        }
+
+        return [];
+    }
 
     private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
         => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);

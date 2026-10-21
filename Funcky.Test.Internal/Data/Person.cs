@@ -20,8 +20,8 @@ public sealed class Person(int age) : IComparable<Person>, IEquatable<Person>
     public bool Equals(Person? other)
          => other?.Age == Age;
 
-    public override bool Equals(object? other)
-        => Equals(other as Person);
+    public override bool Equals(object? obj)
+        => Equals(obj as Person);
 
     public override int GetHashCode()
         => Age.GetHashCode();

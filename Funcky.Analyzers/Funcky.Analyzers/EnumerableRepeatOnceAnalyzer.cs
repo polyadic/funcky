@@ -51,10 +51,16 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
         };
 
     private static Option<IArgumentOperation> MatchRepeatOnce(IInvocationOperation operation, INamedTypeSymbol enumerableType)
-        => MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+    {
+        if (MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
             && operation.GetArgumentsInParameterOrder() is [var valueArgument, var countArgument]
-            && MatchConstantArgument(countArgument, 1)
-                ? [valueArgument] : [];
+            && MatchConstantArgument(countArgument, 1))
+        {
+            return [valueArgument];
+        }
+
+        return [];
+    }
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
         => Diagnostic.Create(

@@ -74,13 +74,18 @@ public sealed class PreferOrNoneAnalyzer : DiagnosticAnalyzer
     /// is the type argument, not the return type: the nullable-annotated LINQ returns <c>TSource?</c> for every sequence.
     /// The operation tree presents an extension call unreduced, with the receiver as the first argument.</summary>
     private static string? MatchOrDefaultMethod(IInvocationOperation invocation, INamedTypeSymbol enumerableType)
-        => invocation.TargetMethod is { IsExtensionMethod: true, TypeArguments: [{ IsReferenceType: true, NullableAnnotation: not NullableAnnotation.Annotated }] } method
-           && SymbolEquals(method.ContainingType, enumerableType)
-           && OrDefaultMethodNames.Contains(method.Name)
-           && method.Parameters.All(parameter => parameter.Name != "defaultValue")
-           && IsCalledInExtensionForm(invocation)
-            ? method.Name
-            : null;
+    {
+        if (invocation.TargetMethod is { IsExtensionMethod: true, TypeArguments: [{ IsReferenceType: true, NullableAnnotation: not NullableAnnotation.Annotated }] } method
+            && SymbolEquals(method.ContainingType, enumerableType)
+            && OrDefaultMethodNames.Contains(method.Name)
+            && method.Parameters.All(parameter => parameter.Name != "defaultValue")
+            && IsCalledInExtensionForm(invocation))
+        {
+            return method.Name;
+        }
+
+        return null;
+    }
 
     private static bool IsCalledInExtensionForm(IInvocationOperation invocation)
         => invocation.Syntax is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax, ArgumentList.Arguments.Count: var argumentCount }

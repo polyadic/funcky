@@ -23,8 +23,8 @@ internal class Grouping<TKey, TElement>(TKey key, IImmutableList<TElement> eleme
     public void Clear()
         => throw new NotSupportedException();
 
-    public bool Contains(TElement element)
-        => elements.Contains(element);
+    public bool Contains(TElement item)
+        => elements.Contains(item);
 
     public void CopyTo(TElement[] array, int arrayIndex)
         => throw new NotSupportedException();
@@ -32,13 +32,13 @@ internal class Grouping<TKey, TElement>(TKey key, IImmutableList<TElement> eleme
     public IEnumerator<TElement> GetEnumerator()
         => elements.GetEnumerator();
 
-    public int IndexOf(TElement element)
-        => elements.IndexOf(element);
+    public int IndexOf(TElement item)
+        => elements.IndexOf(item);
 
-    public void Insert(int index, TElement element)
+    public void Insert(int index, TElement item)
         => throw new NotSupportedException();
 
-    public bool Remove(TElement element)
+    public bool Remove(TElement item)
         => throw new NotSupportedException();
 
     public void RemoveAt(int index)

@@ -56,8 +56,7 @@ public static partial class EnumerableExtensions
     }
 
     // Workaround for https://github.com/dotnet/linker/issues/1416
-    private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>
-        (IEnumerable<Lazy<TSource>> source)
+    private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> source)
     {
         private readonly IEnumerable<Lazy<TSource>> _source = source;
 

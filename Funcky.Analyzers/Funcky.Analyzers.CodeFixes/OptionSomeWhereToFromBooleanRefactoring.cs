@@ -37,17 +37,19 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     }
 
     private static Symbols? GetSymbolsRequiredForRefactoring(Compilation compilation)
-        => compilation.GetOptionType() is { } optionType
-           && compilation.GetOptionOfTType() is { } genericOptionType
-           && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == OptionFromBooleanMethodName)
-            ? new Symbols(optionType, genericOptionType)
-            : null;
+    {
+        if (compilation.GetOptionType() is { } optionType
+            && compilation.GetOptionOfTType() is { } genericOptionType
+            && optionType.GetMembers().OfType<IMethodSymbol>().Any(m => m.IsStatic && m.Name == OptionFromBooleanMethodName))
+        {
+            return new Symbols(optionType, genericOptionType);
+        }
+
+        return null;
+    }
 
     private static InvocationExpressionSyntax? FindInvocationExpression(CodeRefactoringContext context, SyntaxNode root)
-        => root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
-            && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } expression
-            ? expression
-            : null;
+        => root.FindNode(context.Span, getInnermostNodeForTie: true)?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault();
 
     private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? whereInvocation)
     {

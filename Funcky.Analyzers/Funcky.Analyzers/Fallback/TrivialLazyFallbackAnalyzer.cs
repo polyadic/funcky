@@ -61,11 +61,16 @@ public sealed class TrivialLazyFallbackAnalyzer : DiagnosticAnalyzer
 
     // An async lambda returns a task around its body, so the body is not the value the eager overload would take.
     private static IOperation? TrivialReturnedValue(IOperation operation, SemanticModel semanticModel, FallbackTypes fallbackTypes)
-        => operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Symbol.IsAsync: false } lambda }
-           && MatchAnonymousFunctionWithSingleReturn(lambda) is [{ ReturnedValue: { } returnedValue }]
-           && new TrivialValueClassifier(lambda.Symbol, semanticModel, fallbackTypes).IsTrivial(returnedValue)
-            ? returnedValue
-            : null;
+    {
+        if (operation is IDelegateCreationOperation { Target: IAnonymousFunctionOperation { Symbol.IsAsync: false } lambda }
+            && MatchAnonymousFunctionWithSingleReturn(lambda) is [{ ReturnedValue: { } returnedValue }]
+            && new TrivialValueClassifier(lambda.Symbol, semanticModel, fallbackTypes).IsTrivial(returnedValue))
+        {
+            return returnedValue;
+        }
+
+        return null;
+    }
 
     // Passing the value is only an improvement if overload resolution then picks the eager overload: a value that is
     // itself a delegate (`Func<object> fallback` for `Option<object>`) would be taken by the lazy overload and invoked.

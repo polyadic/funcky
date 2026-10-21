@@ -42,15 +42,21 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
     }
 
     private static Option<MatchInvocation> MatchMatchInvocation(IInvocationOperation invocation, AlternativeMonadTypeCollection alternativeMonadTypes)
-        => invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
+    {
+        if (invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
             && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out var alternativeMonadType)
-            && invocation.GetArgumentsInParameterOrder() is { Length: 2 } arguments
-                ? [new MatchInvocation(
-                    receiverType,
-                    alternativeMonadType,
-                    arguments[alternativeMonadType.ErrorStateArgumentIndex],
-                    arguments[alternativeMonadType.SuccessStateArgumentIndex])]
-                : [];
+            && invocation.GetArgumentsInParameterOrder() is { Length: 2 } arguments)
+        {
+            var matchInvocation = new MatchInvocation(
+                receiverType,
+                alternativeMonadType,
+                arguments[alternativeMonadType.ErrorStateArgumentIndex],
+                arguments[alternativeMonadType.SuccessStateArgumentIndex]);
+            return [matchInvocation];
+        }
+
+        return [];
+    }
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation operation,

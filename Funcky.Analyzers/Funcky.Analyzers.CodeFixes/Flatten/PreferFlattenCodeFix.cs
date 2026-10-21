@@ -64,11 +64,14 @@ public sealed class PreferFlattenCodeFix : CodeFixProvider
         var rootWithReplacement = root.ReplaceNode(invocation, flatten);
         var fixedDocument = document.WithSyntaxRoot(UsingDirectives.AddUsing(rootWithReplacement, rootWithReplacement.GetAnnotatedNodes(annotation).Single(), flattenNamespace));
 
-        return await fixedDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } fixedRoot
+        if (await fixedDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } fixedRoot
             && await fixedDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false) is { } fixedSemanticModel
-            && IsFunckyFlatten(fixedSemanticModel.GetSymbolInfo(fixedRoot.GetAnnotatedNodes(annotation).Single(), cancellationToken).Symbol, flattenNamespace)
-            ? fixedDocument
-            : null;
+            && IsFunckyFlatten(fixedSemanticModel.GetSymbolInfo(fixedRoot.GetAnnotatedNodes(annotation).Single(), cancellationToken).Symbol, flattenNamespace))
+        {
+            return fixedDocument;
+        }
+
+        return null;
     }
 
     /// <summary>Explicit type arguments select the result's element type (<c>SelectMany&lt;IEnumerable&lt;string&gt;, object&gt;(x => x)</c>

@@ -56,11 +56,16 @@ public sealed class OptionSelectNullableSelectorCodeFix : CodeFixProvider
     }
 
     private static Symbols? GetSymbols(Compilation compilation)
-        => compilation.GetOptionType() is { } optionType
-           && compilation.GetOptionOfTType() is { } optionOfTType
-           && optionType.GetMembers(OptionFromNullableMethodName).OfType<IMethodSymbol>().Any(method => method.IsStatic)
-            ? new Symbols(optionType, optionOfTType)
-            : null;
+    {
+        if (compilation.GetOptionType() is { } optionType
+            && compilation.GetOptionOfTType() is { } optionOfTType
+            && optionType.GetMembers(OptionFromNullableMethodName).OfType<IMethodSymbol>().Any(method => method.IsStatic))
+        {
+            return new Symbols(optionType, optionOfTType);
+        }
+
+        return null;
+    }
 
     private static bool IsOptionSelect(IMethodSymbol method, Symbols symbols)
         => method is { Name: SelectMethodName, Parameters.Length: 1 }

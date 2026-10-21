@@ -108,17 +108,17 @@ public sealed class CodeAnalysisAttributesGeneratorTest
         public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => GlobalOptions;
     }
 
-    private sealed class BuildPropertyOptions(string? value) : AnalyzerConfigOptions
+    private sealed class BuildPropertyOptions(string? propertyValue) : AnalyzerConfigOptions
     {
-        public override bool TryGetValue(string key, out string result)
+        public override bool TryGetValue(string key, out string value)
         {
-            if (key == CodeAnalysisAttributesGenerator.BuildPropertyKey && value is not null)
+            if (key == CodeAnalysisAttributesGenerator.BuildPropertyKey && propertyValue is not null)
             {
-                result = value;
+                value = propertyValue;
                 return true;
             }
 
-            result = null!;
+            value = null!;
             return false;
         }
     }

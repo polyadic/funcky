@@ -11,8 +11,7 @@ internal static class LazyOverloads
 {
     /// <summary>For an argument passed to a non-delegate parameter: the overload that takes a delegate producing that value instead.</summary>
     public static IMethodSymbol? FindLazyOverload(IInvocationOperation invocation, IArgumentOperation argument, FallbackTypes fallbackTypes)
-        => argument.Parameter is { Type: var eagerType } parameter
-           && fallbackTypes.Contains(invocation.TargetMethod.ContainingType)
+        => argument.Parameter is { Type: var eagerType } parameter && fallbackTypes.Contains(invocation.TargetMethod.ContainingType)
             ? SiblingOverloads(invocation.TargetMethod)
                 .FirstOrDefault(sibling => DelegateReturnType(sibling.Parameters[parameter.Ordinal].Type) is { } returnType
                     && SymbolEquals(returnType, eagerType)
@@ -21,14 +20,19 @@ internal static class LazyOverloads
 
     /// <summary>For an argument passed to a delegate parameter: the overload that takes the delegate's return type directly.</summary>
     public static IMethodSymbol? FindEagerOverload(IInvocationOperation invocation, IArgumentOperation argument, FallbackTypes fallbackTypes)
-        => argument.Parameter is { Type: var lazyType } parameter
-           && fallbackTypes.Contains(invocation.TargetMethod.ContainingType)
-           && DelegateReturnType(lazyType) is { } returnType
-           && !IsDelegate(returnType)
-            ? SiblingOverloads(invocation.TargetMethod)
+    {
+        if (argument.Parameter is { Type: var lazyType } parameter
+            && fallbackTypes.Contains(invocation.TargetMethod.ContainingType)
+            && DelegateReturnType(lazyType) is { } returnType
+            && !IsDelegate(returnType))
+        {
+            return SiblingOverloads(invocation.TargetMethod)
                 .FirstOrDefault(sibling => SymbolEquals(sibling.Parameters[parameter.Ordinal].Type, returnType)
-                    && OtherParametersMatch(invocation.TargetMethod, sibling, parameter.Ordinal))
-            : null;
+                    && OtherParametersMatch(invocation.TargetMethod, sibling, parameter.Ordinal));
+        }
+
+        return null;
+    }
 
     /// <summary>The number of parameters the delegate at the given position takes, e.g. 0 for <c>Func&lt;T&gt;</c> and 1 for <c>Func&lt;Exception, T&gt;</c>.</summary>
     public static int DelegateParameterCount(IMethodSymbol method, int parameterOrdinal)

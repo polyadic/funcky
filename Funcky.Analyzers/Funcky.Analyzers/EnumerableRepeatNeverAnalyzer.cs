@@ -51,10 +51,16 @@ public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
         };
 
     private static Option<IArgumentOperation> MatchRepeatNever(INamedTypeSymbol enumerableType, IInvocationOperation operation)
-        => MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
+    {
+        if (MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
             && operation.GetArgumentsInParameterOrder() is [var valueArgument, var countArgument]
-            && MatchConstantArgument(countArgument, 0)
-                ? [valueArgument] : [];
+            && MatchConstantArgument(countArgument, 0))
+        {
+            return [valueArgument];
+        }
+
+        return [];
+    }
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
         => Diagnostic.Create(

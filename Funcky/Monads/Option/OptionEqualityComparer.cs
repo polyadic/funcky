@@ -36,6 +36,6 @@ internal sealed class OptionEqualityComparerInternal<TItem>(IEqualityComparer<TI
     public override bool Equals(Option<TItem> x, Option<TItem> y)
         => x.EqualsWith(y, comparer);
 
-    public override int GetHashCode(Option<TItem> option)
-        => option.GetHashCodeWith(comparer);
+    public override int GetHashCode(Option<TItem> obj)
+        => obj.GetHashCodeWith(comparer);
 }

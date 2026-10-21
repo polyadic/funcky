@@ -33,9 +33,8 @@ public sealed class NonDefaultableStyleCopSuppressor : DiagnosticSuppressor
     {
         var location = diagnostic.Location;
         var syntaxTree = location.SourceTree;
-        return syntaxTree?.GetRoot(context.CancellationToken) is { } root
-            && context.GetSemanticModel(syntaxTree) is { } semanticModel
-                ? semanticModel.GetOperation(root.FindNode(location.SourceSpan))
-                : null;
+        return syntaxTree?.GetRoot(context.CancellationToken) is { } root && context.GetSemanticModel(syntaxTree) is { } semanticModel
+            ? semanticModel.GetOperation(root.FindNode(location.SourceSpan))
+            : null;
     }
 }

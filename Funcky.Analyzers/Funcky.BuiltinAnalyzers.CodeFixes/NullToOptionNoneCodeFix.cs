@@ -48,12 +48,17 @@ public sealed class NullToOptionNoneCodeFix : CodeFixProvider
 
     /// <summary>The literal is the only argument of <c>Option.Some</c> or <c>Option.Return</c>: the whole call is <c>None</c>.</summary>
     private static Replacement? FindSomeInvocation(SemanticModel semanticModel, LiteralExpressionSyntax nullLiteral, INamedTypeSymbol optionOfTType, INamedTypeSymbol optionType, CancellationToken cancellationToken)
-        => nullLiteral.Parent is ArgumentSyntax { Parent: ArgumentListSyntax { Parent: InvocationExpressionSyntax invocation } }
-           && semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol { ReturnType: INamedTypeSymbol returnType } method
-           && SymbolEqualityComparer.Default.Equals(method.ContainingType, optionType)
-           && SymbolEqualityComparer.Default.Equals(returnType.OriginalDefinition, optionOfTType)
-            ? new Replacement(invocation, returnType)
-            : null;
+    {
+        if (nullLiteral.Parent is ArgumentSyntax { Parent: ArgumentListSyntax { Parent: InvocationExpressionSyntax invocation } }
+            && semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol { ReturnType: INamedTypeSymbol returnType } method
+            && SymbolEqualityComparer.Default.Equals(method.ContainingType, optionType)
+            && SymbolEqualityComparer.Default.Equals(returnType.OriginalDefinition, optionOfTType))
+        {
+            return new Replacement(invocation, returnType);
+        }
+
+        return null;
+    }
 
     /// <summary>The analyzer reports the literal, the conversion sits on it or on an ancestor. The fix is for the first user-defined
     /// conversion on the way up, which is the one that produced the diagnostic: in <c>result == null</c> returned as <c>Option&lt;bool&gt;</c>
@@ -70,10 +75,13 @@ public sealed class NullToOptionNoneCodeFix : CodeFixProvider
 
             if (ancestor is ExpressionSyntax expression && semanticModel.GetConversion(expression, cancellationToken).IsUserDefined)
             {
-                return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol targetType
-                    && SymbolEqualityComparer.Default.Equals(targetType.OriginalDefinition, optionOfTType)
-                    ? new Replacement(nullLiteral, targetType)
-                    : null;
+                if (semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol targetType
+                    && SymbolEqualityComparer.Default.Equals(targetType.OriginalDefinition, optionOfTType))
+                {
+                    return new Replacement(nullLiteral, targetType);
+                }
+
+                return null;
             }
         }
 

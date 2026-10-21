@@ -20,3 +20,7 @@ indent_size = 2
 [*.verified.cs]
 trim_trailing_whitespace = false
 insert_final_newline = false
+
+# Parameters that exist only to be ignored are deliberately named with the Greek omega.
+[{Funcky/Functional/{NoOperation,BoolConstant},Funcky/Monads/Option/OptionExtensions}.cs]
+dotnet_diagnostic.SA1317.severity = none
