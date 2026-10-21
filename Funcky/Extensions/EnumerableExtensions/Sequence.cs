@@ -7,52 +7,69 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    [Pure]
-    public static Either<TLeft, IReadOnlyList<TSource>> Sequence<TLeft, TSource>(this IEnumerable<Either<TLeft, TSource>> source)
+    extension<TLeft, TSource>(IEnumerable<Either<TLeft, TSource>> source)
         where TLeft : notnull
         where TSource : notnull
-        => source.Traverse(UnsafeEither.FromEither).ToEither();
+    {
+        [Pure]
+        public Either<TLeft, IReadOnlyList<TSource>> Sequence()
+            => source.Traverse(UnsafeEither.FromEither).ToEither();
+    }
 
-    [Pure]
-    public static Option<IReadOnlyList<TSource>> Sequence<TSource>(this IEnumerable<Option<TSource>> source)
+    extension<TSource>(IEnumerable<Option<TSource>> source)
         where TSource : notnull
-        => source.Traverse(UnsafeEither.FromOption).ToOption();
+    {
+        [Pure]
+        public Option<IReadOnlyList<TSource>> Sequence()
+            => source.Traverse(UnsafeEither.FromOption).ToOption();
+    }
 
-    [Pure]
-    public static Result<IReadOnlyList<TSource>> Sequence<TSource>(this IEnumerable<Result<TSource>> source)
+    extension<TSource>(IEnumerable<Result<TSource>> source)
         where TSource : notnull
-        => source.Traverse(UnsafeEither.FromResult).ToResult();
+    {
+        [Pure]
+        public Result<IReadOnlyList<TSource>> Sequence()
+            => source.Traverse(UnsafeEither.FromResult).ToResult();
+    }
 
-    [Pure]
-    public static Reader<TEnvironment, IEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IEnumerable<Reader<TEnvironment, TSource>> sequence)
+    extension<TEnvironment, TSource>(IEnumerable<Reader<TEnvironment, TSource>> sequence)
         where TEnvironment : notnull
         where TSource : notnull
-        => environment
-            => sequence.Select(reader => reader(environment));
-
-    [Pure]
-    public static Lazy<IEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IEnumerable<Lazy<TSource>> sequence)
-        => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
-
-    private static UnsafeEither<TLeft, IReadOnlyList<TRight>> Traverse<TSource, TLeft, TRight>(
-        this IEnumerable<TSource> source,
-        Func<TSource, UnsafeEither<TLeft, TRight>> selector)
     {
-        var builder = ImmutableArray.CreateBuilder<TRight>();
+        [Pure]
+        public Reader<TEnvironment, IEnumerable<TSource>> Sequence()
+            => environment
+                => sequence.Select(reader => reader(environment));
+    }
 
-        foreach (var element in source)
+    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> sequence)
+    {
+        [Pure]
+        public Lazy<IEnumerable<TSource>> Sequence()
+            => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
+    }
+
+    extension<TSource>(IEnumerable<TSource> source)
+    {
+        private UnsafeEither<TLeft, IReadOnlyList<TRight>> Traverse<TLeft, TRight>(
+            Func<TSource, UnsafeEither<TLeft, TRight>> selector)
         {
-            var either = selector(element);
+            var builder = ImmutableArray.CreateBuilder<TRight>();
 
-            if (!either.IsRight)
+            foreach (var element in source)
             {
-                return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Left(either.LeftValue);
+                var either = selector(element);
+
+                if (!either.IsRight)
+                {
+                    return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Left(either.LeftValue);
+                }
+
+                builder.Add(either.RightValue);
             }
 
-            builder.Add(either.RightValue);
+            return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
         }
-
-        return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
     }
 
     // Workaround for https://github.com/dotnet/linker/issues/1416

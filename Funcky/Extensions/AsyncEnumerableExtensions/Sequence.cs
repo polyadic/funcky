@@ -8,56 +8,70 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    public static async ValueTask<Either<TLeft, IReadOnlyList<TSource>>> SequenceAsync<TLeft, TSource>(
-        this IAsyncEnumerable<Either<TLeft, TSource>> source,
-        CancellationToken cancellationToken = default)
+    extension<TLeft, TSource>(IAsyncEnumerable<Either<TLeft, TSource>> source)
         where TLeft : notnull
         where TSource : notnull
-        => (await source.TraverseAsync(UnsafeEither.FromEither, cancellationToken).ConfigureAwait(false)).ToEither();
+    {
+        public async ValueTask<Either<TLeft, IReadOnlyList<TSource>>> SequenceAsync(
+            CancellationToken cancellationToken = default)
+            => (await source.TraverseAsync(UnsafeEither.FromEither, cancellationToken).ConfigureAwait(false)).ToEither();
+    }
 
-    public static async ValueTask<Option<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
-        this IAsyncEnumerable<Option<TSource>> source,
-        CancellationToken cancellationToken = default)
+    extension<TSource>(IAsyncEnumerable<Option<TSource>> source)
         where TSource : notnull
-        => (await source.TraverseAsync(UnsafeEither.FromOption, cancellationToken).ConfigureAwait(false)).ToOption();
+    {
+        public async ValueTask<Option<IReadOnlyList<TSource>>> SequenceAsync(
+            CancellationToken cancellationToken = default)
+            => (await source.TraverseAsync(UnsafeEither.FromOption, cancellationToken).ConfigureAwait(false)).ToOption();
+    }
 
-    public static async ValueTask<Result<IReadOnlyList<TSource>>> SequenceAsync<TSource>(
-        this IAsyncEnumerable<Result<TSource>> source,
-        CancellationToken cancellationToken = default)
+    extension<TSource>(IAsyncEnumerable<Result<TSource>> source)
         where TSource : notnull
-        => (await source.TraverseAsync(UnsafeEither.FromResult, cancellationToken).ConfigureAwait(false)).ToResult();
+    {
+        public async ValueTask<Result<IReadOnlyList<TSource>>> SequenceAsync(
+            CancellationToken cancellationToken = default)
+            => (await source.TraverseAsync(UnsafeEither.FromResult, cancellationToken).ConfigureAwait(false)).ToResult();
+    }
 
-    [Pure]
-    public static Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence<TEnvironment, TSource>(this IAsyncEnumerable<Reader<TEnvironment, TSource>> source)
+    extension<TEnvironment, TSource>(IAsyncEnumerable<Reader<TEnvironment, TSource>> source)
         where TEnvironment : notnull
         where TSource : notnull
-        => environment
-            => source.Select(reader => reader(environment));
-
-    [Pure]
-    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> source)
-        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
-
-    private static async ValueTask<UnsafeEither<TLeft, IReadOnlyList<TRight>>> TraverseAsync<TSource, TLeft, TRight>(
-        this IAsyncEnumerable<TSource> source,
-        Func<TSource, UnsafeEither<TLeft, TRight>> selector,
-        CancellationToken cancellationToken)
     {
-        var builder = ImmutableArray.CreateBuilder<TRight>();
+        [Pure]
+        public Reader<TEnvironment, IAsyncEnumerable<TSource>> Sequence()
+            => environment
+                => source.Select(reader => reader(environment));
+    }
 
-        await foreach (var element in source.ConfigureAwait(false).WithCancellation(cancellationToken))
+    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IAsyncEnumerable<Lazy<TSource>> source)
+    {
+        [Pure]
+        public Lazy<IAsyncEnumerable<TSource>> Sequence()
+            => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
+    }
+
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        private async ValueTask<UnsafeEither<TLeft, IReadOnlyList<TRight>>> TraverseAsync<TLeft, TRight>(
+            Func<TSource, UnsafeEither<TLeft, TRight>> selector,
+            CancellationToken cancellationToken)
         {
-            var either = selector(element);
+            var builder = ImmutableArray.CreateBuilder<TRight>();
 
-            if (!either.IsRight)
+            await foreach (var element in source.ConfigureAwait(false).WithCancellation(cancellationToken))
             {
-                return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Left(either.LeftValue);
+                var either = selector(element);
+
+                if (!either.IsRight)
+                {
+                    return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Left(either.LeftValue);
+                }
+
+                builder.Add(either.RightValue);
             }
 
-            builder.Add(either.RightValue);
+            return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
         }
-
-        return UnsafeEither<TLeft, IReadOnlyList<TRight>>.Right(builder.ToImmutable());
     }
 
     private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(

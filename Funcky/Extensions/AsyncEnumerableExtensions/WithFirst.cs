@@ -6,15 +6,18 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Returns a sequence mapping each element into a type which has an IsFirst property which is true for the first element of the sequence. The returned struct is deconstructible.
-    /// </summary>
     /// <param name="source">The source sequence.</param>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <returns>Returns a sequence mapping each element into a type which has an IsFirst property which is true for the first element of the sequence.</returns>
-    [Pure]
-    public static IAsyncEnumerable<ValueWithFirst<TSource>> WithFirst<TSource>(this IAsyncEnumerable<TSource> source)
-        => WithFirstInternal(ArgumentValidator.NotNull(source));
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Returns a sequence mapping each element into a type which has an IsFirst property which is true for the first element of the sequence. The returned struct is deconstructible.
+        /// </summary>
+        /// <returns>Returns a sequence mapping each element into a type which has an IsFirst property which is true for the first element of the sequence.</returns>
+        [Pure]
+        public IAsyncEnumerable<ValueWithFirst<TSource>> WithFirst()
+            => WithFirstInternal(ArgumentValidator.NotNull(source));
+    }
 
     private static async IAsyncEnumerable<ValueWithFirst<TSource>> WithFirstInternal<TSource>(IAsyncEnumerable<TSource> source, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

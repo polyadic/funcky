@@ -4,16 +4,19 @@ namespace Funcky.Internal;
 /// <summary>Polyfill of <c>Random.Shuffle(T[])</c>, which exists since .NET 8, with the same draw order.</summary>
 internal static class Mixer
 {
-    /// <summary>Shuffles the array in place in O(n) with a Fisher-Yates shuffle, so every permutation is equally likely.</summary>
-    public static void Shuffle<TSource>(this Random random, TSource[] values)
+    extension(Random random)
     {
-        for (var currentIndex = 0; currentIndex < values.Length - 1; currentIndex++)
+        /// <summary>Shuffles the array in place in O(n) with a Fisher-Yates shuffle, so every permutation is equally likely.</summary>
+        public void Shuffle<TSource>(TSource[] values)
         {
-            var randomIndex = random.Next(currentIndex, values.Length);
-
-            if (randomIndex != currentIndex)
+            for (var currentIndex = 0; currentIndex < values.Length - 1; currentIndex++)
             {
-                (values[currentIndex], values[randomIndex]) = (values[randomIndex], values[currentIndex]);
+                var randomIndex = random.Next(currentIndex, values.Length);
+
+                if (randomIndex != currentIndex)
+                {
+                    (values[currentIndex], values[randomIndex]) = (values[randomIndex], values[currentIndex]);
+                }
             }
         }
     }

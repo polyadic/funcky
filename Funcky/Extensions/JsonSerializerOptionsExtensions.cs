@@ -6,9 +6,12 @@ namespace Funcky.Extensions;
 
 public static class JsonSerializerOptionsExtensions
 {
-    public static Option<JsonTypeInfo> GetTypeInfoOrNone(this JsonSerializerOptions options, Type type)
-        => options.TryGetTypeInfo(type, out var typeInfo)
-            ? typeInfo
-            : Option<JsonTypeInfo>.None;
+    extension(JsonSerializerOptions options)
+    {
+        public Option<JsonTypeInfo> GetTypeInfoOrNone(Type type)
+            => options.TryGetTypeInfo(type, out var typeInfo)
+                ? typeInfo
+                : Option<JsonTypeInfo>.None;
+    }
 }
 #endif

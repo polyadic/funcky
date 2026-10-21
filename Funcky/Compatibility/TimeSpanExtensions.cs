@@ -10,17 +10,20 @@ internal static class TimeSpanExtensions
 
     private const string ArgumentCannotBeNaN = "TimeSpan does not accept floating point Not-a-Number values";
 
-    public static TimeSpan Multiply(this TimeSpan timeSpan, double factor)
+    extension(TimeSpan timeSpan)
     {
-        if (double.IsNaN(factor))
+        public TimeSpan Multiply(double factor)
         {
-            throw new ArgumentException(ArgumentCannotBeNaN, nameof(factor));
-        }
+            if (double.IsNaN(factor))
+            {
+                throw new ArgumentException(ArgumentCannotBeNaN, nameof(factor));
+            }
 
-        // Rounding to the nearest tick is as close to the result we would have with unlimited
-        // precision as possible, and so likely to have the least potential to surprise.
-        var ticks = Math.Round(timeSpan.Ticks * factor);
-        return IntervalFromDoubleTicks(ticks);
+            // Rounding to the nearest tick is as close to the result we would have with unlimited
+            // precision as possible, and so likely to have the least potential to surprise.
+            var ticks = Math.Round(timeSpan.Ticks * factor);
+            return IntervalFromDoubleTicks(ticks);
+        }
     }
 
     private static TimeSpan IntervalFromDoubleTicks(double ticks)

@@ -6,15 +6,18 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Returns a sequence mapping each element into a type which has an IsLast property which is true for the last element of the sequence. The returned struct is deconstructible.
-    /// </summary>
     /// <param name="source">The source sequence.</param>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <returns>Returns a sequence mapping each element into a type which has an IsLast property which is true for the last element of the sequence.</returns>
-    [Pure]
-    public static IAsyncEnumerable<ValueWithLast<TSource>> WithLast<TSource>(this IAsyncEnumerable<TSource> source)
-        => WithLastInternal(ArgumentValidator.NotNull(source));
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Returns a sequence mapping each element into a type which has an IsLast property which is true for the last element of the sequence. The returned struct is deconstructible.
+        /// </summary>
+        /// <returns>Returns a sequence mapping each element into a type which has an IsLast property which is true for the last element of the sequence.</returns>
+        [Pure]
+        public IAsyncEnumerable<ValueWithLast<TSource>> WithLast()
+            => WithLastInternal(ArgumentValidator.NotNull(source));
+    }
 
     private static async IAsyncEnumerable<ValueWithLast<TSource>> WithLastInternal<TSource>(IAsyncEnumerable<TSource> source, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

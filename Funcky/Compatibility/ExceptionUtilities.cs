@@ -19,7 +19,10 @@ internal static class ExceptionUtilities
 {
     private static readonly Action<Exception, StackTrace> SetStackTraceAction = TryCompileSetStackTrace().GetOrElse(NoOperation);
 
-    public static void SetStackTrace(this Exception target, StackTrace stackTrace) => SetStackTraceAction(target, stackTrace);
+    extension(Exception target)
+    {
+        public void SetStackTrace(StackTrace stackTrace) => SetStackTraceAction(target, stackTrace);
+    }
 
     // Adapted from: https://stackoverflow.com/a/63685720
     private static Option<Action<Exception, StackTrace>> TryCompileSetStackTrace()

@@ -5,19 +5,22 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Concatenates the elements of the given sequence to a single string.
-    /// </summary>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <returns>Concatenated string.</returns>
-    [Pure]
-    public static async ValueTask<string> ConcatToStringAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+    extension<TSource>(IAsyncEnumerable<TSource> source)
     {
-        var result = new StringBuilder();
+        /// <summary>
+        /// Concatenates the elements of the given sequence to a single string.
+        /// </summary>
+        /// <returns>Concatenated string.</returns>
+        [Pure]
+        public async ValueTask<string> ConcatToStringAsync(CancellationToken cancellationToken = default)
+        {
+            var result = new StringBuilder();
 
-        await source.AggregateAsync(result, (builder, value) => builder.Append(value), cancellationToken).ConfigureAwait(false);
+            await source.AggregateAsync(result, (builder, value) => builder.Append(value), cancellationToken).ConfigureAwait(false);
 
-        return result.ToString();
+            return result.ToString();
+        }
     }
 }
 #endif

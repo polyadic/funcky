@@ -7,59 +7,61 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    /// <summary>
-    /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
     /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
-        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)], comparer);
+    extension<TSource>(IEnumerable<TSource> source1)
+    {
+        /// <summary>
+        /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IEnumerable<TSource> Merge(IEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
+            => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)], comparer);
 
-    /// <summary>
-    /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="source3">Third ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
-    /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
-        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)], comparer);
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="source3">Third ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IEnumerable<TSource> Merge(IEnumerable<TSource> source2, IEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
+            => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)], comparer);
 
-    /// <summary>
-    /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="source3">Third ordered sequence.</param>
-    /// <param name="source4">Forth ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
-    /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source1, IEnumerable<TSource> source2, IEnumerable<TSource> source3, IEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
-        => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)], comparer);
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="source3">Third ordered sequence.</param>
+        /// <param name="source4">Forth ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IEnumerable<TSource> Merge(IEnumerable<TSource> source2, IEnumerable<TSource> source3, IEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
+            => Merge([ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)], comparer);
+    }
 
-    /// <summary>
-    /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
     /// <param name="sources">First ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
-        => MergeIterator(ArgumentValidator.NotNull(sources), comparer);
+    extension<TSource>(IEnumerable<IEnumerable<TSource>> sources)
+    {
+        /// <summary>
+        /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IEnumerable<TSource> Merge(Option<IComparer<TSource>> comparer = default)
+            => MergeIterator(ArgumentValidator.NotNull(sources), comparer);
+    }
 
     private static IEnumerable<TSource> MergeIterator<TSource>(IEnumerable<IEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer)
     {

@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 3.8.0
+
+* The extension methods of Funcky, Funcky.Async and Funcky.Xunit are now C# 14 extension members, declared in
+  `extension(...)` blocks. The compiled methods keep their names and `this` parameters, so the change is source and
+  binary compatible. Only `Interleave`, `And`, `Or` and `SplitLazy`, which take a `params` array, and the
+  source-generated `…OrNone` and `Apply` methods stay classic extension methods for now: the C# compiler of the .NET
+  SDK 10.0.1xx does not apply the expanded form to `params` parameters of extension members in referenced assemblies
+  (fixed in the 10.0.2xx SDK).
+
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
 The analyzer release: Funcky itself gains built-in correctness rules, `Funcky.Analyzers` gains eight style rules and a
