@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
 using FsCheck.Fluent;
@@ -133,29 +133,47 @@ public sealed class AverageOrNoneTest
         => (Option.FromNullable(sequence.Select(selector.Get).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
+    [Fact]
+    public async Task AverageOrNoneAsyncSumsInt64ValuesExactlyLikeAverageAsync()
+    {
+        // Each term is not representable as a double, so summing in double drifts while an exact long sum does not.
+        var sequence = AsyncSequence.Return((1L << 53) + 1, (1L << 53) + 1, (1L << 53) + 1);
+
+        FunctionalAssert.Some(await sequence.AverageAsync(), await sequence.AverageOrNoneAsync());
+    }
+
+    [Fact]
+    public async Task AverageOrNoneAsyncThrowsWhenTheInt64SumOverflowsLikeAverageAsync()
+    {
+        var sequence = AsyncSequence.Return(long.MaxValue, 1L);
+
+        await Assert.ThrowsAsync<OverflowException>(async () => await sequence.AverageAsync());
+        await Assert.ThrowsAsync<OverflowException>(async () => await sequence.AverageOrNoneAsync());
+    }
+
     private static async Task<bool> CompareAverageAndHandleEmptyInt32SequenceAsync(IAsyncEnumerable<int> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyInt64SequenceAsync(IAsyncEnumerable<long> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptySingleSequenceAsync(IAsyncEnumerable<float> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyDoubleSequenceAsync(IAsyncEnumerable<double> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 
     private static async Task<bool> CompareAverageAndHandleEmptyDecimalSequenceAsync(IAsyncEnumerable<decimal> sequence)
         => await sequence.AnyAsync()
             ? await sequence.AverageAsync() == await sequence.AverageOrNoneAsync()
-            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: _ => false);
+            : (await sequence.AverageOrNoneAsync()).Match(none: true, some: False);
 }
 #endif

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
 using static Funcky.Async.Test.Extensions.AsyncEnumerableExtensions.TestData;
 
@@ -44,8 +44,7 @@ public sealed class PairwiseTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Pairwise().ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Pairwise());
     }
 }
 #endif

@@ -1,4 +1,4 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 using static Funcky.Discard;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;

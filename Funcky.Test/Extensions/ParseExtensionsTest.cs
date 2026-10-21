@@ -88,6 +88,22 @@ public sealed class ParseExtensionsTest
         Assert.Equal(expected, input.ParseEnumOrNone<MyEnum>());
     }
 
+    [Fact]
+    public void ParseEnumOrNoneReturnsNoneForNull()
+    {
+        string? candidate = null;
+
+        Assert.Equal(Option<MyEnum>.None, candidate.ParseEnumOrNone<MyEnum>());
+        Assert.Equal(Option<MyEnum>.None, candidate.ParseEnumOrNone<MyEnum>(ignoreCase: true));
+    }
+
+    [Fact]
+    public void ParseEnumOrNoneIgnoresCaseOnlyWhenAsked()
+    {
+        Assert.Equal(Option<MyEnum>.None, "cool".ParseEnumOrNone<MyEnum>());
+        Assert.Equal(Option.Some(MyEnum.Cool), "cool".ParseEnumOrNone<MyEnum>(ignoreCase: true));
+    }
+
     public static TheoryData<Option<bool>, string> BooleanStrings()
         => new()
         {

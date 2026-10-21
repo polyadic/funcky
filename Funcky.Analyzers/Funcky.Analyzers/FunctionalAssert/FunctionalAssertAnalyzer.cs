@@ -13,13 +13,16 @@ public sealed class FunctionalAssertAnalyzer : DiagnosticAnalyzer
     public const string ExpectedArgumentIndex = nameof(ExpectedArgumentIndex);
     public const string ActualArgumentIndex = nameof(ActualArgumentIndex);
 
+    public const string PreferFunctionalAssertId = $"{DiagnosticName.Prefix}{DiagnosticName.FunctionalAssertUsage}01";
+
     public static readonly DiagnosticDescriptor PreferFunctionalAssert = new(
-        id: $"{DiagnosticName.Prefix}{DiagnosticName.FunctionalAssertUsage}01",
+        id: PreferFunctionalAssertId,
         title: "Assert can be simplified",
         messageFormat: "Assert can be simplified to a single call to {0}.{1}",
-        category: nameof(Funcky),
+        category: DiagnosticName.Category,
         DiagnosticSeverity.Warning,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticName.HelpLink(PreferFunctionalAssertId));
 
     private const string AttributeFullName = "Funcky.CodeAnalysis.AssertMethodHasOverloadWithExpectedValueAttribute";
 

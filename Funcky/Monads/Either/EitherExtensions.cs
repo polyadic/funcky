@@ -2,10 +2,13 @@ namespace Funcky.Monads;
 
 public static partial class EitherExtensions
 {
+    [Pure]
     public static Either<TLeft, TRight> Flatten<TLeft, TRight>(this Either<TLeft, Either<TLeft, TRight>> either)
         where TLeft : notnull
         where TRight : notnull
+#pragma warning disable λ1018 // This is the implementation of Flatten.
         => either.SelectMany(Identity);
+#pragma warning restore λ1018
 
     /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a right value.</summary>
     [Pure]

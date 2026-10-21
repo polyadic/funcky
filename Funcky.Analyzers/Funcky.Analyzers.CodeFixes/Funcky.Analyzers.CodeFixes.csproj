@@ -1,11 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AnalyzerRoslynVersion>4.4.0</AnalyzerRoslynVersion>
-        <DefineConstants>$(DefineConstants);ROSLYN_4_4_0</DefineConstants>
     </PropertyGroup>
-    <ItemGroup>
-        <None Include="Funcky.Analyzers.CodeFixes.Roslyn4.0.csproj" />
-    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.Analyzers.csproj" PrivateAssets="all" />
     </ItemGroup>

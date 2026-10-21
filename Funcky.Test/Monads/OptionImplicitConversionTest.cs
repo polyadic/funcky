@@ -61,7 +61,9 @@ public sealed class OptionImplicitConversionTest
 
     private void TryNullAssignment()
     {
+#pragma warning disable λ0005 // The test asserts the exception.
         Option<string> number = null!;
+#pragma warning restore λ0005
     }
 
     private void AcceptStringOption(Option<string> s)

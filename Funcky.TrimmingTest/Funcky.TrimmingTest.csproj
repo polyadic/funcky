@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <!-- net8.0: Funcky.Async carries the async implementation.
+             net10.0: the async APIs are part of Funcky itself and Funcky.Async only forwards to them. -->
+        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PublishTrimmed Condition="'$(FunckyTestAot)' != 'true'">true</PublishTrimmed>

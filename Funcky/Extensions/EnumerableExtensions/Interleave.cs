@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -13,7 +14,7 @@ public static partial class EnumerableExtensions
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
     public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSources)
-        => Interleave([source, .. otherSources]);
+        => Interleave([ArgumentValidator.NotNull(source), .. ArgumentValidator.NotNull(otherSources)]);
 
     /// <summary>
     /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
@@ -23,12 +24,21 @@ public static partial class EnumerableExtensions
     /// <returns>one sequences with all the elements interleaved.</returns>
     [Pure]
     public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<IEnumerable<TSource>> source)
+        => InterleaveIterator(ArgumentValidator.NotNull(source));
+
+    private static IEnumerable<TSource> InterleaveIterator<TSource>(IEnumerable<IEnumerable<TSource>> source)
     {
-        var enumerators = GetInterleaveEnumerators(source);
+        // The enumerators are acquired inside the try, so the ones acquired before a failing GetEnumerator are disposed.
+        var enumerators = new List<IEnumerator<TSource>>();
 
         try
         {
-            foreach (var element in InterleaveEnumerator(enumerators))
+            foreach (var sequence in source)
+            {
+                enumerators.Add(sequence.GetEnumerator());
+            }
+
+            foreach (var element in InterleaveEnumerator(enumerators.ToImmutableList()))
             {
                 yield return element;
             }
@@ -38,9 +48,6 @@ public static partial class EnumerableExtensions
             enumerators.ForEach(enumerator => enumerator.Dispose());
         }
     }
-
-    private static ImmutableList<IEnumerator<TSource>> GetInterleaveEnumerators<TSource>(IEnumerable<IEnumerable<TSource>> source)
-        => source.Select(s => s.GetEnumerator()).ToImmutableList();
 
     private static IEnumerable<TSource> InterleaveEnumerator<TSource>(ImmutableList<IEnumerator<TSource>> enumerators)
     {

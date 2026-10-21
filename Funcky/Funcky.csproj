@@ -4,10 +4,12 @@
         <TargetFrameworks>$(FunckyNewestTargetFramework);net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
+        <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Product>Funcky</Product>
         <Description>Funcky is a functional C# library</Description>
         <PackageTags>Functional Monad Linq</PackageTags>
-        <VersionPrefix>3.6.0</VersionPrefix>
+        <VersionPrefix>3.7.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -45,9 +47,6 @@
         <None Include="build/Funcky.targets" Pack="true" PackagePath="build" />
         <None Include="build/Funcky.targets" Pack="true" PackagePath="buildTransitive" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
-        <None Include="$(ArtifactsPath)\bin\Funcky.BuiltinAnalyzers.CodeFixes\$(Configuration.ToLowerInvariant())\Funcky.BuiltinAnalyzers.CodeFixes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
-        <None Include="..\Funcky.Analyzers\Funcky.Analyzers.Package\tools\*.ps1" Pack="true" PackagePath="tools\%(FileName)%(Extension)" Link="analyzers/dotnet/cs/%(Filename)%(Extension)" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="ILLink.LinkAttributes.xml" LogicalName="ILLink.LinkAttributes.xml" />
@@ -59,4 +58,37 @@
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
     <Import Project="..\PublicApiAnalyzers.targets" />
+    <!-- The built-in analyzers ship inside this package, one assembly per supported Roslyn version
+         (analyzers/dotnet/roslyn3.7/cs and analyzers/dotnet/roslyn4.4/cs). Analyzers.props already references
+         the Roslyn 4.4 projects so that they run on Funcky itself; here they are additionally marked for packing. -->
+    <ItemGroup Label="Built-in analyzers packed into the Funcky package">
+        <ProjectReference Update="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" PackAsAnalyzer="true" />
+        <ProjectReference Update="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" PackAsAnalyzer="true" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" Condition="'$(FunckyDisableAnalyzers)' == 'true'" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" Condition="'$(FunckyDisableAnalyzers)' == 'true'" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.Roslyn3.7.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
+        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.Roslyn3.7.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
+    </ItemGroup>
+    <!-- Adapted from https://github.com/dotnet/runtime/blob/4bd597ffde128555b4ff017e87c60adc2fedd178/eng/packaging.targets#L136,
+         the same mechanism Funcky.Analyzers.Package uses. -->
+    <PropertyGroup>
+        <BeforePack>$(BeforePack);IncludeBuiltinAnalyzersInPackage</BeforePack>
+    </PropertyGroup>
+    <Target Name="IncludeBuiltinAnalyzersInPackage"
+            Condition="'@(ProjectReference)' != '' and @(ProjectReference->AnyHaveMetadataValue('PackAsAnalyzer', 'true'))">
+        <MSBuild Projects="@(ProjectReference->WithMetadataValue('PackAsAnalyzer', 'true'))"
+                 Targets="GetAnalyzerPackFiles"
+                 RemoveProperties="SetTargetFramework;TargetFramework;TargetFrameworks">
+            <Output TaskParameter="TargetOutputs" ItemName="_BuiltinAnalyzerFile" />
+        </MSBuild>
+
+        <ItemGroup>
+            <Content Include="@(_BuiltinAnalyzerFile)" Pack="True" Condition="!%(_BuiltinAnalyzerFile.IsSymbol)" />
+            <!-- Symbols don't honor PackagePath.  By default they are placed in lib/%(TargetFramework).
+                 Pack does honor TargetPath and does Path.Combine("lib/%(TargetFramework)", "%(TargetPath)"),
+                 so a rooted path value for TargetPath will override lib.
+                 https://github.com/NuGet/Home/issues/10860 -->
+            <_TargetPathsToSymbols Include="@(_BuiltinAnalyzerFile)" TargetPath="/%(_BuiltinAnalyzerFile.PackagePath)" Condition="%(_BuiltinAnalyzerFile.IsSymbol)" />
+        </ItemGroup>
+    </Target>
 </Project>

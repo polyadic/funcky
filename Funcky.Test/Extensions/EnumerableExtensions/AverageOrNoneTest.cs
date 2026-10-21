@@ -82,28 +82,46 @@ public sealed class AverageOrNoneTest
         => (Option.FromNullable(sequence.Average(selector))
             == sequence.Select(Option.FromNullable).AverageOrNone(SelectorTransformation.TransformNullableSelector(selector))).ToProperty();
 
+    [Fact]
+    public void AverageOrNoneSumsInt64ValuesExactlyLikeAverage()
+    {
+        // Each term is not representable as a double, so summing in double drifts while an exact long sum does not.
+        var sequence = Enumerable.Repeat((1L << 53) + 1, 3).ToList();
+
+        FunctionalAssert.Some(sequence.Average(), sequence.AverageOrNone());
+    }
+
+    [Fact]
+    public void AverageOrNoneThrowsWhenTheInt64SumOverflowsLikeAverage()
+    {
+        var sequence = Sequence.Return(long.MaxValue, 1L);
+
+        Assert.Throws<OverflowException>(() => sequence.Average());
+        Assert.Throws<OverflowException>(() => sequence.AverageOrNone());
+    }
+
     private static bool CompareAverageAndHandleEmptyInt32Sequence(IReadOnlyCollection<int> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyInt64Sequence(IReadOnlyCollection<long> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptySingleSequence(IReadOnlyCollection<float> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyDoubleSequence(IReadOnlyCollection<double> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 
     private static bool CompareAverageAndHandleEmptyDecimalSequence(IReadOnlyCollection<decimal> sequence)
         => sequence.Count == 0
-            ? sequence.AverageOrNone().Match(none: true, some: _ => false)
+            ? sequence.AverageOrNone().Match(none: true, some: False)
             : sequence.Average() == sequence.AverageOrNone();
 }

@@ -1,0 +1,41 @@
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
+using static Funcky.BuiltinAnalyzers.NonDefaultableAnalyzer;
+
+namespace Funcky.BuiltinAnalyzers;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class NonDefaultableStyleCopSuppressor : DiagnosticSuppressor
+{
+    private static readonly SuppressionDescriptor DoNotUseDefaultValueTypeConstructorSuppression = new(
+        "Funcky-Suppress-SA1129",
+        "SA1129",
+        "λ1009 already disallows usage of this constructor.");
+
+    public override ImmutableArray<SuppressionDescriptor> SupportedSuppressions => ImmutableArray.Create(DoNotUseDefaultValueTypeConstructorSuppression);
+
+    public override void ReportSuppressions(SuppressionAnalysisContext context)
+    {
+        var styleCopDiagnostics = context.ReportedDiagnostics.Where(diagnostic => diagnostic.Id == DoNotUseDefaultValueTypeConstructorSuppression.SuppressedDiagnosticId);
+        foreach (var diagnostic in styleCopDiagnostics)
+        {
+            if (GetOperation(context, diagnostic) is IObjectCreationOperation operation
+                && IsParameterlessObjectCreationOfNonDefaultableStruct(operation))
+            {
+                context.ReportSuppression(Suppression.Create(DoNotUseDefaultValueTypeConstructorSuppression, diagnostic));
+            }
+        }
+    }
+
+    private static IOperation? GetOperation(SuppressionAnalysisContext context, Diagnostic diagnostic)
+    {
+        var location = diagnostic.Location;
+        var syntaxTree = location.SourceTree;
+        return syntaxTree?.GetRoot(context.CancellationToken) is { } root
+            && context.GetSemanticModel(syntaxTree) is { } semanticModel
+                ? semanticModel.GetOperation(root.FindNode(location.SourceSpan))
+                : null;
+    }
+}

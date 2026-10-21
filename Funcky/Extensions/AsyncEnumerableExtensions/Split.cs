@@ -1,5 +1,7 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -14,7 +16,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IAsyncEnumerable<TSource> source, TSource separator)
-        => SplitEnumerator(source, separator, EqualityComparer<TSource>.Default);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, EqualityComparer<TSource>.Default);
 
     /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
@@ -26,7 +28,7 @@ public static partial class AsyncEnumerableExtensions
     /// <returns>A sequence of sequences.</returns>
     [Pure]
     public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(this IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> comparer)
-        => SplitEnumerator(source, separator, comparer);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer));
 
     /// <summary>
     /// Splits the source sequence by the given separator and the given equality.
@@ -46,38 +48,27 @@ public static partial class AsyncEnumerableExtensions
         IEqualityComparer<TSource> comparer,
         Func<IReadOnlyList<TSource>, TResult> resultSelector)
         where TSource : notnull
-        => SplitEnumerator(source, separator, comparer)
-            .Select(resultSelector);
+        => SplitEnumerator(ArgumentValidator.NotNull(source), separator, ArgumentValidator.NotNull(comparer))
+            .Select(ArgumentValidator.NotNull(resultSelector));
 
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> SplitEnumerator<TSource>(IAsyncEnumerable<TSource> source, TSource separator, IEqualityComparer<TSource> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
-        await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
+        var part = ImmutableList.CreateBuilder<TSource>();
 
-        while (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
+        await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
-            yield return await TakeSkipWhile(asyncEnumerator, TakeSkipPredicate(separator, comparer)).ToListAsync(cancellationToken).ConfigureAwait(false);
-        }
-    }
-
-    private static Func<TSource, bool> TakeSkipPredicate<TSource>(TSource separator, IEqualityComparer<TSource> comparer)
-        => element
-            => !comparer.Equals(element, separator);
-
-    private static async IAsyncEnumerable<TSource> TakeSkipWhile<TSource>(IAsyncEnumerator<TSource> source, Func<TSource, bool> predicate)
-    {
-        do
-        {
-            if (predicate(source.Current))
+            if (comparer.Equals(element, separator))
             {
-                yield return source.Current;
+                yield return part.ToImmutable();
+                part.Clear();
             }
             else
             {
-                yield break;
+                part.Add(element);
             }
         }
-        while (await source.MoveNextAsync().ConfigureAwait(false));
+
+        yield return part.ToImmutable();
     }
 }
 #endif

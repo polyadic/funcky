@@ -29,6 +29,16 @@ public sealed class RetryTest
         Assert.Single(stack);
     }
 
+    [Fact]
+    public void RetriesTheProducerManyTimesWithoutOverflowingTheStack()
+    {
+        const int failedAttempts = 100_000;
+        var producer = new OptionProducer<int>(failedAttempts, 42);
+
+        Assert.Equal(42, Retry(producer.Produce));
+        Assert.Equal(failedAttempts + 1, producer.Called);
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -57,5 +67,15 @@ public sealed class RetryTest
 
         Assert.Equal(produceString, Retry(producer.Produce, new NoDelayRetryPolicy(1000)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
+    }
+
+    [Fact]
+    public void RequestsTheDelaysWithOneBasedRetryCounts()
+    {
+        var retryPolicy = new RecordingRetryPolicy(3);
+
+        _ = Retry(() => Option<int>.None, retryPolicy);
+
+        Assert.Equal([1, 2, 3], retryPolicy.RequestedRetryCounts);
     }
 }

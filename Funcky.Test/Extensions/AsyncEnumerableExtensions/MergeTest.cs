@@ -1,15 +1,19 @@
-#if INTEGRATED_ASYNC
+#if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 
 using System.Collections.Immutable;
 using FsCheck.Xunit;
 using Funcky.Async.Test.TestUtilities;
 using Funcky.Test.Internal;
+using Xunit.Sdk;
 
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
 public sealed class MergeTest
 {
+    private static readonly Option<IComparer<(int Key, string Tag)>> KeyComparer
+        = Comparer<(int Key, string Tag)>.Create((left, right) => left.Key.CompareTo(right.Key));
+
     [Fact]
     public void MergeIsEnumeratedLazily()
     {
@@ -80,8 +84,41 @@ public sealed class MergeTest
     [Fact]
     public async Task CancellationIsPropagated()
     {
-        var canceledToken = new CancellationToken(canceled: true);
-        _ = await new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(AsyncEnumerable.Empty<Unit>()).ToListAsync(canceledToken);
+        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Merge(AsyncEnumerable.Empty<Unit>()));
+    }
+
+    [Fact]
+    public Task MergeIsStableOnEqualElements()
+    {
+        var sequence1 = AsyncSequence.Return((1, "A1"), (2, "A2"));
+        var sequence2 = AsyncSequence.Return((1, "B1"), (2, "B2"));
+        var expected = AsyncSequence.Return((1, "A1"), (1, "B1"), (2, "A2"), (2, "B2"));
+
+        return AsyncAssert.Equal(expected, sequence1.Merge(sequence2, KeyComparer));
+    }
+
+    [Fact]
+    public Task MergeOfASequenceOfSequencesIsStableOnEqualElements()
+    {
+        var sequence1 = AsyncSequence.Return((1, "A1"), (2, "A2"));
+        var sequence2 = AsyncSequence.Return((1, "B1"), (2, "B2"));
+        var sequence3 = AsyncSequence.Return((1, "C1"), (2, "C2"));
+        var expected = AsyncSequence.Return((1, "A1"), (1, "B1"), (1, "C1"), (2, "A2"), (2, "B2"), (2, "C2"));
+
+        return AsyncAssert.Equal(expected, ImmutableList.Create(sequence1, sequence2, sequence3).Merge(KeyComparer));
+    }
+
+    [Fact]
+    public async Task MergeDisposesTheEnumeratorsAcquiredBeforeAFailingGetAsyncEnumerator()
+    {
+        var first = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(1, 2));
+        var second = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(3, 4));
+        var sources = Sequence.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
+
+        await Assert.ThrowsAsync<XunitException>(async () => await sources.Merge().FirstAsync());
+
+        Assert.Equal(1, first.EnumeratorsDisposed);
+        Assert.Equal(1, second.EnumeratorsDisposed);
     }
 }
 #endif

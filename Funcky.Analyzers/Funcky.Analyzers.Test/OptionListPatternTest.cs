@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.Testing;
 using Xunit;
-using VerifyCS = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.Analyzers.OptionListPatternAnalyzer>;
+using VerifyCS = Funcky.Analyzers.Test.CSharpAnalyzerVerifier<Funcky.BuiltinAnalyzers.OptionListPatternAnalyzer>;
 
 namespace Funcky.Analyzers.Test;
 

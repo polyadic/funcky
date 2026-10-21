@@ -12,6 +12,6 @@ public static partial class Sequence
     [Pure]
     public static IEnumerable<TSource> CycleMaterialized<TSource>(IReadOnlyCollection<TSource> source)
         => source.Count > 0
-            ? Cycle(source).SelectMany(Identity)
+            ? Cycle(source).Flatten()
             : throw new InvalidOperationException("you cannot cycle an empty enumerable");
 }

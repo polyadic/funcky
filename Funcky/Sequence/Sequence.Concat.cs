@@ -15,5 +15,5 @@ public static partial class Sequence
     [Pure]
     public static IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources)
         => sources
-            .SelectMany(Identity);
+            .Flatten();
 }

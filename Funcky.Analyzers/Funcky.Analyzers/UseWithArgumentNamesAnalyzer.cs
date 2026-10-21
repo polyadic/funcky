@@ -11,9 +11,11 @@ namespace Funcky.Analyzers;
 public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
 {
     public const string DiagnosticId = $"{DiagnosticName.Prefix}{DiagnosticName.Usage}03";
-    private const string Category = nameof(Funcky);
 
-    private const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
+    /// <summary>The attribute is matched by name, so any assembly may define it: Funcky, the user's own project or the generator.</summary>
+    internal const string AttributeFullName = "Funcky.CodeAnalysis.UseWithArgumentNamesAttribute";
+
+    private const string Category = DiagnosticName.Category;
 
     private static readonly DiagnosticDescriptor Descriptor = new(
         id: DiagnosticId,
@@ -22,7 +24,8 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
         description: Resources.UseWithArgumentNamesAnalyzerDescription,
         category: Category,
         defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticName.HelpLink(DiagnosticId));
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
@@ -32,21 +35,18 @@ public sealed class UseWithArgumentNamesAnalyzer : DiagnosticAnalyzer
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.RegisterCompilationStartAction(static context =>
         {
-            if (context.Compilation.GetTypeByMetadataName(AttributeFullName) is { } attributeSymbol)
-            {
-                var expressionOfTType = context.Compilation.GetExpressionOfTType();
-                context.RegisterOperationAction(AnalyzeInvocation(attributeSymbol, expressionOfTType), OperationKind.Invocation);
-            }
+            var expressionOfTType = context.Compilation.GetExpressionOfTType();
+            context.RegisterOperationAction(AnalyzeInvocation(expressionOfTType), OperationKind.Invocation);
         });
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol attributeSymbol, INamedTypeSymbol? expressionOfTType)
+    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol? expressionOfTType)
         => context =>
         {
             var invocation = (IInvocationOperation)context.Operation;
             var semanticModel = invocation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never be null for operations passed to an analyzer (according to docs)");
 
-            if (invocation.TargetMethod.HasAttribute(attributeSymbol)
+            if (invocation.TargetMethod.HasAttribute(AttributeFullName)
                 && !invocation.Syntax.IsInExpressionTree(semanticModel, expressionOfTType, context.CancellationToken))
             {
                 foreach (var argument in invocation.Arguments)

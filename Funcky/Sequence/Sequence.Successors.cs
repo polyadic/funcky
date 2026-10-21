@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky;
 
 public static partial class Sequence
@@ -31,14 +33,7 @@ public static partial class Sequence
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, Option<TResult>> successor)
         where TResult : notnull
-    {
-        var item = first;
-        while (item.TryGetValue(out var itemValue))
-        {
-            yield return itemValue;
-            item = successor(itemValue);
-        }
-    }
+        => SuccessorsIterator(first, ArgumentValidator.NotNull(successor));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
     [Pure]
@@ -50,17 +45,36 @@ public static partial class Sequence
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, TResult> successor)
         where TResult : notnull
-        => Successors(first, previous => Option.Some(successor(previous)));
+        => Successors(first, ToOptionSuccessor(ArgumentValidator.NotNull(successor)));
 
     /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
+    /// <remarks>Unlike the other overloads, this one never wraps the elements in an <see cref="Option{T}"/>, so <typeparamref name="TResult"/> is not constrained to <c>notnull</c>: it can produce <c>null</c> elements.</remarks>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, TResult> successor)
+        => SuccessorsIterator(first, ArgumentValidator.NotNull(successor));
+
+    private static IEnumerable<TResult> SuccessorsIterator<TResult>(TResult first, Func<TResult, TResult> successor)
     {
         var item = first;
         while (true)
         {
             yield return item;
             item = successor(item);
+        }
+    }
+
+    private static Func<TResult, Option<TResult>> ToOptionSuccessor<TResult>(Func<TResult, TResult> successor)
+        where TResult : notnull
+        => previous => Option.Some(successor(previous));
+
+    private static IEnumerable<TResult> SuccessorsIterator<TResult>(Option<TResult> first, Func<TResult, Option<TResult>> successor)
+        where TResult : notnull
+    {
+        var item = first;
+        while (item.TryGetValue(out var itemValue))
+        {
+            yield return itemValue;
+            item = successor(itemValue);
         }
     }
 }

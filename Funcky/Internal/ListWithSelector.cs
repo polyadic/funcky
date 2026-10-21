@@ -36,7 +36,7 @@ internal class ListWithSelector<TSource, TResult>(IList<TSource> source, Func<IL
     public void CopyTo(TResult[] array, int arrayIndex)
     {
         var index = arrayIndex;
-        foreach (var element in source.Skip(arrayIndex).Select(_selector))
+        foreach (var element in source.Select(_selector))
         {
             array[index++] = element;
         }

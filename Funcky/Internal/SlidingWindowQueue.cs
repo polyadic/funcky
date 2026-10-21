@@ -1,43 +1,43 @@
-using System.Collections.Immutable;
-
 namespace Funcky.Internal;
 
+/// <summary>A ring buffer of the last <paramref name="width"/> elements; <see cref="Window"/> snapshots them in insertion order.</summary>
 internal sealed class SlidingWindowQueue<TSource>(int width)
 {
-    private int _currentWidth;
-    private ImmutableQueue<TSource> _window = ImmutableQueue<TSource>.Empty;
+    private readonly TSource[] _buffer = new TSource[width];
+    private int _start;
+    private int _count;
 
     public IReadOnlyList<TSource> Window
-        => _window.ToImmutableList();
+    {
+        get
+        {
+            var window = new TSource[_count];
+
+            for (var index = 0; index < _count; index++)
+            {
+                window[index] = _buffer[(_start + index) % width];
+            }
+
+            return Array.AsReadOnly(window);
+        }
+    }
 
     public bool IsFull
-        => width == _currentWidth;
+        => _count == width;
 
     public SlidingWindowQueue<TSource> Enqueue(TSource element)
     {
-        EnqueueWithWidth(element);
-        KeepWindowWidth();
+        if (IsFull)
+        {
+            _buffer[_start] = element;
+            _start = (_start + 1) % width;
+        }
+        else
+        {
+            _buffer[(_start + _count) % width] = element;
+            _count += 1;
+        }
 
         return this;
-    }
-
-    private void EnqueueWithWidth(TSource element)
-    {
-        _window = _window.Enqueue(element);
-        _currentWidth += 1;
-    }
-
-    private void DequeueWithWidth()
-    {
-        _window = _window.Dequeue();
-        _currentWidth -= 1;
-    }
-
-    private void KeepWindowWidth()
-    {
-        if (_currentWidth > width)
-        {
-            DequeueWithWidth();
-        }
     }
 }

@@ -13,6 +13,7 @@ public static partial class StringExtensions
     /// <param name="source">The source string.</param>
     /// <param name="size">The desired size of the chunks in characters.</param>
     /// <returns>A sequence of equally sized substrings containing consecutive substrings of the source string in the same order.</returns>
+    [Pure]
     public static IEnumerable<string> Chunk(this string source, int size)
         => ChunkString(source, ChunkSizeValidator.Validate(size));
 

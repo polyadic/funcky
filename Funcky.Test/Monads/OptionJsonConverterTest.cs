@@ -97,6 +97,15 @@ public sealed class OptionJsonConverterTest
         Assert.Equal(expectedObject, JsonSerializer.Deserialize<MedicalId>(json, Options));
     }
 
+    [Fact]
+    public void OptionIsNotSupportedAsADictionaryKey()
+    {
+        // Keys are written with WriteAsPropertyName, which the converter does not implement; System.Text.Json reports that as unsupported.
+        var dictionary = new Dictionary<Option<string>, int> { [Option.Some("key")] = 1 };
+
+        Assert.Throws<NotSupportedException>(() => JsonSerializer.Serialize(dictionary, Options));
+    }
+
     private sealed record Person
     {
         public Person(string firstName, string lastName)

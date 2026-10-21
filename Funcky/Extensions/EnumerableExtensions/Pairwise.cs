@@ -1,3 +1,5 @@
+using Funcky.Internal.Validators;
+
 namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
@@ -23,6 +25,9 @@ public static partial class EnumerableExtensions
     /// <returns>Returns a sequence of ValueTuple-pairs.</returns>
     [Pure]
     public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
+        => PairwiseIterator(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(resultSelector));
+
+    private static IEnumerable<TResult> PairwiseIterator<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
     {
         using var enumerator = source.GetEnumerator();
 
