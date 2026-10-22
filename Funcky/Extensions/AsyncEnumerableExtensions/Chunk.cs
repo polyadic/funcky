@@ -7,44 +7,49 @@ namespace Funcky.Extensions;
 public static partial class AsyncEnumerableExtensions
 {
 #if SYSTEM_LINQ_ASYNC
-    /// <summary>
-    /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
-    /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
-    /// <param name="size">The desired size of the chunks.</param>
-    /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
-    /// <remarks>Starting with .NET 10 the base class library provides this overload itself, so it is only part of Funcky.Async.</remarks>
-    [Pure]
-    public static IAsyncEnumerable<IReadOnlyList<TSource>> Chunk<TSource>(this IAsyncEnumerable<TSource> source, int size)
-        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size));
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
+        /// </summary>
+        /// <param name="size">The desired size of the chunks.</param>
+        /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
+        /// <remarks>Starting with .NET 10 the base class library provides this overload itself, so it is only part of Funcky.Async.</remarks>
+        [Pure]
+        public IAsyncEnumerable<IReadOnlyList<TSource>> Chunk(int size)
+            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size));
+    }
 #endif
-
-    /// <summary>
-    /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
-    /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    /// <typeparam name="TResult">Type of the elements returned.</typeparam>
     /// <param name="source">The source sequence.</param>
-    /// <param name="size">The desired size of the chunks.</param>
-    /// <param name="resultSelector">The result selector will be applied on each chunked sequence and can produce a desired result.</param>
-    /// <returns>A sequence of results based on equally sized chunks.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TResult> Chunk<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
-        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
-            .Select(ArgumentValidator.NotNull(resultSelector));
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the elements returned.</typeparam>
+        /// <param name="size">The desired size of the chunks.</param>
+        /// <param name="resultSelector">The result selector will be applied on each chunked sequence and can produce a desired result.</param>
+        /// <returns>A sequence of results based on equally sized chunks.</returns>
+        [Pure]
+        public IAsyncEnumerable<TResult> Chunk<TResult>(int size, Func<IReadOnlyList<TSource>, TResult> resultSelector)
+            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
+                .Select(ArgumentValidator.NotNull(resultSelector));
 
-    /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
-    [Pure]
-    public static IAsyncEnumerable<TResult> ChunkAwait<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
-        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
-            .Select(AwaitChunk(ArgumentValidator.NotNull(resultSelector)));
+        /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
+        [Pure]
+        public IAsyncEnumerable<TResult> ChunkAwait<TResult>(int size, Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
+            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
+                .Select(AwaitChunk(ArgumentValidator.NotNull(resultSelector)));
 
-    /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
-    [Pure]
-    public static IAsyncEnumerable<TResult> ChunkAwaitWithCancellation<TSource, TResult>(this IAsyncEnumerable<TSource> source, int size, Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
-        => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
-            .Select(ArgumentValidator.NotNull(resultSelector));
+        /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
+        [Pure]
+        public IAsyncEnumerable<TResult> ChunkAwaitWithCancellation<TResult>(int size, Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
+            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
+                .Select(ArgumentValidator.NotNull(resultSelector));
+    }
 
     private static Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> AwaitChunk<TSource, TResult>(Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
         => (chunk, _) => resultSelector(chunk);

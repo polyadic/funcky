@@ -6,15 +6,32 @@ public static partial class StringExtensions
 
     private delegate Option<(int Index, int SeparatorLength)> FindNextIndex(string text, int startIndex);
 
-    /// <summary>
-    /// Splits a string into individual parts by a given separator.
-    /// </summary>
     /// <param name="text">The input text.</param>
-    /// <param name="separator">A single character separating the parts.</param>
-    /// <returns>A lazy IEnumerable containing the parts.</returns>
-    [Pure]
-    public static IEnumerable<string> SplitLazy(this string text, char separator)
-        => text.SplitBy(ExtractByIndex(IndexOfCharSeparator(separator)));
+    extension(string text)
+    {
+        /// <summary>
+        /// Splits a string into individual parts by a given separator.
+        /// </summary>
+        /// <param name="separator">A single character separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
+        [Pure]
+        public IEnumerable<string> SplitLazy(char separator)
+            => text.SplitBy(ExtractByIndex(IndexOfCharSeparator(separator)));
+
+        /// <summary>
+        /// Splits a string into individual parts by a given separator.
+        /// </summary>
+        /// <param name="separator">A single string separating the parts.</param>
+        /// <returns>A lazy IEnumerable containing the parts.</returns>
+        [Pure]
+        public IEnumerable<string> SplitLazy(string separator)
+            => text.SplitBy(ExtractByIndex(IndexOfStringSeparator(separator)));
+
+        private IEnumerable<string> SplitBy(ExtractElement extractNext)
+            => Sequence
+                    .Successors(extractNext(text, 0), previous => extractNext(text, previous.NextStartIndex))
+                    .Select(r => r.Result);
+    }
 
     /// <summary>
     /// Splits a string into individual parts by several given separators.
@@ -27,16 +44,6 @@ public static partial class StringExtensions
         => text.SplitBy(ExtractByIndex(IndexOfCharSeparators(separators)));
 
     /// <summary>
-    /// Splits a string into individual parts by a given separator.
-    /// </summary>
-    /// <param name="text">The input text.</param>
-    /// <param name="separator">A single string separating the parts.</param>
-    /// <returns>A lazy IEnumerable containing the parts.</returns>
-    [Pure]
-    public static IEnumerable<string> SplitLazy(this string text, string separator)
-        => text.SplitBy(ExtractByIndex(IndexOfStringSeparator(separator)));
-
-    /// <summary>
     /// Splits a string into individual parts by several given separators.
     /// </summary>
     /// <param name="text">The input text.</param>
@@ -45,11 +52,6 @@ public static partial class StringExtensions
     [Pure]
     public static IEnumerable<string> SplitLazy(this string text, params string[] separators)
         => text.SplitBy(ExtractByIndex(IndexOfStringSeparators(separators)));
-
-    private static IEnumerable<string> SplitBy(this string text, ExtractElement extractNext)
-        => Sequence
-                .Successors(extractNext(text, 0), previous => extractNext(text, previous.NextStartIndex))
-                .Select(r => r.Result);
 
     private static FindNextIndex IndexOfCharSeparator(char separator)
         => (text, startIndex)

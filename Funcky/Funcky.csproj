@@ -39,6 +39,9 @@
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <!-- The ILLink analyzers shipped in the .NET 6 and 7 targeting packs predate C# 14 extension blocks and throw on them (AD0001);
+             the analyzers of .NET 8 and later check the same sources. -->
+        <EnableTrimAnalyzer Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">false</EnableTrimAnalyzer>
     </PropertyGroup>
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
         <IsAotCompatible>true</IsAotCompatible>

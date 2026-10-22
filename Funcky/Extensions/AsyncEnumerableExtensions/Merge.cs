@@ -7,59 +7,61 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
     /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)).Merge(comparer);
+    extension<TSource>(IAsyncEnumerable<TSource> source1)
+    {
+        /// <summary>
+        /// Merges two ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Merge(IAsyncEnumerable<TSource> source2, Option<IComparer<TSource>> comparer = default)
+            => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2)).Merge(comparer);
 
-    /// <summary>
-    /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="source3">Third ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
-    /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)).Merge(comparer);
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="source3">Third ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Merge(IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, Option<IComparer<TSource>> comparer = default)
+            => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3)).Merge(comparer);
 
-    /// <summary>
-    /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
-    /// <param name="source1">First ordered sequence.</param>
-    /// <param name="source2">Second ordered sequence.</param>
-    /// <param name="source3">Third ordered sequence.</param>
-    /// <param name="source4">Forth ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
-    /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IAsyncEnumerable<TSource> source1, IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, IAsyncEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
-        => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)).Merge(comparer);
+        /// <summary>
+        /// Merges three ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="source2">Second ordered sequence.</param>
+        /// <param name="source3">Third ordered sequence.</param>
+        /// <param name="source4">Forth ordered sequence.</param>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Merge(IAsyncEnumerable<TSource> source2, IAsyncEnumerable<TSource> source3, IAsyncEnumerable<TSource> source4, Option<IComparer<TSource>> comparer = default)
+            => ImmutableList.Create(ArgumentValidator.NotNull(source1), ArgumentValidator.NotNull(source2), ArgumentValidator.NotNull(source3), ArgumentValidator.NotNull(source4)).Merge(comparer);
+    }
 
-    /// <summary>
-    /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
-    /// </summary>
-    /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
     /// <param name="sources">First ordered sequence.</param>
-    /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
     /// <typeparam name="TSource">The type elements in the sequences.</typeparam>
-    /// <returns>The merged sequences in the same order as the given sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Merge<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources, Option<IComparer<TSource>> comparer = default)
-        => MergeInternal(ArgumentValidator.NotNull(sources), comparer);
+    extension<TSource>(IEnumerable<IAsyncEnumerable<TSource>> sources)
+    {
+        /// <summary>
+        /// Merges a sequence of ordered sequences into one and preserves the ordering. The merged sequences has exactly the same number of elements as the inputs combined.
+        /// </summary>
+        /// <remarks>PRECONDITION: The given sequences must be ordered by the same ordering as the given IComparer.</remarks>
+        /// <param name="comparer">The comparer giving the order condition of the sequences.</param>
+        /// <returns>The merged sequences in the same order as the given sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Merge(Option<IComparer<TSource>> comparer = default)
+            => MergeInternal(ArgumentValidator.NotNull(sources), comparer);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TSource> MergeInternal<TSource>(

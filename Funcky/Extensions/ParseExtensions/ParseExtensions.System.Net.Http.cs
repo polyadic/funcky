@@ -23,10 +23,13 @@ namespace Funcky.Extensions;
 [OrNoneFromTryPattern(typeof(WarningHeaderValue), nameof(WarningHeaderValue.TryParse))]
 public static partial class ParseExtensions
 {
-    // implemented manually because CacheControlHeaderValue.TryParse has no annotations to handle nullability correctly.
-    [Pure]
-    public static Option<CacheControlHeaderValue> ParseCacheControlHeaderValueOrNone(this string? candidate)
-        => CacheControlHeaderValue.TryParse(candidate, out var result)
-            ? result ?? new CacheControlHeaderValue()
-            : Option<CacheControlHeaderValue>.None;
+    extension(string? candidate)
+    {
+        // implemented manually because CacheControlHeaderValue.TryParse has no annotations to handle nullability correctly.
+        [Pure]
+        public Option<CacheControlHeaderValue> ParseCacheControlHeaderValueOrNone()
+            => CacheControlHeaderValue.TryParse(candidate, out var result)
+                ? result ?? new CacheControlHeaderValue()
+                : Option<CacheControlHeaderValue>.None;
+    }
 }

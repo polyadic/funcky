@@ -5,22 +5,25 @@ namespace System.Linq;
 
 internal static class EnumerableCompatibility
 {
-    public static bool TryGetNonEnumeratedCount<TSource>(this IEnumerable<TSource> source, out int count)
+    extension<TSource>(IEnumerable<TSource> source)
     {
-        if (source is ICollection<TSource> collectionOfT)
+        public bool TryGetNonEnumeratedCount(out int count)
         {
-            count = collectionOfT.Count;
-            return true;
-        }
+            if (source is ICollection<TSource> collectionOfT)
+            {
+                count = collectionOfT.Count;
+                return true;
+            }
 
-        if (source is ICollection collection)
-        {
-            count = collection.Count;
-            return true;
-        }
+            if (source is ICollection collection)
+            {
+                count = collection.Count;
+                return true;
+            }
 
-        count = 0;
-        return false;
+            count = 0;
+            return false;
+        }
     }
 }
 #endif

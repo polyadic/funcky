@@ -7,24 +7,27 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
-    /// sequence's elements without causing multiple enumerations over the source.
-    /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
-    /// <returns>A lazy buffer of the underlying sequence.</returns>
-    /// <remarks>
-    /// The source is not enumerated before the first element is requested. The buffer can be enumerated by several
-    /// consumers concurrently; the source is still pulled one element at a time and each element is produced exactly once.
-    /// The cancellation token passed to <see cref="IAsyncEnumerable{T}.GetAsyncEnumerator"/> cancels that consumer's
-    /// enumeration, it does not affect the buffer or other consumers.
-    /// </remarks>
-    [Pure]
-    public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> source)
-        => ArgumentValidator.NotNull(source) is IAsyncBuffer<TSource> buffer
-            ? Borrow(buffer)
-            : MemoizedAsyncBuffer.Create(source);
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
+        /// sequence's elements without causing multiple enumerations over the source.
+        /// </summary>
+        /// <returns>A lazy buffer of the underlying sequence.</returns>
+        /// <remarks>
+        /// The source is not enumerated before the first element is requested. The buffer can be enumerated by several
+        /// consumers concurrently; the source is still pulled one element at a time and each element is produced exactly once.
+        /// The cancellation token passed to <see cref="IAsyncEnumerable{T}.GetAsyncEnumerator"/> cancels that consumer's
+        /// enumeration, it does not affect the buffer or other consumers.
+        /// </remarks>
+        [Pure]
+        public IAsyncBuffer<TSource> Memoize()
+            => ArgumentValidator.NotNull(source) is IAsyncBuffer<TSource> buffer
+                ? Borrow(buffer)
+                : MemoizedAsyncBuffer.Create(source);
+    }
 
     private static IAsyncBuffer<TSource> Borrow<TSource>(IAsyncBuffer<TSource> buffer)
         => new BorrowedAsyncBuffer<TSource>(buffer);

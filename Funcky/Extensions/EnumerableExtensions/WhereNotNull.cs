@@ -2,13 +2,19 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    [Pure]
-    public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
+    extension<TSource>(IEnumerable<TSource?> source)
         where TSource : class
-        => source.WhereSelect(Option.FromNullable);
+    {
+        [Pure]
+        public IEnumerable<TSource> WhereNotNull()
+            => source.WhereSelect(Option.FromNullable);
+    }
 
-    [Pure]
-    public static IEnumerable<TSource> WhereNotNull<TSource>(this IEnumerable<TSource?> source)
+    extension<TSource>(IEnumerable<TSource?> source)
         where TSource : struct
-        => source.WhereSelect(Option.FromNullable);
+    {
+        [Pure]
+        public IEnumerable<TSource> WhereNotNull()
+            => source.WhereSelect(Option.FromNullable);
+    }
 }

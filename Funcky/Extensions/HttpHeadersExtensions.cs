@@ -4,8 +4,11 @@ namespace Funcky.Extensions;
 
 public static partial class HttpHeadersExtensions
 {
-    public static Option<IEnumerable<string>> GetValuesOrNone(this HttpHeaders headers, string name)
-        => headers.TryGetValues(name, out var result)
-            ? Option.Some(result)
-            : Option<IEnumerable<string>>.None;
+    extension(HttpHeaders headers)
+    {
+        public Option<IEnumerable<string>> GetValuesOrNone(string name)
+            => headers.TryGetValues(name, out var result)
+                ? Option.Some(result)
+                : Option<IEnumerable<string>>.None;
+    }
 }

@@ -25,17 +25,39 @@ internal readonly struct UnsafeEither<TLeft, TRight>
 
 internal static class UnsafeEither
 {
+    extension<TItem>(UnsafeEither<Unit, TItem> either)
+        where TItem : notnull
+    {
+        public Option<TItem> ToOption()
+            => either.IsRight
+                ? either.RightValue
+                : Option<TItem>.None;
+    }
+
+    extension<TLeft, TRight>(UnsafeEither<TLeft, TRight> either)
+        where TLeft : notnull
+        where TRight : notnull
+    {
+        public Either<TLeft, TRight> ToEither()
+            => either.IsRight
+                ? Either<TLeft, TRight>.Right(either.RightValue)
+                : Either<TLeft, TRight>.Left(either.LeftValue);
+    }
+
+    extension<TValidResult>(UnsafeEither<Exception, TValidResult> either)
+        where TValidResult : notnull
+    {
+        public Result<TValidResult> ToResult()
+            => either.IsRight
+                ? Result.Ok(either.RightValue)
+                : Result<TValidResult>.Error(either.LeftValue);
+    }
+
     public static UnsafeEither<Unit, TItem> FromOption<TItem>(Option<TItem> option)
         where TItem : notnull
         => option.Match(
             none: static () => UnsafeEither<Unit, TItem>.Left(Unit.Value),
             some: UnsafeEither<Unit, TItem>.Right);
-
-    public static Option<TItem> ToOption<TItem>(this UnsafeEither<Unit, TItem> either)
-        where TItem : notnull
-        => either.IsRight
-            ? either.RightValue
-            : Option<TItem>.None;
 
     public static UnsafeEither<TLeft, TRight> FromEither<TLeft, TRight>(Either<TLeft, TRight> either)
         where TLeft : notnull
@@ -44,22 +66,9 @@ internal static class UnsafeEither
             left: UnsafeEither<TLeft, TRight>.Left,
             right: UnsafeEither<TLeft, TRight>.Right);
 
-    public static Either<TLeft, TRight> ToEither<TLeft, TRight>(this UnsafeEither<TLeft, TRight> either)
-        where TLeft : notnull
-        where TRight : notnull
-        => either.IsRight
-            ? Either<TLeft, TRight>.Right(either.RightValue)
-            : Either<TLeft, TRight>.Left(either.LeftValue);
-
     public static UnsafeEither<Exception, TValidResult> FromResult<TValidResult>(Result<TValidResult> result)
         where TValidResult : notnull
         => result.Match(
             error: UnsafeEither<Exception, TValidResult>.Left,
             ok: UnsafeEither<Exception, TValidResult>.Right);
-
-    public static Result<TValidResult> ToResult<TValidResult>(this UnsafeEither<Exception, TValidResult> either)
-        where TValidResult : notnull
-        => either.IsRight
-            ? Result.Ok(either.RightValue)
-            : Result<TValidResult>.Error(either.LeftValue);
 }

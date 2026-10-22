@@ -4,7 +4,10 @@ namespace Funcky.Extensions;
 
 public static partial class ListExtensions
 {
-    [Pure]
-    public static Option<int> IndexOfOrNone<TValue>(this IList<TValue> list, TValue value)
-        => MapNotFoundToNone(list.IndexOf(value));
+    extension<TValue>(IList<TValue> list)
+    {
+        [Pure]
+        public Option<int> IndexOfOrNone(TValue value)
+            => MapNotFoundToNone(list.IndexOf(value));
+    }
 }
