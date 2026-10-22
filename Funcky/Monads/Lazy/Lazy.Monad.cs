@@ -19,16 +19,14 @@ public static partial class LazyExtensions
 
     // This class is needed because the implicitly generated class that would be generated for a lambda
     // wouldn't have generic types annotated with DynamicallyAccessedMembers, which would result in a warning.
-    private sealed class LazySelect<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>
-        (Lazy<T> source, Func<T, TResult> selector)
+    private sealed class LazySelect<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(Lazy<T> source, Func<T, TResult> selector)
     {
         public TResult Apply() => selector(source.Value);
     }
 
     // This class is needed because the implicitly generated class that would be generated for a lambda
     // wouldn't have generic types annotated with DynamicallyAccessedMembers, which would result in a warning.
-    private sealed class LazySelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TA, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>
-        (Lazy<T> lazy, Func<T, Lazy<TA>> selector, Func<T, TA, TResult> resultSelector)
+    private sealed class LazySelectMany<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] T, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TA, [DynamicallyAccessedMembers(PublicParameterlessConstructor)] TResult>(Lazy<T> lazy, Func<T, Lazy<TA>> selector, Func<T, TA, TResult> resultSelector)
     {
         public TResult Apply()
         {

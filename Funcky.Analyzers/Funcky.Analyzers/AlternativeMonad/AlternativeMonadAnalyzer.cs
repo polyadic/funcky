@@ -49,7 +49,8 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
                     receiverType,
                     alternativeMonadType,
                     arguments[alternativeMonadType.ErrorStateArgumentIndex],
-                    arguments[alternativeMonadType.SuccessStateArgumentIndex])]
+                    arguments[alternativeMonadType.SuccessStateArgumentIndex]),
+                    ]
                 : [];
 
     private static Diagnostic? AnalyzeMatchInvocation(
