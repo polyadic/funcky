@@ -123,6 +123,7 @@ Funcky.Monads.OptionExtensions
 Funcky.Monads.OptionJsonConverter
 Funcky.Monads.OptionJsonConverter.OptionJsonConverter() -> void
 Funcky.Monads.Reader<TEnvironment, TResult>
+virtual Funcky.Monads.Reader<TEnvironment, TResult>.Invoke(TEnvironment environment) -> TResult
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
 Funcky.Monads.Result

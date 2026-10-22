@@ -186,6 +186,7 @@ Funcky.Monads.OptionValueTaskAwaiter<TItem>.IsCompleted.get -> bool
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.OnCompleted(System.Action! continuation) -> void
 Funcky.Monads.OptionValueTaskAwaiter<TItem>.OptionValueTaskAwaiter() -> void
 Funcky.Monads.Reader<TEnvironment, TResult>
+virtual Funcky.Monads.Reader<TEnvironment, TResult>.Invoke(TEnvironment environment) -> TResult
 Funcky.Monads.Reader<TEnvironment>
 Funcky.Monads.ReaderExtensions
 Funcky.Monads.Result
