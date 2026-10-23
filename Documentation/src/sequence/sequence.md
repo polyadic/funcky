@@ -9,6 +9,20 @@ All members are static methods on `Sequence`, so they are called as `Sequence.Re
 that take a function or a lazy input are lazy themselves; `Return` and `FromNullable` are small materialized
 lists.
 
+Since Funcky 3.8.0 the same constructors are also C# 14 static extension members of `System.Linq.Enumerable`, so
+they sit next to `Enumerable.Range`, `Enumerable.Repeat` and `Enumerable.Empty` where LINQ users look for them:
+
+```cs
+var naturals = Enumerable.Successors(1, n => n + 1);
+var single = Enumerable.Return(42);
+using var cycle = Enumerable.CycleRange(new[] { 1, 2, 3 });
+```
+
+`Enumerable.Concat(a, b)` with exactly two sequences binds to the BCL method, which does the same; with one
+sequence of sequences or three or more sequences it binds to Funcky's. The members are declared in
+`Funcky.Extensions.EnumerableExtensions`; on a compiler older than C# 14 they are plain static methods of that class,
+and `Sequence` remains the form to use.
+
 | Constructor                                        | Produces                                                        |
 |----------------------------------------------------|-----------------------------------------------------------------|
 | [Return](#return)                                  | One element, or exactly the elements given                      |
