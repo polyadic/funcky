@@ -1,1 +1,11 @@
 #nullable enable
+Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<TSource>!).Interleave(params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
+Funcky.Extensions.FuncExtensions.extension<T>(System.Func<T, bool>!).And(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+Funcky.Extensions.FuncExtensions.extension<T>(System.Func<T, bool>!).Or(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+Funcky.Extensions.StringExtensions.extension(string!).SplitLazy(params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+Funcky.Extensions.StringExtensions.extension(string!).SplitLazy(params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!

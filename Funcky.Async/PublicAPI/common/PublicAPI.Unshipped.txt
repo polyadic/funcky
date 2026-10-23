@@ -1,1 +1,3 @@
 #nullable enable
+Funcky.Extensions.AsyncEnumerableExtensions.extension<TSource>(System.Collections.Generic.IAsyncEnumerable<TSource>!).Interleave(params System.Collections.Generic.IAsyncEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
+static Funcky.Extensions.AsyncEnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, params System.Collections.Generic.IAsyncEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
