@@ -54,6 +54,7 @@ Funcky.Extensions.NumberParseExtensions
 Funcky.Extensions.NumberParseExtensions.extension<TNumber>(TNumber)
 Funcky.Extensions.ParsableParseExtensions
 Funcky.Extensions.ParsableParseExtensions.extension<TParsable>(TParsable)
+Funcky.Extensions.ParsableParseExtensions.extension<TSpanParsable>(TSpanParsable)
 Funcky.Extensions.ProductHeaderValueParseExtensions
 Funcky.Extensions.ProductHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductHeaderValue!)
 Funcky.Extensions.ProductInfoHeaderValueParseExtensions
@@ -308,12 +309,12 @@ static Funcky.Extensions.NumberParseExtensions.ParseOrNone<TNumber>(string? cand
 static Funcky.Extensions.NumberParseExtensions.ParseOrNone<TNumber>(System.ReadOnlySpan<char> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<TNumber>
 static Funcky.Extensions.ParsableParseExtensions.extension<TParsable>(TParsable).ParseOrNone(string? candidate) -> Funcky.Monads.Option<TParsable>
 static Funcky.Extensions.ParsableParseExtensions.extension<TParsable>(TParsable).ParseOrNone(string? candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParsable>
-static Funcky.Extensions.ParsableParseExtensions.extension<TParsable>(TParsable).ParseOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TParsable>
-static Funcky.Extensions.ParsableParseExtensions.extension<TParsable>(TParsable).ParseOrNone(System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParsable>
+static Funcky.Extensions.ParsableParseExtensions.extension<TSpanParsable>(TSpanParsable).ParseOrNone(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TSpanParsable>
+static Funcky.Extensions.ParsableParseExtensions.extension<TSpanParsable>(TSpanParsable).ParseOrNone(System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TSpanParsable>
 static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TParsable>(string? candidate) -> Funcky.Monads.Option<TParsable>
 static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TParsable>(string? candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParsable>
-static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TParsable>(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TParsable>
-static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TParsable>(System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TParsable>
+static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TSpanParsable>(System.ReadOnlySpan<char> candidate) -> Funcky.Monads.Option<TSpanParsable>
+static Funcky.Extensions.ParsableParseExtensions.ParseOrNone<TSpanParsable>(System.ReadOnlySpan<char> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<TSpanParsable>
 static Funcky.Extensions.ProductHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductHeaderValue!).ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
 static Funcky.Extensions.ProductHeaderValueParseExtensions.ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
 static Funcky.Extensions.ProductInfoHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductInfoHeaderValue!).ParseOrNone(string! candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductInfoHeaderValue!>
