@@ -13,6 +13,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   callers that name the type arguments), the `Lazy` `Select`, `SelectMany`, `Flatten` and `Sequence` overloads (their
   type parameters carry trimming annotations that the compiler does not copy onto an extension block), and the
   source-generated `…OrNone` and `Apply` methods.
+* The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
+  `RepeatRange` and `RepeatMaterialized` are now also static extension members of `System.Linq.Enumerable`, next to
+  `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Sequence.Concat` and the
+  `params` overload of `Return` stay on `Sequence` only. The members are declared in `EnumerableExtensions`, which is
+  what consumers on a compiler older than C# 14 see.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
