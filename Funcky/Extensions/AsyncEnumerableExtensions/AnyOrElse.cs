@@ -8,12 +8,12 @@ public static partial class AsyncEnumerableExtensions
 {
     extension<TSource>(IAsyncEnumerable<TSource> source)
     {
-        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
         [Pure]
         public IAsyncEnumerable<TSource> AnyOrElse(IAsyncEnumerable<TSource> fallback)
             => AnyOrElseInternal(ArgumentValidator.NotNull(source), FallbackProvider(ArgumentValidator.NotNull(fallback)));
 
-        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
         [Pure]
         public IAsyncEnumerable<TSource> AnyOrElse(Func<IAsyncEnumerable<TSource>> fallback)
             => AnyOrElseInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(fallback));

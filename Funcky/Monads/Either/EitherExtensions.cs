@@ -17,14 +17,14 @@ public static partial class EitherExtensions
         where TLeft : notnull
         where TRight : notnull
     {
-        /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <c>either</c> is a right value.</summary>
+        /// <summary>Returns the left value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a right value.</summary>
         [Pure]
         public Option<TLeft> LeftOrNone()
             => either.Match(
                 left: Option.Some,
                 right: static _ => Option<TLeft>.None);
 
-        /// <summary>Returns the right value or <see cref="Option{TItem}.None()"/> if the <c>either</c> is a left value.</summary>
+        /// <summary>Returns the right value or <see cref="Option{TItem}.None()"/> if the <paramref name="either"/> is a left value.</summary>
         [Pure]
         public Option<TRight> RightOrNone()
             => either.Match(
