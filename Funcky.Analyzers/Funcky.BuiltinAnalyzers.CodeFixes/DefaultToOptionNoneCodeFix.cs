@@ -57,8 +57,8 @@ public sealed class DefaultToOptionNoneCodeFix : CodeFixProvider
             {
                 return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol convertedType
                     && SymbolEqualityComparer.Default.Equals(convertedType.OriginalDefinition, optionOfTType)
-                    ? convertedType
-                    : null;
+                        ? convertedType
+                        : null;
             }
         }
 

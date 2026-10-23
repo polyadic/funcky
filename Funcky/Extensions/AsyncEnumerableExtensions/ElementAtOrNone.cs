@@ -3,26 +3,32 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Returns the element at a specified index in a sequence or an <see cref="Option{T}.None" /> value if the index is out of range.
-    /// </summary>
-    /// <typeparam name="TSource">The type of element contained by the sequence.</typeparam>
     /// <param name="source">The sequence to find an element in.</param>
-    /// <param name="index">The index for the element to retrieve.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>The item at the specified index, or <see cref="Option{T}.None" /> if the index is not found.</returns>
-    [Pure]
-    public static async ValueTask<Option<TSource>> ElementAtOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, int index, CancellationToken cancellationToken = default)
+    /// <typeparam name="TSource">The type of element contained by the sequence.</typeparam>
+    extension<TSource>(IAsyncEnumerable<TSource> source)
         where TSource : notnull
-        => await source.Select(Option.Some).ElementAtOrDefaultAsync(index, cancellationToken).ConfigureAwait(false);
+    {
+        /// <summary>
+        /// Returns the element at a specified index in a sequence or an <see cref="Option{T}.None" /> value if the index is out of range.
+        /// </summary>
+        /// <param name="index">The index for the element to retrieve.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The item at the specified index, or <see cref="Option{T}.None" /> if the index is not found.</returns>
+        [Pure]
+        public async ValueTask<Option<TSource>> ElementAtOrNoneAsync(int index, CancellationToken cancellationToken = default)
+            => await source.Select(Option.Some).ElementAtOrDefaultAsync(index, cancellationToken).ConfigureAwait(false);
+    }
 
 #if INDEX_TYPE
-    [Pure]
-    public static ValueTask<Option<TSource>> ElementAtOrNoneAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
+    extension<TSource>(IAsyncEnumerable<TSource> source)
         where TSource : notnull
-        => index.IsFromEnd
-            ? ElementAtOrNoneFromEnd(source, index.Value, cancellationToken)
-            : source.ElementAtOrNoneAsync(index.Value, cancellationToken);
+    {
+        [Pure]
+        public ValueTask<Option<TSource>> ElementAtOrNoneAsync(Index index, CancellationToken cancellationToken = default)
+            => index.IsFromEnd
+                ? ElementAtOrNoneFromEnd(source, index.Value, cancellationToken)
+                : source.ElementAtOrNoneAsync(index.Value, cancellationToken);
+    }
 
     // Adopted from: https://github.com/dotnet/runtime/blob/ebba1d4acb7abea5ba15e1f7f69d1d1311465d16/src/libraries/System.Linq/src/System/Linq/ElementAt.cs#L152-L183
     private static async ValueTask<Option<TSource>> ElementAtOrNoneFromEnd<TSource>(IAsyncEnumerable<TSource> source, int indexFromEnd, CancellationToken cancellationToken)

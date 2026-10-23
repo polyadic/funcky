@@ -1,3 +1,5 @@
+#pragma warning disable SA1317 //  we use ω to denote parameters which are not used, we exempt them from latin-only-identifier convention
+
 using System.Runtime.CompilerServices;
 
 namespace Funcky;

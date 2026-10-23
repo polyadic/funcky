@@ -6,15 +6,18 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
-    [Pure]
-    public static IAsyncEnumerable<TSource> AnyOrElse<TSource>(this IAsyncEnumerable<TSource> source, IAsyncEnumerable<TSource> fallback)
-        => AnyOrElseInternal(ArgumentValidator.NotNull(source), FallbackProvider(ArgumentValidator.NotNull(fallback)));
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        [Pure]
+        public IAsyncEnumerable<TSource> AnyOrElse(IAsyncEnumerable<TSource> fallback)
+            => AnyOrElseInternal(ArgumentValidator.NotNull(source), FallbackProvider(ArgumentValidator.NotNull(fallback)));
 
-    /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
-    [Pure]
-    public static IAsyncEnumerable<TSource> AnyOrElse<TSource>(this IAsyncEnumerable<TSource> source, Func<IAsyncEnumerable<TSource>> fallback)
-        => AnyOrElseInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(fallback));
+        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        [Pure]
+        public IAsyncEnumerable<TSource> AnyOrElse(Func<IAsyncEnumerable<TSource>> fallback)
+            => AnyOrElseInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(fallback));
+    }
 
     private static Func<IAsyncEnumerable<TSource>> FallbackProvider<TSource>(IAsyncEnumerable<TSource> fallback)
         => () => fallback;

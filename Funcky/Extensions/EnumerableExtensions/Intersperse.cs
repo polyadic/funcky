@@ -2,11 +2,14 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    /// <summary>Returns a sequence with the items of the source sequence interspersed with the given <paramref name="element"/>.</summary>
-    [Pure]
-    public static IEnumerable<TSource> Intersperse<TSource>(this IEnumerable<TSource> source, TSource element)
-        => source.WithFirst()
-            .SelectMany(s => s.IsFirst
-                ? Funcky.Sequence.Return(s.Value)
-                : Funcky.Sequence.Return(element, s.Value));
+    extension<TSource>(IEnumerable<TSource> source)
+    {
+        /// <summary>Returns a sequence with the items of the source sequence interspersed with the given <paramref name="element"/>.</summary>
+        [Pure]
+        public IEnumerable<TSource> Intersperse(TSource element)
+            => source.WithFirst()
+                .SelectMany(s => s.IsFirst
+                    ? Funcky.Sequence.Return(s.Value)
+                    : Funcky.Sequence.Return(element, s.Value));
+    }
 }

@@ -11,6 +11,7 @@
 	</ItemGroup>
 	<PropertyGroup Label="Code Style">
 		<AnalysisLevel>5.0</AnalysisLevel>
+		<NoWarn>$(NoWarn);SA1649</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup Label="C# Settings">
 		<ImplicitUsings>enable</ImplicitUsings>

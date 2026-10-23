@@ -6,27 +6,30 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    /// <summary>
-    /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
-    /// sequence's elements without causing multiple enumerations over the source.
-    /// </summary>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     /// <param name="source">The source sequence.</param>
-    /// <returns>A lazy buffer of the underlying sequence.</returns>
-    /// <remarks>
-    /// The source is not enumerated before the first element is requested. The buffer can be enumerated by several
-    /// consumers concurrently; the source is still pulled one element at a time and each element is produced exactly once.
-    /// A list or collection source is not copied: the buffer is a view over it.
-    /// </remarks>
-    [Pure]
-    public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source)
-        => ArgumentValidator.NotNull(source) switch
-        {
-            IBuffer<TSource> buffer => Borrow(buffer),
-            IList<TSource> list => ListBuffer.Create(list),
-            ICollection<TSource> list => CollectionBuffer.Create(list),
-            _ => MemoizedBuffer.Create(source),
-        };
+    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
+    extension<TSource>(IEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to all of the
+        /// sequence's elements without causing multiple enumerations over the source.
+        /// </summary>
+        /// <returns>A lazy buffer of the underlying sequence.</returns>
+        /// <remarks>
+        /// The source is not enumerated before the first element is requested. The buffer can be enumerated by several
+        /// consumers concurrently; the source is still pulled one element at a time and each element is produced exactly once.
+        /// A list or collection source is not copied: the buffer is a view over it.
+        /// </remarks>
+        [Pure]
+        public IBuffer<TSource> Memoize()
+            => ArgumentValidator.NotNull(source) switch
+            {
+                IBuffer<TSource> buffer => Borrow(buffer),
+                IList<TSource> list => ListBuffer.Create(list),
+                ICollection<TSource> list => CollectionBuffer.Create(list),
+                _ => MemoizedBuffer.Create(source),
+            };
+    }
 
     private static IBuffer<TSource> Borrow<TSource>(IBuffer<TSource> buffer)
         => new BorrowedBuffer<TSource>(buffer);

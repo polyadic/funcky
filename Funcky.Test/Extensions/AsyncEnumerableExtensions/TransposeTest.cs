@@ -116,7 +116,7 @@ public sealed class TransposeTest
         [
             AsyncSequence.Return(1, 2, 3, 4),
             AsyncSequence.Return(5, 6, 7, 8),
-            AsyncSequence.Return(9, 10, 11, 12)
+            AsyncSequence.Return(9, 10, 11, 12),
         ];
 
     private static IEnumerable<IAsyncEnumerable<int>> JaggedMatrixExample()
@@ -125,7 +125,7 @@ public sealed class TransposeTest
             AsyncSequence.Return(1, 2, 3, 4),
             AsyncSequence.Return(6, 9, 42),
             AsyncSequence.Return(5),
-            AsyncSequence.Return(10)
+            AsyncSequence.Return(10),
         ];
 
     private static IEnumerable<IAsyncEnumerable<int>> CountingMatrix(Action onEnumeration)

@@ -7,6 +7,18 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
+    /// <param name="source">the source sequences.</param>
+    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
+    extension<TSource>(IEnumerable<IAsyncEnumerable<TSource>> source)
+    {
+        /// <summary>
+        /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
+        /// </summary>
+        /// <returns>one sequences with all the elements interleaved.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Interleave() => InterleaveInternal(ArgumentValidator.NotNull(source));
+    }
+
     /// <summary>
     /// Interleaves the elements of multiple sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
     /// </summary>
@@ -17,15 +29,6 @@ public static partial class AsyncEnumerableExtensions
     [Pure]
     public static IAsyncEnumerable<TSource> Interleave<TSource>(this IAsyncEnumerable<TSource> source, params IAsyncEnumerable<TSource>[] otherSources)
         => ImmutableList.Create(ArgumentValidator.NotNull(source)).AddRange(ArgumentValidator.NotNull(otherSources)).Interleave();
-
-    /// <summary>
-    /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
-    /// <param name="source">the source sequences.</param>
-    /// <returns>one sequences with all the elements interleaved.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Interleave<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> source) => InterleaveInternal(ArgumentValidator.NotNull(source));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TSource> InterleaveInternal<TSource>(
@@ -58,8 +61,8 @@ public static partial class AsyncEnumerableExtensions
 
 #pragma warning disable IDISP007 // The entire point of this method is to dispose.
     private static async Task DisposeEnumerator<T>(IAsyncEnumerator<T> enumerator) => await enumerator.DisposeAsync().ConfigureAwait(false);
-#pragma warning restore IDISP007
 
+#pragma warning restore IDISP007
     private static async IAsyncEnumerable<TSource> InterleaveEnumeratorAsync<TSource>(ImmutableList<IAsyncEnumerator<TSource>> enumerators, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         while (!enumerators.IsEmpty)

@@ -54,7 +54,8 @@ public sealed class EnumerableRepeatNeverAnalyzer : DiagnosticAnalyzer
         => MatchMethod(operation, enumerableType, nameof(Enumerable.Repeat))
             && operation.GetArgumentsInParameterOrder() is [var valueArgument, var countArgument]
             && MatchConstantArgument(countArgument, 0)
-                ? [valueArgument] : [];
+                ? [valueArgument]
+                : [];
 
     private static Diagnostic CreateDiagnostic(IInvocationOperation operation, IArgumentOperation valueArgument)
         => Diagnostic.Create(

@@ -13,13 +13,19 @@ internal static class AverageAggregators
 
     public static readonly AverageAggregator<decimal, decimal, DecimalArithmetic> Decimal = default;
 
-    /// <summary>Adds an <see cref="int"/> term to the <see cref="long"/> aggregator; the widening of a plain <see cref="int"/> is implicit.</summary>
-    public static AverageAggregator<long, double, Int64Arithmetic> Add(this AverageAggregator<long, double, Int64Arithmetic> aggregator, Option<int> term)
-        => aggregator.Add(term.Select(static value => (long)value));
+    extension(AverageAggregator<long, double, Int64Arithmetic> aggregator)
+    {
+        /// <summary>Adds an <see cref="int"/> term to the <see cref="long"/> aggregator; the widening of a plain <see cref="int"/> is implicit.</summary>
+        public AverageAggregator<long, double, Int64Arithmetic> Add(Option<int> term)
+            => aggregator.Add(term.Select(static value => (long)value));
+    }
 
-    /// <summary>Adds a <see cref="float"/> term to the <see cref="double"/> aggregator; the widening of a plain <see cref="float"/> is implicit.</summary>
-    public static AverageAggregator<double, float, SingleArithmetic> Add(this AverageAggregator<double, float, SingleArithmetic> aggregator, Option<float> term)
-        => aggregator.Add(term.Select(static value => (double)value));
+    extension(AverageAggregator<double, float, SingleArithmetic> aggregator)
+    {
+        /// <summary>Adds a <see cref="float"/> term to the <see cref="double"/> aggregator; the widening of a plain <see cref="float"/> is implicit.</summary>
+        public AverageAggregator<double, float, SingleArithmetic> Add(Option<float> term)
+            => aggregator.Add(term.Select(static value => (double)value));
+    }
 
     internal readonly struct Int64Arithmetic : IAverageArithmetic<long, double>
     {

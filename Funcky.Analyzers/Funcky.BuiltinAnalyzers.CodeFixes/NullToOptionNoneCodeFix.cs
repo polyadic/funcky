@@ -72,8 +72,8 @@ public sealed class NullToOptionNoneCodeFix : CodeFixProvider
             {
                 return semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType is INamedTypeSymbol targetType
                     && SymbolEqualityComparer.Default.Equals(targetType.OriginalDefinition, optionOfTType)
-                    ? new Replacement(nullLiteral, targetType)
-                    : null;
+                        ? new Replacement(nullLiteral, targetType)
+                        : null;
             }
         }
 
