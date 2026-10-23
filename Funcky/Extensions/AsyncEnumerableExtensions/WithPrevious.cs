@@ -10,7 +10,7 @@ public static partial class AsyncEnumerableExtensions
         where TSource : notnull
     {
         /// <summary>Returns a sequence mapping each element together with its predecessor.</summary>
-        /// <exception cref="ArgumentNullException">Thrown when any value in <c>source</c> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when any value in <paramref name="source"/> is <see langword="null"/>.</exception>
         [Pure]
         public IAsyncEnumerable<ValueWithPrevious<TSource>> WithPrevious()
             => ArgumentValidator.NotNull(source).WithPreviousInternal();
