@@ -3,14 +3,29 @@ namespace Funcky.Extensions;
 public static partial class EnumerableExtensions
 {
     // The constructors of Funcky.Sequence as static extension members of System.Linq.Enumerable, next to
-    // Enumerable.Range, Enumerable.Repeat and Enumerable.Empty. Sequence.Concat is left out on purpose: Enumerable
-    // already has a Concat, and the params overload cannot be an extension member on the current SDK.
+    // Enumerable.Range, Enumerable.Repeat and Enumerable.Empty.
     extension(Enumerable)
     {
         /// <inheritdoc cref="Funcky.Sequence.Return{TResult}(TResult)"/>
         [Pure]
         public static IReadOnlyList<TResult> Return<TResult>(TResult element)
             => Funcky.Sequence.Return(element);
+
+        /// <inheritdoc cref="Funcky.Sequence.Return{TResult}(TResult[])"/>
+        [Pure]
+        public static IReadOnlyList<TResult> Return<TResult>(params TResult[] elements)
+            => Funcky.Sequence.Return(elements);
+
+        /// <inheritdoc cref="Funcky.Sequence.Concat{TSource}(IEnumerable{TSource}[])"/>
+        /// <remarks>With exactly two sequences the call binds to <see cref="Enumerable.Concat{TSource}(IEnumerable{TSource}, IEnumerable{TSource})"/> of the BCL, which does the same.</remarks>
+        [Pure]
+        public static IEnumerable<TSource> Concat<TSource>(params IEnumerable<TSource>[] sources)
+            => Funcky.Sequence.Concat(sources);
+
+        /// <inheritdoc cref="Funcky.Sequence.Concat{TSource}(IEnumerable{IEnumerable{TSource}})"/>
+        [Pure]
+        public static IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources)
+            => Funcky.Sequence.Concat(sources);
 
         /// <inheritdoc cref="Funcky.Sequence.FromNullable{TResult}(TResult?)"/>
         [Pure]

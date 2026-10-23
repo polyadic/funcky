@@ -10,6 +10,24 @@ public sealed class EnumerableConstructorsTest
     }
 
     [Fact]
+    public void ReturnWithSeveralElementsIsAvailableOnEnumerable()
+    {
+        Assert.Equal([1, 2, 3], Enumerable.Return(1, 2, 3));
+        Assert.Empty(Enumerable.Return<int>());
+    }
+
+    [Fact]
+    public void ConcatIsAvailableOnEnumerableForAnyNumberOfSequences()
+    {
+        IEnumerable<int> a = [1], b = [2], c = [3];
+
+        Assert.Equal([1, 2, 3], Enumerable.Concat(a, b, c));
+        Assert.Equal([1, 2, 3], Enumerable.Concat([a, b, c]));
+        Assert.Equal([1, 2], Enumerable.Concat(a, b));
+        Assert.Empty(Enumerable.Concat<int>());
+    }
+
+    [Fact]
     public void FromNullableIsAvailableOnEnumerable()
     {
         Assert.Empty(Enumerable.FromNullable((string?)null));

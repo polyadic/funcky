@@ -1,5 +1,11 @@
 #nullable enable
 Funcky.Extensions.EnumerableExtensions.extension(System.Linq.Enumerable!)
+static Funcky.Extensions.EnumerableExtensions.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.extension(System.Linq.Enumerable!).Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.extension(System.Linq.Enumerable!).Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.extension(System.Linq.Enumerable!).Return<TResult>(params TResult[]! elements) -> System.Collections.Generic.IReadOnlyList<TResult>!
+static Funcky.Extensions.EnumerableExtensions.Return<TResult>(params TResult[]! elements) -> System.Collections.Generic.IReadOnlyList<TResult>!
 static Funcky.Extensions.EnumerableExtensions.Cycle<TResult>(TResult element) -> System.Collections.Generic.IEnumerable<TResult>!
 static Funcky.Extensions.EnumerableExtensions.CycleMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.CycleRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!

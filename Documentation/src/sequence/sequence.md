@@ -18,9 +18,10 @@ var single = Enumerable.Return(42);
 using var cycle = Enumerable.CycleRange(new[] { 1, 2, 3 });
 ```
 
-Two members are only available on `Sequence`: `Concat`, because `Enumerable` already has a `Concat`, and the
-`params` overload of `Return`. The members are declared in `Funcky.Extensions.EnumerableExtensions`; on a compiler
-older than C# 14 they are plain static methods of that class, and `Sequence` remains the form to use.
+`Enumerable.Concat(a, b)` with exactly two sequences binds to the BCL method, which does the same; with one
+sequence of sequences or three or more sequences it binds to Funcky's. The members are declared in
+`Funcky.Extensions.EnumerableExtensions`; on a compiler older than C# 14 they are plain static methods of that class,
+and `Sequence` remains the form to use.
 
 | Constructor                                        | Produces                                                        |
 |----------------------------------------------------|-----------------------------------------------------------------|
