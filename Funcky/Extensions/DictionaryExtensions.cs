@@ -4,41 +4,38 @@ namespace Funcky.Extensions;
 
 public static class DictionaryExtensions
 {
-    [Pure]
-    public static Option<TValue> GetValueOrNone<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-#if NETCOREAPP3_1
-        // TKey was constraint to notnull when nullability annotations were originally added. It was later dropped again.
-        // See: https://github.com/dotnet/runtime/issues/31401
+    extension<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
         where TKey : notnull
-#endif
         where TValue : notnull
-        => dictionary.TryGetValue(key, out var result)
-            ? result
-            : Option<TValue>.None;
+    {
+        [Pure]
+        public Option<TValue> GetValueOrNone(TKey key)
+            => dictionary.TryGetValue(key, out var result)
+                ? result
+                : Option<TValue>.None;
+    }
 
-    [Pure]
-    [OverloadResolutionPriority(1)]
-    public static Option<TValue> GetValueOrNone<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey readOnlyKey)
-#if NETCOREAPP3_1
-        // TKey was constraint to notnull when nullability annotations were originally added. It was later dropped again.
-        // See: https://github.com/dotnet/runtime/issues/31401
+    extension<TKey, TValue>(IReadOnlyDictionary<TKey, TValue> dictionary)
         where TKey : notnull
-#endif
         where TValue : notnull
-        => dictionary.TryGetValue(readOnlyKey, out var result)
-            ? result
-            : Option<TValue>.None;
+    {
+        [Pure]
+        [OverloadResolutionPriority(1)]
+        public Option<TValue> GetValueOrNone(TKey readOnlyKey)
+            => dictionary.TryGetValue(readOnlyKey, out var result)
+                ? result
+                : Option<TValue>.None;
+    }
 
 #if REMOVE_EXTENSION
-    public static Option<TValue> RemoveOrNone<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-#if NETCOREAPP3_1
-        // TKey was constraint to notnull when nullability annotations were originally added. It was later dropped again.
-        // See: https://github.com/dotnet/runtime/issues/31401
+    extension<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
         where TKey : notnull
-#endif
         where TValue : notnull
-        => dictionary.Remove(key, out var result)
-            ? result
-            : Option<TValue>.None;
+    {
+        public Option<TValue> RemoveOrNone(TKey key)
+            => dictionary.Remove(key, out var result)
+                ? result
+                : Option<TValue>.None;
+    }
 #endif
 }

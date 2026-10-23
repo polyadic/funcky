@@ -1,6 +1,5 @@
 namespace Funcky.SourceGenerator.Test;
 
-[UsesVerify] // 👈 Adds hooks for Verify into XUnit
 public class OrNoneGeneratorSnapshotTests
 {
     private const string OptionSource =

@@ -6,35 +6,35 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>
-    /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
-    /// </summary>
     /// <param name="left">The left sequence to merge.</param>
     /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
-    /// <param name="right">The right sequence to merge.</param>
-    /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
-    /// <returns>A sequence that contains merged elements of two input sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<EitherOrBoth<TLeft, TRight>> ZipLongest<TLeft, TRight>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right)
+    extension<TLeft>(IAsyncEnumerable<TLeft> left)
         where TLeft : notnull
-        where TRight : notnull
-        => left.ZipLongest(right, Identity);
+    {
+        /// <summary>
+        /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+        /// </summary>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
+        /// <returns>A sequence that contains merged elements of two input sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<EitherOrBoth<TLeft, TRight>> ZipLongest<TRight>(IAsyncEnumerable<TRight> right)
+            where TRight : notnull
+            => left.ZipLongest(right, Identity);
 
-    /// <summary>
-    /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
-    /// </summary>
-    /// <param name="left">The left sequence to merge.</param>
-    /// <typeparam name="TLeft">Type of the elements in <paramref name="left"/> sequence.</typeparam>
-    /// <param name="right">The right sequence to merge.</param>
-    /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
-    /// <typeparam name="TResult">The return type of the result selector function.</typeparam>
-    /// <param name="resultSelector">A function that specifies how to merge the elements from the two sequences.</param>
-    /// <returns>A sequence that contains merged elements of two input sequences.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TResult> ZipLongest<TLeft, TRight, TResult>(this IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
-        where TLeft : notnull
-        where TRight : notnull
-        => ZipLongestInternal(ArgumentValidator.NotNull(left), ArgumentValidator.NotNull(right), ArgumentValidator.NotNull(resultSelector));
+        /// <summary>
+        /// Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+        /// </summary>
+        /// <param name="right">The right sequence to merge.</param>
+        /// <typeparam name="TRight">Type of the elements in <paramref name="right"/> sequence.</typeparam>
+        /// <typeparam name="TResult">The return type of the result selector function.</typeparam>
+        /// <param name="resultSelector">A function that specifies how to merge the elements from the two sequences.</param>
+        /// <returns>A sequence that contains merged elements of two input sequences.</returns>
+        [Pure]
+        public IAsyncEnumerable<TResult> ZipLongest<TRight, TResult>(IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector)
+            where TRight : notnull
+            => ZipLongestInternal(ArgumentValidator.NotNull(left), ArgumentValidator.NotNull(right), ArgumentValidator.NotNull(resultSelector));
+    }
 
     private static async IAsyncEnumerable<TResult> ZipLongestInternal<TLeft, TRight, TResult>(IAsyncEnumerable<TLeft> left, IAsyncEnumerable<TRight> right, Func<EitherOrBoth<TLeft, TRight>, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         where TLeft : notnull

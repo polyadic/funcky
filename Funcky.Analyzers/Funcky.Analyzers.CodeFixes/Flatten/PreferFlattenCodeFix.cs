@@ -67,8 +67,8 @@ public sealed class PreferFlattenCodeFix : CodeFixProvider
         return await fixedDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is { } fixedRoot
             && await fixedDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false) is { } fixedSemanticModel
             && IsFunckyFlatten(fixedSemanticModel.GetSymbolInfo(fixedRoot.GetAnnotatedNodes(annotation).Single(), cancellationToken).Symbol, flattenNamespace)
-            ? fixedDocument
-            : null;
+                ? fixedDocument
+                : null;
     }
 
     /// <summary>Explicit type arguments select the result's element type (<c>SelectMany&lt;IEnumerable&lt;string&gt;, object&gt;(x => x)</c>

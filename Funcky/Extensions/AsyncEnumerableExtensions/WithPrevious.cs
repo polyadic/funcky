@@ -6,22 +6,24 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-    /// <summary>Returns a sequence mapping each element together with its predecessor.</summary>
-    /// <exception cref="ArgumentNullException">Thrown when any value in <paramref name="source"/> is <see langword="null"/>.</exception>
-    [Pure]
-    public static IAsyncEnumerable<ValueWithPrevious<TSource>> WithPrevious<TSource>(this IAsyncEnumerable<TSource> source)
-        where TSource : notnull
-        => ArgumentValidator.NotNull(source).WithPreviousInternal();
-
-    private static async IAsyncEnumerable<ValueWithPrevious<TSource>> WithPreviousInternal<TSource>(this IAsyncEnumerable<TSource> source, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    extension<TSource>(IAsyncEnumerable<TSource> source)
         where TSource : notnull
     {
-        var previous = Option<TSource>.None;
+        /// <summary>Returns a sequence mapping each element together with its predecessor.</summary>
+        /// <exception cref="ArgumentNullException">Thrown when any value in <c>source</c> is <see langword="null"/>.</exception>
+        [Pure]
+        public IAsyncEnumerable<ValueWithPrevious<TSource>> WithPrevious()
+            => ArgumentValidator.NotNull(source).WithPreviousInternal();
 
-        await foreach (var value in source.ConfigureAwait(false).WithCancellation(cancellationToken))
+        private async IAsyncEnumerable<ValueWithPrevious<TSource>> WithPreviousInternal([EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            yield return new ValueWithPrevious<TSource>(value, previous);
-            previous = value;
+            var previous = Option<TSource>.None;
+
+            await foreach (var value in source.ConfigureAwait(false).WithCancellation(cancellationToken))
+            {
+                yield return new ValueWithPrevious<TSource>(value, previous);
+                previous = value;
+            }
         }
     }
 }

@@ -46,8 +46,8 @@ public class OptionSomeWhereToFromBooleanRefactoring : CodeRefactoringProvider
     private static InvocationExpressionSyntax? FindInvocationExpression(CodeRefactoringContext context, SyntaxNode root)
         => root.FindNode(context.Span, getInnermostNodeForTie: true) is { } node
             && node.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault() is { } expression
-            ? expression
-            : null;
+                ? expression
+                : null;
 
     private static bool IsWhereInvocation(SyntaxNode syntax, SemanticModel semanticModel, Symbols symbols, [NotNullWhen(true)] out IInvocationOperation? whereInvocation)
     {

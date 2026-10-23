@@ -5,6 +5,19 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
+    /// <param name="source">the source sequences.</param>
+    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
+    extension<TSource>(IEnumerable<IEnumerable<TSource>> source)
+    {
+        /// <summary>
+        /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
+        /// </summary>
+        /// <returns>one sequences with all the elements interleaved.</returns>
+        [Pure]
+        public IEnumerable<TSource> Interleave()
+            => InterleaveIterator(ArgumentValidator.NotNull(source));
+    }
+
     /// <summary>
     /// Interleaves the elements of multiple sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
     /// </summary>
@@ -15,16 +28,6 @@ public static partial class EnumerableExtensions
     [Pure]
     public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSources)
         => Interleave([ArgumentValidator.NotNull(source), .. ArgumentValidator.NotNull(otherSources)]);
-
-    /// <summary>
-    /// Interleaves the elements of a sequence of sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
-    /// <param name="source">the source sequences.</param>
-    /// <returns>one sequences with all the elements interleaved.</returns>
-    [Pure]
-    public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<IEnumerable<TSource>> source)
-        => InterleaveIterator(ArgumentValidator.NotNull(source));
 
     private static IEnumerable<TSource> InterleaveIterator<TSource>(IEnumerable<IEnumerable<TSource>> source)
     {

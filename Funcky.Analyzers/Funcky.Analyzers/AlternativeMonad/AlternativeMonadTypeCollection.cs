@@ -32,32 +32,32 @@ internal sealed class AlternativeMonadTypeCollection
     private static AlternativeMonadType? Option(Compilation compilation)
         => compilation.GetOptionOfTType() is { } optionOfTType
             && compilation.GetOptionType() is { } optionType
-            ? new AlternativeMonadType(
-                optionOfTType,
-                constructorsType: optionType,
-                errorStateConstructorName: OptionNonePropertyName,
-                returnAlias: OptionSomeMethodName,
-                extensionsType: compilation.GetOptionExtensionsType())
-            : null;
+                ? new AlternativeMonadType(
+                    optionOfTType,
+                    constructorsType: optionType,
+                    errorStateConstructorName: OptionNonePropertyName,
+                    returnAlias: OptionSomeMethodName,
+                    extensionsType: compilation.GetOptionExtensionsType())
+                : null;
 
     private static AlternativeMonadType? Either(Compilation compilation)
         => compilation.GetEitherOfTType() is { } eitherOfTType
             && compilation.GetEitherType() is { } eitherType
-            ? new AlternativeMonadType(
-                eitherOfTType,
-                constructorsType: eitherType,
-                errorStateConstructorName: EitherLeftMethodName,
-                returnAlias: EitherRightMethodName)
-            : null;
+                ? new AlternativeMonadType(
+                    eitherOfTType,
+                    constructorsType: eitherType,
+                    errorStateConstructorName: EitherLeftMethodName,
+                    returnAlias: EitherRightMethodName)
+                : null;
 
     private static AlternativeMonadType? Result(Compilation compilation)
         => compilation.GetResultOfTType() is { } resultOfTType
             && compilation.GetResultType() is { } resultType
-            ? new AlternativeMonadType(
-                resultOfTType,
-                constructorsType: resultType,
-                errorStateConstructorName: ResultErrorMethodName,
-                matchHasSuccessStateFirst: true,
-                returnAlias: ResultOkMethodName)
-            : null;
+                ? new AlternativeMonadType(
+                    resultOfTType,
+                    constructorsType: resultType,
+                    errorStateConstructorName: ResultErrorMethodName,
+                    matchHasSuccessStateFirst: true,
+                    returnAlias: ResultOkMethodName)
+                : null;
 }

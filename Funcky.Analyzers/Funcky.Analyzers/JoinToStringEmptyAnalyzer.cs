@@ -57,7 +57,8 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         => MatchMethod(operation, symbols.EnumerableType, JoinToString)
             && operation.GetArgumentsInParameterOrder() is [var valueArgument, var stringArgument]
             && IsEmptyString(stringArgument, symbols.StringType)
-                ? [(valueArgument, stringArgument)] : [];
+                ? [(valueArgument, stringArgument)]
+                : [];
 
     private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
         => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);

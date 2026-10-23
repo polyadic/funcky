@@ -4,15 +4,18 @@ namespace Funcky.Extensions;
 
 public static partial class StringExtensions
 {
-    [Pure]
-    public static Option<int> IndexOfAnyOrNone(this string haystack, char[] anyOf)
-        => MapNotFoundToNone(haystack.IndexOfAny(anyOf));
+    extension(string haystack)
+    {
+        [Pure]
+        public Option<int> IndexOfAnyOrNone(char[] anyOf)
+            => MapNotFoundToNone(haystack.IndexOfAny(anyOf));
 
-    [Pure]
-    public static Option<int> IndexOfAnyOrNone(this string haystack, char[] anyOf, int startIndex)
-        => MapNotFoundToNone(haystack.IndexOfAny(anyOf, startIndex));
+        [Pure]
+        public Option<int> IndexOfAnyOrNone(char[] anyOf, int startIndex)
+            => MapNotFoundToNone(haystack.IndexOfAny(anyOf, startIndex));
 
-    [Pure]
-    public static Option<int> IndexOfAnyOrNone(this string haystack, char[] anyOf, int startIndex, int count)
-        => MapNotFoundToNone(haystack.IndexOfAny(anyOf, startIndex, count));
+        [Pure]
+        public Option<int> IndexOfAnyOrNone(char[] anyOf, int startIndex, int count)
+            => MapNotFoundToNone(haystack.IndexOfAny(anyOf, startIndex, count));
+    }
 }

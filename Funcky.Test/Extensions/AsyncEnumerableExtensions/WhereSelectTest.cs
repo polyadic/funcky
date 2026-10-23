@@ -9,7 +9,7 @@ public sealed class WhereSelectTest
     public async Task WhereSelectRetainsOnlySomeValues()
     {
         var expectedSquares = new[] { 0, 4, 16, 36, 64 };
-        var squares = await Ι(10).WhereSelect(SquareEvenNumbers).ToListAsync();
+        var squares = await Iota(10).WhereSelect(SquareEvenNumbers).ToListAsync();
         Assert.Equal(expectedSquares, squares);
     }
 
@@ -28,11 +28,11 @@ public sealed class WhereSelectTest
             ? n * n
             : Option<int>.None;
 
-    private static async IAsyncEnumerable<int> Ι(int n)
+    private static async IAsyncEnumerable<int> Iota(int n)
     {
-        for (var ι = 0; ι < n; ι++)
+        for (var i = 0; i < n; i++)
         {
-            yield return await new ValueTask<int>(ι);
+            yield return await new ValueTask<int>(i);
         }
     }
 }

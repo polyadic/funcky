@@ -9,24 +9,27 @@ namespace Funcky.Extensions;
 /// </summary>
 internal static class SystemLinqAsyncAdapter
 {
-    [Pure]
-    public static IAsyncEnumerable<TSource> Where<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate)
-        => source.WhereAwaitWithCancellation(predicate);
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        [Pure]
+        public IAsyncEnumerable<TSource> Where(Func<TSource, CancellationToken, ValueTask<bool>> predicate)
+            => source.WhereAwaitWithCancellation(predicate);
 
-    [Pure]
-    public static IAsyncEnumerable<TResult> Select<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<TResult>> selector)
-        => source.SelectAwaitWithCancellation(selector);
+        [Pure]
+        public IAsyncEnumerable<TResult> Select<TResult>(Func<TSource, CancellationToken, ValueTask<TResult>> selector)
+            => source.SelectAwaitWithCancellation(selector);
 
-    [Pure]
-    public static IAsyncEnumerable<TResult> Select<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, int, CancellationToken, ValueTask<TResult>> selector)
-        => source.SelectAwaitWithCancellation(selector);
+        [Pure]
+        public IAsyncEnumerable<TResult> Select<TResult>(Func<TSource, int, CancellationToken, ValueTask<TResult>> selector)
+            => source.SelectAwaitWithCancellation(selector);
 
-    [Pure]
-    public static ValueTask<bool> AnyAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
-        => source.AnyAwaitWithCancellationAsync(predicate, cancellationToken);
+        [Pure]
+        public ValueTask<bool> AnyAsync(Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+            => source.AnyAwaitWithCancellationAsync(predicate, cancellationToken);
 
-    [Pure]
-    public static ValueTask<TAccumulate> AggregateAsync<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator, CancellationToken cancellationToken = default)
-        => source.AggregateAwaitWithCancellationAsync(seed, accumulator, cancellationToken);
+        [Pure]
+        public ValueTask<TAccumulate> AggregateAsync<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator, CancellationToken cancellationToken = default)
+            => source.AggregateAwaitWithCancellationAsync(seed, accumulator, cancellationToken);
+    }
 }
 #endif

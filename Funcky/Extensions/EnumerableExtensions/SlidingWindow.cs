@@ -6,21 +6,24 @@ namespace Funcky.Extensions;
 
 public static partial class EnumerableExtensions
 {
-    /// <summary>
-    /// SlidingWindow returns a sequence of sliding windows of the given width.
-    /// The nth sequence will start with the nth element of the source sequence.
-    /// </summary>
-    /// <remarks>
-    /// The returned windows always have <paramref name="width"/> many elements.
-    /// i.e. if your source Sequence is smaller than the window, there will be an empty result.
-    /// </remarks>
     /// <param name="source">The source sequence.</param>
-    /// <param name="width">The width of the sliding window.</param>
     /// <typeparam name="TSource">The type of the source elements.</typeparam>
-    /// <returns>Returns a sequence of equally sized window sequences.</returns>
-    [Pure]
-    public static IEnumerable<IReadOnlyList<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int width)
-        => SlidingWindowEnumerable(ArgumentValidator.NotNull(source), WindowWidthValidator.Validate(width));
+    extension<TSource>(IEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// SlidingWindow returns a sequence of sliding windows of the given width.
+        /// The nth sequence will start with the nth element of the source sequence.
+        /// </summary>
+        /// <remarks>
+        /// The returned windows always have <paramref name="width"/> many elements.
+        /// i.e. if your source Sequence is smaller than the window, there will be an empty result.
+        /// </remarks>
+        /// <param name="width">The width of the sliding window.</param>
+        /// <returns>Returns a sequence of equally sized window sequences.</returns>
+        [Pure]
+        public IEnumerable<IReadOnlyList<TSource>> SlidingWindow(int width)
+            => SlidingWindowEnumerable(ArgumentValidator.NotNull(source), WindowWidthValidator.Validate(width));
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IEnumerable<IReadOnlyList<TSource>> SlidingWindowEnumerable<TSource>(IEnumerable<TSource> source, int width)

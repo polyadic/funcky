@@ -14,5 +14,6 @@ internal sealed class XunitAssertMatching
             && invocation.GetArgumentsInParameterOrder() is [var expectedArgument, var actualArgument]
             && SymbolEquals(expectedArgument.Parameter?.OriginalDefinition.Type, typeParameter)
             && SymbolEquals(actualArgument.Parameter?.OriginalDefinition.Type, typeParameter)
-                ? [(expectedArgument, actualArgument)] : [];
+                ? [(expectedArgument, actualArgument)]
+                : [];
 }
