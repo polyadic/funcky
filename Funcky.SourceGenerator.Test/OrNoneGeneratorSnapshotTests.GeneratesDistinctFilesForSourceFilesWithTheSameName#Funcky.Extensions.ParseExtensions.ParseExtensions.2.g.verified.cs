@@ -11,3 +11,16 @@ namespace Funcky.Extensions
         public static Funcky.Monads.Option<global::Funcky.Extensions.Second> ParseSecondOrNone(this string candidate) => global::Funcky.Extensions.Second.TryParse(candidate, out var result) ? result : default(Funcky.Monads.Option<global::Funcky.Extensions.Second>);
     }
 }
+
+namespace Funcky.Extensions
+{
+    public static partial class SecondParseExtensions
+    {
+        extension(global::Funcky.Extensions.Second)
+        {
+            /// <summary>Calls <c>Funcky.Extensions.Second.TryParse</c> and returns the parsed <c>Funcky.Extensions.Second</c>, or <c>None</c> when it fails.</summary>
+            [global::System.Diagnostics.Contracts.Pure]
+            public static Funcky.Monads.Option<global::Funcky.Extensions.Second> ParseOrNone(string candidate) => global::Funcky.Extensions.Second.TryParse(candidate, out var result) ? result : default(Funcky.Monads.Option<global::Funcky.Extensions.Second>);
+        }
+    }
+}
