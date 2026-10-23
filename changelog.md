@@ -8,9 +8,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `extension(...)` blocks. The compiled methods keep their names and `this` parameters, so the change is source and
   binary compatible. A few methods stay classic extension methods: `Option.ToEither` and the `Compose` overloads with
   a non-unary receiver (an extension member would reorder their type parameters, which breaks callers that name the
-  type arguments), the `Lazy` `Select`, `SelectMany`, `Flatten` and `Sequence` overloads (their type parameters carry
-  trimming annotations that the compiler does not copy onto an extension block), and the source-generated `…OrNone`
-  and `Apply` methods. Consuming the `params` extension members (`Interleave`, `And`, `Or`, `SplitLazy`) with their
+  type arguments), `Lazy.Flatten` (the compiler does not copy the trimming annotation of a block type parameter onto
+  its marker type, and `Flatten` returns `Lazy<T>` of that parameter, which the trimmer rejects with IL2091), and the
+  source-generated `…OrNone` and `Apply` methods. Consuming the `params` extension members (`Interleave`, `And`, `Or`, `SplitLazy`) with their
   arguments spread out needs the C# compiler of the .NET SDK 10.0.2xx or newer; the 10.0.1xx compiler reports a bogus
   CS8620 per argument for `params` on extension members in referenced assemblies.
 

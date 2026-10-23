@@ -65,9 +65,12 @@ public static partial class EnumerableExtensions
         }
     }
 
-    [Pure]
-    public static Lazy<IEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IEnumerable<Lazy<TSource>> sequence)
-        => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
+    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> sequence)
+    {
+        [Pure]
+        public Lazy<IEnumerable<TSource>> Sequence()
+            => Lazy.FromFunc(new SequenceLazy<TSource>(sequence).Invoke);
+    }
 
     // Workaround for https://github.com/dotnet/linker/issues/1416
     private class SequenceLazy<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IEnumerable<Lazy<TSource>> source)
