@@ -21,7 +21,7 @@ The type arguments are `Including` or `Excluding`, one for each boundary:
  5.InRange<Including, Including>(5, 5);    // true:  the only interval containing a single value
 ```
 
-The boundaries may be given in any order; `12.InRange<Including, Excluding>(20, 0)` is the same check as above.
+The boundaries may be given in any order, but each boundary kind stays attached to its corresponding argument; `12.InRange<Excluding, Including>(20, 0)` checks the same interval as `12.InRange<Including, Excluding>(0, 20)`.
 
 `InRange` exists on every numeric type of the base class library (`int`, `long`, `double`, `decimal`, `Int128`,
 `Half`, `BigInteger`, `char`, …). It requires .NET 7 or newer, because the implementation is built on generic math.
