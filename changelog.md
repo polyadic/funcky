@@ -36,7 +36,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `Result.Try(Func<T>)` and `Result.TryAsync(Func<Task<T>>)`, which run a function and capture its outcome as
   `Ok(value)` or `Error(exception)`: `Result.Try(() => int.Parse(text))`. Exceptions that signal a corrupted process
   (`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) are never
-  captured; `TryAsync` also lets `OperationCanceledException` through, since a cancelled operation has no result.
+  captured, and neither is `OperationCanceledException`, since a cancelled operation has no result.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 

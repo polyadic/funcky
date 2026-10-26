@@ -28,9 +28,13 @@ public sealed partial class ResultTest
     }
 
     [Fact]
-    public void TryCapturesAnOperationCanceledException()
+    public void TryDoesNotCaptureCancellation()
     {
-        _ = FunctionalAssert.Error<OperationCanceledException, int>(Result.Try<int>(() => throw new OperationCanceledException()));
+        var expected = new OperationCanceledException();
+
+        var thrown = Assert.ThrowsAny<OperationCanceledException>(() => Result.Try<int>(() => throw expected));
+
+        Assert.Same(expected, thrown);
     }
 
     [Fact]

@@ -62,10 +62,9 @@ Result<string> body = await Result.TryAsync(() => client.GetStringAsync(uri));
 ```
 
 `TryAsync` awaits the task, so it captures an exception thrown while producing the task as well as one the task
-faults with. Two kinds of exceptions are never captured: those that signal a corrupted process
-(`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) propagate
-from both forms, and `TryAsync` also lets an `OperationCanceledException` through, because a cancelled operation
-has no result rather than an error result.
+faults with. Two kinds of exceptions are never captured by either form: those that signal a corrupted process
+(`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) and
+`OperationCanceledException`, because a cancelled operation has no result rather than an error result.
 
 ## Chaining operations that may fail
 
