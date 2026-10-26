@@ -36,6 +36,7 @@
   * [Strings and monads](./enumerable-extensions/strings-and-monads.md)
   * [Sequence Constructors](./sequence/sequence.md)
 * [String Extensions](./string-extensions.md)
+* [Number Extensions](./number-extensions.md)
 * [Stream Extensions](./stream-extensions.md)
 * [Analyzer Rules](./analyzer-rules/analyzer-rules.md)
   * [λ0001](./analyzer-rules/λ0001.md)
