@@ -14,3 +14,19 @@ namespace Funcky.Extensions
         public static Funcky.Monads.Option<global::Funcky.Extensions.Target> ParseTargetOrNone(this string candidate, bool caseSensitive) => global::Funcky.Extensions.Target.TryParse(candidate, caseSensitive, out var result) ? result : default(Funcky.Monads.Option<global::Funcky.Extensions.Target>);
     }
 }
+
+namespace Funcky.Extensions
+{
+    public static partial class TargetParseExtensions
+    {
+        extension(global::Funcky.Extensions.Target)
+        {
+            /// <summary>Calls <c>Funcky.Extensions.Target.TryParse</c> and returns the parsed <c>Funcky.Extensions.Target</c>, or <c>None</c> when it fails.</summary>
+            [global::System.Diagnostics.Contracts.Pure]
+            public static Funcky.Monads.Option<global::Funcky.Extensions.Target> ParseOrNone(string candidate) => global::Funcky.Extensions.Target.TryParse(candidate, out var result) ? result : default(Funcky.Monads.Option<global::Funcky.Extensions.Target>);
+            /// <summary>Calls <c>Funcky.Extensions.Target.TryParse</c> and returns the parsed <c>Funcky.Extensions.Target</c>, or <c>None</c> when it fails.</summary>
+            [global::System.Diagnostics.Contracts.Pure]
+            public static Funcky.Monads.Option<global::Funcky.Extensions.Target> ParseOrNone(string candidate, bool caseSensitive) => global::Funcky.Extensions.Target.TryParse(candidate, caseSensitive, out var result) ? result : default(Funcky.Monads.Option<global::Funcky.Extensions.Target>);
+        }
+    }
+}

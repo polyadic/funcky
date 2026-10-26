@@ -43,8 +43,9 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         (string HintName, IGrouping<(string FilePath, string NamespaceName, string ClassName), MethodPartial> Methods) source)
     {
         var syntaxTree = OrNoneFromTryPatternPartial.GetSyntaxTree(source.Methods.Key.NamespaceName, source.Methods.Key.ClassName, source.Methods.SelectMany(m => m.Methods));
+        var staticExtensionClasses = OrNoneFromTryPatternPartial.GetStaticExtensionClasses(source.Methods.Key.NamespaceName, source.Methods.SelectMany(m => m.StaticMembers));
 
-        context.AddSource($"{source.HintName}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString());
+        context.AddSource($"{source.HintName}.g.cs", string.Join("\n", GeneratedFileHeadersSource) + "\n" + syntaxTree.NormalizeWhitespace().ToFullString() + "\n\n" + staticExtensionClasses);
 
         return context;
     }
@@ -74,6 +75,7 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             NamespaceName: GetNamespaceName(semanticTarget.ClassDeclarationSyntax, compilation),
             ClassName: semanticTarget.ClassDeclarationSyntax.Identifier.ToString(),
             Methods: GenerateMethods(semanticTarget).ToImmutableArray(),
+            StaticMembers: GenerateStaticMembers(semanticTarget).ToImmutableArray(),
             SourceTree: semanticTarget.ClassDeclarationSyntax.SyntaxTree);
 
     private static IEnumerable<MethodDeclarationSyntax> GenerateMethods(SemanticTarget semanticTarget)
@@ -82,17 +84,28 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
             where method.Name == attribute.MethodName && FollowsTryPattern(method)
             select GenerateOrNoneMethod(attribute.Type, method));
 
+    // The static form, int.ParseOrNone(text), lives in a class per target type (e.g. Int32ParseExtensions): the lowered
+    // static methods of two types would otherwise have the same signature in one class, which the compiler rejects (CS0111).
+    private static IEnumerable<StaticExtensionMember> GenerateStaticMembers(SemanticTarget semanticTarget)
+        => (from attribute in semanticTarget.Attributes
+            from method in attribute.Type.GetMembers().OfType<IMethodSymbol>()
+            where method.Name == attribute.MethodName && FollowsTryPattern(method)
+            select new StaticExtensionMember(
+                ClassName: attribute.Type.Name + semanticTarget.ClassDeclarationSyntax.Identifier,
+                ReceiverType: attribute.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                Method: GenerateOrNoneMethod(attribute.Type, method, isStatic: true)));
+
     // A try method is static, returns bool and has exactly one out parameter, which carries the result.
     private static bool FollowsTryPattern(IMethodSymbol method)
         => method is { IsStatic: true, ReturnType.SpecialType: SpecialType.System_Boolean }
             && method.Parameters.Count(IsOutParameter) is 1;
 
-    private static MethodDeclarationSyntax GenerateOrNoneMethod(ITypeSymbol type, IMethodSymbol method)
+    private static MethodDeclarationSyntax GenerateOrNoneMethod(ITypeSymbol type, IMethodSymbol method, bool isStatic = false)
         => MethodDeclaration(
             ParseTypeName($"Funcky.Monads.Option<{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>"),
-            GetMethodName(type, method))
+            isStatic ? GetStaticMethodName(method) : GetMethodName(type, method))
             .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
-            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(IsForwardedParameter).Select(GenerateParameter))))
+            .WithParameterList(ParameterList(SeparatedList(method.Parameters.Where(IsForwardedParameter).Select((parameter, index) => GenerateParameter(parameter, index, isExtensionParameter: index == 0 && !isStatic)))))
             .WithExpressionBody(ArrowExpressionClause(GenerateOrNoneImplementation(type, method)))
             .WithAttributeLists(SingletonList(AttributeList(SingletonSeparatedList(Attribute(IdentifierName("global::System.Diagnostics.Contracts.Pure"))))))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
@@ -153,9 +166,9 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
     private static SyntaxToken VarKeyword()
         => Identifier(TriviaList(), SyntaxKind.VarKeyword, "var", "var", TriviaList());
 
-    private static ParameterSyntax GenerateParameter(IParameterSymbol parameter, int index)
+    private static ParameterSyntax GenerateParameter(IParameterSymbol parameter, int index, bool isExtensionParameter)
         => Parameter(Identifier(GetParameterName(parameter, index)))
-            .WithModifiers(TokenList((index == 0 ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList()).Concat(GetParameterRefKindModifiers(parameter))))
+            .WithModifiers(TokenList((isExtensionParameter ? TokenList(Token(SyntaxKind.ThisKeyword)) : TokenList()).Concat(GetParameterRefKindModifiers(parameter))))
             .WithType(GenerateTypeSyntax(parameter.Type))
             .WithDefault(GetParameterDefaultValue(parameter))
             .WithAttributeLists(GenerateParameterAttributeLists(parameter));
@@ -203,6 +216,16 @@ public sealed class OrNoneFromTryPatternGenerator : IIncrementalGenerator
         return method.Name.StartsWith(tryPrefix)
             ? $"{method.Name.Substring(tryPrefix.Length)}{type.Name}{orNoneSuffix}"
             : $"{method.Name}{type.Name}{orNoneSuffix}";
+    }
+
+    // int.TryParse becomes int.ParseOrNone: the type is the receiver, so it is not repeated in the name.
+    private static string GetStaticMethodName(IMethodSymbol method)
+    {
+        const string tryPrefix = "Try";
+        const string orNoneSuffix = "OrNone";
+        return method.Name.StartsWith(tryPrefix)
+            ? $"{method.Name.Substring(tryPrefix.Length)}{orNoneSuffix}"
+            : $"{method.Name}{orNoneSuffix}";
     }
 
     private static string GetParameterName(ISymbol parameter, int index)
