@@ -1,1 +1,211 @@
 #nullable enable
+Funcky.Extensions.AuthenticationHeaderValueParseExtensions
+Funcky.Extensions.AuthenticationHeaderValueParseExtensions.extension(System.Net.Http.Headers.AuthenticationHeaderValue!)
+Funcky.Extensions.BigIntegerParseExtensions
+Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger)
+Funcky.Extensions.BooleanParseExtensions
+Funcky.Extensions.BooleanParseExtensions.extension(bool)
+Funcky.Extensions.ByteParseExtensions
+Funcky.Extensions.ByteParseExtensions.extension(byte)
+Funcky.Extensions.CacheControlHeaderValueParseExtensions
+Funcky.Extensions.CacheControlHeaderValueParseExtensions.extension(System.Net.Http.Headers.CacheControlHeaderValue!)
+Funcky.Extensions.CharParseExtensions
+Funcky.Extensions.CharParseExtensions.extension(char)
+Funcky.Extensions.ContentDispositionHeaderValueParseExtensions
+Funcky.Extensions.ContentDispositionHeaderValueParseExtensions.extension(System.Net.Http.Headers.ContentDispositionHeaderValue!)
+Funcky.Extensions.ContentRangeHeaderValueParseExtensions
+Funcky.Extensions.ContentRangeHeaderValueParseExtensions.extension(System.Net.Http.Headers.ContentRangeHeaderValue!)
+Funcky.Extensions.DateTimeOffsetParseExtensions
+Funcky.Extensions.DateTimeOffsetParseExtensions.extension(System.DateTimeOffset)
+Funcky.Extensions.DateTimeParseExtensions
+Funcky.Extensions.DateTimeParseExtensions.extension(System.DateTime)
+Funcky.Extensions.DecimalParseExtensions
+Funcky.Extensions.DecimalParseExtensions.extension(decimal)
+Funcky.Extensions.DoubleParseExtensions
+Funcky.Extensions.DoubleParseExtensions.extension(double)
+Funcky.Extensions.EntityTagHeaderValueParseExtensions
+Funcky.Extensions.EntityTagHeaderValueParseExtensions.extension(System.Net.Http.Headers.EntityTagHeaderValue!)
+Funcky.Extensions.EnumParseExtensions
+Funcky.Extensions.EnumParseExtensions.extension<TEnum>(TEnum)
+Funcky.Extensions.GuidParseExtensions
+Funcky.Extensions.GuidParseExtensions.extension(System.Guid)
+Funcky.Extensions.Int16ParseExtensions
+Funcky.Extensions.Int16ParseExtensions.extension(short)
+Funcky.Extensions.Int32ParseExtensions
+Funcky.Extensions.Int32ParseExtensions.extension(int)
+Funcky.Extensions.Int64ParseExtensions
+Funcky.Extensions.Int64ParseExtensions.extension(long)
+Funcky.Extensions.IPAddressParseExtensions
+Funcky.Extensions.IPAddressParseExtensions.extension(System.Net.IPAddress!)
+Funcky.Extensions.MediaTypeHeaderValueParseExtensions
+Funcky.Extensions.MediaTypeHeaderValueParseExtensions.extension(System.Net.Http.Headers.MediaTypeHeaderValue!)
+Funcky.Extensions.MediaTypeWithQualityHeaderValueParseExtensions
+Funcky.Extensions.MediaTypeWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!)
+Funcky.Extensions.NameValueHeaderValueParseExtensions
+Funcky.Extensions.NameValueHeaderValueParseExtensions.extension(System.Net.Http.Headers.NameValueHeaderValue!)
+Funcky.Extensions.NameValueWithParametersHeaderValueParseExtensions
+Funcky.Extensions.NameValueWithParametersHeaderValueParseExtensions.extension(System.Net.Http.Headers.NameValueWithParametersHeaderValue!)
+Funcky.Extensions.ProductHeaderValueParseExtensions
+Funcky.Extensions.ProductHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductHeaderValue!)
+Funcky.Extensions.ProductInfoHeaderValueParseExtensions
+Funcky.Extensions.ProductInfoHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductInfoHeaderValue!)
+Funcky.Extensions.RangeConditionHeaderValueParseExtensions
+Funcky.Extensions.RangeConditionHeaderValueParseExtensions.extension(System.Net.Http.Headers.RangeConditionHeaderValue!)
+Funcky.Extensions.RangeHeaderValueParseExtensions
+Funcky.Extensions.RangeHeaderValueParseExtensions.extension(System.Net.Http.Headers.RangeHeaderValue!)
+Funcky.Extensions.RetryConditionHeaderValueParseExtensions
+Funcky.Extensions.RetryConditionHeaderValueParseExtensions.extension(System.Net.Http.Headers.RetryConditionHeaderValue!)
+Funcky.Extensions.SByteParseExtensions
+Funcky.Extensions.SByteParseExtensions.extension(sbyte)
+Funcky.Extensions.SingleParseExtensions
+Funcky.Extensions.SingleParseExtensions.extension(float)
+Funcky.Extensions.StringWithQualityHeaderValueParseExtensions
+Funcky.Extensions.StringWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.StringWithQualityHeaderValue!)
+Funcky.Extensions.TimeSpanParseExtensions
+Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan)
+Funcky.Extensions.TransferCodingHeaderValueParseExtensions
+Funcky.Extensions.TransferCodingHeaderValueParseExtensions.extension(System.Net.Http.Headers.TransferCodingHeaderValue!)
+Funcky.Extensions.TransferCodingWithQualityHeaderValueParseExtensions
+Funcky.Extensions.TransferCodingWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!)
+Funcky.Extensions.UInt16ParseExtensions
+Funcky.Extensions.UInt16ParseExtensions.extension(ushort)
+Funcky.Extensions.UInt32ParseExtensions
+Funcky.Extensions.UInt32ParseExtensions.extension(uint)
+Funcky.Extensions.UInt64ParseExtensions
+Funcky.Extensions.UInt64ParseExtensions.extension(ulong)
+Funcky.Extensions.VersionParseExtensions
+Funcky.Extensions.VersionParseExtensions.extension(System.Version!)
+Funcky.Extensions.ViaHeaderValueParseExtensions
+Funcky.Extensions.ViaHeaderValueParseExtensions.extension(System.Net.Http.Headers.ViaHeaderValue!)
+Funcky.Extensions.WarningHeaderValueParseExtensions
+Funcky.Extensions.WarningHeaderValueParseExtensions.extension(System.Net.Http.Headers.WarningHeaderValue!)
+static Funcky.Extensions.CacheControlHeaderValueParseExtensions.extension(System.Net.Http.Headers.CacheControlHeaderValue!).ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.CacheControlHeaderValue!>
+static Funcky.Extensions.CacheControlHeaderValueParseExtensions.ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.CacheControlHeaderValue!>
+static Funcky.Extensions.EnumParseExtensions.extension<TEnum>(TEnum).ParseOrNone(string? candidate) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.EnumParseExtensions.extension<TEnum>(TEnum).ParseOrNone(string? candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.EnumParseExtensions.ParseOrNone<TEnum>(string? candidate) -> Funcky.Monads.Option<TEnum>
+static Funcky.Extensions.EnumParseExtensions.ParseOrNone<TEnum>(string? candidate, bool ignoreCase) -> Funcky.Monads.Option<TEnum>
+~static Funcky.Extensions.AuthenticationHeaderValueParseExtensions.extension(System.Net.Http.Headers.AuthenticationHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.AuthenticationHeaderValue!>
+~static Funcky.Extensions.AuthenticationHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.AuthenticationHeaderValue!>
+~static Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+~static Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+~static Funcky.Extensions.BigIntegerParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+~static Funcky.Extensions.BigIntegerParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+~static Funcky.Extensions.BooleanParseExtensions.extension(bool).ParseOrNone(string candidate) -> Funcky.Monads.Option<bool>
+~static Funcky.Extensions.BooleanParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<bool>
+~static Funcky.Extensions.ByteParseExtensions.extension(byte).ParseOrNone(string candidate) -> Funcky.Monads.Option<byte>
+~static Funcky.Extensions.ByteParseExtensions.extension(byte).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<byte>
+~static Funcky.Extensions.ByteParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<byte>
+~static Funcky.Extensions.ByteParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<byte>
+~static Funcky.Extensions.CharParseExtensions.extension(char).ParseOrNone(string candidate) -> Funcky.Monads.Option<char>
+~static Funcky.Extensions.CharParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<char>
+~static Funcky.Extensions.ContentDispositionHeaderValueParseExtensions.extension(System.Net.Http.Headers.ContentDispositionHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentDispositionHeaderValue!>
+~static Funcky.Extensions.ContentDispositionHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentDispositionHeaderValue!>
+~static Funcky.Extensions.ContentRangeHeaderValueParseExtensions.extension(System.Net.Http.Headers.ContentRangeHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentRangeHeaderValue!>
+~static Funcky.Extensions.ContentRangeHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ContentRangeHeaderValue!>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.extension(System.DateTimeOffset).ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.extension(System.DateTimeOffset).ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.extension(System.DateTimeOffset).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.extension(System.DateTimeOffset).ParseOrNone(string candidate, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeOffsetParseExtensions.ParseOrNone(string candidate, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTimeOffset>
+~static Funcky.Extensions.DateTimeParseExtensions.extension(System.DateTime).ParseExactOrNone(string candidate, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.extension(System.DateTime).ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.extension(System.DateTime).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.extension(System.DateTime).ParseOrNone(string candidate, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.ParseExactOrNone(string candidate, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DateTimeParseExtensions.ParseOrNone(string candidate, System.IFormatProvider provider, System.Globalization.DateTimeStyles styles) -> Funcky.Monads.Option<System.DateTime>
+~static Funcky.Extensions.DecimalParseExtensions.extension(decimal).ParseOrNone(string candidate) -> Funcky.Monads.Option<decimal>
+~static Funcky.Extensions.DecimalParseExtensions.extension(decimal).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<decimal>
+~static Funcky.Extensions.DecimalParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<decimal>
+~static Funcky.Extensions.DecimalParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<decimal>
+~static Funcky.Extensions.DoubleParseExtensions.extension(double).ParseOrNone(string candidate) -> Funcky.Monads.Option<double>
+~static Funcky.Extensions.DoubleParseExtensions.extension(double).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<double>
+~static Funcky.Extensions.DoubleParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<double>
+~static Funcky.Extensions.DoubleParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<double>
+~static Funcky.Extensions.EntityTagHeaderValueParseExtensions.extension(System.Net.Http.Headers.EntityTagHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.EntityTagHeaderValue!>
+~static Funcky.Extensions.EntityTagHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.EntityTagHeaderValue!>
+~static Funcky.Extensions.GuidParseExtensions.extension(System.Guid).ParseExactOrNone(string candidate, string format) -> Funcky.Monads.Option<System.Guid>
+~static Funcky.Extensions.GuidParseExtensions.extension(System.Guid).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Guid>
+~static Funcky.Extensions.GuidParseExtensions.ParseExactOrNone(string candidate, string format) -> Funcky.Monads.Option<System.Guid>
+~static Funcky.Extensions.GuidParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Guid>
+~static Funcky.Extensions.Int16ParseExtensions.extension(short).ParseOrNone(string candidate) -> Funcky.Monads.Option<short>
+~static Funcky.Extensions.Int16ParseExtensions.extension(short).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<short>
+~static Funcky.Extensions.Int16ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<short>
+~static Funcky.Extensions.Int16ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<short>
+~static Funcky.Extensions.Int32ParseExtensions.extension(int).ParseOrNone(string candidate) -> Funcky.Monads.Option<int>
+~static Funcky.Extensions.Int32ParseExtensions.extension(int).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<int>
+~static Funcky.Extensions.Int32ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<int>
+~static Funcky.Extensions.Int32ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<int>
+~static Funcky.Extensions.Int64ParseExtensions.extension(long).ParseOrNone(string candidate) -> Funcky.Monads.Option<long>
+~static Funcky.Extensions.Int64ParseExtensions.extension(long).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<long>
+~static Funcky.Extensions.Int64ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<long>
+~static Funcky.Extensions.Int64ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<long>
+~static Funcky.Extensions.IPAddressParseExtensions.extension(System.Net.IPAddress!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
+~static Funcky.Extensions.IPAddressParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.IPAddress!>
+~static Funcky.Extensions.MediaTypeHeaderValueParseExtensions.extension(System.Net.Http.Headers.MediaTypeHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeHeaderValue!>
+~static Funcky.Extensions.MediaTypeHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeHeaderValue!>
+~static Funcky.Extensions.MediaTypeWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!>
+~static Funcky.Extensions.MediaTypeWithQualityHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.MediaTypeWithQualityHeaderValue!>
+~static Funcky.Extensions.NameValueHeaderValueParseExtensions.extension(System.Net.Http.Headers.NameValueHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueHeaderValue!>
+~static Funcky.Extensions.NameValueHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueHeaderValue!>
+~static Funcky.Extensions.NameValueWithParametersHeaderValueParseExtensions.extension(System.Net.Http.Headers.NameValueWithParametersHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueWithParametersHeaderValue!>
+~static Funcky.Extensions.NameValueWithParametersHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.NameValueWithParametersHeaderValue!>
+~static Funcky.Extensions.ProductHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
+~static Funcky.Extensions.ProductHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductHeaderValue!>
+~static Funcky.Extensions.ProductInfoHeaderValueParseExtensions.extension(System.Net.Http.Headers.ProductInfoHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductInfoHeaderValue!>
+~static Funcky.Extensions.ProductInfoHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ProductInfoHeaderValue!>
+~static Funcky.Extensions.RangeConditionHeaderValueParseExtensions.extension(System.Net.Http.Headers.RangeConditionHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeConditionHeaderValue!>
+~static Funcky.Extensions.RangeConditionHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeConditionHeaderValue!>
+~static Funcky.Extensions.RangeHeaderValueParseExtensions.extension(System.Net.Http.Headers.RangeHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeHeaderValue!>
+~static Funcky.Extensions.RangeHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RangeHeaderValue!>
+~static Funcky.Extensions.RetryConditionHeaderValueParseExtensions.extension(System.Net.Http.Headers.RetryConditionHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RetryConditionHeaderValue!>
+~static Funcky.Extensions.RetryConditionHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.RetryConditionHeaderValue!>
+~static Funcky.Extensions.SByteParseExtensions.extension(sbyte).ParseOrNone(string candidate) -> Funcky.Monads.Option<sbyte>
+~static Funcky.Extensions.SByteParseExtensions.extension(sbyte).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<sbyte>
+~static Funcky.Extensions.SByteParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<sbyte>
+~static Funcky.Extensions.SByteParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<sbyte>
+~static Funcky.Extensions.SingleParseExtensions.extension(float).ParseOrNone(string candidate) -> Funcky.Monads.Option<float>
+~static Funcky.Extensions.SingleParseExtensions.extension(float).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<float>
+~static Funcky.Extensions.SingleParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<float>
+~static Funcky.Extensions.SingleParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<float>
+~static Funcky.Extensions.StringWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.StringWithQualityHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.StringWithQualityHeaderValue!>
+~static Funcky.Extensions.StringWithQualityHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.StringWithQualityHeaderValue!>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.extension(System.TimeSpan).ParseOrNone(string candidate, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseExactOrNone(string candidate, string format, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseExactOrNone(string candidate, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TimeSpanParseExtensions.ParseOrNone(string candidate, System.IFormatProvider formatProvider) -> Funcky.Monads.Option<System.TimeSpan>
+~static Funcky.Extensions.TransferCodingHeaderValueParseExtensions.extension(System.Net.Http.Headers.TransferCodingHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingHeaderValue!>
+~static Funcky.Extensions.TransferCodingHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingHeaderValue!>
+~static Funcky.Extensions.TransferCodingWithQualityHeaderValueParseExtensions.extension(System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!>
+~static Funcky.Extensions.TransferCodingWithQualityHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.TransferCodingWithQualityHeaderValue!>
+~static Funcky.Extensions.UInt16ParseExtensions.extension(ushort).ParseOrNone(string candidate) -> Funcky.Monads.Option<ushort>
+~static Funcky.Extensions.UInt16ParseExtensions.extension(ushort).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<ushort>
+~static Funcky.Extensions.UInt16ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<ushort>
+~static Funcky.Extensions.UInt16ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<ushort>
+~static Funcky.Extensions.UInt32ParseExtensions.extension(uint).ParseOrNone(string candidate) -> Funcky.Monads.Option<uint>
+~static Funcky.Extensions.UInt32ParseExtensions.extension(uint).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<uint>
+~static Funcky.Extensions.UInt32ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<uint>
+~static Funcky.Extensions.UInt32ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<uint>
+~static Funcky.Extensions.UInt64ParseExtensions.extension(ulong).ParseOrNone(string candidate) -> Funcky.Monads.Option<ulong>
+~static Funcky.Extensions.UInt64ParseExtensions.extension(ulong).ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<ulong>
+~static Funcky.Extensions.UInt64ParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<ulong>
+~static Funcky.Extensions.UInt64ParseExtensions.ParseOrNone(string candidate, System.Globalization.NumberStyles style, System.IFormatProvider provider) -> Funcky.Monads.Option<ulong>
+~static Funcky.Extensions.VersionParseExtensions.extension(System.Version!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Version!>
+~static Funcky.Extensions.VersionParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Version!>
+~static Funcky.Extensions.ViaHeaderValueParseExtensions.extension(System.Net.Http.Headers.ViaHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
+~static Funcky.Extensions.ViaHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
+~static Funcky.Extensions.WarningHeaderValueParseExtensions.extension(System.Net.Http.Headers.WarningHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
+~static Funcky.Extensions.WarningHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>

@@ -8,6 +8,9 @@ public static class TestHelper
 {
     private const string TestAssemblyName = "Tests";
 
+    // The generated static extension members need C# 14; the driver and the sources must agree on the language version.
+    private static readonly CSharpParseOptions ParseOptions = new(LanguageVersion.Latest);
+
     /// <summary>
     /// Use verify to snapshot test the source generator output.
     /// </summary>
@@ -24,7 +27,7 @@ public static class TestHelper
     private static GeneratorDriver CreateGeneratorDriver(IEnumerable<SourceFile> sources)
     {
         var driver = CSharpGeneratorDriver
-            .Create(new OrNoneFromTryPatternGenerator())
+            .Create(generators: [new OrNoneFromTryPatternGenerator().AsSourceGenerator()], parseOptions: ParseOptions)
             .RunGeneratorsAndUpdateCompilation(ToCompilation(sources), out var outputCompilation, out var diagnostics);
 
         var combinedDiagnostics = diagnostics.Concat(outputCompilation.GetDiagnostics()).ToImmutableArray();
@@ -54,7 +57,7 @@ public static class TestHelper
     /// Parse the provided string into a C# syntax tree.
     /// </summary>
     private static IEnumerable<SyntaxTree> ToSyntaxTrees(IEnumerable<SourceFile> sources)
-        => sources.Select(source => CSharpSyntaxTree.ParseText(source.Content, path: source.Path));
+        => sources.Select(source => CSharpSyntaxTree.ParseText(source.Content, ParseOptions, path: source.Path));
 
     private static IEnumerable<TItem> Return<TItem>(params TItem[] items)
         => items;

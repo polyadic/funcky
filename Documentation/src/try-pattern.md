@@ -151,6 +151,38 @@ interfaces, including your own, so on .NET 7 and later `text.ParseOrNone<Guid>()
 is used, as in the BCL. `ParseNumberOrNone<T>` additionally accepts a `NumberStyles`; without one the type's own
 default applies, `Integer` for the integer types and `Float | AllowThousands` for the floating-point types.
 
+### The static form: `int.ParseOrNone`
+
+Since Funcky 3.8.0 every parse method also exists as a C# 14 *static extension member* on the type it parses, next to
+the `TryParse` it wraps. The receiver names the type, so the method name drops it: `ParseInt32OrNone` on `string`
+becomes `ParseOrNone` on `int`, `ParseExactDateTimeOrNone` becomes `DateTime.ParseExactOrNone`. Every overload of the
+`string` form is mirrored.
+
+```cs
+Option<int> number = int.ParseOrNone("42");
+Option<int> hex = int.ParseOrNone("2A", NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+Option<DateTime> date = DateTime.ParseExactOrNone("2026-10-21", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+Option<DayOfWeek> day = DayOfWeek.ParseOrNone("monday", ignoreCase: true);
+Option<object> boxed = Enum.ParseOrNone(typeof(DayOfWeek), "Monday");
+Option<MediaTypeHeaderValue> mediaType = MediaTypeHeaderValue.ParseOrNone("text/html");
+```
+
+On .NET 7 and later the generic forms are static extension members on the interfaces' type parameter, so they apply
+to any `IParsable<T>`, `ISpanParsable<T>`, `IUtf8SpanParsable<T>` (.NET 8+) or `INumberBase<T>`, including your own
+types. `int.ParseOrNone(text)` binds to the dedicated `int` member, `Half.ParseOrNone(text)` to the generic one.
+
+```cs
+Option<Half> half = Half.ParseOrNone("1.5", NumberStyles.Float, CultureInfo.InvariantCulture);
+Option<Celsius> temperature = Celsius.ParseOrNone("21.5", CultureInfo.InvariantCulture); // any ISpanParsable<Celsius>
+```
+
+The static members are declared in one static class per parsed type: `Int32ParseExtensions`,
+`DateTimeParseExtensions`, `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions` and so on. The
+compiler lowers a static extension member to an ordinary static method without the receiver, so
+`ParseOrNone(string)` for `int` and for `long` could not share one class. The split only shows on a compiler older
+than C# 14 (before the .NET 10 SDK): there the members are plain static methods, `Int32ParseExtensions.ParseOrNone(text)`,
+and the `string` extensions remain the convenient form.
+
 The `TryParse` methods of the `System.Net.Http.Headers` value types are mirrored as well:
 
 | BCL                                               | Funcky                                            |
