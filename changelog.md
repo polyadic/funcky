@@ -4,6 +4,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 3.8.0
 
+* Add `InRange<TFrom, TTo>(from, to)` extension (.NET 7+) on all BCL numeric types to check whether a value lies within
+  an interval. The boundary kinds are given as type arguments `Including` / `Excluding`, e.g.
+  `5.InRange<Including, Excluding>(0, 10)`. Custom types implementing `IComparisonOperators<T, T, bool>` can use the
+  static `NumberExtensions.InRange<TNumber, TFrom, TTo>`.
 * The extension methods of Funcky, Funcky.Async and Funcky.Xunit are now C# 14 extension members, declared in
   `extension(...)` blocks. The compiled methods keep their names and `this` parameters, so the change is source and
   binary compatible. A few methods stay classic extension methods: `Interleave`, `And`, `Or` and `SplitLazy`, which
