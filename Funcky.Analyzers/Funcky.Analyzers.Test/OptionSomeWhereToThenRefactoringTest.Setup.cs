@@ -1,10 +1,10 @@
 #pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 using Funcky.Extensions;
-using VerifyCS = Funcky.Analyzers.Test.CSharpCodeRefactoringVerifier<Funcky.Analyzers.OptionSomeWhereToFromBooleanRefactoring>;
+using VerifyCS = Funcky.Analyzers.Test.CSharpCodeRefactoringVerifier<Funcky.Analyzers.OptionSomeWhereToThenRefactoring>;
 
 namespace Funcky.Analyzers.Test;
 
-public partial class OptionSomeWhereToFromBooleanRefactoringTest
+public partial class OptionSomeWhereToThenRefactoringTest
 {
     private const string OptionCode = """
         namespace Funcky.Monads
@@ -21,13 +21,21 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
                 public static Option<TItem> Return<TItem>(TItem value) => default;
 
                 public static Option<TItem> Some<TItem>(TItem value) => default;
+            }
+        }
 
-                public static Option<TItem> FromBoolean<TItem>(bool boolean, TItem item) => default;
+        namespace Funcky.Extensions
+        {
+            using Funcky.Monads;
+
+            public static class BooleanExtensions
+            {
+                public static Option<TItem> Then<TItem>(this bool condition, TItem value) => default;
             }
         }
         """;
 
-    private const string OptionCodeWithoutFromBoolean = """
+    private const string OptionCodeWithoutThen = """
         namespace Funcky.Monads
         {
             using System;
@@ -46,14 +54,14 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
         }
         """;
 
-    private static readonly IEnumerable<string> DefaultUsings = ["using Funcky.Monads;"];
+    private static readonly IEnumerable<string> DefaultUsings = ["using Funcky.Extensions;", "using Funcky.Monads;"];
 
-    private static async Task VerifyRefactoring(string source, string fixedSource, string supportSource, IEnumerable<string>? usings = null)
+    private static async Task VerifyRefactoring(string source, string fixedSource, string supportSource, IEnumerable<string>? usings = null, IEnumerable<string>? fixedUsings = null)
     {
         usings ??= DefaultUsings;
         await VerifyCS.VerifyRefactoringAsync(
             WrapInMethod(source, usings).ReplaceLineEndings() + Environment.NewLine + supportSource,
-            WrapInMethod(fixedSource, usings).ReplaceLineEndings() + Environment.NewLine + supportSource);
+            WrapInMethod(fixedSource, fixedUsings ?? usings).ReplaceLineEndings() + Environment.NewLine + supportSource);
     }
 
     private static string WrapInMethod(string statement, IEnumerable<string>? usings)
