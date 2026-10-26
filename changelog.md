@@ -28,6 +28,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Consumers on a compiler older than C# 14 see them as plain static methods of these classes
   (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
   decides their fate.
+* The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
+  `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
+  next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
+  exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
+  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
