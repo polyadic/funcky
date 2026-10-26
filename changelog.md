@@ -33,6 +33,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+* Announcement: [Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union) is retired with
+  Funcky 4.0.0, because C# gets native `union` types and `closed` hierarchies with .NET 11, which Funcky 4.0.0 adopts.
+  The generator keeps working with the 3.x line and receives no new features. Details in
+  [#900](https://github.com/polyadic/funcky/issues/900).
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
