@@ -417,3 +417,5 @@ static Funcky.Extensions.ViaHeaderValueParseExtensions.extension(System.Net.Http
 static Funcky.Extensions.ViaHeaderValueParseExtensions.ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
 static Funcky.Extensions.WarningHeaderValueParseExtensions.extension(System.Net.Http.Headers.WarningHeaderValue!).ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Extensions.WarningHeaderValueParseExtensions.ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
+static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!

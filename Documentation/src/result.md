@@ -52,6 +52,21 @@ stack trace, and the error would be useless once it surfaces somewhere else. `Er
 current stack trace on the exception when none is set. The `Error(…)` call site is where the stack trace points,
 which is almost always what you want.
 
+### From a function that may throw
+
+`Result.Try` runs a function and captures its outcome, so an exception-based API becomes a `Result` at the boundary:
+
+```cs
+Result<int> parsed = Result.Try(() => int.Parse(text));                  // Ok(42) or Error(FormatException)
+Result<string> body = await Result.TryAsync(() => client.GetStringAsync(uri));
+```
+
+`TryAsync` awaits the task, so it captures an exception thrown while producing the task as well as one the task
+faults with. Two kinds of exceptions are never captured: those that signal a corrupted process
+(`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) propagate
+from both forms, and `TryAsync` also lets an `OperationCanceledException` through, because a cancelled operation
+has no result rather than an error result.
+
 ## Chaining operations that may fail
 
 The typical use of `Result<T>` is a pipeline of steps where each step can go wrong and the first failure
