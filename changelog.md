@@ -4,6 +4,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 3.8.0
 
+* Add `InRange<TFrom, TTo>(from, to)` extension (.NET 7+) on all BCL numeric types to check whether a value lies within
+  an interval. The boundary kinds are given as type arguments `Including` / `Excluding`, e.g.
+  `5.InRange<Including, Excluding>(0, 10)`. Custom types implementing `IComparisonOperators<T, T, bool>` can use the
+  static `NumberExtensions.InRange<TNumber, TFrom, TTo>`.
 * The extension methods of Funcky, Funcky.Async and Funcky.Xunit are now C# 14 extension members, declared in
   `extension(...)` blocks. The compiled methods keep their names and `this` parameters, so the change is source and
   binary compatible. A few methods stay classic extension methods: `Option.ToEither` and the `Compose` overloads with
@@ -13,6 +17,22 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   source-generated `…OrNone` and `Apply` methods. Consuming the `params` extension members (`Interleave`, `And`, `Or`, `SplitLazy`) with their
   arguments spread out needs the C# compiler of the .NET SDK 10.0.2xx or newer; the 10.0.1xx compiler reports a bogus
   CS8620 per argument for `params` on extension members in referenced assemblies.
+* Every `Parse…OrNone` extension on `string` is now also a static extension member on the type it parses, so the
+  function is found where the BCL `TryParse` lives: `int.ParseOrNone(text)`, `DateTime.ParseExactOrNone(text, format,
+  provider, styles)`, `MyEnum.ParseOrNone(text)`, `Enum.ParseOrNone(typeof(MyEnum), text)`, `MediaTypeHeaderValue.ParseOrNone(text)`,
+  and on .NET 7+ `MyParsable.ParseOrNone(text)` for every `IParsable<T>` / `ISpanParsable<T>` / `IUtf8SpanParsable<T>`
+  and `MyNumber.ParseOrNone(text, style, provider)` for every `INumberBase<T>`. Every overload of the `string` form is
+  mirrored. The static members live in one class per parsed type (`Int32ParseExtensions`, `DateTimeParseExtensions`,
+  `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions`, …), because the C# compiler does not
+  allow static extension members of different receiver types with the same name and parameters in one class.
+  Consumers on a compiler older than C# 14 see them as plain static methods of these classes
+  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
+  decides their fate.
+* The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
+  `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
+  next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
+  exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
+  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 

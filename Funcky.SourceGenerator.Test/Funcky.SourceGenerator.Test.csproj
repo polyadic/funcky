@@ -23,6 +23,8 @@
         </PackageReference>
         <PackageReference Include="Verify.XUnit" />
         <PackageReference Include="Verify.SourceGenerators" />
+        <!-- The generated extension blocks need a C# 14 compiler, newer than the Roslyn the generator itself targets. -->
+        <PackageReference Include="Microsoft.CodeAnalysis" />
     </ItemGroup>
 
     <ItemGroup>

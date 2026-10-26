@@ -16,7 +16,7 @@ public sealed partial class ParseExtensionsTest
         FunctionalAssert.Some(expected!, input.ParseVersionOrNone());
     }
 
-#if PARSE_READ_ONLY_SPAN_SUPPORTED
+#if READ_ONLY_SPAN_SUPPORTED
     [Theory]
     [InlineData("1.0")]
     [InlineData("1.0.0")]
@@ -39,7 +39,7 @@ public sealed partial class ParseExtensionsTest
         return result.ToProperty();
     }
 
-#if PARSE_READ_ONLY_SPAN_SUPPORTED
+#if READ_ONLY_SPAN_SUPPORTED
     [Property]
     public Property ParseVersionIsTheSameAsTryParseWithReadOnlySpan(string input)
     {
