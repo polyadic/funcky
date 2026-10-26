@@ -33,6 +33,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+* Add `OrNone` extension properties (C# 14) for base class library members that return `null` as a regular outcome:
+  `Type.BaseTypeOrNone`, `MemberInfo.DeclaringTypeOrNone`, `Assembly.EntryPointOrNone`, `Exception.InnerExceptionOrNone`,
+  `DirectoryInfo.ParentOrNone` and `HttpResponseHeaders.LocationOrNone`. They are the first extension properties in
+  Funcky; see the [Nullable Member Extensions](https://polyadic.github.io/funcky/nullable-members.html) chapter.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
