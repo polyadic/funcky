@@ -43,6 +43,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   * [λ1202](https://polyadic.github.io/funcky/analyzer-rules/λ1202.html) `Sequence.Successors(…)` → `Enumerable.Successors(…)`
     for every `Sequence` constructor with an `Enumerable` form.
   * [λ1203](https://polyadic.github.io/funcky/analyzer-rules/λ1203.html) `FunctionalAssert.Some(…)` → `Assert.Some(…)`.
+* Fix: λ1101 names the receiver as written in its message (`Assert.Some`); for a static extension member it used to
+  print the unnamed extension block (`.Some`).
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 

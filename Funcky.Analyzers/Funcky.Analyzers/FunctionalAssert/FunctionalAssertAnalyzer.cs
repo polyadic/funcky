@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunctionalAssert.FunctionalAssertMatching;
@@ -58,7 +59,14 @@ public sealed class FunctionalAssertAnalyzer : DiagnosticAnalyzer
                     PreferFunctionalAssert,
                     invocation.Syntax.GetLocation(),
                     properties,
-                    messageArgs: [innerInvocation.TargetMethod.ContainingType.Name, innerInvocation.TargetMethod.Name]));
+                    messageArgs: [ReceiverDisplayName(innerInvocation), innerInvocation.TargetMethod.Name]));
             }
         };
+
+    // The receiver as written, because for a member of an `extension(Assert)` block the containing type is the
+    // compiler-generated, unnamed extension marker type and the user sees `Assert`, not `AssertExtensions`.
+    private static string ReceiverDisplayName(IInvocationOperation invocation)
+        => invocation.Syntax is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Expression: var receiver } }
+            ? receiver.ToString()
+            : invocation.TargetMethod.ContainingType.Name;
 }
