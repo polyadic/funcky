@@ -17,6 +17,17 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   callers that name the type arguments), the `Lazy` `Select`, `SelectMany`, `Flatten` and `Sequence` overloads (their
   type parameters carry trimming annotations that the compiler does not copy onto an extension block), and the
   source-generated `…OrNone` and `Apply` methods.
+* Every `Parse…OrNone` extension on `string` is now also a static extension member on the type it parses, so the
+  function is found where the BCL `TryParse` lives: `int.ParseOrNone(text)`, `DateTime.ParseExactOrNone(text, format,
+  provider, styles)`, `MyEnum.ParseOrNone(text)`, `Enum.ParseOrNone(typeof(MyEnum), text)`, `MediaTypeHeaderValue.ParseOrNone(text)`,
+  and on .NET 7+ `MyParsable.ParseOrNone(text)` for every `IParsable<T>` / `ISpanParsable<T>` / `IUtf8SpanParsable<T>`
+  and `MyNumber.ParseOrNone(text, style, provider)` for every `INumberBase<T>`. Every overload of the `string` form is
+  mirrored. The static members live in one class per parsed type (`Int32ParseExtensions`, `DateTimeParseExtensions`,
+  `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions`, …), because the C# compiler does not
+  allow static extension members of different receiver types with the same name and parameters in one class.
+  Consumers on a compiler older than C# 14 see them as plain static methods of these classes
+  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
+  decides their fate.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
