@@ -96,7 +96,7 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public ValueTask<Option<TResult>> MinOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwait(selector).MinOrNoneAsync(Identity, cancellationToken);
+            => source.WhereSelect((item, _) => selector(item)).MinOrNoneAsync(Identity, cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -108,7 +108,7 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public ValueTask<Option<TResult>> MinOrNoneAwaitWithCancellationAsync<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwaitWithCancellation(selector).MinOrNoneAsync(Identity, cancellationToken);
+            => source.WhereSelect(selector).MinOrNoneAsync(Identity, cancellationToken);
     }
 }
 #endif

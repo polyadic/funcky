@@ -17,6 +17,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="keySelector">A function to extract the key for each element.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
 #if SYSTEM_LINQ_ASYNC
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
 #else
@@ -36,6 +37,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
 #if SYSTEM_LINQ_ASYNC
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupByAwait<TSource, TKey>(
 #else
@@ -57,6 +59,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="elementSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
 #if SYSTEM_LINQ_ASYNC
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
 #else
@@ -79,6 +82,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>An <see cref="IAsyncEnumerable{T}" /> where each element is an <see cref ="IGrouping{TKey,TElement}" /> object containing a sequence of objects and a key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
 #if SYSTEM_LINQ_ASYNC
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupByAwait<TSource, TKey, TElement>(
 #else
@@ -101,6 +105,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="resultSelector">A function to map each source element to an element in the <see cref ="IGrouping{TKey,TElement}" />.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwait<TSource, TKey, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
@@ -120,6 +125,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="resultSelector">A function to create a result value from each group.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwait<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
@@ -139,6 +145,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwait<TSource, TKey, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
@@ -160,6 +167,7 @@ public static partial class AsyncEnumerableExtensions
     /// <param name="comparer">An IEqualityComparer{T} to compare keys.</param>
     /// <returns>A collection of elements of type TResult where each element represents a projection over a group and its key.</returns>
     [Pure]
+    [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
     public static IAsyncEnumerable<TResult> AdjacentGroupByAwait<TSource, TKey, TElement, TResult>(
         this IAsyncEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,

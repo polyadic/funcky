@@ -96,7 +96,7 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwait(selector).MaxOrNoneAsync(Identity, cancellationToken);
+            => source.WhereSelect((item, _) => selector(item)).MaxOrNoneAsync(Identity, cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -108,7 +108,7 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitWithCancellationAsync<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwaitWithCancellation(selector).MaxOrNoneAsync(Identity, cancellationToken);
+            => source.WhereSelect(selector).MaxOrNoneAsync(Identity, cancellationToken);
     }
 }
 #endif

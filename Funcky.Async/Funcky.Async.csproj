@@ -17,7 +17,7 @@
         <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks on frameworks older than .NET 10. On .NET 10 and newer these APIs are part of the Funcky package and this package only forwards to them.</Description>
         <PackageTags>Functional Async Monad Linq</PackageTags>
-        <VersionPrefix>1.5.0</VersionPrefix>
+        <VersionPrefix>1.6.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageIcon>icon.png</PackageIcon>
