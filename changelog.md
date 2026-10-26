@@ -37,19 +37,23 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   now follow the .NET 10 naming of `System.Linq.AsyncEnumerable`: one name per operator, with the asynchronous delegate
   taking the cancellation token of the enumeration, `xs.Inspect(async (item, cancellationToken) => …)`. This applies to
   the net10.0 asset of Funcky and to Funcky.Async alike.
-* Deprecated: the `…Await` and `…AwaitWithCancellation` overloads of these six operators (`InspectAwait`,
-  `InspectAwaitWithCancellation`, …) are obsolete and will be removed in Funcky 4.0.0. `…AwaitWithCancellation` is a
-  rename; `…Await` additionally gains the token parameter, which can be discarded: `(item, _) => …`. The obsolete
-  overloads stay a warning for the whole 3.x line. Funcky.Analyzers 2.1.0 ships a code fix with fix-all support (see
-  below). The terminal `…AwaitAsync` aggregations (`FirstOrNoneAwaitAsync`, `MaxOrNoneAwaitAsync`, …) are not part of
-  this change.
+* The same for the terminal aggregations `AverageOrNoneAsync`, `FirstOrNoneAsync`, `LastOrNoneAsync`, `MaxOrNoneAsync`,
+  `MinOrNoneAsync`, `NoneAsync`, `PartitionAsync` and `SingleOrNoneAsync`: they gain overloads whose asynchronous
+  delegate receives the cancellation token, `xs.FirstOrNoneAsync(async (item, cancellationToken) => …)`.
+* Deprecated: the `…Await` and `…AwaitWithCancellation` overloads of the six lazy operators (`InspectAwait`,
+  `InspectAwaitWithCancellation`, …) and the `…AwaitAsync` and `…AwaitWithCancellationAsync` overloads of the eight
+  terminal aggregations (`FirstOrNoneAwaitAsync`, `FirstOrNoneAwaitWithCancellationAsync`, …) are obsolete and will be
+  removed in Funcky 4.0.0. `…AwaitWithCancellation` is a rename; `…Await` additionally gains the token parameter, which
+  can be discarded: `(item, _) => …`. The obsolete overloads stay a warning for the whole 3.x line. Funcky.Analyzers
+  2.1.0 ships a code fix with fix-all support (see below).
 
 ### Analyzers (Funcky.Analyzers 2.1.0)
 * New: a code fix for the obsoletion warning CS0618 on the `…Await` and `…AwaitWithCancellation` operators of
   `AsyncEnumerableExtensions`. `xs.InspectAwaitWithCancellation((x, ct) => …)` becomes `xs.Inspect((x, ct) => …)`,
   `xs.InspectAwait(x => …)` becomes `xs.Inspect((x, _) => …)` with the ignored token parameter added to every delegate
-  argument, and a method group or delegate value becomes a forwarding lambda, `xs.Inspect((x, _) => Log(x))`. The fix
-  supports fix-all across a document, project or solution, so a consumer migrates in one step before 4.0.0.
+  argument, and a method group or delegate value becomes a forwarding lambda, `xs.Inspect((x, _) => Log(x))`. The
+  terminal aggregations map the same way, `xs.FirstOrNoneAwaitAsync(x => …)` becomes `xs.FirstOrNoneAsync((x, _) => …)`.
+  The fix supports fix-all across a document, project or solution, so a consumer migrates in one step before 4.0.0.
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 

@@ -127,5 +127,72 @@ public sealed class AsyncSelectorOverloadsTest
 
         Assert.Equal(new[] { "a", "b" }, keys);
     }
+
+    [Fact]
+    public async Task FirstOrNoneAwaitsThePredicate()
+    {
+        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
+        FunctionalAssert.None(await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 3)));
+    }
+
+    [Fact]
+    public async Task LastSingleAndNoneAwaitThePredicate()
+    {
+        FunctionalAssert.Some(3, await AsyncSequence.Return(1, 2, 3).LastOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
+        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).SingleOrNoneAsync((item, _) => ValueTask.FromResult(item == 2)));
+        Assert.True(await AsyncSequence.Return(1, 2, 3).NoneAsync((item, _) => ValueTask.FromResult(item > 3)));
+        Assert.False(await AsyncSequence.Return(1, 2, 3).NoneAsync((item, _) => ValueTask.FromResult(item > 2)));
+    }
+
+    [Fact]
+    public async Task MaxMinAndAverageAwaitTheSelector()
+    {
+        FunctionalAssert.Some(6, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).MinOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        FunctionalAssert.Some(3, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<int>.None : Option.Some(item))));
+        FunctionalAssert.Some(4.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        FunctionalAssert.Some(2.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<long>.None : Option.Some((long)item))));
+        FunctionalAssert.None(await AsyncSequence.Return<int>().AverageOrNoneAsync((item, _) => ValueTask.FromResult((decimal)item)));
+    }
+
+    [Fact]
+    public async Task PartitionAwaitsThePredicateAndTheResultSelector()
+    {
+        var (evens, odds) = await AsyncSequence.Return(1, 2, 3, 4).PartitionAsync((item, _) => ValueTask.FromResult(item % 2 == 0));
+        Assert.Equal(new[] { 2, 4 }, evens);
+        Assert.Equal(new[] { 1, 3 }, odds);
+
+        var summary = await AsyncSequence.Return(1, 2, 3, 4).PartitionAsync(
+            (item, _) => ValueTask.FromResult(item % 2 == 0),
+            (left, right, _) => ValueTask.FromResult($"{left.Count}:{right.Count}"));
+        Assert.Equal("2:2", summary);
+    }
+
+    [Fact]
+    public async Task TheTerminalDelegatesReceiveTheTokenOfTheCall()
+    {
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancellationTokenSource.Token;
+        var tokens = new List<CancellationToken>();
+
+        _ = await AsyncSequence.Return(1, 2).FirstOrNoneAsync(
+            (_, token) =>
+            {
+                tokens.Add(token);
+                return ValueTask.FromResult(false);
+            },
+            cancellationToken);
+        _ = await AsyncSequence.Return(1, 2).PartitionAsync(
+            (_, token) => ValueTask.FromResult(token == cancellationToken),
+            (left, right, token) =>
+            {
+                tokens.Add(token);
+                return ValueTask.FromResult(left.Count + right.Count);
+            },
+            cancellationToken);
+
+        Assert.Equal(3, tokens.Count);
+        Assert.All(tokens, token => Assert.Equal(cancellationToken, token));
+    }
 }
 #endif

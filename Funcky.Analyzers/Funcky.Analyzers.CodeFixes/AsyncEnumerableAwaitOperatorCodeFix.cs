@@ -17,6 +17,7 @@ namespace Funcky.Analyzers;
 /// <c>AsyncEnumerableExtensions</c>, which the single-name overloads with a <c>(…, cancellationToken)</c> delegate replace:
 /// <c>xs.FooAwaitWithCancellation((x, ct) => …)</c> becomes <c>xs.Foo((x, ct) => …)</c>, and <c>xs.FooAwait(x => …)</c>
 /// becomes <c>xs.Foo((x, _) => …)</c>, with the ignored token parameter added to every delegate argument.
+/// The terminal <c>…AwaitAsync</c> and <c>…AwaitWithCancellationAsync</c> aggregations map to <c>…Async</c> the same way.
 /// </summary>
 [Shared]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AsyncEnumerableAwaitOperatorCodeFix))]
@@ -28,6 +29,8 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
     private const string AwaitSuffix = "Await";
 
     private const string AwaitWithCancellationSuffix = "AwaitWithCancellation";
+
+    private const string AsyncSuffix = "Async";
 
     private const string DiscardName = "_";
 
@@ -112,9 +115,13 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
 
     private sealed record Replacement(string Name, bool AddsTokenParameter)
     {
+        // Lazy operators: FooAwait → Foo, FooAwaitWithCancellation → Foo. Terminal aggregations: FooAwaitAsync → FooAsync,
+        // FooAwaitWithCancellationAsync → FooAsync.
         public static Replacement? TryCreate(string obsoleteName)
             => obsoleteName switch
             {
+                _ when EndsWith(obsoleteName, AwaitWithCancellationSuffix + AsyncSuffix) => new Replacement(obsoleteName[..^(AwaitWithCancellationSuffix.Length + AsyncSuffix.Length)] + AsyncSuffix, AddsTokenParameter: false),
+                _ when EndsWith(obsoleteName, AwaitSuffix + AsyncSuffix) => new Replacement(obsoleteName[..^(AwaitSuffix.Length + AsyncSuffix.Length)] + AsyncSuffix, AddsTokenParameter: true),
                 _ when EndsWith(obsoleteName, AwaitWithCancellationSuffix) => new Replacement(obsoleteName[..^AwaitWithCancellationSuffix.Length], AddsTokenParameter: false),
                 _ when EndsWith(obsoleteName, AwaitSuffix) => new Replacement(obsoleteName[..^AwaitSuffix.Length], AddsTokenParameter: true),
                 _ => null,

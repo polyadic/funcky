@@ -44,6 +44,21 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
                 [Obsolete("Use AdjacentGroupBy with (item, cancellationToken) selectors instead.")]
                 public static AsyncSource<TResult> AdjacentGroupByAwait<T, TKey, TResult>(this AsyncSource<T> source, Func<T, Task<TKey>> keySelector, Func<TKey, T[], Task<TResult>> resultSelector) => default!;
 
+                public static Task<T> FirstOrNoneAsync<T>(this AsyncSource<T> source, Func<T, bool> predicate, CancellationToken cancellationToken = default) => default!;
+
+                public static Task<T> FirstOrNoneAsync<T>(this AsyncSource<T> source, Func<T, CancellationToken, Task<bool>> predicate, CancellationToken cancellationToken = default) => default!;
+
+                [Obsolete("Use FirstOrNoneAsync with a (item, cancellationToken) delegate instead.")]
+                public static Task<T> FirstOrNoneAwaitAsync<T>(this AsyncSource<T> source, Func<T, Task<bool>> predicate, CancellationToken cancellationToken = default) => default!;
+
+                [Obsolete("Use FirstOrNoneAsync instead, which takes the same delegate.")]
+                public static Task<T> FirstOrNoneAwaitWithCancellationAsync<T>(this AsyncSource<T> source, Func<T, CancellationToken, Task<bool>> predicate, CancellationToken cancellationToken = default) => default!;
+
+                public static Task<TResult> PartitionAsync<T, TResult>(this AsyncSource<T> source, Func<T, CancellationToken, Task<bool>> predicate, Func<T[], T[], CancellationToken, Task<TResult>> resultSelector, CancellationToken cancellationToken = default) => default!;
+
+                [Obsolete("Use PartitionAsync with (…, cancellationToken) delegates instead.")]
+                public static Task<TResult> PartitionAwaitAsync<T, TResult>(this AsyncSource<T> source, Func<T, Task<bool>> predicate, Func<T[], T[], Task<TResult>> resultSelector, CancellationToken cancellationToken = default) => default!;
+
                 [Obsolete("Not an operator of this family.")]
                 public static AsyncSource<T> Legacy<T>(this AsyncSource<T> source) => source;
             }
@@ -212,6 +227,47 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
                 }
 
                 private static Task Log(int value) => Task.CompletedTask;
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task RenamesTheTerminalAggregations()
+    {
+        const string inputCode =
+            """
+            using System.Threading;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static async Task M(AsyncSource<int> source, CancellationToken cancellationToken)
+                {
+                    _ = await {|CS0618:source.FirstOrNoneAwaitAsync(x => Task.FromResult(x > 1))|};
+                    _ = await {|CS0618:source.FirstOrNoneAwaitAsync(x => Task.FromResult(x > 1), cancellationToken)|};
+                    _ = await {|CS0618:source.FirstOrNoneAwaitWithCancellationAsync((x, token) => Task.FromResult(x > 1), cancellationToken)|};
+                    _ = await {|CS0618:source.PartitionAwaitAsync(x => Task.FromResult(x > 1), (left, right) => Task.FromResult(left.Length))|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            using System.Threading;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static async Task M(AsyncSource<int> source, CancellationToken cancellationToken)
+                {
+                    _ = await source.FirstOrNoneAsync((x, _) => Task.FromResult(x > 1));
+                    _ = await source.FirstOrNoneAsync((x, _) => Task.FromResult(x > 1), cancellationToken);
+                    _ = await source.FirstOrNoneAsync((x, token) => Task.FromResult(x > 1), cancellationToken);
+                    _ = await source.PartitionAsync((x, _) => Task.FromResult(x > 1), (left, right, _) => Task.FromResult(left.Length));
+                }
             }
             """;
 
