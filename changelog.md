@@ -34,6 +34,16 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
 
+### Analyzers (Funcky.Analyzers 2.1.0)
+* New: three opt-in rules with code fixes point at the C# 14 extension forms that 3.8.0 adds next to the classic API,
+  so a solution adopts them in one fix-all. They only fire on C# 14 or newer and skip method groups, which have no
+  static-member form of the same shape:
+  * [λ1201](https://polyadic.github.io/funcky/analyzer-rules/λ1201.html) `text.ParseInt32OrNone()` → `int.ParseOrNone(text)`,
+    including the exact, enum and generic forms.
+  * [λ1202](https://polyadic.github.io/funcky/analyzer-rules/λ1202.html) `Sequence.Successors(…)` → `Enumerable.Successors(…)`
+    for every `Sequence` constructor with an `Enumerable` form.
+  * [λ1203](https://polyadic.github.io/funcky/analyzer-rules/λ1203.html) `FunctionalAssert.Some(…)` → `Assert.Some(…)`.
+
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
 The analyzer release: Funcky itself gains built-in correctness rules, `Funcky.Analyzers` gains eight style rules and a
