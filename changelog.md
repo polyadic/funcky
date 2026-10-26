@@ -33,6 +33,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+* Funcky.Xunit and Funcky.Xunit.v3: the assertions of `FunctionalAssert` are now also static extension members of
+  xunit's `Assert`, so they are found where the other assertions live: `Assert.Some(option)`, `Assert.None(option)`,
+  `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`, each with the overload
+  that takes the expected value. They delegate to `FunctionalAssert`, which stays the form for compilers older than
+  C# 14 (the members are declared in `AssertExtensions`).
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
