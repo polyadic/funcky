@@ -19,7 +19,7 @@ public static partial class AsyncEnumerableExtensions
         /// and every row is advanced by exactly one element per column.
         /// </remarks>
         /// <returns>A lazy transposition of the matrix.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the rows of <c>source</c> do not all have the same length.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the rows of <paramref name="source"/> do not all have the same length.</exception>
         [Pure]
         public IAsyncEnumerable<IEnumerable<TSource>> Transpose()
             => TransposeInternal(ArgumentValidator.NotNull(source));

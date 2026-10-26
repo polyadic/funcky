@@ -1,4 +1,24 @@
 #nullable enable
+Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>!)
+Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>!).Sequence() -> System.Lazy<System.Collections.Generic.IEnumerable<TSource>!>!
+Funcky.Extensions.FuncExtensions.extension<T>(System.Func<T, bool>!).And(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+Funcky.Extensions.FuncExtensions.extension<T>(System.Func<T, bool>!).Or(params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+Funcky.Extensions.StringExtensions.extension(string!).SplitLazy(params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+Funcky.Extensions.StringExtensions.extension(string!).SplitLazy(params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!)
+Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).Select<TResult>(System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
+Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).SelectMany<TLazy, TResult>(System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
+Funcky.Monads.LazyExtensions.extension<T>(System.Lazy<T>!).SelectMany<TResult>(System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!
+static Funcky.Extensions.EnumerableExtensions.Sequence<TSource>(this System.Collections.Generic.IEnumerable<System.Lazy<TSource>!>! sequence) -> System.Lazy<System.Collections.Generic.IEnumerable<TSource>!>!
+static Funcky.Extensions.FuncExtensions.And<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.FuncExtensions.Or<T>(this System.Func<T, bool>! predicate, params System.Func<T, bool>![]! predicates) -> System.Func<T, bool>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params char[]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Extensions.StringExtensions.SplitLazy(this string! text, params string![]! separators) -> System.Collections.Generic.IEnumerable<string!>!
+static Funcky.Monads.LazyExtensions.Select<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, TResult>! selector) -> System.Lazy<TResult>!
+static Funcky.Monads.LazyExtensions.SelectMany<T, TLazy, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TLazy>!>! selector, System.Func<T, TLazy, TResult>! resultSelector) -> System.Lazy<TResult>!
+static Funcky.Monads.LazyExtensions.SelectMany<T, TResult>(this System.Lazy<T>! lazy, System.Func<T, System.Lazy<TResult>!>! selector) -> System.Lazy<TResult>!
+Funcky.Extensions.EnumerableExtensions.extension<TSource>(System.Collections.Generic.IEnumerable<TSource>!).Interleave(params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
+static Funcky.Extensions.EnumerableExtensions.Interleave<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, params System.Collections.Generic.IEnumerable<TSource>![]! otherSources) -> System.Collections.Generic.IEnumerable<TSource>!
 Funcky.Extensions.EnumerableExtensions.extension(System.Linq.Enumerable!)
 static Funcky.Extensions.EnumerableExtensions.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
 static Funcky.Extensions.EnumerableExtensions.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!

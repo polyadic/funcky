@@ -19,16 +19,19 @@ public static partial class AsyncEnumerableExtensions
         public IAsyncEnumerable<TSource> Interleave() => InterleaveInternal(ArgumentValidator.NotNull(source));
     }
 
-    /// <summary>
-    /// Interleaves the elements of multiple sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
     /// <param name="source">first sequence.</param>
-    /// <param name="otherSources">other sequences.</param>
-    /// <returns>one sequences with all the elements interleaved.</returns>
-    [Pure]
-    public static IAsyncEnumerable<TSource> Interleave<TSource>(this IAsyncEnumerable<TSource> source, params IAsyncEnumerable<TSource>[] otherSources)
-        => ImmutableList.Create(ArgumentValidator.NotNull(source)).AddRange(ArgumentValidator.NotNull(otherSources)).Interleave();
+    /// <typeparam name="TSource">The type of the elements in the source sequences.</typeparam>
+    extension<TSource>(IAsyncEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Interleaves the elements of multiple sequences by consuming the heads of each subsequence in the same order as the given subsequences. This repeats until all the sequences are completely consumed.
+        /// </summary>
+        /// <param name="otherSources">other sequences.</param>
+        /// <returns>one sequences with all the elements interleaved.</returns>
+        [Pure]
+        public IAsyncEnumerable<TSource> Interleave(params IAsyncEnumerable<TSource>[] otherSources)
+            => InterleaveInternal(ImmutableList.Create(ArgumentValidator.NotNull(source)).AddRange(ArgumentValidator.NotNull(otherSources)));
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async IAsyncEnumerable<TSource> InterleaveInternal<TSource>(

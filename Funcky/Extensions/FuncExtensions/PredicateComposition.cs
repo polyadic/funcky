@@ -13,25 +13,25 @@ public static partial class FuncExtensions
         [Pure]
         public Func<T, bool> Not()
             => value => !predicate(value);
+
+        /// <summary>
+        /// Returns a new predicate that is true when this predicate and all given predicates are true.
+        /// </summary>
+        /// <remarks>
+        /// The extension form of <see cref="Functional.All{T}"/>; the type argument is inferred from the receiver.
+        /// </remarks>
+        [Pure]
+        public Func<T, bool> And(params Func<T, bool>[] predicates)
+            => value => predicate(value) && predicates.All(other => other(value));
+
+        /// <summary>
+        /// Returns a new predicate that is true when this predicate or any of the given predicates is true.
+        /// </summary>
+        /// <remarks>
+        /// The extension form of <see cref="Functional.Any{T}"/>; the type argument is inferred from the receiver.
+        /// </remarks>
+        [Pure]
+        public Func<T, bool> Or(params Func<T, bool>[] predicates)
+            => value => predicate(value) || predicates.Any(other => other(value));
     }
-
-    /// <summary>
-    /// Returns a new predicate that is true when this predicate and all given predicates are true.
-    /// </summary>
-    /// <remarks>
-    /// The extension form of <see cref="Functional.All{T}"/>; the type argument is inferred from the receiver.
-    /// </remarks>
-    [Pure]
-    public static Func<T, bool> And<T>(this Func<T, bool> predicate, params Func<T, bool>[] predicates)
-        => value => predicate(value) && predicates.All(other => other(value));
-
-    /// <summary>
-    /// Returns a new predicate that is true when this predicate or any of the given predicates is true.
-    /// </summary>
-    /// <remarks>
-    /// The extension form of <see cref="Functional.Any{T}"/>; the type argument is inferred from the receiver.
-    /// </remarks>
-    [Pure]
-    public static Func<T, bool> Or<T>(this Func<T, bool> predicate, params Func<T, bool>[] predicates)
-        => value => predicate(value) || predicates.Any(other => other(value));
 }

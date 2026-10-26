@@ -6,12 +6,12 @@ public static partial class EnumerableExtensions
 {
     extension<TSource>(IEnumerable<TSource> source)
     {
-        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
         [Pure]
         public IEnumerable<TSource> AnyOrElse(IEnumerable<TSource> fallback)
             => AnyOrElseUnchecked(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(fallback));
 
-        /// <summary>Returns the items from <c>source</c> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
+        /// <summary>Returns the items from <paramref name="source"/> when it has any or otherwise the items from <paramref name="fallback"/>.</summary>
         /// <remarks>The <paramref name="fallback"/> is invoked when the result is enumerated, not when this method is called.</remarks>
         [Pure]
         public IEnumerable<TSource> AnyOrElse(Func<IEnumerable<TSource>> fallback)

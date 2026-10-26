@@ -67,9 +67,12 @@ public static partial class AsyncEnumerableExtensions
         }
     }
 
-    [Pure]
-    public static Lazy<IAsyncEnumerable<TSource>> Sequence<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(this IAsyncEnumerable<Lazy<TSource>> source)
-        => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
+    extension<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(IAsyncEnumerable<Lazy<TSource>> source)
+    {
+        [Pure]
+        public Lazy<IAsyncEnumerable<TSource>> Sequence()
+            => Lazy.FromFunc(new SequenceLazyInternal<TSource>(source).Invoke);
+    }
 
     private sealed class SequenceLazyInternal<[DynamicallyAccessedMembers(PublicParameterlessConstructor)] TSource>(
         IAsyncEnumerable<Lazy<TSource>> source)
