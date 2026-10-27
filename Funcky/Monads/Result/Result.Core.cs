@@ -164,7 +164,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
         => new($"Unreachable: Enum variant {_state} is not handled");
 }
 
-public static class Result
+public static partial class Result
 {
     [Pure]
     public static Result<TValidResult> Ok<TValidResult>(TValidResult result)

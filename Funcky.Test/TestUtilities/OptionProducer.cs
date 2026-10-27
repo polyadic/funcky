@@ -9,7 +9,7 @@ internal sealed class OptionProducer<T>(int retriesNeeded, T result)
     {
         Called += 1;
 
-        return Option.FromBoolean(retriesNeeded == (Called - 1), result);
+        return (retriesNeeded == (Called - 1)).Then(result);
     }
 
 #if ASYNC_SUPPORTED
@@ -17,7 +17,7 @@ internal sealed class OptionProducer<T>(int retriesNeeded, T result)
     {
         Called += 1;
 
-        return ValueTask.FromResult(Option.FromBoolean(retriesNeeded == (Called - 1), result));
+        return ValueTask.FromResult((retriesNeeded == (Called - 1)).Then(result));
     }
 #endif
 }

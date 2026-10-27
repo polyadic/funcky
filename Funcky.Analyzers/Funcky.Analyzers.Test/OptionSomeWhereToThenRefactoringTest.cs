@@ -4,16 +4,17 @@ using Xunit;
 
 namespace Funcky.Analyzers.Test;
 
-public partial class OptionSomeWhereToFromBooleanRefactoringTest
+public partial class OptionSomeWhereToThenRefactoringTest
 {
     [Fact]
-    public async Task DoesNotSuggestRefactoringWhenOptionFromBooleanIsMissing()
+    public async Task DoesNotSuggestRefactoringWhenThenIsMissing()
     {
         const string source = "Option<int> b = Option.Return(10).[||]Where(_ => true);";
         await VerifyRefactoring(
             source,
             source,
-            OptionCodeWithoutFromBoolean);
+            OptionCodeWithoutThen,
+            usings: ["using Funcky.Monads;"]);
     }
 
     [Fact]
@@ -33,7 +34,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             $"Option<int> x = Option.{returnMethodName}(10).[||]Where(_ => true);",
-            "Option<int> x = Option.FromBoolean(true, 10);",
+            "Option<int> x = true.Then(10);",
             OptionCode);
     }
 
@@ -42,9 +43,9 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "Option<IEnumerable<char>> x = Option.Return<IEnumerable<char>>(\"foo\").[||]Where(_ => true);",
-            "Option<IEnumerable<char>> x = Option.FromBoolean<IEnumerable<char>>(true, \"foo\");",
+            "Option<IEnumerable<char>> x = true.Then<IEnumerable<char>>(\"foo\");",
             OptionCode,
-            usings: ["using Funcky.Monads;", "using System.Collections.Generic;"]);
+            usings: ["using Funcky.Extensions;", "using Funcky.Monads;", "using System.Collections.Generic;"]);
     }
 
     [Fact]
@@ -52,7 +53,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "Option<int> x = Option.Return(10).[||]Where(Predicate);",
-            "Option<int> x = Option.FromBoolean(Predicate(10), 10);",
+            "Option<int> x = Predicate(10).Then(10);",
             OptionCode);
     }
 
@@ -61,7 +62,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "Option<int> x = Option.Return(10).[||]Where(x => { return x == 10; });",
-            "Option<int> x = Option.FromBoolean(10 == 10, 10);",
+            "Option<int> x = (10 == 10).Then(10);",
             OptionCode);
     }
 
@@ -70,7 +71,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "var x = Option.Return(\"foo\").[||]Where(v => v.Length == 3);",
-            "var x = Option.FromBoolean(\"foo\".Length == 3, \"foo\");",
+            "var x = (\"foo\".Length == 3).Then(\"foo\");",
             OptionCode);
     }
 
@@ -79,7 +80,7 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "var input = \"foo\"; var x = Option.Return(input).[||]Where(v => v.Length == 3);",
-            "var input = \"foo\"; var x = Option.FromBoolean(input.Length == 3, input);",
+            "var input = \"foo\"; var x = (input.Length == 3).Then(input);",
             OptionCode);
     }
 
@@ -88,9 +89,9 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "var x = Return(10).[||]Where(_ => true);",
-            "var x = FromBoolean(true, 10);",
+            "var x = true.Then(10);",
             OptionCode,
-            usings: ["using static Funcky.Monads.Option;"]);
+            usings: ["using Funcky.Extensions;", "using static Funcky.Monads.Option;"]);
     }
 
     [Fact]
@@ -98,18 +99,58 @@ public partial class OptionSomeWhereToFromBooleanRefactoringTest
     {
         await VerifyRefactoring(
             "var x = Funcky.Monads.Option.Return(10).[||]Where(_ => true);",
-            "var x = Funcky.Monads.Option.FromBoolean(true, 10);",
+            "var x = true.Then(10);",
             OptionCode,
-            usings: []);
+            usings: ["using Funcky.Extensions;"]);
+    }
+
+    [Fact]
+    public async Task AddsTheUsingForTheExtensionWhenMissing()
+    {
+        await VerifyRefactoring(
+            "var x = Option.Return(10).[||]Where(_ => true);",
+            "var x = true.Then(10);",
+            OptionCode,
+            usings: ["using Funcky.Monads;"],
+            fixedUsings: ["using Funcky.Monads;", "using Funcky.Extensions;"]);
+    }
+
+    [Fact]
+    public async Task SpellsOutTheTypeOfADefaultLiteralPredicate()
+    {
+        await VerifyRefactoring(
+            "Option<int> x = Option.Return(10).[||]Where(_ => default);",
+            "Option<int> x = default(bool).Then(10);",
+            OptionCode);
+    }
+
+    [Fact]
+    public async Task NamesTheValueParameterWhenTheValueIsADelegate()
+    {
+        await VerifyRefactoring(
+            "Func<int> factory = () => 1; Option<Func<int>> x = Option.Return(factory).[||]Where(_ => true);",
+            "Func<int> factory = () => 1; Option<Func<int>> x = true.Then(value: factory);",
+            OptionCode,
+            usings: ["using System;", "using Funcky.Extensions;", "using Funcky.Monads;"]);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestRefactoringWhenThenWouldBindToAnotherExtension()
+    {
+        const string source = "Option<int> x = Option.Return(10).[||]Where(_ => true);";
+        await VerifyRefactoring(
+            source,
+            source,
+            OptionCode,
+            usings: ["using Funcky.Monads;", "using Other;"]);
     }
 
     [Fact]
     public async Task PreservesLeadingTrivia()
     {
-        // TODO: find out why we get a newline in the leading trivia
         await VerifyRefactoring(
             "/* leading */ Option.Some(10).[||]Where(_ => true);",
-            $"/* leading */{Environment.NewLine}Option.FromBoolean(true, 10);",
+            "/* leading */ true.Then(10);",
             OptionCode);
     }
 }

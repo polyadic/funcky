@@ -689,3 +689,13 @@ static Funcky.Extensions.AsyncEnumerableExtensions.InclusiveScan<TSource, TAccum
 static Funcky.Extensions.AsyncEnumerableExtensions.Inspect<TSource>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask>! inspector) -> System.Collections.Generic.IAsyncEnumerable<TSource>!
 static Funcky.Extensions.AsyncEnumerableExtensions.WhereSelect<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, int, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! selector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
 static Funcky.Extensions.AsyncEnumerableExtensions.WhereSelect<TSource, TResult>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Funcky.Monads.Option<TResult>>>! selector) -> System.Collections.Generic.IAsyncEnumerable<TResult>!
+static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
+Funcky.Extensions.BooleanExtensions
+Funcky.Extensions.BooleanExtensions.extension(bool)
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(TItem value) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, TItem value) -> Funcky.Monads.Option<TItem>
