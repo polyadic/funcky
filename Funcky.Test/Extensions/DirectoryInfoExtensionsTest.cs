@@ -8,7 +8,7 @@ public sealed class DirectoryInfoExtensionsTest
         var root = new DirectoryInfo(Path.GetTempPath()).Root;
         var child = new DirectoryInfo(Path.Combine(root.FullName, "child"));
 
-        var parent = FunctionalAssert.Some(child.ParentOrNone);
+        var parent = Assert.Some(child.ParentOrNone);
 
         Assert.Equal(root.FullName, parent.FullName);
     }
@@ -16,6 +16,6 @@ public sealed class DirectoryInfoExtensionsTest
     [Fact]
     public void ParentOrNoneReturnsNoneForARootDirectory()
     {
-        FunctionalAssert.None(new DirectoryInfo(Path.GetTempPath()).Root.ParentOrNone);
+        Assert.None(new DirectoryInfo(Path.GetTempPath()).Root.ParentOrNone);
     }
 }

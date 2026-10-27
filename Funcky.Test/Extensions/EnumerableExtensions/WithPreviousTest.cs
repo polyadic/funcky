@@ -29,7 +29,7 @@ public sealed class WithPreviousTest
         Assert.Collection(sequenceWithPrevious, value =>
         {
             Assert.Equal(expectedValue, value.Value);
-            FunctionalAssert.None(value.Previous);
+            Assert.None(value.Previous);
         });
     }
 
@@ -55,7 +55,7 @@ public sealed class WithPreviousTest
         Assert.Equal(137, listWithLast.ElementAt(137).Value);
 
         Assert.Equal(0, listWithLast.ElementAt(0).Value);
-        FunctionalAssert.None(listWithLast.ElementAt(0).Previous);
+        Assert.None(listWithLast.ElementAt(0).Previous);
 
         foreach (var index in Enumerable.Range(1, length - 1))
         {
@@ -87,7 +87,7 @@ public sealed class WithPreviousTest
     {
         Assert.Equal(index, listWithLast.ElementAt(index).Value);
 
-        var previous = FunctionalAssert.Some(listWithLast.ElementAt(index).Previous);
+        var previous = Assert.Some(listWithLast.ElementAt(index).Previous);
         Assert.Equal(index - 1, previous);
     }
 }

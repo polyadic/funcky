@@ -119,7 +119,7 @@ public sealed partial class ResultTest
     public void GivenAResultWithAnExceptionWeGetAStackTrace()
     {
         const int arbitraryNumberOfStackFrames = 3;
-        var exception = FunctionalAssert.Error(InterestingStackTrace(arbitraryNumberOfStackFrames));
+        var exception = Assert.Error(InterestingStackTrace(arbitraryNumberOfStackFrames));
         Assert.NotNull(exception.StackTrace);
     }
 
@@ -127,7 +127,7 @@ public sealed partial class ResultTest
     public void GivenAResultWithAnExceptionTheStackTraceStartsInCreationMethod()
     {
         const int arbitraryNumberOfStackFrames = 0;
-        var exception = FunctionalAssert.Error(InterestingStackTrace(arbitraryNumberOfStackFrames));
+        var exception = Assert.Error(InterestingStackTrace(arbitraryNumberOfStackFrames));
         IsInterestingStackTraceFirst(exception);
     }
 
@@ -137,10 +137,10 @@ public sealed partial class ResultTest
         const int arbitraryNumberOfStackFrames = 2;
         var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
 
-        var exception = FunctionalAssert.Error(result);
+        var exception = Assert.Error(result);
         var stackTrace = exception.StackTrace;
 
-        var exceptionAfterProjection = FunctionalAssert.Error(result.Select(Identity));
+        var exceptionAfterProjection = Assert.Error(result.Select(Identity));
         var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
 
         Assert.Equal(stackTrace, stackTraceAfterProjection);
@@ -152,10 +152,10 @@ public sealed partial class ResultTest
         const int arbitraryNumberOfStackFrames = 2;
         var result = InterestingStackTrace(arbitraryNumberOfStackFrames);
 
-        var exception = FunctionalAssert.Error(result);
+        var exception = Assert.Error(result);
         var stackTrace = exception.StackTrace;
 
-        var exceptionAfterProjection = FunctionalAssert.Error(result.SelectMany(Result.Return));
+        var exceptionAfterProjection = Assert.Error(result.SelectMany(Result.Return));
         var stackTraceAfterProjection = exceptionAfterProjection.StackTrace;
 
         Assert.Equal(stackTrace, stackTraceAfterProjection);
@@ -170,34 +170,34 @@ public sealed partial class ResultTest
             from a in error
             from b in GetLength(a)
             select b;
-        FunctionalAssert.Error(length);
+        Assert.Error(length);
     }
 
     [Fact]
     public void ErrorConstructorLeavesExistingStackTraceUnchanged()
     {
         var result = InterestingStackTrace(1);
-        var expectedStackTraceString = FunctionalAssert.Error(result).StackTrace;
+        var expectedStackTraceString = Assert.Error(result).StackTrace;
         _ = result.InspectError(error => Result<int>.Error(error));
-        var stackTraceString = FunctionalAssert.Error(result).StackTrace;
+        var stackTraceString = Assert.Error(result).StackTrace;
         Assert.Equal(expectedStackTraceString, stackTraceString);
     }
 
     [Fact]
     public void SelectManyWithOkResultMatchesTheRightValue()
-        => FunctionalAssert.Ok(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
+        => Assert.Ok(2, Result.Ok(1).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
     public void SelectManyWithErrorResultMatchesTheRightValue()
-        => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(i => Result.Ok(i + 1)));
+        => Assert.Error(Result<int>.Error(new Exception("Any")).SelectMany(i => Result.Ok(i + 1)));
 
     [Fact]
     public void SelectManyReturnErrorResultWithOkResultMatchesTheRightValue()
-        => FunctionalAssert.Error(Result.Ok(1).SelectMany(_ => Result<int>.Error(new Exception("Any"))));
+        => Assert.Error(Result.Ok(1).SelectMany(_ => Result<int>.Error(new Exception("Any"))));
 
     [Fact]
     public void SelectManyReturnErrorResultWithErrorResultMatchesTheRightValue()
-        => FunctionalAssert.Error(Result<int>.Error(new Exception("Any")).SelectMany(_ => Result<int>.Error(new Exception("Other"))));
+        => Assert.Error(Result<int>.Error(new Exception("Any")).SelectMany(_ => Result<int>.Error(new Exception("Other"))));
 
     [Fact]
     public void InspectDoesNothingWhenResultIsError()
@@ -214,7 +214,7 @@ public sealed partial class ResultTest
 
         var sideEffect = Option<int>.None;
         either.Inspect(v => sideEffect = v);
-        FunctionalAssert.Some(value, sideEffect);
+        Assert.Some(value, sideEffect);
     }
 
     [Theory]

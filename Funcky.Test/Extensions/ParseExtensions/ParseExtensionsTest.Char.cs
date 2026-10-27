@@ -9,7 +9,7 @@ public sealed partial class ParseExtensionsTest
     [InlineData('δ', "δ")]
     public void ParseCharOrNoneReturnsTheOnlyCharacterInAString(char expected, string input)
     {
-        FunctionalAssert.Some(expected, input.ParseCharOrNone());
+        Assert.Some(expected, input.ParseCharOrNone());
     }
 
     [Theory]
@@ -19,6 +19,6 @@ public sealed partial class ParseExtensionsTest
     [InlineData("\ud83d\udd25")] // single fire emoji (outside BMP)
     public void ParseCharOrNoneReturnsNoneIfItCanParseItToACharacter(string? input)
     {
-        FunctionalAssert.None(input.ParseCharOrNone());
+        Assert.None(input.ParseCharOrNone());
     }
 }

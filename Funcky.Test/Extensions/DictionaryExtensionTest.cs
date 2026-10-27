@@ -6,14 +6,14 @@ public sealed class DictionaryExtensionTest
     public void GivenADictionaryWhenWeLookForAnExistentValueWithGetValueOrNoneThenTheResultShouldBeASomeOfTheGivenType()
     {
         var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-        FunctionalAssert.Some("value", dictionary.GetValueOrNone(key: "some"));
+        Assert.Some("value", dictionary.GetValueOrNone(key: "some"));
     }
 
     [Fact]
     public void GivenADictionaryWhenWeLookForAnInexistentValueWithGetValueOrNoneThenTheResultShouldBeANoneOfTheGivenType()
     {
         var dictionary = new Dictionary<string, string> { ["some"] = "value" };
-        FunctionalAssert.None(dictionary.GetValueOrNone(readOnlyKey: "none"));
+        Assert.None(dictionary.GetValueOrNone(readOnlyKey: "none"));
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public sealed class DictionaryExtensionTest
         var value = dictionary.RemoveOrNone("some");
 
         Assert.Empty(dictionary);
-        FunctionalAssert.Some("value", value);
+        Assert.Some("value", value);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public sealed class DictionaryExtensionTest
         var value = dictionary.RemoveOrNone("none");
 
         Assert.NotEmpty(dictionary);
-        FunctionalAssert.None(value);
+        Assert.None(value);
     }
 #endif
 }

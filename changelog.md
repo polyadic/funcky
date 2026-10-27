@@ -47,7 +47,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Funcky.Xunit and Funcky.Xunit.v3: the assertions of `FunctionalAssert` are now also static extension members of
   xunit's `Assert`, so they are found where the other assertions live: `Assert.Some(option)`, `Assert.None(option)`,
   `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`; `Some`, `Ok`, `Left` and `Right`
-  also come with the overload that takes the expected value. They delegate to `FunctionalAssert`, which stays the form for compilers older than
+  also come with the overload that takes the expected value. The `Assert` members are the implementation; `FunctionalAssert` forwards to them and stays the form for compilers older than
   C# 14 (the members are declared in `AssertExtensions`).
 * The asynchronous overloads of `AdjacentGroupBy`, `Chunk`, `ExclusiveScan`, `InclusiveScan`, `Inspect` and `WhereSelect`
   now follow the .NET 10 naming of `System.Linq.AsyncEnumerable`: one name per operator, with the asynchronous delegate

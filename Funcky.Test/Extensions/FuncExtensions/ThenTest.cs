@@ -61,7 +61,7 @@ public sealed class ThenTest
 
         var parseLoosely = trim.Then(toLower).Then(parse);
 
-        FunctionalAssert.Some(42, parseLoosely(" 42 "));
-        FunctionalAssert.None(parseLoosely("x"));
+        Assert.Some(42, parseLoosely(" 42 "));
+        Assert.None(parseLoosely("x"));
     }
 }

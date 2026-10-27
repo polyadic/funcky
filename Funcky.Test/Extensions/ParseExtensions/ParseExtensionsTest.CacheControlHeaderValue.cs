@@ -6,7 +6,7 @@ public sealed partial class ParseExtensionsTest
     [Fact]
     public void ReturnsEmptyValueForEmptyString()
     {
-        var value = FunctionalAssert.Some(string.Empty.ParseCacheControlHeaderValueOrNone());
+        var value = Assert.Some(string.Empty.ParseCacheControlHeaderValueOrNone());
         Assert.Equal(string.Empty, value.ToString());
     }
 }
