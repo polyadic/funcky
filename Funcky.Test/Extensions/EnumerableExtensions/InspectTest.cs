@@ -15,7 +15,7 @@ public sealed class InspectTest
     [Fact]
     public void InspectPreservesNonEnumeratedItemCount()
     {
-        var source = Sequence.Return(1, 2, 3);
+        var source = Enumerable.Return(1, 2, 3);
         Assert.True(source.TryGetNonEnumeratedCount(out var expectedCount));
 
         var inspected = source.Inspect(NoOperation);
@@ -29,7 +29,7 @@ public sealed class InspectTest
     public void GivenAnEnumerableAndInjectWeCanApplySideEffectsToEnumerables()
     {
         var sideEffect = 0;
-        var numbers = Sequence.Return(1, 2, 3, 42);
+        var numbers = Enumerable.Return(1, 2, 3, 42);
 
         var numbersWithSideEffect = numbers
             .Inspect(_ => { ++sideEffect; });

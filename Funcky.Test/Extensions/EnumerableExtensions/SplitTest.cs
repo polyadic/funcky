@@ -43,32 +43,32 @@ public sealed class SplitTest
     [Fact]
     public void ASeparatorAtTheEndProducesATrailingEmptyPart()
     {
-        Assert.Equal([[1], []], Sequence.Return(1, 0).Split(0).Select(part => part.ToList()));
+        Assert.Equal([[1], []], Enumerable.Return(1, 0).Split(0).Select(part => part.ToList()));
     }
 
     [Fact]
     public void ASeparatorAtTheStartProducesALeadingEmptyPart()
     {
-        Assert.Equal([[], [1]], Sequence.Return(0, 1).Split(0).Select(part => part.ToList()));
+        Assert.Equal([[], [1]], Enumerable.Return(0, 1).Split(0).Select(part => part.ToList()));
     }
 
     [Fact]
     public void ALoneSeparatorProducesTwoEmptyParts()
     {
-        Assert.Equal([[], []], Sequence.Return(0).Split(0).Select(part => part.ToList()));
+        Assert.Equal([[], []], Enumerable.Return(0).Split(0).Select(part => part.ToList()));
     }
 
     [Fact]
     public void SplitAnEnumerableCorrectly()
     {
-        var sequence = Sequence.Return(12, 14, 7, 41, 31, 19, 7, 9, 11, 99, 99);
+        var sequence = Enumerable.Return(12, 14, 7, 41, 31, 19, 7, 9, 11, 99, 99);
 
         var parts = sequence.Split(7);
 
-        var expected = Sequence.Return(
-            Sequence.Return(12, 14),
-            Sequence.Return(41, 31, 19),
-            Sequence.Return(9, 11, 99, 99));
+        var expected = Enumerable.Return(
+            Enumerable.Return(12, 14),
+            Enumerable.Return(41, 31, 19),
+            Enumerable.Return(9, 11, 99, 99));
 
         Assert.Equal(expected, parts);
     }

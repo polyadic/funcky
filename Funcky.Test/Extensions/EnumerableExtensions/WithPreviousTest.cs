@@ -24,7 +24,7 @@ public sealed class WithPreviousTest
     public void ASequenceWithOneElementWithPreviousHasOneElementWithNoPreviousElement()
     {
         const string expectedValue = "Hello world!";
-        var oneElementSequence = Sequence.Return(expectedValue);
+        var oneElementSequence = Enumerable.Return(expectedValue);
         var sequenceWithPrevious = oneElementSequence.WithPrevious();
         Assert.Collection(sequenceWithPrevious, value =>
         {

@@ -1,3 +1,5 @@
+#pragma warning disable λ1201 // This test exercises the classic string extension form itself.
+
 namespace Funcky.Test.Extensions.ParseExtensions;
 
 public sealed partial class ParseExtensionsTest

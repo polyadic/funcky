@@ -74,7 +74,7 @@ public static partial class EitherExtensions
         where TLeft : notnull
         where TRight : notnull
         => either.Match(
-            left: static left => Funcky.Sequence.Return(Either<TLeft, TRight>.Left(left)),
+            left: static left => Enumerable.Return(Either<TLeft, TRight>.Left(left)),
             right: static right => right.Select(Either<TLeft>.Return));
 
     [Pure]

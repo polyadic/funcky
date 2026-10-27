@@ -19,7 +19,7 @@ public sealed class AggregateOrNoneTest
     {
         var accumulatorInvoked = false;
 
-        var result = Sequence.Return(42).AggregateOrNone((a, b) =>
+        var result = Enumerable.Return(42).AggregateOrNone((a, b) =>
         {
             accumulatorInvoked = true;
             return a + b;
@@ -31,5 +31,5 @@ public sealed class AggregateOrNoneTest
 
     [Fact]
     public void AggregateOrNoneFoldsFromTheLeft()
-        => Assert.Some("((a,b),c)", Sequence.Return("a", "b", "c").AggregateOrNone((a, b) => $"({a},{b})"));
+        => Assert.Some("((a,b),c)", Enumerable.Return("a", "b", "c").AggregateOrNone((a, b) => $"({a},{b})"));
 }

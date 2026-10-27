@@ -94,7 +94,7 @@ public sealed class AverageOrNoneTest
     [Fact]
     public void AverageOrNoneThrowsWhenTheInt64SumOverflowsLikeAverage()
     {
-        var sequence = Sequence.Return(long.MaxValue, 1L);
+        var sequence = Enumerable.Return(long.MaxValue, 1L);
 
         Assert.Throws<OverflowException>(() => sequence.Average());
         Assert.Throws<OverflowException>(() => sequence.AverageOrNone());

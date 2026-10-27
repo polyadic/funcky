@@ -1,3 +1,5 @@
+#pragma warning disable λ1201 // This test exercises the classic string extension form itself.
+
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;

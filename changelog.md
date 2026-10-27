@@ -32,7 +32,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
-  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see, and are the implementation;
+  the `Sequence` constructors forward to them.
 * Add `Result.Try(Func<T>)` and `Result.TryAsync(Func<Task<T>>)`, which run a function and capture its outcome as
   `Ok(value)` or `Error(exception)`: `Result.Try(() => int.Parse(text))`. Exceptions that signal a corrupted process
   (`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) are never

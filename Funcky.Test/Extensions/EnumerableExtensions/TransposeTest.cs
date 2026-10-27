@@ -83,7 +83,7 @@ public sealed class TransposeTest
     [Fact]
     public void TransposingAJaggedMatrixYieldsTheRectangularColumnsBeforeThrowing()
     {
-        var jaggedMatrix = Sequence.Return(Sequence.Return(1, 2, 3), Sequence.Return(4, 5));
+        var jaggedMatrix = Enumerable.Return(Enumerable.Return(1, 2, 3), Enumerable.Return(4, 5));
 
         using var columns = jaggedMatrix.Transpose().GetEnumerator();
 
@@ -97,27 +97,27 @@ public sealed class TransposeTest
     [Fact]
     public void TransposingAMatrixWithEmptyRowsResultsInAnEmptyMatrix()
     {
-        var matrix = Sequence.Return(Enumerable.Empty<int>(), Enumerable.Empty<int>());
+        var matrix = Enumerable.Return(Enumerable.Empty<int>(), Enumerable.Empty<int>());
 
         Assert.Empty(matrix.Transpose());
     }
 
     private static IEnumerable<IEnumerable<int>> MagicSquare()
-        => Sequence.Return(
-            Sequence.Return(4, 9, 2),
-            Sequence.Return(3, 5, 7),
-            Sequence.Return(8, 1, 6));
+        => Enumerable.Return(
+            Enumerable.Return(4, 9, 2),
+            Enumerable.Return(3, 5, 7),
+            Enumerable.Return(8, 1, 6));
 
     private static IEnumerable<IEnumerable<int>> MatrixExample()
-        => Sequence.Return(
-            Sequence.Return(1, 2, 3, 4),
-            Sequence.Return(5, 6, 7, 8),
-            Sequence.Return(9, 10, 11, 12));
+        => Enumerable.Return(
+            Enumerable.Return(1, 2, 3, 4),
+            Enumerable.Return(5, 6, 7, 8),
+            Enumerable.Return(9, 10, 11, 12));
 
     private static IEnumerable<IEnumerable<int>> JaggedMatrixExample()
-        => Sequence.Return(
-            Sequence.Return(1, 2, 3, 4),
-            Sequence.Return(6, 9, 42),
-            Sequence.Return(5),
-            Sequence.Return(10));
+        => Enumerable.Return(
+            Enumerable.Return(1, 2, 3, 4),
+            Enumerable.Return(6, 9, 42),
+            Enumerable.Return(5),
+            Enumerable.Return(10));
 }

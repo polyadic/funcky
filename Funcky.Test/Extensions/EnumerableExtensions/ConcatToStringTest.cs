@@ -13,7 +13,7 @@ public class ConcatToStringTest
     [Fact]
     public void ConcatenatingASetWithExactlyOneElementReturnsTheElement()
     {
-        var singleElement = Sequence.Return("Alpha");
+        var singleElement = Enumerable.Return("Alpha");
 
         Assert.Equal("Alpha", singleElement.ConcatToString());
     }
@@ -21,7 +21,7 @@ public class ConcatToStringTest
     [Fact]
     public void ConcatenatingAListOfStringsReturnsAllElementsWithoutASeparator()
     {
-        var strings = Sequence.Return("Alpha", "Beta", "Gamma");
+        var strings = Enumerable.Return("Alpha", "Beta", "Gamma");
 
         Assert.Equal("AlphaBetaGamma", strings.ConcatToString());
     }
@@ -29,7 +29,7 @@ public class ConcatToStringTest
     [Fact]
     public void ConcatenatingNonStringsWorksToo()
     {
-        var numbers = Sequence.Return(1, 2, 3);
+        var numbers = Enumerable.Return(1, 2, 3);
 
         Assert.Equal("123", numbers.ConcatToString());
     }
@@ -37,7 +37,7 @@ public class ConcatToStringTest
     [Fact]
     public void NullsAreHandledAsEmptyStringsWhileConcatenating()
     {
-        var strings = Sequence.Return("Alpha", null, "Gamma");
+        var strings = Enumerable.Return("Alpha", null, "Gamma");
 
         Assert.Equal("AlphaGamma", strings.ConcatToString());
     }

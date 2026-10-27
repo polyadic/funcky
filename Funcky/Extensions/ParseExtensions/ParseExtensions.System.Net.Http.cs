@@ -25,11 +25,9 @@ public static partial class ParseExtensions
 {
     extension(string? candidate)
     {
-        // implemented manually because CacheControlHeaderValue.TryParse has no annotations to handle nullability correctly.
+        /// <summary>Calls <see cref="CacheControlHeaderValue.TryParse"/> and returns the parsed value, or None when it fails.</summary>
         [Pure]
         public Option<CacheControlHeaderValue> ParseCacheControlHeaderValueOrNone()
-            => CacheControlHeaderValue.TryParse(candidate, out var result)
-                ? result ?? new CacheControlHeaderValue()
-                : Option<CacheControlHeaderValue>.None;
+            => CacheControlHeaderValue.ParseOrNone(candidate);
     }
 }

@@ -68,7 +68,7 @@ public static partial class ResultExtensions
         this Result<IEnumerable<TValidResult>> result)
         where TValidResult : notnull
         => result.Match(
-            error: static error => Funcky.Sequence.Return(Result<TValidResult>.Error(error)),
+            error: static error => Enumerable.Return(Result<TValidResult>.Error(error)),
             ok: static ok => ok.Select(Result.Return));
 
     [Pure]

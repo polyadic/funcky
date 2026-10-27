@@ -62,8 +62,8 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
 
         var result = someNumber.SelectMany(_ => someDate, Tuple.Create);
 
@@ -74,8 +74,8 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
 
         var result = from number in someNumber
                      from date in someDate
@@ -88,9 +88,9 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
-        var someOtherNumber = "not a number".ParseInt32OrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
+        var someOtherNumber = int.ParseOrNone("not a number");
 
         var result = from number in someNumber
                      from date in someDate
@@ -272,7 +272,7 @@ public sealed partial class OptionTest
     [InlineData("")]
     public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
     {
-        var option = stringToParse.ParseInt32OrNone();
+        var option = int.ParseOrNone(stringToParse);
 
         option.Switch(
             none: Statement,

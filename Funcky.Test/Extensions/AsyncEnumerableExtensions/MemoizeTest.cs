@@ -16,7 +16,7 @@ public sealed class MemoizeTest
     [Fact]
     public async Task TheUnderlyingAsyncEnumerableIsOnlyEnumeratedOnce()
     {
-        var enumerateOnce = AsyncEnumerateOnce.Create(Sequence.Return("Alpha", "Beta"));
+        var enumerateOnce = AsyncEnumerateOnce.Create(Enumerable.Return("Alpha", "Beta"));
         await using var memoized = enumerateOnce.Memoize();
 
         Assert.Equal("Alpha", await memoized.FirstAsync());

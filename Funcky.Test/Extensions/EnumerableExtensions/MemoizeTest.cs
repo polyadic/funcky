@@ -15,7 +15,7 @@ public sealed class MemoizeTest
     [Fact]
     public void TheUnderlyingEnumerableIsOnlyEnumeratedOnce()
     {
-        var enumerateOnce = EnumerateOnce.Create(Sequence.Return("Alpha", "Beta"));
+        var enumerateOnce = EnumerateOnce.Create(Enumerable.Return("Alpha", "Beta"));
         using var memoized = enumerateOnce.Memoize();
 
         Assert.Equal("Alpha", memoized.First());
