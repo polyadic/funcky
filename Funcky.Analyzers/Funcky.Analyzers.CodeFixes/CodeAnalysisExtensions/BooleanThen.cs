@@ -56,11 +56,11 @@ internal static class BooleanThen
             return null;
         }
 
-        var changedDocument = FunckyExtensionsImport.ReplaceWithExtensionMemberCalls(document, root, semanticModel, rewrites, symbol => IsThen(symbol, booleanExtensionsType));
-        var unboundRewrites = await UnboundRewritesAsync(changedDocument, rewrites.Length, cancellationToken).ConfigureAwait(false);
+        var annotatedRoot = FunckyExtensionsImport.ReplaceWithAnnotatedExtensionMemberCalls(root, semanticModel, rewrites, symbol => IsThen(symbol, booleanExtensionsType));
+        var unboundRewrites = await UnboundRewritesAsync(document.WithSyntaxRoot(annotatedRoot), rewrites.Length, cancellationToken).ConfigureAwait(false);
 
         return unboundRewrites.IsEmpty
-            ? changedDocument
+            ? document.WithSyntaxRoot(FunckyExtensionsImport.WithoutReplacementAnnotations(annotatedRoot))
             : await TryReplaceAllAsync(document, root, semanticModel, rewrites.Where((_, index) => !unboundRewrites.Contains(index)).ToImmutableArray(), booleanExtensionsType, cancellationToken).ConfigureAwait(false);
     }
 

@@ -286,6 +286,67 @@ public sealed class PreferStaticParseOrNoneTest
         await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
     }
 
+    // Each namespace gets its own using: in one Fix-All pass, and when the fixes are applied one after the other to the
+    // same document, which must not be confused by traces of an earlier fix.
+    [Fact]
+    public async Task AddsTheUsingToEveryNamespaceDeclarationWithUsings()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+            namespace A
+            {
+                using System;
+                using Funcky.Monads;
+
+                public static class C
+                {
+                    public static Option<int> M(string text) => {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(text)|};
+                }
+            }
+
+            namespace B
+            {
+                using System;
+                using Funcky.Monads;
+
+                public static class C
+                {
+                    public static Option<DateTime> M(string text) => {|λ1201:Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(text, "O", null)|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+            namespace A
+            {
+                using System;
+                using Funcky.Monads;
+                using Funcky.Extensions;
+
+                public static class C
+                {
+                    public static Option<int> M(string text) => int.ParseOrNone(text);
+                }
+            }
+
+            namespace B
+            {
+                using System;
+                using Funcky.Monads;
+                using Funcky.Extensions;
+
+                public static class C
+                {
+                    public static Option<DateTime> M(string text) => DateTime.ParseExactOrNone(text, "O", null);
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
+    }
+
     [Fact]
     public async Task DoesNotReportWithoutAStaticCounterpartWhenTheNamespaceIsNotImported()
     {

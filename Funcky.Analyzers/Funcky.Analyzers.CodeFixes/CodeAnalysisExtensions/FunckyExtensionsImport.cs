@@ -21,6 +21,13 @@ internal static class FunckyExtensionsImport
     /// its diagnostic stays and is fixed by a subsequent pass. <paramref name="bindsToExtensionMember"/> tells whether the symbol a
     /// replacement binds to without the <c>using</c> is the intended extension member.</summary>
     public static Document ReplaceWithExtensionMemberCalls(Document document, SyntaxNode root, SemanticModel semanticModel, ImmutableArray<ExtensionMemberRewrite> rewrites, Func<ISymbol?, bool> bindsToExtensionMember)
+        => document.WithSyntaxRoot(WithoutReplacementAnnotations(ReplaceWithAnnotatedExtensionMemberCalls(root, semanticModel, rewrites, bindsToExtensionMember)));
+
+    /// <summary>Like <see cref="ReplaceWithExtensionMemberCalls"/>, but the replacements in the returned root still carry the annotations
+    /// that <see cref="Replacements"/> finds, so that a caller can bind them in the changed document before it strips them with
+    /// <see cref="WithoutReplacementAnnotations"/>. A document handed to the host must not keep them: a later fix on the same document
+    /// would take them for its own.</summary>
+    public static SyntaxNode ReplaceWithAnnotatedExtensionMemberCalls(SyntaxNode root, SemanticModel semanticModel, ImmutableArray<ExtensionMemberRewrite> rewrites, Func<ISymbol?, bool> bindsToExtensionMember)
     {
         var originals = rewrites.Select(rewrite => rewrite.Original).ToImmutableHashSet();
         var outermostRewrites = rewrites
@@ -34,12 +41,15 @@ internal static class FunckyExtensionsImport
             .Select(pair => pair.Index)
             .ToImmutableArray();
 
-        return document.WithSyntaxRoot(AddUsings(rootWithReplacements, replacementsInNeedOfImport));
+        return AddUsings(rootWithReplacements, replacementsInNeedOfImport);
     }
 
-    /// <summary>The replacements in a root produced by <see cref="ReplaceWithExtensionMemberCalls"/>, each with the index of the rewrite it stems from.</summary>
+    /// <summary>The replacements in a root produced by <see cref="ReplaceWithAnnotatedExtensionMemberCalls"/>, each with the index of the rewrite it stems from.</summary>
     public static IEnumerable<(int Index, SyntaxNode Replacement)> Replacements(SyntaxNode root)
         => root.GetAnnotatedNodes(ReplacementAnnotationKind).Select(node => (Index(node), node));
+
+    public static SyntaxNode WithoutReplacementAnnotations(SyntaxNode root)
+        => root.ReplaceNodes(root.GetAnnotatedNodes(ReplacementAnnotationKind), (_, replacement) => replacement.WithoutAnnotations(ReplacementAnnotationKind));
 
     private static SyntaxNode AddUsings(SyntaxNode root, ImmutableArray<int> replacementsInNeedOfImport)
     {
