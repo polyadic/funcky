@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using Funcky.Internal.Aggregators;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -98,7 +99,7 @@ public static partial class AsyncEnumerableExtensions
         [Obsolete("Use MaxOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.MaxOrNoneAsync((item, _) => selector(item), cancellationToken);
+            => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector), cancellationToken).MaxOrNoneAsync(Identity, cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.

@@ -60,7 +60,7 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
                 && IsDeclaredIn(method, extensionsType)
                 && Replacement.TryCreate(method.Name) is { } replacement
                 && HasMember(extensionsType, replacement.Name)
-                && DelegateArguments(operation) is { } delegateArguments
+                && DelegateArguments(operation, invocation) is { } delegateArguments
                 && (!replacement.AddsTokenParameter || delegateArguments.All(argument => IsRewritable(argument.Syntax))))
             {
                 context.RegisterCodeFix(new RenameOperatorCodeFixAction(context.Document, invocation, name, replacement, delegateArguments), diagnostic);
@@ -87,7 +87,7 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
            || type.GetTypeMembers().Any(extension => extension.GetMembers(name).Any());
 
     /// <summary>The arguments bound to a delegate parameter, with the delegate's arity, in parameter order.</summary>
-    private static ImmutableArray<DelegateArgument>? DelegateArguments(IInvocationOperation operation)
+    private static ImmutableArray<DelegateArgument>? DelegateArguments(IInvocationOperation operation, InvocationExpressionSyntax invocation)
     {
         var builder = ImmutableArray.CreateBuilder<DelegateArgument>();
 
@@ -95,7 +95,7 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
         {
             if (argument.Parameter?.Type is INamedTypeSymbol { TypeKind: TypeKind.Delegate, DelegateInvokeMethod: { } invoke })
             {
-                if (argument.Syntax is not ArgumentSyntax syntax)
+                if (ArgumentSyntax(argument, invocation) is not { } syntax)
                 {
                     return null;
                 }
@@ -107,9 +107,40 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
         return builder.ToImmutable();
     }
 
-    // A lambda gets the discard appended; a method group or a delegate value is wrapped in a lambda that forwards its parameters.
+    // The operation's syntax is the argument, or the bare expression when parentheses surround it, which the operation tree skips.
+    private static ArgumentSyntax? ArgumentSyntax(IArgumentOperation argument, InvocationExpressionSyntax invocation)
+        => argument.Syntax.FirstAncestorOrSelf<ArgumentSyntax>() is { } syntax && syntax.Parent == invocation.ArgumentList
+            ? syntax
+            : null;
+
+    // A lambda gets the token parameter appended; a method group or a delegate value is wrapped in a lambda that forwards its parameters.
     private static bool IsRewritable(ArgumentSyntax argument)
-        => argument.Expression is not AnonymousMethodExpressionSyntax;
+        => Unparenthesize(argument.Expression) switch
+        {
+            AnonymousMethodExpressionSyntax => false,
+            LambdaExpressionSyntax => true,
+            var callable => IsReferentiallyStable(callable),
+        };
+
+    // The forwarding lambda evaluates the callable per element instead of once at the call: only names, member paths and
+    // casts of those keep the same meaning. An invocation, an element access or a `new` would run once per element.
+    private static bool IsReferentiallyStable(ExpressionSyntax expression)
+        => expression switch
+        {
+            SimpleNameSyntax or AliasQualifiedNameSyntax or ThisExpressionSyntax or BaseExpressionSyntax or PredefinedTypeSyntax => true,
+            MemberAccessExpressionSyntax memberAccess => IsReferentiallyStable(memberAccess.Expression),
+            CastExpressionSyntax cast => IsReferentiallyStable(cast.Expression),
+            ParenthesizedExpressionSyntax parenthesized => IsReferentiallyStable(parenthesized.Expression),
+            _ => false,
+        };
+
+    private static ExpressionSyntax Unparenthesize(ExpressionSyntax expression)
+        => expression is ParenthesizedExpressionSyntax parenthesized
+            ? Unparenthesize(parenthesized.Expression)
+            : expression;
+
+    private static ImmutableHashSet<string> IdentifiersIn(SyntaxNode node)
+        => node.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText).ToImmutableHashSet();
 
     private sealed record DelegateArgument(ArgumentSyntax Syntax, int Arity);
 
@@ -170,13 +201,24 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
                 ? (SimpleNameSyntax)genericName.WithIdentifier(Identifier(replacement.Name))
                 : IdentifierName(replacement.Name)).WithTriviaFrom(name);
 
+        // The token parameter is appended to the lambda found inside any parentheses; a callable replaces the whole argument.
         private static ExpressionSyntax WithTokenParameter(DelegateArgument argument, SemanticModel semanticModel)
-            => (argument.Syntax.Expression switch
+        {
+            var expression = argument.Syntax.Expression;
+            var names = new NameSource(IdentifiersIn(expression), semanticModel, expression.SpanStart);
+
+            return Unparenthesize(expression) switch
             {
-                SimpleLambdaExpressionSyntax lambda => AppendParameter(lambda, Discard(typed: lambda.Parameter.Type is not null)),
-                ParenthesizedLambdaExpressionSyntax lambda => lambda.WithParameterList(lambda.ParameterList.AddParameters(Discard(typed: lambda.ParameterList.Parameters.All(parameter => parameter.Type is not null)))),
-                var callable => ForwardingLambda(callable, argument, semanticModel),
-            }).WithTriviaFrom(argument.Syntax.Expression);
+                SimpleLambdaExpressionSyntax lambda => Replace(expression, lambda, AppendParameter(lambda, TokenParameter(names, typed: lambda.Parameter.Type is not null))),
+                ParenthesizedLambdaExpressionSyntax lambda => Replace(expression, lambda, lambda.WithParameterList(lambda.ParameterList.AddParameters(TokenParameter(names, typed: lambda.ParameterList.Parameters.All(parameter => parameter.Type is not null))))),
+                var callable => ForwardingLambda(callable, argument.Arity, names).WithTriviaFrom(expression),
+            };
+        }
+
+        private static ExpressionSyntax Replace(ExpressionSyntax expression, ExpressionSyntax original, ExpressionSyntax replacement)
+            => expression == original
+                ? replacement.WithTriviaFrom(original)
+                : expression.ReplaceNode(original, replacement.WithTriviaFrom(original));
 
         private static ParenthesizedLambdaExpressionSyntax AppendParameter(SimpleLambdaExpressionSyntax lambda, ParameterSyntax parameter)
             => ParenthesizedLambdaExpression((CSharpSyntaxNode?)lambda.Block ?? lambda.ExpressionBody!)
@@ -186,25 +228,44 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
                 .WithArrowToken(lambda.ArrowToken);
 
         // `xs.FooAwait(Callable)` becomes `xs.Foo((x, _) => Callable(x))`; the names avoid anything visible at the call site.
-        private static ParenthesizedLambdaExpressionSyntax ForwardingLambda(ExpressionSyntax callable, DelegateArgument argument, SemanticModel semanticModel)
+        private static ParenthesizedLambdaExpressionSyntax ForwardingLambda(ExpressionSyntax callable, int arity, NameSource names)
         {
-            var names = ParameterNames(argument.Arity, semanticModel, argument.Syntax.SpanStart);
-            var parameters = names.Select(name => Parameter(Identifier(name))).Append(Discard(typed: false));
-            var arguments = names.Select(name => Argument(IdentifierName(name)));
+            var parameterNames = CandidateParameterNames.Take(arity).Select(names.Unused).ToList();
+            var parameters = parameterNames.Select(name => Parameter(Identifier(name))).Append(TokenParameter(names, typed: false));
+            var arguments = parameterNames.Select(name => Argument(IdentifierName(name)));
 
-            return ParenthesizedLambdaExpression(InvocationExpression(callable.WithoutTrivia(), ArgumentList(SeparatedList(arguments))))
+            return ParenthesizedLambdaExpression(InvocationExpression(InvocationTarget(callable.WithoutTrivia()), ArgumentList(SeparatedList(arguments))))
                 .WithParameterList(ParameterList(SeparatedList(parameters)));
         }
 
-        private static IReadOnlyList<string> ParameterNames(int arity, SemanticModel semanticModel, int position)
-            => CandidateParameterNames
-                .Take(arity)
-                .Select(candidate => semanticModel.LookupSymbols(position, name: candidate).IsEmpty ? candidate : candidate + arity)
-                .ToList();
+        // Only a primary expression can be invoked as is: `(Func<int, Task>)Log(x)` would cast the result of `Log(x)`.
+        private static ExpressionSyntax InvocationTarget(ExpressionSyntax callable)
+            => callable is SimpleNameSyntax or MemberAccessExpressionSyntax or AliasQualifiedNameSyntax or ThisExpressionSyntax or BaseExpressionSyntax
+                ? callable
+                : ParenthesizedExpression(callable);
 
-        private static ParameterSyntax Discard(bool typed)
+        private static ParameterSyntax TokenParameter(NameSource names, bool typed)
             => typed
-                ? Parameter(Identifier(DiscardName)).WithType(ParseTypeName("global::System.Threading.CancellationToken").WithAdditionalAnnotations(Simplifier.Annotation))
-                : Parameter(Identifier(DiscardName));
+                ? Parameter(Identifier(names.Discard())).WithType(ParseTypeName("global::System.Threading.CancellationToken").WithAdditionalAnnotations(Simplifier.Annotation))
+                : Parameter(Identifier(names.Discard()));
+
+        /// <summary>Picks parameter names that neither shadow a symbol visible at the argument nor appear in the argument
+        /// itself: a second <c>_</c> parameter would turn the lambda's own <c>_</c> parameter into a discard and a lone
+        /// <c>_</c> parameter would capture the <c>out _</c> and <c>_ = …</c> discards in the body.</summary>
+        private sealed class NameSource(ImmutableHashSet<string> identifiersInArgument, SemanticModel semanticModel, int position)
+        {
+            public string Discard()
+                => Enumerable.Range(1, int.MaxValue)
+                    .Select(length => new string(DiscardName[0], length))
+                    .First(IsUnused);
+
+            public string Unused(string candidate)
+                => Enumerable.Repeat(candidate, 1)
+                    .Concat(Enumerable.Range(1, int.MaxValue).Select(suffix => candidate + suffix))
+                    .First(IsUnused);
+
+            private bool IsUnused(string name)
+                => !identifiersInArgument.Contains(name) && semanticModel.LookupSymbols(position, name: name).IsEmpty;
+        }
     }
 }
