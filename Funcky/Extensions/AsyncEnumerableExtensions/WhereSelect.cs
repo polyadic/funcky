@@ -38,26 +38,53 @@ public static partial class AsyncEnumerableExtensions
             where TResult : notnull
             => WhereSelectInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
 
+        /// <summary>
+        /// Projects and filters an <see cref="IAsyncEnumerable{T}"/> at the same time.
+        /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the asynchronous <paramref name="selector"/>,
+        /// which receives the cancellation token of the enumeration.
+        /// </summary>
+        [Pure]
+        [OverloadResolutionPriority(1)]
+        public IAsyncEnumerable<TResult> WhereSelect<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector)
+            where TResult : notnull
+            => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
+
+        /// <summary>
+        /// Projects and filters an <see cref="IAsyncEnumerable{T}"/> at the same time.
+        /// This is done by filtering out any empty <see cref="Option{T}"/> values returned by the asynchronous <paramref name="selector"/>,
+        /// which receives the cancellation token of the enumeration.
+        /// The index of each source element is used in the projected form of that element.
+        /// </summary>
+        [Pure]
+        [OverloadResolutionPriority(1)]
+        public IAsyncEnumerable<TResult> WhereSelect<TResult>(Func<TSource, int, CancellationToken, ValueTask<Option<TResult>>> selector)
+            where TResult : notnull
+            => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
+
         /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,Option{TResult}})"/>
         [Pure]
+        [Obsolete("Use WhereSelect with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TResult> WhereSelectAwait<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector)
             where TResult : notnull
             => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
 
         /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,int,Option{TResult}})"/>
         [Pure]
+        [Obsolete("Use WhereSelect with a (item, index, cancellationToken) delegate instead; discard the token with (item, index, _) => …. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TResult> WhereSelectAwait<TResult>(Func<TSource, int, ValueTask<Option<TResult>>> selector)
             where TResult : notnull
             => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
 
         /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,Option{TResult}})"/>
         [Pure]
+        [Obsolete("Use WhereSelect instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TResult> WhereSelectAwaitWithCancellation<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector)
             where TResult : notnull
             => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
 
         /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,int,Option{TResult}})"/>
         [Pure]
+        [Obsolete("Use WhereSelect instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TResult> WhereSelectAwaitWithCancellation<TResult>(Func<TSource, int, CancellationToken, ValueTask<Option<TResult>>> selector)
             where TResult : notnull
             => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));

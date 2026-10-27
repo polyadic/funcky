@@ -57,8 +57,13 @@ Option<int> alsoNone = default;             // default is a valid None
 Option<string> fromNullable = Option.FromNullable(Environment.GetEnvironmentVariable("HOME"));
 
 // From a condition
-Option<int> even = Option.FromBoolean(number % 2 == 0, number);
+Option<int> even = (number % 2 == 0).Then(number);                // Some(number) when true, None otherwise
+Option<string> name = user.HasName.Then(() => user.Name);          // the selector only runs when true
+Option<IFormFile> file = request.HasFormContentType.Then(() => request.Form.Files.FirstOrNone()); // flattening
 ```
+
+`Option.FromBoolean`, the previous form of this, is obsolete since 3.8.0 and will be removed in 4.0.0. The
+`Funcky.Analyzers` package offers a code fix for the obsoletion warning that rewrites it to `Then`.
 
 The type parameter is constrained to `notnull`. An `Option<string?>` does not exist, because "absent" is what `None`
 is for. `Option.FromNullable` is the bridge: it maps `null` to `None` and anything else to `Some`.

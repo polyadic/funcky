@@ -374,3 +374,13 @@ static Funcky.Extensions.ExceptionExtensions.get_InnerExceptionOrNone(System.Exc
 static Funcky.Extensions.HttpHeadersExtensions.get_LocationOrNone(System.Net.Http.Headers.HttpResponseHeaders! headers) -> Funcky.Monads.Option<System.Uri!>
 static Funcky.Extensions.MemberInfoExtensions.get_DeclaringTypeOrNone(System.Reflection.MemberInfo! member) -> Funcky.Monads.Option<System.Type!>
 static Funcky.Extensions.TypeExtensions.get_BaseTypeOrNone(System.Type! type) -> Funcky.Monads.Option<System.Type!>
+static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
+Funcky.Extensions.BooleanExtensions
+Funcky.Extensions.BooleanExtensions.extension(bool)
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(TItem value) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, TItem value) -> Funcky.Monads.Option<TItem>

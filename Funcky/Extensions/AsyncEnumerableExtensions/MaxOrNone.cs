@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using Funcky.Internal.Aggregators;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -58,9 +59,10 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [Obsolete("Use MaxOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.Select(selector).AggregateAsync(Option<TResult>.None, async (min, current, _) => MaxAggregator.Aggregate(min, await current.ConfigureAwait(false)), cancellationToken);
+            => source.MaxOrNoneAsync(IgnoringToken(ArgumentValidator.NotNull(selector)), cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -70,7 +72,7 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
-        public ValueTask<Option<TResult>> MaxOrNoneAwaitWithCancellationAsync<TResult>(Func<TSource, CancellationToken, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
+        public ValueTask<Option<TResult>> MaxOrNoneAsync<TResult>(Func<TSource, CancellationToken, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
             => source.Select(selector).AggregateAsync(Option<TResult>.None, MaxAggregator.Aggregate, cancellationToken);
 
@@ -94,9 +96,10 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        [Obsolete("Use MaxOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwait(selector).MaxOrNoneAsync(Identity, cancellationToken);
+            => source.MaxOrNoneAsync(IgnoringToken(ArgumentValidator.NotNull(selector)), cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -106,9 +109,28 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The maximum value in the sequence or None.</returns>
         [Pure]
+        public ValueTask<Option<TResult>> MaxOrNoneAsync<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
+            where TResult : notnull
+            => source.WhereSelect(selector).MaxOrNoneAsync(Identity, cancellationToken);
+
+        /// <inheritdoc cref="MaxOrNoneAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,CancellationToken,ValueTask{TResult}},CancellationToken)"/>
+        [Pure]
+        [Obsolete("Use MaxOrNoneAsync instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
+        public ValueTask<Option<TResult>> MaxOrNoneAwaitWithCancellationAsync<TResult>(Func<TSource, CancellationToken, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
+            where TResult : notnull
+            => source.MaxOrNoneAsync(selector, cancellationToken);
+
+        /// <inheritdoc cref="MaxOrNoneAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,CancellationToken,ValueTask{Option{TResult}}},CancellationToken)"/>
+        [Pure]
+        [Obsolete("Use MaxOrNoneAsync instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitWithCancellationAsync<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelectAwaitWithCancellation(selector).MaxOrNoneAsync(Identity, cancellationToken);
+            => source.MaxOrNoneAsync(selector, cancellationToken);
     }
+
+    // Adapts a selector without token to the token-carrying overloads; the obsolete MaxOrNoneAwaitAsync and MinOrNoneAwaitAsync
+    // validate the selector before wrapping it, because the lambda would otherwise hide a null argument until the first element.
+    private static Func<TSource, CancellationToken, ValueTask<TResult>> IgnoringToken<TSource, TResult>(Func<TSource, ValueTask<TResult>> selector)
+        => (item, _) => selector(item);
 }
 #endif

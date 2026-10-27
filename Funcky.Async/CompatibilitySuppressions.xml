@@ -15,6 +15,18 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``1}},System.Collections.Generic.IEqualityComparer{``1})</Target>
+    <Left>lib/net9.0/Funcky.Async.dll</Left>
+    <Right>lib/net10.0/Funcky.Async.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``2(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``1}})</Target>
+    <Left>lib/net9.0/Funcky.Async.dll</Left>
+    <Right>lib/net10.0/Funcky.Async.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``3(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})</Target>
     <Left>lib/net9.0/Funcky.Async.dll</Left>
     <Right>lib/net10.0/Funcky.Async.dll</Right>
@@ -22,6 +34,18 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``3(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})</Target>
+    <Left>lib/net9.0/Funcky.Async.dll</Left>
+    <Right>lib/net10.0/Funcky.Async.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``3(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``1}},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``2}},System.Collections.Generic.IEqualityComparer{``1})</Target>
+    <Left>lib/net9.0/Funcky.Async.dll</Left>
+    <Right>lib/net10.0/Funcky.Async.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.AsyncEnumerableExtensions.AdjacentGroupBy``3(System.Collections.Generic.IAsyncEnumerable{``0},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``1}},System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``2}})</Target>
     <Left>lib/net9.0/Funcky.Async.dll</Left>
     <Right>lib/net10.0/Funcky.Async.dll</Right>
   </Suppression>

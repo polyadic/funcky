@@ -24,9 +24,21 @@ public static partial class AsyncEnumerableExtensions
         /// An IEnumerable that calls and awaits the function on each element before yielding it. It can be used to encode side effects without enumerating.
         /// The side effect will be executed whenever enumerating of the result happens.
         /// </summary>
+        /// <param name="inspector">An asynchronous action; it receives the cancellation token of the enumeration.</param>
+        /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
+        [Pure]
+        [OverloadResolutionPriority(1)]
+        public IAsyncEnumerable<TSource> Inspect(Func<TSource, CancellationToken, ValueTask> inspector)
+            => InspectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(inspector));
+
+        /// <summary>
+        /// An IEnumerable that calls and awaits the function on each element before yielding it. It can be used to encode side effects without enumerating.
+        /// The side effect will be executed whenever enumerating of the result happens.
+        /// </summary>
         /// <param name="inspector">An asynchronous action.</param>
         /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
         [Pure]
+        [Obsolete("Use Inspect with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TSource> InspectAwait(Func<TSource, ValueTask> inspector)
             => InspectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(inspector));
 
@@ -37,6 +49,7 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="inspector">An asynchronous action.</param>
         /// <returns>Returns an <see cref="IAsyncEnumerable{T}" /> with the side effect defined by action encoded in the enumerable.</returns>
         [Pure]
+        [Obsolete("Use Inspect instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TSource> InspectAwaitWithCancellation(Func<TSource, CancellationToken, ValueTask> inspector)
             => InspectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(inspector));
 

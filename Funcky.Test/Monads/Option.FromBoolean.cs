@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // FromBoolean is obsolete, it keeps working until 4.0.0
 using Funcky.Test.TestUtilities;
 
 namespace Funcky.Test.Monads;
