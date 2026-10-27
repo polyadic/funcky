@@ -33,6 +33,22 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+* Add `Then` on `bool` as the replacement of `Option.FromBoolean`, modelled on Rust's `bool::then`:
+  `(number % 2 == 0).Then(number)` is `Some(number)` when the condition holds and `None` otherwise. `Then(() => value)`
+  evaluates the value lazily, and `Then(() => option)` flattens, which replaces the `Option.FromBoolean(condition,
+  option).SelectMany(Identity)` idiom: `request.HasFormContentType.Then(() => request.Form.Files.FirstOrNone())`.
+  The members are declared in `BooleanExtensions`.
+* Deprecated: `Option.FromBoolean` (all three overloads) is obsolete and will be removed in Funcky 4.0.0; use `Then`
+  on the condition instead. Funcky.Analyzers 2.1.0 ships a code fix for the obsoletion warning (see below).
+
+### Analyzers (Funcky.Analyzers 2.1.0)
+* New: a code fix for the obsoletion warning CS0618 on `Option.FromBoolean`. `Option.FromBoolean(condition, value)`
+  becomes `condition.Then(value)`, the selector overload keeps its selector, `Option.FromBoolean(condition)` becomes
+  `condition.Then(Unit.Value)`, and `Option.FromBoolean(condition, option).SelectMany(Identity)` becomes
+  `condition.Then(() => option)`. The fix adds `using Funcky.Extensions;` when needed and supports fix-all. A call
+  whose selector returns an `Option` and that is not flattened gets no fix, because `Then` would flatten it.
+* The refactoring "Replace with Option.FromBoolean" on `Option.Some(value).Where(predicate)` now produces
+  `predicate.Then(value)` and is named "Replace with Then".
 * Funcky.Xunit and Funcky.Xunit.v3: the assertions of `FunctionalAssert` are now also static extension members of
   xunit's `Assert`, so they are found where the other assertions live: `Assert.Some(option)`, `Assert.None(option)`,
   `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`; `Some`, `Ok`, `Left` and `Right`

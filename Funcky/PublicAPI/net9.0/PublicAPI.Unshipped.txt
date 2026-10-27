@@ -654,3 +654,11 @@ Funcky.Extensions.NumberExtensions.extension(double).InRange<TFrom, TTo>(double 
 Funcky.Extensions.NumberExtensions.extension(decimal).InRange<TFrom, TTo>(decimal from, decimal to) -> bool
 Funcky.Extensions.NumberExtensions.extension(char).InRange<TFrom, TTo>(char from, char to) -> bool
 Funcky.Extensions.NumberExtensions.extension(System.Numerics.BigInteger).InRange<TFrom, TTo>(System.Numerics.BigInteger from, System.Numerics.BigInteger to) -> bool
+Funcky.Extensions.BooleanExtensions
+Funcky.Extensions.BooleanExtensions.extension(bool)
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(TItem value) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, TItem value) -> Funcky.Monads.Option<TItem>

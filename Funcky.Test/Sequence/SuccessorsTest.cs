@@ -35,7 +35,7 @@ public sealed class SuccessorsTest
     {
         Assert.Equal(
             Enumerable.Range(0, 11),
-            Sequence.Successors(0, i => Option.FromBoolean(i < 10, i + 1)));
+            Sequence.Successors(0, i => (i < 10).Then(i + 1)));
     }
 
     [Fact]
