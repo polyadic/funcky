@@ -31,3 +31,7 @@ dotnet_diagnostic.λ1203.severity = none
 [Funcky/**.cs]
 dotnet_diagnostic.λ1201.severity = none
 dotnet_diagnostic.λ1202.severity = none
+
+# Funcky.Xunit implements Assert.Some & co. by delegating to FunctionalAssert; the rule addresses its consumers.
+[Funcky.Xunit/**.cs]
+dotnet_diagnostic.λ1203.severity = none
