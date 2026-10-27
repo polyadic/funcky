@@ -25,8 +25,20 @@ public static partial class AsyncEnumerableExtensions
         /// </summary>
         /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
         /// <param name="seed">The seed or neutral element (identity).</param>
+        /// <param name="accumulator">An awaitable binary operator to aggregate a value; it receives the cancellation token of the enumeration.</param>
+        /// <returns>A sequence of aggregated values.</returns>
+        [OverloadResolutionPriority(1)]
+        public IAsyncEnumerable<TAccumulate> InclusiveScan<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
+            => InclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
+
+        /// <summary>
+        /// Scan generates a sequence known as the inclusive prefix sum.
+        /// </summary>
+        /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
+        /// <param name="seed">The seed or neutral element (identity).</param>
         /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
         /// <returns>A sequence of aggregated values.</returns>
+        [Obsolete("Use InclusiveScan with a (accumulate, item, cancellationToken) delegate instead; discard the token with (accumulate, item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TAccumulate> InclusiveScanAwait<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator)
             => InclusiveScanAwaitEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
@@ -37,6 +49,7 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="seed">The seed or neutral element (identity).</param>
         /// <param name="accumulator">A binary operator to aggregate a value.</param>
         /// <returns>A sequence of aggregated values.</returns>
+        [Obsolete("Use InclusiveScan instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TAccumulate> InclusiveScanAwaitWithCancellation<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
             => InclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
@@ -55,8 +68,20 @@ public static partial class AsyncEnumerableExtensions
         /// </summary>
         /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
         /// <param name="seed">The seed or neutral element (identity).</param>
+        /// <param name="accumulator">An awaitable binary operator to aggregate a value; it receives the cancellation token of the enumeration.</param>
+        /// <returns>A sequence of aggregated values.</returns>
+        [OverloadResolutionPriority(1)]
+        public IAsyncEnumerable<TAccumulate> ExclusiveScan<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
+            => ExclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
+
+        /// <summary>
+        /// Scan generates a sequence known as the exclusive prefix sum.
+        /// </summary>
+        /// <typeparam name="TAccumulate">The seed and target type.</typeparam>
+        /// <param name="seed">The seed or neutral element (identity).</param>
         /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
         /// <returns>A sequence of aggregated values.</returns>
+        [Obsolete("Use ExclusiveScan with a (accumulate, item, cancellationToken) delegate instead; discard the token with (accumulate, item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TAccumulate> ExclusiveScanAwait<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator)
             => ExclusiveScanAwaitEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 
@@ -67,6 +92,7 @@ public static partial class AsyncEnumerableExtensions
         /// <param name="seed">The seed or neutral element (identity).</param>
         /// <param name="accumulator">An awaitable binary operator to aggregate a value.</param>
         /// <returns>A sequence of aggregated values.</returns>
+        [Obsolete("Use ExclusiveScan instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
         public IAsyncEnumerable<TAccumulate> ExclusiveScanAwaitWithCancellation<TAccumulate>(TAccumulate seed, Func<TAccumulate, TSource, CancellationToken, ValueTask<TAccumulate>> accumulator)
             => ExclusiveScanAwaitWithCancellationEnumerable(ArgumentValidator.NotNull(source), seed, ArgumentValidator.NotNull(accumulator));
 

@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // The …AwaitAsync overloads are obsolete but keep working until 4.0.0.
 #if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
@@ -30,9 +31,9 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MaxAsync().Result)
-            == sequence.Select(Option.FromNullable).MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MaxOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Int64/long Tests
     [FunckyAsyncProperty]
@@ -55,9 +56,9 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, AwaitSelectorWithCancellation<long?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, AwaitSelectorWithCancellation<long?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MaxAsync().Result)
-            == sequence.Select(Option.FromNullable).MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MaxOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Single/float Tests
     [FunckyAsyncProperty]
@@ -80,9 +81,9 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelectorWithCancellation<float?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelectorWithCancellation<float?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MaxAsync().Result)
-            == sequence.Select(Option.FromNullable).MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MaxOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Double/double Tests
     [FunckyAsyncProperty]
@@ -105,9 +106,9 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelectorWithCancellation<double?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelectorWithCancellation<double?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MaxAsync().Result)
-            == sequence.Select(Option.FromNullable).MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MaxOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Decimal/decimal Tests
     [FunckyAsyncProperty]
@@ -130,9 +131,9 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelectorWithCancellation<decimal?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelectorWithCancellation<decimal?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MaxAsync().Result)
-            == sequence.Select(Option.FromNullable).MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MaxOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Generic TSource implementing IComparable Tests
     [FunckyAsyncProperty]
@@ -155,13 +156,13 @@ public sealed class MaxOrNoneTest
             == sequence.Select(Person.Create).Select(Option.FromNullable).MaxOrNoneAwaitAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MaxAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMaxForNullableAsyncForAnyIComparable(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
+    public Property MaxOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMaxForNullableAsyncForAnyIComparable(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
     {
         var result1 = Option.FromNullable(sequence.Select(Person.Create)
             .Select(SelectorTransformation.TransformPersonSelector(selector.Get)).MaxAsync().Result);
 
         var result2 = sequence.Select(Person.Create).Select(Option.FromNullable)
-            .MaxOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result;
+            .MaxOrNoneAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result;
 
         return (result1 == result2).ToProperty();
     }

@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // PartitionAwaitAsync is obsolete but keeps working until 4.0.0.
 #if ASYNC_SUPPORTED
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 

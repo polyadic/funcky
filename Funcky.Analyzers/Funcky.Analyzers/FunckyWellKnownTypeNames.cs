@@ -8,6 +8,8 @@ public static class FunckyWellKnownTypeNames
 
     public static INamedTypeSymbol? GetEnumerableExtensionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.EnumerableExtensions");
 
+    public static INamedTypeSymbol? GetAsyncEnumerableExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.AsyncEnumerableExtensions");
+
     public static INamedTypeSymbol? GetOptionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option`1");
 
     public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");

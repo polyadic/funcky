@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // The …AwaitAsync overloads are obsolete but keep working until 4.0.0.
 #if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
@@ -30,9 +31,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MinAsync().Result)
-            == sequence.Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Int64/long Tests
     [FunckyAsyncProperty]
@@ -55,9 +56,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, AwaitSelectorWithCancellation<long?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, AwaitSelectorWithCancellation<long?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MinAsync().Result)
-            == sequence.Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Single/float Tests
     [FunckyAsyncProperty]
@@ -80,9 +81,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelectorWithCancellation<float?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelectorWithCancellation<float?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MinAsync().Result)
-            == sequence.Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Double/double Tests
     [FunckyAsyncProperty]
@@ -105,9 +106,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelectorWithCancellation<double?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelectorWithCancellation<double?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MinAsync().Result)
-            == sequence.Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Decimal/decimal Tests
     [FunckyAsyncProperty]
@@ -130,9 +131,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelectorWithCancellation<decimal?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelectorWithCancellation<decimal?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).MinAsync().Result)
-            == sequence.Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     // Generic TSource implementing IComparable Tests
     [FunckyAsyncProperty]
@@ -155,9 +156,9 @@ public sealed class MinOrNoneTest
             == sequence.Select(Person.Create).Select(Option.FromNullable).MinOrNoneAwaitAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property MinAwaitWithCancellationAsyncWithSelectorGivesTheSameResultAsMinForNullableAsyncForAnyIComparable(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
+    public Property MinOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsMinForNullableAsyncForAnyIComparable(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
         => (Option.FromNullable(sequence.Select(Person.Create).Select(SelectorTransformation.TransformPersonSelector(selector.Get)).MinAsync().Result)
-            == sequence.Select(Person.Create).Select(Option.FromNullable).MinOrNoneAwaitWithCancellationAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result).ToProperty();
+            == sequence.Select(Person.Create).Select(Option.FromNullable).MinOrNoneAsync(SelectorTransformation.TransformOptionPersonSelector(selector.Get)).Result).ToProperty();
 
     [Fact]
     public void Failing()
