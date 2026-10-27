@@ -81,8 +81,6 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   argument, and a method group or delegate value becomes a forwarding lambda, `xs.Inspect((x, _) => Log(x))`. The
   terminal aggregations map the same way, `xs.FirstOrNoneAwaitAsync(x => …)` becomes `xs.FirstOrNoneAsync((x, _) => …)`.
   The fix supports fix-all across a document, project or solution, so a consumer migrates in one step before 4.0.0.
-
-### Analyzers (Funcky.Analyzers 2.1.0)
 * New: three opt-in rules with code fixes point at the C# 14 extension forms that 3.8.0 adds next to the classic API,
   so a solution adopts them in one fix-all. They only fire on C# 14 or newer and skip method groups, which have no
   static-member form of the same shape:
