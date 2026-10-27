@@ -26,9 +26,24 @@ public partial class OptionSomeWhereToThenRefactoringTest
 
         namespace Funcky.Extensions
         {
+            using System;
             using Funcky.Monads;
 
             public static class BooleanExtensions
+            {
+                public static Option<TItem> Then<TItem>(this bool condition, TItem value) => default;
+
+                public static Option<TItem> Then<TItem>(this bool condition, Func<TItem> selector) => default;
+
+                public static Option<TItem> Then<TItem>(this bool condition, Func<Option<TItem>> selector) => default;
+            }
+        }
+
+        namespace Other
+        {
+            using Funcky.Monads;
+
+            public static class OtherExtensions
             {
                 public static Option<TItem> Then<TItem>(this bool condition, TItem value) => default;
             }

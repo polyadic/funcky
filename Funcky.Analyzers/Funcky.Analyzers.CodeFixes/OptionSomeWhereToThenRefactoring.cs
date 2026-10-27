@@ -17,8 +17,6 @@ namespace Funcky.Analyzers;
 [ExportCodeRefactoringProvider(LanguageNames.CSharp)]
 public class OptionSomeWhereToThenRefactoring : CodeRefactoringProvider
 {
-    private static readonly SyntaxAnnotation ReplacementAnnotation = new();
-
     private delegate ExpressionSyntax ApplyPredicate(ExpressionSyntax value);
 
     public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
@@ -27,13 +25,15 @@ public class OptionSomeWhereToThenRefactoring : CodeRefactoringProvider
         var root = await document.GetSyntaxRootAsync(cancellationToken) ?? throw new InvalidOperationException("Missing syntax root");
         var semanticModel = await document.GetSemanticModelAsync(cancellationToken) ?? throw new InvalidOperationException("Unable to get semantic model");
 
+        // The document is rewritten up front: the refactoring is withheld when the Then call would not bind to Funcky's extension.
         if (GetSymbolsRequiredForRefactoring(semanticModel.Compilation) is { } symbols
             && FindInvocationExpression(context, root) is { } invocationExpression
             && IsWhereInvocation(invocationExpression, semanticModel, symbols, out var whereInvocation)
             && IsOptionReturnInvocation(whereInvocation.Instance, symbols, out var optionReturnInvocation)
-            && TryGetPredicateApplier(invocationExpression, semanticModel) is { } applyPredicate)
+            && TryGetPredicateApplier(invocationExpression, semanticModel) is { } applyPredicate
+            && await ReplaceWithThenAsync(document, root, semanticModel, symbols, applyPredicate, invocationExpression, optionReturnInvocation, cancellationToken) is { } changedDocument)
         {
-            context.RegisterRefactoring(CodeAction.Create($"Replace with {BooleanThenMethodName}", ReplaceWithThen(document, symbols, applyPredicate, invocationExpression, (InvocationExpressionSyntax)optionReturnInvocation.Syntax)));
+            context.RegisterRefactoring(CodeAction.Create($"Replace with {BooleanThenMethodName}", _ => Task.FromResult(changedDocument), nameof(OptionSomeWhereToThenRefactoring)));
         }
     }
 
@@ -95,23 +95,16 @@ public class OptionSomeWhereToThenRefactoring : CodeRefactoringProvider
             _ => null,
         };
 
-    private static Func<CancellationToken, Task<Document>> ReplaceWithThen(Document document, Symbols symbols, ApplyPredicate applyPredicate, InvocationExpressionSyntax whereInvocation, InvocationExpressionSyntax returnInvocation)
-        => async cancellationToken =>
-        {
-            var root = await document.GetSyntaxRootAsync(cancellationToken) ?? throw new InvalidOperationException("Missing syntax root");
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken) ?? throw new InvalidOperationException("Unable to get semantic model");
-            var returnValue = returnInvocation.ArgumentList.Arguments.Single().Expression;
+    private static Task<Document?> ReplaceWithThenAsync(Document document, SyntaxNode root, SemanticModel semanticModel, Symbols symbols, ApplyPredicate applyPredicate, InvocationExpressionSyntax whereInvocation, IInvocationOperation returnInvocation, CancellationToken cancellationToken)
+    {
+        var returnInvocationSyntax = (InvocationExpressionSyntax)returnInvocation.Syntax;
+        var returnValue = returnInvocationSyntax.ArgumentList.Arguments.Single().Expression;
+        var valueType = returnInvocation.TargetMethod.TypeArguments is [var typeArgument] ? typeArgument : null;
+        var replacement = BooleanThen.Invocation(applyPredicate(returnValue), BooleanThen.ThenName(GetMethodName(returnInvocationSyntax)), BooleanThen.ValueArgument(returnValue, valueType))
+            .WithLeadingTrivia(returnInvocationSyntax.GetLeadingTrivia());
 
-            var replacement = BooleanThen.Invocation(applyPredicate(returnValue), BooleanThen.ThenName(GetMethodName(returnInvocation)), Argument(returnValue))
-                .WithLeadingTrivia(returnInvocation.GetLeadingTrivia())
-                .WithAdditionalAnnotations(ReplacementAnnotation);
-            var rootWithReplacement = root.ReplaceNode(whereInvocation, replacement);
-
-            // The Then extension needs its namespace in scope; the using is only added when the call does not bind without it.
-            return BooleanThen.IsThen(semanticModel.GetSpeculativeSymbolInfo(whereInvocation.SpanStart, replacement, SpeculativeBindingOption.BindAsExpression).Symbol, symbols.BooleanExtensionsType)
-                ? document.WithSyntaxRoot(rootWithReplacement)
-                : document.WithSyntaxRoot(UsingDirectives.AddUsing(rootWithReplacement, rootWithReplacement.GetAnnotatedNodes(ReplacementAnnotation).Single(), BooleanThen.BooleanExtensionsNamespace));
-        };
+        return BooleanThen.TryReplaceAsync(document, root, semanticModel, whereInvocation, replacement, symbols.BooleanExtensionsType, cancellationToken);
+    }
 
     private static SimpleNameSyntax GetMethodName(InvocationExpressionSyntax invocationExpressionSyntax)
         => invocationExpressionSyntax.Expression switch

@@ -4,6 +4,7 @@ using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Simplification;
@@ -42,13 +43,20 @@ public sealed class OptionFromBooleanCodeFix : CodeFixProvider
         foreach (var diagnostic in context.Diagnostics)
         {
             // The warning spans the whole call; one with a smaller span belongs to an obsolete member inside an argument.
+            // The document is rewritten up front: the fix is withheld when the Then call would not bind to Funcky's extension.
             if (root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { } invocation
                 && invocation.Span == diagnostic.Location.SourceSpan
                 && semanticModel.GetOperation(invocation, context.CancellationToken) is IInvocationOperation { TargetMethod: { Name: OptionFromBooleanMethodName, IsStatic: true } method } operation
                 && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.OptionType)
-                && Rewrite.TryCreate(operation, invocation, semanticModel, symbols, context.CancellationToken) is { } rewrite)
+                && Rewrite.TryCreate(operation, invocation, semanticModel, symbols, context.CancellationToken) is { } rewrite
+                && await rewrite.TryApplyAsync(context.Document, root, semanticModel, symbols, context.CancellationToken).ConfigureAwait(false) is { } changedDocument)
             {
-                context.RegisterCodeFix(new ReplaceWithThenCodeFixAction(context.Document, symbols, rewrite), diagnostic);
+                context.RegisterCodeFix(
+                    CodeAction.Create(
+                        $"Replace Option.{OptionFromBooleanMethodName} with {BooleanThenMethodName}",
+                        _ => Task.FromResult(changedDocument),
+                        nameof(OptionFromBooleanCodeFix)),
+                    diagnostic);
             }
         }
     }
@@ -69,41 +77,93 @@ public sealed class OptionFromBooleanCodeFix : CodeFixProvider
     {
         public static Rewrite? TryCreate(IInvocationOperation operation, InvocationExpressionSyntax invocation, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
         {
-            if (GetMethodName(invocation) is not { } name)
+            if (GetMethodName(invocation) is not { } name || !KeepsEvaluationOrder(operation))
             {
                 return null;
             }
 
-            var thenName = BooleanThen.ThenName(name);
-
             // The arguments are in evaluation order, which named arguments can change.
-            return operation.Arguments.OrderBy(argument => argument.Parameter?.Ordinal ?? int.MaxValue).Select(argument => argument.Syntax).ToArray() switch
+            return operation.Arguments.OrderBy(argument => argument.Parameter?.Ordinal ?? int.MaxValue).ToArray() switch
             {
-                [ArgumentSyntax condition] => new Rewrite(invocation, condition.Expression, thenName, Argument(UnitValue(symbols))),
-                [ArgumentSyntax condition, ArgumentSyntax argument] => TryCreate(operation, invocation, condition.Expression, thenName, argument.Expression, semanticModel, symbols, cancellationToken),
+                [{ Syntax: ArgumentSyntax condition }] => new Rewrite(invocation, condition.Expression, BooleanThen.ThenName(name), Argument(UnitValue(symbols))),
+                [{ Syntax: ArgumentSyntax condition }, { Syntax: ArgumentSyntax argumentSyntax } argument] => TryCreate(operation, invocation, name, condition.Expression, argumentSyntax.Expression, argument.Value, semanticModel, symbols, cancellationToken),
                 _ => null,
             };
         }
 
-        private static Rewrite? TryCreate(IInvocationOperation operation, InvocationExpressionSyntax invocation, ExpressionSyntax condition, SimpleNameSyntax thenName, ExpressionSyntax argument, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
+        public Task<Document?> TryApplyAsync(Document document, SyntaxNode root, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
+            => BooleanThen.TryReplaceAsync(
+                document,
+                root,
+                semanticModel,
+                Target,
+                BooleanThen.Invocation(Condition, ThenName, ThenArgument).WithTriviaFrom(Target),
+                symbols.BooleanExtensionsType,
+                cancellationToken);
+
+        private static Rewrite? TryCreate(IInvocationOperation operation, InvocationExpressionSyntax invocation, SimpleNameSyntax name, ExpressionSyntax condition, ExpressionSyntax argument, IOperation value, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
         {
-            var isSelectorOverload = operation.TargetMethod.Parameters[1].Type.TypeKind == TypeKind.Delegate;
-            var producesNestedOption = operation.TargetMethod.TypeArguments is [INamedTypeSymbol { OriginalDefinition: var itemType }] && SymbolEqualityComparer.Default.Equals(itemType, symbols.OptionOfTType);
+            // The definition tells the overloads apart; the constructed parameter type is a delegate for the value overload too when TItem is one.
+            var isSelectorOverload = operation.TargetMethod.OriginalDefinition.Parameters[1].Type.TypeKind == TypeKind.Delegate;
+            var itemType = operation.TargetMethod.TypeArguments is [var typeArgument] ? typeArgument : null;
+            var producesNestedOption = itemType is INamedTypeSymbol { OriginalDefinition: var itemTypeDefinition } && SymbolEqualityComparer.Default.Equals(itemTypeDefinition, symbols.OptionOfTType);
 
             return (FindSelectManyIdentity(invocation, semanticModel, symbols, cancellationToken), isSelectorOverload, producesNestedOption) switch
             {
                 // Option.FromBoolean(condition, option).SelectMany(Identity) => condition.Then(() => option)
-                ({ } selectMany, false, _) => new Rewrite(selectMany, condition, thenName, Argument(ParenthesizedLambdaExpression(argument.WithoutTrivia()))),
+                ({ } selectMany, false, true) => CanMoveIntoLambda(value)
+                    ? new Rewrite(selectMany, condition, FlattenedThenName(name, (INamedTypeSymbol)itemType!), Argument(ParenthesizedLambdaExpression(argument.WithoutTrivia())))
+                    : null,
 
                 // Option.FromBoolean(condition, () => option).SelectMany(Identity) => condition.Then(() => option)
-                ({ } selectMany, true, _) => new Rewrite(selectMany, condition, thenName, Argument(argument)),
+                ({ } selectMany, true, true) => new Rewrite(selectMany, condition, FlattenedThenName(name, (INamedTypeSymbol)itemType!), Argument(argument)),
 
                 // Option.FromBoolean(condition, () => option) yields an Option<Option<T>>, which Then would flatten.
-                (null, true, true) => null,
+                (_, true, true) => null,
 
-                (null, _, _) => new Rewrite(invocation, condition, thenName, Argument(argument)),
+                (_, true, false) => new Rewrite(invocation, condition, BooleanThen.ThenName(name), Argument(argument)),
+
+                (_, false, _) => new Rewrite(invocation, condition, BooleanThen.ThenName(name), BooleanThen.ValueArgument(argument, itemType)),
             };
         }
+
+        // Then evaluates the condition before the value. Named arguments given in the other order are only reordered when neither has an
+        // effect the other could observe; the check is syntactic and errs on the side of keeping the call.
+        private static bool KeepsEvaluationOrder(IInvocationOperation operation)
+            => operation.Arguments.Select(argument => argument.Parameter?.Ordinal ?? int.MaxValue).ToArray() is var ordinals
+               && (ordinals.SequenceEqual(ordinals.OrderBy(ordinal => ordinal))
+                   || operation.Arguments.All(argument => argument.Syntax is ArgumentSyntax { Expression: var expression } && IsSideEffectFree(expression)));
+
+        private static bool IsSideEffectFree(ExpressionSyntax expression)
+            => expression switch
+            {
+                LiteralExpressionSyntax or IdentifierNameSyntax or ThisExpressionSyntax or DefaultExpressionSyntax or TypeOfExpressionSyntax or LambdaExpressionSyntax => true,
+                MemberAccessExpressionSyntax { Expression: var receiver } => IsSideEffectFree(receiver),
+                ParenthesizedExpressionSyntax { Expression: var inner } => IsSideEffectFree(inner),
+                PrefixUnaryExpressionSyntax { RawKind: (int)SyntaxKind.LogicalNotExpression or (int)SyntaxKind.UnaryMinusExpression, Operand: var operand } => IsSideEffectFree(operand),
+                BinaryExpressionSyntax { Left: var left, Right: var right } => IsSideEffectFree(left) && IsSideEffectFree(right),
+                _ => false,
+            };
+
+        // The value moves into a non-async lambda: await, by-reference locals and parameters, ref structs and a struct's this cannot follow it.
+        // Anonymous functions bring their own scope, in which the same rules already hold.
+        private static bool CanMoveIntoLambda(IOperation operation)
+            => operation switch
+            {
+                IAnonymousFunctionOperation or ILocalFunctionOperation => true,
+                IAwaitOperation => false,
+                ILocalReferenceOperation { Local: { RefKind: not RefKind.None } or { Type.IsRefLikeType: true } } => false,
+                IParameterReferenceOperation { Parameter: { RefKind: not RefKind.None } or { Type.IsRefLikeType: true } } => false,
+                IInstanceReferenceOperation { ReferenceKind: InstanceReferenceKind.ContainingTypeInstance, Type.IsValueType: true } => false,
+                _ => operation.ChildOperations.All(CanMoveIntoLambda),
+            };
+
+        /// <summary>The flattening call returns <c>Option&lt;T&gt;</c> for an <c>Option&lt;Option&lt;T&gt;&gt;</c>, so an explicit <c>Option&lt;T&gt;</c>
+        /// type argument becomes <c>T</c>; without one the type argument stays inferred.</summary>
+        private static SimpleNameSyntax FlattenedThenName(SimpleNameSyntax name, INamedTypeSymbol nestedOptionType)
+            => name is GenericNameSyntax
+                ? GenericName(Identifier(BooleanThenMethodName), TypeArgumentList(SingletonSeparatedList(ParseTypeName(nestedOptionType.TypeArguments[0].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).WithAdditionalAnnotations(Simplifier.Annotation))))
+                : IdentifierName(BooleanThenMethodName);
 
         private static InvocationExpressionSyntax? FindSelectManyIdentity(InvocationExpressionSyntax invocation, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
             => invocation.Parent is MemberAccessExpressionSyntax { Name.Identifier.ValueText: SelectManyMethodName, Parent: InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: var selector }] } selectMany }
@@ -128,35 +188,5 @@ public sealed class OptionFromBooleanCodeFix : CodeFixProvider
 
         private static ExpressionSyntax UnitValue(Symbols symbols)
             => ParseExpression($"global::{symbols.UnitType.ToDisplayString()}.{UnitValuePropertyName}").WithAdditionalAnnotations(Simplifier.Annotation);
-    }
-
-    private sealed class ReplaceWithThenCodeFixAction(Document document, Symbols symbols, Rewrite rewrite) : CodeAction
-    {
-        private static readonly SyntaxAnnotation ReplacementAnnotation = new();
-
-        public override string Title => $"Replace Option.{OptionFromBooleanMethodName} with {BooleanThenMethodName}";
-
-        public override string EquivalenceKey => nameof(OptionFromBooleanCodeFix);
-
-        protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
-        {
-            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            if (root is null || semanticModel is null)
-            {
-                return document;
-            }
-
-            var replacement = BooleanThen.Invocation(rewrite.Condition, rewrite.ThenName, rewrite.ThenArgument)
-                .WithTriviaFrom(rewrite.Target)
-                .WithAdditionalAnnotations(ReplacementAnnotation);
-            var rootWithReplacement = root.ReplaceNode(rewrite.Target, replacement);
-
-            // The Then extension needs its namespace in scope; the using is only added when the call does not bind without it.
-            return BooleanThen.IsThen(semanticModel.GetSpeculativeSymbolInfo(rewrite.Target.SpanStart, replacement, SpeculativeBindingOption.BindAsExpression).Symbol, symbols.BooleanExtensionsType)
-                ? document.WithSyntaxRoot(rootWithReplacement)
-                : document.WithSyntaxRoot(UsingDirectives.AddUsing(rootWithReplacement, rootWithReplacement.GetAnnotatedNodes(ReplacementAnnotation).Single(), BooleanThen.BooleanExtensionsNamespace));
-        }
     }
 }

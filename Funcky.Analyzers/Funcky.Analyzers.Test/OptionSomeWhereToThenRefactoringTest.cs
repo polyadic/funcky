@@ -116,6 +116,36 @@ public partial class OptionSomeWhereToThenRefactoringTest
     }
 
     [Fact]
+    public async Task SpellsOutTheTypeOfADefaultLiteralPredicate()
+    {
+        await VerifyRefactoring(
+            "Option<int> x = Option.Return(10).[||]Where(_ => default);",
+            "Option<int> x = default(bool).Then(10);",
+            OptionCode);
+    }
+
+    [Fact]
+    public async Task NamesTheValueParameterWhenTheValueIsADelegate()
+    {
+        await VerifyRefactoring(
+            "Func<int> factory = () => 1; Option<Func<int>> x = Option.Return(factory).[||]Where(_ => true);",
+            "Func<int> factory = () => 1; Option<Func<int>> x = true.Then(value: factory);",
+            OptionCode,
+            usings: ["using System;", "using Funcky.Extensions;", "using Funcky.Monads;"]);
+    }
+
+    [Fact]
+    public async Task DoesNotSuggestRefactoringWhenThenWouldBindToAnotherExtension()
+    {
+        const string source = "Option<int> x = Option.Return(10).[||]Where(_ => true);";
+        await VerifyRefactoring(
+            source,
+            source,
+            OptionCode,
+            usings: ["using Funcky.Monads;", "using Other;"]);
+    }
+
+    [Fact]
     public async Task PreservesLeadingTrivia()
     {
         await VerifyRefactoring(
