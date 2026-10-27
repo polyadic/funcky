@@ -8,6 +8,15 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionFromBooleanMethodName = "FromBoolean";
 
+    /// <summary>The <c>Then</c> extension on <c>bool</c>, the replacement of <c>Option.FromBoolean</c>.</summary>
+    public const string BooleanThenMethodName = "Then";
+
+    /// <summary>The <c>value</c> parameter of <c>bool.Then</c>; naming it keeps a delegate out of the selector overloads.</summary>
+    public const string BooleanThenValueParameterName = "value";
+
+    /// <summary>The <c>Value</c> property of <c>Unit</c>.</summary>
+    public const string UnitValuePropertyName = "Value";
+
     public const string OptionFromNullableMethodName = "FromNullable";
 
     public const string OptionNonePropertyName = "None";

@@ -42,7 +42,7 @@ public sealed class WhereSelectTest
     }
 
     private static Option<int> SquareEvenNumbers(int number)
-        => Option.FromBoolean(IsEven(number), number * number);
+        => IsEven(number).Then(number * number);
 
     private static bool IsEven(int number)
         => number % 2 == 0;

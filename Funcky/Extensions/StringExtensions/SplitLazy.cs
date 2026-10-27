@@ -112,9 +112,7 @@ public static partial class StringExtensions
     //           1   2   3   4
     private static ExtractElement ExtractBy(ExtractElement extractElement)
         => (text, startIndex)
-            => from unit in Option.FromBoolean(startIndex <= text.Length)
-               from element in extractElement(text, startIndex)
-               select element;
+            => (startIndex <= text.Length).Then(() => extractElement(text, startIndex));
 
     private static ExtractElement GetIndex(FindNextIndex getIndex)
         => (text, startIndex)

@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using Funcky.Internal;
 
 namespace Funcky.Monads;
 
@@ -36,7 +37,7 @@ internal static class ExceptionUtilities
                 where stackTraceStringField.FieldType == typeof(string)
                 select CompileSetStackTrace(traceFormatType, toString, stackTraceStringField);
         }
-        catch (Exception exception) when (exception is not OutOfMemoryException)
+        catch (Exception exception) when (!exception.IsFatal)
         {
             return Option<Action<Exception, StackTrace>>.None;
         }

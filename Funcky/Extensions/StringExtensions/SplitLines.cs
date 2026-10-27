@@ -29,9 +29,7 @@ public static partial class StringExtensions
 
     private static Func<Option<SplitResult>> EndOfString(int startIndex, string text)
         => ()
-            => Option
-                .FromBoolean(startIndex < text.Length)
-                .Select(_ => new SplitResult(text.Length + 1, text.Substring(startIndex)));
+            => (startIndex < text.Length).Then(() => new SplitResult(text.Length + 1, text.Substring(startIndex)));
 
     private static Func<int, Option<SplitResult>> NewLine(string text, int startIndex)
         => index
