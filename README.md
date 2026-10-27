@@ -19,7 +19,7 @@ Funcky is a functional library for C# which encourages correct usage of the func
 * **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)**: Provides interoperability between Funcky and EF Core \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore)
   [![git: polyadic/funcky-efcore](https://img.shields.io/badge/git-polyadic%2Ffuncky--efcore-blue)](https://github.com/polyadic/funcky-efcore)
-* **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)**: Provides source generator for discriminated union support in C#; retiring with Funcky 4.0.0 in favour of native C# unions, see [#900](https://github.com/polyadic/funcky/issues/900) \
+* **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)**: Provides source generator for discriminated union support in C# \
   [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion)
   [![git: polyadic/funcky-discriminated-union](https://img.shields.io/badge/git-polyadic%2Ffuncky--discriminated--union-blue)](https://github.com/polyadic/funcky-discriminated-union)
 
