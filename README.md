@@ -20,7 +20,7 @@ rules, and ends with a few case studies. The [changelog](changelog.md) lists wha
 
 | Package | NuGet | Description |
 | --- | --- | --- |
-| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | Monads, `IEnumerable` and `string` extensions, functional helpers. No dependencies. |
+| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | Monads, `IEnumerable` and `string` extensions, functional helpers. No third-party dependencies. |
 | **Funcky.Analyzers** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers) | Optional analyzers and code fixes that suggest more idiomatic Funcky code. |
 | **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. |
 
@@ -93,7 +93,7 @@ var oldest = people.MaxByOrNone(person => person.Age);
 ### Result and Either for computations that can fail
 
 `Result<T>` carries either a value or an `Exception`, `Either<L, R>` carries one of two arbitrary types. Both support
-the same LINQ operators as `Option`, so a chain of fallible steps reads like a query and the failure is handled once,
+`Select` and `SelectMany` like `Option` does, so a chain of fallible steps reads like a query and the failure is handled once,
 at the end.
 
 ```cs
@@ -123,8 +123,8 @@ Sequence.Return(1, 2, 3, 4)
 
 ### Analyzers that catch misuse
 
-Funcky ships with built-in analyzers that turn misuse of its types into compile errors, for example instantiating an
-`Option` with `default` or treating an option as a collection of more than one element. The optional
+Funcky ships with built-in analyzers that turn misuse of its types into compile errors, for example instantiating
+a `Result` or `Either` with `default` or treating an option as a collection of more than one element. The optional
 **Funcky.Analyzers** package adds style rules with code fixes that lead from the general tool to the specific one, for
 example from `option.Match(none: fallback, some: Identity)` to `option.GetOrElse(fallback)`.
 
