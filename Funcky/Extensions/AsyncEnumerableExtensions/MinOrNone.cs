@@ -1,5 +1,6 @@
 #if ASYNC_SUPPORTED
 using Funcky.Internal.Aggregators;
+using Funcky.Internal.Validators;
 
 namespace Funcky.Extensions;
 
@@ -96,7 +97,7 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public ValueTask<Option<TResult>> MinOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.WhereSelect((item, _) => selector(item)).MinOrNoneAsync(Identity, cancellationToken);
+            => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector), cancellationToken).MinOrNoneAsync(Identity, cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the minimum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
