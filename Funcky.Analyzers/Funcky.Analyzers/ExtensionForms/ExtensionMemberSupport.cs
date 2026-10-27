@@ -43,4 +43,8 @@ public static class ExtensionMemberSupport
     /// <summary>Whether the symbol is declared in a class of the <c>Funcky.Extensions</c> namespace, directly or through an extension block.</summary>
     public static bool IsDeclaredInFunckyExtensions(ISymbol? symbol)
         => DeclaringClass(symbol)?.ContainingNamespace.ToDisplayString() == ExtensionsNamespace;
+
+    /// <summary>Whether the type can be named by its simple name at that position, which is the case when its namespace is imported.</summary>
+    public static bool IsVisible(INamedTypeSymbol type, SemanticModel semanticModel, int position)
+        => semanticModel.LookupNamespacesAndTypes(position, name: type.Name).Any(candidate => SymbolEquals(candidate, type));
 }

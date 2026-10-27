@@ -135,10 +135,165 @@ public sealed class PreferStaticParseOrNoneTest
 
             public static class C
             {
-                public static void M(string text, IEnumerable<string> texts)
+                public static void M(string? text, IEnumerable<string> texts)
                 {
-                    Option<Guid> a = text.ParseGuidOrNone();
+                    Option<Guid> a = text!.ParseGuidOrNone();
                     IEnumerable<Option<int>> b = texts.Select(ParseExtensions.ParseInt32OrNone);
+                    Option<int>? c = text?.ParseInt32OrNone();
+                    Option<int>? d = text?.Trim().ParseInt32OrNone();
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + StubCode);
+    }
+
+    [Fact]
+    public async Task KeepsTheCommentsInsideTheArgumentList()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+            using System;
+            using System.Globalization;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(string text, IFormatProvider provider)
+                {
+                    Option<int> a = {|λ1201:text.ParseInt32OrNone(/* explanation */)|};
+                    Option<DateTime> b = {|λ1201:text.ParseExactDateTimeOrNone("O", /* provider rationale */ provider)|};
+                    Option<DateTime> c = {|λ1201:text.ParseExactDateTimeOrNone(
+                        "O", // the round-trip format
+                        provider)|};
+                    Option<int> d = {|λ1201:ParseExtensions.ParseInt32OrNone(/* the candidate */ text)|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+            using System;
+            using System.Globalization;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(string text, IFormatProvider provider)
+                {
+                    Option<int> a = int.ParseOrNone(/* explanation */text);
+                    Option<DateTime> b = DateTime.ParseExactOrNone(text, "O", /* provider rationale */ provider);
+                    Option<DateTime> c = DateTime.ParseExactOrNone(
+                        text, "O", // the round-trip format
+                        provider);
+                    Option<int> d = int.ParseOrNone(/* the candidate */ text);
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
+    }
+
+    // Two diagnostics per test: with three or more fixes that all add the using, the batch fixer needs a second pass.
+    [Fact]
+    public async Task AddsTheUsingWhenTheExtensionIsCalledFullyQualified()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(string text)
+                {
+                    Option<int> a = {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(text)|};
+                    Option<int> b = {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(candidate: text)|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+            using System;
+            using Funcky.Monads;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(string text)
+                {
+                    Option<int> a = int.ParseOrNone(text);
+                    Option<int> b = int.ParseOrNone(text);
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
+    }
+
+    [Fact]
+    public async Task AddsTheUsingWhenTheExtensionIsImportedWithUsingStatic()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+            using System;
+            using Funcky.Monads;
+            using static Funcky.Extensions.ParseExtensions;
+
+            public enum Color { Red, Green }
+
+            public static class C
+            {
+                public static void M(string text)
+                {
+                    Option<Color> a = {|λ1201:text.ParseEnumOrNone<Color>(ignoreCase: true)|};
+                    Option<DateTime> b = {|λ1201:text.ParseExactDateTimeOrNone("O", null)|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            #nullable enable
+            using System;
+            using Funcky.Monads;
+            using static Funcky.Extensions.ParseExtensions;
+            using Funcky.Extensions;
+
+            public enum Color { Red, Green }
+
+            public static class C
+            {
+                public static void M(string text)
+                {
+                    Option<Color> a = Color.ParseOrNone(text, ignoreCase: true);
+                    Option<DateTime> b = DateTime.ParseExactOrNone(text, "O", null);
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
+    }
+
+    [Fact]
+    public async Task DoesNotReportWithoutAStaticCounterpartWhenTheNamespaceIsNotImported()
+    {
+        const string inputCode =
+            """
+            #nullable enable
+            using System;
+            using Funcky.Monads;
+
+            public static class C
+            {
+                public static void M(string text)
+                {
+                    Option<Guid> a = Funcky.Extensions.ParseExtensions.ParseGuidOrNone(text);
                 }
             }
             """;

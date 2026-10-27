@@ -75,13 +75,9 @@ public sealed class PreferEnumerableSequenceConstructorsAnalyzer : DiagnosticAna
         return symbolInfo.Symbol is { } symbol
             ? SymbolEquals(DeclaringClass(symbol), enumerableExtensionsType)
             : symbolInfo.CandidateSymbols.IsEmpty
-                && !IsVisible(enumerableExtensionsType, semanticModel, invocation.SpanStart)
+                && !IsVisible(enumerableExtensionsType, semanticModel, invocation.SpanStart) // when the class is visible by its simple name, `Funcky.Extensions` is imported, so a call that binds to nothing has no static form
                 && HasStaticMember(enumerableExtensionsType, invocation.Expression switch { MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.ValueText, SimpleNameSyntax name => name.Identifier.ValueText, _ => string.Empty });
     }
-
-    // When the class is visible by its simple name, `Funcky.Extensions` is imported, so a call that binds to nothing has no static form.
-    private static bool IsVisible(INamedTypeSymbol type, SemanticModel semanticModel, int position)
-        => semanticModel.LookupNamespacesAndTypes(position, name: type.Name).Any(candidate => SymbolEquals(candidate, type));
 
     private static InvocationExpressionSyntax? EnumerableForm(InvocationExpressionSyntax invocation, INamedTypeSymbol enumerableType)
     {
