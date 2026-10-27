@@ -20,7 +20,7 @@
   <ItemGroup Label="Build Dependencies">
     <PackageVersion Include="PolySharp" Version="1.16.0" />
     <PackageVersion Include="Polyadic.Build.SemanticVersioning" Version="1.0.0" />
-    <PackageVersion Include="Polyadic.CodeStyle" Version="1.2.2" />
+    <PackageVersion Include="Polyadic.CodeStyle" Version="1.2.3" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
   </ItemGroup>
   <ItemGroup Label="Test Dependencies">
