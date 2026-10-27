@@ -20,9 +20,9 @@ rules, and ends with a few case studies. The [changelog](changelog.md) lists wha
 
 | Package | | |
 | --- | --- | --- |
-| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | The library itself: `Option`, `Result`, `Either`, `Reader`, `Unit`, the `IEnumerable` and `string` extensions, the functional helpers and the built-in correctness analyzers. No dependencies. |
+| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | The library itself: `Option`, `Result`, `Either`, `Reader`, `Unit`, the `IEnumerable` and `string` extensions, the functional helpers and the built-in correctness analyzers. On .NET 10 and newer it also contains the `IAsyncEnumerable` and `Task` support. No dependencies. |
 | **Funcky.Analyzers** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers) | Optional analyzers and code fixes that suggest more idiomatic Funcky code. See the [analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html). |
-| **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. On .NET 10 and newer these APIs are part of **Funcky** itself and this package only forwards to them. |
+| **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. Fully integrated into **Funcky** on .NET 10 and newer: there the package only forwards its types to **Funcky**, so projects can drop the reference once they target .NET 10. |
 
 ### Testing
 
