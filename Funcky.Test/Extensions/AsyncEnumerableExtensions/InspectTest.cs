@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // The …Await and …AwaitWithCancellation overloads are obsolete but keep working until 4.0.0.
 #if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
 

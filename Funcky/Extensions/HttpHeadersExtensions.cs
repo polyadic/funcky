@@ -11,4 +11,12 @@ public static partial class HttpHeadersExtensions
                 ? Option.Some(result)
                 : Option<IEnumerable<string>>.None;
     }
+
+    extension(HttpResponseHeaders headers)
+    {
+        /// <summary>The <c>Location</c> header of the response, or <c>None</c> when the response has none, where
+        /// <see cref="HttpResponseHeaders.Location"/> is <see langword="null"/>.</summary>
+        public Option<Uri> LocationOrNone
+            => Option.FromNullable(headers.Location);
+    }
 }
