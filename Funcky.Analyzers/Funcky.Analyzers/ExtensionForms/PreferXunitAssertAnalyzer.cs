@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Analyzers.CodeAnalysisExtensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -35,18 +36,22 @@ public sealed class PreferXunitAssertAnalyzer : DiagnosticAnalyzer
             && context.Compilation.GetAssertExtensionsType() is { } assertExtensionsType
             && context.Compilation.GetXunitAssertType() is not null)
         {
-            context.RegisterOperationAction(AnalyzeInvocation(functionalAssertType, assertExtensionsType), OperationKind.Invocation);
+            var expressionOfTType = context.Compilation.GetExpressionOfTType();
+            context.RegisterOperationAction(AnalyzeInvocation(functionalAssertType, assertExtensionsType, expressionOfTType), OperationKind.Invocation);
         }
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol functionalAssertType, INamedTypeSymbol assertExtensionsType)
+    // Static extension members cannot be invoked in an expression tree, so FunctionalAssert stays the only form there.
+    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol functionalAssertType, INamedTypeSymbol assertExtensionsType, INamedTypeSymbol? expressionOfTType)
         => context =>
         {
             var operation = (IInvocationOperation)context.Operation;
+            var semanticModel = operation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never null for operations passed to an analyzer (according to docs)");
 
             if (SymbolEquals(operation.TargetMethod.ContainingType, functionalAssertType)
                 && SupportsExtensionMembers(operation.Syntax.SyntaxTree)
-                && HasMember(assertExtensionsType, operation.TargetMethod.Name))
+                && HasMember(assertExtensionsType, operation.TargetMethod.Name)
+                && !operation.Syntax.IsInExpressionTree(semanticModel, expressionOfTType, context.CancellationToken))
             {
                 context.ReportDiagnostic(Diagnostic.Create(PreferAssert, operation.Syntax.GetLocation(), operation.TargetMethod.Name));
             }

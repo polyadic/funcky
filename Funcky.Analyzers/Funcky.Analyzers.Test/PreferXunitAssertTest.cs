@@ -139,4 +139,47 @@ public sealed class PreferXunitAssertTest
 
         await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
     }
+
+    [Fact]
+    public async Task DoesNotReportInsideExpressionTrees()
+    {
+        const string inputCode =
+            """
+            using System;
+            using System.Linq.Expressions;
+            using Funcky;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+            using Xunit;
+
+            public static class C
+            {
+                public static void M(Option<int> option)
+                {
+                    Expression<Func<Option<int>, int>> e = option => FunctionalAssert.Some(option);
+                    Func<Option<int>, int> f = option => {|λ1203:FunctionalAssert.Some(option)|};
+                }
+            }
+            """;
+        const string fixedCode =
+            """
+            using System;
+            using System.Linq.Expressions;
+            using Funcky;
+            using Funcky.Extensions;
+            using Funcky.Monads;
+            using Xunit;
+
+            public static class C
+            {
+                public static void M(Option<int> option)
+                {
+                    Expression<Func<Option<int>, int>> e = option => FunctionalAssert.Some(option);
+                    Func<Option<int>, int> f = option => Assert.Some(option);
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
+    }
 }
