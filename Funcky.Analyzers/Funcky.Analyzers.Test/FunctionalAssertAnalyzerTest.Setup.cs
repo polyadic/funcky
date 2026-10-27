@@ -42,4 +42,25 @@ public sealed partial class FunctionalAssertAnalyzerTest
             }
         }
         """;
+
+    // language=csharp
+    private const string ExtensionStubs =
+        """
+        namespace Funcky.Extensions
+        {
+            using Funcky.Monads;
+            using Xunit;
+
+            public static class AssertExtensions
+            {
+                extension(Assert)
+                {
+                    [Funcky.CodeAnalysis.AssertMethodHasOverloadWithExpectedValueAttribute]
+                    public static T Some<T>(Option<T> option) => throw null!;
+
+                    public static T Some<T>(T expected, Option<T> option) => throw null!;
+                }
+            }
+        }
+        """;
 }

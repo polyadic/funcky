@@ -66,6 +66,50 @@ public sealed partial class FunctionalAssertAnalyzerTest
     }
 
     [Fact]
+    public async Task WarnsWithTheReceiverAsWrittenForStaticExtensionMembers()
+    {
+        // language=csharp
+        const string inputCode =
+            """
+            using Funcky.Extensions;
+            using Funcky.Monads;
+            using Xunit;
+
+            class C
+            {
+                private void M()
+                {
+                    Assert.Equal(42, Assert.Some(default(Option<int>)));
+                }
+            }
+            """;
+
+        // language=csharp
+        const string fixedCode =
+            """
+            using Funcky.Extensions;
+            using Funcky.Monads;
+            using Xunit;
+
+            class C
+            {
+                private void M()
+                {
+                    Assert.Some(42, default(Option<int>));
+                }
+            }
+            """;
+        DiagnosticResult[] expectedDiagnostics = [
+            VerifyCS.Diagnostic().WithSpan(9, 9, 9, 60).WithArguments("Assert", "Some"),
+        ];
+
+        await VerifyCS.VerifyCodeFixAsync(
+            inputCode + Environment.NewLine + AttributeSource + Stubs + ExtensionStubs,
+            expectedDiagnostics,
+            fixedCode + Environment.NewLine + AttributeSource + Stubs + ExtensionStubs);
+    }
+
+    [Fact]
     public async Task DoesNotWarnForSpecializedOverloadsOfAssertEqual()
     {
         // language=csharp
