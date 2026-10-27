@@ -2,7 +2,7 @@
 Provides expressive assertions for xUnit.net 2.x that unpack [Funcky]'s monads.
 
 ## Main Types
-* `Funcky.FunctionalAssert`—Assertions for Funcky's monads.
+* `Funcky.FunctionalAssert`—Assertions for Funcky's monads, also available as `Assert.Some`, `Assert.Ok`, … on xunit's `Assert` (C# 14).
 * `Funcky.Extensions.ToTheoryDataExtension`—Conveniently convert `IEnumerable`s to `TheoryData<..>`.
 
 ## How to Use
@@ -21,6 +21,18 @@ FunctionalAssert.Some("hello world", some);
 
 // Asserts that the Option is empty.
 FunctionalAssert.None(none);
+```
+
+### Use the assertions on `Assert`
+With the C# 14 compiler the same assertions are static extension members of xunit's `Assert`:
+```csharp
+var text = Assert.Some(some);
+Assert.Some("hello world", some);
+Assert.None(none);
+var value = Assert.Ok(result);
+var error = Assert.Error(result);
+var left = Assert.Left(either);
+var right = Assert.Right(either);
 ```
 
 ### Test an Either
