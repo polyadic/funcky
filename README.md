@@ -18,27 +18,37 @@ rules, and ends with a few case studies. The [changelog](changelog.md) lists wha
 
 ### Core
 
-| Package | | |
+| Package | NuGet | Description |
 | --- | --- | --- |
-| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | The library itself: `Option`, `Result`, `Either`, `Reader`, `Unit`, the `IEnumerable` and `string` extensions, the functional helpers and the built-in correctness analyzers. On .NET 10 and newer it also contains the `IAsyncEnumerable` and `Task` support. No dependencies. |
-| **Funcky.Analyzers** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers) | Optional analyzers and code fixes that suggest more idiomatic Funcky code. See the [analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html). |
-| **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. Fully integrated into **Funcky** on .NET 10 and newer: there the package only forwards its types to **Funcky**, so projects can drop the reference once they target .NET 10. |
+| **Funcky** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky)](https://www.nuget.org/packages/Funcky) | Monads, `IEnumerable` and `string` extensions, functional helpers. No dependencies. |
+| **Funcky.Analyzers** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Analyzers)](https://www.nuget.org/packages/Funcky.Analyzers) | Optional analyzers and code fixes that suggest more idiomatic Funcky code. |
+| **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. |
+
+The correctness analyzers are built into **Funcky** itself, **Funcky.Analyzers** adds the opt-in style rules. See the
+[analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html) for the full list.
+
+On .NET 10 and newer the async support is fully integrated into **Funcky**. There **Funcky.Async** only forwards its
+types to **Funcky**, so a project can drop the reference once it targets .NET 10.
 
 ### Testing
 
-| Package | | |
+| Package | NuGet | Description |
 | --- | --- | --- |
-| **Funcky.Xunit** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit)](https://www.nuget.org/packages/Funcky.Xunit) | `FunctionalAssert` for xUnit.net 2.x: assert that an `Option` is `Some`, a `Result` is `Ok` or an `Either` is `Right`, and get the unpacked value back. |
-| **Funcky.Xunit.v3** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit.v3)](https://www.nuget.org/packages/Funcky.Xunit.v3) | The same assertions for xUnit.net 3.x, plus serializers so `Option`, `Either` and `Unit` can be used as theory data. |
+| **Funcky.Xunit** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit)](https://www.nuget.org/packages/Funcky.Xunit) | `FunctionalAssert` for xUnit.net 2.x: unpack `Option`, `Result` and `Either` in tests. |
+| **Funcky.Xunit.v3** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit.v3)](https://www.nuget.org/packages/Funcky.Xunit.v3) | The same for xUnit.net 3.x, plus serializers to use the monads as theory data. |
 
 ### Interoperability
 
 These packages live in their own repositories.
 
-| Package | | |
+| Package | NuGet | Description |
 | --- | --- | --- |
 | **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore) | Interoperability between Funcky and EF Core. |
-| **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion) | A source generator for `Match` methods on discriminated unions. **Retiring with Funcky 4.0.0**: C# gets native `union` types and `closed` hierarchies with .NET 11, which Funcky 4.0.0 adopts. The generator keeps working with the 3.x line but receives no new features, see [#900](https://github.com/polyadic/funcky/issues/900). |
+| **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion) | Source generator for `Match` methods on discriminated unions. Retiring, see below. |
+
+**Funcky.DiscriminatedUnion is retiring with Funcky 4.0.0.** C# gets native `union` types and `closed` hierarchies
+with .NET 11, which Funcky 4.0.0 adopts. The generator keeps working with the 3.x line but receives no new features,
+see [#900](https://github.com/polyadic/funcky/issues/900).
 
 ## Highlights
 
