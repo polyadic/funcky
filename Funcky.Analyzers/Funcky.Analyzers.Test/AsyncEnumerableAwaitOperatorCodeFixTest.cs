@@ -191,7 +191,7 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
 
             public static class C
             {
-                public static void M(AsyncSource<int> source, int x)
+                public static void M(AsyncSource<int> source, int x, string x1)
                 {
                     _ = {|CS0618:source.InspectAwait(Log)|};
                 }
@@ -206,12 +206,210 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
 
             public static class C
             {
-                public static void M(AsyncSource<int> source, int x)
+                public static void M(AsyncSource<int> source, int x, string x1)
                 {
-                    _ = source.Inspect((x1, _) => Log(x1));
+                    _ = source.Inspect((x2, _) => Log(x2));
                 }
 
                 private static Task Log(int value) => Task.CompletedTask;
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task ChoosesATokenParameterNameThatPreservesDiscardsAndExistingParameters()
+    {
+        const string inputCode =
+            """
+            using System.Threading;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source, AsyncSource<string> strings)
+                {
+                    _ = {|CS0618:source.InspectAwait(_ => Log(_))|};
+                    _ = {|CS0618:source.InspectAwait((int _) => Log(_))|};
+                    _ = {|CS0618:source.InspectAwait(x =>
+                    {
+                        _ = Log(x);
+                        return Task.CompletedTask;
+                    })|};
+                    _ = {|CS0618:strings.InspectAwait(s => Task.FromResult(int.TryParse(s, out _)))|};
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+        const string fixedCode =
+            """
+            using System.Threading;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source, AsyncSource<string> strings)
+                {
+                    _ = source.Inspect((_, __) => Log(_));
+                    _ = source.Inspect((int _, CancellationToken __) => Log(_));
+                    _ = source.Inspect((x, __) =>
+                    {
+                        _ = Log(x);
+                        return Task.CompletedTask;
+                    });
+                    _ = strings.Inspect((s, __) => Task.FromResult(int.TryParse(s, out _)));
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task LooksThroughParenthesesAroundTheArgument()
+    {
+        const string inputCode =
+            """
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source)
+                {
+                    _ = {|CS0618:source.InspectAwait((x => Log(x)))|};
+                    _ = {|CS0618:source.InspectAwait(((Log)))|};
+                    _ = {|CS0618:source.InspectAwait((delegate (int x) { return Task.CompletedTask; }))|};
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+        const string fixedCode =
+            """
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source)
+                {
+                    _ = source.Inspect(((x, _) => Log(x)));
+                    _ = source.Inspect((x, _) => Log(x));
+                    _ = {|CS0618:source.InspectAwait((delegate (int x) { return Task.CompletedTask; }))|};
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task ParenthesizesACallableThatIsNotAPrimaryExpression()
+    {
+        const string inputCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source)
+                {
+                    _ = {|CS0618:source.InspectAwait((Func<int, Task>)Log)|};
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+        const string fixedCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source)
+                {
+                    _ = source.Inspect((x, _) => ((Func<int, Task>)Log)(x));
+                }
+
+                private static Task Log(int x) => Task.CompletedTask;
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
+    public async Task OffersNoFixForACallableThatWouldBeEvaluatedPerElement()
+    {
+        const string inputCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source, Func<int, Task>[] inspectors, Factory factory)
+                {
+                    _ = {|CS0618:source.InspectAwait(CreateInspector())|};
+                    _ = {|CS0618:source.InspectAwait(inspectors[0])|};
+                    _ = {|CS0618:source.InspectAwait(Factory.Create().Inspector)|};
+                    _ = {|CS0618:source.InspectAwait(factory.Inspector)|};
+                    _ = {|CS0618:source.InspectAwait(factory.Nested.Inspector)|};
+                }
+
+                private static Func<int, Task> CreateInspector() => _ => Task.CompletedTask;
+            }
+
+            public sealed class Factory
+            {
+                public Func<int, Task> Inspector { get; } = _ => Task.CompletedTask;
+
+                public Factory Nested => this;
+
+                public static Factory Create() => new();
+            }
+            """;
+        const string fixedCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static void M(AsyncSource<int> source, Func<int, Task>[] inspectors, Factory factory)
+                {
+                    _ = {|CS0618:source.InspectAwait(CreateInspector())|};
+                    _ = {|CS0618:source.InspectAwait(inspectors[0])|};
+                    _ = {|CS0618:source.InspectAwait(Factory.Create().Inspector)|};
+                    _ = source.Inspect((x, _) => factory.Inspector(x));
+                    _ = source.Inspect((x, _) => factory.Nested.Inspector(x));
+                }
+
+                private static Func<int, Task> CreateInspector() => _ => Task.CompletedTask;
+            }
+
+            public sealed class Factory
+            {
+                public Func<int, Task> Inspector { get; } = _ => Task.CompletedTask;
+
+                public Factory Nested => this;
+
+                public static Factory Create() => new();
             }
             """;
 
@@ -244,5 +442,6 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
             FixedCode = fixedCode + Environment.NewLine + StubCode,
             CompilerDiagnostics = CompilerDiagnostics.Warnings,
             DisabledDiagnostics = { MissingXmlComment },
+            FixedState = { MarkupHandling = MarkupMode.Allow },
         };
 }
