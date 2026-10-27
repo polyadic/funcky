@@ -419,3 +419,11 @@ static Funcky.Extensions.WarningHeaderValueParseExtensions.extension(System.Net.
 static Funcky.Extensions.WarningHeaderValueParseExtensions.ParseOrNone(string? candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
+Funcky.Extensions.BooleanExtensions
+Funcky.Extensions.BooleanExtensions.extension(bool)
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(TItem value) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, TItem value) -> Funcky.Monads.Option<TItem>

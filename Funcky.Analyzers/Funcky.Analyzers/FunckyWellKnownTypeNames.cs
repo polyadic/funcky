@@ -14,6 +14,10 @@ public static class FunckyWellKnownTypeNames
 
     public static INamedTypeSymbol? GetOptionExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.OptionExtensions");
 
+    public static INamedTypeSymbol? GetBooleanExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.BooleanExtensions");
+
+    public static INamedTypeSymbol? GetUnitType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Unit");
+
     public static INamedTypeSymbol? GetEitherType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Either`1");
 
     public static INamedTypeSymbol? GetEitherOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Either`2");
