@@ -62,6 +62,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   removed in Funcky 4.0.0. `…AwaitWithCancellation` is a rename; `…Await` additionally gains the token parameter, which
   can be discarded: `(item, _) => …`. The obsolete overloads stay a warning for the whole 3.x line. Funcky.Analyzers
   2.1.0 ships a code fix with fix-all support (see below).
+* Add `OrNone` extension properties (C# 14) for base class library members that return `null` as a regular outcome:
+  `Type.BaseTypeOrNone`, `MemberInfo.DeclaringTypeOrNone`, `Assembly.EntryPointOrNone`, `Exception.InnerExceptionOrNone`,
+  `DirectoryInfo.ParentOrNone` and `HttpResponseHeaders.LocationOrNone`. They are the first extension properties in
+  Funcky; see the [Nullable Member Extensions](https://polyadic.github.io/funcky/nullable-members.html) chapter.
 
 ### Analyzers (Funcky.Analyzers 2.1.0)
 * New: a code fix for the obsoletion warning CS0618 on `Option.FromBoolean`. `Option.FromBoolean(condition, value)`

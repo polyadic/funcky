@@ -569,6 +569,29 @@ Funcky.Extensions.NumberExtensions.extension(double).InRange<TFrom, TTo>(double 
 Funcky.Extensions.NumberExtensions.extension(decimal).InRange<TFrom, TTo>(decimal from, decimal to) -> bool
 Funcky.Extensions.NumberExtensions.extension(char).InRange<TFrom, TTo>(char from, char to) -> bool
 Funcky.Extensions.NumberExtensions.extension(System.Numerics.BigInteger).InRange<TFrom, TTo>(System.Numerics.BigInteger from, System.Numerics.BigInteger to) -> bool
+Funcky.Extensions.AssemblyExtensions
+Funcky.Extensions.AssemblyExtensions.extension(System.Reflection.Assembly!)
+Funcky.Extensions.AssemblyExtensions.extension(System.Reflection.Assembly!).EntryPointOrNone.get -> Funcky.Monads.Option<System.Reflection.MethodInfo!>
+Funcky.Extensions.DirectoryInfoExtensions
+Funcky.Extensions.DirectoryInfoExtensions.extension(System.IO.DirectoryInfo!)
+Funcky.Extensions.DirectoryInfoExtensions.extension(System.IO.DirectoryInfo!).ParentOrNone.get -> Funcky.Monads.Option<System.IO.DirectoryInfo!>
+Funcky.Extensions.ExceptionExtensions
+Funcky.Extensions.ExceptionExtensions.extension(System.Exception!)
+Funcky.Extensions.ExceptionExtensions.extension(System.Exception!).InnerExceptionOrNone.get -> Funcky.Monads.Option<System.Exception!>
+Funcky.Extensions.HttpHeadersExtensions.extension(System.Net.Http.Headers.HttpResponseHeaders!)
+Funcky.Extensions.HttpHeadersExtensions.extension(System.Net.Http.Headers.HttpResponseHeaders!).LocationOrNone.get -> Funcky.Monads.Option<System.Uri!>
+Funcky.Extensions.MemberInfoExtensions
+Funcky.Extensions.MemberInfoExtensions.extension(System.Reflection.MemberInfo!)
+Funcky.Extensions.MemberInfoExtensions.extension(System.Reflection.MemberInfo!).DeclaringTypeOrNone.get -> Funcky.Monads.Option<System.Type!>
+Funcky.Extensions.TypeExtensions
+Funcky.Extensions.TypeExtensions.extension(System.Type!)
+Funcky.Extensions.TypeExtensions.extension(System.Type!).BaseTypeOrNone.get -> Funcky.Monads.Option<System.Type!>
+static Funcky.Extensions.AssemblyExtensions.get_EntryPointOrNone(System.Reflection.Assembly! assembly) -> Funcky.Monads.Option<System.Reflection.MethodInfo!>
+static Funcky.Extensions.DirectoryInfoExtensions.get_ParentOrNone(System.IO.DirectoryInfo! directory) -> Funcky.Monads.Option<System.IO.DirectoryInfo!>
+static Funcky.Extensions.ExceptionExtensions.get_InnerExceptionOrNone(System.Exception! exception) -> Funcky.Monads.Option<System.Exception!>
+static Funcky.Extensions.HttpHeadersExtensions.get_LocationOrNone(System.Net.Http.Headers.HttpResponseHeaders! headers) -> Funcky.Monads.Option<System.Uri!>
+static Funcky.Extensions.MemberInfoExtensions.get_DeclaringTypeOrNone(System.Reflection.MemberInfo! member) -> Funcky.Monads.Option<System.Type!>
+static Funcky.Extensions.TypeExtensions.get_BaseTypeOrNone(System.Type! type) -> Funcky.Monads.Option<System.Type!>
 static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
 static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
 Funcky.Extensions.BooleanExtensions

@@ -38,6 +38,7 @@
 * [String Extensions](./string-extensions.md)
 * [Number Extensions](./number-extensions.md)
 * [Stream Extensions](./stream-extensions.md)
+* [Nullable Member Extensions](./nullable-members.md)
 * [Analyzer Rules](./analyzer-rules/analyzer-rules.md)
   * [λ0001](./analyzer-rules/λ0001.md)
   * [λ0003](./analyzer-rules/λ0003.md)
