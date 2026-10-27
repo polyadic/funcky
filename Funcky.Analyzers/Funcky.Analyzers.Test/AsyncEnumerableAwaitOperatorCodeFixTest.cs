@@ -473,6 +473,51 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFixTest
     }
 
     [Fact]
+    public async Task AppliesTheSameRewritingRulesToTheTerminalAggregations()
+    {
+        const string inputCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static async Task M(AsyncSource<string> strings, Func<string, Task<bool>> predicate)
+                {
+                    _ = await {|CS0618:strings.FirstOrNoneAwaitAsync(s => Task.FromResult(int.TryParse(s, out _)))|};
+                    _ = await {|CS0618:strings.FirstOrNoneAwaitAsync(_ => Task.FromResult(_.Length > 1))|};
+                    _ = await {|CS0618:strings.FirstOrNoneAwaitAsync(predicate)|};
+                    _ = await {|CS0618:strings.FirstOrNoneAwaitAsync(CreatePredicate())|};
+                }
+
+                private static Func<string, Task<bool>> CreatePredicate() => _ => Task.FromResult(true);
+            }
+            """;
+        const string fixedCode =
+            """
+            using System;
+            using System.Threading.Tasks;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static async Task M(AsyncSource<string> strings, Func<string, Task<bool>> predicate)
+                {
+                    _ = await strings.FirstOrNoneAsync((s, __) => Task.FromResult(int.TryParse(s, out _)));
+                    _ = await strings.FirstOrNoneAsync((_, __) => Task.FromResult(_.Length > 1));
+                    _ = await strings.FirstOrNoneAsync((x, _) => predicate(x));
+                    _ = await {|CS0618:strings.FirstOrNoneAwaitAsync(CreatePredicate())|};
+                }
+
+                private static Func<string, Task<bool>> CreatePredicate() => _ => Task.FromResult(true);
+            }
+            """;
+
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
+    }
+
+    [Fact]
     public async Task OffersNoFixForOtherObsoleteMembers()
     {
         const string inputCode =

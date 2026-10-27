@@ -62,7 +62,7 @@ public static partial class AsyncEnumerableExtensions
         [Obsolete("Use MaxOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<TResult>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => source.MaxOrNoneAsync((item, _) => selector(item), cancellationToken);
+            => source.MaxOrNoneAsync(IgnoringToken(ArgumentValidator.NotNull(selector)), cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -99,7 +99,7 @@ public static partial class AsyncEnumerableExtensions
         [Obsolete("Use MaxOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
         public ValueTask<Option<TResult>> MaxOrNoneAwaitAsync<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector, CancellationToken cancellationToken = default)
             where TResult : notnull
-            => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector), cancellationToken).MaxOrNoneAsync(Identity, cancellationToken);
+            => source.MaxOrNoneAsync(IgnoringToken(ArgumentValidator.NotNull(selector)), cancellationToken);
 
         /// <summary>
         /// Invokes a transform function on each element of a sequence and returns the maximum from the optional generic values compared by a <see cref="Comparer{T}"/>. If the transformed sequence only consists of none or is empty it returns None.
@@ -127,5 +127,10 @@ public static partial class AsyncEnumerableExtensions
             where TResult : notnull
             => source.MaxOrNoneAsync(selector, cancellationToken);
     }
+
+    // Adapts a selector without token to the token-carrying overloads; the obsolete MaxOrNoneAwaitAsync and MinOrNoneAwaitAsync
+    // validate the selector before wrapping it, because the lambda would otherwise hide a null argument until the first element.
+    private static Func<TSource, CancellationToken, ValueTask<TResult>> IgnoringToken<TSource, TResult>(Func<TSource, ValueTask<TResult>> selector)
+        => (item, _) => selector(item);
 }
 #endif
