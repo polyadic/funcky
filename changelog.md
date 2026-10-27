@@ -66,6 +66,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `Type.BaseTypeOrNone`, `MemberInfo.DeclaringTypeOrNone`, `Assembly.EntryPointOrNone`, `Exception.InnerExceptionOrNone`,
   `DirectoryInfo.ParentOrNone` and `HttpResponseHeaders.LocationOrNone`. They are the first extension properties in
   Funcky; see the [Nullable Member Extensions](https://polyadic.github.io/funcky/nullable-members.html) chapter.
+* Announcement: [Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union) is retired with
+  Funcky 4.0.0, because C# gets native `union` types and `closed` hierarchies with .NET 11, which Funcky 4.0.0 adopts.
+  The generator keeps working with the 3.x line and receives no new features. Details in
+  [#900](https://github.com/polyadic/funcky/issues/900).
 
 ### Analyzers (Funcky.Analyzers 2.1.0)
 * New: a code fix for the obsoletion warning CS0618 on `Option.FromBoolean`. `Option.FromBoolean(condition, value)`
