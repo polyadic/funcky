@@ -97,6 +97,7 @@ public sealed class PreferEnumerableSequenceConstructorsTest
         await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
     }
 
+    // Three or more diagnostics: Fix-All has to rewrite every call in one pass although each fix on its own adds the same using (#1009).
     [Fact]
     public async Task AddsTheUsingForTheExtensionWhenMissing()
     {
@@ -107,7 +108,11 @@ public sealed class PreferEnumerableSequenceConstructorsTest
 
             public static class C
             {
-                public static IReadOnlyList<int> M() => {|λ1202:Sequence.Return(1)|};
+                public static IReadOnlyList<int> Single() => {|λ1202:Sequence.Return(1)|};
+
+                public static IReadOnlyList<object> Many() => {|λ1202:Sequence.Return<object>(1, 2)|};
+
+                public static IEnumerable<int> Successors() => {|λ1202:Funcky.Sequence.Successors(1, n => n + 1)|};
             }
             """;
         const string fixedCode =
@@ -118,7 +123,11 @@ public sealed class PreferEnumerableSequenceConstructorsTest
 
             public static class C
             {
-                public static IReadOnlyList<int> M() => System.Linq.Enumerable.Return(1);
+                public static IReadOnlyList<int> Single() => System.Linq.Enumerable.Return(1);
+
+                public static IReadOnlyList<object> Many() => System.Linq.Enumerable.Return<object>(1, 2);
+
+                public static IEnumerable<int> Successors() => System.Linq.Enumerable.Successors(1, n => n + 1);
             }
             """;
 

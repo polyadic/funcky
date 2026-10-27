@@ -197,7 +197,7 @@ public sealed class PreferStaticParseOrNoneTest
         await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
     }
 
-    // Two diagnostics per test: with three or more fixes that all add the using, the batch fixer needs a second pass.
+    // Three or more diagnostics per test: Fix-All has to rewrite every call in one pass although each fix on its own adds the same using (#1009).
     [Fact]
     public async Task AddsTheUsingWhenTheExtensionIsCalledFullyQualified()
     {
@@ -213,6 +213,8 @@ public sealed class PreferStaticParseOrNoneTest
                 {
                     Option<int> a = {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(text)|};
                     Option<int> b = {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(candidate: text)|};
+                    Option<DateTime> c = {|λ1201:Funcky.Extensions.ParseExtensions.ParseExactDateTimeOrNone(text, "O", null)|};
+                    Option<int> d = {|λ1201:Funcky.Extensions.ParseExtensions.ParseInt32OrNone(text.Trim())|};
                 }
             }
             """;
@@ -229,6 +231,8 @@ public sealed class PreferStaticParseOrNoneTest
                 {
                     Option<int> a = int.ParseOrNone(text);
                     Option<int> b = int.ParseOrNone(text);
+                    Option<DateTime> c = DateTime.ParseExactOrNone(text, "O", null);
+                    Option<int> d = int.ParseOrNone(text.Trim());
                 }
             }
             """;
@@ -254,6 +258,7 @@ public sealed class PreferStaticParseOrNoneTest
                 {
                     Option<Color> a = {|λ1201:text.ParseEnumOrNone<Color>(ignoreCase: true)|};
                     Option<DateTime> b = {|λ1201:text.ParseExactDateTimeOrNone("O", null)|};
+                    Option<int> c = {|λ1201:text.ParseInt32OrNone()|};
                 }
             }
             """;
@@ -273,6 +278,7 @@ public sealed class PreferStaticParseOrNoneTest
                 {
                     Option<Color> a = Color.ParseOrNone(text, ignoreCase: true);
                     Option<DateTime> b = DateTime.ParseExactOrNone(text, "O", null);
+                    Option<int> c = int.ParseOrNone(text);
                 }
             }
             """;
