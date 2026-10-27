@@ -22,7 +22,6 @@ public sealed class EitherSerializerTest
             Either<string>.Return(20),
             Either<string, int>.Left("foo"),
             Either<string, int>.Left("bar"),
-            Either<string, int>.Left("bar"),
             Either<NonSerializable, int>.Right(42),
             Either<int, NonSerializable>.Left(42),
         ]);
