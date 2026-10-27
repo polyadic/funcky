@@ -26,8 +26,8 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions`, …), because the C# compiler does not
   allow static extension members of different receiver types with the same name and parameters in one class.
   Consumers on a compiler older than C# 14 see them as plain static methods of these classes
-  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
-  decides their fate.
+  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay on the 3.x line, but the static form is the recommended one: 4.0.0 decides the fate of
+  the classic forms (#1003), and moving early keeps that migration small. Funcky.Analyzers 2.1.0 ships λ1201 with a code fix for it.
 * The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
   `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
