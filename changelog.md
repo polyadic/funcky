@@ -33,6 +33,10 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
   `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+* Add `Result.Try(Func<T>)` and `Result.TryAsync(Func<Task<T>>)`, which run a function and capture its outcome as
+  `Ok(value)` or `Error(exception)`: `Result.Try(() => int.Parse(text))`. Exceptions that signal a corrupted process
+  (`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) are never
+  captured, and neither is `OperationCanceledException`, since a cancelled operation has no result.
 * Add `Then` on `bool` as the replacement of `Option.FromBoolean`, modelled on Rust's `bool::then`:
   `(number % 2 == 0).Then(number)` is `Some(number)` when the condition holds and `None` otherwise. `Then(() => value)`
   evaluates the value lazily, and `Then(() => option)` flattens, which replaces the `Option.FromBoolean(condition,

@@ -646,6 +646,8 @@ Funcky.Extensions.NumberExtensions.extension(double).InRange<TFrom, TTo>(double 
 Funcky.Extensions.NumberExtensions.extension(decimal).InRange<TFrom, TTo>(decimal from, decimal to) -> bool
 Funcky.Extensions.NumberExtensions.extension(char).InRange<TFrom, TTo>(char from, char to) -> bool
 Funcky.Extensions.NumberExtensions.extension(System.Numerics.BigInteger).InRange<TFrom, TTo>(System.Numerics.BigInteger from, System.Numerics.BigInteger to) -> bool
+static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
 Funcky.Extensions.BooleanExtensions
 Funcky.Extensions.BooleanExtensions.extension(bool)
 Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
