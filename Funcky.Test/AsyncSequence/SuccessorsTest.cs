@@ -38,7 +38,7 @@ public sealed class SuccessorsTest
     {
         await AsyncAssert.Equal(
             AsyncEnumerable.Range(0, 11),
-            AsyncSequence.Successors(0, i => ValueTask.FromResult(Option.FromBoolean(i < 10, i + 1))));
+            AsyncSequence.Successors(0, i => ValueTask.FromResult((i < 10).Then(i + 1))));
     }
 
     [Fact]

@@ -8,7 +8,7 @@
         <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Description>Package to use Funcky with xUnit</Description>
         <PackageTags>Functional Monad xUnit</PackageTags>
-        <VersionPrefix>2.2.0</VersionPrefix>
+        <VersionPrefix>2.3.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <RootNamespace>Funcky</RootNamespace>

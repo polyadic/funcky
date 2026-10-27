@@ -351,3 +351,36 @@ static Funcky.Extensions.VersionParseExtensions.ParseOrNone(System.ReadOnlySpan<
 ~static Funcky.Extensions.ViaHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.ViaHeaderValue!>
 ~static Funcky.Extensions.WarningHeaderValueParseExtensions.extension(System.Net.Http.Headers.WarningHeaderValue!).ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
 ~static Funcky.Extensions.WarningHeaderValueParseExtensions.ParseOrNone(string candidate) -> Funcky.Monads.Option<System.Net.Http.Headers.WarningHeaderValue!>
+Funcky.Extensions.AssemblyExtensions
+Funcky.Extensions.AssemblyExtensions.extension(System.Reflection.Assembly!)
+Funcky.Extensions.AssemblyExtensions.extension(System.Reflection.Assembly!).EntryPointOrNone.get -> Funcky.Monads.Option<System.Reflection.MethodInfo!>
+Funcky.Extensions.DirectoryInfoExtensions
+Funcky.Extensions.DirectoryInfoExtensions.extension(System.IO.DirectoryInfo!)
+Funcky.Extensions.DirectoryInfoExtensions.extension(System.IO.DirectoryInfo!).ParentOrNone.get -> Funcky.Monads.Option<System.IO.DirectoryInfo!>
+Funcky.Extensions.ExceptionExtensions
+Funcky.Extensions.ExceptionExtensions.extension(System.Exception!)
+Funcky.Extensions.ExceptionExtensions.extension(System.Exception!).InnerExceptionOrNone.get -> Funcky.Monads.Option<System.Exception!>
+Funcky.Extensions.HttpHeadersExtensions.extension(System.Net.Http.Headers.HttpResponseHeaders!)
+Funcky.Extensions.HttpHeadersExtensions.extension(System.Net.Http.Headers.HttpResponseHeaders!).LocationOrNone.get -> Funcky.Monads.Option<System.Uri!>
+Funcky.Extensions.MemberInfoExtensions
+Funcky.Extensions.MemberInfoExtensions.extension(System.Reflection.MemberInfo!)
+Funcky.Extensions.MemberInfoExtensions.extension(System.Reflection.MemberInfo!).DeclaringTypeOrNone.get -> Funcky.Monads.Option<System.Type!>
+Funcky.Extensions.TypeExtensions
+Funcky.Extensions.TypeExtensions.extension(System.Type!)
+Funcky.Extensions.TypeExtensions.extension(System.Type!).BaseTypeOrNone.get -> Funcky.Monads.Option<System.Type!>
+static Funcky.Extensions.AssemblyExtensions.get_EntryPointOrNone(System.Reflection.Assembly! assembly) -> Funcky.Monads.Option<System.Reflection.MethodInfo!>
+static Funcky.Extensions.DirectoryInfoExtensions.get_ParentOrNone(System.IO.DirectoryInfo! directory) -> Funcky.Monads.Option<System.IO.DirectoryInfo!>
+static Funcky.Extensions.ExceptionExtensions.get_InnerExceptionOrNone(System.Exception! exception) -> Funcky.Monads.Option<System.Exception!>
+static Funcky.Extensions.HttpHeadersExtensions.get_LocationOrNone(System.Net.Http.Headers.HttpResponseHeaders! headers) -> Funcky.Monads.Option<System.Uri!>
+static Funcky.Extensions.MemberInfoExtensions.get_DeclaringTypeOrNone(System.Reflection.MemberInfo! member) -> Funcky.Monads.Option<System.Type!>
+static Funcky.Extensions.TypeExtensions.get_BaseTypeOrNone(System.Type! type) -> Funcky.Monads.Option<System.Type!>
+static Funcky.Monads.Result.Try<TValidResult>(System.Func<TValidResult>! function) -> Funcky.Monads.Result<TValidResult>
+static Funcky.Monads.Result.TryAsync<TValidResult>(System.Func<System.Threading.Tasks.Task<TValidResult>!>! function) -> System.Threading.Tasks.Task<Funcky.Monads.Result<TValidResult>>!
+Funcky.Extensions.BooleanExtensions
+Funcky.Extensions.BooleanExtensions.extension(bool)
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+Funcky.Extensions.BooleanExtensions.extension(bool).Then<TItem>(TItem value) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<Funcky.Monads.Option<TItem>>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+static Funcky.Extensions.BooleanExtensions.Then<TItem>(this bool condition, TItem value) -> Funcky.Monads.Option<TItem>

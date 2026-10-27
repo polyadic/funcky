@@ -8,11 +8,17 @@ public static class FunckyWellKnownTypeNames
 
     public static INamedTypeSymbol? GetEnumerableExtensionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.EnumerableExtensions");
 
+    public static INamedTypeSymbol? GetAsyncEnumerableExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.AsyncEnumerableExtensions");
+
     public static INamedTypeSymbol? GetOptionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option`1");
 
     public static INamedTypeSymbol? GetOptionType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Option");
 
     public static INamedTypeSymbol? GetOptionExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.OptionExtensions");
+
+    public static INamedTypeSymbol? GetBooleanExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.BooleanExtensions");
+
+    public static INamedTypeSymbol? GetUnitType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Unit");
 
     public static INamedTypeSymbol? GetEitherType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Monads.Either`1");
 
@@ -29,4 +35,10 @@ public static class FunckyWellKnownTypeNames
     public static INamedTypeSymbol? GetExpressionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
 
     public static INamedTypeSymbol? GetXunitAssertType(this Compilation compilation) => compilation.GetTypeByMetadataName("Xunit.Assert");
+
+    public static INamedTypeSymbol? GetFunctionalAssertType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.FunctionalAssert");
+
+    public static INamedTypeSymbol? GetAssertExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.AssertExtensions");
+
+    public static INamedTypeSymbol? GetParseExtensionsType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.Extensions.ParseExtensions");
 }

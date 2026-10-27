@@ -20,3 +20,18 @@ indent_size = 2
 [*.verified.cs]
 trim_trailing_whitespace = false
 insert_final_newline = false
+
+# The test projects exercise the classic and the C# 14 extension form of every API on purpose.
+[*.Test/**.cs]
+dotnet_diagnostic.λ1201.severity = none
+dotnet_diagnostic.λ1202.severity = none
+dotnet_diagnostic.λ1203.severity = none
+
+# The library implements both forms itself; the rules address its consumers.
+[Funcky/**.cs]
+dotnet_diagnostic.λ1201.severity = none
+dotnet_diagnostic.λ1202.severity = none
+
+# Funcky.Xunit implements Assert.Some & co. by delegating to FunctionalAssert; the rule addresses its consumers.
+[Funcky.Xunit/**.cs]
+dotnet_diagnostic.λ1203.severity = none
