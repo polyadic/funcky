@@ -15,8 +15,17 @@ The asynchronous APIs have two homes, and which one you use depends only on your
   sources against [System.Linq.Async](https://www.nuget.org/packages/System.Linq.Async) (versions 5 and 6).
 
 The `net10.0` asset of `Funcky.Async` contains nothing but type forwards to `Funcky`. A project that referenced
-`Funcky.Async` on .NET 8 and then retargets to .NET 10 keeps compiling without a change, and can drop the
-`Funcky.Async` reference whenever convenient. Namespaces and type names are the same on both sides: the extension
+`Funcky.Async` on .NET 8 and then retargets to .NET 10 therefore keeps the package reference working, and can drop
+it whenever convenient. The forwards do not make the two sides source compatible, though: where the base class
+library already provides an operator, Funcky defers to it, and two of them differ from the `Funcky.Async` shape.
+
+* `AdjacentGroupBy` returns `IAsyncEnumerable<IAsyncGrouping<TKey, T>>` in `Funcky.Async`, since System.Linq.Async
+  has no synchronous groupings, and `IAsyncEnumerable<IGrouping<TKey, T>>` on .NET 10. Code that treats a group as a
+  sequence, `await grouping.CountAsync()` for example, becomes `grouping.Count()` after retargeting.
+* `Chunk(size)` without a result selector is the base class library's on .NET 10 and yields `T[]` instead of
+  `IReadOnlyList<T>`. The overloads with a result selector are Funcky's on both sides and keep `IReadOnlyList<T>`.
+
+Namespaces and type names are otherwise the same on both sides: the extension
 methods are in `Funcky.Extensions.AsyncEnumerableExtensions`, the constructors in `Funcky.AsyncSequence`, retrying in
 `Funcky.AsyncFunctional`, and the `Option` awaiters in `Funcky.Monads.OptionAsyncExtensions`. With `FunckyImplicitUsings`
 on, the first three namespaces are imported for you; `AsyncFunctional` is not imported statically, so `RetryAsync` is
@@ -49,15 +58,16 @@ makes cancelling the enumeration also cancel the work in progress.
 
 Always write the two-parameter form for an asynchronous delegate, even when you discard the token. The one-parameter
 `async order => …` has no asynchronous overload to bind to once the obsolete `…Await` methods are gone, and C# would
-happily convert it to the `Action<T>` overload as an `async void` lambda, which swallows exceptions and runs
-unobserved.
+happily convert it to the `Action<T>` overload as an `async void` lambda. The enumeration then continues without
+awaiting the callback, and an exception thrown by it does not fail the enumeration: it is posted to the captured
+synchronization context or, without one, surfaces as an unhandled exception that can take the process down.
 
 ## The operator families
 
 Most operators marked ⁂ in the [IEnumerable Extensions](./enumerable-extensions/enumerable-extensions.md) table exist
 on `IAsyncEnumerable<T>` with the same name and the same behaviour. Operators that return a sequence keep their name
-(`Pairwise`, `Merge`, `WithIndex`, `Materialize`, …); operators that return a single value get the `Async` suffix and
-return a `ValueTask` (`ElementAtOrNoneAsync`, `AggregateOrNoneAsync`, …). The operators below are the ones that take
+(`Pairwise`, `Merge`, `WithIndex`, …); operators that return a single value get the `Async` suffix and return a
+`ValueTask` (`ElementAtOrNoneAsync`, `AggregateOrNoneAsync`, `MaterializeAsync`, …). The operators below are the ones that take
 a delegate and therefore come in a synchronous and an asynchronous form.
 
 ### Lazy operators with an asynchronous delegate
@@ -111,8 +121,9 @@ Option<Order> firstOpen = await orders.FirstOrNoneAsync(
 var (large, small) = await orders.PartitionAsync(async (order, _) => await IsLargeAsync(order));
 ```
 
-`PartitionAsync` also has the `Either`- and `Result`-based forms of [Partition](./enumerable-extensions/filtering-and-partitioning.md#partition);
-those take no delegate and were never affected by the renaming.
+`PartitionAsync` also has the `Either`- and `Result`-based forms of [Partition](./enumerable-extensions/filtering-and-partitioning.md#partition).
+Their delegates, the `Either` selector and the result selectors, are synchronous only, so these overloads never had
+an `…Await` form and were not affected by the renaming.
 
 ## Migrating from the `…Await` names
 
@@ -180,7 +191,7 @@ IAsyncEnumerable<Page> pages = AsyncSequence.Successors(
 
 `CycleRange` and `RepeatRange` return an `IAsyncBuffer<T>`, which is an `IAsyncEnumerable<T>` that is also
 `IAsyncDisposable`: the source is enumerated once and buffered, and disposing the buffer disposes the source. The
-same interface is returned by the asynchronous [Memoize](./enumerable-extensions/memoize.md). Use `await using`.
+same interface is returned by the asynchronous [Memoize](./enumerable-extensions/side-effects-and-evaluation.md#memoize). Use `await using`.
 
 The `successor` delegate of `Successors` does not receive a cancellation token; the generator checks the token of the
 enumeration between two elements instead.
