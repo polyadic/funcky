@@ -96,8 +96,10 @@ Assert.Some(42, option);
 ```
 
 [λ1101](./analyzer-rules/λ1101.md) flags the first form and rewrites it to the second. The single call is not only
-shorter: the assertion knows the monad it unwrapped, so a failing test reports `Expected: Some(42)` and
-`Actual: None` instead of a `NullReferenceException` or a generic `Assert.Equal` failure.
+shorter, it also fails better. Both forms report `None` as an assertion failure, but only the single call knows what
+was expected and prints `Expected: Some(42)` where the two-step form can only say `Some(...)`. And when the option is
+`Some(41)`, the two-step form fails in `Assert.Equal` with `41` against `42` and no trace of the monad, while the single
+call reports `Expected: Some(42)` and `Actual: Some(41)`.
 
 ## How a failure reads
 
@@ -126,8 +128,9 @@ The returning overloads cannot know the expected content and print `Some(...)`, 
 `Left(...)` or `Right(...)` as the expected side. The label says `FunctionalAssert` in both forms, so a message
 looks the same whichever receiver the test used.
 
-The assertion's own frames are hidden from the stack trace (`[StackTraceHidden]` on .NET 6 and later, a rethrow that
-erases the frames elsewhere), so the first line of the trace is the test that failed.
+On .NET 6 and later the assertion's own frames are hidden from the stack trace with `[StackTraceHidden]`, so the
+first line of the trace is the test that failed. On older frameworks a rethrow erases the internal frames of the
+monad and the lambdas, but the assertion method itself remains the first frame, with the test right below it.
 
 ## Why there is no `Assert.True(option.IsSome)`
 
@@ -167,9 +170,10 @@ which covers the same need.
 
 ### `Option`, `Either` and `Unit` as theory data (xUnit.net 3.x)
 
-xunit 3.x only accepts theory-data values it can serialize, so that each row shows up as its own test in the
-runner and can be rerun on its own. Funcky.Xunit.v3 ships serializers for `Option<T>`, `Either<L, R>` and `Unit`,
-so these types can be theory parameters directly:
+xunit 3.x runs a theory with any data, but only rows it can serialize are discovered individually: each shows up
+as its own test in the runner and can be rerun on its own. A row with a value xunit cannot serialize collapses the
+whole theory into a single test case. Funcky.Xunit.v3 ships serializers for `Option<T>`, `Either<L, R>` and `Unit`,
+so these types work as theory parameters without losing per-row discovery:
 
 ```cs
 [Theory]
