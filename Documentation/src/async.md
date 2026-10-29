@@ -14,7 +14,7 @@ The asynchronous APIs have two homes, and which one you use depends only on your
 * **Older frameworks** (`netstandard2.0` up to .NET 9): they are in the `Funcky.Async` package, which compiles the same
   sources against [System.Linq.Async](https://www.nuget.org/packages/System.Linq.Async) (versions 5 and 6).
 
-The `net10.0` asset of `Funcky.Async` contains nothing but type forwards to `Funcky`. A project that referenced
+The `net10.0` and `net11.0` assets of `Funcky.Async` contain nothing but type forwards to `Funcky`. A project that referenced
 `Funcky.Async` on .NET 8 and then retargets to .NET 10 therefore keeps the package reference working, and can drop
 it whenever convenient. The forwards do not make the two sides source compatible, though: where the base class
 library already provides an operator, Funcky defers to it, and two of them differ from the `Funcky.Async` shape.

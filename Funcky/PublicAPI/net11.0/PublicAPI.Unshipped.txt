@@ -1,0 +1,47 @@
+#nullable enable
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(char value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(char value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value, int startIndex) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value, int startIndex, int count) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).IndexOfOrNone(System.Text.Rune value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(char value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(char value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(char value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value, int startIndex) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value, int startIndex, int count) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+Funcky.Extensions.StringExtensions.extension(string!).LastIndexOfOrNone(System.Text.Rune value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger).ParseOrNone(System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger).ParseOrNone(System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.BigIntegerParseExtensions.extension(System.Numerics.BigInteger).ParseOrNone(System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.BigIntegerParseExtensions.ParseOrNone(System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.BigIntegerParseExtensions.ParseOrNone(System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.BigIntegerParseExtensions.ParseOrNone(System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.IPEndPointParseExtensions.extension(System.Net.IPEndPoint!).ParseOrNone(System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.IPEndPointParseExtensions.ParseOrNone(System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<byte> candidate, System.Globalization.NumberStyles style, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseBigIntegerOrNone(this System.ReadOnlySpan<byte> candidate, System.IFormatProvider? provider) -> Funcky.Monads.Option<System.Numerics.BigInteger>
+static Funcky.Extensions.ParseExtensions.ParseIPEndPointOrNone(this System.ReadOnlySpan<byte> candidate) -> Funcky.Monads.Option<System.Net.IPEndPoint!>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, char value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, int count) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.IndexOfOrNone(this string! haystack, System.Text.Rune value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, char value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, char value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, char value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, int count) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>

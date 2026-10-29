@@ -22,7 +22,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
-      name: Install Current .NET SDK
+      name: Install .NET SDK 11.0 (release candidate)
+      with:
+        dotnet-version: '11.0.x'
+        dotnet-quality: 'preview'
+    - uses: actions/setup-dotnet@v4
+      name: 'Install .NET SDK 10.0'
+      with:
+        dotnet-version: '10.0.x'
     - uses: actions/setup-dotnet@v4
       name: 'Install .NET SDK 9.0'
       with:
@@ -44,11 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        framework: [ 'net8.0', 'net10.0' ]
+        framework: [ 'net8.0', 'net10.0', 'net11.0' ]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
-      name: Install Current .NET SDK
+      name: Install .NET SDK 11.0 (release candidate)
+      with:
+        dotnet-version: '11.0.x'
+        dotnet-quality: 'preview'
     # Building the analyzers (the code fix projects in particular) for the linux runtime
     # results in some super-old System.* packages with vulnerabilities being pulled in.
     # Our analyzers don't do anything wrt. trimming and AOT so it's safe to disable them.
@@ -63,7 +73,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
-      name: Install Current .NET SDK
+      name: Install .NET SDK 11.0 (release candidate)
+      with:
+        dotnet-version: '11.0.x'
+        dotnet-quality: 'preview'
     - name: Generate NuGet Packages
       run: dotnet pack --configuration Release --output nupkg
     - uses: actions/upload-artifact@v4
