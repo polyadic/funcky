@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Funcky 3.8.0
+## Funcky 3.8.0 | Funcky.Async 1.6.0 | Funcky.Xunit 2.3.0 | Funcky.Xunit.v3 1.1.0 | Funcky.Analyzers 2.1.0
 
 * Add `InRange<TFrom, TTo>(from, to)` extension (.NET 7+) on all BCL numeric types to check whether a value lies within
   an interval. The boundary kinds are given as type arguments `Including` / `Excluding`, e.g.
