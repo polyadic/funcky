@@ -1,5 +1,5 @@
 ## About
-Provides expressive assertions for xUnit.net 3.x that unpack [Funcky]'s monads.
+Provides expressive assertions for xUnit.net v3 (1.x to 4.x) that unpack [Funcky]'s monads.
 
 It also enables `Option`, `Either` and `Unit` for use in theory data by providing
 custom [serializers].

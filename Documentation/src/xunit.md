@@ -8,10 +8,10 @@ assert the case, get the content back.
 
 ## Which package
 
-| xUnit.net version | Package                                                               |
-|-------------------|-----------------------------------------------------------------------|
-| 2.x               | [`Funcky.Xunit`](https://www.nuget.org/packages/Funcky.Xunit)         |
-| 3.x               | [`Funcky.Xunit.v3`](https://www.nuget.org/packages/Funcky.Xunit.v3)   |
+| xUnit.net version     | Package                                                             |
+|-----------------------|---------------------------------------------------------------------|
+| 2.x                   | [`Funcky.Xunit`](https://www.nuget.org/packages/Funcky.Xunit)       |
+| v3, 1.x through 4.x   | [`Funcky.Xunit.v3`](https://www.nuget.org/packages/Funcky.Xunit.v3) |
 
 Both packages share the assertions below and differ only in the theory-data helpers at the end of this chapter.
 The assertions are static extension members of xunit's `Assert`, declared in `Funcky.Extensions.AssertExtensions`,
@@ -27,6 +27,35 @@ Extension members need the C# 14 compiler (.NET 10 SDK). Older compilers use the
 the `Funcky.FunctionalAssert` class, `FunctionalAssert.Some(42, option)`. The two forms are the same code; the
 `Assert` members are the implementation and `FunctionalAssert` forwards to them. If both are available,
 [λ1203](./analyzer-rules/λ1203.md) asks for the `Assert` form and comes with a code fix.
+
+### xUnit.net 3.x versions
+
+xUnit.net v3 has had three major releases since 1.0, each breaking binary compatibility with the previous one for
+extensibility authors. Funcky.Xunit.v3 is unaffected: it uses only `Assert`, `XunitException`, `ArgumentFormatter`
+and the serializer interfaces, none of which changed. The package is compiled against `xunit.v3.assert` and
+`xunit.v3.extensibility.core` 1.0.1 and declares the range `[1.0.1, 5)`, so NuGet takes whichever version your test
+project references.
+
+What does change between the xunit versions is the test host and the runner, not Funcky. In particular, with the
+.NET 10 SDK, xunit.v3 4.x no longer runs under VSTest unless you opt in, which also affects the Azure DevOps
+`DotNetCoreCLI@2` task.
+
+| xunit.v3 | Funcky.Xunit.v3                   | Test project runs on           | `dotnet test` with the .NET 10 SDK                                                |
+|----------|-----------------------------------|--------------------------------|-----------------------------------------------------------------------------------|
+| 1.x      | 1.0.0 and later                   | .NET 6+, .NET Framework 4.7.2+ | VSTest (`xunit.runner.visualstudio`) or Microsoft.Testing.Platform v1             |
+| 2.x      | 1.2.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 3.x      | 1.2.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 4.x      | 1.2.0 and later, verified         | .NET 8+, .NET Framework 4.7.2+ | Microsoft.Testing.Platform v2; VSTest only with the `xunit.v3.*.mtp-off` packages |
+
+"Verified" means Funcky's own test suite runs green against that version. "Expected to work" means nothing in the
+xunit release notes touches what Funcky uses, but the suite is not run against it yet
+([#1015](https://github.com/polyadic/funcky/issues/1015) tracks a matrix build). The test host column is xunit's
+minimum; Funcky.Xunit.v3 itself targets `netstandard2.0` and `net6.0`.
+
+If `dotnet test` on the .NET 10 SDK stops with "Testing with VSTest target is no longer supported by
+Microsoft.Testing.Platform", either opt into Microsoft.Testing.Platform in `global.json`
+(`"test": { "runner": "Microsoft.Testing.Platform" }`) or reference the `mtp-off` variants of the xunit packages. A
+v3 test project is an executable, so `dotnet run --project` works whichever runner the SDK prefers.
 
 ## The assertions
 
