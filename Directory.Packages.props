@@ -9,8 +9,8 @@
     <PackageVersion Include="System.Text.Json" Version="5.0.2" />
     <PackageVersion Include="xunit.assert" Version="[2.9.3, 2.10)" />
     <PackageVersion Include="xunit.extensibility.core" Version="[2.9.3, 2.10)" />
-    <PackageVersion Include="xunit.v3.assert" Version="[1.0.1, 2)" />
-    <PackageVersion Include="xunit.v3.extensibility.core" Version="[1.0.1, 2)" />
+    <PackageVersion Include="xunit.v3.assert" Version="[1.0.1, 5)" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="[1.0.1, 5)" />
     <!-- Funcky.Async compiles against the 5.x operator vocabulary (SelectAwait, SelectAwaitWithCancellation, ...) and is
 		     binary compatible with 6.x. System.Linq.Async 7 is a legacy shim over System.Linq.AsyncEnumerable with the .NET 10
 		     operator shapes only, so it has none of the members Funcky.Async binds to; the upper bound keeps NuGet from resolving

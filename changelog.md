@@ -51,6 +51,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`; `Some`, `Ok`, `Left` and `Right`
   also come with the overload that takes the expected value. The `Assert` members are the implementation; `FunctionalAssert` forwards to them and stays the form for compilers older than
   C# 14 (the members are declared in `AssertExtensions`).
+* Funcky.Xunit.v3 now accepts xUnit.net v3 1.x through 4.x (`xunit.v3.assert` and `xunit.v3.extensibility.core`
+  `[1.0.1, 5)`, previously `[1.0.1, 2)`). The package is still compiled against 1.0.1; the types it uses (`Assert`,
+  `XunitException`, `ArgumentFormatter`, `IXunitSerializer`, `SerializationHelper`) are unchanged in 2.0, 3.0 and 4.0,
+  and the test suite passes against 4.0.2. The [Testing with xUnit](https://polyadic.github.io/funcky/xunit.html#xunitnet-3x-versions)
+  chapter has a compatibility table with the test host and runner requirements of each xunit version.
 * The asynchronous overloads of `AdjacentGroupBy`, `Chunk`, `ExclusiveScan`, `InclusiveScan`, `Inspect` and `WhereSelect`
   now follow the .NET 10 naming of `System.Linq.AsyncEnumerable`: one name per operator, with the asynchronous delegate
   taking the cancellation token of the enumeration, `xs.Inspect(async (item, cancellationToken) => …)`. This applies to
