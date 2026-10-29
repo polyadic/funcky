@@ -57,9 +57,9 @@ public sealed class SplitTest
         var parts = sequence.Split(7);
 
         var expected = AsyncSequence.Return(
-            Sequence.Return(12, 14),
-            Sequence.Return(41, 31, 19),
-            Sequence.Return(9, 11, 99, 99));
+            Enumerable.Return(12, 14),
+            Enumerable.Return(41, 31, 19),
+            Enumerable.Return(9, 11, 99, 99));
 
         await AsyncAssert.Equal(expected, parts);
     }

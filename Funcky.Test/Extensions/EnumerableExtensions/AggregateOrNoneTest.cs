@@ -12,24 +12,24 @@ public sealed class AggregateOrNoneTest
 
     [Fact]
     public void AggregateOrNoneReturnsNoneForAnEmptySequence()
-        => FunctionalAssert.None(Enumerable.Empty<int>().AggregateOrNone((a, b) => a + b));
+        => Assert.None(Enumerable.Empty<int>().AggregateOrNone((a, b) => a + b));
 
     [Fact]
     public void AggregateOrNoneReturnsTheOnlyElementWithoutInvokingTheAccumulator()
     {
         var accumulatorInvoked = false;
 
-        var result = Sequence.Return(42).AggregateOrNone((a, b) =>
+        var result = Enumerable.Return(42).AggregateOrNone((a, b) =>
         {
             accumulatorInvoked = true;
             return a + b;
         });
 
-        FunctionalAssert.Some(42, result);
+        Assert.Some(42, result);
         Assert.False(accumulatorInvoked);
     }
 
     [Fact]
     public void AggregateOrNoneFoldsFromTheLeft()
-        => FunctionalAssert.Some("((a,b),c)", Sequence.Return("a", "b", "c").AggregateOrNone((a, b) => $"({a},{b})"));
+        => Assert.Some("((a,b),c)", Enumerable.Return("a", "b", "c").AggregateOrNone((a, b) => $"({a},{b})"));
 }

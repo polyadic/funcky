@@ -1,13 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
+using Xunit;
 using Xunit.Sdk;
-using static Xunit.Sdk.ArgumentFormatter;
 
 namespace Funcky;
 
 public static partial class FunctionalAssert
 {
-    /// <summary>Asserts that the given <paramref name="result"/> is <c>Error</c>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="result"/> is <c>Ok</c>.</exception>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Error{TValidResult}(Result{TValidResult})"/>
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #endif
@@ -18,11 +17,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return result.Match(
-                error: Identity,
-                ok: static value => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: "Error(...)",
-                    actual: $"Ok({Format(value)})"));
+            return Assert.Error(result);
         }
         catch (XunitException exception)
         {
@@ -30,9 +25,7 @@ public static partial class FunctionalAssert
         }
     }
 
-    /// <summary>Asserts that the given <paramref name="result"/> is <c>Error</c> and that the error is exactly of type <typeparamref name="TException"/>, like <c>Assert.Throws</c>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="result"/> is <c>Ok</c> or when the error is of another type.</exception>
-    /// <returns>Returns the error in <paramref name="result"/> typed as <typeparamref name="TException"/>.</returns>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Error{TException, TValidResult}(Result{TValidResult})"/>
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #endif
@@ -44,15 +37,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return result.Match(
-                error: static exception => exception.GetType() == typeof(TException)
-                    ? (TException)exception
-                    : throw FunctionalAssertException.ForMismatchedValues(
-                        expected: $"Error({typeof(TException).Name})",
-                        actual: $"Error({exception.GetType().Name})"),
-                ok: static value => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: $"Error({typeof(TException).Name})",
-                    actual: $"Ok({Format(value)})"));
+            return Assert.Error<TException, TValidResult>(result);
         }
         catch (XunitException exception)
         {

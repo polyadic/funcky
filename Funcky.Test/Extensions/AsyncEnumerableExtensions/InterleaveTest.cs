@@ -69,7 +69,7 @@ public sealed class InterleaveTest
     [Fact]
     public async Task GivenASequenceOfSequenceTheInnerSequencesGetInterleaved()
     {
-        var sequences = Sequence.Return(AsyncEnumerable.Repeat(1, 2), AsyncEnumerable.Repeat(42, 2));
+        var sequences = Enumerable.Return(AsyncEnumerable.Repeat(1, 2), AsyncEnumerable.Repeat(42, 2));
 
         await AsyncAssert.Equal(AsyncSequence.Return(1, 42, 1, 42), sequences.Interleave());
     }
@@ -86,7 +86,7 @@ public sealed class InterleaveTest
     [Fact]
     public async Task GivenASequenceOfSequencesInterleaveReturnsTheExpectedSequence()
     {
-        var sequences = Sequence.Return(AsyncEnumerable.Repeat(1, 10), AsyncEnumerable.Repeat(2, 10), AsyncEnumerable.Repeat(3, 10), AsyncEnumerable.Repeat(4, 10));
+        var sequences = Enumerable.Return(AsyncEnumerable.Repeat(1, 10), AsyncEnumerable.Repeat(2, 10), AsyncEnumerable.Repeat(3, 10), AsyncEnumerable.Repeat(4, 10));
 
         var innerSum = sequences.Select(async element => await element.CountAsync()).Aggregate(0, (total, part) => total + part.Result);
         Assert.Equal(innerSum, await sequences.Interleave().CountAsync());
@@ -110,7 +110,7 @@ public sealed class InterleaveTest
     {
         var first = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(1, 2));
         var second = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(3, 4));
-        var sources = Sequence.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
+        var sources = Enumerable.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
 
         await Assert.ThrowsAsync<XunitException>(async () => await sources.Interleave().FirstAsync());
 

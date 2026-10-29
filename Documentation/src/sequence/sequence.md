@@ -231,5 +231,6 @@ var all = Sequence.Concat(header, body, footer);
 
 ## Asynchronous counterparts
 
-`Funcky.Async` provides `AsyncSequence.Concat`, `AsyncSequence.Cycle` and `AsyncSequence.CycleRange` for
-`IAsyncEnumerable<T>`.
+`AsyncSequence` provides `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `RepeatRange` and `Concat` for
+`IAsyncEnumerable<T>`, in `Funcky` itself on .NET 10 and in the `Funcky.Async` package on older targets.
+See [Funcky.Async and IAsyncEnumerable](../async.md#asyncsequence).

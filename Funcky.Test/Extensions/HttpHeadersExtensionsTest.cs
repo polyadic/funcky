@@ -9,7 +9,7 @@ public sealed class HttpHeadersExtensionsTest
         var location = new Uri("https://example.com/moved");
         response.Headers.Location = location;
 
-        FunctionalAssert.Some(location, response.Headers.LocationOrNone);
+        Assert.Some(location, response.Headers.LocationOrNone);
     }
 
     [Fact]
@@ -17,6 +17,6 @@ public sealed class HttpHeadersExtensionsTest
     {
         using var response = new System.Net.Http.HttpResponseMessage();
 
-        FunctionalAssert.None(response.Headers.LocationOrNone);
+        Assert.None(response.Headers.LocationOrNone);
     }
 }

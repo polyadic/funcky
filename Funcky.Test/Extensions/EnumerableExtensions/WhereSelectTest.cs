@@ -27,7 +27,7 @@ public sealed class WhereSelectTest
     {
         const int count = 6;
         var expectedSequence = Enumerable.Range(0, count: count);
-        var units = Sequence.Cycle(__).Take(count);
+        var units = Enumerable.Cycle(__).Take(count);
         var indexes = units.WhereSelect((_, index) => Option.Some(index));
         Assert.Equal(expectedSequence, indexes);
     }

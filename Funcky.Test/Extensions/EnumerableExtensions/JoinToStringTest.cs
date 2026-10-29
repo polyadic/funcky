@@ -16,7 +16,7 @@ public sealed class JoinToStringTest
     [Fact]
     public void JoiningASetWithExactlyOneElementReturnsTheElementWithoutASeparator()
     {
-        var singleElement = Sequence.Return("Alpha");
+        var singleElement = Enumerable.Return("Alpha");
 
         Assert.Equal("Alpha", singleElement.JoinToString(", "));
         Assert.Equal("Alpha", singleElement.JoinToString(','));
@@ -25,7 +25,7 @@ public sealed class JoinToStringTest
     [Fact]
     public void JoiningAListOfStringsAddsSeparatorsBetweenTheElements()
     {
-        var strings = Sequence.Return("Alpha", "Beta", "Gamma");
+        var strings = Enumerable.Return("Alpha", "Beta", "Gamma");
 
         Assert.Equal("Alpha, Beta, Gamma", strings.JoinToString(", "));
         Assert.Equal("Alpha,Beta,Gamma", strings.JoinToString(','));
@@ -34,7 +34,7 @@ public sealed class JoinToStringTest
     [Fact]
     public void JoiningNonStringsReturnASeparatedListToo()
     {
-        var numbers = Sequence.Return(1, 2, 3);
+        var numbers = Enumerable.Return(1, 2, 3);
 
         Assert.Equal("1, 2, 3", numbers.JoinToString(", "));
         Assert.Equal("1,2,3", numbers.JoinToString(','));
@@ -43,7 +43,7 @@ public sealed class JoinToStringTest
     [Fact]
     public void NullsAreHandledAsEmptyStringsWhileJoining()
     {
-        var strings = Sequence.Return("Alpha", null, "Gamma");
+        var strings = Enumerable.Return("Alpha", null, "Gamma");
 
         Assert.Equal("Alpha, , Gamma", strings.JoinToString(", "));
         Assert.Equal("Alpha,,Gamma", strings.JoinToString(','));

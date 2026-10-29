@@ -141,6 +141,82 @@ public sealed class PreferOrNoneTest
     }
 
     [Fact]
+    public async Task ThreeFixesThatAllNeedTheUsingAreAppliedInOnePass()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+
+            public static class C
+            {
+                public static string First(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? "fallback";
+
+                public static string Last(IEnumerable<string> values) => {|λ1012:values.LastOrDefault()|} ?? "fallback";
+
+                public static string Single(IEnumerable<string> values) => {|λ1012:values.SingleOrDefault()|} ?? "fallback";
+
+                public static string ElementAt(IEnumerable<string> values) => {|λ1012:values.ElementAtOrDefault(2)|} ?? "fallback";
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string First(IEnumerable<string> values) => values.FirstOrNone().GetOrElse("fallback");
+
+                public static string Last(IEnumerable<string> values) => values.LastOrNone().GetOrElse("fallback");
+
+                public static string Single(IEnumerable<string> values) => values.SingleOrNone().GetOrElse("fallback");
+
+                public static string ElementAt(IEnumerable<string> values) => values.ElementAtOrNone(2).GetOrElse("fallback");
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
+    public async Task ThreeFixesInANamespaceThatAllNeedTheUsingAreAppliedInOnePass()
+    {
+        const string inputCode = """
+            namespace Example
+            {
+                using System.Collections.Generic;
+                using System.Linq;
+
+                public static class C
+                {
+                    public static string First(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? "fallback";
+
+                    public static string Last(IEnumerable<string> values) => {|λ1012:values.LastOrDefault()|} ?? "fallback";
+
+                    public static string Single(IEnumerable<string> values) => {|λ1012:values.SingleOrDefault()|} ?? "fallback";
+                }
+            }
+            """;
+        const string fixedCode = """
+            namespace Example
+            {
+                using System.Collections.Generic;
+                using System.Linq;
+                using Funcky.Extensions;
+
+                public static class C
+                {
+                    public static string First(IEnumerable<string> values) => values.FirstOrNone().GetOrElse("fallback");
+
+                    public static string Last(IEnumerable<string> values) => values.LastOrNone().GetOrElse("fallback");
+
+                    public static string Single(IEnumerable<string> values) => values.SingleOrNone().GetOrElse("fallback");
+                }
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyStubs, fixedCode + FunckyStubs);
+    }
+
+    [Fact]
     public async Task OtherNullChecksAreReportedWithoutFix()
     {
         const string inputCode = """

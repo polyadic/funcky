@@ -19,7 +19,7 @@ public sealed partial class ResultTest
 
         var sideEffect = Option<Exception>.None;
         result.InspectError(v => sideEffect = v);
-        FunctionalAssert.Some(exception, sideEffect);
+        Assert.Some(exception, sideEffect);
     }
 
     [Theory]

@@ -56,14 +56,14 @@ public sealed partial class OptionTest
             from m in Option<int>.None
             select m == 1337;
 
-        FunctionalAssert.None(option);
+        Assert.None(option);
     }
 
     [Fact]
     public void GivenTwoSomeValuesWithASelectManyWenWrittenInMethodSyntaxThenTheResultShouldBeSomeValue()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
 
         var result = someNumber.SelectMany(_ => someDate, Tuple.Create);
 
@@ -74,8 +74,8 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenTwoSomeValuesWithASelectManyWenWrittenInLinqSyntaxThenTheResultShouldBeSomeValue()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
 
         var result = from number in someNumber
                      from date in someDate
@@ -88,16 +88,16 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenASelectManyWithOneNoneInputThenTheResultShouldBeNone()
     {
-        var someNumber = "1337".ParseInt32OrNone();
-        var someDate = "12.2.2009".ParseDateTimeOrNone();
-        var someOtherNumber = "not a number".ParseInt32OrNone();
+        var someNumber = int.ParseOrNone("1337");
+        var someDate = DateTime.ParseOrNone("12.2.2009");
+        var someOtherNumber = int.ParseOrNone("not a number");
 
         var result = from number in someNumber
                      from date in someDate
                      from otherNumber in someOtherNumber
                      select Tuple.Create(number, date, otherNumber);
 
-        FunctionalAssert.None(result);
+        Assert.None(result);
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public sealed partial class OptionTest
 
         foreach (var number in input.Split(',').Select(ParseExtensions.ParseInt32OrNone).Where(option => option.Match(none: false, some: True)))
         {
-            _ = FunctionalAssert.Some(number);
+            _ = Assert.Some(number);
         }
     }
 
@@ -229,11 +229,11 @@ public sealed partial class OptionTest
         var none = Option<int>.None;
         var some = Option.Some(42);
 
-        FunctionalAssert.None(none.AndThen(_ => 1337));
-        FunctionalAssert.Some(1337, some.AndThen(_ => 1337));
+        Assert.None(none.AndThen(_ => 1337));
+        Assert.Some(1337, some.AndThen(_ => 1337));
 
-        FunctionalAssert.None(none.AndThen(_ => Option.Some(1337)));
-        FunctionalAssert.Some(1337, some.AndThen(_ => Option.Some(1337)));
+        Assert.None(none.AndThen(_ => Option.Some(1337)));
+        Assert.Some(1337, some.AndThen(_ => Option.Some(1337)));
     }
 
     [Fact]
@@ -272,7 +272,7 @@ public sealed partial class OptionTest
     [InlineData("")]
     public void GivenAnOptionAndTheMatchFunctionAStatementItShouldCompile(string stringToParse)
     {
-        var option = stringToParse.ParseInt32OrNone();
+        var option = int.ParseOrNone(stringToParse);
 
         option.Switch(
             none: Statement,
@@ -377,8 +377,8 @@ public sealed partial class OptionTest
     [Fact]
     public void GivenAFunctionWithADefaultOptionParameterGivesANoneWhenNoValueGiven()
     {
-        FunctionalAssert.None(MethodWithDefaultOptionParameter());
-        FunctionalAssert.Some("value", MethodWithDefaultOptionParameter(Option.Some("value")));
+        Assert.None(MethodWithDefaultOptionParameter());
+        Assert.Some("value", MethodWithDefaultOptionParameter(Option.Some("value")));
     }
 
     [Fact]
@@ -388,7 +388,7 @@ public sealed partial class OptionTest
             .Select(_ => Option.Some(1337))
             .FirstOrDefault(False);
 
-        FunctionalAssert.None(defaultValue);
+        Assert.None(defaultValue);
     }
 
     private Option<string> MethodWithDefaultOptionParameter(Option<string> value = default) => value;

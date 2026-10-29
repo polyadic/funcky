@@ -24,7 +24,7 @@ public sealed class WithIndexTest
     public void ASequenceWithOneElementWithIndexHasTheIndexZero()
     {
         const string expectedValue = "Hello world!";
-        var oneElementSequence = Sequence.Return(expectedValue);
+        var oneElementSequence = Enumerable.Return(expectedValue);
 
         var sequenceWithIndex = oneElementSequence.WithIndex();
         foreach (var (value, index) in sequenceWithIndex)

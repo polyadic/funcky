@@ -71,5 +71,5 @@ public readonly partial struct Option<TItem>
     public IEnumerable<TItem> ToEnumerable()
         => Match(
             none: [],
-            some: Sequence.Return);
+            some: Enumerable.Return);
 }

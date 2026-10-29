@@ -24,7 +24,7 @@ public sealed class WithLastTest
     public void ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedLast()
     {
         const string expectedValue = "Hello world!";
-        var oneElementSequence = Sequence.Return(expectedValue);
+        var oneElementSequence = Enumerable.Return(expectedValue);
 
         var sequenceWithLast = oneElementSequence.WithLast();
         foreach (var (value, isLast) in sequenceWithLast)

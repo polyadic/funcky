@@ -87,7 +87,7 @@ public sealed class RepeatRangeTest
     [Fact]
     public async Task RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync()
     {
-        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var sequence = Enumerable.Return("Test", "Hello", "Do", "Wait");
         var enumerateOnce = AsyncEnumerateOnce.Create(sequence);
 
         await using var repeatRange = AsyncSequence.RepeatRange(enumerateOnce, 3);

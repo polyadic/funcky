@@ -1,13 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
+using Xunit;
 using Xunit.Sdk;
-using static Xunit.Sdk.ArgumentFormatter;
 
 namespace Funcky;
 
 public static partial class FunctionalAssert
 {
-    /// <summary>Asserts that the given <paramref name="option"/> is <c>None</c>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="option"/> is <c>Some</c>.</exception>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).None{TItem}(Option{TItem})"/>
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #endif
@@ -18,10 +17,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            option.AndThen(
-                static value => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: "None",
-                    actual: $"Some({Format(value)})"));
+            Assert.None(option);
         }
         catch (XunitException exception)
         {

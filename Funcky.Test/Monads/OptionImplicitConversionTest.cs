@@ -31,7 +31,7 @@ public sealed class OptionImplicitConversionTest
     {
         Option<int> number = 12;
 
-        var v = FunctionalAssert.Some(number);
+        var v = Assert.Some(number);
         Assert.Equal(12, v);
     }
 

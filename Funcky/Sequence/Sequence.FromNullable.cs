@@ -1,17 +1,16 @@
-#pragma warning disable SA1010 // StyleCop support for collection expressions is missing
 namespace Funcky;
 
 public static partial class Sequence
 {
-    /// <returns>An <see cref="IEnumerable{T}" /> consisting of a single item or zero items.</returns>
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).FromNullable{TResult}(TResult?)"/>
     [Pure]
     public static IEnumerable<TResult> FromNullable<TResult>(TResult? element)
         where TResult : class
-        => element is null ? [] : [element];
+        => Enumerable.FromNullable(element);
 
-    /// <inheritdoc cref="FromNullable{T}(T)"/>
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).FromNullable{TResult}(TResult?)"/>
     [Pure]
     public static IEnumerable<TResult> FromNullable<TResult>(TResult? element)
         where TResult : struct
-        => element.HasValue ? [element.Value] : [];
+        => Enumerable.FromNullable(element);
 }

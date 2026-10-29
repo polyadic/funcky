@@ -8,13 +8,13 @@ public sealed class SingleOrNoneTest
     [Fact]
     public async Task SingleOrNoneReturnsNoneWhenEnumerableIsEmpty()
     {
-        FunctionalAssert.None(await EmptyEnumerable.SingleOrNoneAsync());
+        Assert.None(await EmptyEnumerable.SingleOrNoneAsync());
     }
 
     [Fact]
     public async Task SingleOrNoneReturnsItemWhenEnumerableHasOneItem()
     {
-        FunctionalAssert.Some(FirstItem, await EnumerableWithOneItem.SingleOrNoneAsync());
+        Assert.Some(FirstItem, await EnumerableWithOneItem.SingleOrNoneAsync());
     }
 
     [Fact]
@@ -27,19 +27,19 @@ public sealed class SingleOrNoneTest
     [Fact]
     public async Task SingleOrNoneReturnsNoneWhenEnumerableHasOneItemAndPredicateDoesNotMatch()
     {
-        FunctionalAssert.None(await EnumerableWithOneItem.SingleOrNoneAsync(False));
+        Assert.None(await EnumerableWithOneItem.SingleOrNoneAsync(False));
     }
 
     [Fact]
     public async Task SingleOrNoneReturnsItemWhenEnumerableHasOneAndPredicateMatches()
     {
-        FunctionalAssert.Some(FirstItem, await EnumerableWithOneItem.SingleOrNoneAsync(True));
+        Assert.Some(FirstItem, await EnumerableWithOneItem.SingleOrNoneAsync(True));
     }
 
     [Fact]
     public async Task SingleOrNoneReturnsItemWhenEnumerableContainsMoreThanOneItemButOnlyOneMatchesPredicate()
     {
-        FunctionalAssert.Some(FirstItem, await EnumerableWithMoreThanOneItem.SingleOrNoneAsync(item => item == FirstItem));
+        Assert.Some(FirstItem, await EnumerableWithMoreThanOneItem.SingleOrNoneAsync(item => item == FirstItem));
     }
 
     [Fact]

@@ -1,3 +1,5 @@
+#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
+
 using Xunit.Sdk;
 
 namespace Funcky.Xunit.Test.FunctionalAssertClass;

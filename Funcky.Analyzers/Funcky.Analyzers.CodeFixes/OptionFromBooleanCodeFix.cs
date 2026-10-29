@@ -21,45 +21,51 @@ namespace Funcky.Analyzers;
 /// </summary>
 [Shared]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OptionFromBooleanCodeFix))]
-public sealed class OptionFromBooleanCodeFix : CodeFixProvider
+public sealed class OptionFromBooleanCodeFix : ExtensionMemberCodeFix
 {
     /// <summary>The compiler diagnostic reported on the use of a member marked <c>[Obsolete]</c> with a message.</summary>
     private const string ObsoleteMemberDiagnosticId = "CS0618";
 
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(ObsoleteMemberDiagnosticId);
 
-    public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
-
+    // The document is rewritten up front: the fix is withheld when the Then call would not bind to Funcky's extension.
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
         var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-        if (root is null || semanticModel is null || GetSymbols(semanticModel.Compilation) is not { } symbols)
+        if (root is null || semanticModel is null)
         {
             return;
         }
 
         foreach (var diagnostic in context.Diagnostics)
         {
-            // The warning spans the whole call; one with a smaller span belongs to an obsolete member inside an argument.
-            // The document is rewritten up front: the fix is withheld when the Then call would not bind to Funcky's extension.
-            if (root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { } invocation
-                && invocation.Span == diagnostic.Location.SourceSpan
-                && semanticModel.GetOperation(invocation, context.CancellationToken) is IInvocationOperation { TargetMethod: { Name: OptionFromBooleanMethodName, IsStatic: true } method } operation
-                && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.OptionType)
-                && Rewrite.TryCreate(operation, invocation, semanticModel, symbols, context.CancellationToken) is { } rewrite
-                && await rewrite.TryApplyAsync(context.Document, root, semanticModel, symbols, context.CancellationToken).ConfigureAwait(false) is { } changedDocument)
+            if (TryCreateRewrite(root, semanticModel, diagnostic, context.CancellationToken) is { } rewrite
+                && await TryApplyAsync(context.Document, root, semanticModel, ImmutableArray.Create(rewrite), context.CancellationToken).ConfigureAwait(false) is { } changedDocument)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        $"Replace Option.{OptionFromBooleanMethodName} with {BooleanThenMethodName}",
-                        _ => Task.FromResult(changedDocument),
-                        nameof(OptionFromBooleanCodeFix)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(GetTitle(rewrite), _ => Task.FromResult(changedDocument), nameof(OptionFromBooleanCodeFix)), diagnostic);
             }
         }
     }
+
+    protected override string GetTitle(ExtensionMemberRewrite rewrite) => $"Replace Option.{OptionFromBooleanMethodName} with {BooleanThenMethodName}";
+
+    // The warning spans the whole call; one with a smaller span belongs to an obsolete member inside an argument.
+    protected override ExtensionMemberRewrite? TryCreateRewrite(SyntaxNode root, SemanticModel semanticModel, Diagnostic diagnostic, CancellationToken cancellationToken)
+        => GetSymbols(semanticModel.Compilation) is { } symbols
+           && root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { } invocation
+           && invocation.Span == diagnostic.Location.SourceSpan
+           && semanticModel.GetOperation(invocation, cancellationToken) is IInvocationOperation { TargetMethod: { Name: OptionFromBooleanMethodName, IsStatic: true } method } operation
+           && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.OptionType)
+           && Rewrite.TryCreate(operation, invocation, semanticModel, symbols, cancellationToken) is { } rewrite
+            ? rewrite.ToExtensionMemberRewrite()
+            : null;
+
+    protected override Task<Document?> TryApplyAsync(Document document, SyntaxNode root, SemanticModel semanticModel, ImmutableArray<ExtensionMemberRewrite> rewrites, CancellationToken cancellationToken)
+        => semanticModel.Compilation.GetBooleanExtensionsType() is { } booleanExtensionsType
+            ? BooleanThen.TryReplaceAllAsync(document, root, semanticModel, rewrites, booleanExtensionsType, cancellationToken)
+            : Task.FromResult<Document?>(null);
 
     private static Symbols? GetSymbols(Compilation compilation)
         => compilation.GetOptionType() is { } optionType
@@ -91,15 +97,8 @@ public sealed class OptionFromBooleanCodeFix : CodeFixProvider
             };
         }
 
-        public Task<Document?> TryApplyAsync(Document document, SyntaxNode root, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
-            => BooleanThen.TryReplaceAsync(
-                document,
-                root,
-                semanticModel,
-                Target,
-                BooleanThen.Invocation(Condition, ThenName, ThenArgument).WithTriviaFrom(Target),
-                symbols.BooleanExtensionsType,
-                cancellationToken);
+        public ExtensionMemberRewrite ToExtensionMemberRewrite()
+            => new(Target, BooleanThen.Invocation(Condition, ThenName, ThenArgument).WithTriviaFrom(Target));
 
         private static Rewrite? TryCreate(IInvocationOperation operation, InvocationExpressionSyntax invocation, SimpleNameSyntax name, ExpressionSyntax condition, ExpressionSyntax argument, IOperation value, SemanticModel semanticModel, Symbols symbols, CancellationToken cancellationToken)
         {

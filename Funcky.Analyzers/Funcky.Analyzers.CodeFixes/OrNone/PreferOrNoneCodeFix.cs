@@ -3,7 +3,6 @@ using System.Composition;
 using Funcky.Analyzers.CodeAnalysisExtensions;
 using Funcky.Analyzers.Fallback;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,10 +15,8 @@ namespace Funcky.Analyzers.OrNone;
 /// The other null checks (<c>?.</c>, <c>is null</c>, …) have no single idiomatic shape, so they are reported without a fix.</summary>
 [Shared]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PreferOrNoneCodeFix))]
-public sealed class PreferOrNoneCodeFix : CodeFixProvider
+public sealed class PreferOrNoneCodeFix : ExtensionMemberCodeFix
 {
-    private const string ExtensionsNamespace = "Funcky.Extensions";
-
     private const string GetOrElseMethodName = "GetOrElse";
 
     private enum FallbackKind
@@ -30,34 +27,27 @@ public sealed class PreferOrNoneCodeFix : CodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(PreferOrNoneAnalyzer.DiagnosticId);
 
-    public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+    // The replacement is `xs.FirstOrNone().GetOrElse(fallback)`.
+    protected override string GetTitle(ExtensionMemberRewrite rewrite)
+        => $"Replace with '{OrNoneMemberAccess(rewrite).Name.Identifier.Text}().{GetOrElseMethodName}(…)'";
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-    {
-        if (await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false) is not { } root
-            || await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false) is not { } semanticModel)
-        {
-            return;
-        }
+    protected override ExtensionMemberRewrite? TryCreateRewrite(SyntaxNode root, SemanticModel semanticModel, Diagnostic diagnostic, CancellationToken cancellationToken)
+        => root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { Expression: MemberAccessExpressionSyntax memberAccess } invocation
+           && diagnostic.Properties.TryGetValue(PreferOrNoneAnalyzer.OrNoneMethodNameProperty, out var orNoneMethodName)
+           && orNoneMethodName is not null
+           && FindCoalesceExpression(invocation) is { } coalesce
+           && KeepsTheResultType(semanticModel, invocation, coalesce, cancellationToken)
+           && ClassifyFallback(semanticModel, Unparenthesized(coalesce.Right), cancellationToken) is { } fallbackKind
+            ? new ExtensionMemberRewrite(coalesce, GetOrElseInvocation(coalesce, invocation, memberAccess, orNoneMethodName, fallbackKind))
+            : null;
 
-        foreach (var diagnostic in context.Diagnostics)
-        {
-            if (root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { Expression: MemberAccessExpressionSyntax memberAccess } invocation
-                && diagnostic.Properties.TryGetValue(PreferOrNoneAnalyzer.OrNoneMethodNameProperty, out var orNoneMethodName)
-                && orNoneMethodName is not null
-                && FindCoalesceExpression(invocation) is { } coalesce
-                && KeepsTheResultType(semanticModel, invocation, coalesce, context.CancellationToken)
-                && ClassifyFallback(semanticModel, Unparenthesized(coalesce.Right), context.CancellationToken) is { } fallbackKind)
-            {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        $"Replace with '{orNoneMethodName}().{GetOrElseMethodName}(…)'",
-                        cancellationToken => ReplaceWithGetOrElseAsync(context.Document, new Rewrite(coalesce, invocation, memberAccess, orNoneMethodName, fallbackKind), cancellationToken),
-                        nameof(PreferOrNoneCodeFix)),
-                    diagnostic);
-            }
-        }
-    }
+    /// <summary>The replacement binds to <c>Option.GetOrElse</c>, a member of <c>Funcky.Monads</c>, when its <c>…OrNone</c> receiver binds,
+    /// which it does only with the <c>using</c> for <c>Funcky.Extensions</c> in place. Any bound method therefore shows the directive is there.</summary>
+    protected override Task<Document?> TryApplyAsync(Document document, SyntaxNode root, SemanticModel semanticModel, ImmutableArray<ExtensionMemberRewrite> rewrites, CancellationToken cancellationToken)
+        => Task.FromResult<Document?>(FunckyExtensionsImport.ReplaceWithExtensionMemberCalls(document, root, semanticModel, rewrites, static symbol => symbol is IMethodSymbol));
+
+    private static MemberAccessExpressionSyntax OrNoneMemberAccess(ExtensionMemberRewrite rewrite)
+        => (MemberAccessExpressionSyntax)((InvocationExpressionSyntax)((MemberAccessExpressionSyntax)((InvocationExpressionSyntax)rewrite.Replacement).Expression).Expression).Expression;
 
     private static BinaryExpressionSyntax? FindCoalesceExpression(InvocationExpressionSyntax invocation)
         => SkipParentheses(invocation) is { Parent: BinaryExpressionSyntax { RawKind: (int)SyntaxKind.CoalesceExpression } coalesce } left && coalesce.Left == left
@@ -102,22 +92,14 @@ public sealed class PreferOrNoneCodeFix : CodeFixProvider
             ? []
             : [operation, .. operation.ChildOperations.SelectMany(DescendantsAndSelfOutsideFunctions)];
 
-    private static async Task<Document> ReplaceWithGetOrElseAsync(Document document, Rewrite rewrite, CancellationToken cancellationToken)
+    private static InvocationExpressionSyntax GetOrElseInvocation(BinaryExpressionSyntax coalesce, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess, string orNoneMethodName, FallbackKind fallbackKind)
     {
-        if (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is not { } root
-            || await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false) is not { } semanticModel)
-        {
-            return document;
-        }
+        var orNoneInvocation = invocation.WithExpression(memberAccess.WithName(RenamedTo(memberAccess.Name, orNoneMethodName)));
 
-        var orNoneInvocation = rewrite.Invocation.WithExpression(rewrite.MemberAccess.WithName(RenamedTo(rewrite.MemberAccess.Name, rewrite.OrNoneMethodName)));
-        var getOrElse = InvocationExpression(
+        return InvocationExpression(
                 MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, orNoneInvocation.WithoutTrailingTrivia(), IdentifierName(GetOrElseMethodName)),
-                ArgumentList(SingletonSeparatedList(Argument(Fallback(Unparenthesized(rewrite.Coalesce.Right), rewrite.FallbackKind)))))
-            .WithTriviaFrom(rewrite.Coalesce);
-
-        var newRoot = root.ReplaceNode(rewrite.Coalesce, getOrElse);
-        return document.WithSyntaxRoot(IsExtensionsNamespaceImported(semanticModel, rewrite.Invocation, orNoneInvocation) ? newRoot : UsingDirectives.AddUsing(newRoot, newRoot.FindNode(rewrite.Coalesce.Span), ExtensionsNamespace));
+                ArgumentList(SingletonSeparatedList(Argument(Fallback(Unparenthesized(coalesce.Right), fallbackKind)))))
+            .WithTriviaFrom(coalesce);
     }
 
     /// <summary>Only the identifier changes: explicit type arguments (<c>FirstOrDefault&lt;object&gt;()</c>) select the element type and stay.</summary>
@@ -128,9 +110,4 @@ public sealed class PreferOrNoneCodeFix : CodeFixProvider
         => fallbackKind == FallbackKind.Lazy
             ? ParenthesizedLambdaExpression(fallback.WithoutTrivia())
             : fallback.WithoutTrivia();
-
-    private static bool IsExtensionsNamespaceImported(SemanticModel semanticModel, InvocationExpressionSyntax original, InvocationExpressionSyntax orNoneInvocation)
-        => semanticModel.GetSpeculativeSymbolInfo(original.SpanStart, orNoneInvocation, SpeculativeBindingOption.BindAsExpression) is { Symbol: IMethodSymbol } or { CandidateSymbols.IsEmpty: false };
-
-    private sealed record Rewrite(BinaryExpressionSyntax Coalesce, InvocationExpressionSyntax Invocation, MemberAccessExpressionSyntax MemberAccess, string OrNoneMethodName, FallbackKind FallbackKind);
 }

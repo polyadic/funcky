@@ -29,7 +29,7 @@ internal static class CheckAssert
 
     public static Property Equal<TItem>(Reader<TItem, TItem> expected, Reader<TItem, TItem> actual, TItem environment)
         where TItem : IEquatable<TItem>
-        => Sequence
+        => Enumerable
             .Return(environment)
             .All(EqualGivenEnvironment(expected, actual))
             .ToProperty();

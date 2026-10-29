@@ -7,7 +7,7 @@ public sealed class AssemblyExtensionsTest
     [Fact]
     public void EntryPointOrNoneReturnsNoneForAClassLibrary()
     {
-        FunctionalAssert.None(typeof(Option).Assembly.EntryPointOrNone);
+        Assert.None(typeof(Option).Assembly.EntryPointOrNone);
     }
 
     [Fact]
@@ -18,7 +18,7 @@ public sealed class AssemblyExtensionsTest
 
         if (entryAssembly?.EntryPoint is { } entryPoint)
         {
-            FunctionalAssert.Some(entryPoint, entryAssembly.EntryPointOrNone);
+            Assert.Some(entryPoint, entryAssembly.EntryPointOrNone);
         }
     }
 }

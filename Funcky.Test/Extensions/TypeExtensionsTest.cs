@@ -5,7 +5,7 @@ public sealed class TypeExtensionsTest
     [Fact]
     public void BaseTypeOrNoneReturnsTheBaseTypeOfAClass()
     {
-        FunctionalAssert.Some(typeof(SystemException), typeof(InvalidOperationException).BaseTypeOrNone);
+        Assert.Some(typeof(SystemException), typeof(InvalidOperationException).BaseTypeOrNone);
     }
 
     [Theory]
@@ -13,6 +13,6 @@ public sealed class TypeExtensionsTest
     [InlineData(typeof(IDisposable))]
     public void BaseTypeOrNoneReturnsNoneForTypesWithoutABaseType(Type type)
     {
-        FunctionalAssert.None(type.BaseTypeOrNone);
+        Assert.None(type.BaseTypeOrNone);
     }
 }

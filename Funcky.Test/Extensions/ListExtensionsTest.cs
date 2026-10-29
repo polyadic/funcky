@@ -8,7 +8,7 @@ public sealed class ListExtensionsTest
     {
         IList<string> list = ["Alpha", "Gamma", "Epsilon"];
 
-        FunctionalAssert.None(list.IndexOfOrNone("Beta"));
+        Assert.None(list.IndexOfOrNone("Beta"));
     }
 
     [Fact]
@@ -16,7 +16,7 @@ public sealed class ListExtensionsTest
     {
         IList<string> list = ["Alpha", "Gamma", "Epsilon"];
 
-        FunctionalAssert.Some(2, list.IndexOfOrNone("Epsilon"));
+        Assert.Some(2, list.IndexOfOrNone("Epsilon"));
     }
 
     [Fact]
@@ -24,9 +24,9 @@ public sealed class ListExtensionsTest
     {
         List<string> list = ["Alpha", "Gamma", "Alien", "Epsilon"];
 
-        FunctionalAssert.Some(0, list.FindIndexOrNone(item => item.StartsWith("Al")));
-        FunctionalAssert.Some(2, list.FindIndexOrNone(2, item => item.StartsWith("Al")));
-        FunctionalAssert.None(list.FindIndexOrNone(3, 1, item => item.StartsWith("Al")));
+        Assert.Some(0, list.FindIndexOrNone(item => item.StartsWith("Al")));
+        Assert.Some(2, list.FindIndexOrNone(2, item => item.StartsWith("Al")));
+        Assert.None(list.FindIndexOrNone(3, 1, item => item.StartsWith("Al")));
     }
 
     [Fact]
@@ -34,8 +34,8 @@ public sealed class ListExtensionsTest
     {
         List<string> list = ["Alpha", "Gamma", "Alien", "Epsilon"];
 
-        FunctionalAssert.Some(2, list.FindLastIndexOrNone(item => item.StartsWith("Al")));
-        FunctionalAssert.Some(0, list.FindLastIndexOrNone(1, item => item.StartsWith("Al")));
-        FunctionalAssert.None(list.FindLastIndexOrNone(3, 1, item => item.StartsWith("Al")));
+        Assert.Some(2, list.FindLastIndexOrNone(item => item.StartsWith("Al")));
+        Assert.Some(0, list.FindLastIndexOrNone(1, item => item.StartsWith("Al")));
+        Assert.None(list.FindLastIndexOrNone(3, 1, item => item.StartsWith("Al")));
     }
 }

@@ -7,12 +7,12 @@ public sealed class ExceptionExtensionsTest
     {
         var inner = new InvalidOperationException("inner");
 
-        FunctionalAssert.Some(inner, new Exception("outer", inner).InnerExceptionOrNone);
+        Assert.Some(inner, new Exception("outer", inner).InnerExceptionOrNone);
     }
 
     [Fact]
     public void InnerExceptionOrNoneReturnsNoneWithoutAnInnerException()
     {
-        FunctionalAssert.None(new Exception("outer").InnerExceptionOrNone);
+        Assert.None(new Exception("outer").InnerExceptionOrNone);
     }
 }

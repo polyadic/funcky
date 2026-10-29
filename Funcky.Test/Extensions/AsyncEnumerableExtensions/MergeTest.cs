@@ -113,7 +113,7 @@ public sealed class MergeTest
     {
         var first = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(1, 2));
         var second = new DisposeTrackingAsyncSequence<int>(AsyncSequence.Return(3, 4));
-        var sources = Sequence.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
+        var sources = Enumerable.Return<IAsyncEnumerable<int>>(first, second, new FailOnEnumerateAsyncSequence<int>());
 
         await Assert.ThrowsAsync<XunitException>(async () => await sources.Merge().FirstAsync());
 

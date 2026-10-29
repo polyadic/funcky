@@ -1,14 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using Funcky.CodeAnalysis;
+using Xunit;
 using Xunit.Sdk;
-using static Xunit.Sdk.ArgumentFormatter;
 
 namespace Funcky;
 
 public static partial class FunctionalAssert
 {
-    /// <summary>Asserts that the given <paramref name="either"/> is <c>Right</c> and contains the given <paramref name="expectedRight"/>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="either"/> is <c>Left</c>.</exception>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Right{TLeft, TRight}(TRight, Either{TLeft, TRight})"/>
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #endif
@@ -20,16 +19,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            either.Switch(
-                left: left => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: $"Right({Format(expectedRight)})",
-                    actual: $"Left({Format(left)})"),
-                right: right => EqualOrThrow(
-                    expected: expectedRight,
-                    actual: right,
-                    () => throw FunctionalAssertException.ForMismatchedValues(
-                        expected: $"Right({Format(expectedRight)})",
-                        actual: $"Right({Format(right)})")));
+            Assert.Right(expectedRight, either);
         }
         catch (XunitException exception)
         {
@@ -37,9 +27,7 @@ public static partial class FunctionalAssert
         }
     }
 
-    /// <summary>Asserts that the given <paramref name="either"/> is <c>Right</c>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="either"/> is <c>Left</c>.</exception>
-    /// <returns>Returns the value in <paramref name="either"/> if it was <c>Right</c>.</returns>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Right{TLeft, TRight}(Either{TLeft, TRight})"/>
     [AssertMethodHasOverloadWithExpectedValue]
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
@@ -52,10 +40,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return either.GetOrElse(
-                static left => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: "Right(...)",
-                    actual: $"Left({Format(left)})"));
+            return Assert.Right(either);
         }
         catch (XunitException exception)
         {

@@ -22,7 +22,7 @@ public static partial class AsyncFunctional
         where TResult : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return await Sequence
+        return await Enumerable
             .Cycle(producer)
             .ToAsyncEnumerable()
             .Select(ProduceUnlessCancelled)
