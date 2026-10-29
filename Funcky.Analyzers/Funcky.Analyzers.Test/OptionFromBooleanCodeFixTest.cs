@@ -175,6 +175,7 @@ public sealed class OptionFromBooleanCodeFixTest
         await test.RunAsync(CancellationToken.None);
     }
 
+    // Three or more diagnostics: Fix-All has to rewrite every call in one pass although each fix on its own adds the same using (#1009).
     [Fact]
     public async Task AddsTheUsingForTheExtensionWhenMissing()
     {
@@ -186,7 +187,9 @@ public sealed class OptionFromBooleanCodeFixTest
             {
                 public static void M(bool flag, int number)
                 {
-                    Use(Option.FromBoolean(flag, number));
+                    Use({|CS0618:Option.FromBoolean(flag, number)|});
+                    Use({|CS0618:Option.FromBoolean(flag)|});
+                    Use({|CS0618:Option.FromBoolean(flag, () => number)|});
                 }
 
                 private static void Use<T>(Option<T> option) where T : notnull { }
@@ -202,15 +205,15 @@ public sealed class OptionFromBooleanCodeFixTest
                 public static void M(bool flag, int number)
                 {
                     Use(flag.Then(number));
+                    Use(flag.Then(Funcky.Unit.Value));
+                    Use(flag.Then(() => number));
                 }
 
                 private static void Use<T>(Option<T> option) where T : notnull { }
             }
             """;
 
-        var test = CreateTest(inputCode, fixedCode);
-        test.ExpectedDiagnostics.Add(DiagnosticResult.CompilerWarning(ObsoleteMember).WithSpan(7, 13, 7, 45));
-        await test.RunAsync(CancellationToken.None);
+        await CreateTest(inputCode, fixedCode).RunAsync(CancellationToken.None);
     }
 
     [Fact]

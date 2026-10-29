@@ -97,6 +97,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   * [λ1203](https://polyadic.github.io/funcky/analyzer-rules/λ1203.html) `FunctionalAssert.Some(…)` → `Assert.Some(…)`.
 * Fix: λ1101 names the receiver as written in its message (`Assert.Some`); for a static extension member it used to
   print the unnamed extension block (`.Some`).
+* Fix: the code fixes that add `using Funcky.Extensions;` (λ1012, λ1201, λ1202, λ1203 and the `Option.FromBoolean` fix)
+  share a Fix-All provider that rewrites every flagged call of a document in one pass and adds the directive once. The
+  batch fixer treated three or more identical directive insertions as colliding edits and dropped those fixes, call
+  rewrite included, so a second Fix-All pass was needed ([#1009](https://github.com/polyadic/funcky/issues/1009),
+  [#1020](https://github.com/polyadic/funcky/issues/1020)).
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 
