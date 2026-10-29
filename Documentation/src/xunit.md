@@ -43,9 +43,9 @@ What does change between the xunit versions is the test host and the runner, not
 | xunit.v3 | Funcky.Xunit.v3                   | Test project runs on           | `dotnet test` with the .NET 10 SDK                                                |
 |----------|-----------------------------------|--------------------------------|-----------------------------------------------------------------------------------|
 | 1.x      | 1.0.0 and later                   | .NET 6+, .NET Framework 4.7.2+ | VSTest (`xunit.runner.visualstudio`) or Microsoft.Testing.Platform v1             |
-| 2.x      | 1.2.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
-| 3.x      | 1.2.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
-| 4.x      | 1.2.0 and later, verified         | .NET 8+, .NET Framework 4.7.2+ | Microsoft.Testing.Platform v2; VSTest only with the `xunit.v3.*.mtp-off` packages |
+| 2.x      | 1.1.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 3.x      | 1.1.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 4.x      | 1.1.0 and later, verified         | .NET 8+, .NET Framework 4.7.2+ | Microsoft.Testing.Platform v2; VSTest only with the `xunit.v3.*.mtp-off` packages |
 
 "Verified" means Funcky's own test suite runs green against that version. "Expected to work" means nothing in the
 xunit release notes touches what Funcky uses, but the suite is not run against it yet

@@ -61,3 +61,11 @@ Rule ID | New Category | New Severity | Old Category | Old Severity | Notes
 λ1006 | Funcky.Style | Warning | Funcky | Warning | OptionMatchAnalyzer
 λ1007 | Funcky.Style | Warning | Funcky | Warning | OptionMatchAnalyzer
 λ1008 | Funcky.Style | Warning | Funcky | Warning | OptionMatchAnalyzer
+
+## Release 2.1
+### New Rules
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
+λ1201 | Funcky.Style | Warning | PreferStaticParseOrNoneAnalyzer
+λ1202 | Funcky.Style | Warning | PreferEnumerableSequenceConstructorsAnalyzer
+λ1203 | Funcky.Style | Warning | PreferXunitAssertAnalyzer
