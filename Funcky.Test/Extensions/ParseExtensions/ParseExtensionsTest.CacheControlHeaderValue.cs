@@ -1,3 +1,5 @@
+#pragma warning disable λ1201 // This test exercises the classic string extension form itself.
+
 namespace Funcky.Test.Extensions.ParseExtensions;
 
 public sealed partial class ParseExtensionsTest
@@ -6,7 +8,7 @@ public sealed partial class ParseExtensionsTest
     [Fact]
     public void ReturnsEmptyValueForEmptyString()
     {
-        var value = FunctionalAssert.Some(string.Empty.ParseCacheControlHeaderValueOrNone());
+        var value = Assert.Some(string.Empty.ParseCacheControlHeaderValueOrNone());
         Assert.Equal(string.Empty, value.ToString());
     }
 }

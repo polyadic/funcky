@@ -14,7 +14,7 @@ public static partial class Functional
     /// </remarks>
     public static TResult Retry<TResult>(Func<Option<TResult>> producer)
         where TResult : notnull
-        => Sequence
+        => Enumerable
             .Cycle(producer)
             .Select(produce => produce())
             .WhereSelect()
@@ -27,7 +27,7 @@ public static partial class Functional
     /// Consider using <c>AsyncFunctional.RetryAsync</c> instead (part of Funcky on .NET 10 and newer, part of the <c>Funcky.Async</c> package on older frameworks).</remarks>
     public static Option<TResult> Retry<TResult>(Func<Option<TResult>> producer, IRetryPolicy retryPolicy)
         where TResult : notnull
-        => Sequence
+        => Enumerable
             .Return(producer())
             .Concat(TailRetries(producer, retryPolicy))
             .WhereSelect()

@@ -22,7 +22,7 @@ public sealed class AggregateOrNoneTest
 
     [Fact]
     public async Task AggregateOrNoneAsyncReturnsNoneForAnEmptySequence()
-        => FunctionalAssert.None(await AsyncEnumerable.Empty<int>().AggregateOrNoneAsync((a, b) => a + b));
+        => Assert.None(await AsyncEnumerable.Empty<int>().AggregateOrNoneAsync((a, b) => a + b));
 
     [Fact]
     public async Task AggregateOrNoneAsyncReturnsTheOnlyElementWithoutInvokingTheAccumulator()
@@ -35,13 +35,13 @@ public sealed class AggregateOrNoneTest
             return a + b;
         });
 
-        FunctionalAssert.Some(42, result);
+        Assert.Some(42, result);
         Assert.False(accumulatorInvoked);
     }
 
     [Fact]
     public async Task AggregateOrNoneAsyncFoldsFromTheLeft()
-        => FunctionalAssert.Some("((a,b),c)", await AsyncSequence.Return("a", "b", "c").AggregateOrNoneAsync((a, b) => $"({a},{b})"));
+        => Assert.Some("((a,b),c)", await AsyncSequence.Return("a", "b", "c").AggregateOrNoneAsync((a, b) => $"({a},{b})"));
 
     [Fact]
     public async Task AggregateOrNoneAsyncPassesTheCancellationTokenToTheSourceAndTheAccumulator()
@@ -59,7 +59,7 @@ public sealed class AggregateOrNoneTest
                 },
                 cancellationToken);
 
-        FunctionalAssert.Some(6, result);
+        Assert.Some(6, result);
         Assert.Equal(cancellationToken, tokenSeenBySource);
     }
 

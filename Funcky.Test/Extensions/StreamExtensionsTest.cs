@@ -11,7 +11,7 @@ public sealed class StreamExtensionsTest
     {
         using var stream = new MemoryStream();
 
-        FunctionalAssert.None(stream.ReadByteOrNone());
+        Assert.None(stream.ReadByteOrNone());
     }
 
     [Property]
@@ -29,39 +29,39 @@ public sealed class StreamExtensionsTest
     public void GetLengthOrNoneReturnsNoneIfTheLengthIsNotSupportedAndTheLengthOtherwise()
     {
         using var stream = new MemoryStream();
-        FunctionalAssert.Some(0, stream.GetLengthOrNone());
+        Assert.Some(0, stream.GetLengthOrNone());
 
         using var nostream = new NoStream();
-        FunctionalAssert.None(nostream.GetLengthOrNone());
+        Assert.None(nostream.GetLengthOrNone());
     }
 
     [Fact]
     public void GetPositionOrNoneReturnsNoneIfThePositionIsNotSupportedAndThePositionOtherwise()
     {
         using var stream = new MemoryStream();
-        FunctionalAssert.Some(0, stream.GetPositionOrNone());
+        Assert.Some(0, stream.GetPositionOrNone());
 
         using var nostream = new NoStream();
-        FunctionalAssert.None(nostream.GetPositionOrNone());
+        Assert.None(nostream.GetPositionOrNone());
     }
 
     [Fact]
     public void GetReadTimeoutOrNoneReturnsNoneIfTheReadTimeoutIsNotSupportedAndTheReadTimeoutOtherwise()
     {
         using var memoryStream = new MemoryStream();
-        FunctionalAssert.None(memoryStream.GetReadTimeoutOrNone());
+        Assert.None(memoryStream.GetReadTimeoutOrNone());
 
         using var nostream = new NoStream();
-        FunctionalAssert.Some(300, nostream.GetReadTimeoutOrNone());
+        Assert.Some(300, nostream.GetReadTimeoutOrNone());
     }
 
     [Fact]
     public void GetWriteTimeoutOrNoneReturnsNoneIfTheWriteTimeoutIsNotSupportedAndTheWriteTimeoutOtherwise()
     {
         using var memoryStream = new MemoryStream();
-        FunctionalAssert.None(memoryStream.GetReadTimeoutOrNone());
+        Assert.None(memoryStream.GetReadTimeoutOrNone());
 
         using var nostream = new NoStream();
-        FunctionalAssert.Some(600, nostream.GetWriteTimeoutOrNone());
+        Assert.Some(600, nostream.GetWriteTimeoutOrNone());
     }
 }

@@ -88,13 +88,13 @@ public sealed class AverageOrNoneTest
         // Each term is not representable as a double, so summing in double drifts while an exact long sum does not.
         var sequence = Enumerable.Repeat((1L << 53) + 1, 3).ToList();
 
-        FunctionalAssert.Some(sequence.Average(), sequence.AverageOrNone());
+        Assert.Some(sequence.Average(), sequence.AverageOrNone());
     }
 
     [Fact]
     public void AverageOrNoneThrowsWhenTheInt64SumOverflowsLikeAverage()
     {
-        var sequence = Sequence.Return(long.MaxValue, 1L);
+        var sequence = Enumerable.Return(long.MaxValue, 1L);
 
         Assert.Throws<OverflowException>(() => sequence.Average());
         Assert.Throws<OverflowException>(() => sequence.AverageOrNone());

@@ -44,8 +44,8 @@ public sealed class MergeTest
     [Property]
     public Property TwoSingleSequencesAreMergedCorrectly(int first, int second)
     {
-        var sequence1 = Sequence.Return(first);
-        var sequence2 = Sequence.Return(second);
+        var sequence1 = Enumerable.Return(first);
+        var sequence2 = Enumerable.Return(second);
 
         var merged = sequence1.Merge(sequence2);
         return (merged.First() <= merged.Last()).ToProperty();
@@ -108,7 +108,7 @@ public sealed class MergeTest
     {
         var first = new DisposeTrackingSequence<int>([1, 2]);
         var second = new DisposeTrackingSequence<int>([3, 4]);
-        var sources = Sequence.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
+        var sources = Enumerable.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
 
         Assert.Throws<XunitException>(() => sources.Merge().First());
 

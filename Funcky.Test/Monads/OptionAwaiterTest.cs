@@ -15,9 +15,9 @@ public sealed class OptionAwaiterTest
     [Fact]
     public async Task OptionOfTaskIsAwaitable()
     {
-        FunctionalAssert.Some(10, await Option.Some(Task.FromResult(10)));
-        FunctionalAssert.Some(10, await Option.Some(Task.FromResult(10)).ConfigureAwait(false));
-        FunctionalAssert.None(await Option<Task<int>>.None.ConfigureAwait(false));
+        Assert.Some(10, await Option.Some(Task.FromResult(10)));
+        Assert.Some(10, await Option.Some(Task.FromResult(10)).ConfigureAwait(false));
+        Assert.None(await Option<Task<int>>.None.ConfigureAwait(false));
     }
 
     [Fact]
@@ -32,10 +32,10 @@ public sealed class OptionAwaiterTest
     [Fact]
     public async Task OptionOfValueTaskIsAwaitable()
     {
-        FunctionalAssert.Some(10, await Option.Some(ValueTask.FromResult(10)));
-        FunctionalAssert.Some(10, await Option.Some(ValueTask.FromResult(10)).ConfigureAwait(false));
-        FunctionalAssert.None(await Option<ValueTask<int>>.None);
-        FunctionalAssert.None(await Option<ValueTask<int>>.None.ConfigureAwait(false));
+        Assert.Some(10, await Option.Some(ValueTask.FromResult(10)));
+        Assert.Some(10, await Option.Some(ValueTask.FromResult(10)).ConfigureAwait(false));
+        Assert.None(await Option<ValueTask<int>>.None);
+        Assert.None(await Option<ValueTask<int>>.None.ConfigureAwait(false));
     }
 
     [Fact]

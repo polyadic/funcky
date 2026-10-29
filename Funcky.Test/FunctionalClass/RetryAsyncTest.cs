@@ -11,7 +11,7 @@ public sealed class RetryAsyncTest
     public async Task ReturnsTheValueImmediatelyIfTheProducerIsPureAndReturnsSome()
     {
         const int value = 10;
-        FunctionalAssert.Some(value, await RetryAsync(() => ValueTask.FromResult(Option.Some(value)), new DoNotRetryPolicy()));
+        Assert.Some(value, await RetryAsync(() => ValueTask.FromResult(Option.Some(value)), new DoNotRetryPolicy()));
     }
 
     [Theory]
@@ -25,7 +25,7 @@ public sealed class RetryAsyncTest
         const string produceString = "Hello world!";
         var producer = new OptionProducer<string>(1000, produceString);
 
-        FunctionalAssert.None(await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(numberOfRetries)));
+        Assert.None(await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(numberOfRetries)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
     }
 
@@ -40,7 +40,7 @@ public sealed class RetryAsyncTest
         const string produceString = "Hello world!";
         var producer = new OptionProducer<string>(numberOfRetries, produceString);
 
-        FunctionalAssert.Some(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
+        Assert.Some(produceString, await RetryAsync(producer.ProduceAsync, new NoDelayRetryPolicy(1000)));
         Assert.Equal(numberOfRetries + 1, producer.Called);
     }
 
@@ -121,7 +121,7 @@ public sealed class RetryAsyncTest
         using var cancellationTokenSource = new CancellationTokenSource();
         var receivedTokens = new List<CancellationToken>();
 
-        FunctionalAssert.None(await RetryAsync(
+        Assert.None(await RetryAsync(
             token =>
             {
                 receivedTokens.Add(token);

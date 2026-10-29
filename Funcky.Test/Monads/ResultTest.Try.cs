@@ -5,7 +5,7 @@ public sealed partial class ResultTest
     [Fact]
     public void TryReturnsOkWhenTheFunctionReturns()
     {
-        FunctionalAssert.Ok(42, Result.Try(() => 42));
+        Assert.Ok(42, Result.Try(() => 42));
     }
 
     [Fact]
@@ -13,7 +13,7 @@ public sealed partial class ResultTest
     {
         var expected = new InvalidOperationException("boom");
 
-        var error = FunctionalAssert.Error<InvalidOperationException, int>(Result.Try<int>(() => throw expected));
+        var error = Assert.Error<InvalidOperationException, int>(Result.Try<int>(() => throw expected));
 
         Assert.Same(expected, error);
         Assert.NotNull(error.StackTrace);
@@ -40,13 +40,13 @@ public sealed partial class ResultTest
     [Fact]
     public async Task TryAsyncReturnsOkWhenTheTaskCompletes()
     {
-        FunctionalAssert.Ok(42, await Result.TryAsync(() => Task.FromResult(42)));
+        Assert.Ok(42, await Result.TryAsync(() => Task.FromResult(42)));
         var awaited = await Result.TryAsync(async () =>
         {
             await Task.Yield();
             return 42;
         });
-        FunctionalAssert.Ok(42, awaited);
+        Assert.Ok(42, awaited);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public sealed partial class ResultTest
     {
         var expected = new InvalidOperationException("boom");
 
-        var error = FunctionalAssert.Error<InvalidOperationException, int>(await Result.TryAsync<int>(() => throw expected));
+        var error = Assert.Error<InvalidOperationException, int>(await Result.TryAsync<int>(() => throw expected));
 
         Assert.Same(expected, error);
     }
@@ -64,7 +64,7 @@ public sealed partial class ResultTest
     {
         var expected = new InvalidOperationException("boom");
 
-        var error = FunctionalAssert.Error<InvalidOperationException, int>(await Result.TryAsync<int>(async () =>
+        var error = Assert.Error<InvalidOperationException, int>(await Result.TryAsync<int>(async () =>
         {
             await Task.Yield();
             throw expected;

@@ -46,7 +46,7 @@ public static partial class StringExtensions
             => text.SplitBy(ExtractByIndex(IndexOfStringSeparators(separators)));
 
         private IEnumerable<string> SplitBy(ExtractElement extractNext)
-            => Sequence
+            => Enumerable
                     .Successors(extractNext(text, 0), previous => extractNext(text, previous.NextStartIndex))
                     .Select(r => r.Result);
     }

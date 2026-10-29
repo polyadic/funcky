@@ -78,7 +78,7 @@ public sealed class AdjacentGroupByTest
 
         Assert.Equal(DaysInAYear + DaysInALeapYear, dates.Count());
         Assert.Equal(2 * MonthsInAYear, months.Count());
-        Assert.Equal(Sequence.Concat(DaysInMonthsOfAYear(), DaysInMonthsOfALeapYear()), months.Select(month => month.Count()));
+        Assert.Equal(Enumerable.Concat(DaysInMonthsOfAYear(), DaysInMonthsOfALeapYear()), months.Select(month => month.Count()));
     }
 
     [Fact]

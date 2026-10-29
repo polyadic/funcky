@@ -29,7 +29,7 @@ public sealed class WithPreviousTest
         await AsyncAssert.Collection(sequenceWithPrevious, value =>
         {
             Assert.Equal(expectedValue, value.Value);
-            FunctionalAssert.None(value.Previous);
+            Assert.None(value.Previous);
         });
     }
 

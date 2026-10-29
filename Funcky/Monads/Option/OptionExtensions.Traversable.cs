@@ -68,7 +68,7 @@ public static partial class OptionExtensions
         this Option<IEnumerable<TItem>> option)
         where TItem : notnull
         => option.Match(
-            none: static () => Funcky.Sequence.Return(Option<TItem>.None),
+            none: static () => Enumerable.Return(Option<TItem>.None),
             some: static item => item.Select(Option.Return));
 
     [Pure]

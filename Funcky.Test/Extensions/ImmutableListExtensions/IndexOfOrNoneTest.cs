@@ -10,7 +10,7 @@ public sealed class IndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.None(list.IndexOfOrNone("Beta"));
+        Assert.None(list.IndexOfOrNone("Beta"));
     }
 
     [Fact]
@@ -18,7 +18,7 @@ public sealed class IndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.Some(0, list.IndexOfOrNone("Alpha"));
+        Assert.Some(0, list.IndexOfOrNone("Alpha"));
     }
 
     [Fact]
@@ -26,11 +26,11 @@ public sealed class IndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.Some(1, list.IndexOfOrNone("Gamma"));
-        FunctionalAssert.Some(4, list.IndexOfOrNone("Gamma", 2));
-        FunctionalAssert.None(list.IndexOfOrNone("Gamma", 2, 2));
-        FunctionalAssert.Some(0, list.IndexOfOrNone("Gamma", new EverythingIsEqual<string>()));
-        FunctionalAssert.Some(2, list.IndexOfOrNone("Gamma", 2, 1, new EverythingIsEqual<string>()));
+        Assert.Some(1, list.IndexOfOrNone("Gamma"));
+        Assert.Some(4, list.IndexOfOrNone("Gamma", 2));
+        Assert.None(list.IndexOfOrNone("Gamma", 2, 2));
+        Assert.Some(0, list.IndexOfOrNone("Gamma", new EverythingIsEqual<string>()));
+        Assert.Some(2, list.IndexOfOrNone("Gamma", 2, 1, new EverythingIsEqual<string>()));
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public sealed class IndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty;
 
-        FunctionalAssert.None(list.IndexOfOrNone("Gamma", 0));
-        FunctionalAssert.None(list.IndexOfOrNone("Gamma", 0, 0));
+        Assert.None(list.IndexOfOrNone("Gamma", 0));
+        Assert.None(list.IndexOfOrNone("Gamma", 0, 0));
     }
 
     [Fact]
