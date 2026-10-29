@@ -1,4 +1,7 @@
 using System.Reflection;
+#if INDEX_OF_RUNE
+using System.Text;
+#endif
 using Xunit.Abstractions;
 
 namespace Funcky.Test.Extensions.StringExtensions;
@@ -13,6 +16,10 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
     private const string ExistingNeedle = "ystack";
     private const char ExistingNeedleChar = 'y';
     private const int NeedlePosition = 2;
+#if INDEX_OF_RUNE
+    private static readonly Rune NonExistingNeedleRune = new(NonExistingNeedleChar);
+    private static readonly Rune ExistingNeedleRune = new(ExistingNeedleChar);
+#endif
 
     [Theory]
     [MemberData(nameof(InvalidIndexes))]
@@ -52,6 +59,27 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar]),
             Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0),
             Haystack.LastIndexOfAnyOrNone([NonExistingNeedleChar], startIndex: 0, count: 1),
+#if INDEX_OF_CHAR_COMPARISON_RANGE
+            Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleChar, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleChar, startIndex: 0, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleChar, startIndex: 0, count: 1, StringComparison.Ordinal),
+#endif
+#if INDEX_OF_RUNE
+            Haystack.IndexOfOrNone(NonExistingNeedleRune),
+            Haystack.IndexOfOrNone(NonExistingNeedleRune, startIndex: 0),
+            Haystack.IndexOfOrNone(NonExistingNeedleRune, startIndex: 0, count: 1),
+            Haystack.IndexOfOrNone(NonExistingNeedleRune, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(NonExistingNeedleRune, startIndex: 0, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(NonExistingNeedleRune, startIndex: 0, count: 1, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune, startIndex: 0),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune, startIndex: 0, count: 1),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune, startIndex: 0, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(NonExistingNeedleRune, startIndex: 0, count: 1, StringComparison.Ordinal),
+#endif
         };
 
     [Theory]
@@ -92,6 +120,27 @@ public sealed class IndexOfTest(ITestOutputHelper testOutputHelper)
             Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar]),
             Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar], startIndex: Haystack.Length - 1),
             Haystack.LastIndexOfAnyOrNone([ExistingNeedleChar], startIndex: Haystack.Length - 1, count: Haystack.Length),
+#if INDEX_OF_CHAR_COMPARISON_RANGE
+            Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(ExistingNeedleChar, startIndex: 0, count: Haystack.Length, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleChar, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleChar, startIndex: Haystack.Length - 1, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleChar, startIndex: Haystack.Length - 1, count: Haystack.Length, StringComparison.Ordinal),
+#endif
+#if INDEX_OF_RUNE
+            Haystack.IndexOfOrNone(ExistingNeedleRune),
+            Haystack.IndexOfOrNone(ExistingNeedleRune, startIndex: 0),
+            Haystack.IndexOfOrNone(ExistingNeedleRune, startIndex: 0, count: Haystack.Length),
+            Haystack.IndexOfOrNone(ExistingNeedleRune, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(ExistingNeedleRune, startIndex: 0, StringComparison.Ordinal),
+            Haystack.IndexOfOrNone(ExistingNeedleRune, startIndex: 0, count: Haystack.Length, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune, startIndex: Haystack.Length - 1),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune, startIndex: Haystack.Length - 1, count: Haystack.Length),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune, startIndex: Haystack.Length - 1, StringComparison.Ordinal),
+            Haystack.LastIndexOfOrNone(ExistingNeedleRune, startIndex: Haystack.Length - 1, count: Haystack.Length, StringComparison.Ordinal),
+#endif
         };
 
     [SkipOnMonoFact]

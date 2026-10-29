@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Funcky 4.0.0
+
+* Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
+  is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
+  framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.
+* The `net11.0` asset gains the UTF-8 parse overloads that .NET 11 adds `TryParse(ReadOnlySpan<byte>, …)` for:
+  `ParseBigIntegerOrNone` and `ParseIPEndPointOrNone` on `ReadOnlySpan<byte>`, and `BigInteger.ParseOrNone` and
+  `IPEndPoint.ParseOrNone` taking a `ReadOnlySpan<byte>`.
+* The `net11.0` asset also wraps the search overloads .NET 11 adds to `string`: `IndexOfOrNone` and `LastIndexOfOrNone`
+  for a `char` with a `StringComparison` and a start index or count, and both for a `Rune` in every shape the `char`
+  overloads come in.
+
 ## Funcky 3.8.0 | Funcky.Async 1.6.0 | Funcky.Xunit 2.3.0 | Funcky.Xunit.v3 1.1.0 | Funcky.Analyzers 2.1.0
 
 * Add `InRange<TFrom, TTo>(from, to)` extension (.NET 7+) on all BCL numeric types to check whether a value lies within
