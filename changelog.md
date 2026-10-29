@@ -26,13 +26,15 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions`, …), because the C# compiler does not
   allow static extension members of different receiver types with the same name and parameters in one class.
   Consumers on a compiler older than C# 14 see them as plain static methods of these classes
-  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
-  decides their fate.
+  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay on the 3.x line, but the static form is the
+  recommended one: 4.0.0 decides the fate of the classic forms (#1003), and moving early keeps that migration small.
+  Funcky.Analyzers 2.1.0 ships λ1201 with a code fix for it.
 * The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
   `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
-  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see, and are the implementation;
+  the `Sequence` constructors forward to them.
 * Add `Result.Try(Func<T>)` and `Result.TryAsync(Func<Task<T>>)`, which run a function and capture its outcome as
   `Ok(value)` or `Error(exception)`: `Result.Try(() => int.Parse(text))`. Exceptions that signal a corrupted process
   (`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) are never
@@ -47,7 +49,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Funcky.Xunit and Funcky.Xunit.v3: the assertions of `FunctionalAssert` are now also static extension members of
   xunit's `Assert`, so they are found where the other assertions live: `Assert.Some(option)`, `Assert.None(option)`,
   `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`; `Some`, `Ok`, `Left` and `Right`
-  also come with the overload that takes the expected value. They delegate to `FunctionalAssert`, which stays the form for compilers older than
+  also come with the overload that takes the expected value. The `Assert` members are the implementation; `FunctionalAssert` forwards to them and stays the form for compilers older than
   C# 14 (the members are declared in `AssertExtensions`).
 * Funcky.Xunit.v3 now accepts xUnit.net v3 1.x through 4.x (`xunit.v3.assert` and `xunit.v3.extensibility.core`
   `[1.0.1, 5)`, previously `[1.0.1, 2)`). The package is still compiled against 1.0.1; the types it uses (`Assert`,
@@ -100,6 +102,11 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   * [λ1203](https://polyadic.github.io/funcky/analyzer-rules/λ1203.html) `FunctionalAssert.Some(…)` → `Assert.Some(…)`.
 * Fix: λ1101 names the receiver as written in its message (`Assert.Some`); for a static extension member it used to
   print the unnamed extension block (`.Some`).
+* Fix: the code fixes that add `using Funcky.Extensions;` (λ1012, λ1201, λ1202, λ1203 and the `Option.FromBoolean` fix)
+  share a Fix-All provider that rewrites every flagged call of a document in one pass and adds the directive once. The
+  batch fixer treated three or more identical directive insertions as colliding edits and dropped those fixes, call
+  rewrite included, so a second Fix-All pass was needed ([#1009](https://github.com/polyadic/funcky/issues/1009),
+  [#1020](https://github.com/polyadic/funcky/issues/1020)).
 
 ## Funcky 3.7.0 | Funcky.Analyzers 2.0.0
 

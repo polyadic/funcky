@@ -23,6 +23,6 @@ public sealed class ToTheoryDataExtensionTest
     }
 
     public static TheoryData<int, string> TheoryFromRepeat()
-        => Sequence.Return(Tuple.Create(IntValue, StringValue)).ToTheoryData();
+        => Enumerable.Return(Tuple.Create(IntValue, StringValue)).ToTheoryData();
 }
 #endif

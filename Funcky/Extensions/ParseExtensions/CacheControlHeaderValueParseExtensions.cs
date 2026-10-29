@@ -8,8 +8,11 @@ public static class CacheControlHeaderValueParseExtensions
     extension(CacheControlHeaderValue)
     {
         /// <summary>Calls <see cref="CacheControlHeaderValue.TryParse"/> and returns the parsed value, or None when it fails.</summary>
+        // implemented manually because CacheControlHeaderValue.TryParse has no annotations to handle nullability correctly.
         [Pure]
         public static Option<CacheControlHeaderValue> ParseOrNone(string? candidate)
-            => candidate.ParseCacheControlHeaderValueOrNone();
+            => CacheControlHeaderValue.TryParse(candidate, out var result)
+                ? result ?? new CacheControlHeaderValue()
+                : Option<CacheControlHeaderValue>.None;
     }
 }

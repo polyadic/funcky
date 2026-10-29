@@ -13,7 +13,7 @@ public sealed class PartitionEitherTest
     [Fact]
     public void PartitionsItemsIntoLeftAndRight()
     {
-        var input = Sequence.Return(
+        var input = Enumerable.Return(
             Either<int, string>.Left(10),
             Either<int, string>.Right("a"),
             Either<int, string>.Right("b"),

@@ -52,7 +52,7 @@ public sealed class MaxByOrNoneTest
     {
         var list = new List<MyNullableKeyRecord> { new(null, "first"), new(2, "second"), new(null, "third"), new(1, "fourth") };
 
-        FunctionalAssert.Some(new MyNullableKeyRecord(2, "second"), list.MaxByOrNone(element => element.Number));
+        Assert.Some(new MyNullableKeyRecord(2, "second"), list.MaxByOrNone(element => element.Number));
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public sealed class MaxByOrNoneTest
     {
         var list = new List<MyNullableKeyRecord> { new(null, "first"), new(null, "second") };
 
-        FunctionalAssert.Some(new MyNullableKeyRecord(null, "first"), list.MaxByOrNone(element => element.Number));
+        Assert.Some(new MyNullableKeyRecord(null, "first"), list.MaxByOrNone(element => element.Number));
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public sealed class MaxByOrNoneTest
     {
         var emptyList = new List<MyRecord>();
 
-        FunctionalAssert.None(emptyList.MaxByOrNone(element => element.Number));
+        Assert.None(emptyList.MaxByOrNone(element => element.Number));
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public sealed class MaxByOrNoneTest
     {
         var emptyList = new List<MyRecordStruct>();
 
-        FunctionalAssert.None(emptyList.MaxByOrNone(element => element.Number));
+        Assert.None(emptyList.MaxByOrNone(element => element.Number));
     }
 
     public record struct MyRecordStruct(int Number, string Text);

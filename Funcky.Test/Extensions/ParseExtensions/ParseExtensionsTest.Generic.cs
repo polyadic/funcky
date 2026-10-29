@@ -1,3 +1,5 @@
+#pragma warning disable λ1201 // This test exercises the classic string extension form itself.
+
 #if GENERIC_PARSABLE
 using System.Globalization;
 

@@ -10,7 +10,7 @@ until the result is enumerated, and the input is enumerated at most once. The ex
 operation's page.
 
 Operations marked with ⁂ have an asynchronous counterpart on `IAsyncEnumerable<T>`, in `Funcky` itself on
-.NET 10 and in the `Funcky.Async` package on older targets.
+.NET 10 and in the `Funcky.Async` package on older targets. See [Funcky.Async and IAsyncEnumerable](../async.md).
 
 ## Finding one element
 

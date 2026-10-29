@@ -113,7 +113,7 @@ public sealed class InterleaveTest
     {
         var first = new DisposeTrackingSequence<int>([1, 2]);
         var second = new DisposeTrackingSequence<int>([3, 4]);
-        var sources = Sequence.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
+        var sources = Enumerable.Return<IEnumerable<int>>(first, second, new FailOnEnumerationSequence<int>());
 
         Assert.Throws<XunitException>(() => sources.Interleave().First());
 

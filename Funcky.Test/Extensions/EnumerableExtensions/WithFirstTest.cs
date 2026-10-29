@@ -25,7 +25,7 @@ public sealed class WithFirstTest
     public void ASequenceWithOneElementWithFirstHasOneElementWhichIsMarkedFirst()
     {
         const string expectedValue = "Hello world!";
-        var oneElementSequence = Sequence.Return(expectedValue);
+        var oneElementSequence = Enumerable.Return(expectedValue);
 
         var sequenceWithFirst = oneElementSequence.WithFirst();
         foreach (var (value, isFirst) in sequenceWithFirst)
@@ -79,7 +79,7 @@ public sealed class WithFirstTest
     [SuppressMessage("Assertions", "xUnit2017:Do not use Contains() to check if a value exists in a collection")]
     public void ContainsWorksOnListWithFirst()
     {
-        var sequence = Sequence.Return(1, 2, 3).ToList();
+        var sequence = Enumerable.Return(1, 2, 3).ToList();
         Assert.True(sequence.WithFirst().Contains(new ValueWithFirst<int>(1, isFirst: true)));
     }
 

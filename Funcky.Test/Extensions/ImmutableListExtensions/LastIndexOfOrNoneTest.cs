@@ -10,7 +10,7 @@ public sealed class LastIndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.None(list.LastIndexOfOrNone("Beta"));
+        Assert.None(list.LastIndexOfOrNone("Beta"));
     }
 
     [Fact]
@@ -18,7 +18,7 @@ public sealed class LastIndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.Some(3, list.LastIndexOfOrNone("Alpha"));
+        Assert.Some(3, list.LastIndexOfOrNone("Alpha"));
     }
 
     [Fact]
@@ -26,11 +26,11 @@ public sealed class LastIndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty.Add("Alpha").Add("Gamma").Add("Epsilon").Add("Alpha").Add("Gamma");
 
-        FunctionalAssert.Some(4, list.LastIndexOfOrNone("Gamma"));
-        FunctionalAssert.Some(1, list.LastIndexOfOrNone("Gamma", 2));
-        FunctionalAssert.None(list.LastIndexOfOrNone("Gamma", 3, 2));
-        FunctionalAssert.Some(4, list.LastIndexOfOrNone("Gamma", new EverythingIsEqual<string>()));
-        FunctionalAssert.Some(2, list.LastIndexOfOrNone("Gamma", 2, 1, new EverythingIsEqual<string>()));
+        Assert.Some(4, list.LastIndexOfOrNone("Gamma"));
+        Assert.Some(1, list.LastIndexOfOrNone("Gamma", 2));
+        Assert.None(list.LastIndexOfOrNone("Gamma", 3, 2));
+        Assert.Some(4, list.LastIndexOfOrNone("Gamma", new EverythingIsEqual<string>()));
+        Assert.Some(2, list.LastIndexOfOrNone("Gamma", 2, 1, new EverythingIsEqual<string>()));
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public sealed class LastIndexOfOrNoneTest
     {
         IImmutableList<string> list = ImmutableList<string>.Empty;
 
-        FunctionalAssert.None(list.LastIndexOfOrNone("Gamma", 0));
-        FunctionalAssert.None(list.LastIndexOfOrNone("Gamma", 0, 0));
+        Assert.None(list.LastIndexOfOrNone("Gamma", 0));
+        Assert.None(list.LastIndexOfOrNone("Gamma", 0, 0));
     }
 }

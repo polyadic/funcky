@@ -13,8 +13,8 @@ public sealed class PartitionResultTest
     [Fact]
     public void PartitionsItemsIntoOkAndError()
     {
-        var values = Sequence.Return(10, 20);
-        var exceptions = Sequence.Return(new Exception("foo"), new InvalidOperationException("bar"));
+        var values = Enumerable.Return(10, 20);
+        var exceptions = Enumerable.Return(new Exception("foo"), new InvalidOperationException("bar"));
         var input = values.Select(Result.Ok).Interleave(exceptions.Select(Result<int>.Error));
 
         var (error, ok) = input.Partition();

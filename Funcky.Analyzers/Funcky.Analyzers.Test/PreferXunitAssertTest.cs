@@ -110,6 +110,7 @@ public sealed class PreferXunitAssertTest
         await VerifyCS.VerifyCodeFixAsync(inputCode + Environment.NewLine + StubCode, fixedCode + Environment.NewLine + StubCode);
     }
 
+    // Three or more diagnostics: Fix-All has to rewrite every call in one pass although each fix on its own adds the same using (#1009).
     [Fact]
     public async Task AddsTheUsingForTheExtensionWhenMissing()
     {
@@ -121,7 +122,13 @@ public sealed class PreferXunitAssertTest
 
             public static class C
             {
-                public static void M(Option<int> option) => {|λ1203:FunctionalAssert.None(option)|};
+                public static void M(Option<int> option)
+                {
+                    {|λ1203:FunctionalAssert.None(option)|};
+                    {|λ1203:FunctionalAssert.Some(10, option)|};
+                    var value = {|λ1203:FunctionalAssert.Some(option)|};
+                    Assert.Equal(10, value);
+                }
             }
             """;
         const string fixedCode =
@@ -133,7 +140,13 @@ public sealed class PreferXunitAssertTest
 
             public static class C
             {
-                public static void M(Option<int> option) => Assert.None(option);
+                public static void M(Option<int> option)
+                {
+                    Assert.None(option);
+                    Assert.Some(10, option);
+                    var value = Assert.Some(option);
+                    Assert.Equal(10, value);
+                }
             }
             """;
 

@@ -34,7 +34,7 @@ public sealed class CycleRangeTest
     [Fact]
     public async Task CycleRangeEnumeratesUnderlyingEnumerableOnlyOnceAsync()
     {
-        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var sequence = Enumerable.Return("Test", "Hello", "Do", "Wait");
         var enumerateOnce = AsyncEnumerateOnce.Create(sequence);
 
         await using var cycleRange = AsyncSequence.CycleRange(enumerateOnce);

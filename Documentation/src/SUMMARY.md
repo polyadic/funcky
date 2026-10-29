@@ -35,6 +35,7 @@
   * [Side effects and evaluation](./enumerable-extensions/side-effects-and-evaluation.md)
   * [Strings and monads](./enumerable-extensions/strings-and-monads.md)
   * [Sequence Constructors](./sequence/sequence.md)
+* [Funcky.Async and IAsyncEnumerable](./async.md)
 * [String Extensions](./string-extensions.md)
 * [Number Extensions](./number-extensions.md)
 * [Stream Extensions](./stream-extensions.md)

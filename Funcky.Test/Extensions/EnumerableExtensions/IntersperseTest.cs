@@ -20,7 +20,7 @@ public sealed class IntersperseTest
     [Fact]
     public void InterspersingASequenceWithOneElementReturnsOriginalSequence()
     {
-        var source = Sequence.Return(10);
+        var source = Enumerable.Return(10);
         Assert.Equal(source, source.Intersperse(42));
     }
 
