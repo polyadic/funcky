@@ -44,7 +44,7 @@ public sealed class OptionAwaiterTest
         var source = new TaskCompletionSource<int>();
         var awaiting = AwaitAsync(Option.Some(source.Task));
         source.SetResult(10);
-        FunctionalAssert.Some(10, await awaiting);
+        Assert.Some(10, await awaiting);
 
         static async Task<Option<int>> AwaitAsync(Option<Task<int>> option) => await option;
     }
@@ -55,19 +55,19 @@ public sealed class OptionAwaiterTest
     {
         var taskAwaiter = Option<Task<int>>.None.GetAwaiter();
         Assert.True(taskAwaiter.IsCompleted);
-        FunctionalAssert.None(taskAwaiter.GetResult());
+        Assert.None(taskAwaiter.GetResult());
 
         var configuredTaskAwaiter = Option<Task<int>>.None.ConfigureAwait(false).GetAwaiter();
         Assert.True(configuredTaskAwaiter.IsCompleted);
-        FunctionalAssert.None(configuredTaskAwaiter.GetResult());
+        Assert.None(configuredTaskAwaiter.GetResult());
 
         var valueTaskAwaiter = Option<ValueTask<int>>.None.GetAwaiter();
         Assert.True(valueTaskAwaiter.IsCompleted);
-        FunctionalAssert.None(valueTaskAwaiter.GetResult());
+        Assert.None(valueTaskAwaiter.GetResult());
 
         var configuredValueTaskAwaiter = Option<ValueTask<int>>.None.ConfigureAwait(false).GetAwaiter();
         Assert.True(configuredValueTaskAwaiter.IsCompleted);
-        FunctionalAssert.None(configuredValueTaskAwaiter.GetResult());
+        Assert.None(configuredValueTaskAwaiter.GetResult());
     }
 
     [Fact]
@@ -95,19 +95,19 @@ public sealed class OptionAwaiterTest
     {
         var taskAwaiter = Option.Some(Task.FromResult(10)).GetAwaiter();
         Assert.True(taskAwaiter.IsCompleted);
-        FunctionalAssert.Some(10, taskAwaiter.GetResult());
+        Assert.Some(10, taskAwaiter.GetResult());
 
         var configuredTaskAwaiter = Option.Some(Task.FromResult(10)).ConfigureAwait(false).GetAwaiter();
         Assert.True(configuredTaskAwaiter.IsCompleted);
-        FunctionalAssert.Some(10, configuredTaskAwaiter.GetResult());
+        Assert.Some(10, configuredTaskAwaiter.GetResult());
 
         var valueTaskAwaiter = Option.Some(ValueTask.FromResult(10)).GetAwaiter();
         Assert.True(valueTaskAwaiter.IsCompleted);
-        FunctionalAssert.Some(10, valueTaskAwaiter.GetResult());
+        Assert.Some(10, valueTaskAwaiter.GetResult());
 
         var configuredValueTaskAwaiter = Option.Some(ValueTask.FromResult(10)).ConfigureAwait(false).GetAwaiter();
         Assert.True(configuredValueTaskAwaiter.IsCompleted);
-        FunctionalAssert.Some(10, configuredValueTaskAwaiter.GetResult());
+        Assert.Some(10, configuredValueTaskAwaiter.GetResult());
     }
 
     [Fact]
