@@ -84,7 +84,7 @@ public sealed class TransposeTest
     [Fact]
     public async Task TransposingAJaggedMatrixYieldsTheRectangularColumnsBeforeThrowing()
     {
-        var jaggedMatrix = Sequence.Return(AsyncSequence.Return(1, 2, 3), AsyncSequence.Return(4, 5));
+        var jaggedMatrix = Enumerable.Return(AsyncSequence.Return(1, 2, 3), AsyncSequence.Return(4, 5));
 
         await using var columns = jaggedMatrix.Transpose().GetAsyncEnumerator();
 
@@ -98,7 +98,7 @@ public sealed class TransposeTest
     [Fact]
     public async Task TransposingAMatrixWithEmptyRowsResultsInAnEmptyMatrix()
     {
-        var matrix = Sequence.Return(AsyncEnumerable.Empty<int>(), AsyncEnumerable.Empty<int>());
+        var matrix = Enumerable.Return(AsyncEnumerable.Empty<int>(), AsyncEnumerable.Empty<int>());
 
         await AsyncAssert.Empty(matrix.Transpose());
     }

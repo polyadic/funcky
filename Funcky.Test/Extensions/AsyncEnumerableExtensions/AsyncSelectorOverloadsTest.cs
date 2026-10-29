@@ -131,15 +131,15 @@ public sealed class AsyncSelectorOverloadsTest
     [Fact]
     public async Task FirstOrNoneAwaitsThePredicate()
     {
-        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
-        FunctionalAssert.None(await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 3)));
+        Assert.Some(2, await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
+        Assert.None(await AsyncSequence.Return(1, 2, 3).FirstOrNoneAsync((item, _) => ValueTask.FromResult(item > 3)));
     }
 
     [Fact]
     public async Task LastSingleAndNoneAwaitThePredicate()
     {
-        FunctionalAssert.Some(3, await AsyncSequence.Return(1, 2, 3).LastOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
-        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).SingleOrNoneAsync((item, _) => ValueTask.FromResult(item == 2)));
+        Assert.Some(3, await AsyncSequence.Return(1, 2, 3).LastOrNoneAsync((item, _) => ValueTask.FromResult(item > 1)));
+        Assert.Some(2, await AsyncSequence.Return(1, 2, 3).SingleOrNoneAsync((item, _) => ValueTask.FromResult(item == 2)));
         Assert.True(await AsyncSequence.Return(1, 2, 3).NoneAsync((item, _) => ValueTask.FromResult(item > 3)));
         Assert.False(await AsyncSequence.Return(1, 2, 3).NoneAsync((item, _) => ValueTask.FromResult(item > 2)));
     }
@@ -147,12 +147,12 @@ public sealed class AsyncSelectorOverloadsTest
     [Fact]
     public async Task MaxMinAndAverageAwaitTheSelector()
     {
-        FunctionalAssert.Some(6, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
-        FunctionalAssert.Some(2, await AsyncSequence.Return(1, 2, 3).MinOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
-        FunctionalAssert.Some(3, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<int>.None : Option.Some(item))));
-        FunctionalAssert.Some(4.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
-        FunctionalAssert.Some(2.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<long>.None : Option.Some((long)item))));
-        FunctionalAssert.None(await AsyncSequence.Return<int>().AverageOrNoneAsync((item, _) => ValueTask.FromResult((decimal)item)));
+        Assert.Some(6, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        Assert.Some(2, await AsyncSequence.Return(1, 2, 3).MinOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        Assert.Some(3, await AsyncSequence.Return(1, 2, 3).MaxOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<int>.None : Option.Some(item))));
+        Assert.Some(4.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item * 2)));
+        Assert.Some(2.0, await AsyncSequence.Return(1, 2, 3).AverageOrNoneAsync((item, _) => ValueTask.FromResult(item == 2 ? Option<long>.None : Option.Some((long)item))));
+        Assert.None(await AsyncSequence.Return<int>().AverageOrNoneAsync((item, _) => ValueTask.FromResult((decimal)item)));
     }
 
     [Fact]

@@ -26,13 +26,15 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions`, …), because the C# compiler does not
   allow static extension members of different receiver types with the same name and parameters in one class.
   Consumers on a compiler older than C# 14 see them as plain static methods of these classes
-  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay and are the recommended form until 4.0.0
-  decides their fate.
+  (`Int32ParseExtensions.ParseOrNone(text)`). The `string` extensions stay on the 3.x line, but the static form is the
+  recommended one: 4.0.0 decides the fate of the classic forms (#1003), and moving early keeps that migration small.
+  Funcky.Analyzers 2.1.0 ships λ1201 with a code fix for it.
 * The `Sequence` constructors `Return`, `FromNullable`, `Successors`, `Cycle`, `CycleRange`, `CycleMaterialized`,
   `RepeatRange`, `RepeatMaterialized` and `Concat` are now also static extension members of `System.Linq.Enumerable`,
   next to `Enumerable.Range` and `Enumerable.Repeat`: `Enumerable.Successors(1, n => n + 1)`. `Enumerable.Concat` with
   exactly two sequences keeps binding to the BCL method, which does the same. The members are declared in
-  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see.
+  `EnumerableExtensions`, which is what consumers on a compiler older than C# 14 see, and are the implementation;
+  the `Sequence` constructors forward to them.
 * Add `Result.Try(Func<T>)` and `Result.TryAsync(Func<Task<T>>)`, which run a function and capture its outcome as
   `Ok(value)` or `Error(exception)`: `Result.Try(() => int.Parse(text))`. Exceptions that signal a corrupted process
   (`OutOfMemoryException`, `StackOverflowException`, `AccessViolationException`, `ThreadAbortException`) are never
@@ -47,7 +49,7 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Funcky.Xunit and Funcky.Xunit.v3: the assertions of `FunctionalAssert` are now also static extension members of
   xunit's `Assert`, so they are found where the other assertions live: `Assert.Some(option)`, `Assert.None(option)`,
   `Assert.Ok(result)`, `Assert.Error(result)`, `Assert.Left(either)` and `Assert.Right(either)`; `Some`, `Ok`, `Left` and `Right`
-  also come with the overload that takes the expected value. They delegate to `FunctionalAssert`, which stays the form for compilers older than
+  also come with the overload that takes the expected value. The `Assert` members are the implementation; `FunctionalAssert` forwards to them and stays the form for compilers older than
   C# 14 (the members are declared in `AssertExtensions`).
 * The asynchronous overloads of `AdjacentGroupBy`, `Chunk`, `ExclusiveScan`, `InclusiveScan`, `Inspect` and `WhereSelect`
   now follow the .NET 10 naming of `System.Linq.AsyncEnumerable`: one name per operator, with the asynchronous delegate

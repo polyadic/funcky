@@ -1,3 +1,5 @@
+#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
+
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;

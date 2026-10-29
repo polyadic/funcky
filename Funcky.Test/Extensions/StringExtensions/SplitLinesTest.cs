@@ -13,7 +13,7 @@ public sealed class SplitLinesTest
     {
         var text = "single line text";
 
-        Assert.Equal(Sequence.Return(text), text.SplitLines());
+        Assert.Equal(Enumerable.Return(text), text.SplitLines());
     }
 
     [Theory]
@@ -22,7 +22,7 @@ public sealed class SplitLinesTest
     [InlineData("\r\n")]
     public void ASingleNewLineSplitsInASingleEmptyLine(string text)
     {
-        Assert.Equal(Sequence.Return(string.Empty), text.SplitLines());
+        Assert.Equal(Enumerable.Return(string.Empty), text.SplitLines());
     }
 
     [Theory]

@@ -1,14 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using Funcky.CodeAnalysis;
+using Xunit;
 using Xunit.Sdk;
-using static Xunit.Sdk.ArgumentFormatter;
 
 namespace Funcky;
 
 public static partial class FunctionalAssert
 {
-    /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c> and contains the given <paramref name="expectedResult"/>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Ok{TValidResult}(TValidResult, Result{TValidResult})"/>
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
     #endif
@@ -19,16 +18,7 @@ public static partial class FunctionalAssert
     {
         try
         {
-            result.Switch(
-                error: exception => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: $"Ok({Format(expectedResult)})",
-                    actual: $"Error({FormatException(exception)})"),
-                ok: value => EqualOrThrow(
-                    expected: expectedResult,
-                    actual: value,
-                    () => throw FunctionalAssertException.ForMismatchedValues(
-                        expected: $"Ok({Format(expectedResult)})",
-                        actual: $"Ok({Format(value)})")));
+            Assert.Ok(expectedResult, result);
         }
         catch (XunitException exception)
         {
@@ -36,9 +26,7 @@ public static partial class FunctionalAssert
         }
     }
 
-    /// <summary>Asserts that the given <paramref name="result"/> is <c>Ok</c>.</summary>
-    /// <exception cref="XunitException">Thrown when <paramref name="result"/> is <c>Error</c>.</exception>
-    /// <returns>Returns the value in <paramref name="result"/> if it was <c>Ok</c>.</returns>
+    /// <inheritdoc cref="AssertExtensions.extension(Assert).Ok{TValidResult}(Result{TValidResult})"/>
     [AssertMethodHasOverloadWithExpectedValue]
     #if STACK_TRACE_HIDDEN_SUPPORTED
     [System.Diagnostics.StackTraceHidden]
@@ -50,30 +38,11 @@ public static partial class FunctionalAssert
     {
         try
         {
-            return result.GetOrElse(
-                static exception => throw FunctionalAssertException.ForMismatchedValues(
-                    expected: "Ok(...)",
-                    actual: $"Error({FormatException(exception)})"));
+            return Assert.Ok(result);
         }
         catch (XunitException exception)
         {
             throw exception;
         }
-    }
-
-    private static string FormatException(Exception exception)
-        => $"{FormatTypeName(exception.GetType())}: {Format(exception.Message)}";
-
-    private static string FormatTypeName(Type type)
-    {
-        // Xunit's `Format` takes care of niceties like C# type names,
-        // array types, nullable, etc. but adds typeof(...) around the name
-        // which is unsuitable for our case.
-        const string prefix = "typeof(";
-        const string suffix = ")";
-        var formatted = Format(type);
-        return formatted.StartsWith(prefix) && formatted.EndsWith(suffix)
-            ? formatted[prefix.Length..^suffix.Length]
-            : formatted;
     }
 }

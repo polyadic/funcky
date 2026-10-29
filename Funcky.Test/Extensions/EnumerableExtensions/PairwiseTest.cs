@@ -23,7 +23,7 @@ public sealed class PairwiseTest
     [Fact]
     public void GivenASingleElementSequencePairwiseReturnsAnEmptySequence()
     {
-        var oneElementSequence = Sequence.Return("string");
+        var oneElementSequence = Enumerable.Return("string");
 
         Assert.Empty(oneElementSequence.Pairwise());
     }

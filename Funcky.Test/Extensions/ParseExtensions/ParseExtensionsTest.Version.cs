@@ -1,3 +1,5 @@
+#pragma warning disable λ1201 // This test exercises the classic string extension form itself.
+
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -13,7 +15,7 @@ public sealed partial class ParseExtensionsTest
     public void ParseVersionIsTheSameAsTryParseForValidVersions(string input)
     {
         Assert.True(Version.TryParse(input, out var expected));
-        FunctionalAssert.Some(expected!, input.ParseVersionOrNone());
+        Assert.Some(expected!, input.ParseVersionOrNone());
     }
 
 #if READ_ONLY_SPAN_SUPPORTED
@@ -25,7 +27,7 @@ public sealed partial class ParseExtensionsTest
     {
         var inputSpan = input.AsSpan();
         Assert.True(Version.TryParse(inputSpan, out var expected));
-        FunctionalAssert.Some(expected!, inputSpan.ParseVersionOrNone());
+        Assert.Some(expected!, inputSpan.ParseVersionOrNone());
     }
 #endif
 

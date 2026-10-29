@@ -8,13 +8,13 @@ public sealed class FirstOrNoneTest
     [Fact]
     public async Task FirstOrNoneReturnsNoneWhenEnumerableIsEmpty()
     {
-        FunctionalAssert.None(await EmptyEnumerable.FirstOrNoneAsync());
+        Assert.None(await EmptyEnumerable.FirstOrNoneAsync());
     }
 
     [Fact]
     public async Task FirstOrNoneReturnsItemWhenEnumerableHasOneItem()
     {
-        FunctionalAssert.Some(
+        Assert.Some(
             FirstItem,
             await EnumerableWithOneItem.FirstOrNoneAsync());
     }
@@ -22,14 +22,14 @@ public sealed class FirstOrNoneTest
     [Fact]
     public async Task FirstOrNoneReturnsNoneWhenEnumerableHasOneItemButItDoesNotMatchPredicate()
     {
-        FunctionalAssert.None(
+        Assert.None(
             await EnumerableWithOneItem.FirstOrNoneAsync(False));
     }
 
     [Fact]
     public async Task FirstOrNoneReturnsItemWhenEnumerableHasMoreThanOneItem()
     {
-        FunctionalAssert.Some(
+        Assert.Some(
             FirstItem,
             await EnumerableWithMoreThanOneItem.FirstOrNoneAsync());
     }
@@ -37,7 +37,7 @@ public sealed class FirstOrNoneTest
     [Fact]
     public async Task FirstOrNoneReturnsNoneWhenEnumerableHasItemsButNoneMatchesPredicate()
     {
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.FirstOrNoneAsync(False));
+        Assert.None(await EnumerableWithMoreThanOneItem.FirstOrNoneAsync(False));
     }
 }
 #endif

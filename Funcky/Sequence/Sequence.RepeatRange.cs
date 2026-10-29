@@ -1,19 +1,9 @@
-using Funcky.Internal.Validators;
-
 namespace Funcky;
 
 public static partial class Sequence
 {
-    /// <summary>
-    /// Generates a sequence that contains the same sequence of elements the given number of times.
-    /// </summary>
-    /// <typeparam name="TSource">Type of the elements to be repeated.</typeparam>
-    /// <param name="source">The sequence of elements to be repeated.</param>
-    /// <param name="count">The number of times to repeat the sequence in the generated sequence; 0 yields an empty sequence.</param>
-    /// <returns>Returns a finite sequence containing the elements of <paramref name="source"/> <paramref name="count"/> times.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative.</exception>
-    /// <remarks>Use <see cref="RepeatMaterialized{TSource}"/> if you need to cycle an already materialized sequence.</remarks>
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).RepeatRange{TSource}(IEnumerable{TSource}, int)"/>
     [Pure]
     public static IBuffer<TSource> RepeatRange<TSource>(IEnumerable<TSource> source, int count)
-        => CycleBuffer.Create(source, RepeatCountValidator.Validate(count));
+        => Enumerable.RepeatRange(source, count);
 }

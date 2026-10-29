@@ -14,8 +14,8 @@ public sealed class PartitionResultTest
     [Fact]
     public async Task PartitionsItemsIntoOkAndError()
     {
-        var values = Sequence.Return(10, 20);
-        var exceptions = Sequence.Return(new Exception("foo"), new InvalidOperationException("bar"));
+        var values = Enumerable.Return(10, 20);
+        var exceptions = Enumerable.Return(new Exception("foo"), new InvalidOperationException("bar"));
         var input = values.Select(Result.Ok).ToAsyncEnumerable().Interleave(exceptions.Select(Result<int>.Error).ToAsyncEnumerable());
 
         var (error, ok) = await input.PartitionAsync();

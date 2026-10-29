@@ -16,20 +16,20 @@ public sealed class ElementAtOrNoneTest
     [InlineData(42)]
     public async Task ElementAtOrNoneReturnsAlwaysANoneOnAnEmptyEnumerable(int index)
     {
-        FunctionalAssert.None(await EmptyEnumerable.ElementAtOrNoneAsync(index));
+        Assert.None(await EmptyEnumerable.ElementAtOrNoneAsync(index));
     }
 
     [Fact]
     public async Task ElementAtOrNoneReturnsSomeWithinTheRangeAndNoneOutside()
     {
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(-10));
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(-1));
-        FunctionalAssert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(0));
-        FunctionalAssert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(1));
-        FunctionalAssert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(2));
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(3));
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(5));
-        FunctionalAssert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(10));
+        Assert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(-10));
+        Assert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(-1));
+        Assert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(0));
+        Assert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(1));
+        Assert.Some(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(2));
+        Assert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(3));
+        Assert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(5));
+        Assert.None(await EnumerableWithMoreThanOneItem.ElementAtOrNoneAsync(10));
     }
 
     public sealed class IndexIndex

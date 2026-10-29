@@ -22,7 +22,7 @@ public sealed partial class EitherTest
 
         var sideEffect = Option<int>.None;
         either.Inspect(v => sideEffect = v);
-        FunctionalAssert.Some(value, sideEffect);
+        Assert.Some(value, sideEffect);
     }
 
     [Theory]
@@ -47,7 +47,7 @@ public sealed partial class EitherTest
 
         var sideEffect = Option<string>.None;
         either.InspectLeft(v => sideEffect = v);
-        FunctionalAssert.Some(value, sideEffect);
+        Assert.Some(value, sideEffect);
     }
 
     [Theory]

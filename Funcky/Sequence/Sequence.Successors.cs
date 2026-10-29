@@ -1,80 +1,27 @@
-using Funcky.Internal.Validators;
-
 namespace Funcky;
 
 public static partial class Sequence
 {
-    /// <summary>
-    /// Generates a sequence based on a <paramref name="successor"/> function stopping at the first <see cref="Option{TItem}.None"/> value.
-    /// This is essentially the inverse operation of an <see cref="Enumerable.Aggregate{T}"/>.
-    /// </summary>
-    /// <example>
-    /// The sequence of all non-negative integers.
-    /// <code>
-    /// Sequence.Successors(0, n => n + 1); // [0, 1, 2, ...]
-    /// </code>
-    /// </example>
-    /// <example>
-    /// The fibonacci sequence.
-    /// <code>
-    /// Sequence.Successors((0, 1), n => (n.Item2, n.Item1 + n.Item2)).Select(n => n.Item1); // [0, 1, 1, 2, 3, 5, 8, ...]
-    /// </code>
-    /// </example>
-    /// <example>
-    /// The sequence of all inner exceptions.
-    /// <code>
-    /// Exception exception = ...;
-    /// Sequence.Successors(exception, e => Option.FromNullable(e.InnerException)); // [exception, exception.InnerException, exception.InnerException.InnerException, ...]
-    /// </code>
-    /// </example>
-    /// <param name="first">The first element of the sequence.</param>
-    /// <param name="successor">Generates the next element of the sequence or <see cref="Option{TItem}.None"/> based on the previous item.</param>
-    /// <remarks>Use <see cref="Enumerable.Skip{TSource}(IEnumerable{TSource}, int)"/> on the result if you don't want the first item to be included.</remarks>
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})"/>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, Option<TResult>> successor)
         where TResult : notnull
-        => SuccessorsIterator(first, ArgumentValidator.NotNull(successor));
+        => Enumerable.Successors(first, successor);
 
-    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).Successors{TResult}(TResult, Func{TResult, Option{TResult}})"/>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, Option<TResult>> successor)
         where TResult : notnull
-        => Successors(Option.Some(first), successor);
+        => Enumerable.Successors(first, successor);
 
-    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).Successors{TResult}(Option{TResult}, Func{TResult, TResult})"/>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(Option<TResult> first, Func<TResult, TResult> successor)
         where TResult : notnull
-        => Successors(first, ToOptionSuccessor(ArgumentValidator.NotNull(successor)));
+        => Enumerable.Successors(first, successor);
 
-    /// <inheritdoc cref="Successors{TResult}(Option{TResult}, Func{TResult, Option{TResult}})" />
-    /// <remarks>Unlike the other overloads, this one never wraps the elements in an <see cref="Option{T}"/>, so <typeparamref name="TResult"/> is not constrained to <c>notnull</c>: it can produce <c>null</c> elements.</remarks>
+    /// <inheritdoc cref="EnumerableExtensions.extension(Enumerable).Successors{TResult}(TResult, Func{TResult, TResult})"/>
     [Pure]
     public static IEnumerable<TResult> Successors<TResult>(TResult first, Func<TResult, TResult> successor)
-        => SuccessorsIterator(first, ArgumentValidator.NotNull(successor));
-
-    private static IEnumerable<TResult> SuccessorsIterator<TResult>(TResult first, Func<TResult, TResult> successor)
-    {
-        var item = first;
-        while (true)
-        {
-            yield return item;
-            item = successor(item);
-        }
-    }
-
-    private static Func<TResult, Option<TResult>> ToOptionSuccessor<TResult>(Func<TResult, TResult> successor)
-        where TResult : notnull
-        => previous => Option.Some(successor(previous));
-
-    private static IEnumerable<TResult> SuccessorsIterator<TResult>(Option<TResult> first, Func<TResult, Option<TResult>> successor)
-        where TResult : notnull
-    {
-        var item = first;
-        while (item.TryGetValue(out var itemValue))
-        {
-            yield return itemValue;
-            item = successor(itemValue);
-        }
-    }
+        => Enumerable.Successors(first, successor);
 }

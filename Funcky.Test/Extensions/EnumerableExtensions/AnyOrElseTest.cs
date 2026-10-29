@@ -13,8 +13,8 @@ public sealed class AnyOrElseTest
     [Fact]
     public void IsSourceEnumerableWhenNonEmpty()
     {
-        var source = Sequence.Return(1, 2, 3).PreventLinqOptimizations();
-        var fallback = Sequence.Return(4, 5, 6);
+        var source = Enumerable.Return(1, 2, 3).PreventLinqOptimizations();
+        var fallback = Enumerable.Return(4, 5, 6);
         Assert.Equal(source, source.AnyOrElse(fallback));
     }
 
@@ -22,7 +22,7 @@ public sealed class AnyOrElseTest
     public void IsFallbackEnumerableWhenSourceIsEmpty()
     {
         var source = Enumerable.Empty<int>().PreventLinqOptimizations();
-        var fallback = Sequence.Return(1, 2, 3);
+        var fallback = Enumerable.Return(1, 2, 3);
         Assert.Equal(fallback, source.AnyOrElse(fallback));
     }
 

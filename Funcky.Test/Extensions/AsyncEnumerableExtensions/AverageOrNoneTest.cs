@@ -140,7 +140,7 @@ public sealed class AverageOrNoneTest
         // Each term is not representable as a double, so summing in double drifts while an exact long sum does not.
         var sequence = AsyncSequence.Return((1L << 53) + 1, (1L << 53) + 1, (1L << 53) + 1);
 
-        FunctionalAssert.Some(await sequence.AverageAsync(), await sequence.AverageOrNoneAsync());
+        Assert.Some(await sequence.AverageAsync(), await sequence.AverageOrNoneAsync());
     }
 
     [Fact]

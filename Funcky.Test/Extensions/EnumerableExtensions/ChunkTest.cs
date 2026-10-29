@@ -25,7 +25,7 @@ public sealed class ChunkTest
     [Fact]
     public void GivenAnSingleElementListWeGetEnumerableWithOneElement()
     {
-        var numbers = Sequence.Return(1);
+        var numbers = Enumerable.Return(1);
 
         var chunked = numbers.Chunk(3);
 
@@ -42,7 +42,7 @@ public sealed class ChunkTest
     [Fact]
     public void GivenAnEnumerableWeChanChunkItIntoAnEnumerableOfEnumerables()
     {
-        var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        var numbers = Enumerable.Return(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         var chunked = numbers.Chunk(3);
 
@@ -77,7 +77,7 @@ public sealed class ChunkTest
     [Fact]
     public void GivenAnEnumerableNotAMultipleOfSizeWeHaveASmallerLastSlice()
     {
-        var numbers = Sequence.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
+        var numbers = Enumerable.Return("a", "b", "c", "d", "e", "g", "h", "i", "j").ToList();
 
         const int chunkSize = 4;
         IEnumerable<IReadOnlyList<string>> chunked = numbers.Chunk(chunkSize);
@@ -95,7 +95,7 @@ public sealed class ChunkTest
     [InlineData(-42)]
     public void ChunkThrowsOnZeroOrNegativeChunkSizes(int invalidChunkSize)
     {
-        var numbers = Sequence.Return(1);
+        var numbers = Enumerable.Return(1);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => Funcky.Extensions.EnumerableExtensions.Chunk(numbers, invalidChunkSize));
     }
@@ -103,7 +103,7 @@ public sealed class ChunkTest
     [Fact]
     public void ChunkWithResultSelectorAppliesTheSelectorCorrectlyToTheSubsequence()
     {
-        var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
+        var magicSquare = Enumerable.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
 
         magicSquare
             .Chunk(3, Enumerable.Average)
