@@ -16,11 +16,11 @@
 		<FunckyPublicApiGroup Condition="'$(FunckyPublicApiGroup)' == ''">$(TargetFramework)</FunckyPublicApiGroup>
 		<FunckyPublicApiDirectory>$(MSBuildProjectDirectory)/PublicAPI/$(FunckyPublicApiGroup)/</FunckyPublicApiDirectory>
 	</PropertyGroup>
-	<!-- The BCL of these target frameworks has no (netstandard2.0) or incomplete (netstandard2.1, netcoreapp3.1)
+	<!-- The BCL of these target frameworks has no (netstandard2.0) or incomplete (netstandard2.1)
 	     nullable annotations. The source-generated parse methods take over the nullability of the wrapped TryParse
 	     methods, so their parameters are oblivious there. The analyzer records such APIs with a leading '~' and
 	     additionally reports RS0041 for each of them, which nothing in this repository can fix. -->
-	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp3.1'">
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<NoWarn>$(NoWarn);RS0041</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>

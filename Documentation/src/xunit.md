@@ -50,7 +50,7 @@ What does change between the xunit versions is the test host and the runner, not
 "Verified" means Funcky's own test suite runs green against that version. "Expected to work" means nothing in the
 xunit release notes touches what Funcky uses, but the suite is not run against it yet
 ([#1015](https://github.com/polyadic/funcky/issues/1015) tracks a matrix build). The test host column is xunit's
-minimum; Funcky.Xunit.v3 itself targets `netstandard2.0` and `net6.0`.
+minimum; Funcky.Xunit.v3 itself targets `netstandard2.0` and `net8.0`.
 
 If `dotnet test` on the .NET 10 SDK stops with "Testing with VSTest target is no longer supported by
 Microsoft.Testing.Platform", either opt into Microsoft.Testing.Platform in `global.json`
