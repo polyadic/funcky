@@ -3,19 +3,13 @@
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
 		<DefineConstants>$(DefineConstants);INDEX_OF_CHAR_COMPARISONTYPE_SUPPORTED;TIMESPAN_MULTIPLY_SUPPORTED;SPLIT_ACCEPTS_STRING_SEPARATOR;LAZY_RETURN_CONSTRUCTOR;QUEUE_TRY_OVERLOADS;OPTIMIZED_ELEMENT_AT;RANGE_SUPPORTED;READ_ONLY_SPAN_SUPPORTED;INDEX_TYPE;JOIN_TO_STRING_CHAR_SEPARATOR;REMOVE_EXTENSION</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netcoreapp3.0'))">
-		<DefineConstants>$(DefineConstants);SYSTEM_INDEX_SUPPORTED;IP_END_POINT_TRY_PARSE_SUPPORTED;OPTIMIZED_FIRST_LAST_OR_DEFAULT</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net5.0'))">
-		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;DYNAMICALLY_ACCESSED_MEMBERS_ATTRIBUTE_SUPPORTED</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
-		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;RANDOM_SHARED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED;PRIORITY_QUEUE;TRY_GET_NON_ENUMERATED_COUNT;HTTP_HEADERS_NON_VALIDATED;ELEMENT_AT_INDEX</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
-		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSABLE;AOT</DefineConstants>
-	</PropertyGroup>
+	<!-- net8.0 is the oldest .NET (Core) target framework since Funcky 4.0.0, so the features that arrived between
+	     .NET Core 3.0 and .NET 8 are one group; they are still absent on the netstandard assets. -->
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
+		<DefineConstants>$(DefineConstants);SYSTEM_INDEX_SUPPORTED;IP_END_POINT_TRY_PARSE_SUPPORTED;OPTIMIZED_FIRST_LAST_OR_DEFAULT</DefineConstants>
+		<DefineConstants>$(DefineConstants);SET_CURRENT_STACK_TRACE_SUPPORTED;DYNAMICALLY_ACCESSED_MEMBERS_ATTRIBUTE_SUPPORTED</DefineConstants>
+		<DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED;RANDOM_SHARED;DATE_ONLY_SUPPORTED;TIME_ONLY_SUPPORTED;PRIORITY_QUEUE;TRY_GET_NON_ENUMERATED_COUNT;HTTP_HEADERS_NON_VALIDATED;ELEMENT_AT_INDEX</DefineConstants>
+		<DefineConstants>$(DefineConstants);GENERIC_MATH;GENERIC_PARSABLE;AOT</DefineConstants>
 		<DefineConstants>$(DefineConstants);RANDOM_SHUFFLE;UTF8_SPAN_PARSABLE;JSON_SERIALIZER_OPTIONS_TRY_GET_TYPE_INFO;IP_NETWORK</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))">

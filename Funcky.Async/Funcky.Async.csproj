@@ -10,7 +10,7 @@
              the tests against each version of the range (see the SystemLinqAsyncVersion matrix in build.yml
              and Funcky.Async.Test.csproj), which exercises exactly the binary compatibility consumers rely on. -->
         <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
-        <TargetFrameworks>net11.0;net10.0;$(FunckyNewestTargetFramework);net8.0;net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net11.0;net10.0;$(FunckyNewestTargetFramework);net8.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
@@ -42,11 +42,9 @@
              SYSTEM_LINQ_ASYNC marks the few places where System.Linq.Async differs from the .NET 10 base class library. -->
         <DefineConstants>$(DefineConstants);ASYNC_SUPPORTED;SYSTEM_LINQ_ASYNC</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-    </PropertyGroup>
-    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
         <IsAotCompatible>true</IsAotCompatible>
     </PropertyGroup>
     <ItemGroup Condition="'$(FunckyAsyncIntegrated)' == 'true'">

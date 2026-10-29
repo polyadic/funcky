@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <FunckyNewestTargetFramework>net6.0</FunckyNewestTargetFramework>
+        <FunckyNewestTargetFramework>net8.0</FunckyNewestTargetFramework>
         <TargetFrameworks>$(FunckyNewestTargetFramework);netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
@@ -19,7 +19,7 @@
         <EnablePackageValidation>true</EnablePackageValidation>
         <NoWarn>$(NoWarn);NU5104</NoWarn>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
         <DefineConstants>$(DefineConstants);STACK_TRACE_HIDDEN_SUPPORTED</DefineConstants>
     </PropertyGroup>
     <ItemGroup>

@@ -4,6 +4,13 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 4.0.0
 
+* Breaking: the target frameworks `net7.0`, `net6.0`, `net5.0` and `netcoreapp3.1` are removed, as announced in
+  `SupportPolicy.md`; all of them are out of Microsoft's support. Funcky now ships `net11.0`, `net10.0`, `net9.0`,
+  `net8.0`, `netstandard2.1` and `netstandard2.0`; Funcky.Async drops its `net5.0` asset; Funcky.Xunit and
+  Funcky.Xunit.v3 replace their `net6.0` asset with `net8.0`. A project on a removed framework gets the
+  `netstandard2.1` asset (or `netstandard2.0` below .NET Core 3.0), which lacks the members that need a newer base
+  class library, such as the generic math and `IParsable` based parsers, `DateOnly`/`TimeOnly` and the trimming
+  annotations.
 * Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
   is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
   framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.
