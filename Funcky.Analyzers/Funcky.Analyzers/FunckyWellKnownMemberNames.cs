@@ -21,6 +21,13 @@ public static class FunckyWellKnownMemberNames
 
     public const string OptionNonePropertyName = "None";
 
+    /// <summary>The <c>Match</c> parameters that handle the error state of each alternative monad.</summary>
+    public const string OptionMatchNoneParameterName = "none";
+
+    public const string EitherMatchLeftParameterName = "left";
+
+    public const string ResultMatchErrorParameterName = "error";
+
     public const string EitherRightMethodName = "Right";
 
     public const string EitherLeftMethodName = "Left";

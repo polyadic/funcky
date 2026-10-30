@@ -97,7 +97,7 @@ public sealed partial class AlternativeMonadAnalyzerTest
 
                 public Result<TResult> SelectMany<TResult>(System.Func<TValidResult, Result<TResult>> selector) where TResult : notnull => default;
 
-                public TMatchResult Match<TMatchResult>(System.Func<TValidResult, TMatchResult> ok, System.Func<System.Exception, TMatchResult> error) => default!;
+                public TMatchResult Match<TMatchResult>(System.Func<System.Exception, TMatchResult> error, System.Func<TValidResult, TMatchResult> ok) => default!;
             }
 
             public static class Result
