@@ -61,16 +61,13 @@
     <Import Project="..\GlobalUsings.props" />
     <Import Project="..\FrameworkFeatureConstants.props" />
     <Import Project="..\PublicApiAnalyzers.targets" />
-    <!-- The built-in analyzers ship inside this package, one assembly per supported Roslyn version
-         (analyzers/dotnet/roslyn3.7/cs and analyzers/dotnet/roslyn4.4/cs). Analyzers.props already references
-         the Roslyn 4.4 projects so that they run on Funcky itself; here they are additionally marked for packing. -->
+    <!-- The built-in analyzers ship inside this package (analyzers/dotnet/roslyn4.14/cs). Analyzers.props already
+         references the projects so that they run on Funcky itself; here they are additionally marked for packing. -->
     <ItemGroup Label="Built-in analyzers packed into the Funcky package">
         <ProjectReference Update="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" PackAsAnalyzer="true" />
         <ProjectReference Update="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.csproj" Condition="'$(FunckyDisableAnalyzers)' == 'true'" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
         <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.csproj" Condition="'$(FunckyDisableAnalyzers)' == 'true'" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
-        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers\Funcky.BuiltinAnalyzers.Roslyn3.7.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
-        <ProjectReference Include="..\Funcky.Analyzers\Funcky.BuiltinAnalyzers.CodeFixes\Funcky.BuiltinAnalyzers.CodeFixes.Roslyn3.7.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" PackAsAnalyzer="true" />
     </ItemGroup>
     <!-- Adapted from https://github.com/dotnet/runtime/blob/4bd597ffde128555b4ff017e87c60adc2fedd178/eng/packaging.targets#L136,
          the same mechanism Funcky.Analyzers.Package uses. -->

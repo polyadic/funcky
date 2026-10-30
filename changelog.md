@@ -13,6 +13,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * The `net11.0` asset also wraps the search overloads .NET 11 adds to `string`: `IndexOfOrNone` and `LastIndexOfOrNone`
   for a `char` with a `StringComparison` and a start index or count, and both for a `Rune` in every shape the `char`
   overloads come in.
+* Breaking: the built-in analyzers and Funcky.Analyzers 3.0.0 are built against Roslyn 4.14 and ship a single
+  `roslyn4.14` asset. They load on Visual Studio 2022 17.14 and the .NET SDK 9.0.300 or newer, which covers every
+  .NET 10 SDK. The `roslyn3.7` asset of the built-in analyzers and the `roslyn4.4` asset of Funcky.Analyzers are gone;
+  an older SDK that supports analyzer versioning finds no compatible asset and silently skips the analyzers, and the
+  package targets remove them on SDKs without analyzer versioning (before .NET 6). The library itself keeps working on
+  those SDKs. `λ1010` no longer needs a separate note, it is part of the one asset.
 
 ## Funcky 3.8.0 | Funcky.Async 1.6.0 | Funcky.Xunit 2.3.0 | Funcky.Xunit.v3 1.1.0 | Funcky.Analyzers 2.1.0
 
