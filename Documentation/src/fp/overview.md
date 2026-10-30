@@ -174,8 +174,8 @@ where the two tracks merge back into a plain value and the caller decides what t
 
 ```cs
 PlaceOrder(request).Match(
-    ok: order => Results.Created($"/orders/{order.Id}", order),
-    error: exception => Results.BadRequest(exception.Message));
+    error: exception => Results.BadRequest(exception.Message),
+    ok: order => Results.Created($"/orders/{order.Id}", order));
 ```
 
 The one discipline the style asks for is to stay on the tracks until the end. Unwrapping a `Result<T>` in the

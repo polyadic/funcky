@@ -2,3 +2,7 @@
 *REMOVED*static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
 *REMOVED*static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
 *REMOVED*static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
+*REMOVED*Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<TValidResult, TMatchResult>! ok, System.Func<System.Exception!, TMatchResult>! error) -> TMatchResult
+*REMOVED*Funcky.Monads.Result<TValidResult>.Switch(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
+Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<System.Exception!, TMatchResult>! error, System.Func<TValidResult, TMatchResult>! ok) -> TMatchResult
+Funcky.Monads.Result<TValidResult>.Switch(System.Action<System.Exception!>! error, System.Action<TValidResult>! ok) -> void

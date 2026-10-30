@@ -102,8 +102,8 @@ Result<Order> order = ParseOrder(json)
     .SelectMany(Price);
 
 return order.Match(
-    ok: o => Results.Ok(o),
-    error: e => Results.BadRequest(e.Message));
+    error: e => Results.BadRequest(e.Message),
+    ok: o => Results.Ok(o));
 ```
 
 ### IEnumerable extensions

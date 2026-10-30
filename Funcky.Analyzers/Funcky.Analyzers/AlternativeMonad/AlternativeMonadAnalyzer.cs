@@ -45,13 +45,20 @@ public sealed partial class AlternativeMonadAnalyzer : DiagnosticAnalyzer
         => invocation is { TargetMethod: { ReceiverType: INamedTypeSymbol receiverType, Name: MatchMethodName } }
             && alternativeMonadTypes.Value.TryGetValue(receiverType.ConstructedFrom, out var alternativeMonadType)
             && invocation.GetArgumentsInParameterOrder() is { Length: 2 } arguments
-                ? [new MatchInvocation(
-                    receiverType,
-                    alternativeMonadType,
-                    arguments[alternativeMonadType.ErrorStateArgumentIndex],
-                    arguments[alternativeMonadType.SuccessStateArgumentIndex]),
-                    ]
+            && ErrorStateIndex(arguments, alternativeMonadType) is { } errorStateIndex
+                ? [new MatchInvocation(receiverType, alternativeMonadType, arguments[errorStateIndex], arguments[1 - errorStateIndex])]
                 : [];
+
+    // The arguments are told apart by parameter name, so both the Funcky 3.x and the 4.0.0 order of Result.Match work.
+    private static int? ErrorStateIndex(ArgumentsInParameterOrder arguments, AlternativeMonadType alternativeMonadType)
+    {
+        if (arguments[0].Parameter?.Name == alternativeMonadType.ErrorStateParameterName)
+        {
+            return 0;
+        }
+
+        return arguments[1].Parameter?.Name == alternativeMonadType.ErrorStateParameterName ? 1 : null;
+    }
 
     private static Diagnostic? AnalyzeMatchInvocation(
         IInvocationOperation operation,
