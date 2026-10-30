@@ -13,11 +13,7 @@ public static partial class AsyncEnumerableExtensions
     /// <inheritdoc cref="AdjacentGroupBy{TSource, TKey}(IAsyncEnumerable{TSource}, Func{TSource, TKey})"/>
     [Pure]
     [OverloadResolutionPriority(1)]
-#if SYSTEM_LINQ_ASYNC
-    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
-#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
-#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector)
         => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ValueTaskFromResult, CreateGroupingAwait, EqualityComparer<TKey>.Default);
@@ -25,11 +21,7 @@ public static partial class AsyncEnumerableExtensions
     /// <inheritdoc cref="AdjacentGroupBy{TSource, TKey}(IAsyncEnumerable{TSource}, Func{TSource, TKey}, IEqualityComparer{TKey})"/>
     [Pure]
     [OverloadResolutionPriority(1)]
-#if SYSTEM_LINQ_ASYNC
-    public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
-#else
     public static IAsyncEnumerable<IGrouping<TKey, TSource>> AdjacentGroupBy<TSource, TKey>(
-#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         IEqualityComparer<TKey> comparer)
@@ -38,11 +30,7 @@ public static partial class AsyncEnumerableExtensions
     /// <inheritdoc cref="AdjacentGroupBy{TSource, TKey, TElement}(IAsyncEnumerable{TSource}, Func{TSource, TKey}, Func{TSource, TElement})"/>
     [Pure]
     [OverloadResolutionPriority(1)]
-#if SYSTEM_LINQ_ASYNC
-    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
-#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
-#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector)
@@ -51,11 +39,7 @@ public static partial class AsyncEnumerableExtensions
     /// <inheritdoc cref="AdjacentGroupBy{TSource, TKey, TElement}(IAsyncEnumerable{TSource}, Func{TSource, TKey}, Func{TSource, TElement}, IEqualityComparer{TKey})"/>
     [Pure]
     [OverloadResolutionPriority(1)]
-#if SYSTEM_LINQ_ASYNC
-    public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
-#else
     public static IAsyncEnumerable<IGrouping<TKey, TElement>> AdjacentGroupBy<TSource, TKey, TElement>(
-#endif
         this IAsyncEnumerable<TSource> source,
         Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
         Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
@@ -101,5 +85,57 @@ public static partial class AsyncEnumerableExtensions
         Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
         IEqualityComparer<TKey> comparer)
         => AdjacentGroupByAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(keySelector), ArgumentValidator.NotNull(elementSelector), ArgumentValidator.NotNull(resultSelector), ArgumentValidator.NotNull(comparer));
+
+    private static async IAsyncEnumerable<TResult> AdjacentGroupByAwaitWithCancellationInternal<TSource, TKey, TElement, TResult>(
+        this IAsyncEnumerable<TSource> source,
+        Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
+        Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
+        Func<TKey, IImmutableList<TElement>, CancellationToken, ValueTask<TResult>> resultSelector,
+        IEqualityComparer<TKey> comparer,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        var asyncEnumerator = source.GetAsyncEnumerator(cancellationToken);
+        await using var sourceEnumerator = asyncEnumerator.ConfigureAwait(false);
+
+        if (!await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
+        {
+            yield break;
+        }
+
+        var (group, key) = await CreateGroupAndKeyAsync(keySelector, elementSelector, asyncEnumerator, cancellationToken).ConfigureAwait(false);
+
+        while (await asyncEnumerator.MoveNextAsync().ConfigureAwait(false))
+        {
+            if (comparer.Equals(key, await keySelector(asyncEnumerator.Current, cancellationToken).ConfigureAwait(false)))
+            {
+                group = group.Add(await elementSelector(asyncEnumerator.Current, cancellationToken).ConfigureAwait(false));
+            }
+            else
+            {
+                yield return await resultSelector(key, group, cancellationToken).ConfigureAwait(false);
+                (group, key) = await CreateGroupAndKeyAsync(keySelector, elementSelector, asyncEnumerator, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        yield return await resultSelector(key, group, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static ValueTask<Grouping<TKey, TElement>> CreateGroupingAwait<TKey, TElement>(
+        TKey key,
+        IImmutableList<TElement> elements,
+        CancellationToken cancellationToken)
+        => ValueTaskFromResult(new Grouping<TKey, TElement>(key, elements), cancellationToken);
+
+    private static async Task<(IImmutableList<TElement> Group, TKey Key)> CreateGroupAndKeyAsync<TSource, TKey, TElement>(
+        Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
+        Func<TSource, CancellationToken, ValueTask<TElement>> elementSelector,
+        IAsyncEnumerator<TSource> enumerator,
+        CancellationToken cancellationToken)
+    {
+        var group = ImmutableList.Create(await elementSelector(enumerator.Current, cancellationToken).ConfigureAwait(false));
+        var key = await keySelector(enumerator.Current, cancellationToken).ConfigureAwait(false);
+
+        return (group, key);
+    }
 }
 #endif

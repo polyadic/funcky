@@ -13,11 +13,14 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Funcky.Analyzers;
 
 /// <summary>
-/// Offers a fix for the obsoletion warning CS0618 on the <c>…Await</c> and <c>…AwaitWithCancellation</c> operators of
-/// <c>AsyncEnumerableExtensions</c>, which the single-name overloads with a <c>(…, cancellationToken)</c> delegate replace:
-/// <c>xs.FooAwaitWithCancellation((x, ct) => …)</c> becomes <c>xs.Foo((x, ct) => …)</c>, and <c>xs.FooAwait(x => …)</c>
-/// becomes <c>xs.Foo((x, _) => …)</c>, with the ignored token parameter added to every delegate argument.
-/// The terminal <c>…AwaitAsync</c> and <c>…AwaitWithCancellationAsync</c> aggregations map to <c>…Async</c> the same way.
+/// Replaces a call of the <c>…Await</c> and <c>…AwaitWithCancellation</c> operators of <c>AsyncEnumerableExtensions</c>
+/// with the single-name overload that takes a <c>(…, cancellationToken)</c> delegate: <c>xs.FooAwaitWithCancellation((x, ct) => …)</c>
+/// becomes <c>xs.Foo((x, ct) => …)</c>, and <c>xs.FooAwait(x => …)</c> becomes <c>xs.Foo((x, _) => …)</c>, with the ignored
+/// token parameter added to every delegate argument. The terminal <c>…AwaitAsync</c> and <c>…AwaitWithCancellationAsync</c>
+/// aggregations map to <c>…Async</c> the same way. The fix is offered on the obsoletion warning CS0618 (Funcky 3.8.0) and on
+/// the compile error CS1061 that a call of a removed operator reports (Funcky 4.0.0), so a project can upgrade first and
+/// rewrite after. Without a bound method the fix recognizes the call by its name, by the receiver being one the replacement
+/// accepts, and tells the delegate arguments apart by their syntax and types.
 /// </summary>
 [Shared]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AsyncEnumerableAwaitOperatorCodeFix))]
@@ -25,6 +28,9 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
 {
     /// <summary>The compiler diagnostic reported on the use of a member marked <c>[Obsolete]</c> with a message.</summary>
     private const string ObsoleteMemberDiagnosticId = "CS0618";
+
+    /// <summary>The compiler diagnostic reported on a member or extension method a type does not have, which a call of a removed operator is.</summary>
+    private const string MissingMemberDiagnosticId = "CS1061";
 
     private const string AwaitSuffix = "Await";
 
@@ -36,7 +42,7 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
 
     private static readonly string[] CandidateParameterNames = ["x", "y", "z", "w"];
 
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(ObsoleteMemberDiagnosticId);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(ObsoleteMemberDiagnosticId, MissingMemberDiagnosticId);
 
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -52,21 +58,59 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
 
         foreach (var diagnostic in context.Diagnostics)
         {
-            // The warning spans the whole call; one with a smaller span belongs to an obsolete member inside an argument.
-            if (root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { } invocation
-                && invocation.Span == diagnostic.Location.SourceSpan
-                && GetMethodName(invocation) is { } name
-                && semanticModel.GetOperation(invocation, context.CancellationToken) is IInvocationOperation { TargetMethod: var method } operation
-                && IsDeclaredIn(method, extensionsType)
-                && Replacement.TryCreate(method.Name) is { } replacement
-                && HasMember(extensionsType, replacement.Name)
-                && DelegateArguments(operation, invocation) is { } delegateArguments
-                && (!replacement.AddsTokenParameter || delegateArguments.All(argument => IsRewritable(argument.Syntax))))
+            if (FindCall(root, semanticModel, diagnostic, extensionsType, context.CancellationToken) is { } call
+                && (!call.Replacement.AddsTokenParameter || call.DelegateArguments.All(argument => IsRewritable(argument.Syntax))))
             {
-                context.RegisterCodeFix(new RenameOperatorCodeFixAction(context.Document, invocation, name, replacement, delegateArguments), diagnostic);
+                context.RegisterCodeFix(new RenameOperatorCodeFixAction(context.Document, call.Invocation, call.Name, call.Replacement, call.DelegateArguments), diagnostic);
             }
         }
     }
+
+    private static ObsoleteCall? FindCall(SyntaxNode root, SemanticModel semanticModel, Diagnostic diagnostic, INamedTypeSymbol extensionsType, CancellationToken cancellationToken)
+        => diagnostic.Id switch
+        {
+            ObsoleteMemberDiagnosticId => FindObsoleteCall(root, semanticModel, diagnostic, extensionsType, cancellationToken),
+            MissingMemberDiagnosticId => FindRemovedCall(root, semanticModel, diagnostic, extensionsType, cancellationToken),
+            _ => null,
+        };
+
+    // The warning spans the whole call; one with a smaller span belongs to an obsolete member inside an argument.
+    private static ObsoleteCall? FindObsoleteCall(SyntaxNode root, SemanticModel semanticModel, Diagnostic diagnostic, INamedTypeSymbol extensionsType, CancellationToken cancellationToken)
+        => root.FindInvocationExpression(diagnostic.Location.SourceSpan) is { } invocation
+           && invocation.Span == diagnostic.Location.SourceSpan
+           && GetMethodName(invocation) is { } name
+           && semanticModel.GetOperation(invocation, cancellationToken) is IInvocationOperation { TargetMethod: var method } operation
+           && IsDeclaredIn(method, extensionsType)
+           && Replacement.TryCreate(method.Name) is { } replacement
+           && HasMember(extensionsType, replacement.Name)
+           && DelegateArguments(operation, invocation) is { } delegateArguments
+            ? new ObsoleteCall(invocation, name, replacement, delegateArguments)
+            : null;
+
+    // The error spans the member name. Nothing binds the name to Funcky any more, so the call counts when the receiver is a type the
+    // replacement accepts and no argument is named (the delegates are found by position).
+    private static ObsoleteCall? FindRemovedCall(SyntaxNode root, SemanticModel semanticModel, Diagnostic diagnostic, INamedTypeSymbol extensionsType, CancellationToken cancellationToken)
+        => root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is SimpleNameSyntax { Parent: MemberAccessExpressionSyntax { Expression: var receiver, Parent: InvocationExpressionSyntax invocation } memberAccess } name
+           && memberAccess.Name == name
+           && Replacement.TryCreate(name.Identifier.ValueText) is { } replacement
+           && semanticModel.GetTypeInfo(receiver, cancellationToken).Type is { TypeKind: not TypeKind.Error } receiverType
+           && AcceptsReceiver(extensionsType, replacement.Name, receiverType)
+           && invocation.ArgumentList.Arguments.All(argument => argument.NameColon is null)
+           && DelegateArguments(invocation, semanticModel, cancellationToken) is { } delegateArguments
+            ? new ObsoleteCall(invocation, name, replacement, delegateArguments)
+            : null;
+
+    // An extension member is lowered to a static method with the receiver as its first parameter, like a classic extension method.
+    private static bool AcceptsReceiver(INamedTypeSymbol extensionsType, string name, ITypeSymbol receiverType)
+        => extensionsType.GetMembers(name)
+            .OfType<IMethodSymbol>()
+            .Any(method => method is { IsStatic: true, Parameters: [{ Type: var parameterType }, ..] } && IsOrImplements(receiverType, parameterType));
+
+    private static bool IsOrImplements(ITypeSymbol type, ITypeSymbol definition)
+        => HasSameDefinition(type, definition) || type.AllInterfaces.Any(implemented => HasSameDefinition(implemented, definition));
+
+    private static bool HasSameDefinition(ITypeSymbol type, ITypeSymbol other)
+        => SymbolEqualityComparer.Default.Equals(type.OriginalDefinition, other.OriginalDefinition);
 
     private static SimpleNameSyntax? GetMethodName(InvocationExpressionSyntax invocation)
         => invocation.Expression switch
@@ -107,6 +151,59 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
         return builder.ToImmutable();
     }
 
+    /// <summary>The delegate arguments of an unbound call, told apart by their syntax and types; <see langword="null"/> when an argument
+    /// cannot be classified.</summary>
+    private static ImmutableArray<DelegateArgument>? DelegateArguments(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        var builder = ImmutableArray.CreateBuilder<DelegateArgument>();
+
+        foreach (var argument in invocation.ArgumentList.Arguments)
+        {
+            switch (DelegateArity(argument, semanticModel, cancellationToken))
+            {
+                case null:
+                    return null;
+                case { } arity and >= 0:
+                    builder.Add(new DelegateArgument(argument, arity));
+                    break;
+            }
+        }
+
+        return builder.ToImmutable();
+    }
+
+    // The arity of a delegate argument, -1 for an argument of another type, null when neither can be told.
+    private static int? DelegateArity(ArgumentSyntax argument, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        var expression = Unparenthesize(argument.Expression);
+
+        return expression switch
+        {
+            SimpleLambdaExpressionSyntax => 1,
+            ParenthesizedLambdaExpressionSyntax lambda => lambda.ParameterList.Parameters.Count,
+            AnonymousMethodExpressionSyntax anonymousMethod => anonymousMethod.ParameterList?.Parameters.Count ?? 0,
+            _ => semanticModel.GetTypeInfo(expression, cancellationToken).Type switch
+            {
+                INamedTypeSymbol { TypeKind: TypeKind.Delegate, DelegateInvokeMethod: { } invoke } => invoke.Parameters.Length,
+                { TypeKind: not TypeKind.Error } => -1,
+                _ => MethodGroupArity(expression, semanticModel, cancellationToken),
+            },
+        };
+    }
+
+    // A method group has no type of its own; its overloads agree on the arity in the cases the fix cares about.
+    private static int? MethodGroupArity(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+        var arities = (symbolInfo.Symbol is null ? symbolInfo.CandidateSymbols : ImmutableArray.Create(symbolInfo.Symbol))
+            .OfType<IMethodSymbol>()
+            .Select(method => method.Parameters.Length)
+            .Distinct()
+            .ToArray();
+
+        return arities is [var arity] ? arity : null;
+    }
+
     // The operation's syntax is the argument, or the bare expression when parentheses surround it, which the operation tree skips.
     private static ArgumentSyntax? ArgumentSyntax(IArgumentOperation argument, InvocationExpressionSyntax invocation)
         => argument.Syntax.FirstAncestorOrSelf<ArgumentSyntax>() is { } syntax && syntax.Parent == invocation.ArgumentList
@@ -143,6 +240,9 @@ public sealed class AsyncEnumerableAwaitOperatorCodeFix : CodeFixProvider
         => node.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText).ToImmutableHashSet();
 
     private sealed record DelegateArgument(ArgumentSyntax Syntax, int Arity);
+
+    /// <summary>A call of an old operator name and what to turn it into.</summary>
+    private sealed record ObsoleteCall(InvocationExpressionSyntax Invocation, SimpleNameSyntax Name, Replacement Replacement, ImmutableArray<DelegateArgument> DelegateArguments);
 
     private sealed record Replacement(string Name, bool AddsTokenParameter)
     {

@@ -12,18 +12,19 @@ The asynchronous APIs have two homes, and which one you use depends only on your
   is in the base class library since .NET 10, so Funcky can build on it without an extra dependency. You need no second
   package.
 * **Older frameworks** (`netstandard2.0` up to .NET 9): they are in the `Funcky.Async` package, which compiles the same
-  sources against [System.Linq.Async](https://www.nuget.org/packages/System.Linq.Async) (versions 5 and 6).
+  sources against [System.Linq.AsyncEnumerable](https://www.nuget.org/packages/System.Linq.AsyncEnumerable), the very
+  library that is part of .NET 10, so the operators have the same shapes on both sides. A project that still references
+  [System.Linq.Async](https://www.nuget.org/packages/System.Linq.Async) 5 or 6 gets a type clash (CS0433) on
+  `System.Linq.AsyncEnumerable`; upgrade that reference to System.Linq.Async 7, which forwards to the same package, or
+  drop it. Funcky.Async 1.x is the line for projects that are stuck on System.Linq.Async 5 or 6; it receives no new
+  features.
 
 The `net10.0` and `net11.0` assets of `Funcky.Async` contain nothing but type forwards to `Funcky`. A project that referenced
 `Funcky.Async` on .NET 8 and then retargets to .NET 10 therefore keeps the package reference working, and can drop
-it whenever convenient. The forwards do not make the two sides source compatible, though: where the base class
-library already provides an operator, Funcky defers to it, and two of them differ from the `Funcky.Async` shape.
-
-* `AdjacentGroupBy` returns `IAsyncEnumerable<IAsyncGrouping<TKey, T>>` in `Funcky.Async`, since System.Linq.Async
-  has no synchronous groupings, and `IAsyncEnumerable<IGrouping<TKey, T>>` on .NET 10. Code that treats a group as a
-  sequence, `await grouping.CountAsync()` for example, becomes `grouping.Count()` after retargeting.
-* `Chunk(size)` without a result selector is the base class library's on .NET 10 and yields `T[]` instead of
-  `IReadOnlyList<T>`. The overloads with a result selector are Funcky's on both sides and keep `IReadOnlyList<T>`.
+it whenever convenient. Since Funcky.Async 2.0.0 the two sides are also source compatible: `AdjacentGroupBy` returns
+`IAsyncEnumerable<IGrouping<TKey, T>>` everywhere, and `Chunk(size)` without a result selector is the one of
+`System.Linq.AsyncEnumerable` everywhere (it yields `T[]`; the overloads with a result selector are Funcky's and keep
+`IReadOnlyList<T>`).
 
 Namespaces and type names are otherwise the same on both sides: the extension
 methods are in `Funcky.Extensions.AsyncEnumerableExtensions`, the constructors in `Funcky.AsyncSequence`, retrying in
@@ -131,7 +132,8 @@ Before 3.8.0 Funcky used the vocabulary of System.Linq.Async, which has three na
 synchronous delegate, `InspectAwait` for an asynchronous one, and `InspectAwaitWithCancellation` for an asynchronous one
 that receives the token. The terminal aggregations followed with `FirstOrNoneAwaitAsync` and
 `FirstOrNoneAwaitWithCancellationAsync`. Since 3.8.0 these overloads are `[Obsolete]`, they stay a warning (CS0618)
-for the whole 3.x line, and they are removed in Funcky 4.0.0 ([#981](https://github.com/polyadic/funcky/issues/981)).
+for the whole 3.x line, and Funcky 4.0.0 removed them ([#981](https://github.com/polyadic/funcky/issues/981)): a call
+of an old name is now the compile error CS1061, "no accessible extension method".
 
 The mapping is mechanical:
 
@@ -147,10 +149,11 @@ its own replacement.
 
 ### Apply the code fix solution-wide
 
-Do not do this by hand. [Funcky.Analyzers](./analyzer-rules/analyzer-rules.md) 2.1.0 ships a code fix for CS0618 on
-these methods, with fix-all support. In the IDE, open the lightbulb on any of the warnings, choose the fix, and apply it
-to the **solution** (the fix-all scope selector offers document, project and solution). One pass migrates every call
-site. The fix:
+Do not do this by hand. [Funcky.Analyzers](./analyzer-rules/analyzer-rules.md) ships a code fix for these methods,
+with fix-all support: on 3.8.0 it fixes the obsoletion warning CS0618, and since Funcky.Analyzers 3.0.0 it also fixes
+the compile error CS1061 that the removed names leave behind on 4.0.0, so you can upgrade first and migrate second.
+In the IDE, open the lightbulb on any of the diagnostics, choose the fix, and apply it to the **solution** (the fix-all
+scope selector offers document, project and solution). One pass migrates every call site. The fix:
 
 * renames `…AwaitWithCancellation` and `…AwaitWithCancellationAsync` calls and leaves the delegate alone;
 * renames `…Await` and `…AwaitAsync` calls and appends the discarded token parameter to every lambda argument,
