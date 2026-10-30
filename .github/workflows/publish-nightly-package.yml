@@ -2,17 +2,36 @@ on:
   push:
     branches:
     - main
+    - 'spike/**'
 
 name: Publish Nightly Packages
 
+# Every push to main publishes a nightly to the polyadic GitHub Packages feed
+# (https://github.com/orgs/polyadic/packages?repo_name=funcky, feed https://nuget.pkg.github.com/polyadic/index.json),
+# a spike branch publishes a preview of the same packages under its own label. The suffix is a date and the run
+# number, so the versions sort chronologically (a commit hash would not); the commit itself is in the package's
+# repository metadata (Source Link).
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
-      name: Install Current .NET SDK
+      name: Install .NET SDK 11.0 (release candidate)
+      with:
+        dotnet-version: '11.0.x'
+        dotnet-quality: 'preview'
+    - name: Compute version suffix
+      id: version
+      # main -> nightly.20261030.12, spike/traits -> spike-traits.20261030.12 (a prerelease label allows letters, digits, hyphens and dots)
+      run: |
+        if [ "${GITHUB_REF_NAME}" = "main" ]; then
+          label="nightly"
+        else
+          label="$(echo "${GITHUB_REF_NAME}" | tr '/_' '--' | tr -c -d 'A-Za-z0-9-')"
+        fi
+        echo "suffix=${label}.$(date -u +%Y%m%d).${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
     - name: Pack Packages
-      run: dotnet pack --configuration Release --output nupkg --version-suffix "nightly.$(git rev-parse --short "${{github.sha}}")"
+      run: dotnet pack --configuration Release --output nupkg --version-suffix "${{steps.version.outputs.suffix}}"
     - name: Push Packages
       run: dotnet nuget push --source https://nuget.pkg.github.com/polyadic/index.json --api-key ${{secrets.GITHUB_TOKEN}} nupkg/Funcky.*.nupkg
