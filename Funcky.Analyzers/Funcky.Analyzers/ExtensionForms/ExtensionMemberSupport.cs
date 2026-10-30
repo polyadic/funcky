@@ -31,7 +31,7 @@ public static class ExtensionMemberSupport
             .OfType<IMethodSymbol>()
             .Any(method => method.IsStatic && !method.IsExtensionMethod);
 
-    /// <summary>The static class an extension member or classic extension method is declared in. Roslyn 4.4 has no notion of
+    /// <summary>The static class an extension member or classic extension method is declared in. Roslyn 4.14 has no notion of
     /// an extension block, so any type nested in a static class is taken for one.</summary>
     public static INamedTypeSymbol? DeclaringClass(ISymbol? symbol)
         => symbol is IMethodSymbol method && (method.ReducedFrom ?? method).ContainingType is { } containingType

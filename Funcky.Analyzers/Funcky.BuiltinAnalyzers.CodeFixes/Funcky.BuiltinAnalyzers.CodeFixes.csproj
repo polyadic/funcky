@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AnalyzerRoslynVersion>4.4.0</AnalyzerRoslynVersion>
+        <AnalyzerRoslynVersion>4.14.0</AnalyzerRoslynVersion>
     </PropertyGroup>
-    <ItemGroup>
-        <None Include="Funcky.BuiltinAnalyzers.CodeFixes.Roslyn3.7.csproj" />
-    </ItemGroup>
     <Import Project="Funcky.BuiltinAnalyzers.CodeFixes.targets" />
 </Project>

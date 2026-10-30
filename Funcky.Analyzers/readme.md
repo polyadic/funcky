@@ -29,11 +29,12 @@ where a rule was born: `λ00xx` built-in, `λ10xx` `Funcky.Analyzers`, `λ11xx` 
 the documentation is the authority on where a rule lives.
 
 ### Built-in Analyzers and Roslyn Versions
-The built-in analyzers have to load on every SDK that can consume `Funcky`, so their baseline is Roslyn 3.7
-(`Funcky.BuiltinAnalyzers.Roslyn3.7.csproj`). Rules that need newer compiler APIs are guarded with `#if ROSLYN_4_4_0` and
-only ship in the `roslyn4.4` asset (`Funcky.BuiltinAnalyzers.csproj`); the `Funcky` package packs both assets with the
-same `GetAnalyzerPackFiles` mechanism as `Funcky.Analyzers.Package`, and `Funcky/build/Funcky.targets` removes the
-`roslyn4.4` asset on SDKs without analyzer versioning and honours `FunckyDisableBuiltinAnalyzers`.
+The built-in analyzers share the Roslyn 4.14 baseline of `Funcky.Analyzers` since Funcky 4.0.0 (up to 3.8.0 they also
+shipped a `roslyn3.7` asset for the SDKs before .NET 7, with the newer rules behind `#if ROSLYN_4_4_0`). The `Funcky`
+package packs the asset with the same `GetAnalyzerPackFiles` mechanism as `Funcky.Analyzers.Package`, and
+`Funcky/build/Funcky.targets` removes the analyzers on SDKs without analyzer versioning (which would otherwise load
+them and fail) and honours `FunckyDisableBuiltinAnalyzers`. Unlike `Funcky.Analyzers`, the library package does not
+warn about an old SDK: the analyzers are an extra, the library itself keeps working.
 
 ## Roslyn Multi-Targeting
 In order to support newer C# features (which in turn requires an upgrade of the `Microsoft.CodeAnalysis.*` packages)
@@ -49,16 +50,18 @@ can be shipped side by side:
 ```
 ╰─ analyzers
    ╰─ dotnet
-      ╰─ roslyn4.4
+      ╰─ roslyn4.14
          ╰─ cs
             ├─ Funcky.Analyzers.dll
             ╰─ ...
 ```
 
 From the different versions, the highest compatible version is picked. Funcky.Analyzers currently ships a
-single asset for Roslyn 4.4 (Visual Studio 2022 17.4, .NET SDK 7.0.100), the oldest version the analyzers
-need. Up to Funcky.Analyzers 1.4.2 there was a second, untested `roslyn4.0` asset for Visual Studio 2022
-17.0; Funcky.Analyzers 2.0.0 dropped it, as that version is out of support. To add an asset for another Roslyn
+single asset for Roslyn 4.14 (Visual Studio 2022 17.14, .NET SDK 9.0.300), the compiler the .NET 10 SDK era
+starts from. Funcky.Analyzers 2.x shipped a `roslyn4.4` asset (Visual Studio 2022 17.4, .NET SDK 7.0.100); 3.0.0
+raised the baseline together with Funcky 4.0.0, which no longer supports SDKs before .NET 10. Up to
+Funcky.Analyzers 1.4.2 there was a second, untested `roslyn4.0` asset for Visual Studio 2022 17.0; Funcky.Analyzers
+2.0.0 dropped it, as that version is out of support. To add an asset for another Roslyn
 version, add a second project file next to `Funcky.Analyzers.csproj` with a different `AnalyzerRoslynVersion`, reference it
 from the package project with `PackAsAnalyzer`, and guard the sources that need the newer API with a define.
 
@@ -68,9 +71,9 @@ from the package project with `PackAsAnalyzer`, and guard the sources that need 
     * The `System.Text.Json` package fixes this by shipping a `.targets` file with their packages that
       catches this case by checking for the `SupportsRoslynComponentVersioning` property
       and manually removing discovered analyzers that are incompatible.
-    * Our analyzers require at least Roslyn 4.4; SDKs without multi-targeting support (before Roslyn 4.0 / .NET 6.0)
+    * Our analyzers require at least Roslyn 4.14; SDKs without multi-targeting support (before Roslyn 4.0 / .NET 6.0)
       would load them anyway, so we ship a `.targets` file that removes all our analyzers and warns the user.
-    * An SDK that supports multi-targeting but is older than Roslyn 4.4 finds no compatible directory and loads
+    * An SDK that supports multi-targeting but is older than Roslyn 4.14 finds no compatible directory and loads
       nothing, without a warning; that cannot be detected from MSBuild.
 * SDKs versions that support multi-targeting also load analyzers
   that are not in a `roslyn*` directory, so to avoid loading analyzers twice
