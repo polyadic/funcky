@@ -21,7 +21,7 @@ returns on an infinite sequence.
 ### Example
 
 ```cs
-var numbers = Sequence.Return(3, 1, 4, 1, 5);
+var numbers = Enumerable.Return(3, 1, 4, 1, 5);
 
 numbers.LastOrNone();               // Some(5)
 numbers.LastOrNone(n => n < 3);     // Some(1)

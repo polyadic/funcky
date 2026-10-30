@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -14,7 +12,7 @@ public sealed class CycleRangeTest
     {
         var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-        using var cycleRange = Sequence.CycleRange(doNotEnumerate);
+        using var cycleRange = Enumerable.CycleRange(doNotEnumerate);
     }
 
     [Fact]
@@ -24,7 +22,7 @@ public sealed class CycleRangeTest
     [Property]
     public Property CycleRangeCanProduceArbitraryManyItems(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
     {
-        using var cycleRange = Sequence
+        using var cycleRange = Enumerable
             .CycleRange(sequence.Get);
 
         return (cycleRange.Take(arbitraryElements.Get).Count() == arbitraryElements.Get)
@@ -34,7 +32,7 @@ public sealed class CycleRangeTest
     [Property]
     public Property CycleRangeRepeatsTheElementsArbitraryManyTimes(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
     {
-        using var cycleRange = Sequence
+        using var cycleRange = Enumerable
             .CycleRange(sequence.Get);
 
         return cycleRange
@@ -46,10 +44,10 @@ public sealed class CycleRangeTest
     [Fact]
     public void CycleRangeEnumeratesUnderlyingEnumerableOnlyOnce()
     {
-        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var sequence = Enumerable.Return("Test", "Hello", "Do", "Wait");
         var enumerateOnce = EnumerateOnce.Create(sequence);
 
-        using var cycleRange = Sequence
+        using var cycleRange = Enumerable
             .CycleRange(enumerateOnce);
 
         cycleRange
@@ -61,7 +59,7 @@ public sealed class CycleRangeTest
     public void CycleRangeAcquiresTheSourceEnumeratorOnlyWhenTheFirstElementIsRequested()
     {
         var source = new DisposeTrackingSequence<int>([1, 2, 3]);
-        using var cycleRange = Sequence.CycleRange(source);
+        using var cycleRange = Enumerable.CycleRange(source);
 
         using var enumerator = cycleRange.GetEnumerator();
         Assert.Equal(0, source.EnumeratorsCreated);
@@ -74,7 +72,7 @@ public sealed class CycleRangeTest
     public void CycleRangeDisposesTheSourceEnumeratorOnceTheSourceIsExhausted()
     {
         var source = new DisposeTrackingSequence<int>([1, 2, 3]);
-        using var cycleRange = Sequence.CycleRange(source);
+        using var cycleRange = Enumerable.CycleRange(source);
 
         Assert.Equal([1, 2, 3, 1], cycleRange.Take(4));
         Assert.Equal(1, source.EnumeratorsDisposed);
@@ -85,7 +83,7 @@ public sealed class CycleRangeTest
 
     private static void CycleEmptySequence()
     {
-        using var cycledRange = Sequence.CycleRange(Sequence.Return<string>());
+        using var cycledRange = Enumerable.CycleRange(Enumerable.Return<string>());
         using var enumerator = cycledRange.GetEnumerator();
 
         enumerator.MoveNext();

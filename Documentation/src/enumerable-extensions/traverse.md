@@ -31,8 +31,8 @@ is done with the results:
 Option<IReadOnlyList<int>> ParseAll(IEnumerable<string> input)
     => input.Traverse(ParseExtensions.ParseInt32OrNone);
 
-ParseAll(Sequence.Return("1", "2", "3"));   // Some([1, 2, 3])
-ParseAll(Sequence.Return("1", "x", "3"));   // None
+ParseAll(Enumerable.Return("1", "2", "3"));   // Some([1, 2, 3])
+ParseAll(Enumerable.Return("1", "x", "3"));   // None
 ```
 
 ```cs

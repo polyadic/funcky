@@ -1,21 +1,19 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class SomeTest
 {
     [Fact]
     public void DoesNotThrowForMatchingSome()
     {
-        FunctionalAssert.Some(10, Option.Some(10));
+        Assert.Some(10, Option.Some(10));
     }
 
     [Fact]
     public void DoesNotThrowForRight()
     {
-        _ = FunctionalAssert.Some(Option.Some(10));
+        _ = Assert.Some(Option.Some(10));
     }
 
     [Fact]
@@ -23,11 +21,11 @@ public sealed class SomeTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Some() Failure: Values differ
+            Assert.Some() Failure: Values differ
             Expected: Some(10)
             Actual:   Some(11)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Some(10, Option.Some(11)));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Some(10, Option.Some(11)));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -36,11 +34,11 @@ public sealed class SomeTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Some() Failure: Values differ
+            Assert.Some() Failure: Values differ
             Expected: Some(10)
             Actual:   None
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Some(10, Option<int>.None));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Some(10, Option<int>.None));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -49,11 +47,11 @@ public sealed class SomeTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Some() Failure: Values differ
+            Assert.Some() Failure: Values differ
             Expected: Some(...)
             Actual:   None
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Some(Option<int>.None));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Some(Option<int>.None));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 }

@@ -151,7 +151,7 @@ static string Report(IReadOnlyList<Transaction> transactions)
         .JoinToString(Environment.NewLine);
 ```
 
-`Sequence.Return` builds a sequence from its arguments and `JoinToString` is the `string.Join` you can put at
+`Enumerable.Return` builds a sequence from its arguments and `JoinToString` is the `string.Join` you can put at
 the end of a pipeline.
 
 Monthly totals use `AdjacentGroupBy`, the same forward-only grouping as in the

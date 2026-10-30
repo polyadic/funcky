@@ -21,7 +21,7 @@ as long as a matching element exists.
 ### Example
 
 ```cs
-var numbers = Sequence.Return(3, 1, 4, 1, 5);
+var numbers = Enumerable.Return(3, 1, 4, 1, 5);
 
 numbers.FirstOrNone();              // Some(3)
 numbers.FirstOrNone(n => n > 3);    // Some(4)

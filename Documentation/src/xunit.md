@@ -23,10 +23,10 @@ using Funcky.Extensions;
 Assert.Some(42, FindUser(id).Select(user => user.Age));
 ```
 
-Extension members need the C# 14 compiler (.NET 10 SDK). Older compilers use the same assertions as methods of
-the `Funcky.FunctionalAssert` class, `FunctionalAssert.Some(42, option)`. The two forms are the same code; the
-`Assert` members are the implementation and `FunctionalAssert` forwards to them. If both are available,
-[λ1203](./analyzer-rules/λ1203.md) asks for the `Assert` form and comes with a code fix.
+Extension members need the C# 14 compiler, which the .NET 10 SDK that Funcky 4 requires provides. Up to Funcky.Xunit
+2.x and Funcky.Xunit.v3 1.x the same assertions were also methods of a `Funcky.FunctionalAssert` class,
+`FunctionalAssert.Some(42, option)`; Funcky.Xunit 3.0.0 and Funcky.Xunit.v3 2.0.0 removed that class. On the last
+2.x release the analyzer rule λ1203 rewrites every call to the `Assert` form, which is the upgrade path.
 
 ### xUnit.net 3.x versions
 
@@ -136,26 +136,26 @@ A failed assertion throws an `XunitException`, so the test runner shows it like 
 message names the assertion and prints both sides in the notation the monads use in `ToString`:
 
 ```text
-FunctionalAssert.Some() Failure: Values differ
+Assert.Some() Failure: Values differ
 Expected: Some(10)
 Actual:   None
 ```
 
 ```text
-FunctionalAssert.Ok() Failure: Values differ
+Assert.Ok() Failure: Values differ
 Expected: Ok(10)
 Actual:   Error(System.InvalidOperationException: "boom")
 ```
 
 ```text
-FunctionalAssert.Error() Failure: Values differ
+Assert.Error() Failure: Values differ
 Expected: Error(ArgumentException)
 Actual:   Error(InvalidOperationException)
 ```
 
 The returning overloads cannot know the expected content and print `Some(...)`, `Ok(...)`, `Error(...)`,
-`Left(...)` or `Right(...)` as the expected side. The label says `FunctionalAssert` in both forms, so a message
-looks the same whichever receiver the test used.
+`Left(...)` or `Right(...)` as the expected side. The label matches xunit's own `Assert.Equal() Failure`; up to
+Funcky.Xunit 2.x it read `FunctionalAssert.Some()`, so a test that asserts on the message text changes with 3.0.0.
 
 On .NET 6 and later the assertion's own frames are hidden from the stack trace with `[StackTraceHidden]`, so the
 first line of the trace is the test that failed. On older frameworks a rethrow erases the internal frames of the
@@ -226,4 +226,4 @@ The serializers register themselves. The package's build targets add the three a
 
 * [Option Monad](./option.md), [Result Monad](./result.md) and [Either Monad](./either.md) describe the types the
   assertions unwrap.
-* [λ1101](./analyzer-rules/λ1101.md) and [λ1203](./analyzer-rules/λ1203.md) are the two analyzer rules for test code.
+* [λ1101](./analyzer-rules/λ1101.md) is the analyzer rule for test code.

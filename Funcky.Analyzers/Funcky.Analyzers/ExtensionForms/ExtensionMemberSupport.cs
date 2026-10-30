@@ -1,21 +1,13 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace Funcky.Analyzers.ExtensionForms;
 
-/// <summary>What the rules for the C# 14 extension forms share: the language gate and the lookup of members that
-/// live in an extension block, which the compiler nests in an unnamed extension type inside the static class.</summary>
+/// <summary>What the rules for the C# 14 extension forms share: the lookup of members that live in an extension block,
+/// which the compiler nests in an unnamed extension type inside the static class. There is no language gate: Funcky 4
+/// requires the .NET 10 SDK, whose compiler binds the static extension members.</summary>
 public static class ExtensionMemberSupport
 {
     public const string ExtensionsNamespace = "Funcky.Extensions";
-
-    // 1400 is the numeric value of LanguageVersion.CSharp14; the analyzer is compiled against Roslyn versions that predate it.
-    private const int CSharp14 = 1400;
-
-    /// <summary>Whether the file is compiled with C# 14 or newer; on an older language version the static extension members do not bind.</summary>
-    public static bool SupportsExtensionMembers(SyntaxTree syntaxTree)
-        => syntaxTree.Options is CSharpParseOptions parseOptions
-           && (int)parseOptions.LanguageVersion.MapSpecifiedToEffectiveVersion() >= CSharp14;
 
     /// <summary>Whether the static class declares a member of that name, directly or in one of its extension blocks.</summary>
     public static bool HasMember(INamedTypeSymbol type, string name)

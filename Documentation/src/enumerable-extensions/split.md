@@ -26,7 +26,7 @@ restores the source. The parts are produced lazily and each part is materialized
 Splitting a token stream into statements:
 
 ```cs
-var tokens = Sequence.Return("let", "x", ";", "print", "x", ";", ";", "exit");
+var tokens = Enumerable.Return("let", "x", ";", "print", "x", ";", ";", "exit");
 
 tokens.Split(";");
 // [["let", "x"], ["print", "x"], [], ["exit"]]

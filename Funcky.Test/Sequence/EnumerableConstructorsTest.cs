@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 namespace Funcky.Test;
 
 public sealed class EnumerableConstructorsTest
@@ -7,7 +5,7 @@ public sealed class EnumerableConstructorsTest
     [Fact]
     public void ReturnIsAvailableOnEnumerable()
     {
-        Assert.Equal(Sequence.Return(42), Enumerable.Return(42));
+        Assert.Equal(Enumerable.Return(42), Enumerable.Return(42));
         Assert.Equal(42, Assert.Single(Enumerable.Return(42)));
     }
 

@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
-using static Funcky.Analyzers.OperationMatching;
 
 namespace Funcky.Analyzers;
 
@@ -15,8 +14,8 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
 {
     public static readonly DiagnosticDescriptor UseCollectionExpression = new(
         id: $"{DiagnosticName.Prefix}{DiagnosticName.Usage}13",
-        title: "Sequence.Return can be replaced with a collection expression",
-        messageFormat: "Replace 'Sequence.Return' with a collection expression",
+        title: "Enumerable.Return can be replaced with a collection expression",
+        messageFormat: "Replace 'Enumerable.Return' with a collection expression",
         category: DiagnosticName.Category,
         DiagnosticSeverity.Info,
         isEnabledByDefault: true,
@@ -33,21 +32,22 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
 
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
-        if (context.Compilation.GetSequenceType() is { } sequenceType)
+        // Enumerable.Return is a static extension member Funcky declares on System.Linq.Enumerable in EnumerableExtensions.
+        if (context.Compilation.GetEnumerableExtensionType() is { } enumerableExtensionsType)
         {
             var collectionTargetTypes = GetCollectionExpressionTargetTypes(context.Compilation);
             var expressionOfTType = context.Compilation.GetExpressionOfTType();
-            context.RegisterOperationAction(AnalyzeInvocation(sequenceType, collectionTargetTypes, expressionOfTType), OperationKind.Invocation);
+            context.RegisterOperationAction(AnalyzeInvocation(enumerableExtensionsType, collectionTargetTypes, expressionOfTType), OperationKind.Invocation);
         }
     }
 
-    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol sequenceType, ImmutableArray<INamedTypeSymbol> collectionTargetTypes, INamedTypeSymbol? expressionOfTType)
+    private static Action<OperationAnalysisContext> AnalyzeInvocation(INamedTypeSymbol enumerableExtensionsType, ImmutableArray<INamedTypeSymbol> collectionTargetTypes, INamedTypeSymbol? expressionOfTType)
         => context =>
         {
             var operation = (IInvocationOperation)context.Operation;
             var semanticModel = operation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never null for operations passed to an analyzer (according to docs)");
 
-            if (MatchSingleElementSequenceReturn(operation, sequenceType)
+            if (MatchSingleElementEnumerableReturn(operation, enumerableExtensionsType)
                 && SupportsCollectionExpressions(operation.Syntax.SyntaxTree)
                 && IsInTargetTypedContext(operation.Syntax)
                 && !IsAssignedToDiscard(operation)
@@ -61,10 +61,11 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
 
     // We deliberately only match the single-element overload: a collection expression `[x]` always
     // matches it, whereas the params overload may be called in normal form with an existing array
-    // (`Sequence.Return(array)`), where `[array]` would change the meaning.
-    private static bool MatchSingleElementSequenceReturn(IInvocationOperation operation, INamedTypeSymbol sequenceType)
-        => MatchMethod(operation, sequenceType, MonadReturnMethodName)
-            && operation.TargetMethod.Parameters is [{ IsParams: false }];
+    // (`Enumerable.Return(array)`), where `[array]` would change the meaning. The member lives in an
+    // extension block, so its containing type is the unnamed extension type nested in EnumerableExtensions.
+    private static bool MatchSingleElementEnumerableReturn(IInvocationOperation operation, INamedTypeSymbol enumerableExtensionsType)
+        => operation.TargetMethod is { Name: MonadReturnMethodName, IsStatic: true, Parameters: [{ IsParams: false }], ContainingType: { } containingType }
+            && (SymbolEquals(containingType, enumerableExtensionsType) || SymbolEquals(containingType.ContainingType, enumerableExtensionsType));
 
     // 1200 is the numeric value of LanguageVersion.CSharp12; we can't reference the enum member
     // directly because the analyzer is also compiled against Roslyn versions that predate it.
@@ -86,7 +87,7 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
         return operation;
     }
 
-    // The element type has to stay the same: `IEnumerable<object> x = Sequence.Return<Widget>(new())` constructs a
+    // The element type has to stay the same: `IEnumerable<object> x = Enumerable.Return<Widget>(new())` constructs a
     // Widget, whereas `[new()]` would construct an object, and a user-defined conversion to TResult would disappear.
     private static bool HasCollectionTargetTypeWithSameElementType(IInvocationOperation operation, ImmutableArray<INamedTypeSymbol> collectionTargetTypes)
         => operation.SemanticModel?.GetTypeInfo(operation.Syntax).ConvertedType is INamedTypeSymbol { TypeArguments: [var elementType] } convertedType
@@ -169,7 +170,7 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
         return originalSymbol is not null && SymbolEquals(originalSymbol, replacementSymbol);
     }
 
-    // `Sequence.Return` returns IReadOnlyList<T>, so the only target types the existing code can
+    // `Enumerable.Return` returns IReadOnlyList<T>, so the only target types the existing code can
     // already convert to (and that collection expressions support) are these read-only interfaces.
     private static ImmutableArray<INamedTypeSymbol> GetCollectionExpressionTargetTypes(Compilation compilation)
         => new[]

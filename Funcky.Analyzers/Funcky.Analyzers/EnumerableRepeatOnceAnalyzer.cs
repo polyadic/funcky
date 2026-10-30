@@ -1,8 +1,10 @@
 using System.Collections.Immutable;
 using Funcky.Analyzers.CodeAnalysisExtensions;
+using Funcky.Analyzers.ExtensionForms;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
+using static Funcky.Analyzers.FunckyWellKnownMemberNames;
 using static Funcky.Analyzers.LocalizedResourceLoader;
 using static Funcky.Analyzers.OperationMatching;
 using static Funcky.Analyzers.Resources;
@@ -32,8 +34,10 @@ public sealed class EnumerableRepeatOnceAnalyzer : DiagnosticAnalyzer
 
         context.RegisterCompilationStartAction(static context =>
         {
+            // Enumerable.Return is a static extension member Funcky declares on System.Linq.Enumerable.
             if (context.Compilation.GetEnumerableType() is { } enumerableType
-                && context.Compilation.GetSequenceType() is not null)
+                && context.Compilation.GetEnumerableExtensionType() is { } enumerableExtensionsType
+                && ExtensionMemberSupport.HasStaticMember(enumerableExtensionsType, MonadReturnMethodName))
             {
                 context.RegisterOperationAction(FindEnumerableRepeatOnce(enumerableType), OperationKind.Invocation);
             }

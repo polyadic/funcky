@@ -30,10 +30,10 @@ The inverse direction, swapping a monad with a sequence inside it, lives on the 
 ### Example
 
 ```cs
-var allParsed = Sequence.Return("1", "2", "3").Select(ParseExtensions.ParseInt32OrNone).Sequence();
+var allParsed = Enumerable.Return("1", "2", "3").Select(ParseExtensions.ParseInt32OrNone).Sequence();
 // Some([1, 2, 3])
 
-var oneBad = Sequence.Return("1", "x", "3").Select(ParseExtensions.ParseInt32OrNone).Sequence();
+var oneBad = Enumerable.Return("1", "x", "3").Select(ParseExtensions.ParseInt32OrNone).Sequence();
 // None
 ```
 

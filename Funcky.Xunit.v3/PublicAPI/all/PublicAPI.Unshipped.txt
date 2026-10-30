@@ -1,1 +1,13 @@
 #nullable enable
+*REMOVED*Funcky.FunctionalAssert
+*REMOVED*static Funcky.FunctionalAssert.Error<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> System.Exception!
+*REMOVED*static Funcky.FunctionalAssert.Left<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TLeft
+*REMOVED*static Funcky.FunctionalAssert.Left<TLeft, TRight>(TLeft expectedLeft, Funcky.Monads.Either<TLeft, TRight> either) -> void
+*REMOVED*static Funcky.FunctionalAssert.None<TItem>(Funcky.Monads.Option<TItem> option) -> void
+*REMOVED*static Funcky.FunctionalAssert.Ok<TValidResult>(Funcky.Monads.Result<TValidResult> result) -> TValidResult
+*REMOVED*static Funcky.FunctionalAssert.Ok<TValidResult>(TValidResult expectedResult, Funcky.Monads.Result<TValidResult> result) -> void
+*REMOVED*static Funcky.FunctionalAssert.Right<TLeft, TRight>(Funcky.Monads.Either<TLeft, TRight> either) -> TRight
+*REMOVED*static Funcky.FunctionalAssert.Right<TLeft, TRight>(TRight expectedRight, Funcky.Monads.Either<TLeft, TRight> either) -> void
+*REMOVED*static Funcky.FunctionalAssert.Some<TItem>(Funcky.Monads.Option<TItem> option) -> TItem
+*REMOVED*static Funcky.FunctionalAssert.Some<TItem>(TItem expectedValue, Funcky.Monads.Option<TItem> option) -> void
+*REMOVED*static Funcky.FunctionalAssert.Error<TException, TValidResult>(Funcky.Monads.Result<TValidResult> result) -> TException!

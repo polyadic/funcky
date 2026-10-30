@@ -26,12 +26,12 @@ same way the BCL's `Min` skips `null`. A sequence consisting only of `None` is t
 ### Example
 
 ```cs
-var numbers = Sequence.Return(3, 1, 4, 1, 5);
+var numbers = Enumerable.Return(3, 1, 4, 1, 5);
 
 numbers.MinOrNone();                       // Some(1)
 Enumerable.Empty<int>().MinOrNone();       // None
 numbers.MinOrNone(n => n * -1);            // Some(-5)
 
-var readings = Sequence.Return(Option.Some(3), Option<int>.None, Option.Some(2));
+var readings = Enumerable.Return(Option.Some(3), Option<int>.None, Option.Some(2));
 readings.MinOrNone();                      // Some(2)
 ```

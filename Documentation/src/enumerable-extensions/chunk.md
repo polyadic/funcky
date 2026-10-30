@@ -26,12 +26,12 @@ way to write `Chunk(size).Select(selector)`.
 ### Example
 
 ```cs
-var numbers = Sequence.Return(1, 2, 3, 4, 5, 6, 7);
+var numbers = Enumerable.Return(1, 2, 3, 4, 5, 6, 7);
 
 numbers.Chunk(3);
 // [[1, 2, 3], [4, 5, 6], [7]]
 
-var magicSquare = Sequence.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
+var magicSquare = Enumerable.Return(4, 9, 2, 3, 5, 7, 8, 1, 6);
 magicSquare.Chunk(3, row => row.Sum());
 // [15, 15, 15]
 ```

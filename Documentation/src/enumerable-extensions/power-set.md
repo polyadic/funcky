@@ -21,7 +21,7 @@ duplicates in the input produce duplicate subsets.
 ### Example
 
 ```cs
-Sequence.Return("a", "b", "c").PowerSet();
+Enumerable.Return("a", "b", "c").PowerSet();
 // [[], [a], [b], [a, b], [c], [a, c], [b, c], [a, b, c]]
 ```
 
