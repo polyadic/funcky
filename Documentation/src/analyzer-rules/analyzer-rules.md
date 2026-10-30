@@ -21,10 +21,11 @@ This is the same split the .NET libraries themselves use: usage diagnostics ship
 ### Rule numbers
 Rule IDs are stable identifiers: once a rule has shipped, its number never changes, because projects configure and
 suppress rules by ID. The number range therefore records where a rule was *born*, not where it lives today:
-`λ0xxx` rules started as built-in rules, `λ1xxx` rules started in `Funcky.Analyzers`, and `λ11xx` rules concern the
-`FunctionalAssert` helpers from the [`Funcky.Xunit`] package, and `λ12xx` rules point at the C# 14 extension forms that
-3.8.0 added next to the classic API. The tables below are the authority on which package
-contains a rule.
+`λ0xxx` rules started as built-in rules, `λ1xxx` rules started in `Funcky.Analyzers`, `λ11xx` rules concern the
+assertions of the [`Funcky.Xunit`] package (born as `FunctionalAssert` rules), and `λ12xx` rules point at the C# 14
+extension forms that 3.8.0 added next to the classic API. λ1202 and λ1203 retired with Funcky 4.0.0, which removed the
+classic `Sequence` and `FunctionalAssert` forms they pointed away from; the numbers are not reused. The tables below
+are the authority on which package contains a rule.
 
 ## Built-in rules
 
@@ -51,7 +52,7 @@ contains a rule.
 | [λ1008](./λ1008.md) | Warning | Prefer `ToNullable` over `Match` |
 | [λ1011](./λ1011.md) | Warning | Prefer `Select` over `Match` |
 | [λ1012](./λ1012.md) | Warning | Prefer the `…OrNone` method over `…OrDefault` with a null check |
-| [λ1013](./λ1013.md) | Info | `Sequence.Return` can be replaced with a collection expression |
+| [λ1013](./λ1013.md) | Info | `Enumerable.Return` can be replaced with a collection expression |
 | [λ1014](./λ1014.md) | Warning | Throw expression in an eagerly evaluated fallback |
 | [λ1015](./λ1015.md) | Info | Fallback is computed eagerly |
 | [λ1016](./λ1016.md) | Warning | Pass the fallback value directly |
@@ -59,8 +60,6 @@ contains a rule.
 | [λ1018](./λ1018.md) | Warning | Prefer `Flatten` over `SelectMany` with the identity function |
 | [λ1101](./λ1101.md) | Warning | Assert can be simplified |
 | [λ1201](./λ1201.md) | Warning | Prefer the static `ParseOrNone` member on the parsed type |
-| [λ1202](./λ1202.md) | Warning | Prefer the `Enumerable` form of the `Sequence` constructor |
-| [λ1203](./λ1203.md) | Warning | Prefer the assertion on `Assert` over `FunctionalAssert` |
 
 ## Removed rules
 

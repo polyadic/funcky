@@ -23,10 +23,10 @@ list of UI elements.
 ### Example
 
 ```cs
-Sequence.Return(9, 7, 3).Intersperse(0);
+Enumerable.Return(9, 7, 3).Intersperse(0);
 // [9, 0, 7, 0, 3]
 
-Sequence.Return("a").Intersperse("-");
+Enumerable.Return("a").Intersperse("-");
 // ["a"]
 
 var layout = widgets.Intersperse(new Spacer());

@@ -1,15 +1,13 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class NoneTest
 {
     [Fact]
     public void DoesNotThrowForNone()
     {
-        FunctionalAssert.None(Option<string>.None);
+        Assert.None(Option<string>.None);
     }
 
     [Fact]
@@ -17,11 +15,11 @@ public sealed class NoneTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.None() Failure: Values differ
+            Assert.None() Failure: Values differ
             Expected: None
             Actual:   Some("something")
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.None(Option.Some("something")));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.None(Option.Some("something")));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 }

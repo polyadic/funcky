@@ -6,3 +6,19 @@
 *REMOVED*Funcky.Monads.Result<TValidResult>.Switch(System.Action<TValidResult>! ok, System.Action<System.Exception!>! error) -> void
 Funcky.Monads.Result<TValidResult>.Match<TMatchResult>(System.Func<System.Exception!, TMatchResult>! error, System.Func<TValidResult, TMatchResult>! ok) -> TMatchResult
 Funcky.Monads.Result<TValidResult>.Switch(System.Action<System.Exception!>! error, System.Action<TValidResult>! ok) -> void
+*REMOVED*Funcky.Sequence
+*REMOVED*static Funcky.Sequence.Concat<TSource>(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static Funcky.Sequence.Concat<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static Funcky.Sequence.Cycle<TResult>(TResult element) -> System.Collections.Generic.IEnumerable<TResult>!
+*REMOVED*static Funcky.Sequence.CycleMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static Funcky.Sequence.CycleRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> Funcky.IBuffer<TSource>!
+*REMOVED*static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult!>!
+*REMOVED*static Funcky.Sequence.FromNullable<TResult>(TResult? element) -> System.Collections.Generic.IEnumerable<TResult>!
+*REMOVED*static Funcky.Sequence.RepeatMaterialized<TSource>(System.Collections.Generic.IReadOnlyCollection<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static Funcky.Sequence.RepeatRange<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int count) -> Funcky.IBuffer<TSource>!
+*REMOVED*static Funcky.Sequence.Return<TResult>(TResult element) -> System.Collections.Generic.IReadOnlyList<TResult>!
+*REMOVED*static Funcky.Sequence.Return<TResult>(params TResult[]! elements) -> System.Collections.Generic.IReadOnlyList<TResult>!
+*REMOVED*static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, System.Func<TResult, Funcky.Monads.Option<TResult>>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+*REMOVED*static Funcky.Sequence.Successors<TResult>(Funcky.Monads.Option<TResult> first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+*REMOVED*static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, Funcky.Monads.Option<TResult>>! successor) -> System.Collections.Generic.IEnumerable<TResult>!
+*REMOVED*static Funcky.Sequence.Successors<TResult>(TResult first, System.Func<TResult, TResult>! successor) -> System.Collections.Generic.IEnumerable<TResult>!

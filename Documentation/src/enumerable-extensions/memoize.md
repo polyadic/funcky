@@ -35,7 +35,7 @@ to `GetAsyncEnumerator`, for example through `WithCancellation`, cancels that co
 ### Example
 
 ```cs
-using var primes = Sequence.Successors(2, p => Option.Some(NextPrime(p))).Memoize();
+using var primes = Enumerable.Successors(2, p => Option.Some(NextPrime(p))).Memoize();
 
 var firstTen = primes.Take(10).ToList();
 var below100 = primes.TakeWhile(p => p < 100).ToList();   // reuses the first ten, computes the rest

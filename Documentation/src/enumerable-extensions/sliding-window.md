@@ -25,7 +25,7 @@ produced lazily and each one is an immutable snapshot.
 A moving average over the last three readings:
 
 ```cs
-var readings = Sequence.Return(2, 4, 6, 8, 10);
+var readings = Enumerable.Return(2, 4, 6, 8, 10);
 
 readings.SlidingWindow(3);
 // [[2, 4, 6], [4, 6, 8], [6, 8, 10]]

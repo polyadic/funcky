@@ -27,7 +27,7 @@ Both produce exactly as many elements as the input and are lazy, which makes the
 ### Example
 
 ```cs
-var amounts = Sequence.Return(10, 20, 30);
+var amounts = Enumerable.Return(10, 20, 30);
 
 amounts.InclusiveScan(0, (sum, amount) => sum + amount);
 // [10, 30, 60]

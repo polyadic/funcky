@@ -39,6 +39,20 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   to compile after the upgrade (the two delegates have different parameter types), swap its arguments. The `Match`
   rules of Funcky.Analyzers (λ1005 to λ1007 and λ1011) now tell the two arguments apart by parameter name, so they work
   with either order.
+* Breaking: the static class `Funcky.Sequence` is removed. Its constructors live on as the static extension members of
+  `System.Linq.Enumerable` that 3.8.0 added (`Enumerable.Return`, `Enumerable.Successors`, `Enumerable.Cycle`, …),
+  declared in `Funcky.Extensions.EnumerableExtensions`. There is no 3.9 release to carry an obsoletion: on 3.8.0 set
+  the analyzer rule λ1202 to `warning`, apply its fix-all, then upgrade. λ1001 now proposes `Enumerable.Return` for
+  `Enumerable.Repeat(x, 1)` and λ1013 reports `Enumerable.Return(x)` where a collection expression fits.
+* Breaking (Funcky.Xunit 3.0.0, Funcky.Xunit.v3 2.0.0): the static class `Funcky.FunctionalAssert` is removed. The
+  assertions are the static extension members of xunit's `Assert` that 3.8.0 added (`Assert.Some`, `Assert.None`,
+  `Assert.Ok`, `Assert.Error`, `Assert.Left`, `Assert.Right`), declared in `Funcky.Extensions.AssertExtensions`. On the
+  last 2.x release the analyzer rule λ1203 rewrites every call, as above. The failure message label changes with the
+  removal from `FunctionalAssert.Some() Failure` to `Assert.Some() Failure`, matching xunit's own `Assert.Equal() Failure`;
+  tests that assert on the message text need the new label.
+* Breaking (Funcky.Analyzers 3.0.0): λ1202 and λ1203 retire, since the forms they pointed away from no longer exist;
+  their numbers stay reserved. λ1201 stays as an opt-in style rule, because both parse forms remain. The C# 14 language
+  gate of the `λ12xx` rules is gone: Funcky 4 requires the .NET 10 SDK, whose compiler always binds the extension forms.
 * Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
   is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
   framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.

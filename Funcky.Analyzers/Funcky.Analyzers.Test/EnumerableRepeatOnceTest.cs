@@ -15,7 +15,7 @@ public sealed class EnumerableRepeatOnceTest
     }
 
     [Fact]
-    public async Task UsingEnumerableRepeatOnceShowsTheSequenceReturnDiagnostic()
+    public async Task UsingEnumerableRepeatOnceShowsTheEnumerableReturnDiagnostic()
     {
         var expectedDiagnostic = VerifyCS
             .Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId)
@@ -26,7 +26,7 @@ public sealed class EnumerableRepeatOnceTest
     }
 
     [Fact]
-    public async Task UsingEnumerableRepeatOnceShowsTheSequenceReturnDiagnosticWhenArgumentsAreFlipped()
+    public async Task UsingEnumerableRepeatOnceShowsTheEnumerableReturnDiagnosticWhenArgumentsAreFlipped()
     {
         var expectedDiagnostic = VerifyCS
             .Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId)
@@ -37,14 +37,14 @@ public sealed class EnumerableRepeatOnceTest
     }
 
     [Fact]
-    public async Task UsingEnumerableRepeatOnceShowsNoDiagnosticWhenSequenceTypeIsNotAvailable()
+    public async Task UsingEnumerableRepeatOnceShowsNoDiagnosticWhenEnumerableExtensionsAreNotAvailable()
     {
-        var inputCode = File.ReadAllText("TestCode/RepeatOnceMissingSequenceType.input");
+        var inputCode = File.ReadAllText("TestCode/RepeatOnceMissingEnumerableExtensions.input");
         await VerifyCS.VerifyAnalyzerAsync(inputCode);
     }
 
     [Fact]
-    public async Task UsingEnumerableRepeatOnceViaConstantShowsTheSequenceReturnDiagnostic()
+    public async Task UsingEnumerableRepeatOnceViaConstantShowsTheEnumerableReturnDiagnostic()
     {
         var expectedDiagnostic = VerifyCS
             .Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId)
@@ -59,9 +59,9 @@ public sealed class EnumerableRepeatOnceTest
     {
         DiagnosticResult[] expectedDiagnostics =
         [
-            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(17, 17, 17, 53).WithArguments("10"),
-            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(28, 17, 28, 53).WithArguments("10"),
-            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(41, 17, 41, 53).WithArguments("10"),
+            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(21, 17, 21, 41).WithArguments("10"),
+            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(34, 17, 34, 53).WithArguments("10"),
+            VerifyCS.Diagnostic(EnumerableRepeatOnceAnalyzer.DiagnosticId).WithSpan(48, 17, 48, 34).WithArguments("10"),
         ];
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<EnumerableRepeatOnceAnalyzer, EnumerableRepeatOnceCodeFix>(expectedDiagnostics, "RepeatOnceQualification");

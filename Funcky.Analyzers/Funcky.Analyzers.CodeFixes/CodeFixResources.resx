@@ -126,7 +126,7 @@
     <comment>The title of the code fix.</comment>
   </data>
   <data name="EnumerableRepeatOnceCodeFixTitle" xml:space="preserve">
-    <value>Use Sequence.Return</value>
+    <value>Use Enumerable.Return</value>
     <comment>The title of the code fix.</comment>
   </data>
   <data name="JoinToStringEmptyCodeFixTitle" xml:space="preserve">

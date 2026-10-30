@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Xunit;
 using Xunit.Sdk;
 
 namespace Funcky;
@@ -13,8 +14,8 @@ internal static class FunctionalAssertException
         [CallerMemberName] string? assertionName = null)
     {
         var assertionLabel = assertionName is not null
-            ? $"{nameof(FunctionalAssert)}.{assertionName}()"
-            : nameof(FunctionalAssert);
+            ? $"{nameof(Assert)}.{assertionName}()"
+            : nameof(Assert);
         return new XunitException(
               $"{assertionLabel} Failure: Values differ{Environment.NewLine}"
             + $"Expected: {expected.Replace(Environment.NewLine, NewLineAndIndent)}{Environment.NewLine}"

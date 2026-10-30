@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -13,7 +11,7 @@ public sealed class CycleMaterializedTest
     public void IsEnumeratedLazily()
     {
         var doNotEnumerate = new FailOnEnumerateReadOnlyCollection<object>(Count: 1);
-        _ = Sequence.CycleMaterialized(doNotEnumerate);
+        _ = Enumerable.CycleMaterialized(doNotEnumerate);
     }
 
     [Fact]
@@ -23,7 +21,7 @@ public sealed class CycleMaterializedTest
     [Property]
     public Property CanProduceArbitraryManyItems(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
     {
-        var cycleRange = Sequence.CycleMaterialized(sequence.Get.Materialize());
+        var cycleRange = Enumerable.CycleMaterialized(sequence.Get.Materialize());
 
         return (cycleRange.Take(arbitraryElements.Get).Count() == arbitraryElements.Get)
             .ToProperty();
@@ -32,7 +30,7 @@ public sealed class CycleMaterializedTest
     [Property]
     public Property RepeatsTheElementsArbitraryManyTimes(NonEmptySet<int> sequence, PositiveInt arbitraryElements)
     {
-        var cycleRange = Sequence.CycleMaterialized(sequence.Get.Materialize());
+        var cycleRange = Enumerable.CycleMaterialized(sequence.Get.Materialize());
 
         return cycleRange
             .IsSequenceRepeating(sequence.Get)
@@ -42,7 +40,7 @@ public sealed class CycleMaterializedTest
 
     private static void CycleEmptySequence()
     {
-        var cycledRange = Sequence.CycleMaterialized(Array.Empty<int>());
+        var cycledRange = Enumerable.CycleMaterialized(Array.Empty<int>());
         using var enumerator = cycledRange.GetEnumerator();
 
         enumerator.MoveNext();

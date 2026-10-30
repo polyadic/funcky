@@ -30,7 +30,7 @@ hands the selector the element's position as well, like the indexed `Select`.
 Parsing what can be parsed:
 
 ```cs
-var input = Sequence.Return("12", "abc", "7", "", "40");
+var input = Enumerable.Return("12", "abc", "7", "", "40");
 
 input.WhereSelect(ParseExtensions.ParseInt32OrNone);
 // [12, 7, 40]
@@ -46,6 +46,6 @@ IEnumerable<User> FindUsers(IEnumerable<int> ids)
 Keeping only the present values of a sequence of options:
 
 ```cs
-var found = Sequence.Return(Option.Some(1), Option<int>.None, Option.Some(3)).WhereSelect();
+var found = Enumerable.Return(Option.Some(1), Option<int>.None, Option.Some(3)).WhereSelect();
 // [1, 3]
 ```

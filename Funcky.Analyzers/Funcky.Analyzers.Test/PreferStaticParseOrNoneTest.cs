@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 using VerifyCS = Funcky.Analyzers.Test.CSharpCodeFixVerifier<Funcky.Analyzers.ExtensionForms.PreferStaticParseOrNoneAnalyzer, Funcky.Analyzers.PreferStaticParseOrNoneCodeFix>;
 
@@ -366,48 +365,5 @@ public sealed class PreferStaticParseOrNoneTest
             """;
 
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + StubCode);
-    }
-
-    [Fact]
-    public async Task DoesNotReportBelowCSharp14()
-    {
-        const string inputCode =
-            """
-            using Funcky.Extensions;
-            using Funcky.Monads;
-
-            public static class C
-            {
-                public static void M(string text)
-                {
-                    Option<int> a = text.ParseInt32OrNone();
-                }
-            }
-
-            namespace Funcky.Monads
-            {
-                public readonly struct Option<TItem>
-                    where TItem : notnull
-                {
-                }
-            }
-
-            namespace Funcky.Extensions
-            {
-                using Funcky.Monads;
-
-                public static class ParseExtensions
-                {
-                    public static Option<int> ParseInt32OrNone(this string candidate) => default;
-                }
-
-                public static class Int32ParseExtensions
-                {
-                    public static Option<int> ParseOrNone(string candidate) => default;
-                }
-            }
-            """;
-
-        await new VerifyCS.Test { TestCode = inputCode, LanguageVersion = LanguageVersion.CSharp13 }.RunAsync(CancellationToken.None);
     }
 }

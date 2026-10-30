@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EnumerableRepeatOnceAnalyzerDescription" xml:space="preserve">
-    <value>Funcky provides Sequence.Return to create an IEnumerable of a single item</value>
+    <value>Funcky provides Enumerable.Return to create an IEnumerable of a single item</value>
     <comment>The title of the diagnostic.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerMessageFormat" xml:space="preserve">
-    <value>Use Sequence.Return({0}) instead of Enumerable.Repeat({0}, 1) </value>
+    <value>Use Enumerable.Return({0}) instead of Enumerable.Repeat({0}, 1)</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="EnumerableRepeatOnceAnalyzerTitle" xml:space="preserve">

@@ -29,10 +29,10 @@ The result type follows the BCL: `int` and `long` average to `double`, the float
 ### Example
 
 ```cs
-Sequence.Return(3, 1, 4, 1, 6).AverageOrNone();    // Some(3.0)
+Enumerable.Return(3, 1, 4, 1, 6).AverageOrNone();    // Some(3.0)
 Enumerable.Empty<int>().AverageOrNone();           // None
 
-var temperatures = Sequence.Return(Option.Some(20.0), Option<double>.None, Option.Some(22.0));
+var temperatures = Enumerable.Return(Option.Some(20.0), Option<double>.None, Option.Some(22.0));
 temperatures.AverageOrNone();                      // Some(21.0)
 
 orders.AverageOrNone(order => order.Total);        // Option<decimal>

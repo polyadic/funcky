@@ -34,7 +34,7 @@ types to **Funcky**, so a project can drop the reference once it targets .NET 10
 
 | Package | NuGet | Description |
 | --- | --- | --- |
-| **Funcky.Xunit** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit)](https://www.nuget.org/packages/Funcky.Xunit) | `FunctionalAssert` for xUnit.net 2.x: unpack `Option`, `Result` and `Either` in tests. |
+| **Funcky.Xunit** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit)](https://www.nuget.org/packages/Funcky.Xunit) | `Assert.Some`, `Assert.Ok`, … for xUnit.net 2.x: unpack `Option`, `Result` and `Either` in tests. |
 | **Funcky.Xunit.v3** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Xunit.v3)](https://www.nuget.org/packages/Funcky.Xunit.v3) | The same for xUnit.net 3.x, plus serializers to use the monads as theory data. |
 
 ### Interoperability
@@ -112,7 +112,7 @@ Funcky adds the sequence operators LINQ lacks: windowing, pairing, interspersing
 `…OrNone` variants of every element query. They are lazy where LINQ is lazy and work together with the monads above.
 
 ```cs
-Sequence.Return(1, 2, 3, 4)
+Enumerable.Return(1, 2, 3, 4)
     .Pairwise((left, right) => left + right) // [3, 5, 7]
     .Intersperse(-1) // [3, -1, 5, -1, 7]
     .Inspect(Console.WriteLine)
@@ -132,7 +132,7 @@ example from `option.Match(none: fallback, some: Identity)` to `option.GetOrElse
 
 * `Reader` and `Lazy` monads, and `Unit` as a first-class "no value" type.
 * Functional helpers: `Identity`, `Compose`, `Curry`, `Flip`, predicate composition, and `Retry` with configurable retry policies.
-* «Constructors» for `IEnumerable`: `Sequence.Return`, `Sequence.Successors`, `Sequence.Cycle`, etc.
+* «Constructors» for `IEnumerable`: `Enumerable.Return`, `Enumerable.Successors`, `Enumerable.Cycle`, etc.
 * `IAsyncEnumerable` counterparts of the sequence extensions, and `await` support for `Option<Task<T>>`.
 * Interoperability with `IQueryable`, `string`, `Stream`, `Nullable<T>` and the numeric types.
 * Supports every framework from .NET Standard 2.0 and .NET Framework 4.8 to the newest .NET, and is trimming and

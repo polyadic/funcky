@@ -23,8 +23,8 @@ For two sequences of the same length, `Interleave` is `Zip` followed by flatteni
 ### Example
 
 ```cs
-var numbers = Sequence.Return(1, 2, 3, 4);
-var letters = Sequence.Return("a", "b");
+var numbers = Enumerable.Return(1, 2, 3, 4);
+var letters = Enumerable.Return("a", "b");
 
 numbers.Select(n => n.ToString()).Interleave(letters);
 // ["1", "a", "2", "b", "3", "4"]
@@ -33,5 +33,5 @@ numbers.Select(n => n.ToString()).Interleave(letters);
 Alternating rows from several sources in a fair way, for example to mix results of different providers:
 
 ```cs
-var mixed = Sequence.Return(newsFeed, blogFeed, podcastFeed).Interleave().Take(30);
+var mixed = Enumerable.Return(newsFeed, blogFeed, podcastFeed).Interleave().Take(30);
 ```

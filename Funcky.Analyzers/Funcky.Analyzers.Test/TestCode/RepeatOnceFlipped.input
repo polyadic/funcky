@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using Funcky;
+using Funcky.Extensions;
 
-namespace Funcky
+namespace Funcky.Extensions
 {
-    class Sequence
+    public static class EnumerableExtensions
     {
-        public static string Return(string value) => value;
+        extension(Enumerable) { public static string Return(string value) => value; }
     }
 }
 

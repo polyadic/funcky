@@ -41,7 +41,7 @@ internal class Program
             .AndThen(ParseExtensions.ParseInt32OrNone);
 
     private static string CreateCalendarString(int year)
-        => Sequence.Successors(JanuaryFirst(year), NextDay)
+        => Enumerable.Successors(JanuaryFirst(year), NextDay)
             .TakeWhile(IsSameYear(year))
             .AdjacentGroupBy(day => day.Month)
             .Select(LayoutMonth)

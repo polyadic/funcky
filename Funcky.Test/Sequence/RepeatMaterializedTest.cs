@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -13,20 +11,20 @@ public sealed class RepeatMaterializedTest
     public void IsEnumeratedLazily()
     {
         var doNotEnumerate = new FailOnEnumerateReadOnlyCollection<object>(Count: 0);
-        _ = Sequence.RepeatMaterialized(doNotEnumerate, 2);
+        _ = Enumerable.RepeatMaterialized(doNotEnumerate, 2);
     }
 
     [Property]
     public Property ARepeatedEmptySequenceIsStillEmpty(NonNegativeInt count)
     {
-        var repeated = Sequence.RepeatMaterialized(Array.Empty<object>(), count.Get);
+        var repeated = Enumerable.RepeatMaterialized(Array.Empty<object>(), count.Get);
         return (!repeated.Any()).ToProperty();
     }
 
     [Property]
     public Property TheLengthOfTheGeneratedSequenceIsCorrect(List<int> list, NonNegativeInt count)
     {
-        var repeatRange = Sequence.RepeatMaterialized(list, count.Get);
+        var repeatRange = Enumerable.RepeatMaterialized(list, count.Get);
 
         var materialized = repeatRange.ToList();
 
@@ -36,7 +34,7 @@ public sealed class RepeatMaterializedTest
     [Property]
     public Property TheSequenceRepeatsTheGivenNumberOfTimes(List<int> list, NonNegativeInt count)
     {
-        var repeatRange = Sequence.RepeatMaterialized(list, count.Get);
+        var repeatRange = Enumerable.RepeatMaterialized(list, count.Get);
 
         return repeatRange
             .IsSequenceRepeating(list)

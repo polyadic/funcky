@@ -88,7 +88,7 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Funcky provides Sequence.Return to create an IEnumerable of a single item.
+        ///   Looks up a localized string similar to Funcky provides Enumerable.Return to create an IEnumerable of a single item.
         /// </summary>
         internal static string EnumerableRepeatOnceAnalyzerDescription {
             get {
@@ -97,7 +97,7 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Sequence.Return({0}) instead of Enumerable.Repeat({0}, 1) .
+        ///   Looks up a localized string similar to Use Enumerable.Return({0}) instead of Enumerable.Repeat({0}, 1).
         /// </summary>
         internal static string EnumerableRepeatOnceAnalyzerMessageFormat {
             get {

@@ -27,12 +27,12 @@ inputs. This is what distinguishes it from `Concat(...).OrderBy(...)`, which has
 ### Example
 
 ```cs
-var odds = Sequence.Return(1, 3, 5, 9);
-var evens = Sequence.Return(2, 4, 6);
+var odds = Enumerable.Return(1, 3, 5, 9);
+var evens = Enumerable.Return(2, 4, 6);
 
 odds.Merge(evens);
 // [1, 2, 3, 4, 5, 6, 9]
 
 var byNewest = Comparer<LogEntry>.Create((a, b) => b.Timestamp.CompareTo(a.Timestamp));
-var combinedLog = Sequence.Return(webLog, dbLog, workerLog).Merge(byNewest);
+var combinedLog = Enumerable.Return(webLog, dbLog, workerLog).Merge(byNewest);
 ```
