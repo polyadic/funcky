@@ -62,8 +62,9 @@ Option<string> name = user.HasName.Then(() => user.Name);          // the select
 Option<IFormFile> file = request.HasFormContentType.Then(() => request.Form.Files.FirstOrNone()); // flattening
 ```
 
-`Option.FromBoolean`, the previous form of this, is obsolete since 3.8.0 and will be removed in 4.0.0. The
-`Funcky.Analyzers` package offers a code fix for the obsoletion warning that rewrites it to `Then`.
+`Option.FromBoolean`, the previous form of this, was obsoleted in 3.8.0 and removed in 4.0.0. The `Funcky.Analyzers`
+package offers a code fix that rewrites it to `Then`, both for the obsoletion warning on 3.8.0 and for the compile
+error CS0117 the removed member leaves behind on 4.0.0, so the upgrade can go first and the rewrite second.
 
 The type parameter is constrained to `notnull`. An `Option<string?>` does not exist, because "absent" is what `None`
 is for. `Option.FromNullable` is the bridge: it maps `null` to `None` and anything else to `Some`.

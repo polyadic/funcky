@@ -45,3 +45,6 @@ static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystac
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, int count, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, int startIndex, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
 static Funcky.Extensions.StringExtensions.LastIndexOfOrNone(this string! haystack, System.Text.Rune value, System.StringComparison comparisonType) -> Funcky.Monads.Option<int>
+*REMOVED*static Funcky.Monads.Option.FromBoolean(bool boolean) -> Funcky.Monads.Option<Funcky.Unit>
+*REMOVED*static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, System.Func<TItem>! selector) -> Funcky.Monads.Option<TItem>
+*REMOVED*static Funcky.Monads.Option.FromBoolean<TItem>(bool boolean, TItem item) -> Funcky.Monads.Option<TItem>
