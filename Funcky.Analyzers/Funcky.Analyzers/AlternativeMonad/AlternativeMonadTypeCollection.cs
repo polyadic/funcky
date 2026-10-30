@@ -36,6 +36,7 @@ internal sealed class AlternativeMonadTypeCollection
                     optionOfTType,
                     constructorsType: optionType,
                     errorStateConstructorName: OptionNonePropertyName,
+                    errorStateParameterName: OptionMatchNoneParameterName,
                     returnAlias: OptionSomeMethodName,
                     extensionsType: compilation.GetOptionExtensionsType())
                 : null;
@@ -47,6 +48,7 @@ internal sealed class AlternativeMonadTypeCollection
                     eitherOfTType,
                     constructorsType: eitherType,
                     errorStateConstructorName: EitherLeftMethodName,
+                    errorStateParameterName: EitherMatchLeftParameterName,
                     returnAlias: EitherRightMethodName)
                 : null;
 
@@ -57,7 +59,7 @@ internal sealed class AlternativeMonadTypeCollection
                     resultOfTType,
                     constructorsType: resultType,
                     errorStateConstructorName: ResultErrorMethodName,
-                    matchHasSuccessStateFirst: true,
+                    errorStateParameterName: ResultMatchErrorParameterName,
                     returnAlias: ResultOkMethodName)
                 : null;
 }

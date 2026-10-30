@@ -30,8 +30,8 @@ Every operation from [`Option<T>`](./option.md) and `Result<T>` exists on `Eithe
 |-----------------------|------------------------|
 | `Ok(value)`           | `Right(value)`         |
 | `Error(exception)`    | `Left(value)`          |
-| `Match(ok, error)`    | `Match(left, right)`   |
-| `Switch(ok, error)`   | `Switch(left, right)`  |
+| `Match(error, ok)`    | `Match(left, right)`   |
+| `Switch(error, ok)`   | `Switch(left, right)`  |
 | `InspectError`        | `InspectLeft`          |
 
 `Select`, `SelectMany`, `OrElse`, `GetOrElse` and `Inspect` work the same way, and so does query syntax. As with

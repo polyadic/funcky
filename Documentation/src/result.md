@@ -19,8 +19,8 @@ difference is that the empty case is called `error` instead of `none`, and that 
 |--------------------|--------------------------|
 | `Some(value)`      | `Ok(value)`              |
 | `None`             | `Error(exception)`       |
-| `Match(none, some)`| `Match(ok, error)`       |
-| `Switch(none, some)`| `Switch(ok, error)`     |
+| `Match(none, some)`| `Match(error, ok)`       |
+| `Switch(none, some)`| `Switch(error, ok)`     |
 | `InspectNone`      | `InspectError`           |
 | `ToNullable`       | `GetOrThrow`             |
 
@@ -116,8 +116,8 @@ As with options, `Match` is the general tool and should be the last one you reac
 
 ```cs
 IActionResult response = PlaceOrder(customerId, productId, quantity).Match(
-    ok: order => Created(order),
-    error: exception => BadRequest(exception.Message));
+    error: exception => BadRequest(exception.Message),
+    ok: order => Created(order));
 ```
 
 `Switch` is the same for actions. Always name the arguments; [λ1003](./analyzer-rules/λ1003.md) enforces it, and

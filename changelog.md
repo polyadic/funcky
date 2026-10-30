@@ -33,6 +33,12 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   single-name overloads with a `(…, cancellationToken)` delegate. The code fix in Funcky.Analyzers 3.0.0 now also fires
   on the compile error CS1061 that a removed name leaves behind, so a project can upgrade first and let Fix-All rewrite
   every call afterwards; the fix for the obsoletion warning CS0618 on 3.8.0 stays as well.
+* Breaking: `Result<T>.Match` and `Result<T>.Switch` take the error case first, `Match(error, ok)` and
+  `Switch(error, ok)`, consistent with `Option.Match(none, some)` and `Either.Match(left, right)`. Both methods carry
+  `[UseWithArgumentNames]`, so calls that follow λ1003 and name their arguments are unaffected; a positional call fails
+  to compile after the upgrade (the two delegates have different parameter types), swap its arguments. The `Match`
+  rules of Funcky.Analyzers (λ1005 to λ1007 and λ1011) now tell the two arguments apart by parameter name, so they work
+  with either order.
 * Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
   is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
   framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.

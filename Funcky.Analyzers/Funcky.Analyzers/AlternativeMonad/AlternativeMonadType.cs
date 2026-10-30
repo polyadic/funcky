@@ -8,7 +8,7 @@ internal sealed class AlternativeMonadType(
     INamedTypeSymbol constructorsType,
     string returnAlias,
     string errorStateConstructorName,
-    bool matchHasSuccessStateFirst = false,
+    string errorStateParameterName,
     INamedTypeSymbol? extensionsType = null)
 {
     private readonly Lazy<bool> _hasGetOrElse = HasMethodLazy(type, GetOrElseMethodName);
@@ -23,9 +23,10 @@ internal sealed class AlternativeMonadType(
 
     public string ErrorStateConstructorName { get; } = errorStateConstructorName;
 
-    public int ErrorStateArgumentIndex => matchHasSuccessStateFirst ? 1 : 0;
-
-    public int SuccessStateArgumentIndex => matchHasSuccessStateFirst ? 0 : 1;
+    /// <summary>The name of the <c>Match</c> parameter that handles the error state (<c>none</c>, <c>left</c>, <c>error</c>). The
+    /// arguments are told apart by name rather than by position, so the analyzer works with Funcky 3.x, where <c>Result.Match</c>
+    /// took the success state first, and with Funcky 4.0.0, where the error state comes first everywhere.</summary>
+    public string ErrorStateParameterName { get; } = errorStateParameterName;
 
     public bool HasGetOrElse => _hasGetOrElse.Value;
 

@@ -95,7 +95,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
 
     [Pure]
     [UseWithArgumentNames]
-    public TMatchResult Match<TMatchResult>(Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
+    public TMatchResult Match<TMatchResult>(Func<Exception, TMatchResult> error, Func<TValidResult, TMatchResult> ok)
         => _state switch
         {
             State.Ok => ok(_result),
@@ -105,7 +105,7 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
         };
 
     [UseWithArgumentNames]
-    public void Switch(Action<TValidResult> ok, Action<Exception> error)
+    public void Switch(Action<Exception> error, Action<TValidResult> ok)
     {
         switch (_state)
         {
@@ -135,20 +135,20 @@ public readonly partial struct Result<TValidResult> : IEquatable<Result<TValidRe
     public override int GetHashCode()
         => Match(
             uninitialized: static () => 0,
-            ok: static result => result.GetHashCode(),
-            error: static error => error.GetHashCode());
+            error: static error => error.GetHashCode(),
+            ok: static result => result.GetHashCode());
 
     [Pure]
     public override string ToString()
         => Match(
             uninitialized: static () => "Uninitialized",
-            ok: static result => $"Ok({result})",
-            error: static exception => $"Error({exception.GetType().FullName}: {exception.Message})");
+            error: static exception => $"Error({exception.GetType().FullName}: {exception.Message})",
+            ok: static result => $"Ok({result})");
 
     /// <summary>A total match that also handles the invalid state of a <c>default</c> value; for members that must never throw.</summary>
     [Pure]
     [UseWithArgumentNames]
-    internal TMatchResult Match<TMatchResult>(Func<TMatchResult> uninitialized, Func<TValidResult, TMatchResult> ok, Func<Exception, TMatchResult> error)
+    internal TMatchResult Match<TMatchResult>(Func<TMatchResult> uninitialized, Func<Exception, TMatchResult> error, Func<TValidResult, TMatchResult> ok)
         => _state switch
         {
             State.Ok => ok(_result),
