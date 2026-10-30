@@ -34,6 +34,8 @@ public static class FunckyWellKnownTypeNames
 
     public static INamedTypeSymbol? GetExpressionOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
 
+    public static INamedTypeSymbol? GetFuncOfTType(this Compilation compilation) => compilation.GetTypeByMetadataName("System.Func`1");
+
     public static INamedTypeSymbol? GetXunitAssertType(this Compilation compilation) => compilation.GetTypeByMetadataName("Xunit.Assert");
 
     public static INamedTypeSymbol? GetFunctionalAssertType(this Compilation compilation) => compilation.GetTypeByMetadataName("Funcky.FunctionalAssert");
