@@ -26,11 +26,11 @@ at most two elements.
 ### Example
 
 ```cs
-Sequence.Return(4).SingleOrNone();             // Some(4)
+Enumerable.Return(4).SingleOrNone();             // Some(4)
 Enumerable.Empty<int>().SingleOrNone();        // None
-Sequence.Return(4, 4).SingleOrNone();          // throws InvalidOperationException
+Enumerable.Return(4, 4).SingleOrNone();          // throws InvalidOperationException
 
-var users = Sequence.Return("alice", "bob");
+var users = Enumerable.Return("alice", "bob");
 users.SingleOrNone(u => u.StartsWith('a'));    // Some("alice")
 users.SingleOrNone(u => u.StartsWith('z'));    // None
 ```

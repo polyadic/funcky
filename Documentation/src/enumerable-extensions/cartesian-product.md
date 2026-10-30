@@ -37,8 +37,8 @@ it before.
 Every playing card is a suit combined with a rank:
 
 ```cs
-var suits = Sequence.Return("♠", "♣", "♥", "♦");
-var ranks = Sequence.Return("2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A");
+var suits = Enumerable.Return("♠", "♣", "♥", "♦");
+var ranks = Enumerable.Return("2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A");
 
 var deck =
     from suit in suits

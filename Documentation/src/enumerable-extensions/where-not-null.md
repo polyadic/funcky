@@ -24,11 +24,11 @@ before `FirstOrNone` and friends on a sequence with nullable elements.
 ### Example
 
 ```cs
-IEnumerable<string?> lines = Sequence.Return("a", null, "b");
+IEnumerable<string?> lines = Enumerable.Return("a", null, "b");
 IEnumerable<string> nonNull = lines.WhereNotNull();
 // ["a", "b"]
 
-IEnumerable<int?> readings = Sequence.Return<int?>(1, null, 3);
+IEnumerable<int?> readings = Enumerable.Return<int?>(1, null, 3);
 IEnumerable<int> values = readings.WhereNotNull();
 // [1, 3]
 

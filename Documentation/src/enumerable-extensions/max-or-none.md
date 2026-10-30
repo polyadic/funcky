@@ -22,7 +22,7 @@ first of several equal elements wins, and `None` elements are skipped.
 ### Example
 
 ```cs
-var numbers = Sequence.Return(3, 1, 4, 1, 5);
+var numbers = Enumerable.Return(3, 1, 4, 1, 5);
 
 numbers.MaxOrNone();                       // Some(5)
 Enumerable.Empty<int>().MaxOrNone();       // None

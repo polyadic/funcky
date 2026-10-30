@@ -79,7 +79,7 @@ namespace Funcky.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Sequence.Return.
+        ///   Looks up a localized string similar to Use Enumerable.Return.
         /// </summary>
         internal static string EnumerableRepeatOnceCodeFixTitle {
             get {

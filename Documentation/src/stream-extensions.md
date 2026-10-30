@@ -42,7 +42,7 @@ string DescribeProgress(Stream stream)
 
 ```cs
 IEnumerable<byte> Bytes(Stream stream)
-    => Sequence.Successors(stream.ReadByteOrNone(), _ => stream.ReadByteOrNone());
+    => Enumerable.Successors(stream.ReadByteOrNone(), _ => stream.ReadByteOrNone());
 ```
 
 See [The TryVerb-pattern](./try-pattern.md) for the same idea across the rest of the BCL.

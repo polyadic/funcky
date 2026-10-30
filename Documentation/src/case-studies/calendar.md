@@ -53,10 +53,10 @@ There are obviously many ways to achieve this, you could write your own Implemen
 
 We want to avoid to write such a function and take advantage of the numerous generators available in Funcky.
 
-`Sequence.Successors` creates an infinite sequence of days, starting with January first of the given year. We take all the values in the same year, so this sequence should yield all the days of a year.
+`Enumerable.Successors` creates an infinite sequence of days, starting with January first of the given year. We take all the values in the same year, so this sequence should yield all the days of a year.
 
 ```cs
-return Sequence.Successors(JanuaryFirst(year), NextDay)
+return Enumerable.Successors(JanuaryFirst(year), NextDay)
     .TakeWhile(IsSameYear(year));
 ```
 
@@ -83,7 +83,7 @@ This makes the main body of the code semantic very easy to understand. All the h
 LINQ offers you the GroupBy function which we could use easily in this case.  This way we would have 12 groups, in each group we would have all the days of one month of the given year.
 
 ```cs
-return Sequence.Successors(JanuaryFirst(year), NextDay)
+return Enumerable.Successors(JanuaryFirst(year), NextDay)
     .TakeWhile(IsSameYear(year))
     .GroupBy(d => d.Month)
 ```
@@ -98,7 +98,7 @@ Often that is exactly what you want, but in this case if we think of an endless 
 That is why Funcky offers the extension function `AdjacentGroupBy`. It is a fully lazy, forward only `GroupBy`. Exactly what we need here.
 
 ```cs
-return Sequence.Successors(JanuaryFirst(year), NextDay)
+return Enumerable.Successors(JanuaryFirst(year), NextDay)
     .TakeWhile(IsSameYear(year))
     .AdjacentGroupBy(d => d.Month);
 ```
@@ -112,7 +112,7 @@ Since we have now all the days of the same month, we want to create a layout for
 Currently we have a sequence of months. To transform the inner element, from a sequence of days into something else, we need to make a projection which is done with `Select` in C#.
 
 ```cs
-return Sequence.Successors(JanuaryFirst(year), NextDay)
+return Enumerable.Successors(JanuaryFirst(year), NextDay)
     .TakeWhile(IsSameYear(year))
     .AdjacentGroupBy(d => d.Month);
     .Select(LayoutMonth)
@@ -152,7 +152,7 @@ private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
 
 This is a fine way to do this, it is very easy to read, but the foreach is really annoying. We already have an `IEnumerable<T>`, we just want to add it between the first and the last line. But with yield you are often limited to very procedural constructs.
 
-Often you can avoid that, for simple cases we have Sequence.Return, Concat and other helpers, in this case though the nicest way is probably creating an ImmutableList, because the syntax allows to combine ranges and single items elegantly.
+Often you can avoid that, for simple cases we have Enumerable.Return, Concat and other helpers, in this case though the nicest way is probably creating an ImmutableList, because the syntax allows to combine ranges and single items elegantly.
 
 ```cs
 private static IEnumerable<string> LayoutMonth(IEnumerable<DateOnly> month)
@@ -281,7 +281,7 @@ Chunk is grouping a sequence into multiple sequences of the same length. In our 
 const MonthsPerRow = 3;
 
 private static string CreateCalendarString(int year)
-    => Sequence.Successors(JanuaryFirst(year), NextDay)
+    => Enumerable.Successors(JanuaryFirst(year), NextDay)
         .TakeWhile(IsSameYear(year))
         .AdjacentGroupBy(day => day.Month)
         .Select(LayoutMonth)
@@ -316,7 +316,7 @@ Funcky has a lazy `Transpose` extension function for `IEnumerable<IEnumerable<T>
 
 ```cs
 private static string CreateCalendarString(int year)
-    => Sequence.Successors(JanuaryFirst(year), NextDay)
+    => Enumerable.Successors(JanuaryFirst(year), NextDay)
         .TakeWhile(IsSameYear(year))
         .AdjacentGroupBy(day => day.Month)
         .Select(LayoutMonth)
@@ -344,7 +344,7 @@ I think it is obvious that at this point, we are done. We just have to join the 
 
 ```cs
 private static string CreateCalendarString(int year)
-    => Sequence.Successors(JanuaryFirst(year), NextDay)
+    => Enumerable.Successors(JanuaryFirst(year), NextDay)
         .TakeWhile(IsSameYear(year))
         .AdjacentGroupBy(day => day.Month)
         .Select(LayoutMonth)

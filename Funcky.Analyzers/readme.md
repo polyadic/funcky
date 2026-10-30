@@ -25,7 +25,8 @@ EF Core ship their usage diagnostics inside the library package, whereas best-pr
 ### Rule IDs
 Rule IDs are stable identifiers and never change once shipped, even when a rule moves between the packages
 (λ1009 and λ1010 moved to the built-in analyzers in Funcky 3.7.0 and kept their numbers). The number range records
-where a rule was born: `λ00xx` built-in, `λ10xx` `Funcky.Analyzers`, `λ11xx` `FunctionalAssert` rules. The rules table in
+where a rule was born: `λ00xx` built-in, `λ10xx` `Funcky.Analyzers`, `λ11xx` rules for the Funcky.Xunit assertions, `λ12xx`
+rules for the C# 14 extension forms. A retired rule (λ1202, λ1203) keeps its number reserved. The rules table in
 the documentation is the authority on where a rule lives.
 
 ### Built-in Analyzers and Roslyn Versions

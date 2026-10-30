@@ -25,7 +25,7 @@ The element type is constrained to `notnull`, because `Previous` is an `Option<T
 Marking where a sorted sequence changes value:
 
 ```cs
-var readings = Sequence.Return(1, 1, 2, 2, 2, 3);
+var readings = Enumerable.Return(1, 1, 2, 2, 2, 3);
 
 readings
     .WithPrevious()

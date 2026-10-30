@@ -25,7 +25,7 @@ comparison, so keep it cheap or project the key first.
 ### Example
 
 ```cs
-var animals = Sequence.Return(
+var animals = Enumerable.Return(
     new Animal("Elephant", Weight: 6000),
     new Animal("Mouse", Weight: 0.02),
     new Animal("Cat", Weight: 4),

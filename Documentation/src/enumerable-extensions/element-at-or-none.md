@@ -21,7 +21,7 @@ whole sequence.
 ### Example
 
 ```cs
-var numbers = Sequence.Return(3, 1, 4, 1, 5);
+var numbers = Enumerable.Return(3, 1, 4, 1, 5);
 
 numbers.ElementAtOrNone(2);     // Some(4)
 numbers.ElementAtOrNone(5);     // None

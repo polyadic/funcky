@@ -23,7 +23,7 @@ target framework and puts the value first, matching the other `With…` types.
 ### Example
 
 ```cs
-var names = Sequence.Return("Ada", "Grace", "Linus");
+var names = Enumerable.Return("Ada", "Grace", "Linus");
 
 names.WithIndex().Select(n => $"{n.Index + 1}. {n.Value}");
 // ["1. Ada", "2. Grace", "3. Linus"]

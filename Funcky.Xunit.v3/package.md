@@ -5,7 +5,10 @@ It also enables `Option`, `Either` and `Unit` for use in theory data by providin
 custom [serializers].
 
 ## Main Types
-* `Funcky.FunctionalAssert`—Assertions for Funcky's monads, also available as `Assert.Some`, `Assert.Ok`, … on xunit's `Assert` (C# 14).
+* `Funcky.Extensions.AssertExtensions`—Assertions for Funcky's monads as static extension members of xunit's `Assert`: `Assert.Some`, `Assert.None`, `Assert.Ok`, `Assert.Error`, `Assert.Left`, `Assert.Right`.
+
+The assertions are C# 14 extension members, so they need the .NET 10 SDK or newer; `using Funcky.Extensions;` brings
+them into scope.
 
 ## How to Use
 
@@ -15,26 +18,24 @@ var some = Option.Some("hello world");
 var none = Option<int>.None;
 
 // Asserts that an Option contains a value, returns its value.
-var text = FunctionalAssert.Some(some);
+var text = Assert.Some(some);
 Assert.Equal("hello world", text);
 
 // Asserts that an Option contains the given value.
-FunctionalAssert.Some("hello world", some);
+Assert.Some("hello world", some);
 
 // Asserts that the Option is empty.
-FunctionalAssert.None(none);
+Assert.None(none);
 ```
 
-### Use the assertions on `Assert`
-With the C# 14 compiler the same assertions are static extension members of xunit's `Assert`:
+### Test a Result
 ```csharp
-var text = Assert.Some(some);
-Assert.Some("hello world", some);
-Assert.None(none);
+// Asserts that the Result is Ok, returns the value.
 var value = Assert.Ok(result);
+
+// Asserts that the Result is an error, returns the exception.
 var error = Assert.Error(result);
-var left = Assert.Left(either);
-var right = Assert.Right(either);
+var typed = Assert.Error<InvalidOperationException, int>(result);
 ```
 
 ### Test an Either
@@ -43,18 +44,18 @@ var right = Either<string>.Return(42);
 var left = Either<string, int>.Left("failure");
 
 // Asserts that the Either is a right, returns the value.
-var value = FunctionalAssert.Right(right);
+var value = Assert.Right(right);
 Assert.Equal(42, value);
 
 // Asserts that the Either is a right with the given value.
-FunctionalAssert.Right(42, right);
+Assert.Right(42, right);
 
 // Asserts that the Either is a left, returns the value.
-var message = FunctionalAssert.Left(left);
+var message = Assert.Left(left);
 Assert.Equal("failure", message);
 
 // Asserts that the Either is a left with the given value.
-FunctionalAssert.Left("failure", left);
+Assert.Left("failure", left);
 ```
 
 ## Use an Option as theory data

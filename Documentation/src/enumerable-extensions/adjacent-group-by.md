@@ -30,7 +30,7 @@ This is the same operation as Haskell's `groupBy` and Python's `itertools.groupb
 Collapsing a log into runs of the same severity:
 
 ```cs
-var entries = Sequence.Return(
+var entries = Enumerable.Return(
     new LogEntry(Level.Info, "started"),
     new LogEntry(Level.Info, "listening"),
     new LogEntry(Level.Error, "timeout"),

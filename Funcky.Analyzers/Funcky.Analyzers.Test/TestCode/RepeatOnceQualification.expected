@@ -1,38 +1,45 @@
-namespace Funcky
+namespace Funcky.Extensions
 {
-    class Sequence
+    public static class EnumerableExtensions
     {
-        public static System.Collections.Generic.IEnumerable<T> Return<T>(T value) => null!;
+        extension(System.Linq.Enumerable)
+        {
+            public static System.Collections.Generic.IEnumerable<T> Return<T>(T value) => null!;
+        }
     }
 }
 
-namespace WithUsingStatic
+namespace WithUsing
 {
-    using static Funcky.Sequence;
+    using System.Linq;
+    using Funcky.Extensions;
 
     public class C
     {
         public void M()
         {
-            _ = Return(10);
+            _ = Enumerable.Return(10);
         }
     }
 }
 
 namespace WithFullyQualifiedName
 {
+    using Funcky.Extensions;
+
     public class C
     {
         public void M()
         {
-            _ = Funcky.Sequence.Return(10);
+            _ = System.Linq.Enumerable.Return(10);
         }
     }
 }
 
 namespace WithUsingAlias
 {
-    using Seq = Funcky.Sequence;
+    using Funcky.Extensions;
+    using Seq = System.Linq.Enumerable;
 
     public class C
     {

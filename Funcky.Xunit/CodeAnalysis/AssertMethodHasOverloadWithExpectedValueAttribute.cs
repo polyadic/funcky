@@ -1,6 +1,6 @@
 namespace Funcky.CodeAnalysis;
 
-/// <summary>Marks <c>FunctionalAssert</c> methods that have an accompanying overload that
-/// takes the expected value.</summary>
+/// <summary>Marks the assertions on <c>Assert</c> that have an accompanying overload which
+/// takes the expected value; the analyzer rule λ1101 prefers that overload.</summary>
 [AttributeUsage(AttributeTargets.Method)]
 internal sealed class AssertMethodHasOverloadWithExpectedValueAttribute : Attribute;
