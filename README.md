@@ -44,11 +44,12 @@ These packages live in their own repositories.
 | Package | NuGet | Description |
 | --- | --- | --- |
 | **[Funcky.EntityFrameworkCore](https://github.com/polyadic/funcky-efcore)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.EntityFrameworkCore)](https://www.nuget.org/packages/Funcky.EntityFrameworkCore) | Interoperability between Funcky and EF Core. |
-| **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion) | Source generator for `Match` methods on discriminated unions. Retiring, see below. |
+| **[Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union)** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.DiscriminatedUnion)](https://www.nuget.org/packages/Funcky.DiscriminatedUnion) | Source generator for `Match` methods on discriminated unions. Retired, see below. |
 
-**Funcky.DiscriminatedUnion is retiring with Funcky 4.0.0.** C# gets native `union` types and `closed` hierarchies
-with .NET 11, which Funcky 4.0.0 adopts. The generator keeps working with the 3.x line but receives no new features,
-see [#900](https://github.com/polyadic/funcky/issues/900).
+**Funcky.DiscriminatedUnion is retired.** C# has native `union` types and `closed` hierarchies since .NET 11, which
+cover what `[DiscriminatedUnion]` generated: a `closed` hierarchy (or a `union`) with a `switch` expression over its
+cases is exhaustive without a generated `Match`. The final 1.2.x version stays on NuGet for projects on the Funcky 3.x
+line and receives no further changes; see [#900](https://github.com/polyadic/funcky/issues/900).
 
 ## Highlights
 
