@@ -4,11 +4,12 @@
              async APIs live in the Funcky package itself. The net10.0 asset of this package therefore only
              contains type forwards to Funcky, so projects that reference both packages keep compiling.
              On older frameworks this package compiles Funcky's async sources (linked from the Funcky project)
-             against System.Linq.Async; see Internal\SystemLinqAsyncAdapter.cs for how the two operator
-             vocabularies are bridged. The package is compiled against the lowest supported System.Linq.Async
-             version (5.0.0) so that the shipped binary works with every version in the allowed range; CI runs
-             the tests against each version of the range (see the SystemLinqAsyncVersion matrix in build.yml
-             and Funcky.Async.Test.csproj), which exercises exactly the binary compatibility consumers rely on. -->
+             against System.Linq.AsyncEnumerable, the very package that is part of the .NET 10 base class library,
+             so the shared sources need no conditional compilation (see Directory.Packages.props for why it is not
+             System.Linq.Async 7). The package is compiled against the lowest supported version of the range so that
+             the shipped binary works with every version in it; CI runs the tests against the floor and the newest
+             version (see the SystemLinqAsyncEnumerableVersion matrix in build.yml and Funcky.Async.Test.csproj),
+             which exercises exactly the binary compatibility consumers rely on. -->
         <FunckyNewestTargetFramework>net9.0</FunckyNewestTargetFramework>
         <TargetFrameworks>net11.0;net10.0;$(FunckyNewestTargetFramework);net8.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>preview</LangVersion>
@@ -17,7 +18,7 @@
         <CheckEolTargetFramework>false</CheckEolTargetFramework>
         <Description>Extends Funcky with support for IAsyncEnumerable and Tasks on frameworks older than .NET 10. On .NET 10 and newer these APIs are part of the Funcky package and this package only forwards to them.</Description>
         <PackageTags>Functional Async Monad Linq</PackageTags>
-        <VersionPrefix>1.6.0</VersionPrefix>
+        <VersionPrefix>2.0.0</VersionPrefix>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageIcon>icon.png</PackageIcon>
@@ -38,9 +39,8 @@
         <FunckyAsyncIntegrated>true</FunckyAsyncIntegrated>
     </PropertyGroup>
     <PropertyGroup Condition="'$(FunckyAsyncIntegrated)' != 'true'">
-        <!-- ASYNC_SUPPORTED enables the async sources shared with Funcky (Funcky itself defines it for net10.0 and newer);
-             SYSTEM_LINQ_ASYNC marks the few places where System.Linq.Async differs from the .NET 10 base class library. -->
-        <DefineConstants>$(DefineConstants);ASYNC_SUPPORTED;SYSTEM_LINQ_ASYNC</DefineConstants>
+        <!-- ASYNC_SUPPORTED enables the async sources shared with Funcky (Funcky itself defines it for net10.0 and newer). -->
+        <DefineConstants>$(DefineConstants);ASYNC_SUPPORTED</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
         <IsTrimmable>true</IsTrimmable>
@@ -66,6 +66,7 @@
         <Compile Include="..\Funcky\Monads\Option\OptionTaskAwaiter.cs" LinkBase="Monads\Option" />
         <Compile Include="..\Funcky\Monads\Option\OptionValueTaskAwaiter.cs" LinkBase="Monads\Option" />
         <Compile Include="..\Funcky\Monads\Result\ResultAsyncExtensions.*.cs" LinkBase="Monads\Result" />
+        <Compile Include="..\Funcky\Grouping.cs" />
         <Compile Include="..\Funcky\IAsyncBuffer.cs" />
         <Compile Include="..\Funcky\ValueTaskFactory.cs" />
         <!-- Internal helpers of Funcky used by the async implementation. -->
@@ -83,7 +84,7 @@
         <Compile Include="..\Funcky\Internal\Validators\RepeatCountValidator.cs" Link="Internal\Validators\RepeatCountValidator.cs" />
         <Compile Include="..\Funcky\Internal\Validators\ArgumentValidator.cs" Link="Internal\Validators\ArgumentValidator.cs" />
         <Compile Include="..\Funcky\Internal\PartitionBuilder.cs" Link="Internal\PartitionBuilder.cs" />
-        <PackageReference Include="System.Linq.Async" />
+        <PackageReference Include="System.Linq.AsyncEnumerable" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="PolySharp" PrivateAssets="all" />

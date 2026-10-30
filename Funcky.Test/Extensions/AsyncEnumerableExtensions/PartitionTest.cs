@@ -1,4 +1,3 @@
-#pragma warning disable CS0618 // PartitionAwaitAsync is obsolete but keeps working until 4.0.0.
 #if ASYNC_SUPPORTED
 namespace Funcky.Async.Test.Extensions.AsyncEnumerableExtensions;
 
@@ -16,22 +15,6 @@ public sealed class PartitionTest
     public async Task PartitionsItemsIntoTruesAndFalses()
     {
         var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAsync(IsEven);
-        Assert.Equal([0, 2, 4], evens);
-        Assert.Equal([1, 3, 5], odds);
-    }
-
-    [Fact]
-    public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncPredicate()
-    {
-        var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitAsync(x => ValueTask.FromResult(IsEven(x)));
-        Assert.Equal([0, 2, 4], evens);
-        Assert.Equal([1, 3, 5], odds);
-    }
-
-    [Fact]
-    public async Task PartitionsItemsIntoTruesAndFalsesWithAsyncCancellablePredicate()
-    {
-        var (evens, odds) = await AsyncEnumerable.Range(0, 6).PartitionAwaitWithCancellationAsync((x, _) => ValueTask.FromResult(IsEven(x)));
         Assert.Equal([0, 2, 4], evens);
         Assert.Equal([1, 3, 5], odds);
     }

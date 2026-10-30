@@ -16,6 +16,23 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   value. The code fix in Funcky.Analyzers 3.0.0 now also fires on the compile error CS0117 that the removed member
   leaves behind, so a project can upgrade to Funcky 4.0.0 first and let the fix (or Fix-All) rewrite every call
   afterwards; the fix for the obsoletion warning CS0618 on Funcky 3.8.0 stays as well.
+* Breaking (Funcky.Async 2.0.0): the package no longer depends on System.Linq.Async but on System.Linq.AsyncEnumerable
+  (`[10.0.6, 12)`), the package that is the `IAsyncEnumerable` LINQ of the .NET 10 base class library, so the operators
+  have the same shapes on every framework. The members that only existed to bridge System.Linq.Async 5 and 6 are gone:
+  `Chunk(size)` without a result selector (System.Linq.AsyncEnumerable provides it, yielding `T[]`), and
+  `AdjacentGroupBy` now returns `IAsyncEnumerable<IGrouping<TKey, T>>` instead of `IAsyncGrouping` on every framework,
+  exactly like the net10.0 asset of Funcky. A project that still references System.Linq.Async 5 or 6 next to
+  Funcky.Async 2.0.0 gets a type clash (CS0433) on `System.Linq.AsyncEnumerable`: upgrade that reference to
+  System.Linq.Async 7, which forwards to the same package, or drop it. Funcky.Async 1.x stays available for projects
+  that cannot. System.Linq.Async 7 itself was not chosen as the dependency because it also brings System.Interactive.Async
+  along, whose `Merge` on a sequence of sequences would silently take over from Funcky's sorted `Merge`.
+* Breaking: the twelve `…Await` and `…AwaitWithCancellation` operators (`AdjacentGroupBy`, `Chunk`, `ExclusiveScan`,
+  `InclusiveScan`, `Inspect`, `WhereSelect`) and the `…AwaitAsync` and `…AwaitWithCancellationAsync` overloads of the
+  eight terminal aggregations (`AverageOrNone`, `FirstOrNone`, `LastOrNone`, `SingleOrNone`, `MaxOrNone`, `MinOrNone`,
+  `None`, `Partition`), obsolete since 3.8.0, are removed from the net10.0 asset of Funcky and from Funcky.Async. Use the
+  single-name overloads with a `(…, cancellationToken)` delegate. The code fix in Funcky.Analyzers 3.0.0 now also fires
+  on the compile error CS1061 that a removed name leaves behind, so a project can upgrade first and let Fix-All rewrite
+  every call afterwards; the fix for the obsoletion warning CS0618 on 3.8.0 stays as well.
 * Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
   is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
   framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.

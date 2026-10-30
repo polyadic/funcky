@@ -35,22 +35,6 @@ public static partial class AsyncEnumerableExtensions
         CancellationToken cancellationToken = default)
         => source.PartitionAsync(predicate, static (left, right, _) => ValueTaskFromResult(Partitions.Create(left, right)), cancellationToken);
 
-    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
-    [Obsolete("Use PartitionAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
-    public static ValueTask<Partitions<TSource>> PartitionAwaitAsync<TSource>(
-        this IAsyncEnumerable<TSource> source,
-        Func<TSource, ValueTask<bool>> predicate,
-        CancellationToken cancellationToken = default)
-        => source.PartitionAsync((item, _) => predicate(item), cancellationToken);
-
-    /// <inheritdoc cref="PartitionAsync{TSource}(IAsyncEnumerable{TSource},Func{TSource,bool},CancellationToken)" />
-    [Obsolete("Use PartitionAsync instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-    public static ValueTask<Partitions<TSource>> PartitionAwaitWithCancellationAsync<TSource>(
-        this IAsyncEnumerable<TSource> source,
-        Func<TSource, CancellationToken, ValueTask<bool>> predicate,
-        CancellationToken cancellationToken = default)
-        => source.PartitionAsync(predicate, cancellationToken);
-
     /// <summary>
     /// Partitions the items in an <see cref="IAsyncEnumerable{T}"/> by the given <paramref name="predicate"/>.
     /// The <paramref name="resultSelector"/> receives the items for which the predicate holds and the items
@@ -85,24 +69,6 @@ public static partial class AsyncEnumerableExtensions
                 .Build(ValueTuple.Create);
         return await resultSelector(left, right, cancellationToken).ConfigureAwait(false);
     }
-
-    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
-    [Obsolete("Use PartitionAsync with (…, cancellationToken) delegates instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
-    public static ValueTask<TResult> PartitionAwaitAsync<TSource, TResult>(
-        this IAsyncEnumerable<TSource> source,
-        Func<TSource, ValueTask<bool>> predicate,
-        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector,
-        CancellationToken cancellationToken = default)
-        => source.PartitionAsync((item, _) => predicate(item), (left, right, _) => resultSelector(left, right), cancellationToken);
-
-    /// <inheritdoc cref="PartitionAsync{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,bool},Func{IReadOnlyList{TSource},IReadOnlyList{TSource},TResult},CancellationToken)" />
-    [Obsolete("Use PartitionAsync instead, which takes the same delegates. This method will be removed in Funcky 4.0.0.")]
-    public static ValueTask<TResult> PartitionAwaitWithCancellationAsync<TSource, TResult>(
-        this IAsyncEnumerable<TSource> source,
-        Func<TSource, CancellationToken, ValueTask<bool>> predicate,
-        Func<IReadOnlyList<TSource>, IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector,
-        CancellationToken cancellationToken = default)
-        => source.PartitionAsync(predicate, resultSelector, cancellationToken);
 
     private static Func<PartitionBuilder<TSource, TSource>, TSource, CancellationToken, ValueTask<PartitionBuilder<TSource, TSource>>> AddAsync<TSource>(
         Func<TSource, CancellationToken, ValueTask<bool>> predicate)
