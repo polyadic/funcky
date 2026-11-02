@@ -1,6 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <AnalyzerRoslynVersion>3.7.0</AnalyzerRoslynVersion>
-    </PropertyGroup>
-    <Import Project="Funcky.BuiltinAnalyzers.CodeFixes.targets" />
-</Project>

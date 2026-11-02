@@ -8,23 +8,23 @@
     </ItemGroup>
 
     <!-- Built-in analyzers.
-         The Funcky package ships its analyzers once per supported Roslyn version (analyzers/dotnet/roslyn3.7/cs and
-         analyzers/dotnet/roslyn4.4/cs). SDKs that support analyzer versioning (.NET 6 and newer) pick the newest
-         compatible directory on their own. Older SDKs load every analyzer they find, so the targets below keep only
-         the Roslyn 3.7 assets there. Adapted from the targets that System.Text.Json ships. -->
+         The Funcky package ships its analyzers in analyzers/dotnet/roslyn4.14/cs. SDKs that support analyzer
+         versioning (.NET 6 and newer) load the directory only when their compiler is at least Roslyn 4.14
+         (Visual Studio 2022 17.14, .NET SDK 9.0.300). Older SDKs load every analyzer they find, so the target
+         below removes the assets there instead of letting the compiler fail to load them. Adapted from the
+         targets that System.Text.Json ships. -->
     <Target Name="_Funcky_GatherBuiltinAnalyzers">
         <ItemGroup>
             <_FunckyBuiltinAnalyzer Include="@(Analyzer)" Condition="'%(Analyzer.NuGetPackageId)' == 'Funcky'" />
         </ItemGroup>
     </Target>
 
-    <Target Name="_Funcky_BuiltinAnalyzerMultiTargeting"
+    <Target Name="_Funcky_RemoveBuiltinAnalyzersWithoutVersioning"
             Condition="'$(SupportsRoslynComponentVersioning)' != 'true'"
             AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets"
             DependsOnTargets="_Funcky_GatherBuiltinAnalyzers">
         <ItemGroup>
-            <Analyzer Remove="@(_FunckyBuiltinAnalyzer)"
-                      Condition="$([System.String]::Copy('%(_FunckyBuiltinAnalyzer.Identity)').IndexOf('roslyn4')) &gt;= 0" />
+            <Analyzer Remove="@(_FunckyBuiltinAnalyzer)" />
         </ItemGroup>
     </Target>
 
