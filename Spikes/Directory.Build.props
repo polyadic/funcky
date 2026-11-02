@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- Spike code: experimental, never packed, not held to the Polyadic code style. Inherits the NuGet metadata and artifacts path from the repository root. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+  <PropertyGroup>
+    <!-- Build and test the spikes with -c Release: the JIT does not optimize debuggable assemblies, so a Debug Funcky
+         boxes in `item is null` and every allocation measurement in the spike tests is off by one object per Option. -->
+    <TargetFramework>net11.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Remove="Polyadic.CodeStyle" />
+  </ItemGroup>
+</Project>

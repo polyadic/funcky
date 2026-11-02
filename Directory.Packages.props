@@ -34,6 +34,7 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <PackageVersion Include="xunit.v3" Version="1.0.1" />
     <PackageVersion Include="FsCheck.Xunit" Version="3.6.0" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" /><!-- Spikes only -->
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="Verify.XUnit" Version="31.12.5" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />

@@ -1,0 +1,8 @@
+<Solution>
+  <File Path="Directory.Build.props" />
+  <File Path="README.md" />
+  <Project Path="Funcky.Spike/Funcky.Spike.csproj" />
+  <Project Path="Funcky.Spike.Test/Funcky.Spike.Test.csproj" />
+  <Project Path="Funcky.Spike.Benchmarks/Funcky.Spike.Benchmarks.csproj" />
+  <Project Path="../Funcky/Funcky.csproj" />
+</Solution>

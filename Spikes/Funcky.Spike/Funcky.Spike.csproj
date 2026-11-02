@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Funcky.Spike</RootNamespace>
+    <!-- CS8509/CS8524: non-exhaustive switch expressions are reported as errors so a missing union/closed case never slips through in the spike. -->
+    <WarningsAsErrors>$(WarningsAsErrors);CS8509;CS8524</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Funcky\Funcky.csproj" />
+  </ItemGroup>
+</Project>
