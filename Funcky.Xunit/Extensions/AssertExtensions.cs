@@ -7,8 +7,7 @@ using static Xunit.Sdk.ArgumentFormatter;
 namespace Funcky.Extensions;
 
 /// <summary>Assertions for Funcky's monads as static extension members of xunit's <see cref="Assert"/>,
-/// so they are found where the other assertions live: <c>Assert.Some(option)</c>.
-/// <see cref="FunctionalAssert"/> offers the same assertions as plain static methods for compilers older than C# 14.</summary>
+/// so they are found where the other assertions live: <c>Assert.Some(option)</c>.</summary>
 public static class AssertExtensions
 {
     extension(Assert)

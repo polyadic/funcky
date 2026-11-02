@@ -26,7 +26,7 @@ predecessor an `Option`, so the first element is not dropped.
 Differences between consecutive measurements:
 
 ```cs
-var temperatures = Sequence.Return(20, 22, 21, 25);
+var temperatures = Enumerable.Return(20, 22, 21, 25);
 
 temperatures.Pairwise();
 // [(20, 22), (22, 21), (21, 25)]

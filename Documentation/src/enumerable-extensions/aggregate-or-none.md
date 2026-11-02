@@ -17,7 +17,7 @@ is the result.
 ### Example
 
 ```cs
-var words = Sequence.Return("functional", "programming", "in", "C#");
+var words = Enumerable.Return("functional", "programming", "in", "C#");
 
 words.AggregateOrNone((longest, word) => word.Length > longest.Length ? word : longest);   // Some("programming")
 Enumerable.Empty<string>().AggregateOrNone((a, b) => a + b);                             // None

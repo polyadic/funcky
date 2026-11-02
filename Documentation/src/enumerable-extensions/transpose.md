@@ -21,9 +21,9 @@ sequence transposes to an empty sequence.
 ### Example
 
 ```cs
-var matrix = Sequence.Return(
-    Sequence.Return(1, 2, 3),
-    Sequence.Return(4, 5, 6));
+var matrix = Enumerable.Return(
+    Enumerable.Return(1, 2, 3),
+    Enumerable.Return(4, 5, 6));
 
 matrix.Transpose();
 // [[1, 4], [2, 5], [3, 6]]

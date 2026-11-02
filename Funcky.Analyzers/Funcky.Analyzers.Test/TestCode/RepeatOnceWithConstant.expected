@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using Funcky;
+using Funcky.Extensions;
 
-namespace Funcky {
-    class Sequence {
-        public static string Return(string value) => value;           
+namespace Funcky.Extensions {
+    public static class EnumerableExtensions {
+        extension(Enumerable) { public static string Return(string value) => value; }
     }
 }
 
@@ -15,7 +15,7 @@ namespace ConsoleApplication1
         private void Syntax()
         {
             const int once = 1;
-            var single = Sequence.Return("Hello world!");
+            var single = Enumerable.Return("Hello world!");
         }
     }
 }

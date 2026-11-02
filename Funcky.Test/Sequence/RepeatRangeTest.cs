@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -14,7 +12,7 @@ public sealed class RepeatRangeTest
     {
         var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-        using var repeatRange = Sequence.RepeatRange(doNotEnumerate, 2);
+        using var repeatRange = Enumerable.RepeatRange(doNotEnumerate, 2);
     }
 
     [Fact]
@@ -22,14 +20,14 @@ public sealed class RepeatRangeTest
     {
         var doNotEnumerate = new FailOnEnumerationSequence<object>();
 
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Sequence.RepeatRange(doNotEnumerate, -1).Dispose());
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Enumerable.RepeatRange(doNotEnumerate, -1).Dispose());
         Assert.Equal("count", exception.ParamName);
     }
 
     [Fact]
     public void RepeatRangeWithCountZeroIsEmpty()
     {
-        using var repeatRange = Sequence.RepeatRange(Sequence.Return(1, 2, 3), 0);
+        using var repeatRange = Enumerable.RepeatRange(Enumerable.Return(1, 2, 3), 0);
 
         Assert.Empty(repeatRange);
     }
@@ -37,7 +35,7 @@ public sealed class RepeatRangeTest
     [Fact]
     public void RepeatRangeThrowsWhenAlreadyDisposed()
     {
-        var repeatRange = Sequence.RepeatRange(Sequence.Return(1337), 5);
+        var repeatRange = Enumerable.RepeatRange(Enumerable.Return(1337), 5);
 
 #pragma warning disable IDISP016 // we test behaviour after Dispose
 #pragma warning disable IDISP017 // we test behaviour after Dispose
@@ -51,13 +49,13 @@ public sealed class RepeatRangeTest
     [Fact]
     public void RepeatRangeThrowsWhenAlreadyDisposedEvenIfYouDisposeBetweenMoveNext()
     {
-        var list = Sequence.Return(1337, 2, 5);
+        var list = Enumerable.Return(1337, 2, 5);
 
         const int repeats = 5;
 
         foreach (var i in Enumerable.Range(0, list.Count * repeats))
         {
-            var repeatRange = Sequence.RepeatRange(list, repeats);
+            var repeatRange = Enumerable.RepeatRange(list, repeats);
             using var enumerator = repeatRange.GetEnumerator();
 
             Assert.True(Enumerable.Range(0, i).All(_ => enumerator.MoveNext()));
@@ -75,7 +73,7 @@ public sealed class RepeatRangeTest
     [Property]
     public Property TheLengthOfTheGeneratedRepeatRangeIsCorrect(List<int> list, NonNegativeInt count)
     {
-        using var repeatRange = Sequence.RepeatRange(list, count.Get);
+        using var repeatRange = Enumerable.RepeatRange(list, count.Get);
 
         var materialized = repeatRange.ToList();
 
@@ -85,7 +83,7 @@ public sealed class RepeatRangeTest
     [Property]
     public Property TheSequenceRepeatsTheGivenNumberOfTimes(List<int> list, NonNegativeInt count)
     {
-        using var repeatRange = Sequence.RepeatRange(list, count.Get);
+        using var repeatRange = Enumerable.RepeatRange(list, count.Get);
 
         return repeatRange
             .IsSequenceRepeating(list)
@@ -96,10 +94,10 @@ public sealed class RepeatRangeTest
     [Fact]
     public void RepeatRangeEnumeratesUnderlyingEnumerableOnlyOnce()
     {
-        var sequence = Sequence.Return("Test", "Hello", "Do", "Wait");
+        var sequence = Enumerable.Return("Test", "Hello", "Do", "Wait");
         var enumerateOnce = EnumerateOnce.Create(sequence);
 
-        using var repeatRange = Sequence.RepeatRange(enumerateOnce, 3);
+        using var repeatRange = Enumerable.RepeatRange(enumerateOnce, 3);
 
         repeatRange.ForEach(NoOperation);
     }

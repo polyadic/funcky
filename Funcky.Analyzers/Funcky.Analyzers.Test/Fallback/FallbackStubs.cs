@@ -65,7 +65,7 @@ internal static class FallbackStubs
 
                 public TValidResult GetOrElse(System.Func<System.Exception, TValidResult> fallback) => default!;
 
-                public TMatchResult Match<TMatchResult>(System.Func<TValidResult, TMatchResult> ok, System.Func<System.Exception, TMatchResult> error) => default!;
+                public TMatchResult Match<TMatchResult>(System.Func<System.Exception, TMatchResult> error, System.Func<TValidResult, TMatchResult> ok) => default!;
             }
         }
         """;

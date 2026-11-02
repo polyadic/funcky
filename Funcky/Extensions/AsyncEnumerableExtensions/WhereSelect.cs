@@ -60,34 +60,6 @@ public static partial class AsyncEnumerableExtensions
         public IAsyncEnumerable<TResult> WhereSelect<TResult>(Func<TSource, int, CancellationToken, ValueTask<Option<TResult>>> selector)
             where TResult : notnull
             => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
-
-        /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,Option{TResult}})"/>
-        [Pure]
-        [Obsolete("Use WhereSelect with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> WhereSelectAwait<TResult>(Func<TSource, ValueTask<Option<TResult>>> selector)
-            where TResult : notnull
-            => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
-
-        /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,int,Option{TResult}})"/>
-        [Pure]
-        [Obsolete("Use WhereSelect with a (item, index, cancellationToken) delegate instead; discard the token with (item, index, _) => …. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> WhereSelectAwait<TResult>(Func<TSource, int, ValueTask<Option<TResult>>> selector)
-            where TResult : notnull
-            => WhereSelectAwaitInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
-
-        /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,Option{TResult}})"/>
-        [Pure]
-        [Obsolete("Use WhereSelect instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> WhereSelectAwaitWithCancellation<TResult>(Func<TSource, CancellationToken, ValueTask<Option<TResult>>> selector)
-            where TResult : notnull
-            => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
-
-        /// <inheritdoc cref="WhereSelect{TSource,TResult}(IAsyncEnumerable{TSource},Func{TSource,int,Option{TResult}})"/>
-        [Pure]
-        [Obsolete("Use WhereSelect instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> WhereSelectAwaitWithCancellation<TResult>(Func<TSource, int, CancellationToken, ValueTask<Option<TResult>>> selector)
-            where TResult : notnull
-            => WhereSelectAwaitWithCancellationInternal(ArgumentValidator.NotNull(source), ArgumentValidator.NotNull(selector));
     }
 
     private static async IAsyncEnumerable<TResult> WhereSelectInternal<TSource, TResult>(IAsyncEnumerable<TSource> source, Func<TSource, Option<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -110,37 +82,6 @@ public static partial class AsyncEnumerableExtensions
         await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
             if (selector(item, index).TryGetValue(out var result))
-            {
-                yield return result;
-            }
-
-            checked
-            {
-                index++;
-            }
-        }
-    }
-
-    private static async IAsyncEnumerable<TResult> WhereSelectAwaitInternal<TSource, TResult>(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<Option<TResult>>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        where TResult : notnull
-    {
-        await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-        {
-            if ((await selector(item).ConfigureAwait(false)).TryGetValue(out var result))
-            {
-                yield return result;
-            }
-        }
-    }
-
-    private static async IAsyncEnumerable<TResult> WhereSelectAwaitInternal<TSource, TResult>(IAsyncEnumerable<TSource> source, Func<TSource, int, ValueTask<Option<TResult>>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        where TResult : notnull
-    {
-        var index = 0;
-
-        await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-        {
-            if ((await selector(item, index).ConfigureAwait(false)).TryGetValue(out var result))
             {
                 yield return result;
             }

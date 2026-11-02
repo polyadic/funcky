@@ -31,18 +31,6 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public async ValueTask<Option<TSource>> SingleOrNoneAsync(Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             => await source.Where(predicate).Select(Option.Some).SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-
-        /// <inheritdoc cref="SingleOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
-        [Pure]
-        [Obsolete("Use SingleOrNoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
-        public ValueTask<Option<TSource>> SingleOrNoneAwaitAsync(Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
-            => source.SingleOrNoneAsync((item, _) => predicate(item), cancellationToken);
-
-        /// <inheritdoc cref="SingleOrNoneAsync{TSource}(IAsyncEnumerable{TSource},CancellationToken)"/>
-        [Pure]
-        [Obsolete("Use SingleOrNoneAsync instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-        public ValueTask<Option<TSource>> SingleOrNoneAwaitWithCancellationAsync(Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
-            => source.SingleOrNoneAsync(predicate, cancellationToken);
     }
 }
 #endif

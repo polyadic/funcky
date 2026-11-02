@@ -1,4 +1,3 @@
-#pragma warning disable CS0618 // The …AwaitAsync overloads are obsolete but keep working until 4.0.0.
 #if ASYNC_SUPPORTED
 // ReSharper disable PossibleMultipleEnumeration
 using FsCheck;
@@ -25,11 +24,6 @@ public sealed class AverageOrNoneTest
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property AverageOrNoneAwaitAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelector<int?> selector)
-        => (Option.FromNullable(sequence.Select((int? item, CancellationToken _) => selector.Get(item)).AverageAsync().Result)
-            == sequence.Select(Option.FromNullable).AverageOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
-
-    [FunckyAsyncProperty]
     public Property AverageOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsAverageForNullableAsyncForInt32(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
@@ -48,11 +42,6 @@ public sealed class AverageOrNoneTest
     public Property AverageOrNoneAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, Func<long?, long?> selector)
         => (Option.FromNullable(sequence.Select(selector).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector)).Result).ToProperty();
-
-    [FunckyAsyncProperty]
-    public Property AverageOrNoneAwaitAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForInt64(IAsyncEnumerable<long?> sequence, AwaitSelector<long?> selector)
-        => (Option.FromNullable(sequence.Select((long? item, CancellationToken _) => selector.Get(item)).AverageAsync().Result)
-            == sequence.Select(Option.FromNullable).AverageOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
     public Property AverageOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsAverageForNullableAsyncForInt64(IAsyncEnumerable<int?> sequence, AwaitSelectorWithCancellation<int?> selector)
@@ -75,11 +64,6 @@ public sealed class AverageOrNoneTest
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property AverageOrNoneAwaitAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelector<float?> selector)
-        => (Option.FromNullable(sequence.Select((float? item, CancellationToken _) => selector.Get(item)).AverageAsync().Result)
-            == sequence.Select(Option.FromNullable).AverageOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
-
-    [FunckyAsyncProperty]
     public Property AverageOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsAverageForNullableAsyncForSingle(IAsyncEnumerable<float?> sequence, AwaitSelectorWithCancellation<float?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
@@ -100,11 +84,6 @@ public sealed class AverageOrNoneTest
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector)).Result).ToProperty();
 
     [FunckyAsyncProperty]
-    public Property AverageOrNoneAwaitAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelector<double?> selector)
-        => (Option.FromNullable(sequence.Select((double? item, CancellationToken _) => selector.Get(item)).AverageAsync().Result)
-            == sequence.Select(Option.FromNullable).AverageOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
-
-    [FunckyAsyncProperty]
     public Property AverageOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsAverageForNullableAsyncForDouble(IAsyncEnumerable<double?> sequence, AwaitSelectorWithCancellation<double?> selector)
         => (Option.FromNullable(sequence.Select(selector.Get).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
@@ -123,11 +102,6 @@ public sealed class AverageOrNoneTest
     public Property AverageOrNoneAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, Func<decimal?, decimal?> selector)
         => (Option.FromNullable(sequence.Select(selector).AverageAsync().Result)
             == sequence.Select(Option.FromNullable).AverageOrNoneAsync(SelectorTransformation.TransformNullableSelector(selector)).Result).ToProperty();
-
-    [FunckyAsyncProperty]
-    public Property AverageOrNoneAwaitAsyncWithSelectorGivesTheSameResultAsAverageForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelector<decimal?> selector)
-        => (Option.FromNullable(sequence.Select((decimal? item, CancellationToken _) => selector.Get(item)).AverageAsync().Result)
-            == sequence.Select(Option.FromNullable).AverageOrNoneAwaitAsync(SelectorTransformation.TransformNullableSelector(selector.Get)).Result).ToProperty();
 
     [FunckyAsyncProperty]
     public Property AverageOrNoneAsyncWithAsyncSelectorGivesTheSameResultAsAverageForNullableAsyncForDecimal(IAsyncEnumerable<decimal?> sequence, AwaitSelectorWithCancellation<decimal?> selector)

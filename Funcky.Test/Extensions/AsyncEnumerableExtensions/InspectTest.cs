@@ -1,4 +1,3 @@
-#pragma warning disable CS0618 // The …Await and …AwaitWithCancellation overloads are obsolete but keep working until 4.0.0.
 #if ASYNC_SUPPORTED
 using Funcky.Async.Test.TestUtilities;
 
@@ -12,14 +11,6 @@ public sealed class InspectTest
         var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
 
         _ = doNotEnumerate.Inspect(NoOperation);
-    }
-
-    [Fact]
-    public void InspectAwaitIsEnumeratedLazily()
-    {
-        var doNotEnumerate = new FailOnEnumerateAsyncSequence<object>();
-
-        _ = doNotEnumerate.InspectAwait(static _ => ValueTask.CompletedTask);
     }
 
     [Fact]
@@ -39,35 +30,9 @@ public sealed class InspectTest
     }
 
     [Fact]
-    public async Task GivenAnAsyncEnumerableAndInjectAnAsynchronouseActionWeCanApplySideEffectsToAsyncEnumerables()
-    {
-        var sideEffect = 0;
-        var numbers = AsyncSequence.Return(1, 2, 3, 42);
-
-        var numbersWithSideEffect = numbers
-            .InspectAwait(_ =>
-            {
-                ++sideEffect;
-                return default;
-            });
-
-        Assert.Equal(0, sideEffect);
-
-        await numbersWithSideEffect.ToListAsync();
-
-        Assert.Equal(await numbers.CountAsync(), sideEffect);
-    }
-
-    [Fact]
     public async Task CancellationIsPropagated()
     {
         await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().Inspect(NoOperation));
-    }
-
-    [Fact]
-    public async Task CancellationIsPropagatedInAwaitOverload()
-    {
-        await AsyncAssert.CancellationIsPropagated(new AssertIsCancellationRequestedAsyncSequence<Unit>().InspectAwait(_ => ValueTask.CompletedTask));
     }
 }
 #endif

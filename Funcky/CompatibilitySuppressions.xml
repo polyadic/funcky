@@ -1,70 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.EnumerableExtensions.Chunk``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
-    <Left>lib/net5.0/Funcky.dll</Left>
-    <Right>lib/net6.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseCacheControlHeaderValueOrNone</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone(System.Type,System.Boolean)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone(System.Type)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone``1</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone``1(System.Boolean)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$7E0B8C73485617FC5155886DD83A182C.ParseEnumOrNone(System.Type,System.Boolean)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$7E0B8C73485617FC5155886DD83A182C.ParseEnumOrNone(System.Type)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$7E0B8C73485617FC5155886DD83A182C.ParseEnumOrNone``1</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$7E0B8C73485617FC5155886DD83A182C.ParseEnumOrNone``1(System.Boolean)</Target>
-    <Left>lib/net6.0/Funcky.dll</Left>
-    <Right>lib/net7.0/Funcky.dll</Right>
-  </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Funcky.Extensions.EnumerableExtensions.Shuffle``1(System.Collections.Generic.IEnumerable{``0})</Target>
     <Left>lib/net9.0/Funcky.dll</Left>
     <Right>lib/net10.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.EnumerableExtensions.Chunk``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseCacheControlHeaderValueOrNone</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone(System.Type,System.Boolean)</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone(System.Type)</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone``1</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Funcky.Extensions.ParseExtensions.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.ParseEnumOrNone``1(System.Boolean)</Target>
+    <Left>lib/netstandard2.1/Funcky.dll</Left>
+    <Right>lib/net8.0/Funcky.dll</Right>
   </Suppression>
 </Suppressions>

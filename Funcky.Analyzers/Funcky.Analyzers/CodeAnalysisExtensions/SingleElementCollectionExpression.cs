@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Funcky.Analyzers.CodeAnalysisExtensions;
 
-/// <summary>Builds the collection expression <c>[element]</c> that replaces <c>Sequence.Return(element)</c>. Shared between the
+/// <summary>Builds the collection expression <c>[element]</c> that replaces <c>Enumerable.Return(element)</c>. Shared between the
 /// analyzer, which binds it speculatively, and the code fix, which inserts it.</summary>
 internal static class SingleElementCollectionExpression
 {

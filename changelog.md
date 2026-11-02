@@ -4,6 +4,61 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Funcky 4.0.0
 
+* Breaking: the target frameworks `net7.0`, `net6.0`, `net5.0` and `netcoreapp3.1` are removed, as announced in
+  `SupportPolicy.md`; all of them are out of Microsoft's support. Funcky now ships `net11.0`, `net10.0`, `net9.0`,
+  `net8.0`, `netstandard2.1` and `netstandard2.0`; Funcky.Async drops its `net5.0` asset; Funcky.Xunit and
+  Funcky.Xunit.v3 replace their `net6.0` asset with `net8.0`. A project on a removed framework gets the
+  `netstandard2.1` asset (or `netstandard2.0` below .NET Core 3.0), which lacks the members that need a newer base
+  class library, such as the generic math and `IParsable` based parsers, `DateOnly`/`TimeOnly` and the trimming
+  annotations.
+* Breaking: `Option.FromBoolean` (all three overloads), obsolete since 3.8.0, is removed. Use `Then` on the condition:
+  `condition.Then(value)`, `condition.Then(() => value)` and `condition.Then(Unit.Value)` for the overload without a
+  value. The code fix in Funcky.Analyzers 3.0.0 now also fires on the compile error CS0117 that the removed member
+  leaves behind, so a project can upgrade to Funcky 4.0.0 first and let the fix (or Fix-All) rewrite every call
+  afterwards; the fix for the obsoletion warning CS0618 on Funcky 3.8.0 stays as well.
+* Breaking (Funcky.Async 2.0.0): the package no longer depends on System.Linq.Async but on System.Linq.AsyncEnumerable
+  (`[10.0.6, 12)`), the package that is the `IAsyncEnumerable` LINQ of the .NET 10 base class library, so the operators
+  have the same shapes on every framework. The members that only existed to bridge System.Linq.Async 5 and 6 are gone:
+  `Chunk(size)` without a result selector (System.Linq.AsyncEnumerable provides it, yielding `T[]`), and
+  `AdjacentGroupBy` now returns `IAsyncEnumerable<IGrouping<TKey, T>>` instead of `IAsyncGrouping` on every framework,
+  exactly like the net10.0 asset of Funcky. A project that still references System.Linq.Async 5 or 6 next to
+  Funcky.Async 2.0.0 gets a type clash (CS0433) on `System.Linq.AsyncEnumerable`: upgrade that reference to
+  System.Linq.Async 7, which forwards to the same package, or drop it. Funcky.Async 1.x stays available for projects
+  that cannot. System.Linq.Async 7 itself was not chosen as the dependency because it also brings System.Interactive.Async
+  along, whose `Merge` on a sequence of sequences would silently take over from Funcky's sorted `Merge`.
+* Breaking: the twelve `…Await` and `…AwaitWithCancellation` operators (`AdjacentGroupBy`, `Chunk`, `ExclusiveScan`,
+  `InclusiveScan`, `Inspect`, `WhereSelect`) and the `…AwaitAsync` and `…AwaitWithCancellationAsync` overloads of the
+  eight terminal aggregations (`AverageOrNone`, `FirstOrNone`, `LastOrNone`, `SingleOrNone`, `MaxOrNone`, `MinOrNone`,
+  `None`, `Partition`), obsolete since 3.8.0, are removed from the net10.0 asset of Funcky and from Funcky.Async. Use the
+  single-name overloads with a `(…, cancellationToken)` delegate. The code fix in Funcky.Analyzers 3.0.0 now also fires
+  on the compile error CS1061 that a removed name leaves behind, so a project can upgrade first and let Fix-All rewrite
+  every call afterwards; the fix for the obsoletion warning CS0618 on 3.8.0 stays as well.
+* Breaking: `Result<T>.Match` and `Result<T>.Switch` take the error case first, `Match(error, ok)` and
+  `Switch(error, ok)`, consistent with `Option.Match(none, some)` and `Either.Match(left, right)`. Both methods carry
+  `[UseWithArgumentNames]`, so calls that follow λ1003 and name their arguments are unaffected; a positional call fails
+  to compile after the upgrade (the two delegates have different parameter types), swap its arguments. The `Match`
+  rules of Funcky.Analyzers (λ1005 to λ1007 and λ1011) now tell the two arguments apart by parameter name, so they work
+  with either order.
+* Breaking: the static class `Funcky.Sequence` is removed. Its constructors live on as the static extension members of
+  `System.Linq.Enumerable` that 3.8.0 added (`Enumerable.Return`, `Enumerable.Successors`, `Enumerable.Cycle`, …),
+  declared in `Funcky.Extensions.EnumerableExtensions`. There is no 3.9 release to carry an obsoletion: on 3.8.0 set
+  the analyzer rule λ1202 to `warning`, apply its fix-all, then upgrade. λ1001 now proposes `Enumerable.Return` for
+  `Enumerable.Repeat(x, 1)` and λ1013 reports `Enumerable.Return(x)` where a collection expression fits.
+* Breaking (Funcky.Xunit 3.0.0, Funcky.Xunit.v3 2.0.0): the static class `Funcky.FunctionalAssert` is removed. The
+  assertions are the static extension members of xunit's `Assert` that 3.8.0 added (`Assert.Some`, `Assert.None`,
+  `Assert.Ok`, `Assert.Error`, `Assert.Left`, `Assert.Right`), declared in `Funcky.Extensions.AssertExtensions`. On the
+  last 2.x release the analyzer rule λ1203 rewrites every call, as above. The failure message label changes with the
+  removal from `FunctionalAssert.Some() Failure` to `Assert.Some() Failure`, matching xunit's own `Assert.Equal() Failure`;
+  tests that assert on the message text need the new label.
+* Breaking (Funcky.Analyzers 3.0.0): λ1202 and λ1203 retire, since the forms they pointed away from no longer exist;
+  their numbers stay reserved. λ1201 stays as an opt-in style rule, because both parse forms remain. The C# 14 language
+  gate of the `λ12xx` rules is gone: Funcky 4 requires the .NET 10 SDK, whose compiler always binds the extension forms.
+* Retired: [Funcky.DiscriminatedUnion](https://github.com/polyadic/funcky-discriminated-union), announced in 3.8.0, is
+  retired with this release. C# has native `union` types and `closed` hierarchies since .NET 11, which cover what the
+  generator did: replace `[DiscriminatedUnion]` on the abstract base with `closed` (or declare a `union`) and the
+  generated `Match` with a `switch` expression over the cases, which the compiler checks for exhaustiveness. The final
+  1.2.x version of the generator stays on NuGet for the 3.x line and receives no further changes. Details in
+  [#900](https://github.com/polyadic/funcky/issues/900).
 * Funcky and Funcky.Async add a `net11.0` asset and are built with the .NET 11 SDK (release candidate 3 while .NET 11
   is in preview). The `net11.0` asset of Funcky.Async only forwards to Funcky, like the `net10.0` one. No target
   framework is removed in this step; see `SupportPolicy.md` for the frameworks Funcky 4 drops.

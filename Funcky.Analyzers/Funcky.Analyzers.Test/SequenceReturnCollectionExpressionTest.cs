@@ -9,19 +9,19 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionForExplicitlyTypedLocal()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 IReadOnlyList<int> M()
                 {
-                    IReadOnlyList<int> result = {|λ1013:Sequence.Return(0)|};
+                    IReadOnlyList<int> result = {|λ1013:Enumerable.Return(0)|};
                     return result;
                 }
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -39,15 +39,15 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionWhenTargetTypeIsIEnumerable()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IEnumerable<int> M() => {|λ1013:Sequence.Return(0)|};
+                IEnumerable<int> M() => {|λ1013:Enumerable.Return(0)|};
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -61,17 +61,17 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionInArgumentPosition()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void Consume(IReadOnlyList<int> values) { }
 
-                void M() => Consume({|λ1013:Sequence.Return(0)|});
+                void M() => Consume({|λ1013:Enumerable.Return(0)|});
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -87,15 +87,15 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task CodeFixKeepsACompoundElementExpression()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IReadOnlyList<int> M(int x) => {|λ1013:Sequence.Return(x + 1)|};
+                IReadOnlyList<int> M(int x) => {|λ1013:Enumerable.Return(x + 1)|};
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -109,15 +109,15 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task CodeFixParenthesizesARangeWithoutLeftOperandSoItIsNotASpread()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IReadOnlyList<System.Range> M() => {|λ1013:Sequence.Return(..5)|};
+                IReadOnlyList<System.Range> M() => {|λ1013:Enumerable.Return(..5)|};
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -131,15 +131,15 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task CodeFixKeepsCommentsInsideTheInvocation()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IReadOnlyList<int> M() => {|λ1013:Sequence.Return(/* explanation */ 0 /* trailing */)|};
+                IReadOnlyList<int> M() => {|λ1013:Enumerable.Return(/* explanation */ 0 /* trailing */)|};
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -153,16 +153,16 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task CodeFixKeepsTheLineBreakAfterALineComment()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IReadOnlyList<int> M() => {|λ1013:Sequence.Return(0 // explanation
+                IReadOnlyList<int> M() => {|λ1013:Enumerable.Return(0 // explanation
                 )|};
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -177,19 +177,19 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionWhenAssignedToAVariableNamedUnderscore()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
                     IReadOnlyList<int> _;
-                    _ = {|λ1013:Sequence.Return(0)|};
+                    _ = {|λ1013:Enumerable.Return(0)|};
                 }
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -207,18 +207,18 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionInReturnOfATargetTypedLambda()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
-                    System.Func<IEnumerable<int>> f = () => { return {|λ1013:Sequence.Return(0)|}; };
+                    System.Func<IEnumerable<int>> f = () => { return {|λ1013:Enumerable.Return(0)|}; };
                 }
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -235,17 +235,17 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task SuggestsCollectionExpressionWhenTheElementTypeIsInferredFromTheCollection()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void Consume<T>(IEnumerable<T> values) { }
 
-                void M() => Consume({|λ1013:Sequence.Return(0)|});
+                void M() => Consume({|λ1013:Enumerable.Return(0)|});
             }
             """);
 
-        var fixedSource = WithSequenceStub(
+        var fixedSource = WithEnumerableStub(
             """
             class C
             {
@@ -261,13 +261,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenAssignedToADiscard()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
-                    _ = Sequence.Return(0);
+                    _ = Enumerable.Return(0);
                 }
             }
             """);
@@ -278,7 +278,7 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestInsideAnExpressionTree()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
@@ -286,7 +286,7 @@ public sealed class SequenceReturnCollectionExpressionTest
 
                 void M()
                 {
-                    System.Linq.Expressions.Expression<System.Action> e = () => Consume(Sequence.Return(0));
+                    System.Linq.Expressions.Expression<System.Action> e = () => Consume(Enumerable.Return(0));
                 }
             }
             """);
@@ -297,7 +297,7 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenTheTargetElementTypeDiffersFromTheReturnedElementType()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class Widget { }
 
@@ -305,8 +305,8 @@ public sealed class SequenceReturnCollectionExpressionTest
             {
                 void M()
                 {
-                    IEnumerable<object> widgets = Sequence.Return(new Widget());
-                    IEnumerable<object> names = Sequence.Return("tag");
+                    IEnumerable<object> widgets = Enumerable.Return(new Widget());
+                    IEnumerable<object> names = Enumerable.Return("tag");
                 }
             }
             """);
@@ -317,13 +317,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenTheTypeParameterCouldNotBeInferredFromACollectionExpression()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void Consume<T>(T value) { }
 
-                void M() => Consume(Sequence.Return(0));
+                void M() => Consume(Enumerable.Return(0));
             }
             """);
 
@@ -333,7 +333,7 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenACollectionExpressionWouldPickAnotherOverload()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
@@ -341,7 +341,7 @@ public sealed class SequenceReturnCollectionExpressionTest
 
                 void Consume(int[] values) { }
 
-                void M() => Consume(Sequence.Return(0));
+                void M() => Consume(Enumerable.Return(0));
             }
             """);
 
@@ -351,13 +351,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestInReturnOfALambdaWithInferredType()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
-                    var f = () => { return Sequence.Return(0); };
+                    var f = () => { return Enumerable.Return(0); };
                 }
             }
             """);
@@ -368,13 +368,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestForImplicitlyTypedLocal()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
-                    var result = Sequence.Return(0);
+                    var result = Enumerable.Return(0);
                 }
             }
             """);
@@ -385,13 +385,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenTargetTypeIsNotACollection()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
                 void M()
                 {
-                    object result = Sequence.Return(0);
+                    object result = Enumerable.Return(0);
                 }
             }
             """);
@@ -402,11 +402,11 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestForParamsOverloadWithMultipleElements()
     {
-        var source = WithSequenceStub(
+        var source = WithEnumerableStub(
             """
             class C
             {
-                IReadOnlyList<int> M() => Sequence.Return(0, 1, 2);
+                IReadOnlyList<int> M() => Enumerable.Return(0, 1, 2);
             }
             """);
 
@@ -416,13 +416,13 @@ public sealed class SequenceReturnCollectionExpressionTest
     [Fact]
     public async Task DoesNotSuggestWhenLanguageVersionIsBelowCSharp12()
     {
-        var source = WithSequenceStub(
+        var source = WithClassicStub(
             """
             class C
             {
                 IReadOnlyList<int> M()
                 {
-                    IReadOnlyList<int> result = Sequence.Return(0);
+                    IReadOnlyList<int> result = EnumerableExtensions.Return(0);
                     return result;
                 }
             }
@@ -438,18 +438,40 @@ public sealed class SequenceReturnCollectionExpressionTest
         await test.RunAsync(CancellationToken.None);
     }
 
-    private static string WithSequenceStub(string code)
+    // Enumerable.Return is a static extension member on System.Linq.Enumerable, declared in Funcky.Extensions.EnumerableExtensions.
+    private static string WithEnumerableStub(string code)
         => $$"""
             using System.Collections.Generic;
-            using Funcky;
+            using System.Linq;
+            using Funcky.Extensions;
 
-            namespace Funcky
+            namespace Funcky.Extensions
             {
-                public static class Sequence
+                public static class EnumerableExtensions
+                {
+                    extension(Enumerable)
+                    {
+                        public static IReadOnlyList<TResult> Return<TResult>(TResult element) => new[] { element };
+
+                        public static IReadOnlyList<TResult> Return<TResult>(params TResult[] elements) => elements;
+                    }
+                }
+            }
+
+            {{code}}
+            """;
+
+    // Extension blocks need C# 14, so the test for older language versions uses the lowered form of the same member.
+    private static string WithClassicStub(string code)
+        => $$"""
+            using System.Collections.Generic;
+            using Funcky.Extensions;
+
+            namespace Funcky.Extensions
+            {
+                public static class EnumerableExtensions
                 {
                     public static IReadOnlyList<TResult> Return<TResult>(TResult element) => new[] { element };
-
-                    public static IReadOnlyList<TResult> Return<TResult>(params TResult[] elements) => elements;
                 }
             }
 

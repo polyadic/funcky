@@ -34,49 +34,50 @@ public sealed class EnumerableRepeatOnceCodeFix : CodeFixProvider
         if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration
             && diagnostic.TryGetIntProperty(ValueParameterIndexProperty, out var valueParameterIndex))
         {
-            context.RegisterCodeFix(new ToSequenceReturnCodeAction(context.Document, declaration, valueParameterIndex), diagnostic);
+            context.RegisterCodeFix(new ToEnumerableReturnCodeAction(context.Document, declaration, valueParameterIndex), diagnostic);
         }
     }
 
     private static Diagnostic GetDiagnostic(CodeFixContext context)
         => context.Diagnostics.First();
 
-    private sealed class ToSequenceReturnCodeAction : CodeAction
+    private sealed class ToEnumerableReturnCodeAction : CodeAction
     {
         private readonly Document _document;
         private readonly InvocationExpressionSyntax _invocationExpression;
         private readonly int _valueParameterIndex;
 
-        public ToSequenceReturnCodeAction(Document document, InvocationExpressionSyntax invocationExpression, int valueParameterIndex)
+        public ToEnumerableReturnCodeAction(Document document, InvocationExpressionSyntax invocationExpression, int valueParameterIndex)
         {
             _document = document;
             _invocationExpression = invocationExpression;
             _valueParameterIndex = valueParameterIndex;
         }
 
-        public override string Title => EnumerableRepeatNeverCodeFixTitle;
+        public override string Title => EnumerableRepeatOnceCodeFixTitle;
 
-        public override string EquivalenceKey => nameof(ToSequenceReturnCodeAction);
+        public override string EquivalenceKey => nameof(ToEnumerableReturnCodeAction);
 
         protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
         {
             var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
             var valueArgument = _invocationExpression.ArgumentList.Arguments[_valueParameterIndex];
-            editor.ReplaceNode(_invocationExpression, CreateSequenceReturnRoot(valueArgument, editor.SemanticModel, editor.Generator));
+            editor.ReplaceNode(_invocationExpression, CreateEnumerableReturnRoot(valueArgument, editor.SemanticModel, editor.Generator));
             return editor.GetChangedDocument();
         }
 
-        private static SyntaxNode CreateSequenceReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
-            => SyntaxSequenceReturn(model, generator)
+        private static SyntaxNode CreateEnumerableReturnRoot(ArgumentSyntax firstArgument, SemanticModel model, SyntaxGenerator generator)
+            => SyntaxEnumerableReturn(model, generator)
                 .WithArgumentList(ArgumentList(SingletonSeparatedList(firstArgument.WithNameColon(null)))
                     .WithCloseParenToken(Token(SyntaxKind.CloseParenToken)))
                 .NormalizeWhitespace();
 
-        private static InvocationExpressionSyntax SyntaxSequenceReturn(SemanticModel model, SyntaxGenerator generator)
+        // Enumerable.Return is Funcky's static extension member on System.Linq.Enumerable, so the receiver is the BCL type.
+        private static InvocationExpressionSyntax SyntaxEnumerableReturn(SemanticModel model, SyntaxGenerator generator)
             => InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetSequenceType()!),
+                    (ExpressionSyntax)generator.TypeExpressionForStaticMemberAccess(model.Compilation.GetEnumerableType()!),
                     IdentifierName(MonadReturnMethodName))
                     .WithAdditionalAnnotations(Simplifier.Annotation));
     }

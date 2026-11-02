@@ -1,21 +1,19 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class LeftTest
 {
     [Fact]
     public void DoesNotThrowForMatchingLeft()
     {
-        FunctionalAssert.Left(10, Either<int, string>.Left(10));
+        Assert.Left(10, Either<int, string>.Left(10));
     }
 
     [Fact]
     public void DoesNotThrowForLeft()
     {
-        FunctionalAssert.Left(Either<int, string>.Left(10));
+        Assert.Left(Either<int, string>.Left(10));
     }
 
     [Fact]
@@ -23,11 +21,11 @@ public sealed class LeftTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Left() Failure: Values differ
+            Assert.Left() Failure: Values differ
             Expected: Left(10)
             Actual:   Left(11)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Left(10, Either<int, string>.Left(11)));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Left(10, Either<int, string>.Left(11)));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -36,11 +34,11 @@ public sealed class LeftTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Left() Failure: Values differ
+            Assert.Left() Failure: Values differ
             Expected: Left(10)
             Actual:   Right("right")
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Left(10, Either<int, string>.Right("right")));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Left(10, Either<int, string>.Right("right")));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -49,11 +47,11 @@ public sealed class LeftTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Left() Failure: Values differ
+            Assert.Left() Failure: Values differ
             Expected: Left(...)
             Actual:   Right("right")
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Left(Either<int, string>.Right("right")));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Left(Either<int, string>.Right("right")));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 }

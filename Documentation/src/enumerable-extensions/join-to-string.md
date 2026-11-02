@@ -20,7 +20,7 @@ points this out.
 ### Example
 
 ```cs
-var names = Sequence.Return("Ada", "Grace", "Linus");
+var names = Enumerable.Return("Ada", "Grace", "Linus");
 
 names.JoinToString(", ");
 // "Ada, Grace, Linus"

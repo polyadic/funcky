@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 namespace Funcky.Test.Extensions;
 
 public sealed class SequenceTest
@@ -7,45 +5,45 @@ public sealed class SequenceTest
     [Fact]
     public void GivenAnObjectWeCreateAnIEnumerableWithToEnumerable()
     {
-        AcceptIntegers(Sequence.Return(42));
+        AcceptIntegers(Enumerable.Return(42));
 
         Unit unit;
-        AcceptUnits(Sequence.Return(unit));
+        AcceptUnits(Enumerable.Return(unit));
     }
 
     [Fact]
     public void ToEnumerableReturnsEmptyEnumerableWhenReferenceIsNull()
     {
         string? value = null;
-        Assert.Empty(Sequence.FromNullable(value));
+        Assert.Empty(Enumerable.FromNullable(value));
     }
 
     [Fact]
     public void ToEnumerableReturnsEnumerableWithOneValueWhenReferenceIsNotNull()
     {
         const string value = "foo";
-        Assert.Single(Sequence.FromNullable(value), value);
+        Assert.Single(Enumerable.FromNullable(value), value);
     }
 
     [Fact]
     public void ToEnumerableReturnsEmptyEnumerableWhenNullableValueTypeIsNull()
     {
         int? value = null;
-        Assert.Empty(Sequence.FromNullable(value));
+        Assert.Empty(Enumerable.FromNullable(value));
     }
 
     [Fact]
     public void ToEnumerableReturnsEnumerableWithOneValueWhenNullableValueTypeIsNotNull()
     {
         int? value = 10;
-        Assert.Single(Sequence.FromNullable(value), value);
+        Assert.Single(Enumerable.FromNullable(value), value);
     }
 
     [Fact]
     public void ToEnumerableReturnsEnumerableWithOneValueWhenValueTypeIsNotNull()
     {
         const int value = 10;
-        Assert.Single(Sequence.Return(value), value);
+        Assert.Single(Enumerable.Return(value), value);
     }
 
     private static void AcceptIntegers(IEnumerable<int> values)

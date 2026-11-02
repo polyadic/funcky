@@ -21,18 +21,6 @@ public static partial class AsyncEnumerableExtensions
         [Pure]
         public async ValueTask<bool> NoneAsync(Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
             => !await source.AnyAsync(predicate, cancellationToken).ConfigureAwait(false);
-
-        /// <inheritdoc cref="NoneAsync{TSource}(IAsyncEnumerable{TSource}, Func{TSource,bool}, CancellationToken)"/>
-        [Pure]
-        [Obsolete("Use NoneAsync with a (item, cancellationToken) delegate instead; discard the token with (item, _) => …. This method will be removed in Funcky 4.0.0.")]
-        public ValueTask<bool> NoneAwaitAsync(Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
-            => source.NoneAsync((item, _) => predicate(item), cancellationToken);
-
-        /// <inheritdoc cref="NoneAsync{TSource}(IAsyncEnumerable{TSource}, Func{TSource,bool}, CancellationToken)"/>
-        [Pure]
-        [Obsolete("Use NoneAsync instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-        public ValueTask<bool> NoneAwaitWithCancellationAsync(Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
-            => source.NoneAsync(predicate, cancellationToken);
     }
 }
 #endif

@@ -17,7 +17,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Some() Failure: Values differ
+            Assert.Some() Failure: Values differ
             Expected: Some(10)
             Actual:   None
             """;
@@ -37,7 +37,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.None() Failure: Values differ
+            Assert.None() Failure: Values differ
             Expected: None
             Actual:   Some(10)
             """;
@@ -58,7 +58,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Ok() Failure: Values differ
+            Assert.Ok() Failure: Values differ
             Expected: Ok(10)
             Actual:   Error(System.InvalidOperationException: "boom")
             """;
@@ -80,7 +80,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Error() Failure: Values differ
+            Assert.Error() Failure: Values differ
             Expected: Error(...)
             Actual:   Ok(10)
             """;
@@ -108,7 +108,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Left() Failure: Values differ
+            Assert.Left() Failure: Values differ
             Expected: Left("failure")
             Actual:   Right(42)
             """;
@@ -130,7 +130,7 @@ public sealed class AssertExtensionsTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Right() Failure: Values differ
+            Assert.Right() Failure: Values differ
             Expected: Right(42)
             Actual:   Left("failure")
             """;
@@ -144,7 +144,6 @@ public sealed class AssertExtensionsTest
     public void StackTraceOfFailedAssertionStartsAtTheTestMethod()
     {
         var firstLine = CaptureStackTrace().Split('\n')[0];
-        Assert.DoesNotContain("Funcky.FunctionalAssert.", firstLine);
         Assert.DoesNotContain("Funcky.Extensions.AssertExtensions.", firstLine);
         Assert.Contains(nameof(CaptureStackTrace), firstLine);
     }

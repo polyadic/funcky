@@ -21,7 +21,7 @@ Func<string, Option<int>> parse = ParseExtensions.ParseInt32OrNone;
 
 var parseLoosely = parse.Compose(toLower).Compose(trim);   // trim, then lower, then parse
 
-Sequence.Return(" 42 ", "x").WhereSelect(parseLoosely);     // [42]
+Enumerable.Return(" 42 ", "x").WhereSelect(parseLoosely);     // [42]
 ```
 
 Within a LINQ query you rarely need `Compose`, because `Select(g).Select(f)` composes for you. It is for the

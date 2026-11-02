@@ -11,11 +11,16 @@
     <PackageVersion Include="xunit.extensibility.core" Version="[2.9.3, 2.10)" />
     <PackageVersion Include="xunit.v3.assert" Version="[1.0.1, 5)" />
     <PackageVersion Include="xunit.v3.extensibility.core" Version="[1.0.1, 5)" />
-    <!-- Funcky.Async compiles against the 5.x operator vocabulary (SelectAwait, SelectAwaitWithCancellation, ...) and is
-		     binary compatible with 6.x. System.Linq.Async 7 is a legacy shim over System.Linq.AsyncEnumerable with the .NET 10
-		     operator shapes only, so it has none of the members Funcky.Async binds to; the upper bound keeps NuGet from resolving
-		     it. The net10.0 asset of Funcky.Async only forwards to Funcky and has no System.Linq.Async dependency at all. -->
-    <PackageVersion Include="System.Linq.Async" Version="[5.0.0, 7)" />
+    <!-- Funcky.Async 2.x compiles against System.Linq.AsyncEnumerable, the package that is the IAsyncEnumerable LINQ of the
+		     .NET 10 base class library, so Funcky's async sources compile identically against the base class library (net10.0
+		     and newer) and against this package (older frameworks). It is deliberately not System.Linq.Async 7: that package is a
+		     facade over System.Linq.AsyncEnumerable which also drags System.Interactive.Async in, whose Merge on a sequence of
+		     sequences wins overload resolution over Funcky's sorted Merge (it has no optional comparer parameter) and would change
+		     the behaviour of every consumer silently. A consumer that still references System.Linq.Async 5 or 6 gets a type clash
+		     (CS0433) on System.Linq.AsyncEnumerable and upgrades to System.Linq.Async 7 or drops the reference; Funcky.Async 1.x
+		     stays the line for projects that cannot. 10.0.6 is the first version whose dependencies carry no known vulnerability.
+		     The net10.0 and net11.0 assets of Funcky.Async only forward to Funcky and have no dependency at all. -->
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="[10.0.6, 12)" />
   </ItemGroup>
   <ItemGroup Label="Build Dependencies">
     <PackageVersion Include="PolySharp" Version="1.16.0" />

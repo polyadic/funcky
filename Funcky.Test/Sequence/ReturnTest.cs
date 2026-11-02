@@ -1,5 +1,3 @@
-#pragma warning disable λ1202 // This test exercises the classic Sequence form itself.
-
 using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
@@ -11,7 +9,7 @@ public sealed class ReturnTest
     [Property]
     public Property ReturnOfASingleItemElevatesThatItemIntoASingleItemedEnumerable(int item)
     {
-        var sequence = Sequence.Return(item);
+        var sequence = Enumerable.Return(item);
 
         return (sequence.SingleOrNone() == item).ToProperty();
     }
@@ -23,7 +21,7 @@ public sealed class ReturnTest
         const string two = "Beta";
         const string three = "Gamma";
 
-        var sequence = Sequence.Return(one, two, three);
+        var sequence = Enumerable.Return(one, two, three);
 
         Assert.Collection(
             sequence,
@@ -35,7 +33,7 @@ public sealed class ReturnTest
     [Fact]
     public void TheSequenceCannotBeCastBackToAMutableArray()
     {
-        var sequence = Sequence.Return(1, 2, 3);
+        var sequence = Enumerable.Return(1, 2, 3);
 
         Assert.IsNotType<int[]>(sequence);
         var list = Assert.IsAssignableFrom<IList<int>>(sequence);
@@ -47,7 +45,7 @@ public sealed class ReturnTest
     public void TheSequenceIsAReadOnlyViewOverTheArrayPassedIn()
     {
         var array = new[] { 1, 2, 3 };
-        var sequence = Sequence.Return(array);
+        var sequence = Enumerable.Return(array);
 
         array[0] = 42;
 
@@ -60,7 +58,7 @@ public sealed class ReturnTest
     {
         var array = new[] { 1, 2, 3 };
 
-        Assert.Equal(3, Sequence.Return(array).Count);
-        Assert.Single(Sequence.Return<int[]>(array));
+        Assert.Equal(3, Enumerable.Return(array).Count);
+        Assert.Single(Enumerable.Return<int[]>(array));
     }
 }

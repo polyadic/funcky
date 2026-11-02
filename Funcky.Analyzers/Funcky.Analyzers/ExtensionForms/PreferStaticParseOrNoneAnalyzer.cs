@@ -74,7 +74,6 @@ public sealed class PreferStaticParseOrNoneAnalyzer : DiagnosticAnalyzer
             var semanticModel = operation.SemanticModel ?? throw new InvalidOperationException("Semantic model is never null for operations passed to an analyzer (according to docs)");
 
             if (IsParseOrNoneExtension(operation.TargetMethod, parseExtensionsType)
-                && SupportsExtensionMembers(operation.Syntax.SyntaxTree)
                 && TargetType(operation.TargetMethod, optionOfTType) is { } targetType
                 && !operation.Syntax.IsInExpressionTree(semanticModel, expressionOfTType, context.CancellationToken)
                 && StaticMemberName(operation.TargetMethod.Name) is var staticMemberName

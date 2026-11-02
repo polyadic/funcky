@@ -1,15 +1,13 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class ErrorTest
 {
     [Fact]
     public void DoesNotThrowForError()
     {
-        FunctionalAssert.Error(Result<int>.Error(new ArgumentException("foo")));
+        Assert.Error(Result<int>.Error(new ArgumentException("foo")));
     }
 
     [Fact]
@@ -17,11 +15,11 @@ public sealed class ErrorTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Error() Failure: Values differ
+            Assert.Error() Failure: Values differ
             Expected: Error(...)
             Actual:   Ok(42)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Error(Result.Ok(42)));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Error(Result.Ok(42)));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -30,7 +28,7 @@ public sealed class ErrorTest
     {
         var exception = new ArgumentException("foo");
 
-        var error = FunctionalAssert.Error<ArgumentException, int>(Result<int>.Error(exception));
+        var error = Assert.Error<ArgumentException, int>(Result<int>.Error(exception));
 
         Assert.Same(exception, error);
     }
@@ -40,11 +38,11 @@ public sealed class ErrorTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Error() Failure: Values differ
+            Assert.Error() Failure: Values differ
             Expected: Error(ArgumentException)
             Actual:   Error(InvalidOperationException)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Error<ArgumentException, int>(Result<int>.Error(new InvalidOperationException("foo"))));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Error<ArgumentException, int>(Result<int>.Error(new InvalidOperationException("foo"))));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -53,11 +51,11 @@ public sealed class ErrorTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Error() Failure: Values differ
+            Assert.Error() Failure: Values differ
             Expected: Error(ArgumentException)
             Actual:   Ok(42)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Error<ArgumentException, int>(Result.Ok(42)));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Error<ArgumentException, int>(Result.Ok(42)));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 }

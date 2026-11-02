@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <FunckyNewestTargetFramework>net11.0</FunckyNewestTargetFramework>
-        <TargetFrameworks>$(FunckyNewestTargetFramework);net10.0;net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>$(FunckyNewestTargetFramework);net10.0;net9.0;net8.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <!-- The package deliberately keeps targeting frameworks that are out of support, see SupportPolicy.md. -->
@@ -30,20 +30,15 @@
         <PackageReference Include="PolySharp" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
 
-        <!-- .NET Core 3.1 ships with System.Text.Json, but we reference the NuGet version instead, so we always get System.Text.Json >= 5.0.0. It is the first version to never return null converter from CreateConverter(...). -->
-        <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'netcoreapp3.1'" />
+        <!-- The netstandard assets reference the NuGet System.Text.Json, so they always get System.Text.Json >= 5.0.0. It is the first version to never return null converter from CreateConverter(...). -->
+        <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Funcky.SourceGenerator\Funcky.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
     </ItemGroup>
-    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
         <IsTrimmable>true</IsTrimmable>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-        <!-- The ILLink analyzers shipped in the .NET 6 and 7 targeting packs predate C# 14 extension blocks and throw on them (AD0001);
-             the analyzers of .NET 8 and later check the same sources. -->
-        <EnableTrimAnalyzer Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">false</EnableTrimAnalyzer>
-    </PropertyGroup>
-    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
         <IsAotCompatible>true</IsAotCompatible>
     </PropertyGroup>
     <ItemGroup>

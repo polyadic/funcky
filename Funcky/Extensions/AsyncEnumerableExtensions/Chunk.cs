@@ -6,22 +6,6 @@ namespace Funcky.Extensions;
 
 public static partial class AsyncEnumerableExtensions
 {
-#if SYSTEM_LINQ_ASYNC
-    /// <param name="source">The source sequence.</param>
-    /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
-    extension<TSource>(IAsyncEnumerable<TSource> source)
-    {
-        /// <summary>
-        /// Chunks the source sequence into equally sized chunks. The last chunk can be smaller.
-        /// </summary>
-        /// <param name="size">The desired size of the chunks.</param>
-        /// <returns>A sequence of equally sized sequences containing elements of the source collection in the same order.</returns>
-        /// <remarks>Starting with .NET 10 the base class library provides this overload itself, so it is only part of Funcky.Async.</remarks>
-        [Pure]
-        public IAsyncEnumerable<IReadOnlyList<TSource>> Chunk(int size)
-            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size));
-    }
-#endif
     /// <param name="source">The source sequence.</param>
     /// <typeparam name="TSource">Type of the elements in <paramref name="source"/> sequence.</typeparam>
     extension<TSource>(IAsyncEnumerable<TSource> source)
@@ -50,24 +34,7 @@ public static partial class AsyncEnumerableExtensions
         public IAsyncEnumerable<TResult> Chunk<TResult>(int size, Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
             => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
                 .Select(ArgumentValidator.NotNull(resultSelector));
-
-        /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
-        [Pure]
-        [Obsolete("Use Chunk with a (chunk, cancellationToken) delegate instead; discard the token with (chunk, _) => …. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> ChunkAwait<TResult>(int size, Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
-            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
-                .Select(AwaitChunk(ArgumentValidator.NotNull(resultSelector)));
-
-        /// <inheritdoc cref="Chunk{TSource,TResult}(IAsyncEnumerable{TSource},int,Func{IReadOnlyList{TSource},TResult})"/>
-        [Pure]
-        [Obsolete("Use Chunk instead, which takes the same delegate. This method will be removed in Funcky 4.0.0.")]
-        public IAsyncEnumerable<TResult> ChunkAwaitWithCancellation<TResult>(int size, Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> resultSelector)
-            => ChunkEnumerable(ArgumentValidator.NotNull(source), ChunkSizeValidator.Validate(size))
-                .Select(ArgumentValidator.NotNull(resultSelector));
     }
-
-    private static Func<IReadOnlyList<TSource>, CancellationToken, ValueTask<TResult>> AwaitChunk<TSource, TResult>(Func<IReadOnlyList<TSource>, ValueTask<TResult>> resultSelector)
-        => (chunk, _) => resultSelector(chunk);
 
     private static async IAsyncEnumerable<IReadOnlyList<TSource>> ChunkEnumerable<TSource>(IAsyncEnumerable<TSource> source, int size, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

@@ -2,15 +2,9 @@
 
 LINQ is good at transforming sequences and poor at creating them. `Enumerable.Range` and `Enumerable.Repeat`
 are the only constructors it offers, so code that needs a one-element sequence ends up with `new[] { x }`,
-and code that needs an unfolding sequence ends up with a `while` loop and `yield`. The static class
-`Funcky.Sequence` fills that gap.
-
-All members are static methods on `Sequence`, so they are called as `Sequence.Return(...)` and so on. Those
-that take a function or a lazy input are lazy themselves; `Return` and `FromNullable` are small materialized
-lists.
-
-Since Funcky 3.8.0 the same constructors are also C# 14 static extension members of `System.Linq.Enumerable`, so
-they sit next to `Enumerable.Range`, `Enumerable.Repeat` and `Enumerable.Empty` where LINQ users look for them:
+and code that needs an unfolding sequence ends up with a `while` loop and `yield`. Funcky fills that gap with
+static extension members of `System.Linq.Enumerable`, so the constructors sit next to `Enumerable.Range`,
+`Enumerable.Repeat` and `Enumerable.Empty` where LINQ users look for them:
 
 ```cs
 var naturals = Enumerable.Successors(1, n => n + 1);
@@ -18,10 +12,14 @@ var single = Enumerable.Return(42);
 using var cycle = Enumerable.CycleRange(new[] { 1, 2, 3 });
 ```
 
-`Enumerable.Concat(a, b)` with exactly two sequences binds to the BCL method, which does the same; with one
+Those that take a function or a lazy input are lazy themselves; `Return` and `FromNullable` are small materialized
+lists. `Enumerable.Concat(a, b)` with exactly two sequences binds to the BCL method, which does the same; with one
 sequence of sequences or three or more sequences it binds to Funcky's. The members are declared in
-`Funcky.Extensions.EnumerableExtensions`; on a compiler older than C# 14 they are plain static methods of that class,
-and `Sequence` remains the form to use.
+`Funcky.Extensions.EnumerableExtensions`, so `using Funcky.Extensions;` brings them into scope.
+
+Up to Funcky 3.8.0 the same constructors were static methods of the class `Funcky.Sequence`, `Sequence.Return(42)`.
+Funcky 4.0.0 removed that class; on 3.8.0 the analyzer rule λ1202 rewrites every call to the `Enumerable` form,
+which is the upgrade path.
 
 | Constructor                                        | Produces                                                        |
 |----------------------------------------------------|-----------------------------------------------------------------|
@@ -43,7 +41,7 @@ IReadOnlyList<TResult> Return<TResult>(params TResult[] elements)
 ```
 
 `Return` is the name monads use for "put a plain value into the monad", and `IEnumerable<T>` is a monad. Where
-you would write `Option.Return(x)` or `Result.Return(x)`, you write `Sequence.Return(x)` for a sequence. It
+you would write `Option.Return(x)` or `Result.Return(x)`, you write `Enumerable.Return(x)` for a sequence. It
 replaces `new[] { x }`, `new List<T> { x }` and `Enumerable.Repeat(x, 1)`; the analyzer [λ1001](../analyzer-rules/λ1001.md)
 flags the last one.
 
@@ -53,17 +51,17 @@ of times. It is a read-only view over the array the compiler builds for the call
 view cannot be cast back to a mutable array. If you pass an existing array yourself, the view reflects later
 changes to that array.
 
-Passing an array binds to the `params` overload, as with any `params` method: `Sequence.Return(array)` is a
+Passing an array binds to the `params` overload, as with any `params` method: `Enumerable.Return(array)` is a
 sequence of the array's elements. To get a sequence whose single element is the array, name the type argument,
-`Sequence.Return<int[]>(array)`.
+`Enumerable.Return<int[]>(array)`.
 
 ```cs
-IEnumerable<string> greeting = Sequence.Return("hello");
+IEnumerable<string> greeting = Enumerable.Return("hello");
 
-var suits = Sequence.Return("♠", "♣", "♥", "♦");
+var suits = Enumerable.Return("♠", "♣", "♥", "♦");
 
 // Prepend a header to a lazy sequence without materializing it
-var report = Sequence.Return(header).Concat(rows);
+var report = Enumerable.Return(header).Concat(rows);
 ```
 
 ## FromNullable
@@ -79,7 +77,7 @@ This is `Option.FromNullable` followed by `ToEnumerable`, in one step. It is use
 simply contribute nothing, for example inside a `SelectMany`:
 
 ```cs
-var inner = exceptions.SelectMany(e => Sequence.FromNullable(e.InnerException));
+var inner = exceptions.SelectMany(e => Enumerable.FromNullable(e.InnerException));
 ```
 
 ## Successors
@@ -111,22 +109,22 @@ The first element is always included. `Skip(1)` if you only want what follows it
 
 ```cs
 // All non-negative integers
-Sequence.Successors(0, n => n + 1);
+Enumerable.Successors(0, n => n + 1);
 
 // Powers of two that fit in an int
-Sequence.Successors(1, n => n <= int.MaxValue / 2 ? Option.Some(n * 2) : Option<int>.None);
+Enumerable.Successors(1, n => n <= int.MaxValue / 2 ? Option.Some(n * 2) : Option<int>.None);
 
 // The chain of inner exceptions
-Sequence.Successors(exception, e => Option.FromNullable(e.InnerException));
+Enumerable.Successors(exception, e => Option.FromNullable(e.InnerException));
 
 // Walking up a directory tree
-Sequence.Successors(directory, d => Option.FromNullable(d.Parent));
+Enumerable.Successors(directory, d => Option.FromNullable(d.Parent));
 
 // Fibonacci, by carrying a pair of state and projecting it away
-Sequence.Successors((0, 1), p => (p.Item2, p.Item1 + p.Item2)).Select(p => p.Item1);
+Enumerable.Successors((0, 1), p => (p.Item2, p.Item1 + p.Item2)).Select(p => p.Item1);
 
 // All days of a year, see the calendar case study
-Sequence.Successors(JanuaryFirst(year), NextDay).TakeWhile(day => day.Year == year);
+Enumerable.Successors(JanuaryFirst(year), NextDay).TakeWhile(day => day.Year == year);
 ```
 
 The last example is a pattern worth recognising: anything you would express with a `for` loop whose state is
@@ -144,7 +142,7 @@ This is `Enumerable.Repeat` without a count, or `Successors(element, Identity)`.
 a constant against another sequence, or a placeholder stream to be cut with `Take`.
 
 ```cs
-var padded = words.ZipLongest(Sequence.Cycle("").Take(10), pair => pair.Match(
+var padded = words.ZipLongest(Enumerable.Cycle("").Take(10), pair => pair.Match(
     left: w => w, right: p => p, both: (w, _) => w));
 ```
 
@@ -176,11 +174,11 @@ can neither end nor produce anything. For `CycleRange` this happens on enumerati
 read to its end.
 
 ```cs
-var colors = Sequence.Return("red", "green", "blue");
+var colors = Enumerable.Return("red", "green", "blue");
 
-var striped = rows.Zip(Sequence.CycleMaterialized(colors), (row, color) => (row, color));
+var striped = rows.Zip(Enumerable.CycleMaterialized(colors), (row, color) => (row, color));
 
-using var schedule = Sequence.CycleRange(ReadShiftsFromFile());
+using var schedule = Enumerable.CycleRange(ReadShiftsFromFile());
 var nextTen = schedule.Take(10).ToList();
 ```
 
@@ -199,10 +197,10 @@ repeatedly. Unlike the cycle variants, an empty source is not an error: repeatin
 A count of zero yields an empty sequence.
 
 ```cs
-Sequence.RepeatMaterialized(Sequence.Return(1, 2), 3);
+Enumerable.RepeatMaterialized(Enumerable.Return(1, 2), 3);
 // [1, 2, 1, 2, 1, 2]
 
-var border = Sequence.RepeatMaterialized(Sequence.Return('-'), width).ConcatToString();
+var border = Enumerable.RepeatMaterialized(Enumerable.Return('-'), width).ConcatToString();
 ```
 
 ## Concat
@@ -221,12 +219,12 @@ IEnumerable<TSource> Concat<TSource>(IEnumerable<IEnumerable<TSource>> sources)
     </picture>
 </picture>
 
-LINQ's `Concat` takes exactly two sequences, so joining three reads `a.Concat(b).Concat(c)`. `Sequence.Concat(a, b, c)`
+LINQ's `Concat` takes exactly two sequences, so joining three reads `a.Concat(b).Concat(c)`. `Enumerable.Concat(a, b, c)`
 says the same thing once. It is lazy, enumerates the inputs in order, and is the same operation as
 [`Flatten`](../enumerable-extensions/combining-sequences.md#flatten) on the sequence of sequences.
 
 ```cs
-var all = Sequence.Concat(header, body, footer);
+var all = Enumerable.Concat(header, body, footer);
 ```
 
 ## Asynchronous counterparts

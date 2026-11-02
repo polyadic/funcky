@@ -25,8 +25,8 @@ the shorter way to write `ZipLongest(right).Select(selector)`.
 ### Example
 
 ```cs
-var expected = Sequence.Return("a", "b", "c");
-var actual = Sequence.Return("a", "x");
+var expected = Enumerable.Return("a", "b", "c");
+var actual = Enumerable.Return("a", "x");
 
 expected.ZipLongest(actual, pair => pair.Match(
     both: (e, a) => e == a ? $"{e} ok" : $"{e} != {a}",

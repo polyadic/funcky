@@ -1,8 +1,6 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class StackTraceTest
 {
@@ -19,16 +17,16 @@ public sealed class StackTraceTest
     public void StackTraceOfFailedAssertionStartsAtTheTestMethod()
     {
         var firstLine = CaptureStackTrace().Split('\n')[0];
-        Assert.DoesNotContain("Funcky.FunctionalAssert.", firstLine);
+        Assert.DoesNotContain("Funcky.Extensions.AssertExtensions.", firstLine);
         Assert.Contains(nameof(CaptureStackTrace), firstLine);
     }
 #else
-    // Frameworks without [StackTraceHidden] cannot hide the FunctionalAssert frame; it is the only frame above the test code.
+    // Frameworks without [StackTraceHidden] cannot hide the assertion frame; it is the only frame above the test code.
     [Fact]
-    public void StackTraceOfFailedAssertionStartsAtTheFunctionalAssertMethod()
+    public void StackTraceOfFailedAssertionStartsAtTheAssertionMethod()
     {
         var lines = CaptureStackTrace().Split('\n');
-        Assert.Contains("Funcky.FunctionalAssert.Some", lines[0]);
+        Assert.Contains("Funcky.Extensions.AssertExtensions.Some", lines[0]);
         Assert.Contains(nameof(CaptureStackTrace), lines[1]);
     }
 #endif
@@ -37,13 +35,13 @@ public sealed class StackTraceTest
     {
         try
         {
-            FunctionalAssert.Some(Option<int>.None);
+            Assert.Some(Option<int>.None);
         }
         catch (XunitException exception)
         {
             return exception.StackTrace ?? string.Empty;
         }
 
-        throw new InvalidOperationException("FunctionalAssert.Some did not throw");
+        throw new InvalidOperationException("Assert.Some did not throw");
     }
 }

@@ -1,21 +1,19 @@
-#pragma warning disable λ1203 // This test exercises the classic FunctionalAssert form itself.
-
 using Xunit.Sdk;
 
-namespace Funcky.Xunit.Test.FunctionalAssertClass;
+namespace Funcky.Xunit.Test.AssertClass;
 
 public sealed class OkTest
 {
     [Fact]
     public void DoesNotThrowForMatchingOk()
     {
-        FunctionalAssert.Ok(10, Result.Ok(10));
+        Assert.Ok(10, Result.Ok(10));
     }
 
     [Fact]
     public void DoesNotThrowForOk()
     {
-        FunctionalAssert.Ok(Result.Ok(10));
+        Assert.Ok(Result.Ok(10));
     }
 
     [Fact]
@@ -23,11 +21,11 @@ public sealed class OkTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Ok() Failure: Values differ
+            Assert.Ok() Failure: Values differ
             Expected: Ok(10)
             Actual:   Ok(11)
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Ok(10, Result.Ok(11)));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Ok(10, Result.Ok(11)));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -36,11 +34,11 @@ public sealed class OkTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Ok() Failure: Values differ
+            Assert.Ok() Failure: Values differ
             Expected: Ok(10)
             Actual:   Error(System.ArgumentException: "message")
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Ok(10, Result<int>.Error(new ArgumentException("message"))));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Ok(10, Result<int>.Error(new ArgumentException("message"))));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 
@@ -49,11 +47,11 @@ public sealed class OkTest
     {
         const string expectedMessage =
             """
-            FunctionalAssert.Ok() Failure: Values differ
+            Assert.Ok() Failure: Values differ
             Expected: Ok(...)
             Actual:   Error(System.ArgumentException: "message")
             """;
-        var exception = Assert.ThrowsAny<XunitException>(() => FunctionalAssert.Ok(Result<int>.Error(new ArgumentException("message"))));
+        var exception = Assert.ThrowsAny<XunitException>(() => Assert.Ok(Result<int>.Error(new ArgumentException("message"))));
         Assert.Equal(expectedMessage.ReplaceLineEndings(Environment.NewLine), exception.Message);
     }
 }
