@@ -22,6 +22,7 @@ tests are off by one boxed object per Option (the `item is null` check in the co
 | `UnionOption<T>` | `union UnionOption<T>(Some<T>, None)` | one `object` field, the case struct is boxed |
 | `BareOption<T>` | `union BareOption<T>(T, None)` | one `object` field, `T` boxed if a struct |
 | `ClosedOption<T>` | `closed record ClosedOption<T>` with nested `Some`/`None` records | heap object per Some, singleton None |
+| `CustomUnionOption<T>` | today's struct + `[Union]` + `IUnion` (`object Value`) | inline like today; the compiler treats it as a union |
 
 plus `UnionEither<L, R>` and `UnionResult<T>` (with `Exception` as a bare case). The facts the write-up on #1034 rests
 on are assertions in `Funcky.Spike.Test/ShapeFactsTest.cs`, `UnionOptionTest.cs` and `ClosedOptionTest.cs`;

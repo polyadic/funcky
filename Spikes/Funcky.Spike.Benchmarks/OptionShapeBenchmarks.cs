@@ -105,6 +105,33 @@ public class OptionShapeBenchmarks
         return sum;
     }
 
+    /// <summary>Shape 3: today's layout as a custom union; the match boxes the int payload once.</summary>
+    [Benchmark]
+    public int CustomUnionOptionPattern()
+    {
+        var sum = 0;
+        for (var i = 0; i < Iterations; i++)
+        {
+            CustomUnionOption<int> option = i;
+            sum += option is int value ? value : 0;
+        }
+
+        return sum;
+    }
+
+    [Benchmark]
+    public int CustomUnionOptionStringPattern()
+    {
+        var sum = 0;
+        for (var i = 0; i < Iterations; i++)
+        {
+            CustomUnionOption<string> option = "x";
+            sum += option is string value ? value.Length : 0;
+        }
+
+        return sum;
+    }
+
     [Benchmark]
     public int ClosedOptionPattern()
     {

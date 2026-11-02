@@ -42,6 +42,30 @@ Consequences for `Option<T>`:
 * **Either** needs two wrapper case types even when `L == R`. **Result** can use `Exception` itself as the error case,
   which reads well (`result is Exception e`) and does not box the error.
 
+## Shape 3: today's struct as a *custom union*
+
+`closed` is rejected on structs, record structs and interfaces (CS0106). But the compiler recognizes a hand-written
+struct as a union when it carries `[Union]` and implements `IUnion` (an `object Value` reporting the current case). RC3
+then gives the struct everything a declared union gets: `option is T value` / `option is None` patterns, exhaustiveness
+(CS8509 for a missing case), conversions from the case types through the constructors.
+
+`CustomUnionOption<T>` keeps today's layout (`bool` + `T`) and adds the three members. Measured:
+
+* **Nothing allocates** at rest, in construction, in `Match`, `Select`, `SelectMany` (unchanged from today).
+* **`default` is `None`** because `Value` reports the cached `None` box for it: no third state, unlike the declared union.
+* **`sizeof` is today's** (8 for `int`, 20 for `Guid`, 16 for `string`).
+* **A pattern match goes through `object Value`.** With a concrete pattern (`is int value`) the JIT elides the box, 0 bytes.
+  In a method generic over `T` (`is T value`) the shared code boxes once per match, 24 bytes for `int`. Reference payloads
+  and `None` never allocate.
+* **List pattern, `Option<T>.None` property, implicit conversion from `T`, JSON converter: unchanged.** The payload is the
+  case, so `Some(None)` nests fine (`Value` returns the inner struct boxed, which is a different type from `None`).
+* **Older frameworks**: an internal PolySharp-style polyfill of `UnionAttribute` and `IUnion` compiles on netstandard2.0
+  and net8.0, and a net8.0 consumer of such a library matches exhaustively on the type (verified cross-assembly). A consumer
+  with an older compiler just sees a struct with a `Value` property.
+
+This is the shape that answers the #1034 question without giving anything up: the struct stays, the compiler-checked
+exhaustiveness comes for free, and Either/Result can get it the same way (`Value` returns the left/right or ok/exception).
+
 ## What a closed record is
 
 Today's class hierarchy with compiler-checked exhaustiveness. One object per `Some`, a singleton `None`, `default` is
@@ -88,12 +112,15 @@ struct with the allocation-free Select/SelectMany from the side finding above, w
 
 | Shape | Mean | Allocated |
 |---|---|---|
-| Struct `is [var v]` | 0.49 µs | 0 B |
-| Union `is Some<int>(var v)` | 5.9 µs | 24 000 B |
-| Closed record `is Some(var v)` | 6.0 µs | 24 000 B |
+| Struct `is [var v]` | 0.33 µs | 0 B |
+| Custom union (shape 3) `is int value` | 0.32 µs | 0 B |
+| Custom union (shape 3) `is string value` | 0.32 µs | 0 B |
+| Union `is Some<int>(var v)` | 4.7 µs | 24 000 B |
+| Closed record `is Some(var v)` | 4.5 µs | 24 000 B |
 
-The union and the closed record are 12× slower than the struct on the bare construct-and-match loop; both pay one
-heap object per Some. Between the two there is no measurable difference.
+The declared union and the closed record are 14× slower than the struct on the bare construct-and-match loop; both pay
+one heap object per Some. Between the two there is no measurable difference. The custom union on today's layout is
+indistinguishable from the struct's list pattern.
 
 **#862: 1000 Map steps through the trait**
 
@@ -121,9 +148,12 @@ per value everywhere else.
 
 ## Interim conclusion (day 1 of the time box)
 
-* On the #1034 measurements the union is not better than the struct on any axis: same or worse size, one allocation per
-  Some, a third invalid state, no list pattern, and the None naming clash. Its single advantage, compiler-checked
-  exhaustiveness, also comes with the closed record, and with the analyzer (λ-rule) for the struct.
-* The closed record is the shape that makes #862 traits cheap; it costs an allocation per Some and a nullable reference.
-* If the structs stay (expected), #1036 (generated cross product) is the route for Traverse/Lift; #862 would need a
+* On the #1034 measurements the declared union is not better than the struct on any axis: same or worse size, one
+  allocation per Some, a third invalid state, no list pattern, and the None naming clash.
+* Its single advantage, compiler-checked exhaustiveness, is available to today's struct as a custom union (shape 3)
+  at no cost beyond a box per match in generic code. That is the recommended direction for 4.0.0: keep the structs,
+  add `[Union]`/`IUnion`/`Value` to Option, Either and Result (polyfilled below net11.0).
+* The closed record is the shape that makes #862 traits cheap; it costs an allocation per Some and a nullable reference,
+  which the custom-union struct does not justify giving up.
+* With the structs staying, #1036 (generated cross product) is the route for Traverse/Lift; #862 would need a
   boxing-free HKT encoding that C# does not have.
