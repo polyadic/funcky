@@ -24,7 +24,8 @@ tests are off by one boxed object per Option (the `item is null` check in the co
 | `ClosedOption<T>` | `closed record ClosedOption<T>` with nested `Some`/`None` records | heap object per Some, singleton None |
 
 plus `UnionEither<L, R>` and `UnionResult<T>` (with `Exception` as a bare case). The facts the write-up on #1034 rests
-on are assertions in `Funcky.Spike.Test/ShapeFactsTest.cs`, `UnionOptionTest.cs` and `ClosedOptionTest.cs`.
+on are assertions in `Funcky.Spike.Test/ShapeFactsTest.cs`, `UnionOptionTest.cs` and `ClosedOptionTest.cs`;
+the running write-up with the benchmark tables is [FINDINGS.md](FINDINGS.md).
 
 ## #862 Type traits (higher-kinded types via static abstract members)
 

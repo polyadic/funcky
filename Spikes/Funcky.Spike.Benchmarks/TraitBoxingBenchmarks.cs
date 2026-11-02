@@ -23,6 +23,19 @@ public class TraitBoxingBenchmarks
         return option.GetOrElse(-1);
     }
 
+    /// <summary>The fair baseline: today's struct with a branch-based Select (no closure).</summary>
+    [Benchmark]
+    public int DirectStructBranchSelect()
+    {
+        var option = Option.Some(0);
+        for (var i = 0; i < Steps; i++)
+        {
+            option = option.SelectBranch(static x => x + 1);
+        }
+
+        return option.GetOrElse(-1);
+    }
+
     [Benchmark]
     public int TraitStructOption() => OptionKind.As(Run<OptionKind>()).GetOrElse(-1);
 

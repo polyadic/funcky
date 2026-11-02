@@ -23,6 +23,21 @@ public class OptionShapeBenchmarks
         return sum;
     }
 
+    /// <summary>Today's struct with the Select/SelectMany a fixed Funcky would have (branch instead of a capturing
+    /// lambda, see ShapeFactsTest.TodaysStructOptionSelectAllocatesAClosurePerCall). The fair baseline for the shapes.</summary>
+    [Benchmark]
+    public int StructOptionBranchSelect()
+    {
+        var sum = 0;
+        for (var i = 0; i < Iterations; i++)
+        {
+            var option = Option.Some(i).SelectBranch(x => x + 1).SelectManyBranch(x => x % 3 == 0 ? Option<int>.None : Option.Some(x));
+            sum += option.Match(none: 0, some: x => x);
+        }
+
+        return sum;
+    }
+
     [Benchmark]
     public int UnionOption()
     {
