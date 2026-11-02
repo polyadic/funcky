@@ -16,6 +16,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 	<PropertyGroup Label="Deterministic Builds and Source Link">
+		<!-- Source Link fills the commit and branch; the URL is given without the .git suffix, which GitHub Packages needs to link a package to this repository. -->
+		<RepositoryUrl>https://github.com/polyadic/funcky</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
