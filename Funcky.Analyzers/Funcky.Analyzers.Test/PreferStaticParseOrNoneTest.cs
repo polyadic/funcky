@@ -366,4 +366,29 @@ public sealed class PreferStaticParseOrNoneTest
 
         await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + StubCode);
     }
+
+    [Fact]
+    public async Task DoesNotReportAWrapperWhoseReplacementWouldCallItself()
+    {
+        // Inside the wrapper, int.ParseOrNone(candidate) binds to the wrapper itself, so the rewrite would recurse forever (#1021).
+        const string inputCode =
+            """
+            #nullable enable
+            using Funcky.Extensions;
+            using Funcky.Monads;
+
+            namespace Consumer
+            {
+                public static class Int32Parsing
+                {
+                    extension(int)
+                    {
+                        public static Option<int> ParseOrNone(string candidate) => candidate.ParseInt32OrNone();
+                    }
+                }
+            }
+            """;
+
+        await VerifyCS.VerifyAnalyzerAsync(inputCode + Environment.NewLine + StubCode);
+    }
 }
