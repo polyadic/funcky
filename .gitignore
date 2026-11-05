@@ -9,6 +9,8 @@
 
 ## Website
 /_site/
+/_documentation/
+/Documentation/version-switcher.js
 
 # User-specific files
 *.suo

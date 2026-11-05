@@ -8,6 +8,12 @@ on:
     # The website displays the latest version and needs
     # to be rebuilt when a new version is published.
     tags: '*'
+  # Rebuilds the website after a change to the 3.x documentation.
+  workflow_dispatch:
+
+env:
+  # The branch that the 3.x book is built from.
+  STABLE_DOCUMENTATION_REF: 'release/3.8.x'
 
 jobs:
   build:
@@ -15,6 +21,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        name: Checkout 3.x Documentation
+        with:
+          ref: ${{ env.STABLE_DOCUMENTATION_REF }}
+          path: _documentation/3.x
+          sparse-checkout: Documentation
       - uses: actions/setup-dotnet@v4
         name: Install Current .NET SDK
       - name: Setup mdBook
@@ -29,6 +41,11 @@ jobs:
       - name: Build Marble Graphics
         run: yarn build-marble-graphics
         working-directory: ./Documentation
+      - run: yarn install
+        working-directory: ./_documentation/3.x/Documentation
+      - name: Build Marble Graphics (3.x)
+        run: yarn build-marble-graphics
+        working-directory: ./_documentation/3.x/Documentation
       - name: Build Website and Documentation
         run: dotnet fsi Website/build.fsx
       - name: Upload GitHub Pages Artifact
