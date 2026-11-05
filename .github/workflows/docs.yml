@@ -1,13 +1,12 @@
-name: Build and Deploy Website
+name: Build Documentation
 
+# The website is built and deployed from main, which checks out the documentation of this branch.
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ release/3.8.x ]
   push:
-    branches: [ main ]
-    # The website displays the latest version and needs
-    # to be rebuilt when a new version is published.
-    tags: '*'
+    branches: [ release/3.8.x ]
+    paths: [ 'Documentation/**' ]
 
 jobs:
   build:
@@ -15,8 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        name: Install Current .NET SDK
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v2
         with:
@@ -29,25 +26,19 @@ jobs:
       - name: Build Marble Graphics
         run: yarn build-marble-graphics
         working-directory: ./Documentation
-      - name: Build Website and Documentation
-        run: dotnet fsi Website/build.fsx
-      - name: Upload GitHub Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Build Documentation
+        run: mdbook build Documentation
 
-  deploy_pages:
+  deploy_website:
     needs: build
-    if: github.ref_type == 'tag' || github.ref_name == 'main'
+    if: github.event_name == 'push'
 
     permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      actions: write
 
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Trigger the Website Deployment on main
+        run: gh workflow run docs.yml --repo ${{ github.repository }} --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
