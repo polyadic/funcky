@@ -10,3 +10,7 @@ site-url = "/funcky/book"
 additional-css = ["custom.css"]
 git-repository-url = "https://github.com/polyadic/funcky"
 git-repository-icon = "fa-github"
+
+[output.html.fold]
+enable = true
+level = 0
