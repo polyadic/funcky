@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 env:
-  # The tag or branch that the 3.x book is built from.
-  STABLE_DOCUMENTATION_REF: '3.8.0'
+  # The branch that the 3.x book is built from.
+  STABLE_DOCUMENTATION_REF: 'release/3.8.x'
 
 jobs:
   build:
