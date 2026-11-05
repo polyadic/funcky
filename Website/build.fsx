@@ -7,6 +7,23 @@ open System.Diagnostics
 open System.Web
 
 let outputDirectory = "_site"
+let sitePrefix = "/funcky"
+
+type Book =
+    { Label: string
+      Source: string
+      /// Path below the site root.
+      Path: string }
+
+// The first book is the default: it is the target of the analyzer help links.
+// When 4.0.0 is released: move 4.x to "book", 3.x to "book/3.x" and list 4.x first.
+// The 3.x sources are checked out by the docs workflow; the book is skipped when they are missing.
+let books =
+    [ { Label = "3.x"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "_documentation", "3.x", "Documentation"); Path = "book" }
+      { Label = "4.x (preview)"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "Documentation"); Path = "book/4.x" } ]
+    |> List.where (fun book -> Directory.Exists(book.Source))
+
+let versionSwitcherJs = Path.Combine(__SOURCE_DIRECTORY__, "book", "version-switcher.js")
 let indexHtml = Path.Combine(__SOURCE_DIRECTORY__, "index.html")
 let redirectHtml = Path.Combine(__SOURCE_DIRECTORY__, "redirect.html")
 
@@ -65,9 +82,10 @@ let ensureSuccessExitCode (p: Process) =
 let addArguments (info: ProcessStartInfo) args =
     args |> Seq.iter info.ArgumentList.Add
 
-let runProcess filename args =
+let runProcess filename args environment =
     let startInfo = ProcessStartInfo(filename)
     addArguments startInfo args
+    environment |> Seq.iter (fun (name: string, value: string) -> startInfo.Environment[name] <- value)
     use p = Process.Start(startInfo)
     p.WaitForExit()
     ensureSuccessExitCode p
@@ -79,12 +97,43 @@ copyToOutput "icons/*.svg"
 copyToOutput "*.css"
 copyToOutput "*.js"
 
-// These links are embedded in Funcky.Analyzers and should keep working
-generateRedirect "analyzer-rules/" "/funcky/book/analyzer-rules/"
-generateRedirect "analyzer-rules/λ0001.html" "/funcky/book/analyzer-rules/λ0001.html"
+let bookUrl book = $"{sitePrefix}/{book.Path}/"
 
-runProcess "mdbook" [
-    "build";
-    Path.Combine(__SOURCE_DIRECTORY__, "..", "Documentation");
-    "--dest-dir";
-    Path.GetFullPath(Path.Combine(outputDirectory, "book"))]
+let buildBook book =
+    // The switcher is injected from here, so that the books of older branches get it without a change to their sources.
+    File.Copy(versionSwitcherJs, Path.Combine(book.Source, Path.GetFileName(versionSwitcherJs)), overwrite = true)
+    runProcess
+        "mdbook"
+        [ "build"; book.Source; "--dest-dir"; Path.GetFullPath(Path.Combine(outputDirectory, book.Path)) ]
+        [ "MDBOOK_OUTPUT__HTML__SITE_URL", bookUrl book
+          "MDBOOK_OUTPUT__HTML__ADDITIONAL_JS", JsonSerializer.Serialize([ Path.GetFileName(versionSwitcherJs) ])
+          "MDBOOK_OUTPUT__HTML__FOLD__ENABLE", "true"
+          "MDBOOK_OUTPUT__HTML__FOLD__LEVEL", "0" ]
+
+let writeVersionsJson book =
+    let versions = books |> List.map (fun b -> {| label = b.Label; url = bookUrl b |})
+    File.WriteAllText(
+        Path.Combine(outputDirectory, book.Path, "versions.json"),
+        contents = JsonSerializer.Serialize({| current = book.Label; versions = versions |}))
+
+let analyzerRules book =
+    let directory = Path.Combine(book.Source, "src", "analyzer-rules")
+    if Directory.Exists(directory) then
+        Directory.GetFiles(directory, "λ*.md") |> Seq.map Path.GetFileNameWithoutExtension
+    else
+        Seq.empty
+
+// These links are embedded in Funcky.Analyzers and should keep working.
+// A rule is redirected to the default book, or else to the first book that documents it.
+let generateAnalyzerRuleRedirects () =
+    books |> List.tryHead |> Option.iter (fun book -> generateRedirect "analyzer-rules/" $"{bookUrl book}analyzer-rules/")
+    books
+        |> Seq.collect (fun book -> analyzerRules book |> Seq.map (fun rule -> rule, book))
+        |> Seq.distinctBy fst
+        |> Seq.iter (fun (rule, book) -> generateRedirect $"analyzer-rules/{rule}.html" $"{bookUrl book}analyzer-rules/{rule}.html")
+
+generateAnalyzerRuleRedirects ()
+
+// mdbook clears its destination directory: a book has to be built before the books nested in it.
+books |> List.sortBy (fun book -> book.Path.Length) |> List.iter buildBook
+books |> List.iter writeVersionsJson
