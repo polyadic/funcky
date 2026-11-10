@@ -105,7 +105,7 @@ public class OptionShapeBenchmarks
         return sum;
     }
 
-    /// <summary>Shape 3: today's layout as a custom union; the match boxes the int payload once.</summary>
+    /// <summary>Shape 3: today's layout as a custom union with the non-boxing access members (HasValue/TryGetValue).</summary>
     [Benchmark]
     public int CustomUnionOptionPattern()
     {
@@ -131,6 +131,40 @@ public class OptionShapeBenchmarks
 
         return sum;
     }
+
+    /// <summary>The match in code generic over the payload (`is T value`): day 1 boxed here (Value), day 2 goes through
+    /// TryGetValue(out T) and does not.</summary>
+    [Benchmark]
+    public int CustomUnionOptionGenericPattern()
+    {
+        var sum = 0;
+        for (var i = 0; i < Iterations; i++)
+        {
+            sum += GenericMatch(CustomUnionOption.Some(i));
+        }
+
+        return sum;
+    }
+
+    [Benchmark]
+    public int StructOptionGenericPattern()
+    {
+        var sum = 0;
+        for (var i = 0; i < Iterations; i++)
+        {
+            sum += GenericMatch(Option.Some(i));
+        }
+
+        return sum;
+    }
+
+    private static int GenericMatch<T>(CustomUnionOption<T> option)
+        where T : notnull
+        => option is T value ? value.GetHashCode() : 0;
+
+    private static int GenericMatch<T>(Option<T> option)
+        where T : notnull
+        => option is [var value] ? value.GetHashCode() : 0;
 
     [Benchmark]
     public int ClosedOptionPattern()

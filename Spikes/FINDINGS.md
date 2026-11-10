@@ -66,6 +66,56 @@ then gives the struct everything a declared union gets: `option is T value` / `o
 This is the shape that answers the #1034 question without giving anything up: the struct stays, the compiler-checked
 exhaustiveness comes for free, and Either/Result can get it the same way (`Value` returns the left/right or ok/exception).
 
+### Day 2: the non-boxing access pattern removes the last cost
+
+The unions spec (`proposals/csharp-15.0/unions.md`) has a *non-boxing union access pattern*: a `bool HasValue` property
+and one `bool TryGetValue(out Case value)` per case. The compiler prefers them over `Value` for type patterns. RC3
+implements it (verified by decompiling the test assembly: `option is T value` in a generic method lowers to
+`option.TryGetValue(out T item)`), and with it:
+
+* **A match never allocates, in generic code too.** Day 1's "one box per match in generic code" is gone. Funcky's
+  `Option<T>` already has `TryGetValue(out T)` (hidden behind λ0001); it needs `HasValue` and `TryGetValue(out None)`.
+* Day 1's generic-match measurement (24 B) was partly the test helper's own `Convert.ToInt32(object)` box; the day 2
+  tests use a constrained `GetHashCode()` call instead.
+* Benchmark, construct-and-match in code generic over the payload: custom union 0.33 µs / 0 B, struct list pattern
+  0.35 µs / 0 B.
+
+**Either and Result** (`CustomUnionEither.cs`, `CustomUnionResult.cs`) get the same treatment on today's layout. The
+cases are the payload types: `either is TLeft l` / `either is TRight r`, `result is T v` / `result is Exception e`,
+no wrapper types. Sizes and allocations are today's; `default` reports a `null` Value, which turns Funcky's
+`[NonDefaultable]` contract into a compiler warning (CS8655) at every switch that does not handle `null`, and the
+`NotSupportedException` stays for `Match`.
+
+**Union member provider** (`CustomUnionResult.cs`): the spec lets the union members live on a nested public interface
+named `IUnionMembers` (static `Create(T)`/`Create(Exception)` factories define the cases, plus `Value`, `HasValue` and
+the `TryGetValue` overloads). RC3 accepts it. Result:
+
+* the constructors stay **private** (today's Either/Result have private constructors, Option's is internal);
+* `Value` is an **explicit** interface implementation and does not appear on the struct (`result.Value` is CS1061);
+  a *public* `Value` on the struct is otherwise mandatory (explicit `IUnion.Value` alone is CS9386);
+* the non-boxing members must be declared on the provider too, or the compiler falls back to `Value` and boxes again.
+
+This is the shape to ship: no new public surface except `HasValue`/`TryGetValue` (λ0001 territory) and the nested
+interface.
+
+**Union conversions** come with the cases: `Either<string, int> e = 5;`, `Result<int> r = exception;`,
+`Option<int> o = default(None);` compile without any implicit operator. That is most of #809 for free (see below).
+
+**Caveats found**
+
+* Identical case types: `Either<int, int>` and `Result<Exception>` compile, but a type pattern resolves to ONE
+  `TryGetValue` (RC3 takes the first case): `Right(2) is int` is false, and for `Result<Exception>` the error case is
+  not `Exception`. `Match` is unaffected. (Without the non-boxing members both sides matched; neither is right.)
+* `Option<object>`: the `object` case covers everything for the compiler (a `None` arm after `object` is CS8510), and
+  `is object` lowers to the null check, so `Option<object>.None is object` is true at runtime.
+* **System.Text.Json** (.NET 11) recognizes `IUnion` and builds a union contract from the public single-parameter
+  constructors. With the provider shape there are none, and it **throws** ("must specify at least one union case")
+  instead of falling back to the plain struct contract that writes `{}` for Either and Result today. With public
+  constructors it writes the case itself (`5`, `{}` for None). Either way Funcky must ship converters for all three
+  types in 4.0.0: #947 (4.1.0) moves up, at least the Either/Result half.
+* The `None` case type is a new public struct next to the `Option<T>.None` property; inside `Option<T>` the type and
+  the property coexist (type positions only see types).
+
 ## What a closed record is
 
 Today's class hierarchy with compiler-checked exhaustiveness. One object per `Some`, a singleton `None`, `default` is
@@ -113,8 +163,10 @@ struct with the allocation-free Select/SelectMany from the side finding above, w
 | Shape | Mean | Allocated |
 |---|---|---|
 | Struct `is [var v]` | 0.33 µs | 0 B |
+| Struct `is [var v]` in generic code | 0.35 µs | 0 B |
 | Custom union (shape 3) `is int value` | 0.32 µs | 0 B |
 | Custom union (shape 3) `is string value` | 0.32 µs | 0 B |
+| Custom union (shape 3) `is T value` in generic code (day 2, TryGetValue) | 0.33 µs | 0 B |
 | Union `is Some<int>(var v)` | 4.7 µs | 24 000 B |
 | Closed record `is Some(var v)` | 4.5 µs | 24 000 B |
 
@@ -146,13 +198,35 @@ boxing into `K` at every step. Traits over a class-shaped Option are competitive
 remaining allocations are the `List<B>` accumulator and the Some objects), but the class shape itself costs a heap object
 per value everywhere else.
 
-## Interim conclusion (day 1 of the time box)
+## The dependents against the custom-union shape (day 2)
+
+| Issue | What the shape changes |
+|---|---|
+| #809 simpler constructors | Union conversions do it: `Either<string, int> e = 5` / `= "x"`, `Result<int> r = exception`, `Option<int> o = None` (with a `None` value in a prelude). `Either<T, T>` stays on `Left`/`Right` (ambiguous conversion is a compile error). Open: a `None` singleton value and where it lives. |
+| #760 collection expressions | Independent. The struct keeps `Count`/indexer, so `[var value]` stays; the case patterns `is T value` / `is None` make the list pattern redundant rather than wrong. A collection builder is additive. |
+| #868 UpCast/DownCast extensions | Partly subsumed: `option is Derived d` applies the pattern to the case, so a DownCast in a condition is a pattern. The fluent `.DownCast<T>()` is still wanted for chains; independent of the shape. |
+| #864 Task as a monad | Independent. Task is a class with its own shape; this is #1036 territory (generated Task × Option/Result rows). |
+| #802 Validation | New type, same recipe: custom union with cases `T` and the error collection, provider interface, converters. |
+
+## Breaking surface of the custom-union shape (for #1033)
+
+* `[Union]` + `IUnion` on `Option<T>`, `Either<L, R>`, `Result<T>`; nested public `IUnionMembers` interface per type;
+  new public `HasValue` and `TryGetValue` overloads on all three (λ0001 extends to them). Polyfilled `UnionAttribute`/
+  `IUnion` (internal) on net8.0–net10.0 and netstandard, invisible to consumers on older compilers.
+* New public struct `None` in `Funcky.Monads` (the Option case type).
+* `default(Either)`/`default(Result)` in a switch: new CS8655 warning (was runtime-only).
+* System.Text.Json: Either and Result serialize through new converters (today `{}`); Option's converter is unchanged.
+* Not breaking: list pattern, `Option<T>.None` property, implicit conversion from `T`, `Match`/`Switch`, sizes,
+  allocation profile, equality.
+
+## Interim conclusion (end of day 2)
 
 * On the #1034 measurements the declared union is not better than the struct on any axis: same or worse size, one
   allocation per Some, a third invalid state, no list pattern, and the None naming clash.
 * Its single advantage, compiler-checked exhaustiveness, is available to today's struct as a custom union (shape 3)
-  at no cost beyond a box per match in generic code. That is the recommended direction for 4.0.0: keep the structs,
-  add `[Union]`/`IUnion`/`Value` to Option, Either and Result (polyfilled below net11.0).
+  at no cost at all once the non-boxing access members are in place. That is the recommended direction for 4.0.0:
+  keep the structs, add `[Union]`/`IUnion`, a provider interface with `Value`/`HasValue`/`TryGetValue` to Option,
+  Either and Result (polyfilled below net11.0), ship JSON converters for Either and Result.
 * The closed record is the shape that makes #862 traits cheap; it costs an allocation per Some and a nullable reference,
   which the custom-union struct does not justify giving up.
 * With the structs staying, #1036 (generated cross product) is the route for Traverse/Lift; #862 would need a

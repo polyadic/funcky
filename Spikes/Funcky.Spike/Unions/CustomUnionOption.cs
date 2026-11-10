@@ -60,10 +60,21 @@ public readonly struct CustomUnionOption<T> : IUnion, IEquatable<CustomUnionOpti
 
     public T GetOrElse(T fallback) => _hasItem ? _item : fallback;
 
+    /// <summary>Non-boxing access pattern (spec: "non-boxing union access pattern"): <c>HasValue</c> plus one
+    /// <c>TryGetValue(out Case)</c> per case. The compiler prefers these over <c>Value</c> for type patterns, so a
+    /// match in generic code no longer boxes a struct payload.</summary>
+    public bool HasValue => true;
+
     public bool TryGetValue([NotNullWhen(true)] out T? item)
     {
         item = _hasItem ? _item : default;
         return _hasItem;
+    }
+
+    public bool TryGetValue(out None none)
+    {
+        none = default;
+        return !_hasItem;
     }
 
     public bool Equals(CustomUnionOption<T> other)

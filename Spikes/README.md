@@ -24,8 +24,11 @@ tests are off by one boxed object per Option (the `item is null` check in the co
 | `ClosedOption<T>` | `closed record ClosedOption<T>` with nested `Some`/`None` records | heap object per Some, singleton None |
 | `CustomUnionOption<T>` | today's struct + `[Union]` + `IUnion` (`object Value`) | inline like today; the compiler treats it as a union |
 
-plus `UnionEither<L, R>` and `UnionResult<T>` (with `Exception` as a bare case). The facts the write-up on #1034 rests
-on are assertions in `Funcky.Spike.Test/ShapeFactsTest.cs`, `UnionOptionTest.cs` and `ClosedOptionTest.cs`;
+plus `UnionEither<L, R>` and `UnionResult<T>` (declared unions, `Exception` as a bare case) and their custom-union
+twins `CustomUnionEither<L, R>` and `CustomUnionResult<T>` (today's layout, non-boxing `HasValue`/`TryGetValue`;
+Result through a nested `IUnionMembers` provider with private constructors). The facts the write-up on #1034 rests
+on are assertions in `Funcky.Spike.Test/ShapeFactsTest.cs`, `UnionOptionTest.cs`, `ClosedOptionTest.cs`,
+`CustomUnionOptionTest.cs`, `CustomUnionEitherResultTest.cs` and `CustomUnionProbeTest.cs`;
 the running write-up with the benchmark tables is [FINDINGS.md](FINDINGS.md).
 
 ## #862 Type traits (higher-kinded types via static abstract members)

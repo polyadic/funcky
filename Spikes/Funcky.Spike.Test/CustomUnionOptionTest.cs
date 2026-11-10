@@ -57,15 +57,16 @@ public sealed class CustomUnionOptionTest
             }
         }));
 
-        // A generic pattern (`is T value` in a method generic over T): shared generic code cannot elide it, one box per match.
-        Assert.InRange(Allocated(() =>
+        // A generic pattern (`is T value` in a method generic over T): without the non-boxing access members this boxed
+        // once per match (24 bytes); with HasValue + TryGetValue(out T) the compiler calls TryGetValue and nothing allocates.
+        Assert.Equal(0, Allocated(() =>
         {
             var sum = 0;
             for (var i = 0; i < 1000; i++)
             {
                 sum += GetOrZero(CustomUnionOption.Some(i));
             }
-        }), 24 * 1000, 24 * 1000 + 1024);
+        }));
 
         Assert.Equal(0, Allocated(() =>
         {
@@ -96,7 +97,7 @@ public sealed class CustomUnionOptionTest
 
     private static int GetOrZero<T>(CustomUnionOption<T> option)
         where T : notnull
-        => option is T value ? Convert.ToInt32(value) : 0;
+        => option is T value ? value.GetHashCode() : 0; // constrained call, no box (int.GetHashCode() is the int)
 
     private static string Show<T>(CustomUnionOption<T> option)
         where T : notnull
