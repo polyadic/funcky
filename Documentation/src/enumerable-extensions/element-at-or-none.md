@@ -4,7 +4,7 @@ Returns the element at the given position, or `None` if the position is outside 
 
 ```cs
 Option<TSource> ElementAtOrNone<TSource>(this IEnumerable<TSource> source, int index)
-Option<TSource> ElementAtOrNone<TSource>(this IEnumerable<TSource> source, Index index)   // .NET 6+
+Option<TSource> ElementAtOrNone<TSource>(this IEnumerable<TSource> source, Index index)   // .NET 8+
 ```
 
 <picture>

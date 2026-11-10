@@ -23,10 +23,9 @@ using Funcky.Extensions;
 Assert.Some(42, FindUser(id).Select(user => user.Age));
 ```
 
-Extension members need the C# 14 compiler, which the .NET 10 SDK that Funcky 4 requires provides. Up to Funcky.Xunit
-2.x and Funcky.Xunit.v3 1.x the same assertions were also methods of a `Funcky.FunctionalAssert` class,
-`FunctionalAssert.Some(42, option)`; Funcky.Xunit 3.0.0 and Funcky.Xunit.v3 2.0.0 removed that class. On the last
-2.x release the analyzer rule λ1203 rewrites every call to the `Assert` form, which is the upgrade path.
+Extension members need the C# 14 compiler of the .NET 10 SDK or newer. On an older compiler the same assertions are the
+static methods of `Funcky.Extensions.AssertExtensions`, `AssertExtensions.Some(42, option)`. Coming from the
+`FunctionalAssert` class of Funcky.Xunit 2.x? See the [upgrade guide](./upgrade-guide.md).
 
 ### xUnit.net 3.x versions
 
@@ -42,10 +41,10 @@ What does change between the xunit versions is the test host and the runner, not
 
 | xunit.v3 | Funcky.Xunit.v3                   | Test project runs on           | `dotnet test` with the .NET 10 SDK                                                |
 |----------|-----------------------------------|--------------------------------|-----------------------------------------------------------------------------------|
-| 1.x      | 1.0.0 and later                   | .NET 6+, .NET Framework 4.7.2+ | VSTest (`xunit.runner.visualstudio`) or Microsoft.Testing.Platform v1             |
-| 2.x      | 1.1.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
-| 3.x      | 1.1.0 and later, expected to work | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
-| 4.x      | 1.1.0 and later, verified         | .NET 8+, .NET Framework 4.7.2+ | Microsoft.Testing.Platform v2; VSTest only with the `xunit.v3.*.mtp-off` packages |
+| 1.x      | 2.0.0, expected to work           | .NET 6+, .NET Framework 4.7.2+ | VSTest (`xunit.runner.visualstudio`) or Microsoft.Testing.Platform v1             |
+| 2.x      | 2.0.0, expected to work           | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 3.x      | 2.0.0, expected to work           | .NET 8+, .NET Framework 4.7.2+ | VSTest or Microsoft.Testing.Platform v1                                           |
+| 4.x      | 2.0.0, verified                   | .NET 8+, .NET Framework 4.7.2+ | Microsoft.Testing.Platform v2; VSTest only with the `xunit.v3.*.mtp-off` packages |
 
 "Verified" means Funcky's own test suite runs green against that version. "Expected to work" means nothing in the
 xunit release notes touches what Funcky uses, but the suite is not run against it yet
@@ -154,11 +153,10 @@ Actual:   Error(InvalidOperationException)
 ```
 
 The returning overloads cannot know the expected content and print `Some(...)`, `Ok(...)`, `Error(...)`,
-`Left(...)` or `Right(...)` as the expected side. The label matches xunit's own `Assert.Equal() Failure`; up to
-Funcky.Xunit 2.x it read `FunctionalAssert.Some()`, so a test that asserts on the message text changes with 3.0.0.
+`Left(...)` or `Right(...)` as the expected side. The label matches xunit's own `Assert.Equal() Failure`.
 
-On .NET 6 and later the assertion's own frames are hidden from the stack trace with `[StackTraceHidden]`, so the
-first line of the trace is the test that failed. On older frameworks a rethrow erases the internal frames of the
+On .NET 8 and later the assertion's own frames are hidden from the stack trace with `[StackTraceHidden]`, so the
+first line of the trace is the test that failed. On .NET Framework a rethrow erases the internal frames of the
 monad and the lambdas, but the assertion method itself remains the first frame, with the test right below it.
 
 ## Why there is no `Assert.True(option.IsSome)`

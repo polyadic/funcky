@@ -19,9 +19,9 @@ A size of zero or less throws an `ArgumentOutOfRangeException` immediately, not 
 produced lazily, but each chunk is materialized when it is yielded, so you can hold on to a chunk after moving
 to the next one.
 
-.NET 6 added `Enumerable.Chunk` to the BCL, returning arrays. On those targets Funcky's own `Chunk(size)` steps
-aside and the BCL method is picked; the overload with a result selector remains Funcky's, and is the shorter
-way to write `Chunk(size).Select(selector)`.
+The BCL has its own `Enumerable.Chunk`, returning arrays. On .NET 8 and later Funcky's own `Chunk(size)` steps
+aside and the BCL method is picked; on .NET Standard Funcky's is the only one. The overload with a result selector is
+Funcky's everywhere, and is the shorter way to write `Chunk(size).Select(selector)`.
 
 ### Example
 
