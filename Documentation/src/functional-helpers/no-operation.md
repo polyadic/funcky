@@ -27,10 +27,8 @@ public void DoSomething(int value, Action<int, string, float, AnyCustomClassThat
   // ...
 }
 
-// How we would usually call it when we don't need the callback (C#9):
+// How we would usually call it when we don't need the callback:
 DoSomething(2, (_, _, _, _) => {});
-// Before C#9, this was even worse:
-DoSomething(3, (_, __, ___, ____) => {});
 
 // How you can call it with NoOperation:
 DoSomething(2, NoOperation);

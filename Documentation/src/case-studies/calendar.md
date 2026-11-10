@@ -196,7 +196,7 @@ private static IEnumerable<string> FormatWeeks(IEnumerable<DateOnly> month)
         .Select(FormatWeek);
 ```
 
-The GetWeekOfYear function is just calling the API with the correct parameters and always using the current culture and a little fiddling with DateTime (because DateOnly was introduced far too late in C# 10).
+The GetWeekOfYear function is just calling the API with the correct parameters and always using the current culture and a little fiddling with DateTime (because `Calendar.GetWeekOfYear` predates `DateOnly` and still takes a `DateTime`).
 
 ```cs
 private static int GetWeekOfYear(DateOnly dateTime)
@@ -273,7 +273,7 @@ And then lines 2, 9 and 16 would be combined to:
 
 To do this lazily we use `Chunk`.
 
-`Chunk` is supported with .NET 6, before that Funcky has nearly identical Replacement. (The return type is slightly different)
+`Chunk` is part of the BCL; on .NET Standard Funcky has a nearly identical replacement. (The return type is slightly different.)
 
 Chunk is grouping a sequence into multiple sequences of the same length. In our case we want to make the sequence of 12 months in to 4 sequences of length 3.
 

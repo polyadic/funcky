@@ -17,10 +17,6 @@ lists. `Enumerable.Concat(a, b)` with exactly two sequences binds to the BCL met
 sequence of sequences or three or more sequences it binds to Funcky's. The members are declared in
 `Funcky.Extensions.EnumerableExtensions`, so `using Funcky.Extensions;` brings them into scope.
 
-Up to Funcky 3.8.0 the same constructors were static methods of the class `Funcky.Sequence`, `Sequence.Return(42)`.
-Funcky 4.0.0 removed that class; on 3.8.0 the analyzer rule λ1202 rewrites every call to the `Enumerable` form,
-which is the upgrade path.
-
 | Constructor                                        | Produces                                                        |
 |----------------------------------------------------|-----------------------------------------------------------------|
 | [Return](#return)                                  | One element, or exactly the elements given                      |

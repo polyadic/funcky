@@ -8,8 +8,8 @@ Option<int> GetNonEnumeratedCountOrNone<TSource>(this IEnumerable<TSource> sourc
 
 This wraps the BCL's `TryGetNonEnumeratedCount`, which succeeds for collections that know their size, such as
 arrays, `List<T>` and `ICollection<T>`, and for some LINQ operators over them. It fails for anything that would
-need to be iterated, for example the result of a `Where`. On frameworks older than .NET 6 Funcky ships its own check,
-which recognizes collections with a `Count` but none of the LINQ operators.
+need to be iterated, for example the result of a `Where`. On .NET Standard Funcky ships its own check, which
+recognizes collections with a `Count` but none of the LINQ operators.
 
 Use it when you want to size a buffer or show a count up front but must not pay for a full enumeration, and
 have a fallback for when the count is unknown:
