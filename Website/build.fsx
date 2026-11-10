@@ -16,10 +16,11 @@ type Book =
       Path: string }
 
 // The first book is the default: it is the target of the analyzer help links.
+// When 4.0.0 is released: move 4.x to "book", 3.x to "book/3.x" and list 4.x first.
 // The 3.x sources are checked out by the docs workflow; the book is skipped when they are missing.
 let books =
-    [ { Label = "4.x"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "Documentation"); Path = "book" }
-      { Label = "3.x"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "_documentation", "3.x", "Documentation"); Path = "book/3.x" } ]
+    [ { Label = "3.x"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "_documentation", "3.x", "Documentation"); Path = "book" }
+      { Label = "4.x (preview)"; Source = Path.Combine(__SOURCE_DIRECTORY__, "..", "Documentation"); Path = "book/4.x" } ]
     |> List.where (fun book -> Directory.Exists(book.Source))
 
 let versionSwitcherJs = Path.Combine(__SOURCE_DIRECTORY__, "book", "version-switcher.js")
