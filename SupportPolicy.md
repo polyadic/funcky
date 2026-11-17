@@ -12,7 +12,10 @@ We support all the actively supported modern Frameworks, .NET Standard 2.1, 2.0 
 
 The analyzers built into Funcky and the Funcky.Analyzers package are compiled against a fixed Roslyn version. Funcky 4
 targets Roslyn 4.14, the compiler of Visual Studio 2022 17.14 and the .NET SDK 9.0.300, so every .NET 10 SDK and newer
-loads them. Older SDKs skip the analyzers; the library itself has no SDK requirement beyond its target frameworks.
+loads them. Older SDKs skip the analyzers; the library itself has no SDK requirement beyond its target frameworks,
+but its extension members (`Assert.Some`, `Enumerable.Return`, `int.ParseOrNone`) need the C# 14 compiler of the
+.NET 10 SDK to be called in their extension form; an older compiler sees them as plain static methods. Funcky itself
+is built with the .NET 11 SDK.
 
 * We only raise the Roslyn baseline on major version changes.
 

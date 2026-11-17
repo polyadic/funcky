@@ -22,10 +22,8 @@ This is the same split the .NET libraries themselves use: usage diagnostics ship
 Rule IDs are stable identifiers: once a rule has shipped, its number never changes, because projects configure and
 suppress rules by ID. The number range therefore records where a rule was *born*, not where it lives today:
 `λ0xxx` rules started as built-in rules, `λ1xxx` rules started in `Funcky.Analyzers`, `λ11xx` rules concern the
-assertions of the [`Funcky.Xunit`] package (born as `FunctionalAssert` rules), and `λ12xx` rules point at the C# 14
-extension forms that 3.8.0 added next to the classic API. λ1202 and λ1203 retired with Funcky 4.0.0, which removed the
-classic `Sequence` and `FunctionalAssert` forms they pointed away from; the numbers are not reused. The tables below
-are the authority on which package contains a rule.
+assertions of the [`Funcky.Xunit`] package, and `λ12xx` rules prefer one of two equivalent forms of an API. The
+numbers of retired rules are not reused. The tables below are the authority on which package contains a rule.
 
 ## Built-in rules
 
@@ -35,7 +33,7 @@ are the authority on which package contains a rule.
 | [λ0003](./λ0003.md) | Error | Member is not intended for direct usage |
 | [λ0004](./λ0004.md) | Error | The `default` literal is wrapped by an implicit conversion |
 | [λ0005](./λ0005.md) | Error | A `null` literal is passed to `Option`, `Result` or `Either` |
-| [λ1009](./λ1009.md) | Error | Do not use `default` to instantiate this type (moved from `Funcky.Analyzers` in 3.7.0) |
+| [λ1009](./λ1009.md) | Error | Do not use `default` to instantiate this type |
 | [λ1010](./λ1010.md) | Error | An option has either zero or one elements |
 
 ## Funcky.Analyzers
@@ -65,7 +63,9 @@ are the authority on which package contains a rule.
 
 | Rule | Title | Note |
 |------|-------|------|
-| λ0002 | Use of `Option<T>.None()` method group | `Option<T>.None()` was replaced by the `Option<T>.None` property in 3.0. The rule and its code fix were removed once the method was gone. See the [migration guide](../migration-guide.md). |
+| λ0002 | Use of `Option<T>.None()` method group | `Option<T>.None()` was replaced by the `Option<T>.None` property in 3.0. The rule and its code fix were removed once the method was gone. |
+| λ1202 | Prefer `Enumerable.Return` over `Sequence.Return` | The `Funcky.Sequence` class was removed in 4.0.0, so there is nothing left to point away from. The rule and its code fix exist on Funcky.Analyzers 2.1.0 and are the upgrade path, see the [upgrade guide](../upgrade-guide.md). |
+| λ1203 | Prefer `Assert.Some` over `FunctionalAssert.Some` | The `Funcky.FunctionalAssert` class was removed in Funcky.Xunit 3.0.0 and Funcky.Xunit.v3 2.0.0. As λ1202. |
 
 ## Using the attributes in your own code
 Two rules are driven by attributes: [λ1003](./λ1003.md) looks for `[UseWithArgumentNames]` on methods and

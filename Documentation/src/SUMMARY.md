@@ -1,7 +1,6 @@
 # Summary
 
 [Introduction](./introduction.md)
-* [Migrating from 2.x to 3.0](./migration-guide.md)
 * [Functional Programming](./fp/overview.md)
 * [Case Studies](./case-studies/case-studies.md)
   * [Simplify `if null` by using an `Option`](./case-studies/if-null-to-option.md)
@@ -41,6 +40,7 @@
 * [Stream Extensions](./stream-extensions.md)
 * [Nullable Member Extensions](./nullable-members.md)
 * [Testing with xUnit](./xunit.md)
+* [Upgrade Guide](./upgrade-guide.md)
 * [Analyzer Rules](./analyzer-rules/analyzer-rules.md)
   * [λ0001](./analyzer-rules/λ0001.md)
   * [λ0003](./analyzer-rules/λ0003.md)

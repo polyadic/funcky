@@ -25,7 +25,7 @@ rules, and ends with a few case studies. The [changelog](changelog.md) lists wha
 | **Funcky.Async** | [![NuGet Version](https://img.shields.io/nuget/v/Funcky.Async)](https://www.nuget.org/packages/Funcky.Async) | `IAsyncEnumerable` and `Task` support for frameworks older than .NET 10. |
 
 The correctness analyzers are built into **Funcky** itself, **Funcky.Analyzers** adds the opt-in style rules. See the
-[analyzer rules](https://polyadic.github.io/funcky/analyzer-rules/analyzer-rules.html) for the full list.
+[analyzer rules](https://polyadic.github.io/funcky/book/analyzer-rules/analyzer-rules.html) for the full list.
 
 On .NET 10 and newer the async support is fully integrated into **Funcky**. There **Funcky.Async** only forwards its
 types to **Funcky**, so a project can drop the reference once it targets .NET 10.
@@ -73,7 +73,7 @@ result.Switch(
 ```
 
 The way out at the edges of your program is to say what happens in both cases, with `Match`, `Switch` or `GetOrElse`.
-The [Option chapter](https://polyadic.github.io/funcky/option.html) is organized as a ladder of answers to
+The [Option chapter](https://polyadic.github.io/funcky/book/option.html) is organized as a ladder of answers to
 "how do I get the value out?".
 
 ### The TryVerb pattern: `…OrNone` instead of `Try…` with `out`

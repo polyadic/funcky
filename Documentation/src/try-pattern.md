@@ -133,28 +133,30 @@ works exactly like the corresponding `int.TryParse`.
 | `DateTime.TryParse` / `TryParseExact`             | `ParseDateTimeOrNone` / `ParseExactDateTimeOrNone` | all |
 | `DateTimeOffset.TryParse` / `TryParseExact`       | `ParseDateTimeOffsetOrNone` / `ParseExactDateTimeOffsetOrNone` | all |
 | `TimeSpan.TryParse` / `TryParseExact`             | `ParseTimeSpanOrNone` / `ParseExactTimeSpanOrNone` | all |
-| `DateOnly.TryParse` / `TryParseExact`             | `ParseDateOnlyOrNone` / `ParseExactDateOnlyOrNone` | .NET 6+ |
-| `TimeOnly.TryParse` / `TryParseExact`             | `ParseTimeOnlyOrNone` / `ParseExactTimeOnlyOrNone` | .NET 6+ |
+| `DateOnly.TryParse` / `TryParseExact`             | `ParseDateOnlyOrNone` / `ParseExactDateOnlyOrNone` | .NET 8+ |
+| `TimeOnly.TryParse` / `TryParseExact`             | `ParseTimeOnlyOrNone` / `ParseExactTimeOnlyOrNone` | .NET 8+ |
 | `Version.TryParse`                                | `ParseVersionOrNone`                | all            |
 | `IPAddress.TryParse`                              | `ParseIPAddressOrNone`              | all            |
-| `IPEndPoint.TryParse`                             | `ParseIPEndPointOrNone`             | .NET Core 3.0+ |
+| `IPEndPoint.TryParse`                             | `ParseIPEndPointOrNone`             | .NET 8+, .NET Standard 2.1 |
 | `IPNetwork.TryParse`                              | `ParseIPNetworkOrNone`              | .NET 8+        |
 | `AssemblyNameInfo.TryParse`                       | `ParseAssemblyNameInfoOrNone`       | .NET 9+        |
 | `TypeName.TryParse`                               | `ParseTypeNameOrNone`               | .NET 9+        |
-| `INumberBase<T>.TryParse`                         | `ParseNumberOrNone<TNumber>`        | .NET 7+        |
-| `IParsable<T>.TryParse` / `ISpanParsable<T>.TryParse` | `ParseOrNone<TParsable>`        | .NET 7+        |
+| `INumberBase<T>.TryParse`                         | `ParseNumberOrNone<TNumber>`        | .NET 8+        |
+| `IParsable<T>.TryParse` / `ISpanParsable<T>.TryParse` | `ParseOrNone<TParsable>`        | .NET 8+        |
 | `IUtf8SpanParsable<T>.TryParse`                   | `ParseOrNone<TParsable>` on `ReadOnlySpan<byte>` | .NET 8+ |
 
+"All" includes the .NET Standard assets; ".NET 8+" means not on .NET Standard, and therefore not on .NET Framework.
+
 The generic `ParseOrNone<T>` and `ParseNumberOrNone<T>` cover any type implementing the static abstract parsing
-interfaces, including your own, so on .NET 7 and later `text.ParseOrNone<Guid>()` and
+interfaces, including your own, so on .NET 8 and later `text.ParseOrNone<Guid>()` and
 `text.ParseGuidOrNone()` are equivalent. Both take an optional `IFormatProvider`; without one the current culture
 is used, as in the BCL. `ParseNumberOrNone<T>` additionally accepts a `NumberStyles`; without one the type's own
 default applies, `Integer` for the integer types and `Float | AllowThousands` for the floating-point types.
 
 ### The static form: `int.ParseOrNone`
 
-Since Funcky 3.8.0 every parse method also exists as a C# 14 *static extension member* on the type it parses, next to
-the `TryParse` it wraps. The receiver names the type, so the method name drops it: `ParseInt32OrNone` on `string`
+Every parse method also exists as a C# 14 *static extension member* on the type it parses, next to the `TryParse` it
+wraps. The receiver names the type, so the method name drops it: `ParseInt32OrNone` on `string`
 becomes `ParseOrNone` on `int`, `ParseExactDateTimeOrNone` becomes `DateTime.ParseExactOrNone`. Every overload of the
 `string` form is mirrored.
 
@@ -167,9 +169,8 @@ Option<object> boxed = Enum.ParseOrNone(typeof(DayOfWeek), "Monday");
 Option<MediaTypeHeaderValue> mediaType = MediaTypeHeaderValue.ParseOrNone("text/html");
 ```
 
-On .NET 7 and later the generic forms are static extension members on the interfaces' type parameter, so they apply
-to any `IParsable<T>`, `ISpanParsable<T>`, `IUtf8SpanParsable<T>` (.NET 8+) or `INumberBase<T>`, including your own
-types. `int.ParseOrNone(text)` binds to the dedicated `int` member, `Half.ParseOrNone(text)` to the generic one.
+On .NET 8 and later the generic forms are static extension members on the interfaces' type parameter, so they apply
+to any `IParsable<T>`, `ISpanParsable<T>`, `IUtf8SpanParsable<T>` or `INumberBase<T>`, including your own types. `int.ParseOrNone(text)` binds to the dedicated `int` member, `Half.ParseOrNone(text)` to the generic one.
 
 ```cs
 Option<Half> half = Half.ParseOrNone("1.5", NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -180,7 +181,7 @@ The static members are declared in one static class per parsed type: `Int32Parse
 `DateTimeParseExtensions`, `EnumParseExtensions`, `ParsableParseExtensions`, `NumberParseExtensions` and so on. The
 compiler lowers a static extension member to an ordinary static method without the receiver, so
 `ParseOrNone(string)` for `int` and for `long` could not share one class. The split only shows on a compiler older
-than C# 14 (before the .NET 10 SDK): there the members are plain static methods, `Int32ParseExtensions.ParseOrNone(text)`,
+than C# 14 (before the .NET 10 SDK), where the members are plain static methods, `Int32ParseExtensions.ParseOrNone(text)`,
 and the `string` extensions remain the convenient form.
 
 The `TryParse` methods of the `System.Net.Http.Headers` value types are mirrored as well:
@@ -217,9 +218,9 @@ The `TryParse` methods of the `System.Net.Http.Headers` value types are mirrored
 | `OrderedDictionary<K, V>.IndexOf` (returns `-1`)        | `IndexOfOrNone`              | .NET 9+        |
 | `Queue<T>.TryDequeue` / `TryPeek`                       | `DequeueOrNone` / `PeekOrNone` | all ¹        |
 | `ConcurrentQueue<T>.TryDequeue` / `TryPeek`             | `DequeueOrNone` / `PeekOrNone` | all          |
-| `PriorityQueue<T, P>.TryDequeue` / `TryPeek`            | `DequeueOrNone` / `PeekOrNone`, returning a `(Element, Priority)` tuple | .NET 6+ |
+| `PriorityQueue<T, P>.TryDequeue` / `TryPeek`            | `DequeueOrNone` / `PeekOrNone`, returning a `(Element, Priority)` tuple | .NET 8+ |
 | `IEnumerator<T>.MoveNext` + `Current`                   | `MoveNextOrNone`             | all            |
-| `Enumerable.TryGetNonEnumeratedCount`                   | `GetNonEnumeratedCountOrNone` | .NET 6+       |
+| `Enumerable.TryGetNonEnumeratedCount`                   | `GetNonEnumeratedCountOrNone` | all           |
 | `IList<T>.IndexOf` (returns `-1`)                       | `IndexOfOrNone`              | all            |
 | `List<T>.FindIndex` / `FindLastIndex` (return `-1`)     | `FindIndexOrNone` / `FindLastIndexOrNone` | all |
 | `IImmutableList<T>.IndexOf` / `LastIndexOf` (return `-1`) | `IndexOfOrNone` / `LastIndexOfOrNone` | all  |
@@ -275,7 +276,7 @@ the result.
 | BCL                                                   | Funcky               | Available on |
 |-------------------------------------------------------|----------------------|--------------|
 | `HttpHeaders.TryGetValues`                            | `GetValuesOrNone`    | all          |
-| `HttpHeadersNonValidated.TryGetValues`                | `GetValuesOrNone`    | .NET 6+      |
+| `HttpHeadersNonValidated.TryGetValues`                | `GetValuesOrNone`    | .NET 8+      |
 | `JsonSerializerOptions.TryGetTypeInfo`                | `GetTypeInfoOrNone`  | .NET 8+      |
 
 ## Everything else: `Option.FromNullable`

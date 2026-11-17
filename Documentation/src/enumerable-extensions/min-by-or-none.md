@@ -15,8 +15,8 @@ Option<TSource> MinByOrNone<TSource, TKey>(this IEnumerable<TSource> source, Fun
 </picture>
 
 Where `MinOrNone` with a selector returns the smallest *key*, `MinByOrNone` returns the *element* that has it.
-This is the same distinction as between `Min(selector)` and `MinBy` in the BCL, which gained `MinBy` in .NET 6
-and throws on an empty sequence of value types. `MinByOrNone` is available on every target framework and
+This is the same distinction as between `Min(selector)` and `MinBy` in the BCL, where `MinBy` throws on an empty
+sequence of value types. `MinByOrNone` is available on every target framework, .NET Standard included, and
 returns `None` instead.
 
 The first element with the smallest key wins when there are ties. The key selector is called once per
