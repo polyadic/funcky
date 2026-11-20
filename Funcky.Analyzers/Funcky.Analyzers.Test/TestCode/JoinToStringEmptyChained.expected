@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using Funcky.Extensions;
+
+namespace Funcky.Extensions
+{
+    public static partial class EnumerableExtensions
+    {
+        [Pure]
+        public static string ConcatToString<T>(this IEnumerable<T> source)
+            => string.Concat(source);
+
+        [Pure]
+        public static string JoinToString<T>(this IEnumerable<T> source, string separator)
+            => string.Join(separator, source);
+    }
+}
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private readonly IEnumerable<string> modes = new[] { "A", "B", "B", "A" };
+
+        private static string Query(string mode)
+            => mode;
+
+        private static string FormatByQuery(IGrouping<string, string> group)
+            => group.Key;
+
+        public string Serialize()
+            => modes
+                .GroupBy(Query)
+                .Select(FormatByQuery)
+                .ConcatToString();
+    }
+}
