@@ -5,6 +5,8 @@ namespace Funcky.Analyzers.Test;
 
 public sealed class JoinToStringEmptyTest
 {
+    private const string ChainedReceiver = "modes\n                .GroupBy(Query)\n                .Select(FormatByQuery)";
+
     [Fact]
     public async Task ValidUseOfJoinToStringDoesNotIssueADiagnostic()
     {
@@ -33,5 +35,27 @@ public sealed class JoinToStringEmptyTest
             .WithArguments("strings", "Empty");
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmptyConstant");
+    }
+
+    [Fact]
+    public async Task TheCodeFixReplacesTheJoinToStringAtTheEndOfAMethodChain()
+    {
+        var expectedDiagnostic = VerifyCS
+            .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
+            .WithSpan(34, 16, 37, 44)
+            .WithArguments(ChainedReceiver, "string.Empty");
+
+        await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmptyChained");
+    }
+
+    [Fact]
+    public async Task UsingAJoinToStringFromAnExtensionBlockWithAnEmptyStringShowsTheDiagnostic()
+    {
+        var expectedDiagnostic = VerifyCS
+            .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
+            .WithSpan(37, 16, 40, 44)
+            .WithArguments(ChainedReceiver, "string.Empty");
+
+        await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmptyExtensionBlock");
     }
 }

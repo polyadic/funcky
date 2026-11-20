@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Funcky.Analyzers.CodeAnalysisExtensions;
+using Funcky.Analyzers.ExtensionForms;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -47,18 +48,29 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         {
             var operation = (IInvocationOperation)context.Operation;
 
-            if (MatchJoinToStringEmpty(symbols, operation) is [var (valueArgument, stringArgument)])
+            if (MatchJoinToStringEmpty(symbols, operation) is [var (receiver, stringArgument)])
             {
-                context.ReportDiagnostic(CreateDiagnostic(operation, valueArgument, stringArgument));
+                context.ReportDiagnostic(CreateDiagnostic(operation, receiver, stringArgument));
             }
         };
 
-    private static Option<(IArgumentOperation Value, IArgumentOperation String)> MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation)
-        => MatchMethod(operation, symbols.EnumerableType, JoinToString)
-            && operation.GetArgumentsInParameterOrder() is [var valueArgument, var stringArgument]
+    private static Option<(IOperation Receiver, IArgumentOperation String)> MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation)
+        => operation.TargetMethod.Name == JoinToString
+            && SymbolEquals(ExtensionMemberSupport.DeclaringClass(operation.TargetMethod), symbols.EnumerableType)
+            && ReceiverAndSeparator(operation) is [var (receiver, stringArgument)]
             && IsEmptyString(stringArgument, symbols.StringType)
-                ? [(valueArgument, stringArgument)]
+                ? [(receiver, stringArgument)]
                 : [];
+
+    // A classic extension method gets the receiver as its first argument. A member of an extension block
+    // (Funcky 3.8 and later) is called on an instance and the separator is its only argument.
+    private static Option<(IOperation Receiver, IArgumentOperation Separator)> ReceiverAndSeparator(IInvocationOperation operation)
+        => operation switch
+        {
+            { Instance: { } instance, Arguments: [var separator] } => [(instance, separator)],
+            { Instance: null } when operation.GetArgumentsInParameterOrder() is [var value, var separator] => [(value.Value, separator)],
+            _ => [],
+        };
 
     private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
         => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);
@@ -66,11 +78,11 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
     private static bool IsStringEmptyField(INamedTypeSymbol stringType, IArgumentOperation argument)
         => argument.Value is IFieldReferenceOperation fieldReferenceOperation && MatchField(fieldReferenceOperation, stringType, nameof(string.Empty));
 
-    private static Diagnostic CreateDiagnostic(IOperation operation, IArgumentOperation valueArgument, IArgumentOperation stringArgument)
+    private static Diagnostic CreateDiagnostic(IOperation operation, IOperation receiver, IArgumentOperation stringArgument)
         => Diagnostic.Create(
             Rule,
             operation.Syntax.GetLocation(),
-            valueArgument.Value.Syntax.ToString(),
+            receiver.Syntax.ToString(),
             stringArgument.Value.Syntax.ToString());
 
     private sealed record Symbols(INamedTypeSymbol EnumerableType, INamedTypeSymbol StringType);

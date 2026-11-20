@@ -3,10 +3,8 @@ using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.Simplification;
 using static Funcky.Analyzers.CodeFixResources;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -27,43 +25,36 @@ public sealed class JoinToStringEmptyCodeFix : CodeFixProvider
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-        var diagnosticSpan = context.Diagnostics.First().Location.SourceSpan;
+        var diagnostic = context.Diagnostics.First();
 
-        if (root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<InvocationExpressionSyntax>().First() is { } declaration)
+        // The diagnostic spans the whole JoinToString invocation, so we look up the node with exactly that span.
+        // Searching from the first token instead would find the innermost invocation of a method chain
+        // (e.g. the GroupBy in modes.GroupBy(...).Select(...).JoinToString("")). A static call such as
+        // EnumerableExtensions.JoinToString(source, "") passes the source as an argument, so we leave it alone.
+        if (root?.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax memberAccess, ArgumentList.Arguments.Count: 1 } invocation)
         {
-            context.RegisterCodeFix(CreateFix(context, declaration), GetDiagnostic(context));
+            context.RegisterCodeFix(CreateFix(context, invocation, memberAccess), diagnostic);
         }
     }
 
-    private static Diagnostic GetDiagnostic(CodeFixContext context)
-        => context.Diagnostics.First();
-
-    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax declaration)
+    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         => CodeAction.Create(
             JoinToStringEmptyCodeFixTitle,
-            CreateConcatToStringAsync(context.Document, declaration),
+            CreateConcatToStringAsync(context.Document, invocation, memberAccess),
             nameof(JoinToStringEmptyCodeFixTitle));
 
-    private static Func<CancellationToken, Task<Document>> CreateConcatToStringAsync(Document document, InvocationExpressionSyntax declaration)
+    private static Func<CancellationToken, Task<Document>> CreateConcatToStringAsync(Document document, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         => async cancellationToken
             =>
             {
                 var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-
-                if (declaration.Expression is MemberAccessExpressionSyntax memberAccess)
-                {
-                    editor.ReplaceNode(declaration, CreateConcatToStringRoot(memberAccess.Expression));
-                }
-
+                editor.ReplaceNode(invocation, ReplaceWithConcatToString(invocation, memberAccess));
                 return editor.GetChangedDocument();
             };
 
-    private static SyntaxNode CreateConcatToStringRoot(ExpressionSyntax target)
-        => SyntaxConcatToString(target)
-            .NormalizeWhitespace();
-
-    private static InvocationExpressionSyntax SyntaxConcatToString(ExpressionSyntax target)
-        => InvocationExpression(
-            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, target, IdentifierName(ConcatToString))
-                .WithAdditionalAnnotations(Simplifier.Annotation));
+    // Only the method name and the argument list change, so the receiver and its formatting stay as they are.
+    private static InvocationExpressionSyntax ReplaceWithConcatToString(InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+        => invocation
+            .WithExpression(memberAccess.WithName(IdentifierName(ConcatToString).WithTriviaFrom(memberAccess.Name)))
+            .WithArgumentList(ArgumentList().WithTriviaFrom(invocation.ArgumentList));
 }
