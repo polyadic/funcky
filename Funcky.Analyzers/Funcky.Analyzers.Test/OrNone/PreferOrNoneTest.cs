@@ -36,6 +36,74 @@ public sealed class PreferOrNoneTest
         }
         """;
 
+    // Funcky 3.8 and later declare the …OrNone variants in an extension block.
+    private const string FunckyExtensionBlockStubs = """
+
+        namespace Funcky.Monads
+        {
+            public readonly struct Option<TItem>
+            {
+                public TItem GetOrElse(TItem fallback) => fallback;
+                public TItem GetOrElse(System.Func<TItem> fallback) => fallback();
+            }
+        }
+
+        namespace Funcky.Extensions
+        {
+            using System;
+            using System.Collections.Generic;
+            using Funcky.Monads;
+
+            public static class EnumerableExtensions
+            {
+                extension<TSource>(IEnumerable<TSource> source)
+                {
+                    public Option<TSource> FirstOrNone() => default;
+                    public Option<TSource> FirstOrNone(Func<TSource, bool> predicate) => default;
+                    public Option<TSource> LastOrNone() => default;
+                    public Option<TSource> ElementAtOrNone(int index) => default;
+                }
+            }
+        }
+        """;
+
+    [Fact]
+    public async Task TheOrNoneVariantIsFoundInAnExtensionBlock()
+    {
+        const string inputCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+
+            public static class C
+            {
+                public static string First(IEnumerable<string> values) => {|λ1012:values.FirstOrDefault()|} ?? "fallback";
+
+                public static string Last(IEnumerable<string> values) => {|λ1012:values.LastOrDefault()|} ?? "fallback";
+
+                public static string ElementAt(IEnumerable<string> values) => {|λ1012:values.ElementAtOrDefault(2)|} ?? "fallback";
+
+                public static string Single(IEnumerable<string> values) => values.SingleOrDefault() ?? "fallback";
+            }
+            """;
+        const string fixedCode = """
+            using System.Collections.Generic;
+            using System.Linq;
+            using Funcky.Extensions;
+
+            public static class C
+            {
+                public static string First(IEnumerable<string> values) => values.FirstOrNone().GetOrElse("fallback");
+
+                public static string Last(IEnumerable<string> values) => values.LastOrNone().GetOrElse("fallback");
+
+                public static string ElementAt(IEnumerable<string> values) => values.ElementAtOrNone(2).GetOrElse("fallback");
+
+                public static string Single(IEnumerable<string> values) => values.SingleOrDefault() ?? "fallback";
+            }
+            """;
+        await VerifyCS.VerifyCodeFixAsync(inputCode + FunckyExtensionBlockStubs, fixedCode + FunckyExtensionBlockStubs);
+    }
+
     [Fact]
     public async Task CoalesceAfterFirstOrDefaultIsReportedAndRewrittenToGetOrElseWithUsing()
     {

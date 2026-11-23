@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Funcky.Analyzers.ExtensionForms;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -89,8 +90,9 @@ public sealed class PreferOrNoneAnalyzer : DiagnosticAnalyzer
     private static string OrNoneMethodName(string orDefaultMethodName)
         => orDefaultMethodName.Substring(0, orDefaultMethodName.Length - OrDefaultSuffix.Length) + OrNoneSuffix;
 
+    // Funcky 3.8 and later declare the …OrNone variants in an extension block.
     private static bool HasOrNoneVariant(INamedTypeSymbol enumerableExtensionsType, string orNoneMethodName)
-        => enumerableExtensionsType.GetMembers(orNoneMethodName).Any(member => member is IMethodSymbol { IsStatic: true, IsExtensionMethod: true });
+        => ExtensionMemberSupport.HasMember(enumerableExtensionsType, orNoneMethodName);
 
     /// <summary>Whether the result of the invocation is consumed by a null test: <c>??</c>, <c>?.</c>, <c>== null</c>, <c>!= null</c>
     /// or an <c>is</c> pattern that distinguishes <c>null</c> from a value.</summary>

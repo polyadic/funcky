@@ -147,7 +147,7 @@ public sealed class PreferStaticParseOrNoneAnalyzer : DiagnosticAnalyzer
     // From source the member is nested in its extension block, which contributes its own type parameters; from metadata the
     // lowered static method is a direct member and already carries them.
     private static IEnumerable<int> StaticMemberArities(INamedTypeSymbol type, string staticMemberName)
-        => type.GetTypeMembers()
+        => ExtensionBlocks(type)
             .SelectMany(extension => extension.GetMembers(staticMemberName).OfType<IMethodSymbol>().Select(method => extension.Arity + method.Arity))
             .Concat(type.GetMembers(staticMemberName).OfType<IMethodSymbol>().Where(method => method.IsStatic && !method.IsExtensionMethod).Select(method => method.Arity))
             .Distinct();

@@ -14,7 +14,8 @@ namespace Funcky.Extensions
 
         [Pure]
         public static string JoinToString<T>(this IEnumerable<T> source, string separator)
-            => string.Join(separator, source);    }
+            => string.Join(separator, source);
+    }
 }
 
 namespace ConsoleApplication1
