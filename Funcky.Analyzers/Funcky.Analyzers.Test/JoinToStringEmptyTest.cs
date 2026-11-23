@@ -58,4 +58,17 @@ public sealed class JoinToStringEmptyTest
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmptyExtensionBlock");
     }
+
+    [Fact]
+    public async Task AStaticJoinToStringCallShowsTheDiagnosticButOffersNoCodeFix()
+    {
+        var inputCode = await File.ReadAllTextAsync("TestCode/JoinToStringEmptyStaticCall.input");
+        var expectedDiagnostic = VerifyCS
+            .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
+            .WithSpan(28, 26, 28, 82)
+            .WithArguments("strings", "string.Empty");
+
+        // The fixed code equals the input, so the verifier fails if a code fix is offered.
+        await VerifyCS.VerifyCodeFixAsync(inputCode, expectedDiagnostic, inputCode);
+    }
 }
