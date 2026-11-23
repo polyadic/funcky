@@ -77,7 +77,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Fix (Funcky.Analyzers 3.0.0): λ1004 reports `JoinToString(string.Empty)` again. Since 3.8.0 `JoinToString` is a member
   of an extension block, which the rule did not recognize, so it stayed silent. Its code fix now rewrites the
   `JoinToString` call itself: at the end of a method chain such as `modes.GroupBy(Query).Select(Format).JoinToString("")`
-  it used to replace the first call of the chain. The rest of the chain and its line breaks stay as they were.
+  it used to replace the first call of the chain. The rest of the chain and its line breaks stay as they were. The fix is
+  also offered through a conditional access (`strings?.JoinToString("")`), and the message renders a multi-line receiver
+  on one line.
 
 ## Funcky 3.8.0 | Funcky.Async 1.6.0 | Funcky.Xunit 2.3.0 | Funcky.Xunit.v3 1.1.0 | Funcky.Analyzers 2.1.0
 

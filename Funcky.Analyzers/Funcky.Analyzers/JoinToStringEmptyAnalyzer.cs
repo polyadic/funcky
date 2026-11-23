@@ -82,8 +82,12 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         => Diagnostic.Create(
             Rule,
             operation.Syntax.GetLocation(),
-            receiver.Syntax.ToString(),
+            FormatReceiver(receiver),
             stringArgument.Value.Syntax.ToString());
+
+    // The message is a single line, so a receiver that spans several lines (a method chain) is normalized.
+    private static string FormatReceiver(IOperation receiver)
+        => receiver.Syntax.NormalizeWhitespace().ToString();
 
     private sealed record Symbols(INamedTypeSymbol EnumerableType, INamedTypeSymbol StringType);
 }

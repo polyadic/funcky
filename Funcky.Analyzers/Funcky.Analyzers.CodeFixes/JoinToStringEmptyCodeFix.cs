@@ -31,30 +31,45 @@ public sealed class JoinToStringEmptyCodeFix : CodeFixProvider
         // Searching from the first token instead would find the innermost invocation of a method chain
         // (e.g. the GroupBy in modes.GroupBy(...).Select(...).JoinToString("")). A static call such as
         // EnumerableExtensions.JoinToString(source, "") passes the source as an argument, so we leave it alone.
-        if (root?.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax memberAccess, ArgumentList.Arguments.Count: 1 } invocation)
+        if (root?.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is InvocationExpressionSyntax { ArgumentList.Arguments.Count: 1 } invocation
+            && ReplaceWithConcatToString(invocation) is { } replacement)
         {
-            context.RegisterCodeFix(CreateFix(context, invocation, memberAccess), diagnostic);
+            context.RegisterCodeFix(CreateFix(context, invocation, replacement), diagnostic);
         }
     }
 
-    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+    private static CodeAction CreateFix(CodeFixContext context, InvocationExpressionSyntax invocation, InvocationExpressionSyntax replacement)
         => CodeAction.Create(
             JoinToStringEmptyCodeFixTitle,
-            CreateConcatToStringAsync(context.Document, invocation, memberAccess),
+            ReplaceAsync(context.Document, invocation, replacement),
             nameof(JoinToStringEmptyCodeFixTitle));
 
-    private static Func<CancellationToken, Task<Document>> CreateConcatToStringAsync(Document document, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+    private static Func<CancellationToken, Task<Document>> ReplaceAsync(Document document, InvocationExpressionSyntax invocation, InvocationExpressionSyntax replacement)
         => async cancellationToken
             =>
             {
                 var editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
-                editor.ReplaceNode(invocation, ReplaceWithConcatToString(invocation, memberAccess));
+                editor.ReplaceNode(invocation, replacement);
                 return editor.GetChangedDocument();
             };
 
     // Only the method name and the argument list change, so the receiver and its formatting stay as they are.
-    private static InvocationExpressionSyntax ReplaceWithConcatToString(InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
-        => invocation
-            .WithExpression(memberAccess.WithName(IdentifierName(ConcatToString).WithTriviaFrom(memberAccess.Name)))
-            .WithArgumentList(ArgumentList().WithTriviaFrom(invocation.ArgumentList));
+    private static InvocationExpressionSyntax? ReplaceWithConcatToString(InvocationExpressionSyntax invocation)
+        => RenameToConcatToString(invocation.Expression) is { } expression
+            ? invocation
+                .WithExpression(expression)
+                .WithArgumentList(ArgumentList().WithTriviaFrom(invocation.ArgumentList))
+            : null;
+
+    // The method is accessed either directly (strings.JoinToString) or through a conditional access (strings?.JoinToString).
+    private static ExpressionSyntax? RenameToConcatToString(ExpressionSyntax expression)
+        => expression switch
+        {
+            MemberAccessExpressionSyntax memberAccess => memberAccess.WithName(ConcatToStringName(memberAccess.Name)),
+            MemberBindingExpressionSyntax memberBinding => memberBinding.WithName(ConcatToStringName(memberBinding.Name)),
+            _ => null,
+        };
+
+    private static IdentifierNameSyntax ConcatToStringName(SimpleNameSyntax name)
+        => IdentifierName(ConcatToString).WithTriviaFrom(name);
 }
