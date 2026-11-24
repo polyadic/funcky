@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Funcky.Analyzers.CodeAnalysisExtensions;
 using Funcky.Analyzers.ExtensionForms;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -55,22 +54,11 @@ public sealed class JoinToStringEmptyAnalyzer : DiagnosticAnalyzer
         };
 
     private static Option<(IOperation Receiver, IArgumentOperation String)> MatchJoinToStringEmpty(Symbols symbols, IInvocationOperation operation)
-        => operation.TargetMethod.Name == JoinToString
-            && SymbolEquals(ExtensionMemberSupport.DeclaringClass(operation.TargetMethod), symbols.EnumerableType)
-            && ReceiverAndSeparator(operation) is [var (receiver, stringArgument)]
+        => MatchMethod(operation, symbols.EnumerableType, JoinToString)
+            && ExtensionMemberSupport.ReceiverAndArguments(operation) is [(var receiver, [var stringArgument])]
             && IsEmptyString(stringArgument, symbols.StringType)
                 ? [(receiver, stringArgument)]
                 : [];
-
-    // A classic extension method gets the receiver as its first argument. A member of an extension block
-    // (Funcky 3.8 and later) is called on an instance and the separator is its only argument.
-    private static Option<(IOperation Receiver, IArgumentOperation Separator)> ReceiverAndSeparator(IInvocationOperation operation)
-        => operation switch
-        {
-            { Instance: { } instance, Arguments: [var separator] } => [(instance, separator)],
-            { Instance: null } when operation.GetArgumentsInParameterOrder() is [var value, var separator] => [(value.Value, separator)],
-            _ => [],
-        };
 
     private static bool IsEmptyString(IArgumentOperation argument, INamedTypeSymbol stringType)
         => IsEmptyStringConstant(argument) || IsStringEmptyField(stringType, argument);

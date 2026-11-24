@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Funcky.Analyzers.CodeAnalysisExtensions;
+using Funcky.Analyzers.ExtensionForms;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -88,12 +89,9 @@ public sealed class PreferFlattenAnalyzer : DiagnosticAnalyzer
            && SymbolEquals(parameterContainingSymbol, anonymousFunction.Symbol);
 
     private static ITypeSymbol? ReceiverType(IInvocationOperation invocation)
-        => invocation switch
-        {
-            { Instance: { } instance } => instance.Type,
-            { Arguments: [{ Value: var receiver }, ..] } => receiver.Type,
-            _ => null,
-        };
+        => ExtensionMemberSupport.ReceiverAndArguments(invocation) is [(var receiver, _)]
+            ? receiver.Type
+            : null;
 
     /// <summary>The types that have a <c>Flatten</c> extension method, keyed by the original definition of the receiver type and
     /// the type whose <c>SelectMany</c> it replaces, together with the namespace the extension lives in. Only that <c>SelectMany</c>

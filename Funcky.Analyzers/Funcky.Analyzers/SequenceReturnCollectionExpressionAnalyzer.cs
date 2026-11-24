@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using static Funcky.Analyzers.FunckyWellKnownMemberNames;
+using static Funcky.Analyzers.OperationMatching;
 
 namespace Funcky.Analyzers;
 
@@ -62,10 +63,10 @@ public sealed class SequenceReturnCollectionExpressionAnalyzer : DiagnosticAnaly
     // We deliberately only match the single-element overload: a collection expression `[x]` always
     // matches it, whereas the params overload may be called in normal form with an existing array
     // (`Enumerable.Return(array)`), where `[array]` would change the meaning. The member lives in an
-    // extension block, so its containing type is the unnamed extension type nested in EnumerableExtensions.
+    // extension block of EnumerableExtensions.
     private static bool MatchSingleElementEnumerableReturn(IInvocationOperation operation, INamedTypeSymbol enumerableExtensionsType)
-        => operation.TargetMethod is { Name: MonadReturnMethodName, IsStatic: true, Parameters: [{ IsParams: false }], ContainingType: { } containingType }
-            && (SymbolEquals(containingType, enumerableExtensionsType) || SymbolEquals(containingType.ContainingType, enumerableExtensionsType));
+        => operation.TargetMethod is { IsStatic: true, Parameters: [{ IsParams: false }] }
+            && MatchMethod(operation, enumerableExtensionsType, MonadReturnMethodName);
 
     // 1200 is the numeric value of LanguageVersion.CSharp12; we can't reference the enum member
     // directly because the analyzer is also compiled against Roslyn versions that predate it.

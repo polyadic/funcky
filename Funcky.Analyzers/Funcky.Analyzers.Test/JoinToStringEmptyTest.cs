@@ -16,11 +16,19 @@ public sealed class JoinToStringEmptyTest
     }
 
     [Fact]
+    public async Task AJoinToStringOfAnOrdinaryClassNestedInEnumerableExtensionsDoesNotIssueADiagnostic()
+    {
+        var inputCode = await File.ReadAllTextAsync("TestCode/JoinToStringNestedClass.input");
+
+        await VerifyCS.VerifyAnalyzerAsync(inputCode);
+    }
+
+    [Fact]
     public async Task UsingAJoinToStringWithAnEmptyStringShowsTheDiagnostic()
     {
         var expectedDiagnostic = VerifyCS
             .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
-            .WithSpan(28, 26, 28, 60)
+            .WithSpan(29, 26, 29, 60)
             .WithArguments("strings", "string.Empty");
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmpty");
@@ -31,7 +39,7 @@ public sealed class JoinToStringEmptyTest
     {
         var expectedDiagnostic = VerifyCS
             .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
-            .WithSpan(30, 26, 30, 53)
+            .WithSpan(31, 26, 31, 53)
             .WithArguments("strings", "Empty");
 
         await VerifyWithSourceExample.VerifyDiagnosticAndCodeFix<JoinToStringEmptyAnalyzer, JoinToStringEmptyCodeFix>(expectedDiagnostic, "JoinToStringEmptyConstant");
@@ -87,7 +95,7 @@ public sealed class JoinToStringEmptyTest
         var inputCode = await File.ReadAllTextAsync("TestCode/JoinToStringEmptyStaticCall.input");
         var expectedDiagnostic = VerifyCS
             .Diagnostic(JoinToStringEmptyAnalyzer.DiagnosticId)
-            .WithSpan(28, 26, 28, 82)
+            .WithSpan(29, 26, 29, 82)
             .WithArguments("strings", "string.Empty");
 
         // The fixed code equals the input, so the verifier fails if a code fix is offered.

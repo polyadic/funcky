@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using Funcky.Extensions;
+
+namespace Funcky.Extensions
+{
+    public static partial class EnumerableExtensions
+    {
+        [Pure]
+        public static string ConcatToString<T>(this IEnumerable<T> source)
+            => string.Concat(source);
+
+        [Pure]
+        public static string JoinToString<T>(this IEnumerable<T> source, string separator)
+            => string.Join(separator, source);
+
+        public sealed class Builder
+        {
+            private readonly List<string> _parts = new List<string>();
+
+            public Builder Add(string part)
+            {
+                _parts.Add(part);
+                return this;
+            }
+
+            public string JoinToString(string separator)
+                => string.Join(separator, _parts);
+        }
+    }
+}
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        private void Syntax()
+        {
+            var builder = new EnumerableExtensions.Builder().Add("A").Add("B");
+
+            var joined = builder.JoinToString(string.Empty);
+        }
+    }
+}

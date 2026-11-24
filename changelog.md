@@ -80,6 +80,9 @@ Funcky adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   it used to replace the first call of the chain. The rest of the chain and its line breaks stay as they were. The fix is
   also offered through a conditional access (`strings?.JoinToString("")`), and the message renders a multi-line receiver
   on one line.
+* Fix (Funcky.Analyzers 3.0.0): λ1012 reports `FirstOrDefault` & co. followed by a null check again. It looked for the
+  `…OrNone` variants as classic extension methods of `EnumerableExtensions`, but since Funcky 3.8.0 they are members of
+  an extension block, so the rule stayed silent. All rules now find members of extension blocks through one shared lookup.
 
 ## Funcky 3.8.0 | Funcky.Async 1.6.0 | Funcky.Xunit 2.3.0 | Funcky.Xunit.v3 1.1.0 | Funcky.Analyzers 2.1.0
 
